@@ -3,18 +3,25 @@
 		"./src/**/*"
 	],
 	"compilerOptions": {
-		"baseUrl": "src",
-		"paths": {
-			"/*": [ "./*" ]
-		},
 		"allowJs": true,
-		"target": "es5",
+		"baseUrl": "src",
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitAny": false,
-		"removeComments": true,
-		"preserveConstEnums": true,
 		"outDir": "app",
-		"sourceMap": false
+		"paths": {
+			"/*": [ "./*" ]
+		},
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"target": "es6",
+		"types" : [
+			"bluebird",
+			"core-js",
+			"express",
+			"lodash",
+			"node"
+		]
 	}
 }
