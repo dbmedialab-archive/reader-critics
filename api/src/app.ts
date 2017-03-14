@@ -9,7 +9,7 @@ import axios from 'axios';
 import config from './config';
 import api from './apilib';
 
-import articleHandler from './routes/article';
+import articleRouter from './routes/article';
 
 global.Promise = bluebird;
 
@@ -28,11 +28,11 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 .then(startHTTP)
 .catch(error => console.error(error.stack));
 
-app.get('/article', articleHandler);  // Example endpoint
+app.use('/article', articleRouter.router);  // Example endpoint
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
-		debug(`Aurora API running on port ${httpPort} in ${config.get('env')} mode`);
+		debug(`Reader Critic API running on port ${httpPort} in ${config.get('env')} mode`);
 	});
 }
 

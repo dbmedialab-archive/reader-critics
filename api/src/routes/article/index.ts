@@ -1,17 +1,55 @@
 import * as express from 'express';
-
 import api from '../../apilib';
+import { HtmlParser } from '../../parser/html';
 
 const debug = api.createDebugChannel();
 
-const serveNoContent = (requ, resp) => {
-	debug('Default route handler');
-	resp.status(204).end();
-};
+class ArticleRouter {
 
-// Routing
-const articleHandler = express();
+	router: express.Router;
 
-articleHandler.get('*', serveNoContent);
+	constructor () {
+		debug('booting routes')
+		this.router = express.Router();
 
-export default articleHandler;
+		this.show();
+		this.noContent();
+	}
+
+	show (): void {
+		this.router.get('/', (req: express.Request, res: express.Response) => {
+			let h = new HtmlParser('http://www.vg.no/nyheter/utenriks/nederland/geert-wilders-hjemby-vi-maa-gjoere-noe-med-denne-innvandringen/a/23947954/');
+			res.send(h.request());
+		});
+	}
+
+	noContent (): void {
+		this.router.get('*', (req: express.Request, res: express.Response) => {
+			debug('Default route handler');
+			res.status(204).end();
+		});
+	}
+
+}
+
+const articleRouter = new ArticleRouter();
+export default articleRouter;
+
+
+
+
+// const getArticle = (req, res) => {
+
+// }
+
+// // Routing
+// const articleHandler = express();
+
+// articleHandler.get('/', (req,res) => {
+// 	res.send("Hallo");
+// });
+
+// articleHandler.get('/get', getArticle);
+// // articleHandler.get('*', serveNoContent);
+
+// export default articleHandler;
