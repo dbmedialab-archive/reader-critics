@@ -4,7 +4,7 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"description": "Backend part of Kildekritikk (Reader Critics)",
-	"main": "src/",
+	"main": "app/app.js",
 	"engines": {
 		"node": "7.7.2"
 	},
