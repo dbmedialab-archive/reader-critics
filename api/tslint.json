@@ -1,0 +1,23 @@
+{
+	"rules": {
+		"curly": true,
+		"eofline": true,
+		"indent": [ true, "tabs" ],
+		"new-parens": true,
+		"no-eval": true,
+		"no-require-imports": true,
+		"no-shadowed-variable": true,
+		"no-string-throw": true,
+		"no-unnecessary-initializer": true,
+		"no-use-before-declare": true,
+		"ordered-imports": true,
+		"quotemark": [ true, "single" ],
+		"prefer-const": true,
+		"semicolon": true,
+		"trailing-comma": [ true, {
+			"multiline": "always",
+			"singleline": "never"
+		}],
+		"triple-equals": true
+	}
+}
