@@ -55,6 +55,7 @@ public/common.js
 public/app.js
 public/styles.css
 stash
+yarn.lock
 
 # Editors
 .idea
