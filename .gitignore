@@ -7,6 +7,10 @@
 *.o
 *.so
 
+# Compiled paths #
+##################
+api/app/
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -46,12 +50,11 @@ Thumbs.db
 *.bak
 *.orig
 *.swp
-/node_modules
-/public/common.js
-/public/app.js
-/public/styles.css
-/stash
-
+node_modules
+public/common.js
+public/app.js
+public/styles.css
+stash
 
 # Editors
 .idea
