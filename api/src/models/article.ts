@@ -10,8 +10,8 @@ class Article extends BaseModel {
 		'title',
 		'body',
 		'url',
-		'modified_identifier'
-	]
+		'modified_identifier',
+	];
 
 	constructor (properties: Object) {
 		super();
@@ -25,11 +25,9 @@ class Article extends BaseModel {
 		this.modified_identifier = properties['modified_identifier'];
 	}
 
-
-
 	private validate (properties: Object) {
 		// Loop through the required props array
-		for (let index in this.required) {
+		for (const index in this.required) {
 			// Check for the required property
 			if (!properties.hasOwnProperty(this.required[index])) {
 				return false;
