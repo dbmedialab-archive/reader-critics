@@ -7,7 +7,7 @@ import * as util from 'util';
 import axios from 'axios';
 
 import config from './config';
-import api from './apilib';
+import api from 'apilib';
 
 import articleHandler from './routes/article';
 

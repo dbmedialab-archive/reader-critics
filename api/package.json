@@ -44,6 +44,8 @@
 
 		"chai": "3.5.x",
 
+		"del": "2.2.2",
+
 		"eslint": "3.x",
 		"eslint-plugin-import": "2.2.0",
 
