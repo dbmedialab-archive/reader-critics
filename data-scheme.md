@@ -16,6 +16,7 @@
 
 #### Article
 
+* `permalink url`
 * `client version` (string)
 * `internal version` (int) _for ordering of arbitrary client version string, like UUIDs_
 * `date` (datetime)
