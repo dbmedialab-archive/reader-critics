@@ -62,6 +62,6 @@
 		"@types/express": "4.x",
 		"@types/lodash": "4.x",
 		"@types/node": "7.x",
-		"@types/mysql": "*"
+		"@types/sequelize": "4.0.46"
 	}
 }
