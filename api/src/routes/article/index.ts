@@ -19,7 +19,7 @@ class ArticleRouter {
 	show (): void {
 		this.router.get('/', (req: express.Request, res: express.Response) => {
 			let h = new HtmlParser('http://www.vg.no/nyheter/utenriks/nederland/geert-wilders-hjemby-vi-maa-gjoere-noe-med-denne-innvandringen/a/23947954/');
-			res.send(h.request());
+			res.send(h.buildContent());
 		});
 	}
 
