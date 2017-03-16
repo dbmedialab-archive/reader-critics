@@ -1,7 +1,6 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
-import * as mysql from 'mysql';
 import * as util from 'util';
 
 import axios from 'axios';
@@ -32,23 +31,9 @@ app.get('/article', articleHandler);  // Example endpoint
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
-		debug(`Aurora API running on port ${httpPort} in ${config.get('env')} mode`);
+		debug(`Kildekritikk API running on port ${httpPort} in ${config.get('env')} mode`);
 	});
 }
-
-/*
-Later!
-const connection = mysql.createConnection(`${config.get('mysql.url')}&charset=utf8_general_ci`);
-
-connection.connect (function (err) {
-	if (err) {
-		console.error('error connecting: ' + err.stack);
-		return;
-	}
-
-	console.log ('connected as id ' + connection.threadId);
-});
-*/
 
 /*
 .then(() => {
