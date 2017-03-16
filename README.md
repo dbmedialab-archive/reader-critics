@@ -13,7 +13,7 @@ git clone git@github.com:dbmedialab/Reader-critics.git
 cd api
 npm install
 ```
-Of course, `yarn` works file as well!
+Of course, `yarn` works fine as well!
 
 Initialise your local MySQL with a database and user:
 ```
