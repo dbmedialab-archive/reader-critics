@@ -1,8 +1,8 @@
-import { BaseParser } from '../base';
-import * as NodeRead from 'node-read';
 import * as Cheerio from 'cheerio';
 import { fetchUrl } from 'fetch';
-import { Article } from '../../models/article';
+import Article from '../../models/article';
+import * as NodeRead from 'node-read';
+import { BaseParser } from '../base';
 
 class HtmlParser extends BaseParser {
 	private parsedElements = {};
@@ -14,20 +14,41 @@ class HtmlParser extends BaseParser {
 		super(url);
 	}
 
-	public getArticle() {
-		if (!this.article) {
-			if (!this.requestSent) {
-				this.request().then(() => {
-					this.buildElements();
-					// this.createArticle();
-				});
+	public getArticle(): any {
+		const article_promise = new Promise((resolve, reject) => {
+			if (!this.article) {
+				if (!this.requestSent) {
+					this.request().then(() => {
+						this.createArticle();
+						resolve(super.getArticle());
+					});
+				} else {
+					this.createArticle();
+					resolve(super.getArticle());
+				}
+			} else {
+				resolve(super.getArticle());
 			}
-			if (!this.parsedElements) {
-				this.buildElements();
-			}
+		}).then(article => {
+			return article;
+		})
 
+		return article_promise;
+	}
+
+	private createArticle() {
+		if (!Object.keys(this.parsedElements).length) {
+			this.buildElements();
 		}
-		return super.getArticle();
+		const article = new Article({
+			title: this.response.title,
+			elements: this.parsedElements,
+			url: this.url,
+			modified_identifier: "unidentified"
+		});
+		if (article) {
+			this.article = article;
+		}
 	}
 
 	private buildElements() {
@@ -38,7 +59,7 @@ class HtmlParser extends BaseParser {
 
 		// If the build function was initiated without having a response
 		} else if (!Object.keys(this.response).length) {
-			// @TODO: Throw some kind of error here?
+			// TODO: Throw some kind of error here?
 			console.error('Error: Attempted to build article elements without any data to build from.');
 			return [];
 		}
@@ -57,7 +78,7 @@ class HtmlParser extends BaseParser {
 		// Get the elements from the bodytext
 		const $elements = $(this.elementTags.join(','));
 		// Iterate through all the elements and add them to the array with the correct structure
-		for(let index in $elements) {
+		for(const index in $elements) {
 			const data = this.getElementData($elements[index]);
 
 			if (!data) {

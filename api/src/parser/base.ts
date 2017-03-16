@@ -1,5 +1,5 @@
+import Article from '../models/article';
 import { Parser } from './index';
-import { Article } from '../models/article';
 
 class BaseParser implements Parser {
 	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
@@ -10,7 +10,7 @@ class BaseParser implements Parser {
 		this.url = url;
 	}
 
-	getArticle() {
+	getArticle(): Article {
 		return this.article;
 	}
 }

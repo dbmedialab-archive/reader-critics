@@ -1,5 +1,6 @@
 import * as express from 'express';
 import api from '../../apilib';
+import ApiParser from '../../parser/api';
 import { HtmlParser } from '../../parser/html';
 
 const debug = api.createDebugChannel();
@@ -13,13 +14,24 @@ class ArticleRouter {
 		this.router = express.Router();
 
 		this.show();
+		this.api();
+		// This has to come last
 		this.noContent();
 	}
 
 	show (): void {
 		this.router.get('/', (req: express.Request, res: express.Response) => {
-			let h = new HtmlParser('http://www.vg.no/nyheter/innenriks/fant-feil-paa-kran-etter-ulykken-der-gutt-5-doede/a/23949617/');
-			res.send(h.getArticle());
+			let h = new HtmlParser(req.query.url);
+			h.getArticle().then(article => {
+				res.send(article);
+			});
+		});
+	}
+
+	api (): void {
+		this.router.get('/api', (req: express.Request, res: express.Response) => {
+			const a = new ApiParser('http://www.dagbladet.no/_dan/berge.json');
+			res.send(a.request());
 		});
 	}
 
@@ -34,22 +46,3 @@ class ArticleRouter {
 
 const articleRouter = new ArticleRouter();
 export default articleRouter;
-
-
-
-
-// const getArticle = (req, res) => {
-
-// }
-
-// // Routing
-// const articleHandler = express();
-
-// articleHandler.get('/', (req,res) => {
-// 	res.send("Hallo");
-// });
-
-// articleHandler.get('/get', getArticle);
-// // articleHandler.get('*', serveNoContent);
-
-// export default articleHandler;

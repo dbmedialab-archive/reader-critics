@@ -1,6 +1,6 @@
-import { Article } from '../models/article';
+import Article from '../models/article';
 
-interface Parser {
+export interface Parser {
 	// Properties
 	url: string;
 
@@ -8,5 +8,3 @@ interface Parser {
 	// request: () => void;
 	getArticle: () => Article;
 }
-
-export { Parser };
