@@ -2,9 +2,9 @@ import { Parser } from './index';
 import { Article } from '../models/article';
 
 class BaseParser implements Parser {
-	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol'];
+	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
 	readonly url: string;
-	private article: Article;
+	protected article: Article;
 
 	constructor (url: string) {
 		this.url = url;
