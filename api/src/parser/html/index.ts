@@ -3,43 +3,66 @@ import { fetchUrl } from 'fetch';
 import Article from '../../models/article';
 import * as NodeRead from 'node-read';
 import { BaseParser } from '../base';
+import ParserRequestException from '../../exceptions/ParserRequestException';
 
 class HtmlParser extends BaseParser {
 	private parsedElements = {};
 	private requestError = null;
 	private requestSent = false;
-	private response: {title: string, content: {}, html: string};
-
-	constructor(url: string) {
-		super(url);
-	}
+	private response: {title: string, content: {}, html: string, status: number};
 
 	public getArticle(): any {
-		const article_promise = new Promise((resolve, reject) => {
-			if (!this.article) {
-				if (!this.requestSent) {
-					this.request().then(() => {
-						this.createArticle();
-						resolve(super.getArticle());
-					});
-				} else {
-					this.createArticle();
-					resolve(super.getArticle());
-				}
+		return new Promise((resolve, reject) => {
+			// If we don't have anything to base the article on
+			if (!this.requestSent || typeof this.response === 'undefined') {
+				// We run the article request
+				this.request().then(() => {
+					// If the request failed
+					if (this.requestError || typeof this.response === 'undefined' || this.response.status !== 200) {
+						// We throw an exception
+						reject(new ParserRequestException('Failed to request the article HTML'));
+					}
+					// Request was successful - carry on
+					resolve();
+				});
 			} else {
-				resolve(super.getArticle());
+				// We've already sent the request and have the data - carry on
+				resolve();
 			}
-		}).then(article => {
-			return article;
-		})
+		}).then(() => {
+			// Generate the article based on the response
+			this.createArticle();
 
-		return article_promise;
+			// If we couldn't create an article
+			if (!this.article) {
+				// Return error
+				return {
+					success: false,
+					exception: new ParserRequestException('Could not create article based on response')
+				};
+			}
+
+			// Return an object containing the article
+			return {
+				success: true,
+				data: super.getArticle()
+			};
+		}).catch(reason => {
+			// Something went wrong, return the error
+			return {
+				success: false,
+				exception: reason
+			};
+		});
 	}
 
 	private createArticle() {
+		// Check if we have built the elements of the article
 		if (!Object.keys(this.parsedElements).length) {
 			this.buildElements();
 		}
+
+		// Build an article object based on the data
 		const article = new Article({
 			title: this.response.title,
 			elements: this.parsedElements,
@@ -59,7 +82,6 @@ class HtmlParser extends BaseParser {
 
 		// If the build function was initiated without having a response
 		} else if (!Object.keys(this.response).length) {
-			// TODO: Throw some kind of error here?
 			console.error('Error: Attempted to build article elements without any data to build from.');
 			return [];
 		}
@@ -127,7 +149,8 @@ class HtmlParser extends BaseParser {
 					this.response = {
 						title: article.title,
 						content: article.content,
-						html: html
+						html: html,
+						status: meta.status
 					}
 					resolve(this.response);
 				});
