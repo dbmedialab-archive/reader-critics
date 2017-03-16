@@ -1,6 +1,6 @@
-import { BaseParser } from '../base';
-import * as NodeRead from 'node-read';
 import * as Cheerio from 'cheerio';
+import * as NodeRead from 'node-read';
+import { BaseParser } from '../base';
 
 class HtmlParser extends BaseParser {
 	private parsedContent = {};
@@ -37,10 +37,10 @@ class HtmlParser extends BaseParser {
 		// If the article has been requested but no response was returned or if we have an error
 		} else if (this.requestError !== null || !Object.keys(this.response).length) {
 			// @TODO: Throw some kind of error here, or attempt multiple times to request the article(?)
-			console.error("Request for the article failed, heres an error: ", this.requestError)
+			console.error('Request for the article failed, heres an error: ', this.requestError);
 			return;
 		}
-		let $ = Cheerio.load(this.response.content),
+			const $ = Cheerio.load(this.response.content),
 			elements = [];
 
 		elements.push({
@@ -48,11 +48,11 @@ class HtmlParser extends BaseParser {
 			text: this.response.title
 		});
 
-		let $elements = $(this.elementTags.join(','));
+		const $elements = $(this.elementTags.join(','));
 		let curr_element: {name: string};
 
 		// Iterate through all the elements and add them to the array with the correct structure
-		for(let index in $elements) {
+		for(const index in $elements) {
 			curr_element = $elements[index];
 
 			// If the tag is not recognized we continue to the next element

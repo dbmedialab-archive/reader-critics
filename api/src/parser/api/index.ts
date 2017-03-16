@@ -1,11 +1,13 @@
 import * as Ajv from 'ajv';
 import * as Http from 'http';
 
-import { Article } from '../../models/article';
+import Article from '../../models/article';
+import Author from '../../models/author';
+import Site from '../../models/site';
 import { BaseParser } from '../base';
 import { Schema } from './json';
 
-class ApiParser extends BaseParser {
+export default class ApiParser extends BaseParser {
 	constructor(url: string) {
 		super(url);
 	}
@@ -43,8 +45,9 @@ class ApiParser extends BaseParser {
 	}
 
 	private buildArticle(articleJson: object) {
-		console.log('articleJson', articleJson);
+		const site = new Site(articleJson['site']);
+		const article = new Article(articleJson['article']);
+		const authors = articleJson['byline'];
+		const tags = articleJson['tags'];
 	}
 }
-
-export { ApiParser };
