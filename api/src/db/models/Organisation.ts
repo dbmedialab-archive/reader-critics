@@ -1,18 +1,20 @@
-import defaults from './sequelizeDefaults';
+import { DataTypes, Sequelize } from 'sequelize';
 
-const Organisation = (sequelize, DataTypes) => {
+import withDefaults from './defaults';
+
+const Organisation = (sequelize: Sequelize, types: DataTypes) => {
 	return sequelize.define('organisation', {
 		uuid: {
-			type: DataTypes.UUID,
+			type: types.UUID,
 			primaryKey: true,
-			defaultValue: DataTypes.UUIDV4,
+			defaultValue: types.UUIDV4,
 		},
 		name: {
-			type: DataTypes.STRING,
+			type: types.STRING,
 			allowNull: false,
 			unique: true,
 		},
-	}, defaults);
+	}, withDefaults());
 };
 
 export default Organisation;

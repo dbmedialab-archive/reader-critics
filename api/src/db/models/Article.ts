@@ -1,26 +1,30 @@
-import defaults from './sequelizeDefaults';
+import { DataTypes, Sequelize } from 'sequelize';
 
-const options = Object.assign({}, defaults, {
-	updatedAt: false,
-});
+import withDefaults from './defaults';
 
-console.dir(options);
-
-const Article = (sequelize, DataTypes) => {
+const Article = (sequelize: Sequelize, types: DataTypes) => {
 	return sequelize.define('article', {
 		id: {
-			type: DataTypes.INTEGER.UNSIGNED,
+			type: types.INTEGER.UNSIGNED,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
 		url: {
-			type: DataTypes.STRING,
+			type: types.STRING,
 			allowNull: false,
-			unique: true,
 			isUrl: true,
 		},
-	}, options);
+	}, withDefaults({
+		updatedAt: false,
+		indexes: [
+			{
+				name: 'article_url',
+				unique: true,
+				fields: ['url'],
+			}
+		]
+	}));
 };
 
 export default Article;
