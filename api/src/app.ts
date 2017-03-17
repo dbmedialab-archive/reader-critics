@@ -1,25 +1,36 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
+import * as session from 'express-session';
 import * as http from 'http';
 import * as mysql from 'mysql';
+import * as redis from 'redis';
 import * as util from 'util';
 
 import axios from 'axios';
 
-import config from './config';
 import api from './apilib';
+import config from './config';
 
 import articleRouter from './routes/article';
 
 global.Promise = bluebird;
 
+const client = redis.createClient();
+const RedisStore = require('connect-redis')(session);
 const debug = api.createDebugChannel();
 
 debug('Starting Kildekritikk API');
 
 // Create Express application
 const app = express();
-
+app.use(session({
+	store: new RedisStore({ client: client, host: 'localhost', port: 6379}),
+	secret: 'shampo',
+	logErrors: true,
+	resave: false,
+	saveUninitialized: true,
+	cookie: { secure: true },
+}));
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
 
@@ -52,22 +63,22 @@ connection.connect (function (err) {
 
 /*
 .then(() => {
-  // Start HTTP server
+	// Start HTTP server
 
-  httpServer.listen(httpPort, () => {
-    debug(`Aurora API running on port ${httpPort} in ${config.get('env')} mode`);
-    recordEvent('worker_start');
+	httpServer.listen(httpPort, () => {
+		debug(`Aurora API running on port ${httpPort} in ${config.get('env')} mode`);
+		recordEvent('worker_start');
 
-    // If this is the test environment, then there will be a master script waiting for the API service
-    // to settle. Send a "we're ready, proceed" signal to this process:
-    if (aurora.isTestEnv && process.env.MASTER_PID) {
-      const masterPID = parseInt(process.env.MASTER_PID);
-      if (masterPID > 0) {
-        process.kill(masterPID, 'SIGUSR2');
-      }
-    } // if (process.env)
-  });
+		// If this is the test environment, then there will be a master script waiting for the API service
+		// to settle. Send a "we're ready, proceed" signal to this process:
+		if (aurora.isTestEnv && process.env.MASTER_PID) {
+			const masterPID = parseInt(process.env.MASTER_PID);
+			if (masterPID > 0) {
+				process.kill(masterPID, 'SIGUSR2');
+			}
+		} // if (process.env)
+	});
 })
 .catch((error) => {
-  console.error(error.stack);
+	console.error(error.stack);
 });*/

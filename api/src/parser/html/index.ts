@@ -36,7 +36,7 @@ class HtmlParser extends BaseParser {
 
 		// If the article has been requested but no response was returned or if we have an error
 		} else if (this.requestError !== null || !Object.keys(this.response).length) {
-			// @TODO: Throw some kind of error here, or attempt multiple times to request the article(?)
+			// TODO: Throw some kind of error here, or attempt multiple times to request the article(?)
 			console.error('Request for the article failed, heres an error: ', this.requestError);
 			return;
 		}

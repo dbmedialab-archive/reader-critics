@@ -18,4 +18,13 @@ export default class Article extends BaseModel {
 		this.url = properties['url'];
 		this.modified_identifier = properties['modified_identifier'];
 	}
+
+	public getArticle(): Object {
+		return {
+			title: this.title,
+			elements: this.elements,
+			url: this.url,
+			modified_identifier: this.modified_identifier,
+		};
+	}
 }

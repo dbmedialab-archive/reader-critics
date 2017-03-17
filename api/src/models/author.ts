@@ -1,10 +1,17 @@
-export default class Author {
+import BaseModel from './base';
+
+export default class Author extends BaseModel {
 	private _name: string;
 	private _email: string;
 
-	constructor (name: string, email: string) {
-		this._name = name;
-		this._email = email;
+	constructor (properties: Object) {
+		super(['name', 'email']);
+
+		if (!this.validate(properties)) {
+			console.error('Failed to validate author! Heres the props that failed: ', properties);
+		}
+		this._name = properties['name'];
+		this._email = properties['email'];
 	}
 
 	public get name(): string {

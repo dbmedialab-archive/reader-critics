@@ -4,7 +4,10 @@ export default class BaseModel {
 	protected updated_at: string;
 	protected required: string[];
 
-	constructor(required: string[]) {
+	constructor(required?: string[]) {
+		if (typeof required === 'undefined') {
+			required = [];
+		}
 		this.required = required;
 	}
 
