@@ -1,17 +1,30 @@
 import Article from '../models/article';
+import axios from 'axios';
 import { Parser } from './index';
 
 class BaseParser implements Parser {
-	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
 	readonly url: string;
+	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
+	protected requestSent: boolean;
 	protected article: Article;
 
 	constructor (url: string) {
 		this.url = url;
+		this.requestSent = false;
 	}
 
 	getArticle(): Article {
 		return this.article;
+	}
+
+	// Requests the url
+	protected request() {
+		this.requestSent = true;
+		return axios.get(this.url).then(response => {
+			return Promise.resolve(response);
+		}).catch(error => {
+			return Promise.reject(error);
+		});
 	}
 }
 

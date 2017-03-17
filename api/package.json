@@ -22,7 +22,7 @@
   "dependencies": {
     "ajv": "^4.11.5",
     "ansicolors": "0.3.x",
-    "axios": "0.15.x",
+    "axios": "^0.15.3",
     "bluebird": "3.5.x",
     "callsite": "1.x",
     "cheerio": "^0.22.0",

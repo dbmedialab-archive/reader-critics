@@ -1,7 +1,7 @@
 import * as express from 'express';
 import api from '../../apilib';
 import ApiParser from '../../parser/api';
-import { HtmlParser } from '../../parser/html';
+import HtmlParser from '../../parser/html';
 
 const debug = api.createDebugChannel();
 
@@ -21,17 +21,26 @@ class ArticleRouter {
 
 	show (): void {
 		this.router.get('/', (req: express.Request, res: express.Response) => {
-			let h = new HtmlParser(req.query.url);
+			const h = new HtmlParser(req.query.url);
 			h.getArticle().then(article => {
 				res.send(article);
+			}).catch(reason => {
+				res.send(reason);
 			});
 		});
 	}
 
 	api (): void {
 		this.router.get('/api', (req: express.Request, res: express.Response) => {
-			const a = new ApiParser('http://www.dagbladet.no/_dan/berge.json');
-			res.send(a.request());
+			if (typeof req.query.url === 'undefined' || req.query.url === '') {
+				res.send({error: 'URL query paramater is not provided'});
+				return;
+			}
+			const a = new ApiParser(req.query.url);
+			a.request().then(article => {
+				res.send(article);
+				return;
+			});
 		});
 	}
 
