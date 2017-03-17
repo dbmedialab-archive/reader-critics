@@ -97,18 +97,19 @@ export default class HtmlParser extends BaseParser {
 		let $ = Cheerio.load(this.parsedArticle.content),
 			elements = [],
 			html = Cheerio.load(this.response.data),
-			image = html('meta[property="og:image"]');
+			image = html('meta[property="og:image"]'),
+			el_counter = 1;
 
 		// Add title and cover image (if defined)
-		elements.push({type: 'h1', data: {text: this.parsedArticle.title}});
+		elements.push({type: 'h1', data: {text: this.parsedArticle.title}, order: el_counter++});
 		if (typeof image !== 'undefined') {
-			elements.push({type: 'img', data: {src: image.attr('content')}});
+			elements.push({type: 'img', data: {src: image.attr('content')}, order: el_counter++});
 		}
 
 		// Get the elements from the bodytext
 		const $elements = $(this.elementTags.join(','));
 		// Iterate through all the elements and add them to the array with the correct structure
-		for(const index in $elements) {
+		for (const index in $elements) {
 			const data = this.getElementData($elements[index]);
 
 			if (!data) {
@@ -117,7 +118,8 @@ export default class HtmlParser extends BaseParser {
 
 			elements.push({
 				type: $elements[index].name,
-				data: data
+				data: data,
+				order: el_counter++
 			});
 		}
 		// Return the finished content
