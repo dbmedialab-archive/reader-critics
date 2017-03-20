@@ -52,7 +52,7 @@ export default class Article extends BaseModel {
 		this.tags = tags;
 	}
 
-	public attachdTag(tag: Tag) {
+	public attachTag(tag: Tag) {
 		this.tags.push(tag);
 	}
 }

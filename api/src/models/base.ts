@@ -2,7 +2,7 @@ export default class BaseModel {
 	protected id: number;
 	protected created_at: string;
 	protected updated_at: string;
-	protected required: string[];
+	private required: string[];
 
 	constructor(required?: string[]) {
 		if (typeof required === 'undefined') {
@@ -21,5 +21,12 @@ export default class BaseModel {
 		}
 		// Validation succeeded
 		return true;
+	}
+
+	public toString() {
+		const obj = Object.assign(this, {});
+		delete obj['required'];
+
+		return obj;
 	}
 }

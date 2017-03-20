@@ -19,7 +19,6 @@ export default class ApiParser extends BaseParser {
 	* Fetch json from the given api url provided by the site
 	*/
 	public request(): any {
-
 		if (!this.url) {
 			return Promise.reject({
 				success: false,
@@ -74,13 +73,12 @@ export default class ApiParser extends BaseParser {
 
 		const byline = new Byline({});
 		for (const author of articleJson['byline']) {
-			byline.attachdAuthor(new Author(author));
+			byline.attachdAuthor(new Author(author).toString());
 		}
-		byline.toString();
-		article.setByline(byline);
+		article.setByline(byline.toString());
 
 		for (const tag of articleJson['tags']) {
-			article.attachdTag(new Tag(tag));
+			article.attachTag(new Tag(tag).toString());
 		}
 
 		return article;
