@@ -1,8 +1,10 @@
 import * as Ajv from 'ajv';
+import axios from 'axios';
 import * as Http from 'http';
 
 import Article from '../../models/article';
 import Author from '../../models/author';
+import Byline from '../../models/byline';
 import Site from '../../models/site';
 import Tag from '../../models/tag';
 import { BaseParser } from '../base';
@@ -17,55 +19,52 @@ export default class ApiParser extends BaseParser {
 	* Fetch json from the given api url provided by the site
 	*/
 	public request(): any {
-		return new Promise((resolve, reject) => {
-			if (!this.url) {
-				reject({
+
+		if (!this.url) {
+			return Promise.reject({
+				success: false,
+				message: 'No url provided',
+			});
+		}
+
+		return axios.get(this.url).then(response => {
+			let articleJson = {};
+			if (response.headers['content-type'].indexOf('json') === -1) {
+				if (typeof response.data === 'string') {
+					try {
+						articleJson = JSON.parse(response.data);
+					} catch (error) {
+						return Promise.reject({
+							success: false,
+							message: 'Could not parse json',
+						});
+					}
+				}
+			} else {
+				articleJson = response.data;
+			}
+			// json validator
+			const ajv = new Ajv();
+
+			// See schema in json.ts
+			const validate = ajv.compile(Schema);
+			const valid = validate(articleJson);
+
+			if (!valid) {
+				console.error(validate.errors);
+				return Promise.reject({
 					success: false,
-					message: 'No url provided',
+					message: 'Failed to validate the json schema.',
+					errors: validate.errors,
 				});
 			}
-
-			Http.get(this.url, (res) => {
-				let data = '';
-
-				res.on('data', (chunk) => {
-					data += chunk.toString();
-				});
-				res.on('end', () => {
-					// Validate the json schema recieveed
-					const articleJson = JSON.parse(data);
-					const ajv = new Ajv();
-
-					// See schema in json.ts
-					const validate = ajv.compile(Schema);
-					const valid = validate(articleJson);
-
-					if (!valid) {
-						console.error(validate.errors);
-						reject({
-							success: false,
-							message: 'Failed to validate the json schema.',
-							errors: validate.errors,
-						});
-						return;
-					}
-					const article = this.buildArticle(articleJson);
-					resolve(article.getArticle());
-				});
-				res.on('error', (error) => {
-					console.error('error', error);
-					reject(error);
-				});
-
-			});
-		}).then(article => {
-			return {
+			const article = this.buildArticle(articleJson);
+			return Promise.resolve({
 				success: true,
-				article,
-			};
-		}).catch(reason => {
-			console.error('Catching rejection error: ', reason);
-			return reason;
+				article: article.getArticle(),
+			}).catch(reason => {
+				return Promise.reject(reason);
+			});
 		});
 	}
 
@@ -73,17 +72,17 @@ export default class ApiParser extends BaseParser {
 		const site = new Site(articleJson['site']);
 		const article = new Article(articleJson['article']);
 
-		const authors = [];
+		const byline = new Byline({});
 		for (const author of articleJson['byline']) {
-			authors.push(new Author(author));
+			byline.attachdAuthor(new Author(author));
 		}
+		byline.toString();
+		article.setByline(byline);
 
-		const tags = [];
 		for (const tag of articleJson['tags']) {
-			tags.push(new Tag(tag));
+			article.attachdTag(new Tag(tag));
 		}
 
-		// TODO: Do something with site, authors and tags
 		return article;
 	}
 }
