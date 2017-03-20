@@ -17,9 +17,9 @@ Of course, `yarn` works fine as well!
 
 Initialise your local MySQL with a database and user:
 ```
-CREATE DATABASE IF NOT EXISTS readercritics;
+CREATE DATABASE IF NOT EXISTS reader_critics_api;
 CREATE USER 'readercritics'@'localhost' IDENTIFIED BY "secret%123";
-GRANT ALL ON readercritics.* TO 'readercritics'@'localhost';
+GRANT ALL ON reader_critics_api.* TO 'readercritics'@'localhost';
 ```
 
 ##### Run
