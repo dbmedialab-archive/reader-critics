@@ -5,6 +5,7 @@ import * as Http from 'http';
 import Article from '../../models/article';
 import Author from '../../models/author';
 import Byline from '../../models/byline';
+import Error from '../../models/error';
 import Site from '../../models/site';
 import Tag from '../../models/tag';
 import { BaseParser } from '../base';
@@ -20,10 +21,7 @@ export default class ApiParser extends BaseParser {
 	*/
 	public request(): any {
 		if (!this.url) {
-			return Promise.reject({
-				success: false,
-				message: 'No url provided',
-			});
+			return Promise.reject(new Error(false, 'No url provided'));
 		}
 
 		return axios.get(this.url).then(response => {
@@ -33,10 +31,7 @@ export default class ApiParser extends BaseParser {
 					try {
 						articleJson = JSON.parse(response.data);
 					} catch (error) {
-						return Promise.reject({
-							success: false,
-							message: 'Could not parse json',
-						});
+						return Promise.reject(new Error(false, 'Could not parse json'));
 					}
 				}
 			} else {
@@ -46,17 +41,14 @@ export default class ApiParser extends BaseParser {
 			const ajv = new Ajv();
 
 			// See schema in json.ts
-			const validate = ajv.compile(Schema);
-			const valid = validate(articleJson);
+			const validate: Ajv.ValidateFunction = ajv.compile(Schema);
+			const valid: any = validate(articleJson);
 
 			if (!valid) {
 				console.error(validate.errors);
-				return Promise.reject({
-					success: false,
-					message: 'Failed to validate the json schema.',
-					errors: validate.errors,
-				});
+				return Promise.reject(new Error(false, 'Failed to validate the json schema', validate.errors));
 			}
+
 			const article = this.buildArticle(articleJson);
 			return Promise.resolve({
 				success: true,
