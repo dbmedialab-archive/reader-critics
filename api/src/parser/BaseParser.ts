@@ -1,7 +1,7 @@
 import Article from '../models/article';
-import { Parser } from './index';
+import Parser from './Parser';
 
-class BaseParser implements Parser {
+export default class BaseParser implements Parser {
 	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol'];
 	readonly url: string;
 	private article: Article;
@@ -14,5 +14,3 @@ class BaseParser implements Parser {
 		return this.article;
 	}
 }
-
-export { BaseParser };

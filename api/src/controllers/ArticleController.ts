@@ -1,7 +1,7 @@
 import * as express from 'express';
 import api from '../apilib';
-import ApiParser from '../parser/api';
-import { HtmlParser } from '../parser/html';
+import ApiParser from '../parser/api/ApiParser';
+import HtmlParser from '../parser/html/HtmlParser';
 
 const debug = api.createDebugChannel();
 

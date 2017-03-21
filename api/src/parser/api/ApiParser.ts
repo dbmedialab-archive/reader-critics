@@ -2,14 +2,14 @@ import * as Ajv from 'ajv';
 import axios from 'axios';
 import * as Http from 'http';
 
-import Article from '../../models/article';
-import Author from '../../models/author';
-import Byline from '../../models/byline';
-import Error from '../../models/error';
-import Site from '../../models/site';
-import Tag from '../../models/tag';
-import { BaseParser } from '../base';
-import { Schema } from './json';
+import Article from '../../models/Article';
+import Author from '../../models/Author';
+import Byline from '../../models/Byline';
+import Error from '../../models/Error';
+import Site from '../../models/Site';
+import Tag from '../../models/Tag';
+import BaseParser from '../BaseParser';
+import Schema from './Schema';
 
 export default class ApiParser extends BaseParser {
 	constructor(url: string) {

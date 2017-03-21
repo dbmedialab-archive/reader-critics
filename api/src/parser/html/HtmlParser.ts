@@ -1,8 +1,8 @@
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
-import { BaseParser } from '../base';
+import BaseParser from '../BaseParser';
 
-class HtmlParser extends BaseParser {
+export default class HtmlParser extends BaseParser {
 	private parsedContent = {};
 	private requestError = null;
 	private requestSent = false;
@@ -83,5 +83,3 @@ class HtmlParser extends BaseParser {
 		});
 	}
 }
-
-export { HtmlParser };

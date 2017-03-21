@@ -1,4 +1,4 @@
-export const Schema = {
+const Schema = {
 	'properties': {
 		'site': {
 			'name': 'string',
@@ -28,3 +28,5 @@ export const Schema = {
 	},
 	'required': ['site', 'article', 'byline'],
 };
+
+export default Schema;
