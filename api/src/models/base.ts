@@ -24,10 +24,8 @@ export default class BaseModel {
 	}
 
 	public toString() {
-		console.log('before', this);
 		const obj = Object.assign({}, this);
 		delete obj['required'];
-		console.log('after', this);
 		return obj;
 	}
 }
