@@ -10,9 +10,11 @@ export default class ArticleController {
 		res.send('hellu');
 	}
 
-	public static show(req: express.Request, res: express.Response): void {
-		const h = new HtmlParser('http://www.vg.no/nyheter/utenriks/nederland/geert-wilders-hjemby-vi-maa-gjoere-noe-med-denne-innvandringen/a/23947954/');
-		res.send(h.buildContent());
+	public static html(req: express.Request, res: express.Response): void {
+		const h = new HtmlParser(req.query.url);
+		h.getArticle()
+		.then(article => res.send(article))
+		.catch(reason => res.send(reason));
 	}
 
 	public static api(req: express.Request, res: express.Response): void {

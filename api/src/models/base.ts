@@ -2,6 +2,7 @@ export default class BaseModel {
 	protected id: number;
 	protected created_at: string;
 	protected updated_at: string;
+	protected failedProperties: string[];
 	private required: string[];
 
 	constructor(required?: string[]) {
@@ -12,15 +13,17 @@ export default class BaseModel {
 	}
 
 	protected validate(properties: Object) {
+		let valid = true;
+		this.failedProperties = [];
 		// Loop through the required props array
 		for (const index in this.required) {
 			// Check for the required property
 			if (!properties.hasOwnProperty(this.required[index])) {
-				return false;
+				this.failedProperties.push(this.required[index]);
+				valid = false;
 			}
 		}
-		// Validation succeeded
-		return true;
+		return valid;
 	}
 
 	public toString() {

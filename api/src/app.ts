@@ -1,6 +1,7 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
+import * as mysql from 'mysql';
 import * as util from 'util';
 
 import axios from 'axios';
@@ -10,6 +11,7 @@ import config from './config';
 import router from './routes';
 
 global.Promise = bluebird;
+
 const debug = api.createDebugChannel();
 
 debug('Starting Kildekritikk API');
