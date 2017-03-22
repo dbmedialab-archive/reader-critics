@@ -1,6 +1,6 @@
 import Article from '../models/article';
 
-export interface Parser {
+interface Parser {
 	// Properties
 	url: string;
 
@@ -8,3 +8,5 @@ export interface Parser {
 	// request: () => void;
 	getArticle: () => Article;
 }
+
+export default Parser;

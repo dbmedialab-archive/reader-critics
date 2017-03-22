@@ -1,7 +1,7 @@
 import BaseModel from './base';
 
 export default class Site extends BaseModel {
-	private _name: string;
+	private name: string;
 
 	constructor (properties: Object) {
 		super(['name']);
@@ -9,14 +9,14 @@ export default class Site extends BaseModel {
 		if (!this.validate(properties)) {
 			console.error('Failed to validate site! Heres the props that failed: ', properties);
 		}
-		this._name = properties['name'];
+		this.name = properties['name'];
 	}
 
-	public get name(): string {
-		return this._name;
+	public getName(): string {
+		return this.name;
 	}
 
-	public set name(name: string) {
-		this._name = name;
+	public setName(name: string) {
+		this.name = name;
 	}
 }

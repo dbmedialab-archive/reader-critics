@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
 import Article from '../../models/article';
-import { BaseParser } from '../base';
+import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {
 	private parsedElements = {};
@@ -128,7 +128,7 @@ export default class HtmlParser extends BaseParser {
 	private getElementData(el) {
 
 		// If the tag is not recognized we continue to the next element
-		if (!el.hasOwnProperty('name') || this.elementTags.indexOf(el.name) == -1) {
+		if (!el.hasOwnProperty('name') || this.elementTags.indexOf(el.name) === -1) {
 			return false;
 		}
 		const $el = Cheerio.load(el);
@@ -143,6 +143,7 @@ export default class HtmlParser extends BaseParser {
 				text: $el.text(),
 			};
 		} else {
+			console.log($el);
 			return {
 				text: $el.text(),
 			};
