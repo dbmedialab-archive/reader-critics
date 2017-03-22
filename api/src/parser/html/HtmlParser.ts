@@ -143,7 +143,6 @@ export default class HtmlParser extends BaseParser {
 				text: $el.text(),
 			};
 		} else {
-			console.log($el);
 			return {
 				text: $el.text(),
 			};
