@@ -24,7 +24,7 @@ const config = convict({
 	},
 	parser: {
 		doc: 'Fallback setting for the article parser',
-		fallback: 'api',
+		fallback: 'html',
 		env: 'PARSER',
 	},
 });
