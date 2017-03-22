@@ -1,85 +1,163 @@
+import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
+import Article from '../../models/article';
 import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {
-	private parsedContent = {};
-	private requestError = null;
-	private requestSent = false;
-	private response: {title: string, content: {}};
+	private parsedElements = {};
+	private parsedArticle: {content: {}, title: {}};
+	private response: {data: {}};
 
-	constructor(url: string) {
-		super(url);
-	}
-
-	public getArticle() {
-		if (!Object.keys(this.parsedContent).length) {
-			this.buildContent();
-			// new Article()
-		}
-		return super.getArticle();
-	}
-
-	public buildContent() {
-		// If we already have the parsed content
-		if (Object.keys(this.parsedContent).length) {
-			// We just return it
-			return this.parsedContent;
-
-		// If the article has not yet been requested
-		} else if(!this.requestSent) {
-			// We send the request and attempt to build the content after
-			this.request(() => {
-				this.buildContent();
+	public getArticle(): any {
+		return new Promise((resolve, reject) => {
+			// If we don't have anything to base the article on
+			if (!this.requestSent || typeof this.response === 'undefined') {
+				// We run the article request
+				this.request().then((response) => {
+					this.response = response;
+					// Request was successful - carry on
+					return resolve();
+				}).catch(reason => {
+					return reject(reason.toString());
+				});
+			} else {
+				// We've already sent the request - carry on
+				return resolve();
+			}
+		}).then(() => {
+			this.parseArticle().then((article) => {
+				return Promise.resolve(article);
+			}).catch(reason => {
+				// Html parsing failed
+				return Promise.reject({
+					success: false,
+					message: 'HTML parsing failed',
+					errors: [reason],
+				});
 			});
-			return;
+		}).then(article => {
+			// Generate the article based on the response
+			this.createArticle();
 
-		// If the article has been requested but no response was returned or if we have an error
-		} else if (this.requestError !== null || !Object.keys(this.response).length) {
-			// TODO: Throw some kind of error here, or attempt multiple times to request the article(?)
-			console.error('Request for the article failed, heres an error: ', this.requestError);
-			return;
-		}
-			const $ = Cheerio.load(this.response.content),
-			elements = [];
+			// If we couldn't create an article
+			if (!this.article) {
+				// Return error
+				return Promise.reject({
+					success: false,
+					message: 'Could not create article based on response',
+				});
+			}
 
-		elements.push({
-			type: 'h1',
-			text: this.response.title
+			// Return an object containing the article
+			return Promise.resolve({
+				success: true,
+				article: super.getArticle(),
+			});
+		}).catch(reason => {
+			// Something went wrong, return the error
+			return Promise.reject({
+				success: false,
+				message: 'Something went wrong',
+				errors: [reason],
+			});
 		});
+	}
 
+	private createArticle() {
+		// Check if we have built the elements of the article
+		if (!Object.keys(this.parsedElements).length) {
+			this.buildElements();
+		}
+
+		// Build an article object based on the data
+		const article = new Article({
+			title: this.parsedArticle.title,
+			elements: this.parsedElements,
+			url: this.url,
+			modified_identifier: 'unidentified',
+		});
+		if (article) {
+			this.article = article;
+		}
+	}
+
+	private buildElements() {
+		// If we already have the parsed content
+		if (Object.keys(this.parsedElements).length) {
+			// We just return it
+			return this.parsedElements;
+		// If the build function was initiated without having a response
+		} else if (!Object.keys(this.response).length) {
+			console.error('Error: Attempted to build article elements without any data to build from.');
+			return [];
+		}
+
+		const $ = Cheerio.load(this.parsedArticle.content),
+			elements = [],
+			html = Cheerio.load(this.response.data),
+			image = html('meta[property="og:image"]');
+		let el_counter = 1;
+
+		// Add title and cover image (if defined)
+		elements.push({type: 'h1', data: {text: this.parsedArticle.title}, order: el_counter++});
+		if (typeof image !== 'undefined') {
+			elements.push({type: 'img', data: {src: image.attr('content')}, order: el_counter++});
+		}
+
+		// Get the elements from the bodytext
 		const $elements = $(this.elementTags.join(','));
-		let curr_element: {name: string};
-
 		// Iterate through all the elements and add them to the array with the correct structure
-		for(const index in $elements) {
-			curr_element = $elements[index];
+		for (const index in $elements) {
+			const data = this.getElementData($elements[index]);
 
-			// If the tag is not recognized we continue to the next element
-			if (!curr_element.hasOwnProperty('name') || this.elementTags.indexOf(curr_element.name) == -1) {
+			if (!data) {
 				continue;
 			}
 
 			elements.push({
-				type: curr_element.name,
-				text: $(curr_element).text()
+				type: $elements[index].name,
+				data: data,
+				order: el_counter++,
 			});
 		}
-
-		console.log(elements);
+		// Return the finished content
+		return this.parsedElements = elements;
 	}
 
-	// Requests the url
-	public request(callback?: () => void) {
-		NodeRead(this.url, (err, article, res) => {
-			this.requestSent = true;
-			this.requestError = err;
-			this.response = article;
+	private getElementData(el) {
 
-			// Execute the callback
-			if (typeof callback !== 'undefined') {
-				callback();
-			}
+		// If the tag is not recognized we continue to the next element
+		if (!el.hasOwnProperty('name') || this.elementTags.indexOf(el.name) === -1) {
+			return false;
+		}
+		const $el = Cheerio.load(el);
+		if (el.name === 'img') {
+			return {
+				src: $el.attr('src'),
+				alt: $el.attr('alt'),
+			};
+		} else if (el.name === 'a') {
+			return {
+				href: el.attribs.href,
+				text: $el.text(),
+			};
+		} else {
+			return {
+				text: $el.text(),
+			};
+		}
+	}
+
+	private parseArticle() {
+		return new Promise((resolve, reject) => {
+			NodeRead(this.response.data, (err, article, res) => {
+				if (err) {
+					return reject(err);
+				}
+				this.parsedArticle = article;
+				return resolve(article);
+			});
 		});
 	}
 }

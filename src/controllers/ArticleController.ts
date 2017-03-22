@@ -1,21 +1,38 @@
 import * as express from 'express';
 import api from '../apilib';
+import config from '../config';
+
 import ApiParser from '../parser/api/ApiParser';
 import HtmlParser from '../parser/html/HtmlParser';
 
 const debug = api.createDebugChannel();
 
 export default class ArticleController {
-	public static index(req: express.Request, res: express.Response) : void {
-		res.send('hellu');
+
+	public static parse(req: express.Request, res: express.Response) {
+		// TODO: Read site config from the database here and cache it
+		const parseConfig = {};
+		if (!Object.keys(parseConfig).length) {
+			// No config has been found, fallback to default
+			switch (config.get('parser.fallback')) {
+				case 'api':
+					ArticleController.api(req, res);
+					return;
+				default:
+					ArticleController.html(req, res);
+					return;
+			}
+		}
 	}
 
-	public static show(req: express.Request, res: express.Response): void {
-		const h = new HtmlParser('http://www.vg.no/nyheter/utenriks/nederland/geert-wilders-hjemby-vi-maa-gjoere-noe-med-denne-innvandringen/a/23947954/');
-		res.send(h.buildContent());
+	private static html(req: express.Request, res: express.Response): void {
+		const h = new HtmlParser(req.query.url);
+		h.getArticle()
+		.then(article => res.send(article))
+		.catch(reason => res.send(reason));
 	}
 
-	public static api(req: express.Request, res: express.Response): void {
+	private static api(req: express.Request, res: express.Response): void {
 		if (typeof req.query.url === 'undefined' || req.query.url === '') {
 			res.send({ error: 'URL query paramater is not provided' });
 			return;
@@ -26,12 +43,8 @@ export default class ArticleController {
 			return;
 		}).catch(reason => {
 			console.error(reason);
+			res.send(reason);
 			return;
 		});
-	}
-
-	public static noContent(req: express.Request, res: express.Response): void {
-		debug('Default route handler');
-		res.status(204).end();
 	}
 }
