@@ -7,7 +7,7 @@ import * as util from 'util';
 import axios from 'axios';
 
 import api from './apilib';
-import config from './config';
+import config from './configs/site';
 import router from './routes';
 
 global.Promise = bluebird;
