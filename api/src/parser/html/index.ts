@@ -138,6 +138,11 @@ export default class HtmlParser extends BaseParser {
 				src: $el.attr('src'),
 				alt: $el.attr('alt')
 			};
+		} else if (el.name === 'a') {
+			return {
+				href: el.attribs.href,
+				text: $el.text()
+			}
 		} else {
 			return {
 				text: $el.text()
