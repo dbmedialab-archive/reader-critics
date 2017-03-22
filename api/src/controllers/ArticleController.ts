@@ -12,11 +12,9 @@ export default class ArticleController {
 
 	public static html(req: express.Request, res: express.Response): void {
 		const h = new HtmlParser(req.query.url);
-		h.getArticle().then(article => {
-			res.send(article);
-		}).catch(reason => {
-			res.send(reason);
-		});
+		h.getArticle()
+		.then(article => res.send(article))
+		.catch(reason => res.send(reason));
 	}
 
 	public static api(req: express.Request, res: express.Response): void {

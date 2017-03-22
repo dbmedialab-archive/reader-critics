@@ -20,10 +20,6 @@ export default class BaseParser implements Parser {
 	// Requests the url
 	protected request() {
 		this.requestSent = true;
-		return axios.get(this.url).then(response => {
-			return Promise.resolve(response);
-		}).catch(error => {
-			return Promise.reject(error);
-		});
+		return axios.get(this.url);
 	}
 }
