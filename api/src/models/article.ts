@@ -2,6 +2,8 @@ import BaseModel from './base';
 import Byline from './byline';
 import Tag from './tag';
 
+import ValdiationError from '../errors/ValidationError';
+
 export default class Article extends BaseModel {
 	private byline: Byline;
 	private tags: Tag[];
@@ -11,11 +13,10 @@ export default class Article extends BaseModel {
 	private modified_identifier: string;
 
 	constructor (properties: Object) {
-		super(['title','elements','url','modified_identifier',]);
+		super(['title','elements','url','modified_identifier']);
 
 		if (!super.validate(properties)) {
-			console.error('Failed to validate article! Heres the props that failed: ', properties);
-			// Throw some kind of article could not be created exception
+			throw new ValdiationError('Article', this.failedProperties);
 		}
 		this.title = properties['title'];
 		this.elements = properties['elements'];

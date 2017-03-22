@@ -26,8 +26,10 @@ export default class ArticleController {
 	}
 
 	private static html(req: express.Request, res: express.Response): void {
-		const h = new HtmlParser('http://www.vg.no/nyheter/utenriks/nederland/geert-wilders-hjemby-vi-maa-gjoere-noe-med-denne-innvandringen/a/23947954/');
-		res.send(h.buildContent());
+		const h = new HtmlParser(req.query.url);
+		h.getArticle()
+		.then(article => res.send(article))
+		.catch(reason => res.send(reason));
 	}
 
 	private static api(req: express.Request, res: express.Response): void {
