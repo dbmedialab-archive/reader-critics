@@ -10,7 +10,7 @@ class ArticleRouter {
 	router: express.Router;
 
 	constructor () {
-		debug('booting routes')
+		debug('booting routes');
 		this.router = express.Router();
 
 		this.show();

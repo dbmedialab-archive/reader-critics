@@ -1,8 +1,7 @@
-import * as Cheerio from 'cheerio';
 import axios from 'axios';
-import fetchUrl from 'fetch';
-import Article from '../../models/article';
+import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
+import Article from '../../models/article';
 import { BaseParser } from '../base';
 
 export default class HtmlParser extends BaseParser {
@@ -34,7 +33,7 @@ export default class HtmlParser extends BaseParser {
 				return Promise.reject({
 					success: false,
 					message: 'HTML parsing failed',
-					errors: [reason]
+					errors: [reason],
 				});
 			});
 		}).then(article => {
@@ -46,21 +45,21 @@ export default class HtmlParser extends BaseParser {
 				// Return error
 				return Promise.reject({
 					success: false,
-					message: 'Could not create article based on response'
+					message: 'Could not create article based on response',
 				});
 			}
 
 			// Return an object containing the article
 			return Promise.resolve({
 				success: true,
-				article: super.getArticle()
+				article: super.getArticle(),
 			});
 		}).catch(reason => {
 			// Something went wrong, return the error
 			return Promise.reject({
 				success: false,
 				message: 'Something went wrong',
-				errors: [reason]
+				errors: [reason],
 			});
 		});
 	}
@@ -76,7 +75,7 @@ export default class HtmlParser extends BaseParser {
 			title: this.parsedArticle.title,
 			elements: this.parsedElements,
 			url: this.url,
-			modified_identifier: "unidentified"
+			modified_identifier: 'unidentified',
 		});
 		if (article) {
 			this.article = article;
@@ -94,11 +93,11 @@ export default class HtmlParser extends BaseParser {
 			return [];
 		}
 
-		let $ = Cheerio.load(this.parsedArticle.content),
+		const $ = Cheerio.load(this.parsedArticle.content),
 			elements = [],
 			html = Cheerio.load(this.response.data),
-			image = html('meta[property="og:image"]'),
-			el_counter = 1;
+			image = html('meta[property="og:image"]');
+		let el_counter = 1;
 
 		// Add title and cover image (if defined)
 		elements.push({type: 'h1', data: {text: this.parsedArticle.title}, order: el_counter++});
@@ -119,7 +118,7 @@ export default class HtmlParser extends BaseParser {
 			elements.push({
 				type: $elements[index].name,
 				data: data,
-				order: el_counter++
+				order: el_counter++,
 			});
 		}
 		// Return the finished content
@@ -132,20 +131,20 @@ export default class HtmlParser extends BaseParser {
 		if (!el.hasOwnProperty('name') || this.elementTags.indexOf(el.name) == -1) {
 			return false;
 		}
-		let $el = Cheerio.load(el);
+		const $el = Cheerio.load(el);
 		if (el.name === 'img') {
 			return {
 				src: $el.attr('src'),
-				alt: $el.attr('alt')
+				alt: $el.attr('alt'),
 			};
 		} else if (el.name === 'a') {
 			return {
 				href: el.attribs.href,
-				text: $el.text()
-			}
+				text: $el.text(),
+			};
 		} else {
 			return {
-				text: $el.text()
+				text: $el.text(),
 			};
 		}
 	}

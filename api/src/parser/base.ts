@@ -1,5 +1,5 @@
-import Article from '../models/article';
 import axios from 'axios';
+import Article from '../models/article';
 import { Parser } from './index';
 
 class BaseParser implements Parser {
