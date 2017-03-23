@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
-import Article from '../../models/article';
+import Article from '../../models/Article';
 import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {

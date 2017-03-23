@@ -2,6 +2,7 @@ import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 import * as mysql from 'mysql';
+import * as path from 'path';
 import * as util from 'util';
 
 import axios from 'axios';
@@ -18,6 +19,7 @@ debug('Starting Kildekritikk API');
 
 // Create Express application
 const app = express();
+
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
 
@@ -27,6 +29,10 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 	.catch(error => console.error(error.stack));
 
 app.use('/', router);
+
+app.use(express.static(path.join(__dirname, 'frontend', 'views')));
+app.use(express.static(path.join(__dirname, 'frontend', 'assets')));
+app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
