@@ -1,4 +1,6 @@
 # Reader-critics
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 Leserkritikk versjon 2
 
 ### API
