@@ -130,10 +130,6 @@ export default class HtmlParser extends BaseParser {
 		}
 		const $el = Cheerio.load(el);
 		if (el.name === 'img') {
-			// return {
-			// 	src: $el.attr('src'),
-			// 	alt: $el.attr('alt'),
-			// };
 			return {
 				src: el.attribs.src,
 				alt: el.attribs.alt,
