@@ -1,10 +1,10 @@
 import * as debug from 'debug';
 import * as express from 'express';
-import article from './article';
+import api from './api';
 
 const router: express.Router = express.Router();
 
-router.use('/article', article);
+router.use('/api', api);
 
 router.use('*', (req, res) => {
 	debug('Default route handler');
