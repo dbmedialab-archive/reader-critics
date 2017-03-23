@@ -1,6 +1,6 @@
 import * as express from 'express';
 import api from '../apilib';
-import config from '../configs/site';
+import config from '../config';
 
 import ApiParser from '../parser/api/ApiParser';
 import HtmlParser from '../parser/html/HtmlParser';
@@ -43,6 +43,7 @@ export default class ArticleController {
 			return;
 		}).catch(reason => {
 			console.error(reason);
+			res.send(reason);
 			return;
 		});
 	}

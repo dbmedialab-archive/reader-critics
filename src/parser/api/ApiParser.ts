@@ -12,10 +12,6 @@ import BaseParser from '../BaseParser';
 import Schema from './Schema';
 
 export default class ApiParser extends BaseParser {
-	constructor(url: string) {
-		super(url);
-	}
-
 	/*
 	* Fetch json from the given api url provided by the site
 	*/
@@ -56,6 +52,8 @@ export default class ApiParser extends BaseParser {
 			}).catch(reason => {
 				return Promise.reject(reason);
 			});
+		}).catch(reason => {
+			return Promise.reject(new Error(false, 'Request failed'));
 		});
 	}
 
