@@ -98,9 +98,8 @@ module.exports = ReactDOM;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(0);
 const ReactDOM = __webpack_require__(2);
-const components_1 = __webpack_require__(1);
-console.log('hello world');
-ReactDOM.render(React.createElement(components_1.Hello, { compiler: 'TypeScript', framework: 'React' }), document.getElementById('example'));
+const Hello_1 = __webpack_require__(1);
+ReactDOM.render(React.createElement(Hello_1.Hello, { compiler: 'TypeScript', framework: 'React' }), document.getElementById('example'));
 
 
 /***/ })
