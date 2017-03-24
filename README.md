@@ -1,29 +1,8 @@
-# Reader-critics
+# Reader Critics
 Leserkritikk versjon 2
 
-### API
+![Reader Critics Project Map](doc/img/leserkritikk_map.png)
 
-Dependencies:
-* Node.js 7.7
-* MySQL 5.6
+### Table of Contents
 
-##### Setup
-```
-git clone git@github.com:dbmedialab/Reader-critics.git
-cd api
-npm install
-```
-Of course, `yarn` works fine as well!
-
-Initialise your local MySQL with a database and user:
-```
-CREATE DATABASE IF NOT EXISTS reader_critics_api;
-CREATE USER 'readercritics'@'localhost' IDENTIFIED BY "secret%123";
-GRANT ALL ON reader_critics_api.* TO 'readercritics'@'localhost';
-```
-
-##### Run
-```
-npm run build && node run start
-```
-
+* [Project setup](doc/project-setup.md)
