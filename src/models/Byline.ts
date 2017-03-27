@@ -1,5 +1,5 @@
-import Author from './author';
-import BaseModel from './base';
+import Author from './Author';
+import BaseModel from './Base';
 
 export default class Byline extends BaseModel {
 	private authors: Author[];
