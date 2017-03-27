@@ -13,8 +13,10 @@ import {
 	Organisation,
 } from './models';
 
-// Initialize Sequel...ize
-const sequelize = new Sequelize('mysql://kildekritikk:secret123@localhost/kildekritikk');  // TODO config
+import * as api from '../apilib';
+import sequelize from './initSequelize';
+
+const log = api.createLog();
 
 // Create models from their definitions
 const models = {
@@ -23,6 +25,17 @@ const models = {
 	Organisation: sequelize.import('organisation', Organisation),
 };
 
+// Initialize Sequel..ize
+sequelize
+.authenticate()
+.then(function(err) {
+	log('Connection has been established successfully.');
+})
+.catch(function (err) {
+	log('Unable to connect to the database:', err);
+});
+
+/*
 // Create relations
 // models.ArticleTag.belongsTo(models.Article);
 
@@ -43,7 +56,8 @@ sequelize.query('set foreign_key_checks = 0;')
 		models.Article.hasMany(models.ArticleTag),  // , { foreignKey: 'article_id' }
 		models.ArticleTag.belongsTo(models.Article),  // , { foreignKey: 'article_id' }
 	]);
-	*/
+	* /
 })
 
 .catch(error => console.error(error.stack));
+*/
