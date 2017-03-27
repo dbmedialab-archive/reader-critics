@@ -6,13 +6,14 @@ import * as util from 'util';
 
 import axios from 'axios';
 
-import api from './apilib';
+import * as api from './apilib';
+
 import config from './config';
 import router from './routes';
 
 global.Promise = bluebird;
 
-const debug = api.createDebugChannel();
+const debug = api.createLog();
 
 debug('Starting Kildekritikk API');
 
