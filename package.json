@@ -14,7 +14,7 @@
 		"test": "./run_test",
 		"start": "node app/app"
 	},
-	"author": [
+    "authors": [
 		"Philipp Gröschler",
 		"Ole Nedrebrø",
 		"Simen Berge"
@@ -24,6 +24,7 @@
 		"axios": "0.15.x",
 		"bluebird": "3.5.x",
 		"callsite": "1.x",
+		"cheerio": "^0.22.0",
 		"convict": "2.0.0",
 		"debug": "2.x",
 		"express": "4.x",
@@ -31,6 +32,7 @@
 		"lodash": "4.17.x",
 		"moment": "2.17.x",
 		"mysql": "2.13.0",
+		"node-read": "^0.1.7",
 		"sprintf-js": "1.x",
 		"sequelize": "3.30.2",
 		"stringify-clone": "2.x",

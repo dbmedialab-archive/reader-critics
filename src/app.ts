@@ -1,14 +1,13 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
+import * as mysql from 'mysql';
 import * as util from 'util';
 
 import axios from 'axios';
 
 import config from './config';
-import api from './apilib';
-
-import articleHandler from './routes/article';
+import router from './routes';
 
 global.Promise = bluebird;
 
@@ -27,13 +26,27 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 .then(startHTTP)
 .catch(error => console.error(error.stack));
 
-app.get('/article', articleHandler);  // Example endpoint
+app.use('/', router);
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
-		debug(`Kildekritikk API running on port ${httpPort} in ${config.get('env')} mode`);
+		debug(`Reader Critic API running on port ${httpPort} in ${config.get('env')} mode`);
 	});
 }
+
+/*
+Later!
+const connection = mysql.createConnection(`${config.get('mysql.url')}&charset=utf8_general_ci`);
+
+connection.connect (function (err) {
+	if (err) {
+		console.error('error connecting: ' + err.stack);
+		return;
+	}
+
+	console.log ('connected as id ' + connection.threadId);
+});
+*/
 
 /*
 .then(() => {
