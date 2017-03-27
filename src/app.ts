@@ -6,10 +6,9 @@ import * as util from 'util';
 
 import axios from 'axios';
 
-import config from './config';
 import api from './apilib';
-
-import articleHandler from './routes/article';
+import config from './config';
+import router from './routes';
 
 global.Promise = bluebird;
 
@@ -19,20 +18,19 @@ debug('Starting Kildekritikk API');
 
 // Create Express application
 const app = express();
-
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
 
 // Main application startup
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
-.then(startHTTP)
-.catch(error => console.error(error.stack));
+	.then(startHTTP)
+	.catch(error => console.error(error.stack));
 
-app.get('/article', articleHandler);  // Example endpoint
+app.use('/', router);
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
-		debug(`Aurora API running on port ${httpPort} in ${config.get('env')} mode`);
+		debug(`Reader Critic API running on port ${httpPort} in ${config.get('env')} mode`);
 	});
 }
 
