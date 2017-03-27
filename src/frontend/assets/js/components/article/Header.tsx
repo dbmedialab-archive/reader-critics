@@ -1,18 +1,9 @@
 import * as React from 'react';
 
-export interface HeaderProps { title: string; }
-
-export default class Header extends React.Component<HeaderProps, undefined> {
-	private title: string;
-
-	constructor(props: HeaderProps) {
-		super(props);
-		this.title = props.title;
+export default function Header(props) {
+	if (props.type === 'h1') {
+		return <h1>{ props.title }</h1>;
+	} else {
+		return <h2>{props.title}</h2>;
 	}
-
-	render() {
-		return (
-			<h2>{this.title}</h2>
-		);
-	}
-}
+};

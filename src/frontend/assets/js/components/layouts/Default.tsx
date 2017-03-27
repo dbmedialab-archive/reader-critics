@@ -1,21 +1,25 @@
-import * as axios from 'axios';
+import axios from 'axios';
 import * as queryString from 'query-string';
 import * as React from 'react';
 
-import ArticleHeader from '../article/Header';
-import ArticleParagraph from '../article/Paragraph';
+import ArticleBody from '../article/Body';
+import Element from '../article/Element';
 import ArticleTitle from '../article/Title';
 import Header from '../partials/Header';
+import ErrorResponse from '../response/ErrorResponse';
 
 export default class Default extends React.Component<any, any> {
 	private data: object;
+	private error: boolean;
 
 	constructor(props: any) {
 		super(props);
 
+		this.error =  false;
 		this.state = {
 			title: '',
 			elements: [],
+			error: {},
 		};
 	}
 
@@ -24,50 +28,72 @@ export default class Default extends React.Component<any, any> {
 	}
 
 	private fetchData() {
-		console.log('Fetching data');
 		const parsed = queryString.parse(location.search);
 
 		if (typeof parsed.url === 'undefined' || parsed.url === '') {
-			// TODO: Return some kinda error to the user here
-			return {};
+			this.setError(true);
+			this.setState({
+				error: {
+					success: false,
+					message: 'Kunne ikke finnne en gyldig url',
+				},
+			});
+			return;
 		}
 
 		const articleUrl = parsed.url;
 		axios.get('/article/parse?url=' + articleUrl)
 		.then(result => {
-			console.log(result);
 			const data = result.data;
 
 			if (!data.success) {
-				// TODO: Return failure message to user or try again?
-				return {};
+				this.setError(true);
+				this.setState({
+					error: {
+						success: false,
+						message: 'Kunne ikke laste inn data, vennligst prøv på nytt',
+					},
+				});
+				return;
 			}
 
 			const elements = data.article.elements.map((element) => {
-				if (element.type === 'h1') {
-					return <h1>{element.data.text}</h1>;
-				}
-
-				if (element.type === 'h2') {
-					return <h2>{element.data.text}</h2>;
+				if (element.type === 'h1' || element.type === 'h2') {
+					return <Element key={element.order} text={element.data.text} type={element.type} url={''}/>;
 				}
 
 				if (element.type === 'p') {
-					return <p>{element.data.text}</p>;
+					return <Element key={element.order} text={element.data.text} type={element.type} url={''} />;
+				}
+
+				if (element.type === 'img') {
+					return <Element key={element.order} url={element.data.src} type={element.type} text={''}/>;
 				}
 			});
 
 			this.setState({
 				elements: elements,
 			});
-			console.log(this.state);
-			console.log('Fetching data complete');
 		});
 	}
 
 	public render() {
+		if (!this.error) {
+			return (
+				<ArticleBody elements={this.state.elements} />
+			);
+		}
+
 		return (
-			<ArticleParagraph elements={this.state.elements} />
+			<ErrorResponse error={this.state.error} />
 		);
+	}
+
+	public setError(error: boolean) {
+		this.error = error;
+	}
+
+	public getError(): boolean {
+		return this.error;
 	}
 }
