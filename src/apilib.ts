@@ -1,5 +1,5 @@
-import * as path from 'path';
 import * as callsite from 'callsite';
+import * as path from 'path';
 
 import { debug } from 'debug';
 
