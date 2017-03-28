@@ -1,25 +1,25 @@
 {
-    "name": "reader-critics-api",
-    "version": "0.0.1",
-    "license": "UNLICENSED",
-    "private": true,
-    "description": "Backend part of Kildekritikk (Reader Critics)",
-    "main": "app/app.js",
-    "engines": {
-      	"node": "7.7.2"
-    },
-    "scripts": {
+	"name": "reader-critics-api",
+	"version": "0.0.1",
+	"license": "UNLICENSED",
+	"private": true,
+	"description": "Backend part of Kildekritikk (Reader Critics)",
+	"main": "app/app.js",
+	"engines": {
+		"node": "7.7.2"
+	},
+	"scripts": {
 		"build": "rm -rf app/* && node_modules/.bin/tsc",
 		"eslint": "./run_eslint",
 		"test": "./run_test",
 		"start": "node app/app"
-    },
+	},
     "authors": [
 		"Philipp Gröschler",
 		"Ole Nedrebrø",
 		"Simen Berge"
-    ],
-    "dependencies": {
+	],
+	"dependencies": {
 		"ansicolors": "0.3.x",
 		"axios": "0.15.x",
 		"bluebird": "3.5.x",
@@ -36,8 +36,8 @@
 		"sprintf-js": "1.x",
 		"stringify-clone": "2.x",
 		"typings": "2.1.x"
-    },
-    "devDependencies": {
+	},
+	"devDependencies": {
 		"babel-core": "6.23.1",
 		"babel-polyfill": "6.23.0",
 		"babel-plugin-root-import": "5.0.0",
@@ -54,10 +54,11 @@
 		"tslint": "4.5.x",
 		"typescript": "2.2.x",
 		"@types/bluebird": "3.x",
+		"@types/callsite": "1.0.30",
 		"@types/core-js": "0.9.37",
 		"@types/express": "4.x",
 		"@types/lodash": "4.x",
 		"@types/node": "7.x",
 		"@types/mysql": "*"
-    }
+	}
 }
