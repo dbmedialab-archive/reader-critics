@@ -15,9 +15,11 @@ export default function(sql : Sequelize, models) : Promise<any> {
 	.then(() => keyChecks(sql, true));
 }
 
+const values = (obj) => Object.keys(obj).map(key => obj[key]);
+
 function syncModels(sql : Sequelize, models) : Promise<any> {
 	return Promise.mapSeries(values(models), (model) => {
-		console.dir(model);
+		log('Syncing %s', model);
 		return model.sync({ force: true });
 	});
 }
@@ -25,5 +27,3 @@ function syncModels(sql : Sequelize, models) : Promise<any> {
 function keyChecks(sql : Sequelize, onoff : boolean) : Promise<any> {
 	return sql.query(`SET foreign_key_checks = ${onoff ? '1' : '0'}`);
 }
-
-const values = (obj) => Object.keys(obj).map(key => obj[key]);

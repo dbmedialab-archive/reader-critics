@@ -11,6 +11,8 @@ import * as api from './apilib';
 import config from './config';
 import router from './routes';
 
+import { initDatabase } from './db';
+
 global.Promise = bluebird;
 
 const debug = api.createLog();
@@ -24,10 +26,11 @@ const httpServer = http.createServer(app);
 
 // Main application startup
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
-	.then(startHTTP)
+	.then(initDatabase)
+//	.then(startHTTP)
 	.catch(error => console.error(error.stack));
 
-app.use('/', router);
+//app.use('/', router);
 
 function startHTTP() {
 	httpServer.listen(httpPort, () => {
