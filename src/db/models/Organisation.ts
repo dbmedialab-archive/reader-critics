@@ -12,9 +12,16 @@ const Organisation = (sequelize: Sequelize, types: DataTypes) => {
 		name: {
 			type: types.STRING,
 			allowNull: false,
-			unique: true,
 		},
-	}, withDefaults());
+	}, withDefaults({
+		indexes: [
+			{
+				name: 'org_name',
+				unique: true,
+				fields: ['name'],
+			},
+		],
+	}));
 };
 
 export default Organisation;

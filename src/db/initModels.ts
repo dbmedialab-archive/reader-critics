@@ -1,26 +1,26 @@
 import * as Promise from 'bluebird';
 import * as util from 'util';
 
-import { Sequelize } from 'sequelize';
+import { Model, Sequelize } from 'sequelize';
 
 import * as api from '../apilib';
 
 const log = api.createLog();
 
-export default function(sql : Sequelize, models) : Promise<any> {
+export default function(sql : Sequelize, models) : Promise<any> {  // TODO models: type Object{Model}
 	log('Preparing models');
+	const modelArr : Model[] = Object.keys(models).map(key => models[key]);
+
 	return Promise.resolve()
 	.then(() => keyChecks(sql, false))
-	.then(() => syncModels(sql, models))
+	.then(() => syncModels(sql, modelArr))
 	.then(() => keyChecks(sql, true));
 }
 
-const values = (obj) => Object.keys(obj).map(key => obj[key]);
-
-function syncModels(sql : Sequelize, models) : Promise<any> {
-	return Promise.mapSeries(values(models), (model) => {
-		log('Syncing %s', model);
-		return model.sync({ force: true });
+function syncModels(sql : Sequelize, models : Model[]) : Promise<any> {
+	return Promise.mapSeries(models, (model) => {
+		log('Syncing %s', model.getTableName());
+		return model.sync({ /* force: true */ });
 	});
 }
 

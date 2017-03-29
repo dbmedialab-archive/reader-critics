@@ -2,37 +2,46 @@ import { DataTypes, Sequelize } from 'sequelize';
 
 import withDefaults from './defaults';
 
-const Author = (sequelize: Sequelize, types: DataTypes) => {
-	return sequelize.define('author', {
+const Website = (sequelize: Sequelize, types: DataTypes) => {
+	return sequelize.define('website', {
 		id: {
 			type: types.INTEGER.UNSIGNED,
 			autoIncrement: true,
 			allowNull: false,
 			primaryKey: true,
 		},
-		website_id: {
-			type: types.INTEGER.UNSIGNED,
+		org_id: {
+			type: types.UUID,
 			allowNull: false,
 		},
-		full_name: {
+		base_url: {
+			type: types.STRING,
+			allowNull: false,
+			isUrl: true,
+		},
+		name: {
 			type: types.STRING,
 			allowNull: false,
 		},
-		email: {
+		master_email: {
 			type: types.STRING,
 			allowNull: false,
 			isEmail: true,
 		},
 	}, withDefaults({
-		updatedAt: false,
 		indexes: [
 			{
-				name: 'author_email',
+				name: 'base_url',
 				unique: true,
-				fields: ['email'],
+				fields: ['base_url'],
+			},
+			{
+				name: 'master_email',
+				unique: true,
+				fields: ['master_email'],
 			},
 		],
 	}));
 };
 
-export default Author;
+export default Website;

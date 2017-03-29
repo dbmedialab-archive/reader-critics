@@ -18,15 +18,11 @@ import withDefaults from './defaults';
 */
 
 const ArticleTag = (sequelize: Sequelize, types: DataTypes) => {
-	return sequelize.define('ArticleTag', {
+	return sequelize.define('article_tag', {
 		article_id: {
 			type: types.INTEGER.UNSIGNED,
 			allowNull: false,
 			primaryKey: true,
-			// references: {
-			// 	model: 'article',  // Need to reference the model by name, because the instance does not exist yet
-			// 	key: 'id',
-			// },
 		},
 		tag_txt: {
 			type: types.STRING,
