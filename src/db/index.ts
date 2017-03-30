@@ -5,14 +5,12 @@ import {
 	Sequelize,
 } from 'sequelize';
 
-import * as api from '../apilib';
-
-import * as models from './models';
+import { createLog } from '../apilib';
 
 import initModels from './initModels';
 import sequelize from './initSequelize';
 
-const log = api.createLog();
+const log = createLog();
 
 export function initDatabase() {
 	log('Initializing');

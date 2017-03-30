@@ -3,13 +3,13 @@ import * as util from 'util';
 
 import { Model } from 'sequelize';
 
-import * as api from '../apilib';
+import { createLog } from '../apilib';
 
 import * as models from './models';
 
 import sequelize from './initSequelize';
 
-const log = api.createLog();
+const log = createLog();
 
 export default function() : Promise<any> {
 	return Promise.resolve()
