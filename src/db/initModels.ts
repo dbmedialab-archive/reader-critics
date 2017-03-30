@@ -1,29 +1,32 @@
 import * as Promise from 'bluebird';
 import * as util from 'util';
 
-import { Model, Sequelize } from 'sequelize';
+import { Model } from 'sequelize';
 
 import * as api from '../apilib';
 
+import * as models from './models';
+
+import sequelize from './initSequelize';
+
 const log = api.createLog();
 
-export default function(sql : Sequelize, models) : Promise<any> {  // TODO models: type Object{Model}
-	log('Preparing models');
-	const modelArr : Model[] = Object.keys(models).map(key => models[key]);
-
+export default function() : Promise<any> {
 	return Promise.resolve()
-	.then(() => keyChecks(sql, false))
-	.then(() => syncModels(sql, modelArr))
-	.then(() => keyChecks(sql, true));
+	.then(() => keyChecks(false))
+	.then(syncModels)
+	.then(() => keyChecks(true));
 }
 
-function syncModels(sql : Sequelize, models : Model[]) : Promise<any> {
-	return Promise.mapSeries(models, (model) => {
+function syncModels() : Promise<any> {
+	const modelz : Model[] = Object.keys(models).map(key => models[key]);
+
+	return Promise.mapSeries(modelz, (model) => {
 		log('Syncing %s', model.getTableName());
-		return model.sync({ /* force: true */ });
+		return model.sync({ force: true });
 	});
 }
 
-function keyChecks(sql : Sequelize, onoff : boolean) : Promise<any> {
-	return sql.query(`SET foreign_key_checks = ${onoff ? '1' : '0'}`);
+function keyChecks(onoff : boolean) : Promise<any> {
+	return sequelize.query(`SET foreign_key_checks = ${onoff ? '1' : '0'}`);
 }

@@ -1,6 +1,9 @@
-export { default as Article } from './Article';
-export { default as ArticleElement } from './ArticleElement';
-export { default as ArticleTag } from './ArticleTag';
-export { default as Author } from './Author';
-export { default as Organisation } from './Organisation';
-export { default as Website } from './Website';
+import * as requireAll from 'require-all';
+
+module.exports = requireAll({
+	dirname: __dirname,
+	// Only files that start with a capital letter
+	filter: /^([A-Z]\w+)\.(:?js|ts)/,
+	// Map the default exports
+	resolve: mod => mod.default,
+});

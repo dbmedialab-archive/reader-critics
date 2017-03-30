@@ -27,6 +27,9 @@ const httpServer = http.createServer(app);
 // Main application startup
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
 	.then(initDatabase)
+	.then(() => {
+
+	})
 //	.then(startHTTP)
 	.catch(error => console.error(error.stack));
 
