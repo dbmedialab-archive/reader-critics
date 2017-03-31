@@ -1,3 +1,3 @@
 # Feedback Overview
 
-![Reader Critics Feedback Overview](feedback-workflow-overview.png)
+![Reader Critics Feedback Overview](feedback-sequence-overview.png)
