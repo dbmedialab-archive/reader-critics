@@ -14,7 +14,7 @@
 		"test": "./run_test",
 		"start": "node app/app"
 	},
-	"authors": [
+    "authors": [
 		"Philipp Gröschler",
 		"Ole Nedrebrø",
 		"Simen Berge"
@@ -33,11 +33,13 @@
 		"moment": "2.18.1",
 		"mysql": "2.13.0",
 		"node-read": "0.1.7",
+        "require-all": "2.2.0",
 		"sprintf-js": "1.x",
+		"sequelize": "3.30.2",
 		"stringify-clone": "2.x",
 		"typings": "2.1.x"
-    },
-    "devDependencies": {
+	},
+	"devDependencies": {
 		"babel-core": "6.24.0",
 		"babel-polyfill": "6.23.0",
 		"babel-plugin-root-import": "5.1.0",
