@@ -15,29 +15,47 @@ import { initDatabase } from './db';
 
 global.Promise = bluebird;
 
-const debug = api.createLog();
-
-debug('Starting Kildekritikk API');
+const log = api.createLog();
+log('Starting Reader Critics webservice');
 
 // Create Express application
+
 const app = express();
+
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
 
 // Main application startup
+
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
 	.then(initDatabase)
-	.then(() => {
+    .then(startHTTP)
+    .catch(startupErrorHandler);
 
-	})
-//	.then(startHTTP)
-	.catch(error => console.error(error.stack));
+app.use('/', router);
 
-//app.use('/', router);
+// Starting the HTTP server
 
 function startHTTP() {
+	httpServer.on('error', startupErrorHandler);
+
+	return new Promise((resolve) => {
 	httpServer.listen(httpPort, () => {
-		debug(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
+			log(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
+			return resolve();
+    	});
 	});
+}
+
+// Error handling during startup
+
+function startupErrorHandler(error : Error) {
+	if (error.stack) {
+		log(error.stack);
+	}
+	else {
+		log(error.toString());
+	}
+	process.exit(-128);
 }
 
