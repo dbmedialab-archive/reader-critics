@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../initSequelize';
 import withDefaults from '../modelDefaults';
 
-import Article from './Article';
+import ArticleVersion from './ArticleVersion';
 
 const Feedback = sequelize.define('feedback', {
 	id: {
@@ -12,7 +12,7 @@ const Feedback = sequelize.define('feedback', {
 		allowNull: false,
 		primaryKey: true,
 	},
-	article_id: {
+	article_version: {
 		type: DataTypes.INTEGER.UNSIGNED,
 		allowNull: false,
 	},
@@ -30,8 +30,9 @@ const Feedback = sequelize.define('feedback', {
 	],
 }));
 
-Feedback.belongsTo(Article, {
-	foreignKey: 'article_id',
+Feedback.belongsTo(ArticleVersion, {
+	as: 'ArticleVersion',
+	foreignKey: 'internal_version',
 });
 
 export default Feedback;

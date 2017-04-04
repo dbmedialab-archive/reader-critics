@@ -1,4 +1,4 @@
-import * as bluebird from 'bluebird';
+import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 import * as mysql from 'mysql';
@@ -12,8 +12,6 @@ import config from './config';
 import router from './routes';
 
 import { initDatabase } from './db';
-
-global.Promise = bluebird;
 
 const log = api.createLog();
 log('Starting Reader Critics webservice');
@@ -29,8 +27,8 @@ const httpServer = http.createServer(app);
 
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
 	.then(initDatabase)
-    .then(startHTTP)
-    .catch(startupErrorHandler);
+ //	.then(startHTTP)
+	.catch(startupErrorHandler);
 
 app.use('/', router);
 
@@ -43,7 +41,7 @@ function startHTTP() {
 	httpServer.listen(httpPort, () => {
 			log(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
 			return resolve();
-    	});
+		});
 	});
 }
 
