@@ -6,7 +6,7 @@
 	"description": "Backend part of Kildekritikk (Reader Critics)",
 	"main": "app/app.js",
 	"engines": {
-		"node": "7.7.2"
+		"node": "7.8.0"
 	},
 	"scripts": {
 		"build": "rm -rf app/* && node_modules/.bin/tsc",
@@ -36,8 +36,8 @@
 		"sprintf-js": "1.x",
 		"stringify-clone": "2.x",
 		"typings": "2.1.x"
-	},
-	"devDependencies": {
+    },
+    "devDependencies": {
 		"babel-core": "6.24.0",
 		"babel-polyfill": "6.23.0",
 		"babel-plugin-root-import": "5.1.0",
@@ -54,6 +54,7 @@
 		"tslint": "4.5.1",
 		"typescript": "2.2.1",
 		"@types/bluebird": "3.5.2",
+		"@types/callsite": "1.0.30",
 		"@types/core-js": "0.9.39",
 		"@types/express": "4.0.35",
 		"@types/lodash": "4.14.58",

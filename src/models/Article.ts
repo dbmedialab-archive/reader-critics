@@ -1,6 +1,6 @@
-import BaseModel from './base';
-import Byline from './byline';
-import Tag from './tag';
+import BaseModel from './Base';
+import Byline from './Byline';
+import Tag from './Tag';
 
 import ValdiationError from '../errors/ValidationError';
 

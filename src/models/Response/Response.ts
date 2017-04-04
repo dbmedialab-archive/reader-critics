@@ -1,12 +1,10 @@
-export default class Error {
+export default class Response {
 	private success: boolean;
 	private message: string;
-	private errors: object;
 
-	constructor(success: boolean, message: string, errors?: object) {
+	constructor(success: boolean, message: string) {
 		this.success = success;
 		this.message = message;
-		this.errors = errors;
 	}
 
 	public getSuccess(): boolean {

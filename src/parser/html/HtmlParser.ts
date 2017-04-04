@@ -1,7 +1,8 @@
 import axios from 'axios';
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
-import Article from '../../models/article';
+import Article from '../../models/Article';
+import ErrorResponse from '../../models/Response/ErrorResponse';
 import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {
@@ -56,11 +57,7 @@ export default class HtmlParser extends BaseParser {
 			});
 		}).catch(reason => {
 			// Something went wrong, return the error
-			return Promise.reject({
-				success: false,
-				message: 'Something went wrong',
-				errors: [reason],
-			});
+			return Promise.reject(new ErrorResponse(false, 'Something went wrong', reason));
 		});
 	}
 
@@ -134,8 +131,8 @@ export default class HtmlParser extends BaseParser {
 		const $el = Cheerio.load(el);
 		if (el.name === 'img') {
 			return {
-				src: $el.attr('src'),
-				alt: $el.attr('alt'),
+				src: el.attribs.src,
+				alt: el.attribs.alt,
 			};
 		} else if (el.name === 'a') {
 			return {
