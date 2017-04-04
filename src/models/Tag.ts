@@ -1,4 +1,4 @@
-import BaseModel from './base';
+import BaseModel from './Base';
 
 export default class Tag extends BaseModel {
 	private tag: string;
