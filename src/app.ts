@@ -1,17 +1,13 @@
-import * as bluebird from 'bluebird';
+import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
-import * as mysql from 'mysql';
-import * as util from 'util';
-
-import axios from 'axios';
 
 import * as api from './apilib';
 
 import config from './config';
 import router from './routes';
 
-global.Promise = bluebird;
+import { initDatabase } from './db';
 
 const log = api.createLog();
 log('Starting Reader Critics webservice');
@@ -26,7 +22,8 @@ const httpServer = http.createServer(app);
 // Main application startup
 
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
-.then(startHTTP)
+.then(initDatabase)
+//.then(startHTTP)
 .catch(startupErrorHandler);
 
 app.use('/', router);

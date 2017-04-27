@@ -15,11 +15,11 @@ const config = convict({
 			env: 'HTTP_PORT',
 		},
 	},
-	mysql: {
+	mongodb: {
 		url: {
-			doc: 'MySQL connection URL for the main backend database',
-			default: 'mysql://localhost:3306/kildekritikk_api',
-			env: 'MYSQL_URL',
+			doc: 'MongoDB connection URL for the main backend database',
+			default: 'mongodb://localhost:27017/readercritics',
+			env: 'MONGO_URL',
 		},
 	},
 	parser: {
