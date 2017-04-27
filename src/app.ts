@@ -7,35 +7,54 @@ import * as util from 'util';
 
 import axios from 'axios';
 
-import api from './apilib';
+import * as api from './apilib';
+
 import config from './config';
 import router from './routes';
 
 global.Promise = bluebird;
 
-const debug = api.createDebugChannel();
-
-debug('Starting Kildekritikk API');
+const log = api.createLog();
+log('Starting Reader Critics webservice');
 
 // Create Express application
 const app = express();
-
 const httpPort = config.get('http.port') || 4001;
+const httpServer = http.createServer(app);
 
 // Main application startup
-// Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
-// 	.then(startHTTP)
-// 	.catch(error => console.error(error.stack));
+
+Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
+	.then(startHTTP)
+	.catch(startupErrorHandler);
 
 app.use('/static', express.static(path.join(__dirname, 'frontend', 'dist')));
 app.use('/static', express.static(path.join(__dirname, 'frontend', 'assets')));
 
 app.use('/', router);
 
-app.listen(3000, () => console.log('Runs on port 3000'));
+// Starting the HTTP server
 
-// function startHTTP() {
-// 	httpServer.listen(httpPort, () => {
-// 		debug(`Reader Critic API running on port ${httpPort} in ${config.get('env')} mode`);
-// 	});
-// }
+function startHTTP() {
+	httpServer.on('error', startupErrorHandler);
+
+	return new Promise((resolve) => {
+		httpServer.listen(httpPort, () => {
+			log(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
+			return resolve();
+		});
+	});
+}
+
+// Error handling during startup
+
+function startupErrorHandler(error : Error) {
+	if (error.stack) {
+		log(error.stack);
+	}
+	else {
+		log(error.toString());
+	}
+	process.exit(-128);
+}
+

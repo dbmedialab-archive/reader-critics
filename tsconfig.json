@@ -10,7 +10,8 @@
 		"noImplicitAny": false,
 		"outDir": "app",
 		"paths": {
-			"/*": [ "./*" ]
+			"/*": [ "./*" ],
+			"~/*": [ "./*" ]
 		},
 		"preserveConstEnums": true,
 		"removeComments": true,

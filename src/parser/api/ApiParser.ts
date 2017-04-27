@@ -5,7 +5,8 @@ import * as Http from 'http';
 import Article from '../../models/Article';
 import Author from '../../models/Author';
 import Byline from '../../models/Byline';
-import Error from '../../models/Error';
+import ErrorResponse from '../../models/Response/ErrorResponse';
+import Response from '../../models/Response/Response';
 import Site from '../../models/Site';
 import Tag from '../../models/Tag';
 import BaseParser from '../BaseParser';
@@ -17,7 +18,7 @@ export default class ApiParser extends BaseParser {
 	*/
 	public request(): any {
 		if (!this.url) {
-			return Promise.reject(new Error(false, 'No url provided'));
+			return Promise.reject(new Response(false, 'No url provided'));
 		}
 
 		return axios.get(this.url).then(response => {
@@ -27,7 +28,7 @@ export default class ApiParser extends BaseParser {
 					try {
 						articleJson = JSON.parse(response.data);
 					} catch (error) {
-						return Promise.reject(new Error(false, 'Could not parse json'));
+						return Promise.reject(new Response(false, 'Could not parse json'));
 					}
 				}
 			} else {
@@ -42,7 +43,7 @@ export default class ApiParser extends BaseParser {
 
 			if (!valid) {
 				console.error(validate.errors);
-				return Promise.reject(new Error(false, 'Failed to validate the json schema', validate.errors));
+				return Promise.reject(new ErrorResponse(false, 'Failed to validate the json schema', validate.errors));
 			}
 
 			const article = this.buildArticle(articleJson);
@@ -53,7 +54,7 @@ export default class ApiParser extends BaseParser {
 				return Promise.reject(reason);
 			});
 		}).catch(reason => {
-			return Promise.reject(new Error(false, 'Request failed'));
+			return Promise.reject(new ErrorResponse(false, 'Request failed', reason));
 		});
 	}
 

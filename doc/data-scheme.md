@@ -17,10 +17,12 @@
 #### Article
 
 * `permalink url`
+* m..n :arrow_left: :arrow_right: Author
+
+#### Article Version
+
 * `client version` (string)
 * `internal version` (int) _for ordering of arbitrary client version string, like UUIDs_
-* `date` (datetime)
-* m..n :arrow_left: :arrow_right: Author
 
 #### Article Tags
 
@@ -32,13 +34,7 @@
 * `order` (int) _to keep the element order within an article_
 * `type` (enum) _like "headline", "image", "paragraph"_
 * `metadata` (json) _element specific data like "text" for a paragraph or "caption" for an image_
-* 1..n :arrow_right: Article
-
-#### User Comment
-
-* `text` (string)
-* m..n :arrow_left: :arrow_right: Article Element
-* 1..n :arrow_right: User Feedback
+* 1..n :arrow_right: Article Version
 
 #### User Feedback
 
@@ -46,12 +42,19 @@
 * `metadata` (json) _tracking information specific to this feedback_
 * 1..n :arrow_right: User
 
+#### User Comment
+
+* `text` (string)
+* m..n :arrow_left: :arrow_right: Article Element
+* 1..n :arrow_right: User Feedback
+
 #### User
 
-* `user name` _or UUID from session cookie if anonymous_
-* `real name` _or *null* if anonymous_
+* `user_name` _or *null* if anonymous_
+* `real_name` _or *null* if anonymous_
 * `e-mail address`
-* `metadata` (json) _tracking information_
+* `cookie_id` (string) hash value from session cookie
+* `metadata` (json) _other information_
 * _possible extension: account information for login_
 
 ## Possible extensions
