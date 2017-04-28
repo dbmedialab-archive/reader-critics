@@ -1,13 +1,14 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
-import * as mysql from 'mysql';
 import * as path from 'path';
 import * as util from 'util';
 
 import axios from 'axios';
 
 import * as api from './apilib';
+
+import logRequest from './app/logRequest';
 
 import config from './config';
 import router from './routes';
@@ -19,6 +20,9 @@ log('Starting Reader Critics webservice');
 
 // Create Express application
 const app = express();
+
+app.use(logRequest);
+
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
 
@@ -28,6 +32,9 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 	.then(startHTTP)
 	.catch(startupErrorHandler);
 
+// We don't bundle frontend libraries together with the compiled sources, but rather host
+// them from static endpoints. Fair tradeoff between enabled browser caching but not using
+// a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.
 app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react/dist/')));
 app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react-dom/dist/')));
 

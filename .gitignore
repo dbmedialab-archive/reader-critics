@@ -1,7 +1,7 @@
 # Distribution paths
-app/
-frontend/
-node_modules/
+/app/
+/frontend/
+/node_modules/
 
 # Packages
 *.7z

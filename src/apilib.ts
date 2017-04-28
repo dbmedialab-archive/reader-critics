@@ -1,9 +1,8 @@
 import * as callsite from 'callsite';
+import * as debug from 'debug';
 import * as path from 'path';
 
-import { debug } from 'debug';
-
-const appName = 'rc';  // As short as possible, please
+export const appName = 'app';  // As short as possible, please
 
 const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
