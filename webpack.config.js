@@ -2,7 +2,24 @@ const webpack = require('webpack');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Loaders
+
+const ldrBabel = {
+	loader: 'babel-loader',
+	options: {
+		presets: ['es2015', 'stage-1'],
+	},
+};
+
+const ldrTypeScript = {
+	loader: 'awesome-typescript-loader',
+	options: {
+		configFileName: __dirname + '/tsconfig-frontend.json',
+	}
+};
+
 // Main config, see other (sometimes environment depending) settings below
+
 const webpackConfig = {
 	entry: __dirname + '/src-frontend/index.tsx',
 	output: {
@@ -22,22 +39,12 @@ const webpackConfig = {
 
 	module: {
 		rules: [
-			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
 			{
 				test: /\.tsx?$/,
+				// Mind that these loaders get executed in right-to-left order:
 				use: [
-					{
-						loader: 'babel-loader',
-						options: {
-							presets: ['es2015', 'stage-1'],
-						},
-					},
-					{
-						loader: 'awesome-typescript-loader',
-						options: {
-							configFileName: __dirname + '/tsconfig-frontend.json',
-						}
-					},
+					ldrBabel,
+					ldrTypeScript,
 				],
 			},
 		],
