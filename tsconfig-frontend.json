@@ -7,7 +7,7 @@
 		"baseUrl": "src-frontend",
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"noImplicitAny": false,
+		"noImplicitAny": true,
 		"outDir": "./frontend",
 		"paths": {
 			"/*": [ "./*" ],
@@ -16,15 +16,8 @@
 		"preserveConstEnums": true,
 		"removeComments": true,
 		"sourceMap": false,
+		"suppressImplicitAnyIndexErrors": true,
 		"target": "es6",
-		"jsx": "react",
-		"types" : [
-			"bluebird",
-			"core-js",
-			"express",
-			"lodash",
-			"react",
-			"react-dom"
-		]
+		"jsx": "react"
 	}
 }

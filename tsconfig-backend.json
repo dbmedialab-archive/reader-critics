@@ -19,14 +19,7 @@
 		"preserveConstEnums": true,
 		"removeComments": true,
 		"sourceMap": false,
-		"target": "es6",
-		"jsx": "react",
-		"types" : [
-			"bluebird",
-			"core-js",
-			"express",
-			"lodash",
-			"node"
-		]
+		"suppressImplicitAnyIndexErrors": true,
+		"target": "es6"
 	}
 }
