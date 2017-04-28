@@ -28,8 +28,10 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 	.then(startHTTP)
 	.catch(startupErrorHandler);
 
-app.use('/static', express.static(path.join(__dirname, 'frontend', 'dist')));
-app.use('/static', express.static(path.join(__dirname, 'frontend', 'assets')));
+app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react/dist/')));
+app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react-dom/dist/')));
+
+app.use('/static', express.static(path.join(__dirname, '..', 'frontend')));
 
 app.use('/', router);
 
@@ -49,12 +51,8 @@ function startHTTP() {
 // Error handling during startup
 
 function startupErrorHandler(error : Error) {
-	if (error.stack) {
-		log(error.stack);
-	}
-	else {
-		log(error.toString());
-	}
+	log(error.stack || error.toString());
 	process.exit(-128);
 }
 
+// TODO Graceful shutdown

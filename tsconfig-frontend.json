@@ -1,0 +1,30 @@
+{
+	"include": [
+		"./src-frontend/**/*"
+	],
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": "src-frontend",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"outDir": "./frontend",
+		"paths": {
+			"/*": [ "./*" ],
+			"~/*": [ "./*" ]
+		},
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"target": "es6",
+		"jsx": "react",
+		"types" : [
+			"bluebird",
+			"core-js",
+			"express",
+			"lodash",
+			"react",
+			"react-dom"
+		]
+	}
+}
