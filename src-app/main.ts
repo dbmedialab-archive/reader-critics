@@ -9,6 +9,7 @@ import axios from 'axios';
 import * as api from './apilib';
 
 import logRequest from './app/logRequest';
+import faviconRoute from './routes/faviconRoute';
 import feedbackRoute from './routes/feedbackRoute';
 
 import config from './config';
@@ -32,6 +33,8 @@ const httpServer = http.createServer(app);
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
 	.then(startHTTP)
 	.catch(startupErrorHandler);
+
+app.use(faviconRoute);
 
 // We don't bundle frontend libraries together with the compiled sources, but rather host
 // them from static endpoints. Fair tradeoff between enabled browser caching but not using
