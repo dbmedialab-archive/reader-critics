@@ -1,17 +1,14 @@
 {
 	"include": [
-		"./src/**/*"
-	],
-	"exclude": [
-		"./src/frontend"
+		"./src-front/**/*"
 	],
 	"compilerOptions": {
 		"allowJs": true,
-		"baseUrl": "src",
+		"baseUrl": "src-front",
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"noImplicitAny": false,
-		"outDir": "app",
+		"noImplicitAny": true,
+		"outDir": "./out/front",
 		"paths": {
 			"/*": [ "./*" ],
 			"~/*": [ "./*" ]
@@ -20,6 +17,7 @@
 		"removeComments": true,
 		"sourceMap": false,
 		"suppressImplicitAnyIndexErrors": true,
-		"target": "es6"
+		"target": "es6",
+		"jsx": "react"
 	}
 }

@@ -14,17 +14,17 @@ const ldrBabel = {
 const ldrTypeScript = {
 	loader: 'awesome-typescript-loader',
 	options: {
-		configFileName: __dirname + '/tsconfig-frontend.json',
+		configFileName: __dirname + '/tsconfig-front.json',
 	}
 };
 
 // Main config, see other (sometimes environment depending) settings below
 
 const webpackConfig = {
-	entry: __dirname + '/src-frontend/index.tsx',
+	entry: __dirname + '/src-front/index.tsx',
 	output: {
 		filename: 'bundle.js',
-		path: __dirname + '/frontend'
+		path: __dirname + '/out/front'
 	},
 
 	resolve: {
