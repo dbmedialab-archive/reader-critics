@@ -8,7 +8,7 @@ const router: express.Router = express.Router();
 
 // frontend
 router.get('/', (req, res) => {
-	res.sendFile(path.resolve('src', 'frontend', 'views', 'index.html'), {
+	res.sendFile(path.resolve('assets', 'index.html'), {
 		data: 'dette er en test',
 	});
 });

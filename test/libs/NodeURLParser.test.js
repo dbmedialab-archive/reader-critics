@@ -44,7 +44,7 @@ describe('Node «url» package', function() {
 	it('should parse an URL correctly', function() {
 		examples.forEach(testParser);
 	});
-})
+});
 
 function testParser(record) {
 	const parsed = url.parse(record.url);

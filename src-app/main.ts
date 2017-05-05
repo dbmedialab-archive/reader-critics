@@ -9,6 +9,7 @@ import axios from 'axios';
 import * as api from './apilib';
 
 import logRequest from './app/logRequest';
+import feedbackRoute from './routes/feedbackRoute';
 
 import config from './config';
 import router from './routes';
@@ -38,7 +39,9 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react/dist/')));
 app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react-dom/dist/')));
 
-app.use('/static', express.static(path.join(__dirname, '..', 'frontend')));
+app.use('/static', express.static(path.join(__dirname, '..', 'out/front')));
+
+app.use('/fb', feedbackRoute);
 
 app.use('/', router);
 
