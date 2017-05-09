@@ -3,11 +3,30 @@ import * as debug from 'debug';
 import * as findRoot from 'find-root';
 import * as path from 'path';
 
-/** First component of debug's logger */
-export const appName = 'app';  // As short as possible, please
+// Application environment
+
+/** The current environment that this app is running in */
+const findEnvironment = () => {
+	let e = process.env.NODE_ENV || null;
+	if (0 > ['production', 'development', 'test'].indexOf(e)) {
+		e = 'development';
+	//	throw new Error(`Unknown execution environment "${e}"`);
+		console.log(`Execution environment not set, assuming "${e}"`);
+	}
+	return e;
+}
+
+export const env : string = findEnvironment();
+
+// Filesystem
 
 /** The filesystem root of the whole project */
-export const rootPath = findRoot(path.dirname(require.main.filename));
+export const rootPath : string = findRoot(path.dirname(require.main.filename));
+
+// Logging
+
+/** First component of debug's logger */
+export const appName = 'app';  // As short as possible, please
 
 const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
@@ -17,7 +36,7 @@ const regexForwardSlashes = /\//g;
  * Dynamically create a log channel based on the caller location.
  * @return function (...args : any[]) => void
  */
-export function createLog(moduleName? : string) : (...args : any[]) => void {
+export function createLog(moduleName? : string) : (...args : any[]) => void {  // hvorfor ikke debug.IDebugger ??
 	const name = moduleName !== undefined
 		? `${appName}:${moduleName}`
 		: logChannelName (callsite());
