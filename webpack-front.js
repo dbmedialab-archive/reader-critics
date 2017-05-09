@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const ldrBabel = {
 	loader: 'babel-loader',
 	options: {
-		presets: ['es2015', 'stage-1'],
+		presets: ['es2015', 'react'],  // 'stage-1'
 	},
 };
 
@@ -65,11 +65,11 @@ const webpackConfig = {
 if (!isProduction) {
 	// Source maps
 	webpackConfig.devtool = 'source-map';
-	webpackConfig.module.rules.push({
+	/* webpackConfig.module.rules.push({
 		enforce: 'pre',
 		test: /\.js$/,
 		loader: 'source-map-loader'
-	});
+	}); */
 }
 
 // Plugins
