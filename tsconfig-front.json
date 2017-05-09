@@ -2,6 +2,9 @@
 	"include": [
 		"./src-front/**/*"
 	],
+	"exclude": [
+		"./node_modules"
+	],
 	"compilerOptions": {
 		"allowJs": true,
 		"baseUrl": "src-front",

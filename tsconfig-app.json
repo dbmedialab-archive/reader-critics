@@ -2,6 +2,9 @@
 	"include": [
 		"./src-app/**/*"
 	],
+	"exclude": [
+		"./node_modules"
+	],
 	"compilerOptions": {
 		"allowJs": true,
 		"baseUrl": "src-app",
