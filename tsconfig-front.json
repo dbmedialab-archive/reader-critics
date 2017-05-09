@@ -1,14 +1,17 @@
 {
 	"include": [
-		"./src/**/*"
+		"./src-front/**/*"
+	],
+	"exclude": [
+		"./node_modules"
 	],
 	"compilerOptions": {
 		"allowJs": true,
-		"baseUrl": "src",
+		"baseUrl": "src-front",
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"noImplicitAny": false,
-		"outDir": "app",
+		"noImplicitAny": true,
+		"outDir": "./out/front",
 		"paths": {
 			"/*": [ "./*" ],
 			"~/*": [ "./*" ]
@@ -16,13 +19,8 @@
 		"preserveConstEnums": true,
 		"removeComments": true,
 		"sourceMap": false,
+		"suppressImplicitAnyIndexErrors": true,
 		"target": "es6",
-		"types" : [
-			"bluebird",
-			"core-js",
-			"express",
-			"lodash",
-			"node"
-		]
+		"jsx": "react"
 	}
 }

@@ -1,12 +1,16 @@
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
-import * as mysql from 'mysql';
+import * as path from 'path';
 import * as util from 'util';
 
 import axios from 'axios';
 
 import * as api from './apilib';
+
+import logRequest from './app/logRequest';
+import faviconRoute from './routes/faviconRoute';
+import feedbackRoute from './routes/feedbackRoute';
 
 import config from './config';
 import router from './routes';
@@ -17,8 +21,9 @@ const log = api.createLog();
 log('Starting Reader Critics webservice');
 
 // Create Express application
-
 const app = express();
+
+app.use(logRequest);
 
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(app);
@@ -26,8 +31,20 @@ const httpServer = http.createServer(app);
 // Main application startup
 
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
-.then(startHTTP)
-.catch(startupErrorHandler);
+	.then(startHTTP)
+	.catch(startupErrorHandler);
+
+app.use(faviconRoute);
+
+// We don't bundle frontend libraries together with the compiled sources, but rather host
+// them from static endpoints. Fair tradeoff between enabled browser caching but not using
+// a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.
+app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react/dist/')));
+app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react-dom/dist/')));
+
+app.use('/static', express.static(path.join(api.rootPath, 'out/front')));
+
+app.use('/fb', feedbackRoute);
 
 app.use('/', router);
 
@@ -47,12 +64,8 @@ function startHTTP() {
 // Error handling during startup
 
 function startupErrorHandler(error : Error) {
-	if (error.stack) {
-		log(error.stack);
-	}
-	else {
-		log(error.toString());
-	}
+	log(error.stack || error.toString());
 	process.exit(-128);
 }
 
+// TODO Graceful shutdown
