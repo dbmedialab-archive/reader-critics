@@ -14,7 +14,7 @@ const findEnvironment = () => {
 		console.log(`Execution environment not set, assuming "${e}"`);
 	}
 	return e;
-}
+};
 
 export const env : string = findEnvironment();
 

@@ -21,6 +21,7 @@ const log = api.createLog();
 log('Starting Reader Critics webservice');
 
 // Create Express application
+
 const app = express();
 
 app.use(logRequest);
@@ -55,7 +56,7 @@ function startHTTP() {
 
 	return new Promise((resolve) => {
 		httpServer.listen(httpPort, () => {
-			log(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
+			log(`Reader Critics webservice running on port ${httpPort} in ${api.env} mode`);
 			return resolve();
 		});
 	});
