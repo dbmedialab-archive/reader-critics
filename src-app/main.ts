@@ -39,10 +39,10 @@ app.use(faviconRoute);
 // We don't bundle frontend libraries together with the compiled sources, but rather host
 // them from static endpoints. Fair tradeoff between enabled browser caching but not using
 // a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.
-app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react/dist/')));
-app.use('/static/react', express.static(path.join(__dirname, '..', 'node_modules/react-dom/dist/')));
+app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react/dist/')));
+app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react-dom/dist/')));
 
-app.use('/static', express.static(path.join(__dirname, '..', 'out/front')));
+app.use('/static', express.static(path.join(api.rootPath, 'out/front')));
 
 app.use('/fb', feedbackRoute);
 
