@@ -31,11 +31,10 @@ export default router;
 function mainHandler(requ : Request, resp : Response) {
 	const articleURL = requ.params[0] || '';
 	// TODO add flexibility and do URL decode (maybe check via regex if '%[hex]' appears, then convert)
-	log('feedback router');
-	log(`[${articleURL}]`);
-	log(requ.params[0]);
+	log('Feedback main router', requ.params);
 
 	if (articleURL.length <= 0) {
+		log('Empty request without parameters');
 		return emptyHandler(requ, resp);
 	}
 

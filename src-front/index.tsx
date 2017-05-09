@@ -1,10 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import MainBanzaii from './MainBanzaii';
+
 class DefaultLayout extends React.Component<any, any> {
 
 	public render() {
-		return <p>React pwnz!</p>;
+		return (<div id="main-container">
+			<p>This is an example layout. Place feedback form here:</p>
+			<MainBanzaii/>
+			<p>React pwnz!</p>
+		</div>);
 	}
 
 }
