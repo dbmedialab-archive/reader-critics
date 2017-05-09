@@ -1,20 +1,8 @@
-# Compiled source #
-###################
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
+# Distribution paths
+/node_modules/
+/out/
 
-# Compiled paths #
-##################
-app/
-
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
+# Packages
 *.7z
 *.dmg
 *.gz
@@ -24,14 +12,22 @@ app/
 *.tar
 *.zip
 
-# Logs and databases #
-######################
+# Logs and databases
 *.log
 *.sql
 *.sqlite
 
-# OS generated files #
-######################
+# Shellscripts
+*.sh
+
+# Custom
+*.1
+*.bak
+*.orig
+*.swp
+yarn.lock
+
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -40,23 +36,3 @@ app/
 ehthumbs.db
 Thumbs.db
 
-# Shellscripts
-#####################
-*.sh
-
-# Custom
-#####################
-*.1
-*.bak
-*.orig
-*.swp
-node_modules
-public/common.js
-public/app.js
-public/styles.css
-stash
-yarn.lock
-
-# Editors
-.idea
-*.iml

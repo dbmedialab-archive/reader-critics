@@ -1,0 +1,26 @@
+{
+	"include": [
+		"./src-app/**/*"
+	],
+	"exclude": [
+		"./node_modules"
+	],
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": "src-app",
+		"experimentalDecorators": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"outDir": "out/app",
+		"paths": {
+			"/*": [ "./*" ],
+			"~/*": [ "./*" ]
+		},
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"target": "es6"
+	}
+}

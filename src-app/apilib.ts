@@ -1,9 +1,13 @@
 import * as callsite from 'callsite';
+import * as debug from 'debug';
+import * as findRoot from 'find-root';
 import * as path from 'path';
 
-import { debug } from 'debug';
+/** First component of debug's logger */
+export const appName = 'app';  // As short as possible, please
 
-const appName = 'rc';  // As short as possible, please
+/** The filesystem root of the whole project */
+export const rootPath = findRoot(path.dirname(require.main.filename));
 
 const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
