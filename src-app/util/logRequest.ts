@@ -3,7 +3,7 @@ import * as debug from 'debug';
 import { Request, Response } from 'express';
 import { parse } from 'url';
 
-import { appName } from 'applib';
+import { appName } from 'util/applib';
 
 const log = debug(`${appName}:requ`);
 

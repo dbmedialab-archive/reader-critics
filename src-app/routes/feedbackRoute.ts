@@ -4,7 +4,7 @@ import {
 	Router
 } from 'express';
 
-import * as app from 'applib';
+import * as app from 'util/applib';
 
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';

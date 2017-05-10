@@ -8,7 +8,7 @@ import {
 	Response,
 } from 'express';
 
-import * as app from 'applib';
+import * as app from 'util/applib';
 
 const log = app.createLog();
 
