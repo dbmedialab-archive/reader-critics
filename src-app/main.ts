@@ -1,3 +1,5 @@
+import 'app-module-path/register';
+
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
@@ -6,8 +8,8 @@ import * as util from 'util';
 
 import axios from 'axios';
 
-import config from 'config';
-import * as app from 'applib';
+import config from './config';
+import * as app from 'util/applib';
 
 import logRequest from 'util/logRequest';
 
