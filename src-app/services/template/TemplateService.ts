@@ -1,9 +1,7 @@
-export function getTemplate(customer : any) : Object {
-	return {
-		might_be_a: 'template',
-	};
+interface TemplateService {
+
+	getTemplate(customer : any) : any;
+
 }
 
-export function getSomethingElse() : any {
-	return 12345;
-}
+export default TemplateService;

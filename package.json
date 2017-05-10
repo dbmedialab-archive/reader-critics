@@ -45,7 +45,6 @@
 		"query-string": "4.3.4",
 		"react": "15.5.4",
 		"react-dom": "15.5.4",
-		"require-all": "2.2.0",
 		"serve-favicons": "2.1.5",
 		"webpack": "2.4.1"
 	},
