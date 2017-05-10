@@ -4,10 +4,10 @@ import {
 	Router
 } from 'express';
 
+import * as app from 'applib';
+
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
-
-import * as app from 'applib';
 
 const log = app.createLog();
 

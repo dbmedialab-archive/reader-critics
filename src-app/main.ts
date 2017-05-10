@@ -6,14 +6,15 @@ import * as util from 'util';
 
 import axios from 'axios';
 
+import config from 'config';
 import * as app from 'applib';
 
-import logRequest from './app/logRequest';
-import faviconRoute from './routes/faviconRoute';
-import feedbackRoute from './routes/feedbackRoute';
+import logRequest from 'util/logRequest';
 
-import config from './config';
-import router from './routes';
+import faviconRoute from 'routes/faviconRoute';
+import feedbackRoute from 'routes/feedbackRoute';
+import homeRoute from 'routes/homeRoute';
+import staticRoute from 'routes/staticRoute';
 
 global.Promise = bluebird;
 
@@ -36,18 +37,9 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 	.catch(startupErrorHandler);
 
 expressApp.use(faviconRoute);
-
-// We don't bundle frontend libraries together with the compiled sources, but rather host
-// them from static endpoints. Fair tradeoff between enabled browser caching but not using
-// a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.
-expressApp.use('/static/react', express.static(path.join(app.rootPath, 'node_modules/react/dist/')));
-expressApp.use('/static/react', express.static(path.join(app.rootPath, 'node_modules/react-dom/dist/')));
-
-expressApp.use('/static', express.static(path.join(app.rootPath, 'out/front')));
-
+expressApp.use('/static', staticRoute);
 expressApp.use('/fb', feedbackRoute);
-
-expressApp.use('/', router);
+expressApp.use('/', homeRoute);
 
 // Starting the HTTP server
 

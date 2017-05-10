@@ -8,7 +8,11 @@
 	"compilerOptions": {
 		"baseUrl": "src-app",
 		"paths": {
-			"applib": [ "util/applib/index" ]
+			"routes/*": [ "routes/*" ],
+			"util/*": [ "util/*" ],
+
+			"applib": [ "util/applib" ],
+			"config": [ "config" ]
 		},
 		"outDir": "out/app",
 
