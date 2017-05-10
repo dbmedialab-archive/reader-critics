@@ -3,6 +3,22 @@ import * as debug from 'debug';
 import * as findRoot from 'find-root';
 import * as path from 'path';
 
+// Application environment
+
+/** The current environment that this app is running in */
+const findEnvironment = () => {
+	let e = process.env.NODE_ENV || null;
+	if (0 > ['production', 'development', 'test'].indexOf(e)) {
+		e = 'development';
+	//	throw new Error(`Unknown execution environment "${e}"`);
+		console.log(`Execution environment not set, assuming "${e}"`);
+	}
+	return e;
+};
+
+export const env : string = findEnvironment();
+
+
 /** First component of debug's logger */
 export const appName = 'app';  // As short as possible, please
 

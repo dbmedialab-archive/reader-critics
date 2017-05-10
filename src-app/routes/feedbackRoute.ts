@@ -7,9 +7,9 @@ import {
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
 
-import * as api from '../apilib';
+import * as app from 'applib';
 
-const log = api.createLog();
+const log = app.createLog();
 
 // TODOs:
 // - Router mit URL-Parameter einrichten
