@@ -1,5 +1,6 @@
 import 'app-module-path/register';
 
+import * as colors from 'ansicolors';
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
@@ -22,6 +23,7 @@ global.Promise = bluebird;
 
 const log = app.createLog();
 log('Starting Reader Critics webservice');
+log('App located in %s', colors.brightWhite(app.rootPath));
 
 // Create Express application
 
@@ -50,7 +52,9 @@ function startHTTP() {
 
 	return new Promise((resolve) => {
 		httpServer.listen(httpPort, () => {
-			log(`Reader Critics webservice running on port ${httpPort} in ${app.env} mode`);
+			const p = colors.brightGreen(httpPort);
+			const m = colors.brightRed(app.env);
+			log(`Reader Critics webservice running on port ${p} in ${m} mode`);
 			return resolve();
 		});
 	});
