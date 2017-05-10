@@ -1,3 +1,6 @@
+import 'app-module-path/register';
+
+import * as colors from 'ansicolors';
 import * as bluebird from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
@@ -6,27 +9,30 @@ import * as util from 'util';
 
 import axios from 'axios';
 
-import * as api from './apilib';
-
-import logRequest from './app/logRequest';
-import faviconRoute from './routes/faviconRoute';
-import feedbackRoute from './routes/feedbackRoute';
-
 import config from './config';
-import router from './routes';
+import * as app from 'util/applib';
+
+import logRequest from 'util/logRequest';
+
+import faviconRoute from 'routes/faviconRoute';
+import feedbackRoute from 'routes/feedbackRoute';
+import homeRoute from 'routes/homeRoute';
+import staticRoute from 'routes/staticRoute';
 
 global.Promise = bluebird;
 
-const log = api.createLog();
+const log = app.createLog();
 log('Starting Reader Critics webservice');
+log('App located in %s', colors.brightWhite(app.rootPath));
 
 // Create Express application
-const app = express();
 
-app.use(logRequest);
+const expressApp = express();
+
+expressApp.use(logRequest);
 
 const httpPort = config.get('http.port') || 4001;
-const httpServer = http.createServer(app);
+const httpServer = http.createServer(expressApp);
 
 // Main application startup
 
@@ -34,19 +40,10 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 	.then(startHTTP)
 	.catch(startupErrorHandler);
 
-app.use(faviconRoute);
-
-// We don't bundle frontend libraries together with the compiled sources, but rather host
-// them from static endpoints. Fair tradeoff between enabled browser caching but not using
-// a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.
-app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react/dist/')));
-app.use('/static/react', express.static(path.join(api.rootPath, 'node_modules/react-dom/dist/')));
-
-app.use('/static', express.static(path.join(api.rootPath, 'out/front')));
-
-app.use('/fb', feedbackRoute);
-
-app.use('/', router);
+expressApp.use(faviconRoute);
+expressApp.use('/static', staticRoute);
+expressApp.use('/fb', feedbackRoute);
+expressApp.use('/', homeRoute);
 
 // Starting the HTTP server
 
@@ -55,7 +52,9 @@ function startHTTP() {
 
 	return new Promise((resolve) => {
 		httpServer.listen(httpPort, () => {
-			log(`Reader Critics webservice running on port ${httpPort} in ${config.get('env')} mode`);
+			const p = colors.brightGreen(httpPort);
+			const m = colors.brightRed(app.env);
+			log(`Reader Critics webservice running on port ${p} in ${m} mode`);
 			return resolve();
 		});
 	});

@@ -8,9 +8,9 @@ import {
 	Response,
 } from 'express';
 
-import * as api from '../../../apilib';  // Oh a root import plugin would be nice ...
+import * as app from 'util/applib';
 
-const log = api.createLog();
+const log = app.createLog();
 
 //const indexTemplate = doT.template("<h1>Here is a sample template <span>{{=it.foo}}</span> how awesome is that!</h1>");
 
@@ -22,7 +22,7 @@ export default function (requ : Request, resp : Response, articleURL : string) {
 	//const resultText = indexTemplate({foo: articleURL});
 	//resp.json({ and_now: resultText }).status(200).end();
 
-	const indexPath = path.join(api.rootPath, 'assets/index.html');
+	const indexPath = path.join(app.rootPath, 'assets/index.html');
 	const indexHTML = readFileSync(indexPath);
 
 	resp.set('Content-Type', 'text/html');

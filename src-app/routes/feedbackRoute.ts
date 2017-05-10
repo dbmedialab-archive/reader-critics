@@ -4,12 +4,12 @@ import {
 	Router
 } from 'express';
 
+import * as app from 'util/applib';
+
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
 
-import * as api from '../apilib';
-
-const log = api.createLog();
+const log = app.createLog();
 
 // TODOs:
 // - Router mit URL-Parameter einrichten
