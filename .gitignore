@@ -25,6 +25,7 @@
 *.bak
 *.orig
 *.swp
+tsconfig.json
 yarn.lock
 
 # OS generated files

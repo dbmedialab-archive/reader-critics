@@ -1,21 +1,14 @@
+declare var articleURL : string;  // declared externally and set in main template
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import MainBanzaii from './MainBanzaii';
+import FeedbackDefaultLayout from './feedback/FeedbackDefaultLayout';
 
-class DefaultLayout extends React.Component<any, any> {
-
-	public render() {
-		return (<div id="main-container">
-			<p>This is an example layout. Place feedback form here:</p>
-			<MainBanzaii/>
-			<p>React pwnz!</p>
-		</div>);
-	}
-
-}
 
 ReactDOM.render(
-	React.createElement(DefaultLayout, null),
+	React.createElement(FeedbackDefaultLayout, {
+		articleURL,
+	}),
 	document.getElementById('app')
 );

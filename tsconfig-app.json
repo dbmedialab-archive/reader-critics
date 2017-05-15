@@ -6,17 +6,14 @@
 		"./node_modules"
 	],
 	"compilerOptions": {
-		"allowJs": true,
 		"baseUrl": "src-app",
+		"outDir": "out/app",
+
+		"allowJs": true,
 		"experimentalDecorators": true,
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitAny": false,
-		"outDir": "out/app",
-		"paths": {
-			"/*": [ "./*" ],
-			"~/*": [ "./*" ]
-		},
 		"preserveConstEnums": true,
 		"removeComments": true,
 		"sourceMap": false,

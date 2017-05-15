@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello React!</title>
+
+        {{~it.styles :stylePath}}
+        <link rel="stylesheet" href="/static/styles/{{=stylePath}}"/>
+        {{~}}
+    </head>
+    <body>
+        <script>
+          var articleURL = '{{=it.articleURL}}';
+        </script>
+
+        <div id="app"></div>
+
+        {{~it.scripts :scriptPath}}
+        <script src="/static/{{=scriptPath}}"></script>
+        {{~}}
+    </body>
+</html>

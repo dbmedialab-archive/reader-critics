@@ -7,7 +7,7 @@ import WebsiteService from './website/WebsiteService';
 
 // Determine execution environment
 
-import * as app from '../apilib';
+import * as app from 'util/applib';
 
 const env : string = app.env === 'test' ? 'mock' : 'prod';
 

@@ -1,29 +1,5 @@
 import * as callsite from 'callsite';
 import * as debug from 'debug';
-import * as findRoot from 'find-root';
-import * as path from 'path';
-
-// Application environment
-
-/** The current environment that this app is running in */
-const findEnvironment = () => {
-	let e = process.env.NODE_ENV || null;
-	if (0 > ['production', 'development', 'test'].indexOf(e)) {
-		e = 'development';
-	//	throw new Error(`Unknown execution environment "${e}"`);
-		console.log(`Execution environment not set, assuming "${e}"`);
-	}
-	return e;
-};
-
-export const env : string = findEnvironment();
-
-// Filesystem
-
-/** The filesystem root of the whole project */
-export const rootPath : string = findRoot(path.dirname(require.main.filename));
-
-// Logging
 
 /** First component of debug's logger */
 export const appName = 'app';  // As short as possible, please
@@ -36,7 +12,7 @@ const regexForwardSlashes = /\//g;
  * Dynamically create a log channel based on the caller location.
  * @return function (...args : any[]) => void
  */
-export function createLog(moduleName? : string) : (...args : any[]) => void {  // hvorfor ikke debug.IDebugger ??
+export function createLog(moduleName? : string) : (...args : any[]) => void {
 	const name = moduleName !== undefined
 		? `${appName}:${moduleName}`
 		: logChannelName (callsite());
@@ -75,3 +51,4 @@ const isCallTrace = (callstack: callsite.CallSite[]) : boolean => (
 	&& callstack.length > 1
 	&& callstack[1].getFunctionName() === null
 );
+

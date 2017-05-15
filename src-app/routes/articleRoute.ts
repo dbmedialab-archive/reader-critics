@@ -6,10 +6,12 @@ import {
 
 import { isEmpty } from 'lodash';
 
+import HtmlParser from 'parser/html/HtmlParser';
+
 import * as app from 'util/applib';
 
-import feedbackHandler from './feedback/feedbackHandler';
-import emptyHandler from './feedback/emptyHandler';
+//import feedbackHandler from './feedback/feedbackHandler';
+//import emptyHandler from './feedback/emptyHandler';
 
 const log = app.createLog();
 
@@ -29,32 +31,26 @@ const router = Router();
 // We use this to grab the article URL which is to be processed and that can be appended to this
 // route without any further encoding. Most browsers are capable of that, also optional decoding
 // will happen when an encoded URL is detected.
-router.get('/*', mainHandler);
+router.get('/get/*', getArticleHandler);
 
 export default router;
 
 // Main handler, checks for URL parameter and "empty" requests
 
-function mainHandler(requ : Request, resp : Response) {
-	const articleURL = prepareURL(requ.params[0]);
-	log('Feedback main router to "%s"', articleURL);
+function getArticleHandler(requ : Request, resp : Response) {
+	const articleURL = requ.params[0];
+	log('Fetch article "%s"', articleURL);
 
-	if (articleURL.length <= 0) {
-		log('Empty request without parameters');
-		return emptyHandler(requ, resp);
-	}
+	const htmlParser = new HtmlParser(articleURL);
 
-	return feedbackHandler(requ, resp, articleURL);
-}
+	htmlParser.getArticle()
+	.then(article => resp.send(article))  // TODO api okResponse, vgl woodwing middleware
+	.catch(reason => resp.status(500).send(reason));
 
-// Dynamically decode the URL parameter, if need be
+	// if (articleURL.length <= 0) {
+	// 	log('Empty request without parameters');
+	// 	return emptyHandler(requ, resp);
+	// }
 
-const containsHex = /(?:%3A|%2F)/;
-
-function prepareURL(origURL : string) : string {
-	if (isEmpty(origURL)) {
-		return '';
-	}
-
-	return containsHex.test(origURL) ? decodeURIComponent(origURL) : origURL;
+	// return feedbackHandler(requ, resp, articleURL);
 }
