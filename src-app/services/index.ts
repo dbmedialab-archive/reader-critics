@@ -2,6 +2,7 @@ declare function require(arg : string) : any;
 
 // Import service interfaces
 
+import ArticleService from './article/ArticleService';
 import TemplateService from './template/TemplateService';
 import WebsiteService from './website/WebsiteService';
 
@@ -13,5 +14,6 @@ const env : string = app.env === 'test' ? 'mock' : 'prod';
 
 // Declare service exports
 
+export const Article : ArticleService = require(`./template/ArticleService.${env}`);
 export const Template : TemplateService = require(`./template/TemplateService.${env}`);
 export const Website : WebsiteService = require(`./website/WebsiteService.${env}`);

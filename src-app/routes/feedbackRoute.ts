@@ -4,9 +4,9 @@ import {
 	Router
 } from 'express';
 
-import { isEmpty } from 'lodash';
-
 import * as app from 'util/applib';
+
+import { Article } from 'services';
 
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
@@ -36,7 +36,7 @@ export default router;
 // Main handler, checks for URL parameter and "empty" requests
 
 function mainHandler(requ : Request, resp : Response) {
-	const articleURL = prepareURL(requ.params[0]);
+	const articleURL = Article.parseURL(requ.params[0]);
 	log('Feedback main router to "%s"', articleURL);
 
 	if (articleURL.length <= 0) {
@@ -45,16 +45,4 @@ function mainHandler(requ : Request, resp : Response) {
 	}
 
 	return feedbackHandler(requ, resp, articleURL);
-}
-
-// Dynamically decode the URL parameter, if need be
-
-const containsHex = /(?:%3A|%2F)/;
-
-function prepareURL(origURL : string) : string {
-	if (isEmpty(origURL)) {
-		return '';
-	}
-
-	return containsHex.test(origURL) ? decodeURIComponent(origURL) : origURL;
 }
