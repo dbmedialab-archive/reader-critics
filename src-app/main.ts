@@ -14,6 +14,7 @@ import * as app from 'util/applib';
 
 import logRequest from 'util/logRequest';
 
+import articleRoute from 'routes/articleRoute';
 import faviconRoute from 'routes/faviconRoute';
 import feedbackRoute from 'routes/feedbackRoute';
 import homeRoute from 'routes/homeRoute';
@@ -42,7 +43,10 @@ Promise.resolve()  // This will be replaced by other initialization calls, e.g. 
 
 expressApp.use(faviconRoute);
 expressApp.use('/static', staticRoute);
+
 expressApp.use('/fb', feedbackRoute);
+expressApp.use('/article', articleRoute);
+
 expressApp.use('/', homeRoute);
 
 // Starting the HTTP server

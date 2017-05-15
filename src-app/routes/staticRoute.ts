@@ -11,6 +11,8 @@ const router = express.Router();
 router.use('/react', express.static(path.join(app.rootPath, 'node_modules/react/dist/')));
 router.use('/react', express.static(path.join(app.rootPath, 'node_modules/react-dom/dist/')));
 
+router.use('/styles', express.static(path.join(app.rootPath, 'tmp/styles')));
+
 router.use('/', express.static(path.join(app.rootPath, 'out/front')));
 
 export default router;
