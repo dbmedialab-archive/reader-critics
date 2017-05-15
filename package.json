@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "UNLICENSED",
 	"private": true,
 	"description": "Kildekritikk (Reader Critics)",
@@ -9,12 +9,14 @@
 		"node": "7.10.0"
 	},
 	"scripts": {
-		"build:app": "rm -rf out/app/* && node_modules/.bin/tsc --project tsconfig-app.json",
-		"build:front": "rm -rf out/front/* && webpack --config webpack-front.js",
+		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
+		"watch:app": "node_modules/.bin/tsc --project tsconfig-app.json --watch",
+		"build:front": "webpack --config webpack-front.js",
+		"watch:front": "webpack --config webpack-front.js --watch",
 		"clean": "rm -rf out/*",
 		"eslint": "./run_eslint",
 		"test": "./run_test",
-		"start": "node out/app/main"
+		"start": "./run_app"
 	},
 	"babel": {
 		"presets": [
@@ -29,6 +31,7 @@
 	],
 	"dependencies": {
 		"ansicolors": "0.3.2",
+		"app-module-path": "2.2.0",
 		"axios": "0.16.1",
 		"bluebird": "3.5.0",
 		"callsite": "1.0.0",
