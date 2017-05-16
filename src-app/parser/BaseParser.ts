@@ -1,8 +1,13 @@
-import axios from 'axios';
+import {
+	default as axios,
+	AxiosPromise,
+} from 'axios';
+
 import Article from '../models/Article';
 import Parser from './Parser';
 
 export default class BaseParser implements Parser {
+
 	readonly url: string;
 	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
 	protected requestSent: boolean;
@@ -18,8 +23,9 @@ export default class BaseParser implements Parser {
 	}
 
 	// Requests the url
-	protected request() {
+	protected request() : AxiosPromise {
 		this.requestSent = true;
 		return axios.get(this.url);
 	}
+
 }

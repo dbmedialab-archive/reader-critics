@@ -22,7 +22,7 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router = Router();
+const router : Router = Router();
 
 // The asterisk in the route means that anything after the / slash will be picked up by Express and
 // exposed to the handler in Request.params[0]
@@ -35,7 +35,7 @@ export default router;
 
 // Main handler, checks for URL parameter and "empty" requests
 
-function mainHandler(requ : Request, resp : Response) {
+function mainHandler(requ : Request, resp : Response) : void {
 	const articleURL = Article.parseURL(requ.params[0]);
 	log('Feedback main router to "%s"', articleURL);
 

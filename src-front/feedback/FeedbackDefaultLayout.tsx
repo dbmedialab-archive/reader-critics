@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import * as React from 'react';
 
 import {
 	default as axios,
@@ -20,7 +20,7 @@ interface LayoutState {
 
 // Default Feedback Layout
 
-export default class FeedbackDefaultLayout extends Component <LayoutProps, LayoutState> {
+export default class FeedbackDefaultLayout extends React.Component <LayoutProps, LayoutState> {
 
 	private articleRequest : any;
 
