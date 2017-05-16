@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const ldrBabel = {
 	loader: 'babel-loader',
 	options: {
-		presets: ['es2015', 'react'],  // 'stage-1'
+		presets: ['es2015', 'react'],
 	},
 };
 
