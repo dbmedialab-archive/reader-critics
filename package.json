@@ -9,8 +9,9 @@
 		"node": "7.10.0"
 	},
 	"scripts": {
-		"build:app": "rm -rf out/app/* && node_modules/.bin/tsc --project tsconfig-app.json",
-		"build:front": "rm -rf out/front/* && webpack --config webpack-front.js",
+		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
+		"build:front": "webpack --config webpack-front.js",
+		"build:dev": "npm run build:front -- --watch",
 		"clean": "rm -rf out/*",
 		"eslint": "./run_eslint",
 		"test": "./run_test",
@@ -28,25 +29,34 @@
 		"Simen Berge"
 	],
 	"dependencies": {
+		"@types/material-ui": "^0.17.7",
+		"@types/react-tap-event-plugin": "^0.0.30",
 		"ansicolors": "0.3.2",
 		"axios": "0.16.1",
 		"bluebird": "3.5.0",
 		"callsite": "1.0.0",
 		"cheerio": "0.22.0",
 		"convict": "3.0.0",
+		"css-loader": "^0.28.1",
 		"debug": "2.x",
 		"dot": "1.1.1",
 		"express": "4.x",
+		"extract-text-webpack-plugin": "^2.1.0",
 		"find-root": "1.0.0",
 		"json5": "0.5.1",
 		"lodash": "4.17.4",
+		"material-ui": "^0.18.1",
 		"moment": "2.18.1",
 		"node-read": "0.1.7",
+		"node-sass": "^4.5.2",
 		"query-string": "4.3.4",
 		"react": "15.5.4",
 		"react-dom": "15.5.4",
+		"sass-loader": "^6.0.5",
 		"serve-favicons": "2.1.5",
-		"webpack": "2.4.1"
+		"style-loader": "^0.17.0",
+		"webpack": "^2.5.1",
+		"webpack-dev-server": "^2.4.5"
 	},
 	"devDependencies": {
 		"@types/bluebird": "3.5.3",
