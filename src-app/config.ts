@@ -5,7 +5,7 @@ const config = convict({
 		port: {
 			doc: 'Network port where the HTTP server is going to listen',
 			format: 'port',
-			default: 4001,
+			default: 4000,
 			env: 'HTTP_PORT',
 		},
 	},

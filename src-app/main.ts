@@ -7,7 +7,6 @@ import * as http from 'http';
 import * as path from 'path';
 import * as util from 'util';
 
-import axios from 'axios';
 
 import config from './config';
 import * as app from 'util/applib';
@@ -19,6 +18,8 @@ import faviconRoute from 'routes/faviconRoute';
 import feedbackRoute from 'routes/feedbackRoute';
 import homeRoute from 'routes/homeRoute';
 import staticRoute from 'routes/staticRoute';
+
+import './env';
 
 global.Promise = bluebird;
 
@@ -58,7 +59,7 @@ function startHTTP() {
 	return new Promise((resolve) => {
 		httpServer.listen(httpPort, () => {
 			const p = colors.brightGreen(httpPort);
-			const m = colors.brightRed(app.env);
+			const m = colors.brightCyan(app.env);
 			log(`Reader Critics webservice running on port ${p} in ${m} mode`);
 			return resolve();
 		});
