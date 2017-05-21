@@ -10,10 +10,10 @@ import WebsiteService from './website/WebsiteService';
 
 import * as app from 'util/applib';
 
-const env : string = app.env === 'test' ? 'mock' : 'prod';
+const env : string = app.env === 'test' ? 'mock' : 'live';
 
 // Declare service exports
 
-export const Article : ArticleService = require(`./template/ArticleService.${env}`);
+export const Article : ArticleService = require(`./article/ArticleService.${env}`);
 export const Template : TemplateService = require(`./template/TemplateService.${env}`);
 export const Website : WebsiteService = require(`./website/WebsiteService.${env}`);

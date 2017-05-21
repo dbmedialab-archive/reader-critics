@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 
-const containsHex = /(?:%3A|%2F)/;
+const containsHex = /(?:%3A|%2F)/;  // Detect encoded ':' and '/' characters
 
 export default function (origURL : string) : string {
 	if (isEmpty(origURL)) {
