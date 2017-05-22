@@ -6,9 +6,9 @@ import {
 
 import { isEmpty } from 'lodash';
 
-import HtmlParser from 'parser/html/HtmlParser';
+import HtmlParser from 'app/parser/html/HtmlParser';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 //import feedbackHandler from './feedback/feedbackHandler';
 //import emptyHandler from './feedback/emptyHandler';

@@ -4,7 +4,7 @@ import {
 	Router
 } from 'express';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 const log = app.createLog();
 

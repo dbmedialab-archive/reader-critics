@@ -1,5 +1,3 @@
-import 'app-module-path/register';
-
 import * as colors from 'ansicolors';
 import * as bluebird from 'bluebird';
 import * as express from 'express';
@@ -7,17 +5,16 @@ import * as http from 'http';
 import * as path from 'path';
 import * as util from 'util';
 
+import * as app from './util/applib';
 
 import config from './config';
-import * as app from 'util/applib';
+import logRequest from './util/logRequest';
 
-import logRequest from 'util/logRequest';
-
-import articleRoute from 'routes/articleRoute';
-import faviconRoute from 'routes/faviconRoute';
-import feedbackRoute from 'routes/feedbackRoute';
-import homeRoute from 'routes/homeRoute';
-import staticRoute from 'routes/staticRoute';
+import articleRoute from './routes/articleRoute';
+import faviconRoute from './routes/faviconRoute';
+import feedbackRoute from './routes/feedbackRoute';
+import homeRoute from './routes/homeRoute';
+import staticRoute from './routes/staticRoute';
 
 import './env';
 

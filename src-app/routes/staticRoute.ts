@@ -5,7 +5,7 @@ import {
 	static as serveStatic,
 } from 'express';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 const router : Router = Router();
 

@@ -80,8 +80,9 @@
 		"gulp-typescript": "3.1.6",
 		"gulp-watch": "4.3.11",
 		"mocha": "3.3.0",
-		"mocha-typescript": "1.1.2",
 		"source-map-support": "0.4.15",
+		"ts-node": "3.0.4",
+		"tsconfig-paths": "2.1.2",
 		"tslint": "5.1.0",
 		"typescript": "2.2.2"
 	}

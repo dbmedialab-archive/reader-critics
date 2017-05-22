@@ -8,9 +8,11 @@ import WebsiteService from './website/WebsiteService';
 
 // Determine execution environment
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 const env : string = app.env === 'test' ? 'mock' : 'live';
+
+console.log('Service factory loads ' + env + ' stuff');
 
 // Declare service exports
 

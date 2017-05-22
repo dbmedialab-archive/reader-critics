@@ -4,9 +4,9 @@ import {
 	Router
 } from 'express';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
-import { Article } from 'services';
+import { Article } from 'app/services';
 
 import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';

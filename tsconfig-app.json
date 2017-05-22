@@ -6,8 +6,12 @@
 		"./node_modules"
 	],
 	"compilerOptions": {
-		"baseUrl": "src-app",
 		"outDir": "out/app",
+
+		"baseUrl": ".",
+		"paths": {
+			"app/*": [ "src-app/*" ]
+		},
 
 		"allowJs": false,
 		"declaration": true,
