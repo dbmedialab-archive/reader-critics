@@ -3,6 +3,8 @@ import {
 	AxiosPromise,
 } from 'axios';
 
+import * as Promise from 'bluebird';
+
 import Article from '../models/Article';
 import Parser from './Parser';
 
@@ -18,8 +20,8 @@ export default class BaseParser implements Parser {
 		this.requestSent = false;
 	}
 
-	getArticle(): Article {
-		return this.article;
+	getArticle(): Promise <Article> {
+		return Promise.resolve(this.article);
 	}
 
 	// Requests the url

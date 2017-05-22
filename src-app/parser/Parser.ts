@@ -1,12 +1,13 @@
+import * as Promise from 'bluebird';
+
 import Article from '../models/Article';
 
 interface Parser {
-	// Properties
-	url: string;
 
-	// Methods
-	// request: () => void;
-	getArticle: () => Article;
+	url : string;
+
+	getArticle: () => Promise <Article>;
+
 }
 
 export default Parser;

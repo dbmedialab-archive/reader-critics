@@ -1,8 +1,11 @@
 import axios from 'axios';
+
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
-import Article from '../../models/Article';
-import ErrorResponse from '../../models/Response/ErrorResponse';
+import * as Promise from 'bluebird';
+
+import Article from 'app/models/Article';
+import ErrorResponse from 'app/models/Response/ErrorResponse';
 import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {
@@ -10,19 +13,20 @@ export default class HtmlParser extends BaseParser {
 	private parsedArticle: {content: {}, title: {}};
 	private response: {data: {}};
 
-	public getArticle(): any {
+	public getArticle(): Promise <Article> {
 		return new Promise((resolve, reject) => {
 			// If we don't have anything to base the article on
 			if (!this.requestSent || typeof this.response === 'undefined') {
 				// We run the article request
-				this.request().then((response) => {
+				return this.request().then((response) => {
 					this.response = response;
 					// Request was successful - carry on
 					return resolve();
-				}).catch(reason => {
-					return reject(reason.toString());
-				});
-			} else {
+				})
+				.catch(reason => reject(reason));
+			}
+// FIXME Warning: a promise was created in a handler but was not returned from it (where?!)
+			else {
 				// We've already sent the request - carry on
 				return resolve();
 			}
@@ -37,13 +41,14 @@ export default class HtmlParser extends BaseParser {
 					errors: [reason],
 				});
 			});
-		}).then(article => {
+		}).then((article : any) => {
 			// Generate the article based on the response
 			this.createArticle();
 
 			// If we couldn't create an article
 			if (!this.article) {
 				// Return error
+// TODO exchange this with throwing a dedicated error class. The parser should not form API responses
 				return Promise.reject({
 					success: false,
 					message: 'Could not create article based on response',
@@ -51,13 +56,7 @@ export default class HtmlParser extends BaseParser {
 			}
 
 			// Return an object containing the article
-			return Promise.resolve({
-				success: true,
-				article: super.getArticle(),
-			});
-		}).catch(reason => {
-			// Something went wrong, return the error
-			return Promise.reject(new ErrorResponse(false, 'Something went wrong', reason));
+			return Promise.resolve(super.getArticle());
 		});
 	}
 
