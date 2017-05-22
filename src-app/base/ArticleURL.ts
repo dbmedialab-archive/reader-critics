@@ -10,6 +10,8 @@ export default class ArticleURL {
 
 	private url : URL;
 
+	readonly href : string;
+
 	// Constructor
 
 	constructor(origURL : string) {
@@ -26,12 +28,13 @@ export default class ArticleURL {
 		}
 
 		this.url = new URL(decodedURL);
+		this.href = this.url.toString();
 	}
 
 	// Accessors
 
 	public toString() : string {
-		return this.url.toString();
+		return this.href;
 	}
 
 }

@@ -30,7 +30,7 @@ const scripts = [
 
 export default function (requ : Request, resp : Response, articleURL : ArticleURL) {
 	log('feedback endpoint');
-	log(`[${articleURL.toString()}]`);
+	log(`[${articleURL.href}]`);
 
 	// 2. Use template function as many times as you like
 	//const resultText = indexTemplate({foo: articleURL});
@@ -38,7 +38,7 @@ export default function (requ : Request, resp : Response, articleURL : ArticleUR
 
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
-		articleURL: articleURL.toString(),
+		articleURL: articleURL.href,
 		styles,
 		scripts,
 	}));

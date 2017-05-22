@@ -24,13 +24,13 @@ describe('ArticleURL', () => {
 	});
 
 	it('Return decoded URLs', function() {
-		const value = new ArticleURL('http%3a%2f%2fexample%2ecom%2ftest%2fpath%2f').toString();
+		const value = new ArticleURL('http%3a%2f%2fexample%2ecom%2ftest%2fpath%2f').href;
 		assert.isString(value);
 		assert.strictEqual(value, 'http://example.com/test/path/');
 	});
 
 	it('Transform UTF-8 into Punycode', function() {
-		const value = new ArticleURL('https://你好你好').toString();
+		const value = new ArticleURL('https://你好你好').href;
 		assert.isString(value);
 		assert.strictEqual(value, 'https://xn--6qqa088eba/');
 	});
@@ -56,7 +56,7 @@ describe('ArticleURL', () => {
 		];
 
 		tryThese.forEach((probe) => {
-			const value = new ArticleURL(probe.input).toString();
+			const value = new ArticleURL(probe.input).href;
 			assert.isString(value);
 			assert.strictEqual(value, probe.expect);
 		});
