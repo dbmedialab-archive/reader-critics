@@ -8,7 +8,9 @@ import {
 	Response,
 } from 'express';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
+
+import ArticleURL from 'app/base/ArticleURL';
 
 const log = app.createLog();
 
@@ -26,9 +28,9 @@ const scripts = [
 
 // Respond with initial HTML, process template for feedback form page
 
-export default function (requ : Request, resp : Response, articleURL : string) {
+export default function (requ : Request, resp : Response, articleURL : ArticleURL) {
 	log('feedback endpoint');
-	log(`[${articleURL}]`);
+	log(`[${articleURL.toString()}]`);
 
 	// 2. Use template function as many times as you like
 	//const resultText = indexTemplate({foo: articleURL});
@@ -36,7 +38,7 @@ export default function (requ : Request, resp : Response, articleURL : string) {
 
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
-		articleURL,
+		articleURL: articleURL.toString(),
 		styles,
 		scripts,
 	}));

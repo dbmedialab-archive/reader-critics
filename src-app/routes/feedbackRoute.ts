@@ -4,17 +4,18 @@ import {
 	Router
 } from 'express';
 
-import { isEmpty } from 'lodash';
+import * as app from 'app/util/applib';
 
-import * as app from 'util/applib';
+import ArticleURL from 'app/base/ArticleURL';
+import { EmptyError } from 'app/util/errors';
 
-import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
+import feedbackHandler from './feedback/feedbackHandler';
+import paramErrorHandler from './feedback/paramErrorHandler';
 
 const log = app.createLog();
 
 // TODOs:
-// - Router mit URL-Parameter einrichten
 // - URL parsen und Hostnamen extrahieren (parser-package? warsch "url", Node API)
 // - Hostnamen mit Datenbank abgleichen und Record des Kunden holen
 // - Styling und Template laden
@@ -22,7 +23,7 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router = Router();
+const router : Router = Router();
 
 // The asterisk in the route means that anything after the / slash will be picked up by Express and
 // exposed to the handler in Request.params[0]
@@ -33,28 +34,23 @@ router.get('/*', mainHandler);
 
 export default router;
 
-// Main handler, checks for URL parameter and "empty" requests
+// Main handler, checks the URL parameter and diverts to the respective handlers
 
-function mainHandler(requ : Request, resp : Response) {
-	const articleURL = prepareURL(requ.params[0]);
-	log('Feedback main router to "%s"', articleURL);
+function mainHandler(requ : Request, resp : Response) : void {
+	try {
+		const articleURL = new ArticleURL(requ.params[0]);
+		log('Feedback main router to "%s"', articleURL);
 
-	if (articleURL.length <= 0) {
-		log('Empty request without parameters');
-		return emptyHandler(requ, resp);
+		return feedbackHandler(requ, resp, articleURL);
 	}
-
-	return feedbackHandler(requ, resp, articleURL);
-}
-
-// Dynamically decode the URL parameter, if need be
-
-const containsHex = /(?:%3A|%2F)/;
-
-function prepareURL(origURL : string) : string {
-	if (isEmpty(origURL)) {
-		return '';
+	catch (error) {
+		if (error instanceof TypeError) {
+			log('URL parameter invalid');
+			return paramErrorHandler(requ, resp);
+		}
+		else if (error instanceof EmptyError) {
+			log('Empty request without parameters');
+			return emptyHandler(requ, resp);
+		}
 	}
-
-	return containsHex.test(origURL) ? decodeURIComponent(origURL) : origURL;
 }

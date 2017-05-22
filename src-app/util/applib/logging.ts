@@ -51,3 +51,4 @@ const isCallTrace = (callstack: callsite.CallSite[]) : boolean => (
 	&& callstack.length > 1
 	&& callstack[1].getFunctionName() === null
 );
+

@@ -6,10 +6,15 @@
 		"./node_modules"
 	],
 	"compilerOptions": {
-		"baseUrl": "src-app",
 		"outDir": "out/app",
 
-		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"app/*": [ "src-app/*" ]
+		},
+
+		"allowJs": false,
+		"declaration": true,
 		"experimentalDecorators": true,
 		"module": "commonjs",
 		"moduleResolution": "node",

@@ -6,9 +6,9 @@ import {
 
 import { isEmpty } from 'lodash';
 
-import HtmlParser from 'parser/html/HtmlParser';
+import HtmlParser from 'app/parser/html/HtmlParser';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 //import feedbackHandler from './feedback/feedbackHandler';
 //import emptyHandler from './feedback/emptyHandler';
@@ -24,7 +24,7 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router = Router();
+const router : Router = Router();
 
 // The asterisk in the route means that anything after the / slash will be picked up by Express and
 // exposed to the handler in Request.params[0]
@@ -37,7 +37,7 @@ export default router;
 
 // Main handler, checks for URL parameter and "empty" requests
 
-function getArticleHandler(requ : Request, resp : Response) {
+function getArticleHandler(requ : Request, resp : Response) : void {
 	const articleURL = requ.params[0];
 	log('Fetch article "%s"', articleURL);
 
