@@ -6,7 +6,7 @@ import {
 
 import * as app from 'app/util/applib';
 
-import { Article } from 'app/services';
+import ArticleURL from 'app/base/ArticleURL';
 import { EmptyError } from 'app/util/errors';
 
 import emptyHandler from './feedback/emptyHandler';
@@ -38,7 +38,7 @@ export default router;
 
 function mainHandler(requ : Request, resp : Response) : void {
 	try {
-		const articleURL = Article.parseURL(requ.params[0]);
+		const articleURL = new ArticleURL(requ.params[0]);
 		log('Feedback main router to "%s"', articleURL);
 
 		return feedbackHandler(requ, resp, articleURL);

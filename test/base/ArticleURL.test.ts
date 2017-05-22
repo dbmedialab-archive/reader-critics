@@ -1,14 +1,14 @@
 // import { describe } from 'mocha';
 import { assert } from 'chai';
 
-import parseURL from 'app/services/article/parseURL';
+import ArticleURL from 'app/base/ArticleURL';
 
 import { EmptyError } from 'app/util/errors';
 
 describe('ArticleURL', () => {
 
 	it('Reject empty parameters', function() {
-		assert.throws(() => { parseURL(undefined) }, EmptyError);
+		assert.throws(() => { new ArticleURL(undefined) }, EmptyError);
 	});
 
 	it('Reject invalid URLs', function() {
@@ -19,18 +19,18 @@ describe('ArticleURL', () => {
 		];
 
 		checkafew.forEach((probablyInvalidURL : string) => {
-			assert.throws(() => { parseURL(probablyInvalidURL) }, TypeError);
+			assert.throws(() => { new ArticleURL(probablyInvalidURL) }, TypeError);
 		});
 	});
 
 	it('Return decoded URLs', function() {
-		const value = parseURL('http%3a%2f%2fexample%2ecom%2ftest%2fpath%2f');
+		const value = new ArticleURL('http%3a%2f%2fexample%2ecom%2ftest%2fpath%2f').toString();
 		assert.isString(value);
 		assert.strictEqual(value, 'http://example.com/test/path/');
 	});
 
 	it('Transform UTF-8 into Punycode', function() {
-		const value = parseURL('https://你好你好');
+		const value = new ArticleURL('https://你好你好').toString();
 		assert.isString(value);
 		assert.strictEqual(value, 'https://xn--6qqa088eba/');
 	});
@@ -56,7 +56,7 @@ describe('ArticleURL', () => {
 		];
 
 		tryThese.forEach((probe) => {
-			const value = parseURL(probe.input);
+			const value = new ArticleURL(probe.input).toString();
 			assert.isString(value);
 			assert.strictEqual(value, probe.expect);
 		});

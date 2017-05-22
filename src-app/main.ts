@@ -1,3 +1,5 @@
+import 'app-module-path/register';
+
 import * as colors from 'ansicolors';
 import * as bluebird from 'bluebird';
 import * as express from 'express';
