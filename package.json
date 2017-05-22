@@ -9,14 +9,14 @@
 		"node": "7.10.0"
 	},
 	"scripts": {
+		"build": "npm run clean && npm run build:app && npm run build:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
 		"watch:app": "node_modules/.bin/tsc --project tsconfig-app.json --watch",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
-		"clean": "rm -rf out/*",
-		"eslint": "./run_eslint",
-		"test": "./run_test",
-		"start": "./run_app"
+		"clean": "rm -rf out/app out/front",
+		"test": "./run_test.sh",
+		"start": "./run_apps.sh"
 	},
 	"babel": {
 		"presets": [
