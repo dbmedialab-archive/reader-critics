@@ -32,6 +32,8 @@ const router : Router = Router();
 // will happen when an encoded URL is detected.
 router.get('/*', mainHandler);
 
+// TODO add "post" endpoint that can make use of additional query parameters, "version" most importantly
+
 export default router;
 
 // Main handler, checks the URL parameter and diverts to the respective handlers

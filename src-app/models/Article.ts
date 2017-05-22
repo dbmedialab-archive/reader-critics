@@ -8,7 +8,7 @@ export default class Article extends BaseModel {
 	private byline: Byline;
 	private tags: Tag[];
 	private title: string;
-	private elements: {type: string, data: string, order: number}[];
+	private elements: { type : string, data : string, order : number }[];
 	private url: string;
 	private modified_identifier: string;
 
@@ -56,4 +56,12 @@ export default class Article extends BaseModel {
 	public attachTag(tag: Tag) {
 		this.tags.push(tag);
 	}
+
+	/**
+	 * OBS! If the receiver intends to change/iterate the returned array, it must clone it!
+	 */
+	public getRawElements() : { type : string, data : string, order : number }[] {
+		return this.elements;
+	}
+
 }

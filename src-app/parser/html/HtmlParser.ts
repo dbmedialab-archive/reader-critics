@@ -25,13 +25,12 @@ export default class HtmlParser extends BaseParser {
 				})
 				.catch(reason => reject(reason));
 			}
-// FIXME Warning: a promise was created in a handler but was not returned from it (where?!)
 			else {
 				// We've already sent the request - carry on
 				return resolve();
 			}
 		}).then(() => {
-			this.parseArticle().then((article) => {
+			return this.parseArticle().then((article) => {
 				return Promise.resolve(article);
 			}).catch(reason => {
 				// Html parsing failed
@@ -96,7 +95,14 @@ export default class HtmlParser extends BaseParser {
 		let el_counter = 1;
 
 		// Add title and cover image (if defined)
-		elements.push({type: 'h1', data: {text: this.parsedArticle.title}, order: el_counter++});
+		elements.push({
+			type: 'h1',
+			data: {
+				text: this.parsedArticle.title,
+			},
+			order: el_counter++
+		});
+
 		if (typeof image !== 'undefined') {
 			elements.push({type: 'img', data: {src: image.attr('content')}, order: el_counter++});
 		}
@@ -136,11 +142,11 @@ export default class HtmlParser extends BaseParser {
 		} else if (el.name === 'a') {
 			return {
 				href: el.attribs.href,
-				text: $el.text(),
+				text: $el.text().trim(),
 			};
 		} else {
 			return {
-				text: $el.text(),
+				text: $el.text().trim(),
 			};
 		}
 	}
