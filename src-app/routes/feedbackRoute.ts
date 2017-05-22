@@ -7,14 +7,15 @@ import {
 import * as app from 'app/util/applib';
 
 import { Article } from 'app/services';
+import { EmptyError } from 'app/util/errors';
 
-import feedbackHandler from './feedback/feedbackHandler';
 import emptyHandler from './feedback/emptyHandler';
+import feedbackHandler from './feedback/feedbackHandler';
+import paramErrorHandler from './feedback/paramErrorHandler';
 
 const log = app.createLog();
 
 // TODOs:
-// - Router mit URL-Parameter einrichten
 // - URL parsen und Hostnamen extrahieren (parser-package? warsch "url", Node API)
 // - Hostnamen mit Datenbank abgleichen und Record des Kunden holen
 // - Styling und Template laden
@@ -33,16 +34,23 @@ router.get('/*', mainHandler);
 
 export default router;
 
-// Main handler, checks for URL parameter and "empty" requests
+// Main handler, checks the URL parameter and diverts to the respective handlers
 
 function mainHandler(requ : Request, resp : Response) : void {
-	const articleURL = Article.parseURL(requ.params[0]);
-	log('Feedback main router to "%s"', articleURL);
+	try {
+		const articleURL = Article.parseURL(requ.params[0]);
+		log('Feedback main router to "%s"', articleURL);
 
-	if (articleURL.length <= 0) {
-		log('Empty request without parameters');
-		return emptyHandler(requ, resp);
+		return feedbackHandler(requ, resp, articleURL);
 	}
-
-	return feedbackHandler(requ, resp, articleURL);
+	catch (error) {
+		if (error instanceof TypeError) {
+			log('URL parameter invalid');
+			return paramErrorHandler(requ, resp);
+		}
+		else if (error instanceof EmptyError) {
+			log('Empty request without parameters');
+			return emptyHandler(requ, resp);
+		}
+	}
 }
