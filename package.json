@@ -15,6 +15,8 @@
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
 		"clean": "rm -rf out/app out/front",
+		"lint": "npm run lint",
+		"lint:ts": "node_modules/.bin/tslint --config tslint.json src-app/**/*.ts src-front/**/*.ts",
 		"test": "./run_test.sh",
 		"start": "./run_apps.sh"
 	},
