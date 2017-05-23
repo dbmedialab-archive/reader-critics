@@ -13,11 +13,11 @@ export default class ArticleContent extends React.Component<any, any> {
 
 	constructor (){
 		super();
-		this.state = { editing : false };
+		this.state = { editing : false, edited: false };
 	}
 
 	public render(){
-		const content = test.map( (props, index) => <ArticleElement key={index} id={index} {...props} state={this.state}/> )
+		const content = test.map( (props, index) => <ArticleElement key={index} id={index} {...props} {...this.state}/> )
  		return <section id="content">
  			{content}
  		</section>

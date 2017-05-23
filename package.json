@@ -55,6 +55,7 @@
 		"sass-loader": "^6.0.5",
 		"serve-favicons": "2.1.5",
 		"style-loader": "^0.17.0",
+		"text-diff": "^1.0.1",
 		"webpack": "^2.5.1",
 		"webpack-dev-server": "^2.4.5"
 	},
