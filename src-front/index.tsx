@@ -4,16 +4,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './scss/app.scss';
 
-import ArticleConent from './section/ArticleContent';
+import ArticleContent from './section/ArticleContent';
 import Header from './section/Header';
 import Footer from './section/Header';
-
-var test = [
-	{ type: "paragraph", text: "foo", typeIndex: 1 },
-	{ type: "paragraph", text: "foo", typeIndex: 2 },
-	{ type: "paragraph", text: "foo", typeIndex: 3 },
-	{ type: "paragraph", text: "foo", typeIndex: 4 }
-];
 
 class DefaultLayout extends React.Component <any, any> {
 
@@ -25,7 +18,7 @@ class DefaultLayout extends React.Component <any, any> {
 	public render() : any {
 		return (<div>
 			<Header />
-			<ArticleConent />
+			<ArticleContent />
 			<Footer />
 		</div>);
 	}
