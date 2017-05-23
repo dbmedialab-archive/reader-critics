@@ -7,6 +7,7 @@ export const appName = 'app';  // As short as possible, please
 const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
 const regexForwardSlashes = /\//g;
+const regexEnvSuffix = /\.(:?live|mock)$/;
 
 /**
  * Dynamically create a log channel based on the caller location.
@@ -35,7 +36,8 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 	const originName = callstack[1].getFileName()
 		.replace(regexFileSuffix, '')  // strip file suffix
 		.replace(regexDeleteIndex, '')  // strip "index"
-		.replace(regexForwardSlashes, ':');  // replace slashes with colons
+		.replace(regexForwardSlashes, ':')  // replace slashes with colons
+		.replace(regexEnvSuffix, '');  // string environment suffixes from service modules etc.
 
 	// Replace "app" directory name with the application name
 	const pos = originName.lastIndexOf(':app:');
