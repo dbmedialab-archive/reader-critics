@@ -1,6 +1,7 @@
 # Distribution paths
 /node_modules/
-/out/
+/out/app/
+/out/front/
 
 # Packages
 *.7z
@@ -17,14 +18,12 @@
 *.sql
 *.sqlite
 
-# Shellscripts
-*.sh
-
 # Custom
 *.1
 *.bak
 *.orig
 *.swp
+tsconfig.json
 yarn.lock
 
 # OS generated files

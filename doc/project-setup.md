@@ -1,26 +1,29 @@
 # Project Setup
 
 #### Dependencies:
-* Node.js 7.7
-* MySQL 5.6
+* Node.js v7.10.0
+* MongoDB ≥ v2.2 (DBRef feature), preferrably ≥ v3.4
 
 #### Setup
 ```
-git clone git@github.com:dbmedialab/Reader-critics.git
-cd api
+git clone git@github.com:dbmedialab/reader-critics.git
 npm install
 ```
-Of course, `yarn` works fine as well!
+`yarn` should work fine as well, but mind that it is currently not officially supported.
 
 #### Database
-Initialise your local MySQL with a database and user:
-```
-CREATE DATABASE IF NOT EXISTS reader_critics_api;
-CREATE USER 'readercritics'@'localhost' IDENTIFIED BY "secret%123";
-GRANT ALL ON reader_critics_api.* TO 'readercritics'@'localhost';
-```
+The database initialisation will occur automatically upon first start of the main application,
+if the configured database is empty at that moment. Bootstrap data for your own specific
+installation will be applied, if found.
+
+<< Update documentation with instructions as soon as this is implemented >>
 
 #### Run
 ```
 npm run build && node run start
 ```
+This will build the app (TypeScript compilation) and frontend bundle (again TypeScript, then
+Webpack). If all goes well, the main app will start and greet you with some output on the terminal.
+
+The network port on which the app is listening will be printed out as soon as the initialisation
+is finished and the main HTTP server is up.

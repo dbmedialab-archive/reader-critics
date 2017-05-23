@@ -5,14 +5,14 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // Loaders
 
-const ldrBabel = {
+const loaderBabel = {
 	loader: 'babel-loader',
 	options: {
-		presets: ['es2015', 'react'],  // 'stage-1'
+		presets: ['es2015', 'react'],
 	},
 };
 
-const ldrTypeScript = {
+const loaderTypeScript = {
 	loader: 'awesome-typescript-loader',
 	options: {
 		configFileName: __dirname + '/tsconfig-front.json',
@@ -20,8 +20,8 @@ const ldrTypeScript = {
 };
 
 const extractSass = new ExtractTextPlugin({
-    filename: "[name].css",
-    disable: process.env.NODE_ENV === "development"
+	filename: "[name].css",
+	disable: !isProduction
 });
 
 // Main config, see other (sometimes environment depending) settings below
@@ -52,22 +52,22 @@ const webpackConfig = {
 				test: /\.tsx?$/,
 				// Mind that these loaders get executed in right-to-left order:
 				use: [
-					ldrBabel,
-					ldrTypeScript,
+					loaderBabel,
+					loaderTypeScript,
 				],
 			},
 			{
-        test: /\.scss$/,
-        use: extractSass.extract({
-          use: [{
-	            loader: "css-loader"
-	          }, {
-	            loader: "sass-loader"
-          }],
-          // use style-loader in development
-          fallback: "style-loader"
-        })
-      }
+				test: /\.scss$/,
+				use: extractSass.extract({
+					use: [{
+							loader: "css-loader"
+						}, {
+							loader: "sass-loader"
+					}],
+					// use style-loader in development
+					fallback: "style-loader"
+				})
+			}
 		],
 	},
 
@@ -97,7 +97,6 @@ if (!isProduction) {
 		loader: 'source-map-loader'
 	}); */
 }
-
 
 // Production settings
 if (isProduction) {

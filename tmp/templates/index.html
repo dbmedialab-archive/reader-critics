@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  This is a temporary template to test the doT engine. The final templates are not
+  intended to be files on the storage but will rather be loaded from the database.
+-->
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Leserkritikkk</title>
+
+		{{~it.styles :stylePath}}
+		<link rel="stylesheet" href="{{=stylePath}}"/>
+		{{~}}
+	</head>
+	<body>
+		<script>
+			var articleURL = '{{=it.articleURL}}';
+		</script>
+
+		<div id="app"></div>
+
+		{{~it.scripts :scriptPath}}
+		<script src="{{=scriptPath}}"></script>
+		{{~}}
+
+		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+		<!-- TODO implement "defer" attribute in template code -->
+	</body>
+</html>
