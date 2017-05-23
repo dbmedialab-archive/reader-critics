@@ -1,5 +1,5 @@
---compilers js:babel-core/register
---ui mocha-typescript
 --require source-map-support/register
+--require ts-node/register
+--require tsconfig-paths/register
 --recursive
-test/base/**/*.test.js
+test/base/**/*.test.ts

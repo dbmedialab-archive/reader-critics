@@ -4,53 +4,61 @@ import {
 	Router
 } from 'express';
 
-import { isEmpty } from 'lodash';
+import * as app from 'app/util/applib';
 
-import HtmlParser from 'parser/html/HtmlParser';
+import ArticleURL from 'app/base/ArticleURL';
 
-import * as app from 'util/applib';
-
-//import feedbackHandler from './feedback/feedbackHandler';
-//import emptyHandler from './feedback/emptyHandler';
+import { Article } from 'app/services';
+import { EmptyError } from 'app/util/errors';
 
 const log = app.createLog();
 
-// TODOs:
-// - Router mit URL-Parameter einrichten
-// - URL parsen und Hostnamen extrahieren (parser-package? warsch "url", Node API)
-// - Hostnamen mit Datenbank abgleichen und Record des Kunden holen
-// - Styling und Template laden
-// - Templatecache für bereits geladene/kompilierte Frontends
-
 // Prepare and export Express router
 
-const router = Router();
+const router : Router = Router();
 
-// The asterisk in the route means that anything after the / slash will be picked up by Express and
-// exposed to the handler in Request.params[0]
-// We use this to grab the article URL which is to be processed and that can be appended to this
-// route without any further encoding. Most browsers are capable of that, also optional decoding
-// will happen when an encoded URL is detected.
+// TODO in order to get "version" into this endpoint, change to contain two (or more) query parameters
 router.get('/get/*', getArticleHandler);
 
 export default router;
 
-// Main handler, checks for URL parameter and "empty" requests
+// Main handler, checks for URL parameter and invalid requests
 
-function getArticleHandler(requ : Request, resp : Response) {
+function getArticleHandler(requ : Request, resp : Response) : void {
+	// TODO check for mandatory query parameters: "url" and "version"
+	try {
+		const articleURL = new ArticleURL(requ.params[0]);
+		log('Requesting article at', articleURL.href);
+
+		Article.getArticle(articleURL)
+		.then(article => resp.json(article).status(200).end())
+		.catch(error => resp.json(error).status(500).end());
+		// TODO .catch with generic error response
+	}
+	catch (error) {
+		const failCode = 400;  // "Bad Request" in any case
+
+		if (error instanceof EmptyError) {
+			resp.json({
+				status: 'Mandatory URL parameter is missing',
+			}).status(failCode).end();  // "Bad Request"
+		}
+		else {
+			resp.json({
+				status: 'URL parameter invalid',
+			}).status(failCode).end();
+		}
+	}
+}
+
+/*
 	const articleURL = requ.params[0];
 	log('Fetch article "%s"', articleURL);
 
-	const htmlParser = new HtmlParser(articleURL);
-
-	htmlParser.getArticle()
-	.then(article => resp.send(article))  // TODO api okResponse, vgl woodwing middleware
-	.catch(reason => resp.status(500).send(reason));
-
+*/
 	// if (articleURL.length <= 0) {
 	// 	log('Empty request without parameters');
 	// 	return emptyHandler(requ, resp);
 	// }
 
 	// return feedbackHandler(requ, resp, articleURL);
-}

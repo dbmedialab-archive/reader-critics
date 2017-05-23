@@ -4,7 +4,7 @@ import {
 	Router
 } from 'express';
 
-import * as app from 'util/applib';
+import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
@@ -17,10 +17,11 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router = Router();
-export default router;
+const router : Router = Router();
 
 router.get('/*', homeHandler);
+
+export default router;
 
 // Main handler, checks for URL parameter and "empty" requests
 

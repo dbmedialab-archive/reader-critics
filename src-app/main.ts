@@ -1,28 +1,29 @@
 import 'app-module-path/register';
 
 import * as colors from 'ansicolors';
-import * as bluebird from 'bluebird';
+import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
 import * as util from 'util';
 
-import axios from 'axios';
+import * as app from './util/applib';
 
 import config from './config';
-import * as app from 'util/applib';
+import logRequest from './util/logRequest';
 
-import logRequest from 'util/logRequest';
+import articleRoute from './routes/articleRoute';
+import faviconRoute from './routes/faviconRoute';
+import feedbackRoute from './routes/feedbackRoute';
+import homeRoute from './routes/homeRoute';
+import staticRoute from './routes/staticRoute';
 
-import articleRoute from 'routes/articleRoute';
-import faviconRoute from 'routes/faviconRoute';
-import feedbackRoute from 'routes/feedbackRoute';
-import homeRoute from 'routes/homeRoute';
-import staticRoute from 'routes/staticRoute';
+import './env';
 
-global.Promise = bluebird;
+// global.Promise = bluebird;
 
 const log = app.createLog();
+
 log('Starting Reader Critics webservice');
 log('App located in %s', colors.brightWhite(app.rootPath));
 
@@ -57,7 +58,7 @@ function startHTTP() {
 	return new Promise((resolve) => {
 		httpServer.listen(httpPort, () => {
 			const p = colors.brightGreen(httpPort);
-			const m = colors.brightRed(app.env);
+			const m = colors.brightCyan(app.env);
 			log(`Reader Critics webservice running on port ${p} in ${m} mode`);
 			return resolve();
 		});

@@ -9,14 +9,14 @@
 		"node": "7.10.0"
 	},
 	"scripts": {
+		"build": "npm run clean && npm run build:app && npm run build:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
 		"watch:app": "node_modules/.bin/tsc --project tsconfig-app.json --watch",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
-		"clean": "rm -rf out/*",
-		"eslint": "./run_eslint",
-		"test": "./run_test",
-		"start": "./run_app"
+		"clean": "rm -rf out/app out/front",
+		"test": "./run_test.sh",
+		"start": "./run_apps.sh"
 	},
 	"babel": {
 		"presets": [
@@ -37,7 +37,7 @@
 		"callsite": "1.0.0",
 		"cheerio": "0.22.0",
 		"convict": "3.0.0",
-		"debug": "2.x",
+		"debug": "2.6.8",
 		"dot": "1.1.1",
 		"express": "4.x",
 		"find-root": "1.0.0",
@@ -45,6 +45,7 @@
 		"lodash": "4.17.4",
 		"moment": "2.18.1",
 		"node-read": "0.1.7",
+		"print-env": "0.1.0",
 		"query-string": "4.3.4",
 		"react": "15.5.4",
 		"react-dom": "15.5.4",
@@ -79,8 +80,9 @@
 		"gulp-typescript": "3.1.6",
 		"gulp-watch": "4.3.11",
 		"mocha": "3.3.0",
-		"mocha-typescript": "1.1.2",
 		"source-map-support": "0.4.15",
+		"ts-node": "3.0.4",
+		"tsconfig-paths": "2.1.2",
 		"tslint": "5.1.0",
 		"typescript": "2.2.2"
 	}

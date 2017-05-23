@@ -1,6 +1,7 @@
 # Distribution paths
 /node_modules/
-/out/
+/out/app/
+/out/front/
 
 # Packages
 *.7z
@@ -16,9 +17,6 @@
 *.log
 *.sql
 *.sqlite
-
-# Shellscripts
-*.sh
 
 # Custom
 *.1
