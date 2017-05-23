@@ -17,7 +17,8 @@ const log = app.createLog();
 
 const router : Router = Router();
 
-// TODO in order to get "version" into this endpoint, change to contain two (or more) query parameters
+// TODO in order to get "version" into this endpoint,
+// change to contain two (or more) query parameters
 router.get('/get/*', getArticleHandler);
 
 export default router;
