@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"license": "UNLICENSED",
 	"private": true,
 	"description": "Kildekritikk (Reader Critics)",
@@ -9,13 +9,15 @@
 		"node": "7.10.0"
 	},
 	"scripts": {
+		"build": "npm run clean && npm run build:app && npm run build:front",
+		"build:dev": "npm run build:app && npm run watch:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
+		"watch:app": "node_modules/.bin/tsc --project tsconfig-app.json --watch",
 		"build:front": "webpack --config webpack-front.js",
-		"build:dev": "npm run build:front -- --watch",
-		"clean": "rm -rf out/*",
-		"eslint": "./run_eslint",
-		"test": "./run_test",
-		"start": "node out/app/main"
+		"watch:front": "webpack --config webpack-front.js --watch",
+		"clean": "rm -rf out/app out/front",
+		"test": "./run_test.sh",
+		"start": "./run_apps.sh"
 	},
 	"babel": {
 		"presets": [
@@ -29,35 +31,35 @@
 		"Simen Berge"
 	],
 	"dependencies": {
-		"@types/material-ui": "^0.17.7",
-		"@types/react-tap-event-plugin": "^0.0.30",
 		"ansicolors": "0.3.2",
+		"app": "^0.1.0",
+		"app-module-path": "^2.2.0",
 		"axios": "0.16.1",
 		"bluebird": "3.5.0",
 		"callsite": "1.0.0",
 		"cheerio": "0.22.0",
 		"convict": "3.0.0",
-		"css-loader": "^0.28.1",
-		"debug": "2.x",
+		"css-loader": "0.28.1",
+		"debug": "2.6.8",
 		"dot": "1.1.1",
-		"express": "4.x",
-		"extract-text-webpack-plugin": "^2.1.0",
+		"express": "4.15.3",
+		"extract-text-webpack-plugin": "2.1.0",
 		"find-root": "1.0.0",
 		"json5": "0.5.1",
 		"lodash": "4.17.4",
-		"material-ui": "^0.18.1",
 		"moment": "2.18.1",
 		"node-read": "0.1.7",
-		"node-sass": "^4.5.2",
+		"node-sass": "4.5.2",
+		"print-env": "0.1.0",
 		"query-string": "4.3.4",
 		"react": "15.5.4",
 		"react-dom": "15.5.4",
-		"sass-loader": "^6.0.5",
+		"sass-loader": "6.0.5",
 		"serve-favicons": "2.1.5",
-		"style-loader": "^0.17.0",
+		"style-loader": "0.17.0",
 		"text-diff": "^1.0.1",
-		"webpack": "^2.5.1",
-		"webpack-dev-server": "^2.4.5"
+		"webpack": "2.5.1",
+		"webpack-dev-server": "2.4.5"
 	},
 	"devDependencies": {
 		"@types/bluebird": "3.5.3",
@@ -87,8 +89,9 @@
 		"gulp-typescript": "3.1.6",
 		"gulp-watch": "4.3.11",
 		"mocha": "3.3.0",
-		"mocha-typescript": "1.1.2",
 		"source-map-support": "0.4.15",
+		"ts-node": "3.0.4",
+		"tsconfig-paths": "2.1.2",
 		"tslint": "5.1.0",
 		"typescript": "2.2.2"
 	}

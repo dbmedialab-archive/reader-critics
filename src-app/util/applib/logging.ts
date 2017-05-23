@@ -1,13 +1,8 @@
 import * as callsite from 'callsite';
 import * as debug from 'debug';
-import * as findRoot from 'find-root';
-import * as path from 'path';
 
 /** First component of debug's logger */
 export const appName = 'app';  // As short as possible, please
-
-/** The filesystem root of the whole project */
-export const rootPath = findRoot(path.dirname(require.main.filename));
 
 const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
@@ -56,3 +51,4 @@ const isCallTrace = (callstack: callsite.CallSite[]) : boolean => (
 	&& callstack.length > 1
 	&& callstack[1].getFunctionName() === null
 );
+

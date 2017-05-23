@@ -4,9 +4,9 @@ import * as Diff from 'text-diff'
 
 
 interface ArticleProp {
-	id: number;
+	index: number;
 	type : string;
-	typeIndex : number;
+	order : number;
 	text : string;
 	comment: string;
 	editing: boolean;
@@ -19,7 +19,6 @@ interface ArticleState {
 	origionalText: string;
 	edited: boolean;
 	link: Array<string>;
-	edited: boolean;
 }
 
 export default class ArticleElement extends React.Component<ArticleProp, ArticleState> {
@@ -52,7 +51,7 @@ export default class ArticleElement extends React.Component<ArticleProp, Article
 				<header>
 					{content}
 				</header>
-				<ArticleEditForm {...this.state} link={this.state.link} comment={this.state.comment} onCancel={this.CancelInput.bind(this)} onSave={this.SaveData.bind(this)} type={this.props.type} />
+				<ArticleEditForm id={this.props.index} {...this.state} link={this.state.link} comment={this.state.comment} onCancel={this.CancelInput.bind(this)} onSave={this.SaveData.bind(this)} type={this.props.type} />
 				<footer>
 					<a className="button reset" onClick={ this.RestoreOrigionalContent.bind(this) }>Slett</a>
 					<a className="button edit">Rediger</a>
@@ -69,7 +68,7 @@ export default class ArticleElement extends React.Component<ArticleProp, Article
 
 	private SubtitleElement() {
 		return <div>
-				<label>Mellomtittel {this.props.typeIndex}</label>
+				<label>Mellomtittel {this.props.order}</label>
 				<h3 dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
 			</div>;
 	}
@@ -83,7 +82,7 @@ export default class ArticleElement extends React.Component<ArticleProp, Article
 
 	private ParagraphElement() {
 		return <div>
-				<label>Avsnitt {this.props.typeIndex}</label>
+				<label>Avsnitt {this.props.order}</label>
 				<p>{this.state.text}</p>
 			</div>;
 	}

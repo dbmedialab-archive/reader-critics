@@ -63,7 +63,7 @@ export default class ArticleEditForm extends React.Component<ArticleProp, any> {
 		this.setState({ link: [ ...link.slice( 0, index ), ...link.slice( index + 1 )] })
 	}
 
-	private onCancel(e){
+	private onCancel(e:any){
 		e.stopPropagation()
 		this.setState({ text: this.props.text,  comment: this.props.comment,  link: this.props.link })
 		commentArea.value = this.props.comment
@@ -71,13 +71,13 @@ export default class ArticleEditForm extends React.Component<ArticleProp, any> {
 		this.props.onCancel()
 	}
 
-	private onSave(e){
+	private onSave(e:any){
 		e.stopPropagation()
 		if( linkInput.value ) this.AddLinkItem()
 		this.props.onSave( this.state )
 	}
 
-	private AddLinkItem( e:any ){
+	private AddLinkItem( e?:any ){
 		if( e ) e.preventDefault()
 		if( ! linkInput.value ) return
 		this.setState({link:[...this.state.link, linkInput.value]})

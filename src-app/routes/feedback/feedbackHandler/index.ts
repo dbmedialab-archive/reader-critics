@@ -8,25 +8,56 @@ import {
 	Response,
 } from 'express';
 
-import * as api from '../../../apilib';  // Oh a root import plugin would be nice ...
+import * as app from 'app/util/applib';
 
-const log = api.createLog();
+import ArticleURL from 'app/base/ArticleURL';
 
-//const indexTemplate = doT.template("<h1>Here is a sample template <span>{{=it.foo}}</span> how awesome is that!</h1>");
+const log = app.createLog();
 
-export default function (requ : Request, resp : Response, articleURL : string) {
+const mainTemplate = createMainTemplate();
+
+const styles = [
+	'https://fonts.googleapis.com/icon?family=Material+Icons',
+	'https://code.getmdl.io/1.3.0/material.indigo-pink.min.css',
+	'/static/styles/feedback.css',
+];
+
+const scripts = [
+	'/static/react/react.js',
+	'/static/react/react-dom.js',
+	'/static/app.bundle.js',
+];
+
+// Respond with initial HTML, process template for feedback form page
+
+export default function (requ : Request, resp : Response, articleURL : ArticleURL) {
 	log('feedback endpoint');
-	log(`[${articleURL}]`);
+	log(`[${articleURL.href}]`);
 
 	// 2. Use template function as many times as you like
 	//const resultText = indexTemplate({foo: articleURL});
 	//resp.json({ and_now: resultText }).status(200).end();
 
-	const indexPath = path.join(api.rootPath, 'assets/index.html');
-	const indexHTML = readFileSync(indexPath);
-
 	resp.set('Content-Type', 'text/html');
-	resp.send(indexHTML);
+	resp.send(mainTemplate({
+		articleURL: articleURL.href,
+		styles,
+		scripts,
+	}));
 
 	resp.status(200).end();
+}
+
+// Load main template
+// TODO Process template on demand, based on article URL / customer website / domain
+// Later: caching of already processed templates, maybe preload templates based on
+// configured websites/domains.
+
+function createMainTemplate() {
+	// Currently loads the template from a static file.
+	// The template will later be determined dynamically based on website url / domain.
+	const templatePath = path.join(app.rootPath, 'tmp/templates/index.html');
+	const templateRaw = readFileSync(templatePath);
+
+	return doT.template(templateRaw);
 }
