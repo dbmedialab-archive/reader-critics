@@ -12,8 +12,6 @@ import * as app from 'app/util/applib';
 
 const env : string = app.env === 'test' ? 'mock' : 'live';
 
-console.log('Service factory loads ' + env + ' stuff');
-
 // Declare service exports
 
 export const Article : ArticleService = require(`./article/ArticleService.${env}`);
