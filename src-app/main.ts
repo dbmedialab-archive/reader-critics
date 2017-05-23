@@ -1,7 +1,7 @@
 import 'app-module-path/register';
 
 import * as colors from 'ansicolors';
-import * as bluebird from 'bluebird';
+import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
@@ -20,7 +20,7 @@ import staticRoute from './routes/staticRoute';
 
 import './env';
 
-global.Promise = bluebird;
+// global.Promise = bluebird;
 
 const log = app.createLog();
 
