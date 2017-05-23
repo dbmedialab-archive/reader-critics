@@ -33,7 +33,7 @@
 		"no-unused-variable": {
 			"severity": "warning"
 		},
-		"ordered-imports": true,
+		"ordered-imports": false,
 		"quotemark": [ true, "single" ],
 		"prefer-const": true,
 		"prefer-for-of": {
