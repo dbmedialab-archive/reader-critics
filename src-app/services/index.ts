@@ -1,3 +1,4 @@
+/* tslint:disable:no-require-imports */
 declare function require(arg : string) : any;
 
 // Import service interfaces

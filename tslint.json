@@ -9,7 +9,6 @@
 		"no-shadowed-variable": true,
 		"no-string-throw": true,
 		"no-unnecessary-initializer": true,
-		"no-use-before-declare": true,
 		"ordered-imports": true,
 		"quotemark": [ true, "single" ],
 		"prefer-const": true,
