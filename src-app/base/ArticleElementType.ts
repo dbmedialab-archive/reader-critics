@@ -3,7 +3,7 @@ enum ArticleElementType {
 	lead,
 	subtitle,
 	paragraph,
-	figure
+	figure,
 }
 
 export default ArticleElementType;
