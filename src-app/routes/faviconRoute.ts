@@ -1,7 +1,5 @@
 import * as favicon from 'serve-favicons';
 
-import * as app from 'app/util/applib';
-
 export default favicon({
 	'/favicon.ico': new Buffer(20), // app.rootPath + '/assets/favicon.ico',
 	'/favicon-152.png': new Buffer(20), // app.rootPath + '/assets/favicon-152.png',
