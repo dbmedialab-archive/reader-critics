@@ -12,3 +12,7 @@ const findEnvironment = () => {
 };
 
 export const env : string = findEnvironment();
+
+export const isProduction : boolean = process.env.NODE_ENV === 'production';
+export const isDevelop : boolean = process.env.NODE_ENV === 'development';
+export const isTest : boolean = process.env.NODE_ENV === 'test';

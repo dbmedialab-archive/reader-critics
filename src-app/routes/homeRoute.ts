@@ -19,7 +19,8 @@ const log = app.createLog();
 
 const router : Router = Router();
 
-router.get('/*', homeHandler);
+router.get('/', homeHandler);
+router.get('/*', notFoundHandler);
 
 export default router;
 
@@ -30,4 +31,11 @@ function homeHandler(requ : Request, resp : Response) {
 	resp.json({
 		status: 'show the project homepage here',
 	}).status(200).end();
+}
+
+// Everything else
+
+function notFoundHandler(requ : Request, resp : Response) {
+	log('404 not found');
+	resp.status(404).end('not found');
 }

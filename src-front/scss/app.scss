@@ -1,0 +1,230 @@
+// ASSETS
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+
+// COLORS
+$color-background:   #fff;
+$color-text:         #222;
+$color-success:      rgba(89,126,151,1);
+$color-warning:      rgba(185,79,112,1);
+$color-notification: rgba(255,250,217,1);
+
+// MATERIAR UI PAPER PRINCIPLES
+$shadow-level-1: 0 1px 2px rgba(0, 0, 0, 0.2);
+$shadow-level-2: 0 2px 3px rgba(0, 0, 0, 0.3);
+$shadow-level-3: 0 3px 5px rgba(0, 0, 0, 0.5);
+
+@mixin material-icon {
+	font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  text-transform: none;
+}
+
+// ZEROPING CONTENT
+html, body, * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+// ANIMATIONS
+@keyframes appear {
+	from {
+		opacity: 0;
+		position: relative;
+		top: -5px;
+	}
+	to {
+		opacity: 1;
+		position: relative;
+		top: 0;
+	}
+}
+$speed-appear: .5s;
+$speed-disappear: .3s;
+@mixin appear {
+	animation: appear $speed-appear;
+}
+@mixin disappear {
+	animation: appear $speed-disappear;
+}
+
+// AWAY WE GO!
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+header {
+	height: 2rem;
+  box-shadow: $shadow-level-2;
+  h1 {
+  	background: url("/static/images/logo/leserkritikk-logo-color.svg")
+  }
+}
+
+ins {
+	color: $color-success;
+	text-decoration: none;
+}
+del {
+	color: $color-warning;
+}
+
+// BUTTON
+.button {
+	text-transform: uppercase;
+	font-size: .8rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: .5rem;
+	letter-spacing: .1rem;
+
+	&:before {
+		margin-right: .3rem;
+		@include material-icon;
+		display: inline-block;
+		border-radius: 2rem;
+		border-width: 1px;
+		border-style: solid;
+		position: relative;
+  	top: .15rem;
+  	padding: .5rem;
+  }
+
+	// BUTTON VARIATIONS
+	&.cancel {
+		&:before {
+			content: "close";
+			border-color: $color-warning;
+    }
+		color: $color-warning;
+	}
+	&.save {
+		&:before {
+			content: "done";
+			border-color: $color-success;
+		}
+		color: $color-success;
+	}
+	&.edit {
+		&:before {
+			content: "edit";
+			border-color: $color-success;
+		}
+		color: $color-success;
+	}
+	&.reset {
+		&:before {
+			content: "delete";
+			border-color: $color-warning;
+		}
+		color: $color-warning;
+	}
+
+	&.remove {
+
+	}
+}
+
+// MAIN CONTENT
+.card {
+  box-shadow: $shadow-level-2;
+  padding: 1rem;
+  margin: 0 auto 1rem;
+  max-width: 40rem;
+  box-sizing: border-box;
+
+  h1 {
+  	font-size: 1.5rem;
+  	margin: 0 0 .5rem;
+  }
+
+  p {
+  	margin-bottom: .5rem;
+  }
+
+	fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+
+  textarea,
+  input[type=text] {
+  	width: 100%;
+  	border: 1px solid $color-success;
+  	border-radius: 5px;
+  	padding: .5rem;
+		font-family: 'Roboto', sans-serif;
+		font-size: .9rem;
+		margin-bottom: 1rem;
+  }
+
+  footer {
+		text-align: center;
+		margin: 1rem 0;
+  }
+
+  fieldset {
+  	&.actions {
+  		text-align: center;
+  		margin: 1rem 0;
+  	}
+  }
+
+  label {
+  	text-transform: uppercase;
+  	color: $color-success;
+  	font-size: .8rem;
+  }
+
+	form {
+		display: none;
+	}
+
+	header {
+		height: auto;
+		box-shadow: none;
+	}
+	ol {
+		li {
+			font-size: .9rem;
+			list-style: none;
+			&:before {
+				margin-right: .3rem;
+				font-size: 1.5rem;
+				@include material-icon;
+				display: inline-block;
+				content: "close";
+				color: $color-warning;
+				position: relative;
+	    	top: .5rem;
+	    	cursor: pointer;
+			}
+			&:last-child {
+				margin-bottom: 1rem;
+			}
+		}
+	}
+
+	//
+  &.editing {
+		form {
+			display: block;
+			@include appear;
+		}
+		footer {
+			display: none;
+		}
+	}
+
+	&:not(.edited) {
+		.button.reset {
+			display: none;
+		}
+	}
+}

@@ -17,13 +17,15 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'feedback.css',
+	'https://fonts.googleapis.com/icon?family=Material+Icons',
+	'https://code.getmdl.io/1.3.0/material.indigo-pink.min.css',
+	'/static/styles/feedback.css',
 ];
 
 const scripts = [
-	'react/react.js',
-	'react/react-dom.js',
-	'bundle.js',
+	'/static/react/react.js',
+	'/static/react/react-dom.js',
+	'/static/app.bundle.js',
 ];
 
 // Respond with initial HTML, process template for feedback form page
