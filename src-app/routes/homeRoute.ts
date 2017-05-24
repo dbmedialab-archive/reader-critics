@@ -17,11 +17,12 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router : Router = Router();
+const homeRoute : Router = Router();
 
-router.get('/*', homeHandler);
+homeRoute.get('/', homeHandler);
+homeRoute.get('/*', notFoundHandler);
 
-export default router;
+export default homeRoute;
 
 // Main handler, checks for URL parameter and "empty" requests
 
@@ -30,4 +31,11 @@ function homeHandler(requ : Request, resp : Response) {
 	resp.json({
 		status: 'show the project homepage here',
 	}).status(200).end();
+}
+
+// Everything else
+
+function notFoundHandler(requ : Request, resp : Response) {
+	log('404 not found');
+	resp.status(404).end('not found');
 }
