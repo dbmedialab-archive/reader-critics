@@ -4,7 +4,7 @@ const Schema = {
 			'name': 'string',
 		},
 		'article': {
-			'modified_identifier': 'string',
+			'modifiedIdentifier': 'string',
 			'title': 'string',
 			'url': 'string',
 			'updated_at': 'number',

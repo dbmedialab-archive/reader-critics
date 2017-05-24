@@ -1,7 +1,7 @@
 import {
 	Request,
 	Response,
-	Router
+	Router,
 } from 'express';
 
 import * as app from 'app/util/applib';
