@@ -1,30 +1,39 @@
 const webpack = require('webpack');
 
 const isProduction = process.env.NODE_ENV === 'production';
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // Loaders
 
-const ldrBabel = {
+const loaderBabel = {
 	loader: 'babel-loader',
 	options: {
 		presets: ['es2015', 'react'],
 	},
 };
 
-const ldrTypeScript = {
+const loaderTypeScript = {
 	loader: 'awesome-typescript-loader',
 	options: {
 		configFileName: __dirname + '/tsconfig-front.json',
 	}
 };
 
+const extractSass = new ExtractTextPlugin({
+	filename: "[name].css",
+	disable: !isProduction
+});
+
 // Main config, see other (sometimes environment depending) settings below
 
 const webpackConfig = {
-	entry: __dirname + '/src-front/index.tsx',
+	entry: {
+		app : __dirname + '/src-front/index.tsx'
+	},
 	output: {
-		filename: 'bundle.js',
-		path: __dirname + '/out/front'
+		filename: '[name].bundle.js',
+		path: __dirname + '/out/front',
+		publicPath: '/static'
 	},
 
 	resolve: {
@@ -43,12 +52,29 @@ const webpackConfig = {
 				test: /\.tsx?$/,
 				// Mind that these loaders get executed in right-to-left order:
 				use: [
-					ldrBabel,
-					ldrTypeScript,
+					loaderBabel,
+					loaderTypeScript,
 				],
 			},
+			{
+				test: /\.scss$/,
+				use: extractSass.extract({
+					use: [{
+							loader: "css-loader?-url"
+						}, {
+							loader: "sass-loader"
+					}],
+					// use style-loader in development
+					fallback: "style-loader"
+				})
+			}
 		],
 	},
+
+	plugins: [
+		new webpack.optimize.OccurrenceOrderPlugin(),
+		extractSass
+	],
 
 	// When importing a module whose path matches one of the following, just
 	// assume a corresponding global variable exists and use that instead.
@@ -72,18 +98,10 @@ if (!isProduction) {
 	}); */
 }
 
-// Plugins
-
-const plugins = [
-	new webpack.optimize.OccurrenceOrderPlugin(),
-];
-
+// Production settings
 if (isProduction) {
-	plugins.push(new webpack.optimize.UglifyJsPlugin());
+	webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
 }
 
-webpackConfig.plugins = plugins;
-
 // All good
-
 module.exports = webpackConfig;

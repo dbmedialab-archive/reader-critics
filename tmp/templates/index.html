@@ -6,10 +6,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8" />
-		<title>Hello React!</title>
+		<title>Leserkritikkk</title>
 
 		{{~it.styles :stylePath}}
-		<link rel="stylesheet" href="/static/styles/{{=stylePath}}"/>
+		<link rel="stylesheet" href="{{=stylePath}}"/>
 		{{~}}
 	</head>
 	<body>
@@ -20,7 +20,10 @@
 		<div id="app"></div>
 
 		{{~it.scripts :scriptPath}}
-		<script src="/static/{{=scriptPath}}"></script>
+		<script src="{{=scriptPath}}"></script>
 		{{~}}
+
+		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+		<!-- TODO implement "defer" attribute in template code -->
 	</body>
 </html>
