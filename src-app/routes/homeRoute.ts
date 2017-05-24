@@ -17,12 +17,12 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router : Router = Router();
+const homeRoute : Router = Router();
 
-router.get('/', homeHandler);
-router.get('/*', notFoundHandler);
+homeRoute.get('/', homeHandler);
+homeRoute.get('/*', notFoundHandler);
 
-export default router;
+export default homeRoute;
 
 // Main handler, checks for URL parameter and "empty" requests
 

@@ -12,13 +12,13 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router : Router = Router();
+const apiRoute : Router = Router();
 
-router.get('/article/*', articleHandler);
+apiRoute.get('/article/*', articleHandler);
 
-router.get('/*', defaultHandler);
+apiRoute.get('/*', defaultHandler);
 
-export default router;
+export default apiRoute;
 
 function defaultHandler(requ : Request, resp : Response) : void {
 	log('Default API router');
