@@ -3,7 +3,7 @@ import * as React from 'react';
 import {
 	default as axios,
 	AxiosResponse,
-} from 'axios'
+} from 'axios';
 
 import FeedbackFormContainer from './FeedbackFormContainer';
 
@@ -29,13 +29,14 @@ export default class FeedbackDefaultLayout extends React.Component <LayoutProps,
 	}
 
 	componentDidMount() {
-		var _this = this;
-		this.articleRequest = axios.get(`/article/get/${this.props.articleURL}`);
+		const encodedURL = encodeURIComponent(this.props.articleURL);
+
+		this.articleRequest = axios.get(`/api/article/?url=${encodedURL}`);
 		this.articleRequest.then(function(resp : AxiosResponse) {
 			console.dir(resp);
-			/*_this.setState({
-				jobs: resp.data.jobs
-			});*/
+			// _this.setState({
+			// 	jobs: resp.data.jobs
+			// });
 		});
 	}
 
@@ -45,8 +46,8 @@ export default class FeedbackDefaultLayout extends React.Component <LayoutProps,
 
 	render() {
 		return (
-			<div id="page-container">
-				<div id="main-container">
+			<div id='page-container'>
+				<div id='main-container'>
 					<p>This is an example layout. Place feedback form here:</p>
 					<FeedbackFormContainer/>
 					<p>React pwnz!</p>

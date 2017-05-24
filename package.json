@@ -4,7 +4,7 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"description": "Kildekritikk (Reader Critics)",
-	"main": "out/app/main.js",
+	"main": "out/start.js",
 	"engines": {
 		"node": "7.10.0"
 	},
@@ -38,6 +38,7 @@
 		"app-module-path": "2.2.0",
 		"axios": "0.16.1",
 		"bluebird": "3.5.0",
+		"body-parser": "^1.17.2",
 		"callsite": "1.0.0",
 		"cheerio": "0.22.0",
 		"convict": "3.0.0",
@@ -64,6 +65,7 @@
 	},
 	"devDependencies": {
 		"@types/bluebird": "3.5.4",
+		"@types/body-parser": "^1.16.3",
 		"@types/callsite": "1.0.30",
 		"@types/chai": "3.5.2",
 		"@types/core-js": "0.9.41",
