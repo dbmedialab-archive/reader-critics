@@ -32,7 +32,6 @@
 	],
 	"dependencies": {
 		"ansicolors": "0.3.2",
-		"app": "^0.1.0",
 		"app-module-path": "^2.2.0",
 		"axios": "0.16.1",
 		"bluebird": "3.5.0",
@@ -58,8 +57,7 @@
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.17.0",
 		"text-diff": "^1.0.1",
-		"webpack": "2.5.1",
-		"webpack-dev-server": "2.4.5"
+		"webpack": "2.5.1"
 	},
 	"devDependencies": {
 		"@types/bluebird": "3.5.3",
@@ -93,6 +91,7 @@
 		"ts-node": "3.0.4",
 		"tsconfig-paths": "2.1.2",
 		"tslint": "5.1.0",
-		"typescript": "2.2.2"
+		"typescript": "2.2.2",
+		"webpack-dev-server": "2.4.5"
 	}
 }
