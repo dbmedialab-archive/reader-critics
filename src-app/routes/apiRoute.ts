@@ -23,7 +23,7 @@ apiRoute.use(bodyParser.json({
 	strict: true,
 }));
 
-apiRoute.get('/article/:url', articleHandler);
+apiRoute.get('/article', articleHandler);
 apiRoute.put('/feedback', feedbackPostHandler);
 
 apiRoute.get('/*', defaultHandler);
@@ -32,5 +32,5 @@ export default apiRoute;
 
 function defaultHandler(requ : Request, resp : Response) : void {
 	log('Default API router');
-	resp.status(404).end('Unknown API endpoint');
+	resp.status(404).end('Unknown API endpoint\n');
 }

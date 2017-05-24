@@ -8,38 +8,37 @@ import ArticleURL from 'app/base/ArticleURL';
 import { Article } from 'app/services';
 import { EmptyError } from 'app/util/errors';
 
+import {
+	okResponse,
+	errorResponse,
+	ResponseOptions,
+} from './apiResponse';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-// TODO in order to get "version" into this endpoint,
-// change route to contain two (or more) query parameters
-
 // Main handler, checks for URL parameter and invalid requests
-// getArticleHandler
+
 export default function(requ : Request, resp : Response) : void {
-	// TODO check for mandatory query parameters: "url" and "version"
 	try {
-		const articleURL = new ArticleURL(requ.params[0]);
+		const articleURL = new ArticleURL(requ.query.url);
 		log('Requesting article at', articleURL.href);
 
 		Article.getArticle(articleURL)
-		.then(article => resp.json(article).status(200).end())
-		.catch(error => resp.json(error).status(500).end());
-		// TODO .catch with generic error response
+		.then(article => okResponse(resp, { article }))
+		.catch(error => errorResponse(resp, error));
 	}
 	catch (error) {
-		const failCode = 400;  // "Bad Request" in any case
+		const options : ResponseOptions = {
+			status: 400,  // "Bad Request" in any case
+		};
 
 		if (error instanceof EmptyError) {
-			resp.json({
-				status: 'Mandatory URL parameter is missing',
-			}).status(failCode).end();  // "Bad Request"
+			errorResponse(resp, error, 'Mandatory URL parameter is missing or empty', options);
 		}
 		else {
-			resp.json({
-				status: 'URL parameter invalid',
-			}).status(failCode).end();
+			errorResponse(resp, error, 'URL parameter invalid', options);
 		}
 	}
 }

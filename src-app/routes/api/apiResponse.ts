@@ -15,7 +15,7 @@ export interface ResponseOptions {
 // Send a "success" response
 
 export function okResponse(resp : Response, data? : any, options? : ResponseOptions) : void {
-	const response = {
+	const response : any = {
 		success: true,
 	};
 
@@ -31,6 +31,36 @@ export function okResponse(resp : Response, data? : any, options? : ResponseOpti
 		if (options.status) {
 			statusCode = options.status;
 		}
+	}
+
+	resp.status(statusCode).end(stringify(response));
+}
+
+// Send a "failure" response
+
+export function errorResponse(
+	resp : Response,
+	error : Error,
+	message? : string,
+	options? : ResponseOptions,
+) {
+	const response : any = {
+		success: false,
+		error: error.message,
+	};
+
+	let statusCode = 500;
+
+	if (options !== undefined) {
+		Object.assign(response, options);
+
+		if (options.status) {
+			statusCode = options.status;
+		}
+	}
+
+	if (message !== undefined) {
+		response.message = message;
 	}
 
 	resp.status(statusCode).end(stringify(response));
