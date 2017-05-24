@@ -4,7 +4,10 @@ import {
 	Router,
 } from 'express';
 
+import * as bodyParser from 'body-parser';
+
 import articleHandler from './api/articleHandler';
+import feedbackPostHandler from './api/feedbackPostHandler';
 
 import * as app from 'app/util/applib';
 
@@ -14,7 +17,14 @@ const log = app.createLog();
 
 const apiRoute : Router = Router();
 
-apiRoute.get('/article/*', articleHandler);
+apiRoute.use(bodyParser.json({
+	inflate: true,
+	limit: '512kb',
+	strict: true,
+}));
+
+apiRoute.get('/article/:url', articleHandler);
+apiRoute.put('/feedback', feedbackPostHandler);
 
 apiRoute.get('/*', defaultHandler);
 
