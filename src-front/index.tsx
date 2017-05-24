@@ -1,5 +1,3 @@
-declare var articleURL : string;  // declared externally and set in main template
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import './scss/app.scss';
@@ -25,8 +23,4 @@ class DefaultLayout extends React.Component <any, any> {
 
 }
 
-ReactDOM.render(
-	React.createElement(DefaultLayout, null),
-	document.getElementById('app')
-);
-
+ReactDOM.render(React.createElement(DefaultLayout, null), document.getElementById('app'));
