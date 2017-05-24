@@ -5,7 +5,6 @@ import { parse } from 'url';
 
 import apiRoute from './apiRoute';
 import faviconRoute from './faviconRoute';
-// import articleRoute from './articleRoute';
 import feedbackRoute from './feedbackRoute';
 import homeRoute from './homeRoute';
 import staticRoute from './staticRoute';
