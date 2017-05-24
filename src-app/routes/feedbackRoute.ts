@@ -23,18 +23,18 @@ const log = app.createLog();
 
 // Prepare and export Express router
 
-const router : Router = Router();
+const feedbackRoute : Router = Router();
 
 // The asterisk in the route means that anything after the / slash will be picked up by Express and
 // exposed to the handler in Request.params[0]
 // We use this to grab the article URL which is to be processed and that can be appended to this
 // route without any further encoding. Most browsers are capable of that, also optional decoding
 // will happen when an encoded URL is detected.
-router.get('/*', mainHandler);
+feedbackRoute.get('/*', mainHandler);
 
 // TODO add "post" endpoint that can make use of additional query parameters, "version" most importantly
 
-export default router;
+export default feedbackRoute;
 
 // Main handler, checks the URL parameter and diverts to the respective handlers
 

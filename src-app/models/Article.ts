@@ -15,9 +15,9 @@ export default class Article extends BaseModel {
 	constructor (properties: Object) {
 		super(['title','elements','url','modifiedIdentifier']);
 
-		if (!super.validate(properties)) {
+		/*if (!super.validate(properties)) {
 			throw new ValidationError('Article', this.failedProperties);
-		}
+		}*/
 		this.title = properties['title'];
 		this.elements = properties['elements'];
 		this.url = properties['url'];
