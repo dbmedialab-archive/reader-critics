@@ -1,5 +1,3 @@
-declare var articleURL : string;
-
 import * as React from 'react';
 
 export default class FeedbackFormContainer extends React.Component <any, void> {
