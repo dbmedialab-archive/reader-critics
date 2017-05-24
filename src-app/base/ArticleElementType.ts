@@ -3,11 +3,11 @@ const names = [
 	'lead',
 	'subtitle',
 	'paragraph',
-	'figure'
+	'figure',
 ];
 
 const ArticleElementEnum : any = {
-	names
+	names,
 };
 
 names.forEach(name => ArticleElementEnum[name] = name);
