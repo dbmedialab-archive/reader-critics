@@ -2,32 +2,41 @@ import * as React from 'react';
 
 import {
 	default as axios,
+	AxiosPromise,
 	AxiosResponse,
 } from 'axios';
 
 import ArticleElement from '../component/ArticleElement';
 
-var test = [
-	{ type: "title",     text: "The Article Title is Medium Long and Large", order: 1 },
-	{ type: "lead",      text: "The lead has a bunch of stuff in it that gives the article some context.", order: 1 },
-	{ type: "paragraph", text: "foo", order: 1 },
-	{ type: "paragraph", text: "foo", order: 2 }
-]
+import { getArticleURL } from '../uiGlobals';
 
-export default class ArticleContent extends React.Component <any, any> {
+export interface ArticleContentState {
+	article: any;
+}
+
+export default class ArticleContent extends React.Component <any, ArticleContentState> {
+
+	private articleRequest : AxiosPromise;
 
 	constructor() {
 		super();
 		this.state = {
 			article: null,
-			editing: false,
-			edited: false,
 		};
 	}
 
 	componentWillMount() {
-		this.setState({
-			article: test,
+		const encodedURL = encodeURIComponent(getArticleURL());
+		const self = this;
+
+		console.log('Fetch:', encodedURL);
+
+		this.articleRequest = axios.get(`/api/article/?url=${encodedURL}`);
+		this.articleRequest.then(function(resp : AxiosResponse) {
+			console.dir(resp);
+			self.setState({
+				article: resp.data.data.article,
+			});
 		});
 	}
 
@@ -38,11 +47,26 @@ export default class ArticleContent extends React.Component <any, any> {
 
 		console.log('ArticleContent state:', this.state);
 
-		const content = test.map( (props, index) => <ArticleElement key={index} index={index} {...props} {...this.state}/> );
+		const content = this.state.article.map((item, index) => <ArticleElement
+			key={this.createKey(item)}
+			elemOrder={item.order.elem}
+			typeOrder={item.order.type}
+
+			type={item.type}
+			text={item.text}
+		/>);
 
 		return <section id='content'>
 			{content}
 		</section>;
 	}
+
+	private createKey(item : any) : string {
+		return `element-${item.order.elem}`;
+	}
+
+	// private createArticleElement(elem : any) : ArticleElement {
+	// 	return
+	// }
 
 }

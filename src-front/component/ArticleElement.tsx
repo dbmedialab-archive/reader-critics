@@ -4,11 +4,11 @@ import * as React from 'react';
 import ArticleEditForm from '../component/ArticleEditForm';
 
 interface ArticleElementProp {
-	index: number;
+	elemOrder : number;
+	typeOrder : number;
 	type : string;
-	order : number;
 	text : string;
-	comment: string;
+	// comment: string;
 }
 
 interface ArticleElementState {
@@ -41,7 +41,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		return <article onClick={()=>this.EnableEditing()} className={className}>
 				<header>{this.getContentElement()}</header>
 				<ArticleEditForm
-					id={this.props.index}
+					id={this.props.typeOrder}
 					{...this.state}
 					link={this.state.link}
 					comment={this.state.comment}
@@ -78,7 +78,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private SubtitleElement() {
 		return <div>
-				<label>Mellomtittel {this.props.order}</label>
+				<label>Mellomtittel {this.props.typeOrder}</label>
 				<h3 dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
 			</div>;
 	}
@@ -92,7 +92,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private ParagraphElement() {
 		return <div>
-				<label>Avsnitt {this.props.order}</label>
+				<label>Avsnitt {this.props.typeOrder}</label>
 				<p>{this.state.text}</p>
 			</div>;
 	}
@@ -154,7 +154,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// @param n/a
 	// Callback for childs onCancel funciton.
 	private CancelInput(){
-		this.DisableEditing()
+		this.DisableEditing();
 	}
 
 	// SaveData( state:object )
@@ -162,7 +162,9 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.
 	private SaveData( state:object ){
-		this.DisableEditing()
-		this.setState( {...state, edited:true} )
+		this.DisableEditing();
+		this.setState({
+			edited: true,
+		});
 	}
 }
