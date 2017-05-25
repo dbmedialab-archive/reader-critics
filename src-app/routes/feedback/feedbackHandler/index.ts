@@ -17,9 +17,6 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'https://fonts.googleapis.com/icon?family=Material+Icons',
-	'https://code.getmdl.io/1.3.0/material.indigo-pink.min.css',
-	'/static/styles/feedback.css',
 ];
 
 const scripts = [

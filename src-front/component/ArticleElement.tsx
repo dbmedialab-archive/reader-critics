@@ -13,7 +13,6 @@ interface ArticleProp {
 }
 interface ArticleState {
 	editing: boolean;
-	textPreview : string;
 	text: string;
 	comment: string;
 	origionalText: string;
@@ -25,7 +24,7 @@ export default class ArticleElement extends React.Component<ArticleProp, Article
 
 	constructor ( props:ArticleProp ){
 		super()
-		this.state = {...props, origionalText: props.text, link: [], comment: "", textPreview: "", editing: false, edited: false }
+		this.state = {...props, origionalText: props.text, link: [], comment: "", editing: false, edited: false }
 	}
 
 	public render() {
@@ -87,31 +86,53 @@ export default class ArticleElement extends React.Component<ArticleProp, Article
 			</div>;
 	}
 
+	// TextDiff()
+	// @param n/a
+	// Caclulates and highlights the diff of two sentences.
+	// Used to preview changes to the text done by the user.
 	private TextDiff(){
 		const diff = new Diff();
 		const textDiff = diff.main(  this.state.origionalText, this.state.text  );
 		return diff.prettyHtml( textDiff );
 	}
 
-
+	// EnableEditing()
+	// @param n/a
+	// Changes the state for the component so correct css-classes are applied
 	private EnableEditing() {
 		if (!this.state.editing) this.setState({ editing: true })
 	}
 
+	// DisableEditing()
+	// @param n/a
+	// Changes the state for the component so correct css-classes are applied
 	private DisableEditing() {
 		if (this.state.editing) this.setState({ editing: false })
 	}
 
+	// RestoreOrigionalContent( e:any )
+	// @param {event} e
+	// Stops bubbeling then resets the parrent components state.
+	// TODO: This should rerender the child,
+	// however the child still seams to contain the initial data...
 	private RestoreOrigionalContent( e:any ){
 		e.stopPropagation()
-		this.setState({ edited : false, link: [], text: this.state.origionalText, comment: "" })
+		const state = Object.assign( {}, {...this.state, edited : false, link: [], text: this.state.origionalText, comment: "" })
+		this.setState( state )
 		this.DisableEditing()
 	}
 
+	// CancelInput()
+	// @param n/a
+	// Callback for childs onCancel funciton.
 	private CancelInput(){
 		this.DisableEditing()
 	}
 
+	// SaveData( state:object )
+	// @param {state} state
+	// Applies the submitted state (from the child component) to the parents state.
+	// This is passed to the child as a prop and used as callback.
 	private SaveData( state:object ){
 		this.DisableEditing()
 		this.setState( {...state, edited:true} )
