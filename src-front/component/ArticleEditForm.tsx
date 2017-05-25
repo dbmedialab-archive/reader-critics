@@ -1,5 +1,6 @@
 import * as React from 'react';
-import DynamicList from './../component/DynamicList';
+
+import DynamicList from '../component/DynamicList';
 
 export interface ArticleEditFormProp {
 	/** The ID of this item. It's used to create references for labels to text areas and inputs */
@@ -100,7 +101,7 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 	// Removes the supplied index from the states link-list.
 	// Component renders news state and gives each item a new index.
 	private RemoveLinkItem( index:number ){
-		let link = this.state.link;
+		const link = this.state.link;
 		this.setState({ link: [ ...link.slice( 0, index ), ...link.slice( index + 1 )] });
 	}
 

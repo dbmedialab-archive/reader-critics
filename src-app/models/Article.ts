@@ -2,7 +2,7 @@ import BaseModel from './Base';
 import Byline from './Byline';
 import Tag from './Tag';
 
-import ValidationError from '../errors/ValidationError';
+// import ValidationError from '../errors/ValidationError';
 
 export default class Article extends BaseModel {
 	private byline: Byline;
