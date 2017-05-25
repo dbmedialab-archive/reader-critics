@@ -1,5 +1,11 @@
 import * as React from 'react';
-import ArticleElement from './../component/ArticleElement';
+
+import {
+	default as axios,
+	AxiosResponse,
+} from 'axios';
+
+import ArticleElement from '../component/ArticleElement';
 
 var test = [
 	{ type: "title",     text: "The Article Title is Medium Long and Large", order: 1 },
@@ -8,18 +14,35 @@ var test = [
 	{ type: "paragraph", text: "foo", order: 2 }
 ]
 
-export default class ArticleContent extends React.Component<any, any> {
+export default class ArticleContent extends React.Component <any, any> {
 
-
-	constructor (){
+	constructor() {
 		super();
-		this.state = { editing : false, edited: false };
+		this.state = {
+			article: null,
+			editing: false,
+			edited: false,
+		};
 	}
 
-	public render(){
-		const content = test.map( (props, index) => <ArticleElement key={index} index={index} {...props} {...this.state}/> )
- 		return <section id="content">
- 			{content}
- 		</section>
+	componentWillMount() {
+		this.setState({
+			article: test,
+		});
 	}
+
+	public render() {
+		if (this.state.article === null) {
+			return null;
+		}
+
+		console.log('ArticleContent state:', this.state);
+
+		const content = test.map( (props, index) => <ArticleElement key={index} index={index} {...props} {...this.state}/> );
+
+		return <section id='content'>
+			{content}
+		</section>;
+	}
+
 }
