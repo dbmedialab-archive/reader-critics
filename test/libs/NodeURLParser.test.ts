@@ -1,8 +1,19 @@
+import 'mocha';
+
 import { assert } from 'chai';
+import { URL } from 'url';
 
-const url = require('url');
+// Describe the test data
 
-const examples = [
+interface TestRecord {
+	url: string;
+	host: string;
+	port: Function;
+}
+
+// Declare the test data
+
+const examples : TestRecord[] = [
 	{
 		url: 'http://www.dagbladet.no/nyheter/le-pen-blir-mer-kaos/67532944',
 		host: 'www.dagbladet.no',
@@ -16,22 +27,22 @@ const examples = [
 	{
 		url: 'http://some.hostname.de:1234/with/port',
 		host: 'some.hostname.de',
-		port: n => Number.parseInt(n) === 1234,
+		port: n => parseInt(n) === 1234,
 	},
 	{
 		url: 'http://default.example.com:80/with/default/port',
 		host: 'default.example.com',
-		port: n => Number.parseInt(n) === 80,
+		port: n => parseInt(n) === 80,
 	},
 	{
 		url: 'https://secure.hostname.de:4433/with/port',
 		host: 'secure.hostname.de',
-		port: n => Number.parseInt(n) === 4433,
+		port: n => parseInt(n) === 4433,
 	},
 	{
 		url: 'https://secure.example.com:443/with/default/port',
 		host: 'secure.example.com',
-		port: n => Number.parseInt(n) === 443,
+		port: n => parseInt(n) === 443,
 	},
 	{
 		url: 'http://ungueltig.com:schmarrn/',
@@ -40,14 +51,16 @@ const examples = [
 	},
 ];
 
+// Test
+
 describe('Node «url» package', function() {
 	it('should parse an URL correctly', function() {
 		examples.forEach(testParser);
 	});
 });
 
-function testParser(record) {
-	const parsed = url.parse(record.url);
+function testParser(record : TestRecord) {
+	const parsed = new URL(record.url);
 
 	assert.strictEqual(parsed.hostname, record.host);
 	assert.isTrue(record.port(parsed.port));
