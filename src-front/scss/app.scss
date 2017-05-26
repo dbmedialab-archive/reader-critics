@@ -36,11 +36,17 @@ html, body, * {
 @keyframes appear {
 	from {
 		opacity: 0;
-		position: relative;
 	}
 	to {
 		opacity: 1;
-		position: relative;
+	}
+}
+@keyframes disappear {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
 	}
 }
 $speed-appear: .5s;
@@ -49,7 +55,7 @@ $speed-disappear: .3s;
 	animation: appear $speed-appear;
 }
 @mixin disappear {
-	animation: appear $speed-disappear;
+	animation: disappear $speed-disappear;
 }
 
 // AAAAND AWAY WE GO!
@@ -135,9 +141,20 @@ del {
 }
 
 .fab {
+	pointer-events: none;
+	overflow: hidden;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 1rem;
+	text-align: right;
+	margin: 0 auto;
+
 	span {
-		&.disable {
+		pointer-events: all;
+		&.disabled {
 			@include disappear;
+			opacity: 0;
 		}
 		background-color: $color-success;
     color: $color-background;
@@ -154,6 +171,7 @@ del {
 	    font-size: 1.5rem;
 	    position: relative;
 	    top: .30rem;
+ 			cursor: pointer;
     }
     &:after {
     	border-style: solid;
@@ -164,32 +182,12 @@ del {
 			position: relative;
 			right: -1rem;
 			top: .1rem;
+			cursor: pointer;
     }
 	}
-	overflow: hidden;
-	position: absolute;
-	bottom: 0;
-	padding: 1rem;
-	text-align: right;
-	width: 100%;
-	margin: 0 auto;
-	&.disabled {
-		a {
-			transition: bottom $speed-appear;
-			bottom: -6rem;
-		}
-	}
-	&.enabled {
-		a {
-			transition: bottom $speed-disappear;
-			bottom: 0rem;
-		}
-		span {
-			opacity: 1;
-			@include appear;
-		}
-	}
+
 	a {
+		pointer-events: all;
 		position: relative;
 		font-size: 0rem;
 		color: transparent;
@@ -208,6 +206,27 @@ del {
 			box-shadow: $shadow-level-3;
 		}
 	}
+
+	&.disabled {
+		a {
+			transition: bottom $speed-appear;
+			bottom: -6rem;
+		}
+	}
+	&.enabled {
+		a {
+			transition: bottom $speed-disappear;
+			bottom: 0rem;
+		}
+		span {
+			opacity: 1;
+			@include appear;
+			&.disabled {
+				@include disappear;
+				opacity: 0;
+			}
+		}
+	}
 }
 
 // MAIN CONTENT
@@ -224,8 +243,15 @@ del {
 	}
 
   h1 {
-  	font-size: 1.5rem;
+  	font-size: 1.8rem;
   	margin: 0 0 .5rem;
+  	font-weight: 400;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin: 0 0 .5rem;
+    font-weight: 600;
   }
 
   p {

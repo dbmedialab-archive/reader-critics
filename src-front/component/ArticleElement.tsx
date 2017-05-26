@@ -4,6 +4,7 @@ import {
 	default as ArticleEditForm,
 	ArticleEditFormState,
 } from '../component/ArticleEditForm';
+
 import textDiffToHTML from './textDiffToHTML';
 
 interface ArticleElementProp {
@@ -67,6 +68,8 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 				return this.LeadElement();
 			case 'subtitle':
 				return this.SubtitleElement();
+			case 'figure':
+				return this.FigureElement();
 			default:
 				return this.ParagraphElement();
 		}
@@ -81,7 +84,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private SubtitleElement() {
 		return <div>
-				<label>Mellomtittel {this.props.typeOrder}</label>
+				<label>Mellomtittel #{this.props.typeOrder}</label>
 				<h3>{this.TextDiff()}</h3>
 			</div>;
 	}
@@ -95,8 +98,15 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private ParagraphElement() {
 		return <div>
-				<label>Avsnitt {this.props.typeOrder}</label>
+				<label>Avsnitt #{this.props.typeOrder}</label>
 				<p>{this.TextDiff()}</p>
+			</div>;
+	}
+
+	private FigureElement() {
+		return <div>
+				<label>Bilde #{this.props.typeOrder}</label>
+				<p>{this.state.text}</p>
 			</div>;
 	}
 
