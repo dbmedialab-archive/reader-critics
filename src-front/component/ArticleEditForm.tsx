@@ -135,6 +135,7 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 			this.AddLinkItem();
 		}
 
+		console.log('onSave', this.props.onSave, this.state);
 		this.props.onSave(this.state);
 	}
 
