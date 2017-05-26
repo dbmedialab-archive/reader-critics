@@ -44,6 +44,7 @@
 		"convict": "3.0.0",
 		"css-loader": "0.28.1",
 		"debug": "2.6.8",
+		"diff": "3.2.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
 		"extract-text-webpack-plugin": "2.1.0",
@@ -60,7 +61,6 @@
 		"sass-loader": "6.0.5",
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.17.0",
-		"text-diff": "1.0.1",
 		"webpack": "2.6.0"
 	},
 	"devDependencies": {
@@ -70,6 +70,7 @@
 		"@types/chai": "3.5.2",
 		"@types/core-js": "0.9.41",
 		"@types/debug": "0.0.29",
+		"@types/diff": "3.2.0",
 		"@types/express": "4.0.35",
 		"@types/lodash": "4.14.64",
 		"@types/mocha": "2.2.41",
