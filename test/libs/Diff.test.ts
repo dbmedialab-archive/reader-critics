@@ -25,7 +25,7 @@ const expected : any[] = [
 	{ count: 9, value: ' und sei Diandldrahn de ' },
 	{ count: 3, added: undefined, removed: true, value: 'Sonn nois' },
 	{ count: 1, added: true, removed: undefined, value: 'nackata' },
-	{ count: 1, value: '.' }
+	{ count: 1, value: '.' },
 ];
 
 describe('«diff» package', function() {
