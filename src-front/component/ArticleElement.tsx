@@ -64,6 +64,8 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 				return this.LeadElement();
 			case 'subtitle':
 				return this.SubtitleElement();
+			case 'figure':
+				return this.FigureElement();
 			default:
 				return this.ParagraphElement();
 		}
@@ -78,7 +80,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private SubtitleElement() {
 		return <div>
-				<label>Mellomtittel {this.props.typeOrder}</label>
+				<label>Mellomtittel #{this.props.typeOrder}</label>
 				<h3 dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
 			</div>;
 	}
@@ -92,7 +94,14 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private ParagraphElement() {
 		return <div>
-				<label>Avsnitt {this.props.typeOrder}</label>
+				<label>Avsnitt #{this.props.typeOrder}</label>
+				<p>{this.state.text}</p>
+			</div>;
+	}
+
+	private FigureElement() {
+		return <div>
+				<label>Bilde #{this.props.typeOrder}</label>
 				<p>{this.state.text}</p>
 			</div>;
 	}
