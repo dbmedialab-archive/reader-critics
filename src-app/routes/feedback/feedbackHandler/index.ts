@@ -17,13 +17,12 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'feedback.css',
 ];
 
 const scripts = [
-	'react/react.js',
-	'react/react-dom.js',
-	'bundle.js',
+	'/static/react/react.js',
+	'/static/react/react-dom.js',
+	'/static/app.bundle.js',
 ];
 
 // Respond with initial HTML, process template for feedback form page
@@ -38,7 +37,13 @@ export default function (requ : Request, resp : Response, articleURL : ArticleUR
 
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
-		articleURL: articleURL.href,
+		feedbackParam: JSON.stringify({
+			article: {
+				url: articleURL.href,
+				version: '2017.05.11-something',
+			},
+			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}),
 		styles,
 		scripts,
 	}));

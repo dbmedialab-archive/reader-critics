@@ -28,15 +28,27 @@ function createExportableStruct(article : Article) : Promise <any> {
 	const rawElements : IntermediateElem[] = Array.from(article.getRawElements());
 	const newElements : any[] = [];
 
-	let order : number = 0;
+	let elemOrder : number = 1;
+	let typeOrder = {};
+
+	ArticleElementType.names.forEach(name => (typeOrder[name] = 1));
+
+	log(typeOrder);
 
 	while (rawElements.length > 0) {
 		const next : IntermediateElem = rawElements.shift();
 		log('%o', next);
 
+		const type = mapElementType(next);
+
+		log('type [%s] typeOrder [%d]', type, typeOrder[type]);
+
 		const newElem : any = {
-			type: getElementType(next),
-			order,
+			type,
+			order: {
+				elem: elemOrder,
+				type: typeOrder[type],
+			}
 		};
 
 		if (newElem.type === 'figure') {
@@ -52,13 +64,17 @@ function createExportableStruct(article : Article) : Promise <any> {
 			// TODO integrate caption recognition into initial parser
 
 			newElements.push(newElem);
-			order ++;
+
+			elemOrder ++;
+			typeOrder[type] ++
 		}
 		else if (newElem.type !== null) {
 			if (next.data.text.length > 0) {
 				newElem.text = next.data.text;
 				newElements.push(newElem);
-				order ++;
+
+				elemOrder ++;
+				typeOrder[type] ++
 			}
 			else {
 				log('Skipped empty content');
@@ -69,11 +85,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 	return Promise.resolve(newElements);
 }
 
-function getElementType(elem : IntermediateElem) : string {
-	return ArticleElementType[mapElementType(elem)];
-}
-
-function mapElementType(elem : IntermediateElem) : ArticleElementType {
+function mapElementType(elem : IntermediateElem) : string {
 	if (isTitle(elem)) {
 		return ArticleElementType.title;
 	}
