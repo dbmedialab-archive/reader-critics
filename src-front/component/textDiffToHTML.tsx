@@ -13,8 +13,9 @@ export default function(oldText : string, newText : string) : any {
 	const diff : IDiffResult[] = diffWords(oldText, newText);
 	const html : any[] = [];
 
-	console.log('diff:', diff);
-	diff.forEach((diffResult : IDiffResult, index : number) => html.push(formatResult(diffResult, index)));
+	diff.forEach((diffResult : IDiffResult, index : number) => {
+		html.push(formatResult(diffResult, index));
+	});
 
 	return html;
 }
