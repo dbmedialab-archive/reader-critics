@@ -1,7 +1,10 @@
-import * as Diff from 'text-diff';
 import * as React from 'react';
 
-import ArticleEditForm from '../component/ArticleEditForm';
+import {
+	default as ArticleEditForm,
+	ArticleEditFormState,
+} from '../component/ArticleEditForm';
+import textDiffToHTML from './textDiffToHTML';
 
 interface ArticleElementProp {
 	elemOrder : number;
@@ -72,28 +75,28 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	private TitleElement() {
 		return <div>
 				<label>Tittel</label>
-				<h1 dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
+				<h1>{this.TextDiff()}</h1>
 			</div>;
 	}
 
 	private SubtitleElement() {
 		return <div>
 				<label>Mellomtittel {this.props.typeOrder}</label>
-				<h3 dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
+				<h3>{this.TextDiff()}</h3>
 			</div>;
 	}
 
 	private LeadElement() {
 		return <div>
 				<label>Innledning</label>
-				<p  dangerouslySetInnerHTML={{ __html:  this.TextDiff()}} />
+				<p>{this.TextDiff()}</p>
 			</div>;
 	}
 
 	private ParagraphElement() {
 		return <div>
 				<label>Avsnitt {this.props.typeOrder}</label>
-				<p>{this.state.text}</p>
+				<p>{this.TextDiff()}</p>
 			</div>;
 	}
 
@@ -101,10 +104,8 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// @param n/a
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
-	private TextDiff(){
-		const diff = new Diff();
-		const textDiff = diff.main(  this.state.originalText, this.state.text  );
-		return diff.prettyHtml( textDiff );
+	private TextDiff() : any {
+		return textDiffToHTML(this.state.originalText, this.state.text);
 	}
 
 	// EnableEditing()
@@ -161,10 +162,13 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// @param {state} state
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.
-	private SaveData( state:object ){
+	private SaveData(fromState : ArticleEditFormState) {
 		this.DisableEditing();
+
 		this.setState({
 			edited: true,
+			text: fromState.text,
 		});
 	}
+
 }
