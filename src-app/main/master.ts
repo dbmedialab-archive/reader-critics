@@ -1,7 +1,7 @@
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
 
-import printEnv from 'print-env';
+import printEnvironment from 'print-env';
 
 import * as app from 'app/util/applib';
 
@@ -14,7 +14,7 @@ export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
-	printEnvironment();
+	printEnvironment(app.createLog('env'));
 
 	log(
 		'%s threads available, running at %sx concurrency',
@@ -25,9 +25,4 @@ export default function() {
 	for (let i = 0; i < app.numConcurrency; i++) {
 		cluster.fork();
 	}
-}
-
-function printEnvironment() {
-	const log = app.createLog('env');
-	printEnv(log);
 }
