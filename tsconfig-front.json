@@ -10,7 +10,7 @@
 		"baseUrl": "src-front",
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"outDir": "./out/front",
 		"paths": {
 			"/*": [ "./*" ],

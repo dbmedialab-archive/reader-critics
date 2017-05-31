@@ -92,7 +92,7 @@ export default class HtmlParser extends BaseParser {
 			elements = [],
 			html = Cheerio.load(this.response.data),
 			image = html('meta[property="og:image"]');
-		let el_counter = 1;
+		let elCounter = 1;
 
 		// Add title and cover image (if defined)
 		elements.push({
@@ -100,11 +100,11 @@ export default class HtmlParser extends BaseParser {
 			data: {
 				text: this.parsedArticle.title,
 			},
-			order: el_counter++
+			order: elCounter++,
 		});
 
 		if (typeof image !== 'undefined') {
-			elements.push({type: 'img', data: {src: image.attr('content')}, order: el_counter++});
+			elements.push({type: 'img', data: {src: image.attr('content')}, order: elCounter++});
 		}
 
 		// Get the elements from the bodytext
@@ -120,7 +120,7 @@ export default class HtmlParser extends BaseParser {
 			elements.push({
 				type: $elements[index].name,
 				data: data,
-				order: el_counter++,
+				order: elCounter++,
 			});
 		}
 		// Return the finished content
