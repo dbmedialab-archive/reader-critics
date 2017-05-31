@@ -1,26 +1,16 @@
-import 'app-module-path/register';
-
 import * as colors from 'ansicolors';
 import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
-import * as path from 'path';
-import * as util from 'util';
 
 import * as app from './util/applib';
 
 import config from './config';
 import logRequest from './util/logRequest';
 
-import articleRoute from './routes/articleRoute';
-import faviconRoute from './routes/faviconRoute';
-import feedbackRoute from './routes/feedbackRoute';
-import homeRoute from './routes/homeRoute';
-import staticRoute from './routes/staticRoute';
+import routes from './routes';
 
 import './env';
-
-// global.Promise = bluebird;
 
 const log = app.createLog();
 
@@ -31,8 +21,6 @@ log('App located in %s', colors.brightWhite(app.rootPath));
 
 const expressApp = express();
 
-expressApp.use(logRequest);
-
 const httpPort = config.get('http.port') || 4001;
 const httpServer = http.createServer(expressApp);
 
@@ -40,15 +28,8 @@ const httpServer = http.createServer(expressApp);
 
 Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
 	.then(startHTTP)
+	.then(initExpress)
 	.catch(startupErrorHandler);
-
-expressApp.use(faviconRoute);
-expressApp.use('/static', staticRoute);
-
-expressApp.use('/fb', feedbackRoute);
-expressApp.use('/article', articleRoute);
-
-expressApp.use('/', homeRoute);
 
 // Starting the HTTP server
 
@@ -63,6 +44,11 @@ function startHTTP() {
 			return resolve();
 		});
 	});
+}
+
+function initExpress() {
+	routes(expressApp);
+	return Promise.resolve();  // Sync finish
 }
 
 // Error handling during startup

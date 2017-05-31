@@ -1,7 +1,7 @@
 export default class BaseModel {
 	protected id: number;
-	protected created_at: string;
-	protected updated_at: string;
+	protected createdAt: string;
+	protected updatedAt: string;
 	protected failedProperties: string[];
 	private required: string[];
 

@@ -2,7 +2,7 @@ import BaseModel from './Base';
 import Byline from './Byline';
 import Tag from './Tag';
 
-import ValdiationError from '../errors/ValidationError';
+// import ValidationError from '../errors/ValidationError';
 
 export default class Article extends BaseModel {
 	private byline: Byline;
@@ -10,25 +10,25 @@ export default class Article extends BaseModel {
 	private title: string;
 	private elements: { type : string, data : string, order : number }[];
 	private url: string;
-	private modified_identifier: string;
+	private modifiedIdentifier: string;
 
 	constructor (properties: Object) {
-		super(['title','elements','url','modified_identifier']);
+		super(['title','elements','url','modifiedIdentifier']);
 
-		if (!super.validate(properties)) {
-			throw new ValdiationError('Article', this.failedProperties);
-		}
+		/*if (!super.validate(properties)) {
+			throw new ValidationError('Article', this.failedProperties);
+		}*/
 		this.title = properties['title'];
 		this.elements = properties['elements'];
 		this.url = properties['url'];
-		this.modified_identifier = properties['modified_identifier'];
+		this.modifiedIdentifier = properties['modifiedIdentifier'];
 		this.tags = [];
 
 	}
 
 	public getArticle(): Object {
 		return {
-			modified_identifier: this.modified_identifier,
+			modifiedIdentifier: this.modifiedIdentifier,
 			url: this.url,
 			title: this.title,
 			byline: this.byline,

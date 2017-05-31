@@ -1,6 +1,6 @@
 import {
-	default as axios,
 	AxiosPromise,
+	default as axios,
 } from 'axios';
 
 import * as Promise from 'bluebird';
