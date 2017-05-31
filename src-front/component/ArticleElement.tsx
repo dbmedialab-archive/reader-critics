@@ -1,3 +1,4 @@
+import * as classnames from 'classnames';
 import * as React from 'react';
 
 import {
@@ -39,25 +40,52 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		console.dir(this.state);
 	}
 
-	public render() {
-		const className = `card ${this.state.editing ? 'editing' : '' } ${this.state.edited ? 'edited' : '' } ${this.props.type}`;
+	public render() : JSX.Element {
+		const css = classnames('card', this.props.type, {
+			editing: this.state.editing,
+			edited: this.state.edited,
+		});
 
-		return <article onClick={()=>this.EnableEditing()} className={className}>
-				<header>{this.getContentElement()}</header>
-				<ArticleEditForm
-					id={this.props.typeOrder}
-					{...this.state}
-					link={this.state.link}
-					comment={this.state.comment}
-					onCancel={this.CancelInput.bind(this)}
-					onSave={this.SaveData.bind(this)}
-					type={this.props.type}
-				/>
+		return <article className={css}>
+				<header>
+					{ this.getContentElement() }
+				</header>
+				{ this.createEditForm() }
 				<footer>
-					<a className='button reset' onClick={ this.restoreOriginalContent.bind(this) }>Slett</a>
-					<a className='button edit'>Rediger</a>
+					{ this.createResetButton() }
+					{ this.createEditButton() }
 				</footer>
 		</article>;
+	}
+
+	private createEditForm() : JSX.Element {
+		return <ArticleEditForm
+			id={this.props.typeOrder}
+			text={this.state.text}
+			link={this.state.link}
+			comment={this.state.comment}
+			onCancel={this.CancelInput.bind(this)}
+			onSave={this.SaveData.bind(this)}
+			type={this.props.type}
+		/>;
+	}
+
+	private createResetButton() : JSX.Element {
+		const css = classnames('button', 'reset');
+		return <a
+			id={`btn-reset-${this.props.elemOrder}`}
+			className={css}
+			onClick={ this.restoreOriginalContent.bind(this) }
+		>Slett</a>;
+	}
+
+	private createEditButton() : JSX.Element {
+		const css = classnames('button', 'edit');
+		return <a
+			id={`btn-reset-${this.props.elemOrder}`}
+			className={css}
+			onClick={ this.EnableEditing.bind(this) }
+		>Rediger</a>;
 	}
 
 	private getContentElement() {
@@ -148,17 +176,13 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	private restoreOriginalContent(e : any) {
 		console.log('restoreOriginalContent "%s"', this.state.originalText);
 
-		e.stopPropagation();
-		const state = Object.assign({}, {
-			...this.state,
+		this.setState({
 			edited: false,
+			editing: false,
 			link: [],
-			text: this.state.originalText,
+			text: this.props.text,
 			comment: '',
 		});
-
-		this.setState(state);
-		this.DisableEditing();
 	}
 
 	// CancelInput()
