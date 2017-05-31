@@ -53,7 +53,7 @@ export default class ArticleContent extends React.Component <any, ArticleContent
 			typeOrder={item.order.type}
 
 			type={item.type}
-			text={item.text}
+			originalText={item.text}
 		/>);
 
 		return <section id='content'>

@@ -1,8 +1,9 @@
+import * as classnames from 'classnames';
 import * as React from 'react';
 
 import {
 	default as ArticleEditForm,
-	ArticleEditFormState,
+	EditFormPayload,
 } from '../component/ArticleEditForm';
 
 import textDiffToHTML from './textDiffToHTML';
@@ -11,53 +12,79 @@ interface ArticleElementProp {
 	elemOrder : number;
 	typeOrder : number;
 	type : string;
-	text : string;
-	// comment: string;
+	originalText : string;
 }
 
 interface ArticleElementState {
+	edited: boolean;
 	editing: boolean;
 	text: string;
-	comment: string;
-	originalText: string;
-	edited: boolean;
-	link: Array<string>;
 }
 
 export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
 
+	private references: {
+		editForm: ArticleEditForm;
+	} = {
+		editForm: null,
+	};
+
 	constructor(props : ArticleElementProp) {
 		super();
 		this.state = {
-			...props,
-			originalText: props.text,
-			link: [],
-			comment: '',
-			editing: false,
 			edited: false,
+			editing: false,
+			text: props.originalText,
 		};
-		console.dir(this.state);
 	}
 
-	public render() {
-		const className = `card ${this.state.editing ? 'editing' : '' } ${this.state.edited ? 'edited' : '' } ${this.props.type}`;
+	public render() : JSX.Element {
+		const css = classnames('card', this.props.type, {
+			editing: this.state.editing,
+			edited: this.state.edited,
+		});
 
-		return <article onClick={()=>this.EnableEditing()} className={className}>
-				<header>{this.getContentElement()}</header>
-				<ArticleEditForm
-					id={this.props.typeOrder}
-					{...this.state}
-					link={this.state.link}
-					comment={this.state.comment}
-					onCancel={this.CancelInput.bind(this)}
-					onSave={this.SaveData.bind(this)}
-					type={this.props.type}
-				/>
+		return <article className={css}>
+				<header>
+					{ this.getContentElement() }
+				</header>
+				{ this.createEditForm() }
 				<footer>
-					<a className='button reset' onClick={ this.restoreOriginalContent.bind(this) }>Slett</a>
-					<a className='button edit'>Rediger</a>
+					{ this.createResetButton() }
+					{ this.createEditButton() }
 				</footer>
 		</article>;
+	}
+
+	private createEditForm() : JSX.Element {
+		return <ArticleEditForm
+			id={this.props.typeOrder}
+			ref={(i : any) => { this.references.editForm = i; }}
+			originalText={this.state.text}
+			// link={this.state.link}
+			// comment={this.state.comment}
+			onCancel={this.CancelInput.bind(this)}
+			onSave={this.SaveData.bind(this)}
+			type={this.props.type}
+		/>;
+	}
+
+	private createResetButton() : JSX.Element {
+		const css = classnames('button', 'reset');
+		return <a
+			id={`btn-reset-${this.props.elemOrder}`}
+			className={css}
+			onClick={ this.restoreOriginalContent.bind(this) }
+		>Slett</a>;
+	}
+
+	private createEditButton() : JSX.Element {
+		const css = classnames('button', 'edit');
+		return <a
+			id={`btn-reset-${this.props.elemOrder}`}
+			className={css}
+			onClick={ this.EnableEditing.bind(this) }
+		>Rediger</a>;
 	}
 
 	private getContentElement() {
@@ -110,16 +137,12 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 			</div>;
 	}
 
-	// TextDiff()
-	// @param n/a
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	private TextDiff() : any {
-		return textDiffToHTML(this.state.originalText, this.state.text);
+		return textDiffToHTML(this.props.originalText, this.state.text);
 	}
 
-	// EnableEditing()
-	// @param n/a
 	// Changes the state for the component so correct css-classes are applied
 	private EnableEditing() {
 		if (!this.state.editing) {
@@ -129,8 +152,6 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		}
 	}
 
-	// DisableEditing()
-	// @param n/a
 	// Changes the state for the component so correct css-classes are applied
 	private DisableEditing() {
 		if (this.state.editing) {
@@ -140,39 +161,28 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		}
 	}
 
-	// restoreOriginalContent( e:any )
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
-	// TODO: This should rerender the child,
-	// however the child still seams to contain the initial data...
 	private restoreOriginalContent(e : any) {
-		console.log('restoreOriginalContent "%s"', this.state.originalText);
+		console.log('restoreOriginalContent "%s"', this.props.originalText);
 
-		e.stopPropagation();
-		const state = Object.assign({}, {
-			...this.state,
+		this.setState({
 			edited: false,
-			link: [],
-			text: this.state.originalText,
-			comment: '',
+			text: this.props.originalText,
 		});
 
-		this.setState(state);
-		this.DisableEditing();
+		this.references.editForm.reset(this.props.originalText);
 	}
 
-	// CancelInput()
-	// @param n/a
 	// Callback for childs onCancel funciton.
 	private CancelInput(){
 		this.DisableEditing();
 	}
 
-	// SaveData( state:object )
 	// @param {state} state
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.
-	private SaveData(fromState : ArticleEditFormState) {
+	private SaveData(fromState : EditFormPayload) {
 		this.DisableEditing();
 
 		this.setState({
