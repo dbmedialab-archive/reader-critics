@@ -10,11 +10,11 @@ export interface EditFormPayload {
 
 interface ArticleEditFormProp {
 	/** The ID of this item. It's used to create references for labels to text areas and inputs */
-	id: number;
+	id : number;
 	/** Funciton to trigger so input is reset */
-	onCancel: any;
+	onCancel : Function;
 	/** Funciton to trigger so component's state is sent to parrent Article component */
-	onSave: any;
+	onSave : Function;
 	/** The text of the element, be it title, paragraph, lead etc. */
 	originalText: string;
 	/** The type of the content, e.g. title, subtitle, paraghrap etc */
@@ -49,6 +49,19 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 
 	public reset(originalText : string) {
 		console.log('ArticleEditForm.reset');
+		const clean : EditFormPayload = {
+			text: originalText,
+			comment: '',
+			links: [],
+		};
+
+		this.textArea.value = originalText;
+		this.commentArea.value = '';
+
+		this.setState({
+			current: clean,
+			previous: clean,
+		});
 	}
 
 	public render() {
@@ -113,8 +126,7 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		const link = this.state.current.links;
 		const current : EditFormPayload = this.state.current;
 
-		// TODO do this with Array.splice() instead
-		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
+		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )]; // TODO do this with Array.splice() instead
 
 		this.setState({
 			current,
@@ -128,8 +140,8 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 	private onCancel(e : any) {
 		e.stopPropagation();
 
-		this.commentArea.value = this.state.previous.comment;
 		this.textArea.value = this.state.previous.text;
+		this.commentArea.value = this.state.previous.comment;
 
 		this.setState({
 			current: this.state.previous,
