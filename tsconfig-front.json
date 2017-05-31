@@ -1,0 +1,26 @@
+{
+	"include": [
+		"./src-front/**/*"
+	],
+	"exclude": [
+		"./node_modules"
+	],
+	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": "src-front",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"outDir": "./out/front",
+		"paths": {
+			"/*": [ "./*" ],
+			"~/*": [ "./*" ]
+		},
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": false,
+		"suppressImplicitAnyIndexErrors": true,
+		"target": "es6",
+		"jsx": "react"
+	}
+}

@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+html, body {
+	background-color: #eee;
+	font-family: 'Roboto', 'Arial', sans-serif;
+	font-size: 14pt;
+	margin: 20px;
+}
+
+div#page-container {
+	padding-top: 60px;
+	background-image: url(/static/images/leserkritikk-logo.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
