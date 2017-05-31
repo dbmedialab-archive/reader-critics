@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import {
 	default as ArticleEditForm,
-	ArticleEditFormState,
+	EditFormPayload,
 } from '../component/ArticleEditForm';
 
 import textDiffToHTML from './textDiffToHTML';
@@ -12,35 +12,46 @@ interface ArticleElementProp {
 	elemOrder : number;
 	typeOrder : number;
 	type : string;
-	text : string;
+	originalText : string;
 	// comment: string;
 }
 
 interface ArticleElementState {
+	edited: boolean;
 	editing: boolean;
 	text: string;
-	comment: string;
-	originalText: string;
-	edited: boolean;
-	link: Array<string>;
+	// comment: string;
+//	originalText: string;
+	// link: Array<string>;
 }
 
 export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
 
+	private references: {
+		editForm: ArticleEditForm;
+	} = {
+		editForm: null,
+	};
+
 	constructor(props : ArticleElementProp) {
 		super();
 		this.state = {
-			...props,
-			originalText: props.text,
-			link: [],
-			comment: '',
-			editing: false,
 			edited: false,
+			editing: false,
+			text: props.originalText,
+			// originalText: props.text,
+			// link: [],
+			// comment: '',
 		};
-		console.dir(this.state);
+		console.log('ArticleElement state:', this.state);
 	}
 
 	public render() : JSX.Element {
+		console.log([
+			'ArticleElement.render',
+			'editing=' + (this.state.editing ? 'y' : 'n'),
+			'edited=' + (this.state.edited ? 'y' : 'n'),
+		].join(' '));
 		const css = classnames('card', this.props.type, {
 			editing: this.state.editing,
 			edited: this.state.edited,
@@ -61,9 +72,10 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	private createEditForm() : JSX.Element {
 		return <ArticleEditForm
 			id={this.props.typeOrder}
-			text={this.state.text}
-			link={this.state.link}
-			comment={this.state.comment}
+			ref={(i : any) => { this.references.editForm = i; }}
+			originalText={this.state.text}
+			// link={this.state.link}
+			// comment={this.state.comment}
 			onCancel={this.CancelInput.bind(this)}
 			onSave={this.SaveData.bind(this)}
 			type={this.props.type}
@@ -143,7 +155,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	private TextDiff() : any {
-		return textDiffToHTML(this.state.originalText, this.state.text);
+		return textDiffToHTML(this.props.originalText, this.state.text);
 	}
 
 	// EnableEditing()
@@ -174,15 +186,17 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// TODO: This should rerender the child,
 	// however the child still seams to contain the initial data...
 	private restoreOriginalContent(e : any) {
-		console.log('restoreOriginalContent "%s"', this.state.originalText);
+		console.log('restoreOriginalContent "%s"', this.props.originalText);
 
 		this.setState({
 			edited: false,
-			editing: false,
-			link: [],
-			text: this.props.text,
-			comment: '',
+			// editing: false,
+//			link: [],
+			text: this.props.originalText,
+			// comment: '',
 		});
+
+		this.references.editForm.reset(this.props.originalText);
 	}
 
 	// CancelInput()
@@ -196,7 +210,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// @param {state} state
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.
-	private SaveData(fromState : ArticleEditFormState) {
+	private SaveData(fromState : EditFormPayload) {
 		this.DisableEditing();
 
 		this.setState({
