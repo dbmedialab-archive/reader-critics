@@ -13,16 +13,12 @@ interface ArticleElementProp {
 	typeOrder : number;
 	type : string;
 	originalText : string;
-	// comment: string;
 }
 
 interface ArticleElementState {
 	edited: boolean;
 	editing: boolean;
 	text: string;
-	// comment: string;
-//	originalText: string;
-	// link: Array<string>;
 }
 
 export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
@@ -39,19 +35,10 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 			edited: false,
 			editing: false,
 			text: props.originalText,
-			// originalText: props.text,
-			// link: [],
-			// comment: '',
 		};
-		console.log('ArticleElement state:', this.state);
 	}
 
 	public render() : JSX.Element {
-		console.log([
-			'ArticleElement.render',
-			'editing=' + (this.state.editing ? 'y' : 'n'),
-			'edited=' + (this.state.edited ? 'y' : 'n'),
-		].join(' '));
 		const css = classnames('card', this.props.type, {
 			editing: this.state.editing,
 			edited: this.state.edited,
@@ -150,16 +137,12 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 			</div>;
 	}
 
-	// TextDiff()
-	// @param n/a
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	private TextDiff() : any {
 		return textDiffToHTML(this.props.originalText, this.state.text);
 	}
 
-	// EnableEditing()
-	// @param n/a
 	// Changes the state for the component so correct css-classes are applied
 	private EnableEditing() {
 		if (!this.state.editing) {
@@ -169,8 +152,6 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		}
 	}
 
-	// DisableEditing()
-	// @param n/a
 	// Changes the state for the component so correct css-classes are applied
 	private DisableEditing() {
 		if (this.state.editing) {
@@ -180,33 +161,24 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		}
 	}
 
-	// restoreOriginalContent( e:any )
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
-	// TODO: This should rerender the child,
-	// however the child still seams to contain the initial data...
 	private restoreOriginalContent(e : any) {
 		console.log('restoreOriginalContent "%s"', this.props.originalText);
 
 		this.setState({
 			edited: false,
-			// editing: false,
-//			link: [],
 			text: this.props.originalText,
-			// comment: '',
 		});
 
 		this.references.editForm.reset(this.props.originalText);
 	}
 
-	// CancelInput()
-	// @param n/a
 	// Callback for childs onCancel funciton.
 	private CancelInput(){
 		this.DisableEditing();
 	}
 
-	// SaveData( state:object )
 	// @param {state} state
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.

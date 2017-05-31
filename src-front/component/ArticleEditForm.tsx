@@ -17,10 +17,6 @@ interface ArticleEditFormProp {
 	onSave: any;
 	/** The text of the element, be it title, paragraph, lead etc. */
 	originalText: string;
-	/** The user's comment to this item. Sent as prop since Article component needs this when sending data */
-	// comment: string;
-	/** List or links/references the user has added. These are needed på Article component */
-	// link: Array<string>;
 	/** The type of the content, e.g. title, subtitle, paraghrap etc */
 	type: string;
 }
@@ -28,12 +24,6 @@ interface ArticleEditFormProp {
 interface ArticleEditFormState {
 	current : EditFormPayload;
 	previous : EditFormPayload;
-	/** All the input is stored in the components state */
-	// text: string;
-	/** If the user cancels the state is reset to prop values */
-	// comment : string;
-	/** If the user stores the state is sent to Article component and stored in props */
-	// link: Array<string>;
 }
 
 export default class ArticleEditForm extends React.Component <ArticleEditFormProp, ArticleEditFormState> {
@@ -59,12 +49,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 
 	public reset(originalText : string) {
 		console.log('ArticleEditForm.reset');
-// 		this.setState({
-// 			text: originalText,
-// //			comment: '',
-// 		});
-
-		// this.textArea.value = originalText;
 	}
 
 	public render() {
@@ -109,7 +93,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		</form>;
 	}
 
-	// UpdateState( field:string, ref:any )
 	// Helper class to update the components state when inputing values in text areas.
 	private UpdateState(field : string, ref : any) {
 		const state = {};
@@ -117,14 +100,12 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		this.setState( state );
 	}
 
-	// FieldId( type:string )
 	// @param {string} type
 	// Helper class to create unique ID for lables in form.
 	private FieldId(type : string) {
 		return `edit-field-${this.props.id}-${type}`;
 	}
 
-	// RemoveLinkItem( index:number )
 	// @param {number} index
 	// Removes the supplied index from the states link-list.
 	// Component renders news state and gives each item a new index.
@@ -140,7 +121,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		});
 	}
 
-	// onCacnel( e:any )
 	// @param {event} e
 	// Resets the components state to that of its initial props.
 	// Clears inputfeilds and calls the onCancle funciton for the
@@ -156,7 +136,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		}, () => this.props.onCancel(this.state));
 	}
 
-	// onSave( e:any )
 	// @param {event} e
 	// Takes an event so it can stop bubbling in the dom.
 	// Adds the current input to the link feild
@@ -172,7 +151,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		this.props.onSave(this.state);
 	}
 
-	// AddLinkItem( e?:any )
 	// @param {event} e optional
 	// Adds the content of the linkinput feild to the component link state
 	// resets the input
@@ -195,7 +173,7 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		});
 	}
 
-	// Helper class to translate component type to native language.
+	// Helper to translate component type to native language.
 	private Translate(type : string) {
 		const lookup = {
 			lead: 'innledning',
