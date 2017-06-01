@@ -8,26 +8,35 @@ log('Selenium version: %s', seleniumJAR.version);
 log('Chrome driver version: %s', chromedriver.version);
 log('Gecko driver version: %s', geckodriver.version);
 
-log(geckodriver);
+// require('source-map-support/register');  -- not quite there yet
+// require('ts-node/register');
+// require('tsconfig-paths/register');
 
 const conf = {
-	'src_folders': ['tests'],
-	'output_folder': 'reports',
+	'src_folders': ['test/frontend'],
+	'output_folder': false,
 
 	'selenium': {
 		'server_path': seleniumJAR.path,
 		'start_process': true,
-//		'log_path': '',
 		'port': 4444,
 		'cli_args': {
 			'webdriver.chrome.driver': chromedriver.path,
 			'webdriver.gecko.driver': geckodriver.path,
-			// 'webdriver.edge.driver': ''
+		},
+	},
+
+	'test_runner': {
+		'type': 'mocha',
+		'options': {
+			'ui': 'bdd',
+			'reporter': 'list'
 		},
 	},
 
 	'test_settings': {
 		'default': {
+			'filter': '*.test.js',
 			'launch_url': 'http://localhost',
 			'selenium_port': 4444,
 			'selenium_host': 'localhost',
@@ -36,9 +45,12 @@ const conf = {
 				'enabled' : false,
 			},
 			'desiredCapabilities': {
-				'browserName': 'firefox',
-				'marionette': true
-			}
+				'browserName': 'chrome',
+			},
+			// 'desiredCapabilities': {
+			// 	'browserName': 'firefox',
+			// 	'marionette': true
+			// },
 		},
 	},
 };
