@@ -17,6 +17,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 			DONT_TEST_ALL=true
 			TEST_BASE=true
 			;;
+		--frontend)
+			DONT_TEST_ALL=true
+			TEST_FRONTEND=true
+			;;
 	esac
 	shift
 done
@@ -26,9 +30,11 @@ MOCHA="node_modules/.bin/mocha --opts"
 export NODE_ENV="test"
 export DEBUG=${DEBUG:-"*,-babel,-mocha:*"}
 
-### Global test runner, saves return code
+### Global test runners, save return code
 
 EXITCODE=0
+
+### Run Mocha
 
 runMocha()
 {
@@ -40,6 +46,13 @@ runMocha()
 	if [ ${RETURN_VALUE} -ne 0 ] ; then
 		EXITCODE=${RETURN_VALUE}
 	fi
+}
+
+### Run Nightwatch
+
+runNightwatch()
+{
+	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
 }
 
 ### Test parts
@@ -56,12 +69,19 @@ testBaseSource()
 	runMocha test/mocha-base.opts "Base Sources"
 }
 
+testFrontend()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_FRONTEND ]) ; then return ; fi
+	runNightwatch 'narf' "Frontend"
+}
+
 ### Execute all test suites
 
 runAllTests()
 {
 	testLibraries
 	testBaseSource
+	testFrontend
 }
 
 ### Return global exit code for CI service
