@@ -44,7 +44,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 			edited: this.state.edited,
 		});
 
-		return <article className={css}>
+		return <article id={`article-el-${this.props.elemOrder}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>
