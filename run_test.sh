@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 clear
-
 echo -e "\033[38;1m#### Reader Critics Test Suite ####\033[0m"
 echo
 
