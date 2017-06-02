@@ -20,7 +20,7 @@
 		"lint:app": "node_modules/.bin/tslint --project tsconfig-app.json --type-check --config tslint.json src-app/**/*.ts",
 		"lint:front": "node_modules/.bin/tslint --project tsconfig-front.json --type-check --config tslint.json src-front/**/*.ts src-front/**/*.tsx",
 		"test": "./run_test.sh",
-		"start": "./run_apps.sh"
+		"start": "./run_app.sh"
 	},
 	"babel": {
 		"presets": [
@@ -88,13 +88,17 @@
 		"babel-preset-react": "6.24.1",
 		"babel-preset-stage-0": "6.24.1",
 		"chai": "3.5.0",
+		"chromedriver": "2.29.0",
 		"eslint": "3.19.0",
 		"eslint-plugin-import": "2.2.0",
+		"geckodriver": "1.6.1",
 		"gulp": "3.9.1",
 		"gulp-babel": "6.1.2",
 		"gulp-typescript": "3.1.6",
 		"gulp-watch": "4.3.11",
 		"mocha": "3.4.1",
+		"nightwatch": "0.9.15",
+		"selenium-server-standalone-jar": "3.4.0",
 		"source-map-support": "0.4.15",
 		"ts-node": "3.0.4",
 		"tsconfig-paths": "2.1.2",

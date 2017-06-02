@@ -21,19 +21,20 @@ log('App located in %s', colors.brightWhite(app.rootPath));
 
 const expressApp = express();
 
-const httpPort = config.get('http.port') || 4001;
+const httpPort = config.get('http.port');
 const httpServer = http.createServer(expressApp);
 
 // Main application startup
 
-Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
+Promise.resolve()
 	.then(startHTTP)
 	.then(initExpress)
+	.then(notifyTestMaster)
 	.catch(startupErrorHandler);
 
 // Starting the HTTP server
 
-function startHTTP() {
+function startHTTP() : Promise <any> {
 	httpServer.on('error', startupErrorHandler);
 
 	return new Promise((resolve) => {
@@ -46,9 +47,21 @@ function startHTTP() {
 	});
 }
 
-function initExpress() {
+function initExpress() : Promise <void> {
 	routes(expressApp);
-	return Promise.resolve();  // Sync finish
+	return Promise.resolve();	// Sync finish
+}
+
+function notifyTestMaster() : Promise <void> {
+	// If this is the test environment, there will be a master script waiting for the app to start
+	// and become ready for API requests. Send a custom "ready, proceed" signal to this process:
+	if (app.isTest && process.env.MASTER_PID) {
+		const masterPID = parseInt(process.env.MASTER_PID);
+		if (masterPID > 0) {
+			process.kill(masterPID, 'SIGUSR2');
+		}
+	}
+	return Promise.resolve();	// Sync finish
 }
 
 // Error handling during startup
