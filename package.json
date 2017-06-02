@@ -64,7 +64,7 @@
 		"webpack": "2.6.1"
 	},
 	"devDependencies": {
-		"@types/bluebird": "3.5.4",
+		"@types/bluebird": "3.5.5",
 		"@types/body-parser": "1.16.3",
 		"@types/callsite": "1.0.30",
 		"@types/chai": "4.0.0",
@@ -96,7 +96,7 @@
 		"source-map-support": "0.4.15",
 		"ts-node": "3.0.4",
 		"tsconfig-paths": "2.2.0",
-		"tslint": "5.4.0",
+		"tslint": "5.4.2",
 		"typescript": "2.3.4",
 		"webpack-dev-server": "2.4.5"
 	}
