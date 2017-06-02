@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reader-critics
+spec:
+  replicas: 2
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        app: reader-critics
+    spec:
+      containers:
+        - name: vote
+          image: eu.gcr.io/dagbladet-projects/reader-critics
+          command: ["./run_app.sh"]
+          ports:
+          - containerPort: 4000
+            name: http-port
+          resources:
+            requests:
+              memory: "40Mi"
+              cpu: "0.02"
+            limits:
+              memory: "200Mi"
+              cpu: "0.1"
+          volumeMounts: 
+          - name: service-auth
+            mountPath: /etc/secret
+            readOnly: true
+          - name: certs
+            mountPath: /etc/ssl/certs
+          env:
+          - name: NODE_ENV
+            valueFrom:
+              configMapKeyRef:
+                name: reader-critics-config
+                key: NODE_ENV

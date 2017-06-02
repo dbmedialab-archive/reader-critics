@@ -11,14 +11,14 @@
 	"scripts": {
 		"build": "npm run clean && npm run build:app && npm run build:front",
 		"build:dev": "npm run build:app && npm run watch:front",
-		"build:app": "node_modules/.bin/tsc --project tsconfig-app.json",
-		"watch:app": "node_modules/.bin/tsc --project tsconfig-app.json --watch",
+		"build:app": "tsc --project tsconfig-app.json",
+		"watch:app": "tsc --project tsconfig-app.json --watch",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
 		"clean": "rm -rf out/app out/front",
 		"lint": "npm run lint:app && npm run lint:front",
-		"lint:app": "node_modules/.bin/tslint --project tsconfig-app.json --type-check --config tslint.json src-app/**/*.ts",
-		"lint:front": "node_modules/.bin/tslint --project tsconfig-front.json --type-check --config tslint.json src-front/**/*.ts src-front/**/*.tsx",
+		"lint:app": "tslint --project tsconfig-app.json --type-check --config tslint.json src-app/**/*.ts",
+		"lint:front": "tslint --project tsconfig-front.json --type-check --config tslint.json src-front/**/*.ts src-front/**/*.tsx",
 		"test": "./run_test.sh",
 		"start": "./run_app.sh"
 	},

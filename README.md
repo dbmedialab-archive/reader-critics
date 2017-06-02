@@ -1,6 +1,7 @@
 # Reader Critics
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
+[![wercker status](https://app.wercker.com/status/becb14dfb1645c8010f604bdbb6aeeca/s/master "wercker status")](https://app.wercker.com/project/byKey/becb14dfb1645c8010f604bdbb6aeeca)
 Leserkritikk versjon 2
 
 ### Table of Contents
