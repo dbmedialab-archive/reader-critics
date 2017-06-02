@@ -33,7 +33,7 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 done
 
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"*,-babel,-mocha:*"}
+export DEBUG=${DEBUG:-"app:*"}
 
 ### Global test runners, save return code
 
@@ -98,7 +98,38 @@ testBaseSource()
 testFrontend()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_FRONTEND ]) ; then return ; fi
+
+	export MASTER_PID=$$
+	export PORT=${PORT:-"4000"}
+
+	# Launch API service in the background
+	node out/start.js &
+
+	# Grab PID of background process
+	NODE_PID=$!
+	echo "App launching on PID ${NODE_PID}. Waiting for startup ..."
+
+	# Install trap that catches the "ready" signal when the API has finished its initialization
+	NODE_READY=false
+	trap "NODE_READY=true" SIGUSR2
+
+	# Wait for the APU process to become ready
+	count=0
+	until ( ${NODE_READY} )
+	do
+		((count++))
+		if [ ${count} -gt 50 ]  # waits for a maximum of 10 seconds
+		then
+			echo "App didn't become ready in time. Check test output!"
+			exit 69  # BSD value for "service unavailable"
+		fi
+		sleep 0.2
+	done
+
 	runNightwatch "test/nightwatch-frontend.js" "Frontend"
+
+	echo "Terminating Node process ${NODE_PID}"
+	kill ${NODE_PID}
 }
 
 ### Execute all test suites
