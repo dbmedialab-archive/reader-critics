@@ -20,7 +20,7 @@
 		"lint:app": "node_modules/.bin/tslint --project tsconfig-app.json --type-check --config tslint.json src-app/**/*.ts",
 		"lint:front": "node_modules/.bin/tslint --project tsconfig-front.json --type-check --config tslint.json src-front/**/*.ts src-front/**/*.tsx",
 		"test": "./run_test.sh",
-		"start": "./run_apps.sh"
+		"start": "./run_app.sh"
 	},
 	"babel": {
 		"presets": [
