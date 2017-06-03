@@ -8,14 +8,14 @@ import {
 
 import textDiffToHTML from './textDiffToHTML';
 
-interface ArticleElementProp {
+export interface ArticleElementProp {
 	elemOrder : number;
 	typeOrder : number;
 	type : string;
 	originalText : string;
 }
 
-interface ArticleElementState {
+export interface ArticleElementState {
 	edited: boolean;
 	editing: boolean;
 	text: string;

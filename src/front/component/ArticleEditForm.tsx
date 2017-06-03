@@ -8,7 +8,7 @@ export interface EditFormPayload {
 	links: Array <string>;
 }
 
-interface ArticleEditFormProp {
+export interface ArticleEditFormProp {
 	/** The ID of this item. It's used to create references for labels to text areas and inputs */
 	id : number;
 	/** Funciton to trigger so input is reset */
@@ -21,7 +21,7 @@ interface ArticleEditFormProp {
 	type: string;
 }
 
-interface ArticleEditFormState {
+export interface ArticleEditFormState {
 	current : EditFormPayload;
 	previous : EditFormPayload;
 }

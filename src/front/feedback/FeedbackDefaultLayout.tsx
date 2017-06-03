@@ -9,18 +9,13 @@ import FeedbackFormContainer from './FeedbackFormContainer';
 
 // Component Properties
 
-interface LayoutProps {
+export interface FeedbackLayoutProps {
 	articleURL : string;
-}
-
-// Component State
-
-interface LayoutState {
 }
 
 // Default Feedback Layout
 
-export default class FeedbackDefaultLayout extends React.Component <LayoutProps, LayoutState> {
+export default class FeedbackDefaultLayout extends React.Component <FeedbackLayoutProps, void> {
 
 	private articleRequest : any;
 
