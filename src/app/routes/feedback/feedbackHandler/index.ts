@@ -10,7 +10,7 @@ import {
 
 import * as app from 'app/util/applib';
 
-import ArticleURL from 'app/base/ArticleURL';
+import ArticleURL from 'base/ArticleURL';
 
 const log = app.createLog();
 

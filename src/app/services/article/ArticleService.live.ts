@@ -3,8 +3,8 @@ import * as Promise from 'bluebird';
 import * as app from 'app/util/applib';
 
 import Article from 'app/models/Article';
-import ArticleURL from 'app/base/ArticleURL';
-import ArticleElementType from 'app/base/ArticleElementType';
+import ArticleURL from 'base/ArticleURL';
+import ArticleElementType from 'base/ArticleElementType';
 import HtmlParser from 'app/parser/html/HtmlParser';
 
 const log = app.createLog();

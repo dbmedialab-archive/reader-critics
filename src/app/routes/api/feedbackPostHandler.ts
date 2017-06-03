@@ -3,7 +3,7 @@ import {
 	Response,
 } from 'express';
 
-import ArticleURL from 'app/base/ArticleURL';
+import ArticleURL from 'base/ArticleURL';
 
 import { Article } from 'app/services';
 import { EmptyError } from 'app/util/errors';

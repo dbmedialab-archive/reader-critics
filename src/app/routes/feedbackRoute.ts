@@ -6,7 +6,7 @@ import {
 
 import * as app from 'app/util/applib';
 
-import ArticleURL from 'app/base/ArticleURL';
+import ArticleURL from 'base/ArticleURL';
 import { EmptyError } from 'app/util/errors';
 
 import emptyHandler from './feedback/emptyHandler';

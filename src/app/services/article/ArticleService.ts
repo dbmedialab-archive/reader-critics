@@ -1,4 +1,4 @@
-import ArticleURL from 'app/base/ArticleURL';
+import ArticleURL from 'base/ArticleURL';
 
 interface ArticleService {
 
