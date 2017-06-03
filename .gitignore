@@ -2,6 +2,7 @@
 /node_modules/
 /out/app/
 /out/base/
+/out/bundle/
 /out/front/
 
 # Packages

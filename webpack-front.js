@@ -31,8 +31,8 @@ const webpackConfig = {
 		app : __dirname + '/src/front/index.tsx'
 	},
 	output: {
-		filename: '[name].bundle.js',
-		path: __dirname + '/out/front',
+		filename: 'front.bundle.js',
+		path: __dirname + '/out/bundle',
 		publicPath: '/static'
 	},
 

@@ -20,6 +20,6 @@ staticRoute.use('/styles', serveStatic(path.join(app.rootPath, 'tmp/styles')));
 staticRoute.use('/react', serveStatic(path.join(app.rootPath, 'node_modules/react/dist/')));
 staticRoute.use('/react', serveStatic(path.join(app.rootPath, 'node_modules/react-dom/dist/')));
 
-staticRoute.use('/', serveStatic(path.join(app.rootPath, 'out/front')));
+staticRoute.use('/', serveStatic(path.join(app.rootPath, 'out/bundle')));
 
 export default staticRoute;

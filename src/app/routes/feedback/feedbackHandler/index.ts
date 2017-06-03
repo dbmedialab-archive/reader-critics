@@ -22,7 +22,7 @@ const styles = [
 const scripts = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
-	'/static/app.bundle.js',
+	'/static/front.bundle.js',
 ];
 
 // Respond with initial HTML, process template for feedback form page
