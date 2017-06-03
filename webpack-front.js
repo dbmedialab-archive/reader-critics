@@ -15,7 +15,7 @@ const loaderBabel = {
 const loaderTypeScript = {
 	loader: 'awesome-typescript-loader',
 	options: {
-		configFileName: __dirname + '/tsconfig-front.json',
+		configFileName: __dirname + '/tsconfig.json',
 	}
 };
 
@@ -28,7 +28,7 @@ const extractSass = new ExtractTextPlugin({
 
 const webpackConfig = {
 	entry: {
-		app : __dirname + '/src-front/index.tsx'
+		app : __dirname + '/src/front/index.tsx'
 	},
 	output: {
 		filename: '[name].bundle.js',
