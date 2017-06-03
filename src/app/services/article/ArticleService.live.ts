@@ -29,7 +29,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 	const newElements : any[] = [];
 
 	let elemOrder : number = 1;
-	let typeOrder = {};
+	const typeOrder = {};
 
 	ArticleElementType.names.forEach(name => (typeOrder[name] = 1));
 
@@ -48,7 +48,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 			order: {
 				elem: elemOrder,
 				type: typeOrder[type],
-			}
+			},
 		};
 
 		if (newElem.type === 'figure') {
@@ -66,7 +66,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 			newElements.push(newElem);
 
 			elemOrder ++;
-			typeOrder[type] ++
+			typeOrder[type] ++;
 		}
 		else if (newElem.type !== null) {
 			if (next.data.text.length > 0) {
@@ -74,7 +74,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 				newElements.push(newElem);
 
 				elemOrder ++;
-				typeOrder[type] ++
+				typeOrder[type] ++;
 			}
 			else {
 				log('Skipped empty content');

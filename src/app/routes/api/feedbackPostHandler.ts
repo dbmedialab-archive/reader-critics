@@ -3,11 +3,6 @@ import {
 	Response,
 } from 'express';
 
-import ArticleURL from 'base/ArticleURL';
-
-import { Article } from 'app/services';
-import { EmptyError } from 'app/util/errors';
-
 import { okResponse } from './apiResponse';
 
 import * as app from 'app/util/applib';

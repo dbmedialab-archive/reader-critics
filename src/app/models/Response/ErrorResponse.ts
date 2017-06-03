@@ -1,6 +1,6 @@
 import Response from './Response';
 
-export default class ErrorRespnse extends Response {
+export default class ErrorResponse extends Response {
 	private errors: object;
 
 	constructor(success: boolean, message: string, errors: object) {

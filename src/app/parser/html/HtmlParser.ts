@@ -1,11 +1,8 @@
-import axios from 'axios';
-
 import * as Cheerio from 'cheerio';
 import * as NodeRead from 'node-read';
 import * as Promise from 'bluebird';
 
 import Article from 'app/models/Article';
-import ErrorResponse from 'app/models/Response/ErrorResponse';
 import BaseParser from '../BaseParser';
 
 export default class HtmlParser extends BaseParser {

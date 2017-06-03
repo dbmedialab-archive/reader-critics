@@ -1,8 +1,8 @@
-import printEnv from 'print-env';
+import printEnvironment from 'print-env';
 
 import { createLog } from 'app/util/applib';
 
 {
 	const log = createLog();
-	printEnv(log);
+	printEnvironment(log);
 }

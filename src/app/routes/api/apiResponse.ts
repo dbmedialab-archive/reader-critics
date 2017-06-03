@@ -1,8 +1,4 @@
-import {
-	Request,
-	Response,
-} from 'express';
-
+import { Response } from 'express';
 import { isObject } from 'lodash';
 
 import * as app from 'app/util/applib';

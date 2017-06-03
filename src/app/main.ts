@@ -6,8 +6,6 @@ import * as http from 'http';
 import * as app from './util/applib';
 
 import config from './config';
-import logRequest from './util/logRequest';
-
 import routes from './routes';
 
 import './env';

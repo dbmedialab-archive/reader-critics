@@ -1,14 +1,14 @@
 import * as Ajv from 'ajv';
-import axios from 'axios';
-import * as Http from 'http';
 
-import Article from '../../models/Article';
-import Author from '../../models/Author';
-import Byline from '../../models/Byline';
-import ErrorResponse from '../../models/Response/ErrorResponse';
-import Response from '../../models/Response/Response';
-import Site from '../../models/Site';
-import Tag from '../../models/Tag';
+import Axios from 'axios';
+
+import Article from 'app/models/Article';
+import Author from 'app/models/Author';
+import Byline from 'app/models/Byline';
+import ErrorResponse from 'app/models/Response/ErrorResponse';
+import Response from 'app/models/Response/Response';
+import Tag from 'app/models/Tag';
+
 import BaseParser from '../BaseParser';
 import Schema from './Schema';
 
@@ -21,7 +21,7 @@ export default class ApiParser extends BaseParser {
 			return Promise.reject(new Response(false, 'No url provided'));
 		}
 
-		return axios.get(this.url).then(response => {
+		return Axios.get(this.url).then(response => {
 			let articleJson = {};
 			if (response.headers['content-type'].indexOf('json') === -1) {
 				if (typeof response.data === 'string') {
@@ -58,14 +58,14 @@ export default class ApiParser extends BaseParser {
 		});
 	}
 
-	private buildArticle(articleJson: object) {
-		const site = new Site(articleJson['site']);
+	private buildArticle(articleJson : object) {
 		const article = new Article(articleJson['article']);
-
 		const byline = new Byline({});
+
 		for (const author of articleJson['byline']) {
 			byline.attachdAuthor(new Author(author).toString());
 		}
+
 		article.setByline(byline.toString());
 
 		for (const tag of articleJson['tags']) {
@@ -74,4 +74,5 @@ export default class ApiParser extends BaseParser {
 
 		return article;
 	}
+
 }
