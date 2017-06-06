@@ -11,6 +11,7 @@ const {
 
 const elContent = 'article#article-el-2 p';
 const elEditBtn = 'article#article-el-2 footer a#btn-edit-2.button.edit';
+const elTextArea = 'article#article-el-2 form textarea#edit-field-1-content';
 
 const expectedText = 'Kort tid etter ble han historisk da han, som den';
 
@@ -43,11 +44,18 @@ describe('ArticleEditForm', function() {
 			});
 		})
 
+		// Click on the "Edit" button and check if <ArticleEditForm> becomes visible
 		.click(elEditBtn)
+		.assert.visible(elTextArea)
+
+		// Check if <textarea> contains same text as its parent <ArticleElement>
+		.assert.value(elTextArea, originalText)
 
 		.perform(function() {
 			console.log('Saved:', originalText);
-		});
+		})
+
+		.end();
 	});
 
 });
