@@ -40,17 +40,17 @@ const conf = {
 			'launch_url': 'http://localhost',
 			'selenium_port': 4444,
 			'selenium_host': 'localhost',
-			'silent': false,
+			'silent': true,
 			'screenshots' : {
 				'enabled' : false,
 			},
-		//	'desiredCapabilities': {
-		//		'browserName': 'chrome',
-		//	},
 			'desiredCapabilities': {
-			 	'browserName': 'firefox',
-			 	'marionette': true
+				'browserName': 'chrome',
 			},
+			// 'desiredCapabilities': {
+			//  	'browserName': 'firefox',
+			//  	'marionette': true
+			// },
 		},
 	},
 };

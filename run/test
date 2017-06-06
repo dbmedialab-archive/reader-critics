@@ -32,8 +32,11 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 	shift
 done
 
+# App Configuration
+
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"app:*"}
+export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-retry-as-promised,-send"}
+export WEB_CONCURRENCY=${WEB_CONCURRENCY:-3}
 
 ### Global test runners, save return code
 

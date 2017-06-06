@@ -4,7 +4,7 @@ import * as findRoot from 'find-root';
 import * as Promise from 'bluebird';
 
 /** The filesystem root of the whole project */
-export const rootPath = findRoot(path.dirname(require.main.filename));
+export const rootPath : string = findRoot(path.dirname(require.main.filename));
 
 export function loadResource(relativePath : string) : Promise <any> {
 	return new Promise((resolve, reject) => {
