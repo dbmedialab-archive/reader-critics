@@ -7,6 +7,8 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog('master');
 
+const workerMap = {};
+
 /**
  * Main function of master process
  */
@@ -22,17 +24,48 @@ export default function() {
 		colors.brightWhite(app.numConcurrency),
 	);
 
+	const startupPromises : Promise<{}> [] = [];
+
 	for (let i = 0; i < app.numConcurrency; i++) {
-		cluster.fork();
+		const worker : cluster.Worker = cluster.fork();
+		log('Starting up worker %d', worker.id);
+
+		startupPromises.push(new Promise((resolve) => {
+			workerMap[worker.id] = {
+				startupResolve: resolve,
+			};
+		}));
 	}
 
-	notifyTestMaster();
+	Promise.all(startupPromises)
+		.then(notifyTestMaster)
+		.catch(startupErrorHandler);
 }
 
-/**
- * Signal Test Environment
- */
-function notifyTestMaster() : void {
+// Cluster Events
+
+cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => {
+	log('Worker %d died (%s)', worker.id, signal || code);
+	delete workerMap[worker.id];
+});
+
+cluster.on('listening', (worker : cluster.Worker, address : any) => {
+	log('Worker %d is ready', worker.id);
+	workerMap[worker.id].startupResolve();
+	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
+});
+
+// Error handling during startup
+
+function startupErrorHandler(error : Error) {
+	log(error.stack || error.toString());
+	process.exit(-128);
+}
+
+// Signal Test Environment
+
+function notifyTestMaster() : Promise <void> {
+	log('All workers ready');
 	// If this is the test environment, there will be a master script waiting
 	// for the app to start and become ready for API requests. Send a custom
 	// "ready, proceed" signal to this process:
@@ -42,10 +75,7 @@ function notifyTestMaster() : void {
 			process.kill(masterPID, 'SIGUSR2');
 		}
 	}
+
+	// Sync resolve
+	return Promise.resolve();
 }
-
-// Cluster Events
-
-cluster.on('exit', (worker, code, signal) => {
-	log('Worker %d died (%s)', worker.id, signal || code);
-});
