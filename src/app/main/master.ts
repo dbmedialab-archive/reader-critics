@@ -37,10 +37,9 @@ export default function() {
 		}));
 	}
 
-	Promise.all(startupPromises).then(() => {
-		log('All workers ready');
-		notifyTestMaster();
-	});
+	Promise.all(startupPromises)
+		.then(notifyTestMaster)
+		.catch(startupErrorHandler);
 }
 
 // Cluster Events
@@ -56,10 +55,17 @@ cluster.on('listening', (worker : cluster.Worker, address : any) => {
 	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
 });
 
-/**
- * Signal Test Environment
- */
-function notifyTestMaster() : void {
+// Error handling during startup
+
+function startupErrorHandler(error : Error) {
+	log(error.stack || error.toString());
+	process.exit(-128);
+}
+
+// Signal Test Environment
+
+function notifyTestMaster() : Promise <void> {
+	log('All workers ready');
 	// If this is the test environment, there will be a master script waiting
 	// for the app to start and become ready for API requests. Send a custom
 	// "ready, proceed" signal to this process:
@@ -69,4 +75,7 @@ function notifyTestMaster() : void {
 			process.kill(masterPID, 'SIGUSR2');
 		}
 	}
+
+	// Sync resolve
+	return Promise.resolve();
 }
