@@ -44,13 +44,13 @@ const conf = {
 			'screenshots' : {
 				'enabled' : false,
 			},
-		//	'desiredCapabilities': {
-		//		'browserName': 'chrome',
-		//	},
 			'desiredCapabilities': {
-			 	'browserName': 'firefox',
-			 	'marionette': true
+				'browserName': 'chrome',
 			},
+			// 'desiredCapabilities': {
+			//  	'browserName': 'firefox',
+			//  	'marionette': true
+			// },
 		},
 	},
 };
