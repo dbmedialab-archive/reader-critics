@@ -10,7 +10,7 @@ const {
 } = require('../test-tools-frontend');
 
 const elContent = 'article#article-el-2 p';
-const elEditBtn = 'article#article-el-2 footer btn-edit-2';
+const elEditBtn = 'article#article-el-2 footer a#btn-edit-2.button.edit';
 
 const expectedText = 'Kort tid etter ble han historisk da han, som den';
 
