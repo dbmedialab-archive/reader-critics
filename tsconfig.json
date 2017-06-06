@@ -1,1 +1,32 @@
-tsconfig-app.json
+{
+	"include": [
+		"./src/**/*"
+	],
+	"exclude": [
+		"./node_modules",
+		"./src-arch"
+	],
+	"compilerOptions": {
+		"outDir": "out",
+
+		"baseUrl": "./src",
+		"paths": {
+			"app/*": [ "app/*" ],
+			"base/*": [ "base/*" ],
+			"front/*": [ "front/*" ]
+		},
+
+		"allowJs": false,
+		"declaration": true,
+		"experimentalDecorators": true,
+		"jsx": "react",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": false,
+		"preserveConstEnums": true,
+		"removeComments": true,
+		"sourceMap": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"target": "es6"
+	}
+}
