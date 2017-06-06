@@ -7,6 +7,8 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog('master');
 
+const workerMap = {};
+
 /**
  * Main function of master process
  */
@@ -22,12 +24,37 @@ export default function() {
 		colors.brightWhite(app.numConcurrency),
 	);
 
+	const startupPromises : Promise<{}> [] = [];
+
 	for (let i = 0; i < app.numConcurrency; i++) {
-		cluster.fork();
+		const worker : cluster.Worker = cluster.fork();
+		log('Starting up worker %d', worker.id);
+
+		startupPromises.push(new Promise((resolve) => {
+			workerMap[worker.id] = {
+				startupResolve: resolve,
+			};
+		}));
 	}
 
-	notifyTestMaster();
+	Promise.all(startupPromises).then(() => {
+		log('All workers ready');
+		notifyTestMaster();
+	});
 }
+
+// Cluster Events
+
+cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => {
+	log('Worker %d died (%s)', worker.id, signal || code);
+	delete workerMap[worker.id];
+});
+
+cluster.on('listening', (worker : cluster.Worker, address : any) => {
+	log('Worker %d is ready', worker.id);
+	workerMap[worker.id].startupResolve();
+	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
+});
 
 /**
  * Signal Test Environment
@@ -43,9 +70,3 @@ function notifyTestMaster() : void {
 		}
 	}
 }
-
-// Cluster Events
-
-cluster.on('exit', (worker, code, signal) => {
-	log('Worker %d died (%s)', worker.id, signal || code);
-});
