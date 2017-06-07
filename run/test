@@ -1,13 +1,34 @@
 #!/usr/bin/env bash
 
-clear
-echo -e "\033[38;1m#### Reader Critics Test Suite ####\033[0m"
-echo
+# Print help
+
+printUsage()
+{
+	echo "${0} [options]"
+	echo
+	echo "  --libs         Only execute Javascript library tests"
+	echo "  --base         Only test base modules"
+	echo "  --frontend     Only execute frontend E2E tests"
+	echo
+	echo "  --kill-all     Clean up leftover processes after E2E tests (like Chromedriver, Chrome, etc.)"
+	echo "                 Terminates whole process group but does not touch (for example) user browsers"
+	echo "  -h|--help      Print this sermon"
+	echo
+	exit
+}
 
 ### Process command line parameters and configure test suite
 
+KILL_E2E_PROC=false
+
 while [ $# -gt 0 ]; do	# Until you run out of parameters
 	case "$1" in
+		-h)
+			printUsage
+			;;
+		--help)
+			printUsage
+			;;
 		--libs)
 			DONT_TEST_ALL=true
 			TEST_LIBS=true
@@ -20,6 +41,9 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 			DONT_TEST_ALL=true
 			TEST_FRONTEND=true
 			;;
+		--kill-all)
+			KILL_E2E_PROC=true
+			;;
 	#	--tags)
 	#		shift
 	#		if [ $# -lt 1 ]; then
@@ -31,6 +55,12 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 	esac
 	shift
 done
+
+# Clear screen and print intro
+
+clear
+echo -e "\033[38;1m#### Reader Critics Test Suite ####\033[0m"
+echo
 
 # App Configuration
 
@@ -77,6 +107,12 @@ runNightwatch()
 	# Run Nightwatch
 	node_modules/.bin/nightwatch --config ${1} # ${TAGS_CMDL}
 	RETURN_VALUE=$?
+
+	# Clean up in case stuff breaks (which it does quite often when writing tests)
+	if [ $KILL_E2E_PROC ]; then
+		killall --quiet --process-group node_modules/chromedriver/lib/chromedriver/chromedriver
+		killall --quiet --process-group node_modules/geckodriver/geckodriver
+	fi
 
 	# Catch exit code
 	if [ ${RETURN_VALUE} -ne 0 ] ; then
