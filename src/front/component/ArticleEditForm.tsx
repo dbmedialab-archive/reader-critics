@@ -48,7 +48,6 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 	}
 
 	public reset(originalText : string) {
-		console.log('ArticleEditForm.reset');
 		const clean : EditFormPayload = {
 			text: originalText,
 			comment: '',
