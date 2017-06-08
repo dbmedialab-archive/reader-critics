@@ -83,6 +83,12 @@ describe('ArticleEditForm', function() {
 		});
 	});
 
+	after(function(browser, done) {
+		return browser.end().perform(function() {
+			done();
+		});
+	})
+
 	// Check if clicking on "Edit" opens the <ArticleEditForm>
 
 	it('should become visible when clicking the "Edit" button', function(browser) {
@@ -99,7 +105,9 @@ describe('ArticleEditForm', function() {
 		.assert.value(elTextArea, originalText)
 	});
 
-	// The actual test case
+	// Check if the text components keep their input.
+	// Form elements in React can be set up in a way that makes them read-only
+	// (for example, declaring them with value=this.state.some)
 
 	it('should accept and keep user input', function(browser) {
 		// Focus comment field and type some text into it
@@ -119,6 +127,9 @@ describe('ArticleEditForm', function() {
 		.assert.value(elTextArea, changedText)
 	});
 
+	// Check if the form closes after clicking "Safe"
+	// A text diff should appear on its parent component
+
 	it('should close the form and display a text diff', function(browser) {
 		// Click "Save" button
 		thePage.click(elFormSaveBtn)
@@ -133,54 +144,20 @@ describe('ArticleEditForm', function() {
 		.assert.containsText(elContent, diffyText);
 	});
 
+	// Check if the form is reset to its original values correctly when
+	// clicking the "Reset" button
 
-
-
+	it('should reset properly', function(browser) {
 		// Click "Reset" button, check for original text, then re-open <ArticleEditForm>
-		// .click(elResetBtn)
-
-
-// it('should reset properly', function(browser) {
-
-
-		// Doing a plain assert against the previously stored value
-		// .assert.containsText(elContent, originalText)
-		// will yield that 'originalText' is undefined in that scope.
-
-		// .perform(function() {
-		// 	log('originalText', originalText);
-		// 	const thisShitIsImmutable = originalText;
-		// 	return browser.assert.containsText(elContent, thisShitIsImmutable);
-		// })
-
-		// .click(elEditBtn)
-
-
-
-		// .waitForElementVisible('#edit-field-1-comment', timeoWait)
-		// .click('#edit-field-1-comment')
-		// .setValue('#edit-field-1-comment', 'shiiiiiiiiiiiiiiiiiiiiiiiiiite')
-		// .click(elTextArea)
-		// .setValue(elTextArea, changedText)
-
-/*
-
-		.assert.value(elTextArea, 'narf' /*originalText* /)
-		.pause(20000)
-*/
-
-/*
+		thePage.click(elResetBtn)
 		.assert.hidden(elFeedbackForm)
-
-		.click(elResetBtn)
 		.assert.containsText(elContent, originalText)
+
+		// Click on "Edit" to re-open the feedback form
 		.click(elEditBtn)
+		.waitForElementVisible(elFeedbackForm, timeoWait)
 
-		// Finally, check if the <textarea> was reset properly, it should
-		// contain the original text again:
-		.assert.visible(elFeedbackForm)
-		.assert.value(elTextArea, originalText)
-
-		.end();*/
+		.assert.value(elTextArea, originalText);
+	});
 
 });
