@@ -11,7 +11,7 @@ spec:
         app: reader-critics
     spec:
       containers:
-        - name: node
+        - name: reader-critics
           image: eu.gcr.io/dagbladet-projects/reader-critics
           command: ["npm"]
           args: ["start"]
