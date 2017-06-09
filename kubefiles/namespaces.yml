@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reader-critics-prod
+  labels:
+    environment: production
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: reader-critics-stage
+  labels:
+    environment: staging
