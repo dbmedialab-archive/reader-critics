@@ -53,7 +53,7 @@ deploy:
     code: |
       initkube
       deploy $WERCKER_GIT_REPOSITORY <<EOL
-        vote=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
+        $WERCKER_GIT_REPOSITORY=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
       EOL
   - script:
     name: perserve cache.txt file
