@@ -55,7 +55,3 @@ deploy:
       deploy $WERCKER_GIT_REPOSITORY <<EOL
         reader-critics=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
       EOL
-  - script:
-    name: perserve cache.txt file
-    code: |
-      cp cache.txt "$WERCKER_OUTPUT_DIR"
