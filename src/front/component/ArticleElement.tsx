@@ -81,7 +81,7 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	private createEditButton() : JSX.Element {
 		const css = classnames('button', 'edit');
 		return <a
-			id={`btn-reset-${this.props.elemOrder}`}
+			id={`btn-edit-${this.props.elemOrder}`}
 			className={css}
 			onClick={ this.EnableEditing.bind(this) }
 		>Rediger</a>;

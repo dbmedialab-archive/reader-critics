@@ -59,11 +59,16 @@ of that particular component.
 Things learned when writing tests for Nightwatch:
 * If the test finishes too quickly, something likely has gone south. It has
   been observed that certain `assert.value(...)` calls just interrupt the
-  test case and **let the result appear to be OKAY**. This means basically that
-  the test is **not finishing** but at the same time claims to be good. Such
+  test case and **let the result appear to be OKAY**. This seems to be a bug
+  in Nightwatch and is triggered when comparing something against `undefined`.
+  The test is **not finishing** but at the same time claims to be fine. Such
   a test is not only _worthless_, but rather _dangerous_ and _deceiving_.
   Always check that the test is really doing what it is supposed to to when
   writing a new one!
+* The function chains of the test suites in Nightwatch are evaluated _completely
+  before_ the test is started. This means that variables that are set during
+  the test and are referenced later will always resolve to `undefined`. See
+  above and also [this Google Groups thread](https://groups.google.com/forum/#!topic/nightwatchjs/NmRQtUz4bzk).
 * Frontend tests actually behave like a person sitting in front of a browser.
   Therefore, tests need to follow the _exact_ behaviour of a human user.
   Example, the following sequence will _do nothing_:
@@ -110,3 +115,15 @@ Things learned when writing tests for Nightwatch:
   A bit more code, but the call to `done` is reliable this way. It is supposed
   that parameters forwarded to `done` when using it directly in a callback
   parameter are interpreted as errors and thus will make the test case fail.
+* Nightwatch tests are one long function sequence. Commands, asserts, waits,
+  everything is chained. The test execution is asynchronous, which makes
+  chaining all calls to Nightwatch necessary.
+  This test case
+  ```
+    browser
+      .click('input#field')
+      .setValue('input#field', 'something');  // set it
+    browser
+      .assert.value('input#field', 'something');  // expect it
+  ```
+  will not yield the expected result because both calls will run concurrently.
