@@ -14,9 +14,7 @@ js-lint-build:
   - script:
     name: copy production files
     code: |
-      cp -r out \
-        tmp \
-        run_app.sh \
+      cp -r . \
         $WERCKER_OUTPUT_DIR
 
 push-image:

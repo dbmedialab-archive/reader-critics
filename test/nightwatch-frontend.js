@@ -48,8 +48,8 @@ const conf = {
 				'browserName': 'chrome',
 			},
 			// 'desiredCapabilities': {
-			// 	'browserName': 'firefox',
-			// 	'marionette': true
+			//  	'browserName': 'firefox',
+			//  	'marionette': true
 			// },
 		},
 	},

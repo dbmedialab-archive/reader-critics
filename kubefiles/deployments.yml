@@ -11,9 +11,10 @@ spec:
         app: reader-critics
     spec:
       containers:
-        - name: vote
+        - name: node
           image: eu.gcr.io/dagbladet-projects/reader-critics
-          command: ["./run_app.sh"]
+          command: ["npm"]
+          args: ["start"]
           ports:
           - containerPort: 4000
             name: http-port
@@ -24,12 +25,6 @@ spec:
             limits:
               memory: "200Mi"
               cpu: "0.1"
-          volumeMounts: 
-          - name: service-auth
-            mountPath: /etc/secret
-            readOnly: true
-          - name: certs
-            mountPath: /etc/ssl/certs
           env:
           - name: NODE_ENV
             valueFrom:

@@ -1,9 +1,7 @@
 {
 	"defaultSeverity": "error",
 	"rules": {
-		"arrow-return-shorthand": {
-			"severity": "warning"
-		},
+		"arrow-return-shorthand": true,
 		"await-promise": true,
 		"class-name": true,
 		"curly": true,
@@ -11,13 +9,14 @@
 		"eofline": true,
 		"indent": [ true, "tabs" ],
 		"linebreak-style": [ true, "LF" ],
-		"match-default-export-name": true,
+		"match-default-export-name": {
+			"severity": "warning"
+		},
 		"max-file-line-count": [ true, 200 ],
 		"max-line-length": [ "warning", 100 ],
 		"new-parens": true,
-		"no-consecutive-blank-lines": {
-			"severity": "warning"
-		},
+		"no-conditional-assignment": true,
+		"no-consecutive-blank-lines": true,
 		"no-duplicate-variable": true,
 		"no-eval": true,
 		"no-irregular-whitespace": true,
@@ -26,9 +25,7 @@
 		"no-shadowed-variable": true,
 		"no-string-throw": true,
 		"no-switch-case-fall-through": true,
-		"no-trailing-whitespace": {
-			"severity": "warning"
-		},
+		"no-trailing-whitespace": true,
 		"no-unnecessary-initializer": true,
 		"no-unused-variable": {
 			"severity": "warning"
