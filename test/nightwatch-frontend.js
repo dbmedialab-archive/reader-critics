@@ -1,4 +1,7 @@
-const log = require('debug')('nightwatch');
+const {
+	log,
+	openPage,
+} = require('./test-tools-frontend');
 
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
@@ -44,6 +47,7 @@ const conf = {
 			'screenshots' : {
 				'enabled' : false,
 			},
+			'end_session_on_fail': true,
 			'desiredCapabilities': {
 				'browserName': 'chrome',
 			},

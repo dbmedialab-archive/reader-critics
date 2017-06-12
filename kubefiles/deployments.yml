@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: reader-critics
+spec:
+  replicas: 2
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        app: reader-critics
+    spec:
+      containers:
+        - name: reader-critics
+          image: eu.gcr.io/dagbladet-projects/reader-critics
+          command: ["npm"]
+          args: ["start"]
+          ports:
+          - containerPort: 4000
+            name: http-port
+          resources:
+            requests:
+              memory: "40Mi"
+              cpu: "0.02"
+            limits:
+              memory: "200Mi"
+              cpu: "0.1"
+          env:
+          - name: NODE_ENV
+            valueFrom:
+              configMapKeyRef:
+                name: reader-critics-config
+                key: NODE_ENV
