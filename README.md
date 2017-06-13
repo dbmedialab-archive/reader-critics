@@ -17,6 +17,9 @@
 ### Project Structure
 
 ```
+/assets                        Static route base folder
+    /images                    Images!
+    /styles                    CSS things
 /doc                           Documentation and schematics
 /kubefiles                     Kubernetes and Wercker configuration
 /out                           Target directory for compiled code
@@ -40,9 +43,7 @@
     nightwatch-frontend.js     Nightwatch configuration for frontend tests
     test-tools-frontend.js     Common helper functions for frontend tests
 /tmp                           Home of the temporary files
-    /images                    Static express route for serving images goes here
     /src-archive               Early React drafts
-    /styles                    Static route for CSS things
     /templates                 HTML page templates, doT format
 .ackrc                         Project local settings for the "ack" tool
 .editorconfig                  Configures indentation and whitespace. These are not only suggestions!
