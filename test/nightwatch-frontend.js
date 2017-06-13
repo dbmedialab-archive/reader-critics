@@ -1,15 +1,12 @@
-const {
-	log,
-	openPage,
-} = require('./test-tools-frontend');
+const { openPage } = require('./test-tools-frontend');
 
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
 const seleniumJAR = require('selenium-server-standalone-jar');
 
-log('Selenium version: %s', seleniumJAR.version);
-log('Chrome driver version: %s', chromedriver.version);
-log('Gecko driver version: %s', geckodriver.version);
+console.log('Selenium version:', seleniumJAR.version);
+console.log('Chrome driver version:', chromedriver.version);
+console.log('Gecko driver version:', geckodriver.version);
 
 // require('source-map-support/register');  -- not quite there yet
 // require('ts-node/register');

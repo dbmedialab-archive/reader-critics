@@ -141,8 +141,13 @@ testFrontend()
 	export MASTER_PID=$$
 	export PORT=${PORT:-"4000"}
 
+	APPLOG="app.log"
+
 	# Launch API service in the background
-	node out/start.js &
+	echo "Starting app in the background"
+	script /dev/null \
+		--quiet --command "node out/start.js" \
+		< /dev/null > ${APPLOG} 2>&1 &
 
 	# Grab PID of background process
 	NODE_PID=$!
@@ -167,8 +172,10 @@ testFrontend()
 
 	runNightwatch "test/nightwatch-frontend.js" "Frontend"
 
-	echo "Terminating Node process ${NODE_PID}"
+	echo "Terminating background process ${NODE_PID}"
 	kill ${NODE_PID}
+
+	echo -e "Check \033[38;1m${APPLOG}\033[0m for app output"
 }
 
 ### Execute all test suites
