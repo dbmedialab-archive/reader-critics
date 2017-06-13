@@ -9,7 +9,7 @@ const {
 const {
 	log,
 	openPage,
-} = require('../test-tools-frontend');
+} = require('../../test-tools-frontend');
 
 const timeoWait = 5000;
 
