@@ -16,7 +16,7 @@ _<< Update documentation with instructions as soon as this is implemented >>_
 
 ### Run
 ```
-npm run build && node run start
+npm run build && npm run start
 ```
 This will build the app (TypeScript compilation) and frontend bundle (again TypeScript, then
 Webpack). If all goes well, the main app will start and greet you with some output on the terminal.
