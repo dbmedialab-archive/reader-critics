@@ -11,8 +11,8 @@ const staticRoute : Router = Router();
 
 //express.s
 
-staticRoute.use('/images', serveStatic(path.join(app.rootPath, 'tmp/images')));
-staticRoute.use('/styles', serveStatic(path.join(app.rootPath, 'tmp/styles')));
+staticRoute.use('/images', serveStatic(path.join(app.rootPath, 'assets/images')));
+staticRoute.use('/styles', serveStatic(path.join(app.rootPath, 'assets/styles')));
 
 // We don't bundle frontend libraries together with the compiled sources, but rather host
 // them from static endpoints. Fair tradeoff between enabled browser caching but not using
