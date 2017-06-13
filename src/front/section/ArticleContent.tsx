@@ -1,13 +1,8 @@
 import * as React from 'react';
 
-import {
-	default as axios,
-	AxiosPromise,
-	AxiosResponse,
-} from 'axios';
-
 import ArticleElement from '../component/ArticleElement';
 
+import { fetchArticle } from '../apiCommunication';
 import { getArticleURL } from '../uiGlobals';
 
 export interface ArticleContentState {
@@ -15,8 +10,6 @@ export interface ArticleContentState {
 }
 
 export default class ArticleContent extends React.Component <any, ArticleContentState> {
-
-	private articleRequest : AxiosPromise;
 
 	constructor() {
 		super();
@@ -26,26 +19,16 @@ export default class ArticleContent extends React.Component <any, ArticleContent
 	}
 
 	componentWillMount() {
-		const encodedURL = encodeURIComponent(getArticleURL());
 		const self = this;
-
-		console.log('Fetch:', encodedURL);
-
-		this.articleRequest = axios.get(`/api/article/?url=${encodedURL}`);
-		this.articleRequest.then(function(resp : AxiosResponse) {
-			console.dir(resp);
-			self.setState({
-				article: resp.data.data.article,
-			});
-		});
+		fetchArticle(getArticleURL()).then(article => self.setState({
+			article,
+		}));
 	}
 
 	public render() {
 		if (this.state.article === null) {
 			return null;
 		}
-
-		console.log('ArticleContent state:', this.state);
 
 		const content = this.state.article.map((item, index) => <ArticleElement
 			key={this.createKey(item)}
@@ -64,9 +47,5 @@ export default class ArticleContent extends React.Component <any, ArticleContent
 	private createKey(item : any) : string {
 		return `element-${item.order.elem}`;
 	}
-
-	// private createArticleElement(elem : any) : ArticleElement {
-	// 	return
-	// }
 
 }
