@@ -26,26 +26,27 @@ export default class ArticleContent extends React.Component <any, ArticleContent
 	}
 
 	public render() {
+		// Initial state has no article data, render empty
 		if (this.state.article === null) {
 			return null;
 		}
 
-		const content = this.state.article.map((item, index) => <ArticleElement
-			key={this.createKey(item)}
+		// Iterate article elements and render sub components
+		return <section id='content'>
+			{ this.state.article.map(this.createArticleElement) }
+		</section>;
+	}
+
+	private createArticleElement(item, index : number) {
+		const elemKey = `element-${item.order.elem}`;
+		return <ArticleElement
+			key={elemKey}
 			elemOrder={item.order.elem}
 			typeOrder={item.order.type}
 
 			type={item.type}
 			originalText={item.text}
-		/>);
-
-		return <section id='content'>
-			{content}
-		</section>;
-	}
-
-	private createKey(item : any) : string {
-		return `element-${item.order.elem}`;
+		/>;
 	}
 
 }
