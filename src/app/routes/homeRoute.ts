@@ -23,7 +23,7 @@ export default homeRoute;
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'static/styles/home.css',
+	'/static/styles/home.css',
 ];
 
 const scripts = [];
