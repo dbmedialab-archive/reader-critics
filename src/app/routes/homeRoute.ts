@@ -11,13 +11,6 @@ import { readFileSync } from 'fs';
 
 const log = app.createLog();
 
-// TODOs:
-// - Router mit URL-Parameter einrichten
-// - URL parsen und Hostnamen extrahieren (parser-package? warsch "url", Node API)
-// - Hostnamen mit Datenbank abgleichen und Record des Kunden holen
-// - Styling und Template laden
-// - Templatecache für bereits geladene/kompilierte Frontends
-
 // Prepare and export Express router
 
 const homeRoute : Router = Router();
@@ -33,9 +26,7 @@ const styles = [
 	'static/styles/home.css',
 ];
 
-const scripts = [
-
-];
+const scripts = [];
 
 // Main handler, checks for URL parameter and "empty" requests
 
