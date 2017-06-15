@@ -33,9 +33,7 @@ const styles = [
 ];
 
 const scripts = [
-	'/static/react/react.js',
-	'/static/react/react-dom.js',
-	'/static/front.bundle.js',
+
 ];
 
 // Main handler, checks for URL parameter and "empty" requests
@@ -44,9 +42,6 @@ function homeHandler(requ : Request, resp : Response) {
 	log('Homepage router', requ.params);
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
-		feedbackParam: JSON.stringify({
-			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
-		}),
 		styles,
 		scripts,
 	}));
