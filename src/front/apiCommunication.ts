@@ -6,7 +6,7 @@ import {
 
 const rxUnencoded = /:\/\//;
 
-export function fetchArticle(url : string) : Promise<any> {
+export function fetchArticle(url : string, version : string) : Promise<any> {
 	const encodedURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
 		: url;
