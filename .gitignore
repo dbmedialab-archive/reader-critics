@@ -37,3 +37,5 @@ yarn.lock
 ehthumbs.db
 Thumbs.db
 
+#IDE Web/PHP Storm
+/.idea
