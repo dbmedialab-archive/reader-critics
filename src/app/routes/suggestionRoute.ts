@@ -10,27 +10,24 @@ import * as path from 'path';
 import { readFileSync } from 'fs';
 
 const log = app.createLog();
+const suggestionRoute : Router = Router();
 
-// Prepare and export Express router
+suggestionRoute.get('/', suggestionHandler);
+suggestionRoute.get('/*', notFoundHandler);
 
-const homeRoute : Router = Router();
+export default suggestionRoute;
 
-homeRoute.get('/', homeHandler);
-homeRoute.get('/*', notFoundHandler);
-
-export default homeRoute;
-
-const mainTemplate = createMainTemplate();
-
+// Template stuff
+const templateName = 'tmp/templates/suggestion.html';
 const styles = [
 	'/static/styles/home.css',
 ];
 
 const scripts = [];
 
-// Main handler, checks for URL parameter and "empty" requests
+const mainTemplate = createMainTemplate();
 
-function homeHandler(requ : Request, resp : Response) {
+function suggestionHandler(requ : Request, resp : Response) {
 	log('Homepage router', requ.params);
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
@@ -51,7 +48,7 @@ function notFoundHandler(requ : Request, resp : Response) {
 function createMainTemplate() {
 	// Currently loads the template from a static file.
 	// The template will later be determined dynamically based on website url / domain.
-	const templatePath = path.join(app.rootPath, 'assets/templates/home.html');
+	const templatePath = path.join(app.rootPath, templateName);
 	const templateRaw = readFileSync(templatePath);
 
 	return doT.template(templateRaw);
