@@ -37,7 +37,7 @@ function setRoutes(expressApp : express.Application) {
 
 	expressApp.use('/api', apiRoute);
 	expressApp.use('/fb', feedbackRoute);
-	expressApp.use('/sb', suggestionRoute);
+	expressApp.use('/suggestion-box', suggestionRoute);
 
 	expressApp.use('/', homeRoute);
 }
