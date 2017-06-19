@@ -21,13 +21,11 @@
 			window.feedbackParam = Object.freeze({{=it.feedbackParam}});
 		</script>
 
-		<div id="app"></div>
+		<div id="app" name="feedback"></div>
 
 		{{~it.scripts :scriptPath}}
 		<script src="{{=scriptPath}}"></script>
 		{{~}}
 
-		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-		<!-- TODO implement "defer" attribute in template code -->
 	</body>
 </html>
