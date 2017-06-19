@@ -20,7 +20,7 @@ export default class ArticleContent extends React.Component <any, ArticleContent
 
 	componentWillMount() {
 		const self = this;
-		fetchArticle(getArticleURL()).then(article => self.setState({
+		fetchArticle(getArticleURL(), '').then(article => self.setState({
 			article,
 		}));
 	}
