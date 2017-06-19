@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import ArticleContent from '../section/ArticleContent';
+import FeedbackContainer from './FeedbackContainer';
 import FeedbackFooter from './FeedbackFooter';
 import FeedbackHeader from './FeedbackHeader';
 
@@ -9,7 +9,7 @@ import FinishButton from './FinishButton';
 const FeedbackPageLayout : React.StatelessComponent <any> =
 	() => <div>
 		<FeedbackHeader />
-		<ArticleContent />
+		<FeedbackContainer />
 		<FinishButton />
 		<FeedbackFooter />
 	</div>;
