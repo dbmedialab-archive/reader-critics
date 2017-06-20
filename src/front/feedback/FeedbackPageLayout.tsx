@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-import FeedbackContainer from './FeedbackContainer';
-import FeedbackFooter from './FeedbackFooter';
-import FeedbackHeader from './FeedbackHeader';
+import Footer from '../common/Footer';
+import Header from '../common/Header';
 
+import FeedbackContainer from './FeedbackContainer';
 import FinishButton from './FinishButton';
 
 const FeedbackPageLayout : React.StatelessComponent <any> =
 	() => <div>
-		<FeedbackHeader />
+		<Header />
 		<FeedbackContainer />
 		<FinishButton />
-		<FeedbackFooter />
+		<Footer />
 	</div>;
 
 export default FeedbackPageLayout;
