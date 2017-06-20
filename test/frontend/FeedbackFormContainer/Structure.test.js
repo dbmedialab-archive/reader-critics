@@ -1,12 +1,12 @@
 const {
 	openPage
-} = require('../test-tools-frontend');
+} = require('../../test-tools-frontend');
 
 const article_el_1 = 'article#article-el-1';
 const article_el_2 = 'article#article-el-2';
 const article_el_5 = 'article#article-el-5';
 
-describe('Basic checks', function() {
+describe('FeedbackFormContainer', function() {
 
 	let page;
 
