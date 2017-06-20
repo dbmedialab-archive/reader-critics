@@ -5,11 +5,12 @@ import ArticleElement from '../component/ArticleElement';
 import { fetchArticle } from '../apiCommunication';
 import { getArticleURL } from '../uiGlobals';
 
-export interface ArticleContentState {
+export interface FeedbackContainerState {
 	article: any;
 }
 
-export default class ArticleContent extends React.Component <any, ArticleContentState> {
+export default class FeedbackContainer
+extends React.Component <any, FeedbackContainerState> {
 
 	constructor() {
 		super();

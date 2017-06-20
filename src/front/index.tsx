@@ -1,28 +1,26 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import FloatingActionButton from './component/FloatingActionButton';
+
 import './scss/app.scss';
 
-import ArticleContent from './section/ArticleContent';
-import Header from './section/Header';
-import Footer from './section/Footer';
+import FeedbackPageLayout from './feedback/FeedbackPageLayout';
 
-class DefaultLayout extends React.Component <any, any> {
+const apps = {
+	'feedback': FeedbackPageLayout,
+};
 
-	constructor() {
-		super();
-		this.state = { editing : false };
-	}
+const rootContainer : HTMLElement = document.getElementById('app');
 
-	public render() : any {
-		return (<div>
-			<Header />
-			<ArticleContent />
-			<FloatingActionButton/>
-			<Footer />
-		</div>);
-	}
-
+if (!rootContainer.hasAttribute('name')) {
+	throw new Error('Root <div> container must have a "name" attribute');
 }
+else {
+	const name = rootContainer.getAttribute('name');
 
-ReactDOM.render(React.createElement(DefaultLayout, null), document.getElementById('app'));
+	if (typeof apps[name] === 'function') {
+		ReactDOM.render(React.createElement(apps[name]), rootContainer);
+	}
+	else {
+		throw new Error(`Unknown app type "${name}"`);
+	}
+}
