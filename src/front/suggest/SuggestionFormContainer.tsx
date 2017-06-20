@@ -1,5 +1,6 @@
 import * as React from 'react';
 import InputError from '../form/InputError';
+import {sendSuggestion} from '../apiCommunication';
 
 export interface FormPayload {
 	username: string;
@@ -33,13 +34,14 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private handleBlur = (field) => (evt) => {
 		this.setState({
 			touched: { ...this.state.touched, [field]: true },
-		}, () => {
-			console.log(this.state);
 		});
 	}
 
 	private hasCommentError() {
-		if (!this.state.comment || this.state.comment.length > 2000) {
+		if (!this.state.comment) {
+			return 'Fylle ut feltet';
+		}
+		if (this.state.comment.length > 2000) {
 			return 'Tilbakemelding er for lang (maksimum 2000 tegn).';
 		}
 		return false;
@@ -69,9 +71,11 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	}
 
 	public handleSubmit(e : any) {
-		e.stopPropagation();
+		e.preventDefault();
 		console.log(this.state);
-		//Send to backend Some info
+		sendSuggestion(this.state).then(function (res) {
+			console.log(res);
+		});
 	}
 
 	public render() : JSX.Element {
