@@ -104,13 +104,14 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
 
+		// Check if the form becomes hidden
+		.assert.visible(elFeedbackForm)
+
 		// Change the content of the text field. Needed to save changes
+		// TODO Remove this after RC-50 is solved
 		.click(elTextArea)
 		.clearValue(elTextArea)
 		.setValue(elTextArea, changedText)
-
-		// Check if the form becomes hidden
-		.assert.visible(elFeedbackForm)
 
 		// Change the content of the link field and press Enter
 		.click(elLinkInput)
