@@ -17,7 +17,11 @@
 		{{~}}
 	</head>
 	<body>
-		<div id="app"></div>
+		<script>
+			window.feedbackParam = Object.freeze({{=it.feedbackParam}});
+		</script>
+
+		<div id="app" name="feedback"></div>
 
 		{{~it.scripts :scriptPath}}
 		<script src="{{=scriptPath}}"></script>
