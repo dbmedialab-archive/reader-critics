@@ -21,9 +21,14 @@ export default suggestionRoute;
 const templateName = 'tmp/templates/suggestion.html';
 const styles = [
 	'/static/styles/home.css',
+	'/static/styles/suggestion.css',
 ];
 
-const scripts = [];
+const scripts = [
+	'/static/react/react.js',
+	'/static/react/react-dom.js',
+	'/static/front.bundle.js',
+];
 
 const mainTemplate = createMainTemplate();
 
@@ -31,6 +36,13 @@ function suggestionHandler(requ : Request, resp : Response) {
 	log('Homepage router', requ.params);
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
+		feedbackParam: JSON.stringify({
+			page: {
+				title: 'Suggestion Box',
+				version: '2017.05.11-something',
+			},
+			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}),
 		styles,
 		scripts,
 	}));

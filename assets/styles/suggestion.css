@@ -1,0 +1,67 @@
+.confirmation .container {
+	padding: 0;
+}
+.confirmation form input, .confirmation form textarea, .confirmation form button {
+	width: 100%}
+.confirmation form input {
+	font-size: 14px;
+}
+.confirmation form .hide {
+	display: none;
+	visibility: hidden;
+}
+.confirmation form textarea {
+	max-width: 100%}
+.confirmation ul li {
+	color: red;
+}
+.confirmation .feedbackForm {
+	width: 100%;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-justify-content: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+}
+.confirmation .feedbackForm textarea {
+	resize: none;
+	height: 200px;
+}
+.confirmation .returnToArticle h5 a button {
+	font-size: 20px;
+}
+.notifications {
+	position: fixed;
+	top: 0;
+	left: auto;
+	right: auto;
+	width: 100%;
+	margin: 0;
+	z-index: 9999;
+	box-sizing: border-box;
+	display: none;
+}
+.notifications .container {
+	background: #82D581;
+	border: 2px solid #32953C;
+	border-top: none;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	font-family: "Droid Sans", sans-serif;
+	color: #333;
+}
+@media only screen and (max-width:480px) {
+	.confirmation .feedbackForm textarea {
+		height: 100px;
+	}
+
+	.confirmation .returnToArticle h5 a button {
+		font-size: 15px;
+	}
+}
+
+.suggestion .button-primary{
+	font-size:14px;
+}
+

@@ -1,13 +1,16 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import './scss/app.scss';
-// Common components
+import '../scss/app.scss';
 
-import SuggestionFormContainer from './SuggestionFormContainer';
+// Common components
+import Header from '../common/Header';
+import Footer from '../common/Footer';
+import SuggestionContainer from './SuggestionContainer';
 
 const SuggestionLayout : React.StatelessComponent <any> =
 	() => <div>
-					<SuggestionFormContainer />
-				</div>;
+		<Header/>
+		<SuggestionContainer/>
+		<Footer/>
+	</div>;
 
 export default SuggestionLayout;

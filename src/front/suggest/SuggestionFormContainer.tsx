@@ -32,7 +32,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	public render() : JSX.Element {
 		return (
-			<form name='suggestBox' onSubmit={this.handleSubmit}>
+			<form name='suggestBox' className='eleven suggestion columns feedbackform' onSubmit={this.handleSubmit}>
 				<fieldset className='text'>
 					<label htmlFor='comment'>Username</label>
 					<input
@@ -64,7 +64,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 					/>
 				</fieldset>
 				<fieldset className='actions'>
-					<button type='submit' className='button save'>Lagre</button>
+					<button type='submit' className='button button-primary'>Lagre</button>
 				</fieldset>
 			</form>
 		);
