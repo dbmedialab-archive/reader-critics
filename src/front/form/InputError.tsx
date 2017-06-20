@@ -4,7 +4,7 @@ export interface InputErrorProps {
 	/** The Error Text */
 	errorText: string | boolean;
 	/** Is touched field */
-	touchedField: boolean;
+	touchedField: boolean | undefined;
 }
 
 export default class InputError extends React.Component <InputErrorProps, any> {
@@ -13,12 +13,12 @@ export default class InputError extends React.Component <InputErrorProps, any> {
 		super(props);
 	}
 
-	render() {
+	render(): JSX.Element {
 		if (!this.props.errorText || !this.props.touchedField) {
 			return null;
 		}
 		return (
-			<small className='error'>{this.props.errorText}</small>
+			<small className='callout secondary alert error'>{this.props.errorText}</small>
 		);
 	}
 

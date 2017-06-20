@@ -7,7 +7,7 @@ export interface FormPayload {
 	comment: string;
 	touched: {
 		email: boolean,
-		password: boolean,
+		comment: boolean,
 	};
 }
 
@@ -25,7 +25,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			comment: '',
 			touched: {
 				email: false,
-				password: false,
+				comment: false,
 			},
 		};
 	}
@@ -33,6 +33,8 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private handleBlur = (field) => (evt) => {
 		this.setState({
 			touched: { ...this.state.touched, [field]: true },
+		}, () => {
+			console.log(this.state);
 		});
 	}
 
@@ -74,7 +76,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
-		console.log(isDisabled);
 		return (
 			<form name='suggestBox' className='eleven suggestion columns feedbackform' onSubmit={this.handleSubmit}>
 				<fieldset className='text'>
@@ -94,7 +95,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						name='email'
 						ref={r => this.emailInput = r}
 						id='email'
-						onBlur={() => this.handleBlur('email')}
+						onBlur={this.handleBlur('email')}
 						onChange={() => this.UpdateState('email', this.emailInput)}
 					/>
 					<InputError
@@ -110,7 +111,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						ref={r => this.commentArea = r}
 						rows={3}
 						id='commentArea'
-						onBlur={() => this.handleBlur('comment')}
+						onBlur={this.handleBlur('comment')}
 					/>
 					<InputError
 						errorText={this.hasCommentError()}

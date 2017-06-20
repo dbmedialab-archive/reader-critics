@@ -65,3 +65,11 @@
 	font-size:14px;
 }
 
+.suggestion .button-primary:disabled {
+	opacity: .5;
+	cursor: not-allowed;
+}
+
+.confirmation small.error{
+	color: #D60000;
+}
