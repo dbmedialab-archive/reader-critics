@@ -9,9 +9,9 @@ const {
 const {
 	log,
 	openPage,
-} = require('../test-tools-frontend');
+} = require('../../test-tools-frontend');
 
-const timeoWait = 5000;
+const timeToWait = 5000;
 
 // CSS selectors for the various probed elements
 
@@ -26,6 +26,7 @@ const elEditBtn = elArticle + ' footer .button.edit';
 const elResetBtn = elArticle + ' footer .button.reset';
 
 const elFormSaveBtn = elFeedbackForm + ' .button.save';
+const elFormCancelBtn = elFeedbackForm + ' .button.cancel';
 
 // Some text snippets for display and input fields
 
@@ -34,7 +35,7 @@ const changedText = 'Bavaria lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
 const userComment = 'Here be some comment';
 const diffyText = 'Bavaria I lorem dag ipsum landet dolor Donald Kreiz Trump Birnbaum';
 
-describe('ArticleEditForm', function() {
+describe('ArticleEditForm Reset Tests', function() {
 
 	var thePage;
 	var originalText;
@@ -62,9 +63,9 @@ describe('ArticleEditForm', function() {
 		thePage = openPage(browser, '/fb/http://test/xyz/1')
 
 		// Wait for elements to render
-		.waitForElementVisible('body', timeoWait)
-		.waitForElementVisible('div#app section#content', timeoWait)
-		.waitForElementVisible('section#content > article.title', timeoWait)
+		.waitForElementVisible('body', timeToWait)
+		.waitForElementVisible('div#app section#content', timeToWait)
+		.waitForElementVisible('section#content > article.title', timeToWait)
 
 		// Ensure we're addressing the right container. Remember that
 		// containsText() is a substring match! strictEquals has to be done manually.
@@ -87,7 +88,7 @@ describe('ArticleEditForm', function() {
 		return browser.end().perform(function() {
 			done();
 		});
-	})
+	});
 
 	// Check if clicking on "Edit" opens the <ArticleEditForm>
 
@@ -95,9 +96,9 @@ describe('ArticleEditForm', function() {
 		// Click on the "Edit" button and check if <ArticleEditForm>
 		// and the sub components become visible
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeoWait)
-		.waitForElementVisible(elTextArea, timeoWait)
-		.waitForElementVisible(elCommentArea, timeoWait)
+		.waitForElementVisible(elFeedbackForm, timeToWait)
+		.waitForElementVisible(elTextArea, timeToWait)
+		.waitForElementVisible(elCommentArea, timeToWait)
 
 		// Check if <ArticleEditForm> and the sub components have become visible,
 		// also if the "text" field contains the same text as its parent component
@@ -124,7 +125,53 @@ describe('ArticleEditForm', function() {
 
 		// Check if the input fields have kept the values that we just fed them
 		.assert.value(elCommentArea, userComment)
-		.assert.value(elTextArea, changedText)
+		.assert.value(elTextArea, changedText);
+	});
+
+	// Check if "Cancel" button works properly. It should close the form
+	// without text diff
+
+	it('should close form without accepting text diff', function(browser) {
+		// Click "Cancel" button
+		thePage.click(elFormCancelBtn)
+		.waitForElementNotVisible(elFeedbackForm, timeToWait)
+
+		// Check if the form becomes hidden
+		.assert.hidden(elFeedbackForm)
+
+		// Check for the diff. The weird word order comes from the diff package,
+		// which currently performs a word-wise diff. This might be changed into
+		// a sentence-diff, or at least something that respects consecutive words.
+		.assert.containsText(elContent, originalText);
+	});
+
+	// Check if the text components can keep their input again on the second form show.
+	// Form elements in React can be set up in a way that makes them read-only
+	// (for example, declaring them with value=this.state.some)
+
+	it('should accept and keep user input again on the second form show', function(browser) {
+		// Click on the "Edit" button and check if <ArticleEditForm>
+		// and the sub components become visible
+		thePage.click(elEditBtn)
+		.waitForElementVisible(elFeedbackForm, timeToWait)
+		.waitForElementVisible(elTextArea, timeToWait)
+		.waitForElementVisible(elCommentArea, timeToWait);
+
+		// Focus comment field and type some text into it
+		thePage.click(elCommentArea)
+		.setValue(elCommentArea, userComment)
+
+		// Change the content of the text field
+		.click(elTextArea)
+		.clearValue(elTextArea)
+		.setValue(elTextArea, changedText)
+
+		// Click outside the form to remove focus from the text fields
+		.click(elContent)
+
+		// Check if the input fields have kept the values that we just fed them
+		.assert.value(elCommentArea, userComment)
+		.assert.value(elTextArea, changedText);
 	});
 
 	// Check if the form closes after clicking "Safe"
@@ -133,7 +180,7 @@ describe('ArticleEditForm', function() {
 	it('should close the form and display a text diff', function(browser) {
 		// Click "Save" button
 		thePage.click(elFormSaveBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeoWait)
+		.waitForElementNotVisible(elFeedbackForm, timeToWait)
 
 		// Check if the form becomes hidden
 		.assert.hidden(elFeedbackForm)
@@ -142,6 +189,26 @@ describe('ArticleEditForm', function() {
 		// which currently performs a word-wise diff. This might be changed into
 		// a sentence-diff, or at least something that respects consecutive words.
 		.assert.containsText(elContent, diffyText);
+	});
+
+	// Check if the data in form is the same we entered before on next open
+	// of the <ArticleEditForm>.
+
+	it('should open the form and display a text entered before', function(browser) {
+		// Click "Edit" button
+		thePage.click(elEditBtn)
+		.waitForElementVisible(elFeedbackForm, timeToWait)
+
+		// Check if the form becomes visible
+		.assert.visible(elFeedbackForm)
+
+		// Check if the fields contain exactly that text we had entered
+		.assert.value(elCommentArea, userComment)
+		.assert.value(elTextArea, changedText)
+
+		// Click "Cancel" button
+		.click(elFormCancelBtn)
+		.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 
 	// Check if the form is reset to its original values correctly when
@@ -155,7 +222,7 @@ describe('ArticleEditForm', function() {
 
 		// Click on "Edit" to re-open the feedback form
 		.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeoWait)
+		.waitForElementVisible(elFeedbackForm, timeToWait)
 
 		.assert.value(elTextArea, originalText);
 	});

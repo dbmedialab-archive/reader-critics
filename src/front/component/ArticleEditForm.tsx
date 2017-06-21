@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import DynamicList from '../component/DynamicList';
+import DynamicList from 'front/component/DynamicList';
 
 export interface EditFormPayload {
 	text : string;

@@ -36,7 +36,7 @@ const conf = {
 
 	'test_settings': {
 		'default': {
-			'filter': '*.test.js',
+			'filter': '**/*.test.js',
 			'launch_url': 'http://localhost',
 			'selenium_port': 4444,
 			'selenium_host': 'localhost',
