@@ -1,6 +1,6 @@
 import * as React from 'react';
 import InputError from '../form/InputError';
-import {sendSuggestion} from '../apiCommunication';
+import { sendSuggestion } from '../apiCommunication';
 
 export interface FormPayload {
 	username: string;
