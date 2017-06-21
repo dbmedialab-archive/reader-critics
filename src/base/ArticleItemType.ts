@@ -12,5 +12,3 @@ enum ArticleItemType {
 }
 
 export default ArticleItemType;
-
-console.log(ArticleItemType);
