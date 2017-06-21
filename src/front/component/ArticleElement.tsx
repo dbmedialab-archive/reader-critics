@@ -4,7 +4,7 @@ import * as React from 'react';
 import {
 	default as ArticleEditForm,
 	EditFormPayload,
-} from '../component/ArticleEditForm';
+} from 'front/component/ArticleEditForm';
 
 import textDiffToHTML from './textDiffToHTML';
 

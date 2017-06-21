@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import ArticleElement from '../component/ArticleElement';
+import ArticleElement from 'front/component/ArticleElement';
 
-import { fetchArticle } from '../apiCommunication';
-import { getArticleURL } from '../uiGlobals';
+import { fetchArticle } from 'front/apiCommunication';
+import { getArticleURL } from 'front/uiGlobals';
 
 export interface FeedbackContainerState {
 	article: any;

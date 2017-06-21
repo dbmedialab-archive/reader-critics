@@ -1,39 +1,55 @@
+const path = require ('path');
 const webpack = require('webpack');
 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const LodashPlugin = require('lodash-webpack-plugin');
+
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
 const isProduction = process.env.NODE_ENV === 'production';
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 // Loaders
 
-const loaderBabel = {
+const BabelLoader = {
 	loader: 'babel-loader',
 	options: {
 		presets: ['es2015', 'react'],
+		// plugins: [ 'lodash' ],
 	},
 };
 
-const loaderTypeScript = {
-	loader: 'awesome-typescript-loader',
+const TypeScriptLoader = {
+	loader: 'awesome-typescript-loader?silent=true',
 	options: {
 		configFileName: __dirname + '/tsconfig.json',
-	}
+	},
 };
 
-const extractSass = new ExtractTextPlugin({
-	filename: "[name].css",
-	disable: !isProduction
+// Plugins
+
+const TypeScriptPathsPlugin = new TsConfigPathsPlugin({
+	configFileName: path.join(__dirname, 'tsconfig.json'),
+	compiler: 'typescript',
+});
+
+const OrderPlugin = new webpack.optimize.OccurrenceOrderPlugin();
+
+const UglifyPlugin = new webpack.optimize.UglifyJsPlugin();
+
+const ExtractSassPlugin = new ExtractTextPlugin({
+	filename: 'front.css',
 });
 
 // Main config, see other (sometimes environment depending) settings below
 
 const webpackConfig = {
 	entry: {
-		app : __dirname + '/src/front/index.tsx'
+		app : __dirname + '/src/front/index.tsx',
 	},
 	output: {
 		filename: 'front.bundle.js',
-		path: __dirname + '/out/bundle',
-		publicPath: '/static'
+		path: path.join(__dirname, 'out', 'bundle'),
+		publicPath: '/static',
 	},
 
 	resolve: {
@@ -44,6 +60,10 @@ const webpackConfig = {
 			'.js',
 			'.json',
 		],
+		modules: [
+			path.join(__dirname, 'src'),
+			'node_modules',
+		],
 	},
 
 	module: {
@@ -52,28 +72,29 @@ const webpackConfig = {
 				test: /\.tsx?$/,
 				// Mind that these loaders get executed in right-to-left order:
 				use: [
-					loaderBabel,
-					loaderTypeScript,
+					BabelLoader,
+					TypeScriptLoader,
 				],
 			},
 			{
 				test: /\.scss$/,
-				use: extractSass.extract({
+				use: ExtractSassPlugin.extract({
 					use: [{
-							loader: "css-loader?-url"
-						}, {
-							loader: "sass-loader"
+						loader: 'css-loader?-url',
+					}, {
+						loader: 'sass-loader',
 					}],
 					// use style-loader in development
-					fallback: "style-loader"
-				})
-			}
+					fallback: 'style-loader',
+				}),
+			},
 		],
 	},
 
 	plugins: [
-		new webpack.optimize.OccurrenceOrderPlugin(),
-		extractSass
+		TypeScriptPathsPlugin,
+		OrderPlugin,
+		ExtractSassPlugin,
 	],
 
 	// When importing a module whose path matches one of the following, just
@@ -82,14 +103,13 @@ const webpackConfig = {
 	// dependencies, which allows browsers to cache those libraries between builds.
 	externals: {
 		'react': 'React',
-		'react-dom': 'ReactDOM'
+		'react-dom': 'ReactDOM',
 	},
 };
 
 // Enable source maps in development
 
 if (!isProduction) {
-	// Source maps
 	webpackConfig.devtool = 'source-map';
 	/* webpackConfig.module.rules.push({
 		enforce: 'pre',
@@ -98,10 +118,14 @@ if (!isProduction) {
 	}); */
 }
 
-// Production settings
+// Production Plugins
+
 if (isProduction) {
-	webpackConfig.plugins.push(new webpack.optimize.UglifyJsPlugin());
+	webpackConfig.plugins.push(
+		UglifyPlugin
+	);
 }
 
 // All good
+
 module.exports = webpackConfig;
