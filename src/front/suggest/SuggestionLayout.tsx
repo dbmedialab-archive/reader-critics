@@ -2,9 +2,9 @@ import * as React from 'react';
 import '../scss/app.scss';
 
 // Common components
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import SuggestionContainer from './SuggestionContainer';
+import Header from 'front/common/Header';
+import Footer from 'front/common/Footer';
+import SuggestionContainer from 'front/suggest/SuggestionContainer';
 
 const SuggestionLayout : React.StatelessComponent <any> =
 	() => <div>

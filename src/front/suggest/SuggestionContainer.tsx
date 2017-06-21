@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import SuggestionFormContainer from './SuggestionFormContainer';
+import SuggestionFormContainer from 'front/suggest/SuggestionFormContainer';
 
 const SuggestionContainer : React.StatelessComponent <any> =
 	() => <div>
