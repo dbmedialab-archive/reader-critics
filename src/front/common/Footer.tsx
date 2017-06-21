@@ -11,7 +11,7 @@ const Footer : React.StatelessComponent <any> =
 				<a href='/suggestion-box'>Gi oss din tilbakemelding på verktøyet</a>
 			</div>
 			<div className='content four columns'>
-				<span>Ansvarlig redaktør <a href='&hellip;'>John Arne Markussen</a>
+				<span>Ansvarlig redaktør <a href='#'>John Arne Markussen</a>
 				</span>
 				<div itemType='http://schema.org/Organization'>© 2017 <span itemProp='name'>DB Medialab</span></div>
 			</div>
