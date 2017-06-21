@@ -29,6 +29,12 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				comment: false,
 			},
 		};
+
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.UpdateState = this.UpdateState.bind(this);
+		this.handleBlur = this.handleBlur.bind(this);
+		this.hasCommentError = this.hasCommentError.bind(this);
+		this.hasEmailError = this.hasEmailError.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
@@ -70,9 +76,8 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.setState( state );
 	}
 
-	public handleSubmit(e : any) {
+	private handleSubmit(e : any) {
 		e.preventDefault();
-		console.log(this.state);
 		sendSuggestion(this.state).then(function (res) {
 			console.log(res);
 		});

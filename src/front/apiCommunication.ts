@@ -26,7 +26,9 @@ export function fetchArticle(url : string, version : string) : Promise<any> {
 export function sendSuggestion(data: any) : Promise<any> {
 	const apiUrl = `/api/suggest/`;
 
-	return axios.get(apiUrl)
+	return axios.post(apiUrl, {
+		data,
+	})
 		.then((resp : AxiosResponse) => {
 			const d = resp.data;
 
