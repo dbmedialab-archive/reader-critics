@@ -3,9 +3,10 @@ import {
 	Response,
 } from 'express';
 
+import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 
-import { Article } from 'app/services';
+import { articleService } from 'app/services';
 import { EmptyError } from 'app/util/errors';
 
 import {
@@ -25,8 +26,8 @@ export default function(requ : Request, resp : Response) : void {
 		const articleURL = new ArticleURL(requ.query.url);
 		log('Requesting article at', articleURL.href);
 
-		Article.getArticle(articleURL)
-		.then(article => okResponse(resp, { article }))
+		articleService.getArticle(articleURL)
+		.then((article : Article) => okResponse(resp, { article }))
 		.catch(error => errorResponse(resp, error));
 	}
 	catch (error) {
