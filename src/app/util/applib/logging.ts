@@ -1,5 +1,8 @@
 import * as callsite from 'callsite';
+import * as cluster from 'cluster';
 import * as debug from 'debug';
+
+import { isObject } from 'lodash';
 
 /** First component of debug's logger */
 export const appName = 'app';  // As short as possible, please
@@ -14,11 +17,10 @@ const regexEnvSuffix = /\.(:?live|mock)$/;
  * @return function (...args : any[]) => void
  */
 export function createLog(moduleName? : string) : (...args : any[]) => void {
-	const name = moduleName !== undefined
-		? `${appName}:${moduleName}`
-		: logChannelName (callsite());
+	const processID = getProcessID();
+	const name = moduleName !== undefined ? moduleName : logChannelName (callsite());
 
-	return debug(name);
+	return debug(`${appName}${processID}:${name}`);
 }
 
 /**
@@ -41,7 +43,7 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 
 	// Replace "app" directory name with the application name
 	const pos = originName.lastIndexOf(':app:');
-	return `${appName}${originName.substr(pos + 4)}`;
+	return originName.substr(pos + 5);
 };
 
 /**
@@ -53,3 +55,27 @@ const isCallTrace = (callstack: callsite.CallSite[]) : boolean => (
 	&& callstack.length > 1
 	&& callstack[1].getFunctionName() === null
 );
+
+/**
+ * Checks for cluster environments and returns a number > 1 for worker processes,
+ * a 0 for the master node if running multiple processes. Returns an empty string
+ * when run as a single process.
+ */
+function getProcessID() : string {
+	const hasWorkers = isObject(cluster.workers) && Object.keys(cluster.workers).length > 0;
+	const isM = cluster.isMaster;
+	const isW = cluster.isWorker;
+
+	// Multi-process master
+	if (isM && !isW && hasWorkers) {
+		return ':m';
+	}
+
+	// Multi-process worker
+	if (!isM && isW && !hasWorkers) {
+		return `:${cluster.worker.id}`;
+	}
+
+	// Single-process environment
+	return '';
+}

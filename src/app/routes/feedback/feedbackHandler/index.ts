@@ -17,6 +17,7 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
+	'/static/front.css',
 ];
 
 const scripts = [
@@ -28,15 +29,10 @@ const scripts = [
 // Respond with initial HTML, process template for feedback form page
 
 export default function (requ : Request, resp : Response, articleURL : ArticleURL) {
-	log('feedback endpoint');
-	log(`[${articleURL.href}]`);
+	log('load article from', articleURL.href);
 
-	// 2. Use template function as many times as you like
-	//const resultText = indexTemplate({foo: articleURL});
-	//resp.json({ and_now: resultText }).status(200).end();
-
-	resp.set('Content-Type', 'text/html');
-	resp.send(mainTemplate({
+	resp.set('Content-Type', 'text/html')
+	.send(mainTemplate({
 		feedbackParam: JSON.stringify({
 			article: {
 				url: articleURL.href,
@@ -46,9 +42,9 @@ export default function (requ : Request, resp : Response, articleURL : ArticleUR
 		}),
 		styles,
 		scripts,
-	}));
-
-	resp.status(200).end();
+	}))
+	.status(200)
+	.end();
 }
 
 // Load main template

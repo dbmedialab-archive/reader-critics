@@ -1,3 +1,5 @@
+#!/bin/sh
+
 rm -rf out/app out/base out/bundle out/front
 
 echo -e "\033[1;38;5;214mBuilding App ...\033[0m"
