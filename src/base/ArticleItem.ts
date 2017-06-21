@@ -6,7 +6,7 @@ interface ArticleItem {
 	order: {
 		item: number,
 		type: number,
-	},
+	};
 
 }
 

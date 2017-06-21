@@ -3,4 +3,4 @@ interface ArticleAuthor {
 	email : string;
 }
 
-export default ArticleAuthor
+export default ArticleAuthor;
