@@ -22,3 +22,21 @@ export function fetchArticle(url : string, version : string) : Promise<any> {
 		return Promise.reject(new Error(`Failed to load article at ${url}`));
 	});
 }
+
+export function sendSuggestion(data: any) : Promise<any> {
+	const apiUrl = `/api/suggest/`;
+
+	return axios.post(apiUrl, {
+		data,
+	})
+		.then((resp : AxiosResponse) => {
+			const d = resp.data;
+
+			if (d.success === true) {
+				console.log(d);
+				return d.data;
+			}
+
+			return Promise.reject(new Error(`Failed to send Suggestion form`));
+		});
+}

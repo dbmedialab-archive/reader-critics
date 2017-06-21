@@ -10,30 +10,39 @@ import * as path from 'path';
 import { readFileSync } from 'fs';
 
 const log = app.createLog();
+const suggestionRoute : Router = Router();
 
-// Prepare and export Express router
+suggestionRoute.get('/', suggestionHandler);
+suggestionRoute.get('/*', notFoundHandler);
 
-const homeRoute : Router = Router();
+export default suggestionRoute;
 
-homeRoute.get('/', homeHandler);
-homeRoute.get('/*', notFoundHandler);
+// Template stuff
+const templateName = 'tmp/templates/suggestion.html';
+const styles = [
+	'/static/styles/home.css',
+	'/static/styles/suggestion.css',
+];
 
-export default homeRoute;
+const scripts = [
+	'/static/react/react.js',
+	'/static/react/react-dom.js',
+	'/static/front.bundle.js',
+];
 
 const mainTemplate = createMainTemplate();
 
-const styles = [
-	'/static/styles/home.css',
-];
-
-const scripts = [];
-
-// Main handler, checks for URL parameter and "empty" requests
-
-function homeHandler(requ : Request, resp : Response) {
+function suggestionHandler(requ : Request, resp : Response) {
 	log('Homepage router', requ.params);
 	resp.set('Content-Type', 'text/html');
 	resp.send(mainTemplate({
+		feedbackParam: JSON.stringify({
+			page: {
+				title: 'Suggestion Box',
+				version: '2017.05.11-something',
+			},
+			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}),
 		styles,
 		scripts,
 	}));
@@ -51,7 +60,7 @@ function notFoundHandler(requ : Request, resp : Response) {
 function createMainTemplate() {
 	// Currently loads the template from a static file.
 	// The template will later be determined dynamically based on website url / domain.
-	const templatePath = path.join(app.rootPath, 'assets/templates/home.html');
+	const templatePath = path.join(app.rootPath, templateName);
 	const templateRaw = readFileSync(templatePath);
 
 	return doT.template(templateRaw);

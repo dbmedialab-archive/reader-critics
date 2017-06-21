@@ -45,7 +45,7 @@
 		"diff": "3.2.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
-		"extract-text-webpack-plugin": "2.1.2",
+		"extract-text-webpack-plugin": "^2.1.2",
 		"find-root": "1.0.0",
 		"json5": "0.5.1",
 		"lodash": "4.17.4",
