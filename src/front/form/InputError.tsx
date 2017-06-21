@@ -7,19 +7,13 @@ export interface InputErrorProps {
 	touchedField: boolean | undefined;
 }
 
-export default class InputError extends React.Component <InputErrorProps, any> {
-
-	constructor(props: InputErrorProps) {
-		super(props);
-	}
-
-	render(): JSX.Element {
-		if (!this.props.errorText || !this.props.touchedField) {
+export const InputError: React.StatelessComponent <InputErrorProps> =
+	(props : InputErrorProps) => {
+		if (!props.errorText || !props.touchedField) {
 			return null;
 		}
 		return (
-			<small className='callout secondary alert error'>{this.props.errorText}</small>
+			<small className='callout secondary alert error'>{props.errorText}</small>
 		);
-	}
+	};
 
-}

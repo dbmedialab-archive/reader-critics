@@ -1,5 +1,5 @@
 import * as React from 'react';
-import InputError from '../form/InputError';
+import { InputError } from '../form/InputError';
 import { sendSuggestion } from '../apiCommunication';
 
 export interface FormPayload {
