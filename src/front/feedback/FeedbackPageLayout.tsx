@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Footer from '../common/Footer';
-import Header from '../common/Header';
+import Footer from 'front/common/Footer';
+import Header from 'front/common/Header';
 
 import FeedbackContainer from './FeedbackContainer';
 import FinishButton from './FinishButton';

@@ -17,6 +17,7 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
+	'/static/front.css',
 ];
 
 const scripts = [
