@@ -37,5 +37,6 @@ yarn.lock
 ehthumbs.db
 Thumbs.db
 
-#IDE Web/PHP Storm
+# IDE and Editors
 /.idea
+*.sublime-workspace
