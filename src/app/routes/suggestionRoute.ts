@@ -8,6 +8,7 @@ import * as app from 'app/util/applib';
 import * as doT from 'dot';
 import * as path from 'path';
 import { readFileSync } from 'fs';
+import  notFoundHandler  from './notFoundHandler';
 
 const log = app.createLog();
 const suggestionRoute : Router = Router();
@@ -48,13 +49,6 @@ function suggestionHandler(requ : Request, resp : Response) {
 	}));
 
 	resp.status(200).end();
-}
-
-// Everything else
-
-function notFoundHandler(requ : Request, resp : Response) {
-	log('404 not found');
-	resp.status(404).end('not found');
 }
 
 function createMainTemplate() {
