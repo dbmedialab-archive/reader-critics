@@ -3,6 +3,8 @@ import {
 	AxiosResponse,
 } from 'axios';
 
+import 'unfetch/polyfill';
+
 const rxUnencoded = /:\/\//;
 
 export function fetchArticle(url : string, version : string) : Promise<any> {
@@ -39,3 +41,4 @@ export function sendSuggestion(data: any) : Promise<any> {
 			return Promise.reject(new Error(`Failed to send Suggestion form`));
 		});
 }
+
