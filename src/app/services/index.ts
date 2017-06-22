@@ -15,6 +15,11 @@ const env : string = app.env === 'test' ? 'mock' : 'live';
 // Declare service exports
 // tslint:disable no-require-imports
 
-export const Article : ArticleService = require(`./article/ArticleService.${env}`);
-export const Template : TemplateService = require(`./template/TemplateService.${env}`);
-export const Website : WebsiteService = require(`./website/WebsiteService.${env}`);
+export const articleService : ArticleService
+	= require(`./article/ArticleService.${env}`);
+
+export const templateService : TemplateService
+	= require(`./template/TemplateService.${env}`);
+
+export const websiteService : WebsiteService
+	= require(`./website/WebsiteService.${env}`);
