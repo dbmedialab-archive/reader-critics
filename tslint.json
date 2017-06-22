@@ -37,7 +37,9 @@
 		"prefer-for-of": {
 			"severity": "warning"
 		},
-		"semicolon": true,
+		"semicolon": {
+			"severity": "warning"
+		},
 		"trailing-comma": [ true, {
 			"multiline": "always",
 			"singleline": "never"
