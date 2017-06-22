@@ -1,7 +1,3 @@
-import {
-	isString,
-} from 'lodash';
-
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
@@ -30,5 +26,5 @@ export function identify(articleURL : ArticleURL|string) : Website {
 	return websites.find((site : Website) => {
 		const rx = new RegExp(`^https?:\/\/.*${site.name}/`);
 		return rx.test(url);
-	})
+	});
 }
