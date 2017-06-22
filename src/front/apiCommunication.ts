@@ -1,6 +1,5 @@
 import {
 	default as axios,
-	AxiosPromise,
 	AxiosResponse,
 } from 'axios';
 

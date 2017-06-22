@@ -2,9 +2,12 @@ import * as Promise from 'bluebird';
 
 import * as app from 'app/util/applib';
 
-import Article from 'app/models/Article';
+import Article from 'base/Article';
+import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
 import ArticleURL from 'base/ArticleURL';
-import ArticleElementType from 'base/ArticleElementType';
+
+import ArticleModel from 'app/models/Article';
 import HtmlParser from 'app/parser/html/HtmlParser';
 
 const log = app.createLog();
@@ -20,18 +23,25 @@ declare interface IntermediateElem {
 // - decide wether to load newest version or use available data (no newer version found)
 // - load article+version (both necessary for unique reference) from database
 
-export function getArticle(url : ArticleURL) : Promise <any> {
-	return new HtmlParser(url.href).getArticle().then(createExportableStruct);
+export function getArticle(url : ArticleURL, version : string) : Promise <Article> {
+	return new HtmlParser(url.href)
+		.getArticle()
+		.then(createExportableStruct)
+		.then((items : ArticleItem[]) => <Article> ({
+			url,
+			version,
+			items,
+		}));
 }
 
-function createExportableStruct(article : Article) : Promise <any> {
+function createExportableStruct(article : ArticleModel) : Promise <ArticleItem[]> {
 	const rawElements : IntermediateElem[] = Array.from(article.getRawElements());
 	const newElements : any[] = [];
 
 	let elemOrder : number = 1;
 	const typeOrder = {};
 
-	ArticleElementType.names.forEach(name => (typeOrder[name] = 1));
+	Object.keys(ArticleItemType).forEach(name => (typeOrder[name] = 1));
 
 	log(typeOrder);
 
@@ -39,7 +49,7 @@ function createExportableStruct(article : Article) : Promise <any> {
 		const next : IntermediateElem = rawElements.shift();
 		log('%o', next);
 
-		const type = mapElementType(next);
+		const type : ArticleItemType = mapElementType(next);
 
 		log('type [%s] typeOrder [%d]', type, typeOrder[type]);
 
@@ -85,34 +95,36 @@ function createExportableStruct(article : Article) : Promise <any> {
 	return Promise.resolve(newElements);
 }
 
-function mapElementType(elem : IntermediateElem) : string {
-	if (isTitle(elem)) {
-		return ArticleElementType.title;
+function mapElementType(elem : IntermediateElem) : ArticleItemType {
+	if (isMainTitle(elem)) {
+		return ArticleItemType.MainTitle;
 	}
 
-	if (isSubtitle(elem)) {
-		return ArticleElementType.subtitle;
+	if (isSubHeading(elem)) {
+		return ArticleItemType.SubHeading;
 	}
 
 	if (isFigure(elem)) {
-		return ArticleElementType.figure;
+		return ArticleItemType.Figure;
 	}
 
 	if (isParagraph(elem)) {
-		return ArticleElementType.paragraph;
+		return ArticleItemType.Paragraph;
 	}
+
+	// TODO add missing types from enum
 
 	return null;
 }
 
-function isTitle(elem : IntermediateElem) : boolean {
+function isMainTitle(elem : IntermediateElem) : boolean {
 	return elem.type === 'h1';
 }
 
-const rxSubtitle = /(:?h2|h3|h4|h5|h6)/;
+const rxSubHeading = /(:?h2|h3|h4|h5|h6)/;
 
-function isSubtitle(elem : IntermediateElem) : boolean {
-	return rxSubtitle.test(elem.type);
+function isSubHeading(elem : IntermediateElem) : boolean {
+	return rxSubHeading.test(elem.type);
 }
 
 function isFigure(elem : IntermediateElem) : boolean {
