@@ -10,6 +10,7 @@ import {
 	articleService,
 	websiteService,
 } from 'app/services';
+
 import { EmptyError } from 'app/util/errors';
 
 import {
@@ -33,7 +34,7 @@ export default function(requ : Request, resp : Response) : void {
 
 		const website = websiteService.identify(articleURL);
 
-		log('Requesting article at', articleURL.href);
+		log(articleURL);
 
 		// Fetch the article from the database. If not stored, will return undefined
 		articleService.load(articleURL, version)
@@ -59,6 +60,7 @@ export default function(requ : Request, resp : Response) : void {
 
 			return articleService.save(website, article);
 		})
+		.catch(error => errorResponse(resp, error));
 	}
 	catch (error) {
 		const options : ResponseOptions = {
