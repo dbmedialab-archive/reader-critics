@@ -59,8 +59,8 @@
 		"sass-loader": "6.0.6",
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.18.2",
-		"unfetch": "^2.1.2",
-		"webpack": "2.6.1"
+		"webpack": "2.6.1",
+		"whatwg-fetch": "^2.0.3"
 	},
 	"devDependencies": {
 		"@types/bluebird": "3.5.5",

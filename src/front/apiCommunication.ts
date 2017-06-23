@@ -3,7 +3,11 @@ import {
 	AxiosResponse,
 } from 'axios';
 
-import 'unfetch/polyfill';
+import 'whatwg-fetch'
+
+console.log(fetch);
+
+
 
 const rxUnencoded = /:\/\//;
 
@@ -24,7 +28,7 @@ export function fetchArticle(url : string, version : string) : Promise<any> {
 	});
 }
 
-export function sendSuggestion(data: any) : Promise<any> {
+/*export function sendSuggestion(data: any) : Promise<any> {
 	const apiUrl = `/api/suggest/`;
 
 	return axios.post(apiUrl, {
@@ -40,5 +44,29 @@ export function sendSuggestion(data: any) : Promise<any> {
 
 			return Promise.reject(new Error(`Failed to send Suggestion form`));
 		});
-}
+}*/
 
+
+export const sendSuggestion = ((data: any): Promise<any> => {
+	console.log(JSON.stringify(data));
+	const apiUrl = `/api/suggest/`;
+	return fetch(apiUrl, {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify(data)
+	}).then(checkStatus)
+		.then(r => r.json())
+		.then(data => {
+			console.log(data);
+		});
+});
+
+const checkStatus = ((response: any) => {
+  if (response.ok) {
+	  return response;
+  } else {
+    var error = new Error(response.statusText);
+	console.log(error);
+    //return Promise.reject(error);
+  }
+})
