@@ -6,7 +6,10 @@ import {
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 
-import { articleService } from 'app/services';
+import {
+	articleService,
+	websiteService,
+} from 'app/services';
 import { EmptyError } from 'app/util/errors';
 
 import {
@@ -24,11 +27,38 @@ const log = app.createLog();
 export default function(requ : Request, resp : Response) : void {
 	try {
 		const articleURL = new ArticleURL(requ.query.url);
+		const version = requ.query.version;
+
+		let wasFetched = false;
+
+		const website = websiteService.identify(articleURL);
+
 		log('Requesting article at', articleURL.href);
 
-		articleService.getArticle(articleURL)
-		.then((article : Article) => okResponse(resp, { article }))
-		.catch(error => errorResponse(resp, error));
+		// Fetch the article from the database. If not stored, will return undefined
+		articleService.load(articleURL, version)
+		.then((article : Article) => {
+			// Article is not in the database, fetch a fresh version from the web
+			if (article === undefined) {
+				wasFetched = true;
+				return articleService.fetch(website, articleURL);
+			}
+			return article;
+		})
+		.then((article : Article) => {
+			// Deliver the API response ...
+			okResponse(resp, { article });
+			return article;
+		})
+		.then((article : Article) => {
+			// After serving the request: if the article is fresh, store it it
+			// the database now
+			if (!wasFetched) {
+				return null;
+			}
+
+			return articleService.save(website, article);
+		})
 	}
 	catch (error) {
 		const options : ResponseOptions = {
