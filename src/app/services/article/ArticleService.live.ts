@@ -1,3 +1,9 @@
+export { default as fetch } from './live/fetch';
+
+export { default as load } from './live/load';
+export { default as save } from './live/save';
+
+/*
 import * as Promise from 'bluebird';
 
 import * as app from 'app/util/applib';
@@ -70,7 +76,7 @@ function createExportableStruct(article : ArticleModel) : Promise <ArticleItem[]
 			/* if (rawElements.length > 0 && rawElements[0].type === 'p') {
 				const captElem : IntermediateElem = rawElements.shift();
 				newElem.image.caption = captElem.data.text;
-			} */
+			} * /
 			// TODO integrate caption recognition into initial parser
 
 			newElements.push(newElem);
@@ -134,3 +140,4 @@ function isFigure(elem : IntermediateElem) : boolean {
 function isParagraph(elem : IntermediateElem) : boolean {
 	return elem.type === 'p';
 }
+*/
