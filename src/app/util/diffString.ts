@@ -77,7 +77,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 	return {o: no, n: nn};
 }
 
-function diffString(o: string, n: string, isHTML: boolean): DiffStringResultObject[] | string {
+function diffString(o: string, n: string, isHTML: boolean = false): any[] | string {
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
 		const lastItem: DiffStringResultObject = result[lastIndex];
