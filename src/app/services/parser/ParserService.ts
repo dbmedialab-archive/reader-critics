@@ -3,7 +3,7 @@ import Website from 'base/Website';
 
 interface ParserService {
 
-	getParserFor (website : Website) : Parser;
+	getParserFor(website : Website) : Promise <Parser>;
 
 }
 
