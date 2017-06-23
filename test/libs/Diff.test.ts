@@ -29,7 +29,7 @@ const expected: any[] = [
 	{count: 1, value: '.'},
 ];
 
-const expectedMy = [
+const expectedMy: DiffStringResultObject[] = [
 	{count: 12, value: 'Bavaria ipsum dolor eana is ma '},
 	{added: false, count: 2, removed: true, value: 'Wuascht, '},
 	{added: true, count: 2, removed: false, value: 'Worschd, '},

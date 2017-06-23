@@ -2,7 +2,7 @@
  * Javascript Diff Algorithm
  *  By John Resig (http://ejohn.org/)
  *  Modified by Chu Alan "sprite"
- *  Modified by Dimitriy Borshchov "grimstal" grimstal@bigmir.net
+ *  Modified for objects and TypeScript by Dimitriy Borshchov "grimstal" grimstal@bigmir.net
  *
  * Released under the MIT license.
  *
@@ -11,45 +11,54 @@
  */
 
 interface DiffParsingItem {
-	rows: number[];
+	rows: number[];			// Contains indexes of item's positions
 }
 
+// Contains info about simple part of string word and every it's position
 interface DiffParsingObject {
 	[name: string]: DiffParsingItem;
 }
 
+// Result of pre-parsing the string
 interface DiffResultObject {
-	o: any[];
-	n: any[];
+	o: any[];				// Array of objects from an old string
+	n: any[];				// Array of objects from a new string
 }
 
+// Object to show every single part of string after diff check
 export interface DiffStringResultObject {
-	count: number;
-	added?: boolean;
-	removed?: boolean;
-	value: string;
+	count: number;			// Amount of items in string part
+	added?: boolean;		// Is string added
+	removed?: boolean;		// Is string removed
+	value: string;			// String part
 }
 
+/*
+	Pre-parsing strings to find and mark parts which are same and with differences
+ */
 function diff(o: string[], n: string[]): DiffResultObject {
-	const ns: DiffParsingObject = {};
-	const os: DiffParsingObject = {};
-	const nn: any[] = Object.assign([], n);
-	const no: any[] = Object.assign([], o);
+	const ns: DiffParsingObject = {};			// Info for new string
+	const os: DiffParsingObject = {};			// Info for old string
+	const nn: any[] = Object.assign([], n);		// Object to change while parsing new string
+	const no: any[] = Object.assign([], o);		// Object to change while parsing old string
 
-	for (let i = 0; i < n.length; i++) {
-		if (!ns[n[i]]) {
-			ns[n[i]] = {rows: []};
+	// Pick info about every simple part of new string and it's positions
+	for (let i = 0; i < nn.length; i++) {
+		if (!ns[nn[i]]) {
+			ns[nn[i]] = {rows: []};
 		}
-		ns[n[i]].rows.push(i);
+		ns[nn[i]].rows.push(i);
 	}
 
-	for (let i = 0; i < o.length; i++) {
-		if (!os[o[i]]) {
-			os[o[i]] = {rows: []};
+	// Pick info about every simple part of old string and it's positions
+	for (let i = 0; i < no.length; i++) {
+		if (!os[no[i]]) {
+			os[no[i]] = {rows: []};
 		}
-		os[o[i]].rows.push(i);
+		os[no[i]].rows.push(i);
 	}
 
+	// Marking parts that are the same
 	for (const i in ns) {
 		if (ns[i].rows.length === 1 && typeof(os[i]) !== 'undefined' &&
 			os[i].rows.length === 1) {
@@ -58,6 +67,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 		}
 	}
 
+	// Looking for parts with differences
 	for (let i = 0; i < nn.length - 1; i++) {
 		if (nn[i].text && !nn[i + 1].text && nn[i].row + 1 < no.length &&
 			!no[nn[i].row + 1].text && nn[i + 1] === no[nn[i].row + 1]) {
@@ -66,6 +76,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 		}
 	}
 
+	// Still looking for parts with differences
 	for (let i = nn.length - 1; i > 0; i--) {
 		if (nn[i].text && !nn[i - 1].text && nn[i].row > 0 &&
 			!no[nn[i].row - 1].text && nn[i - 1] === no[nn[i].row - 1]) {
@@ -77,7 +88,12 @@ function diff(o: string[], n: string[]): DiffResultObject {
 	return {o: no, n: nn};
 }
 
-function diffString(o: string, n: string, isHTML: boolean = false): any[] | string {
+/*
+	Building an object or a string with result of diff operation
+ */
+function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffStringResultObject> | string {
+
+	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
 		const lastItem: DiffStringResultObject = result[lastIndex];
@@ -89,6 +105,7 @@ function diffString(o: string, n: string, isHTML: boolean = false): any[] | stri
 		result.splice(lastIndex, 1, replaceItem);
 	}
 
+	// Adding a new string part with added/deleted flags
 	function addOptItem(value: string, isAdding: boolean) {
 		const lastIndex: number = result.length - 1;
 		const lastItem: DiffStringResultObject = result[lastIndex];
@@ -108,6 +125,7 @@ function diffString(o: string, n: string, isHTML: boolean = false): any[] | stri
 		}
 	}
 
+	// Adding a new string part for item that has not been changed
 	function addItem(value: string) {
 		const lastIndex: number = result.length - 1;
 		const lastItem: DiffStringResultObject = result[lastIndex];
@@ -118,24 +136,28 @@ function diffString(o: string, n: string, isHTML: boolean = false): any[] | stri
 		}
 	}
 
+	const result: DiffStringResultObject[] = [];
+	const lastSymbol: string = isHTML ? '\n' : '';	// If building an html text using the '/n' as an end of string
+	let str: string = '';
+
 	o = o.replace(/\s+$/, '');
 	n = n.replace(/\s+$/, '');
 
+	// Pre-Parsing the strings
 	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
-	const result: DiffStringResultObject[] = [];
-	let str: string = '';
 
+	// Setting an array of space characters to add
 	let oSpace: string[] = o.match(/\s+/g);
 	if (!oSpace) {
-		oSpace = ['\n'];
+		oSpace = [lastSymbol];
 	} else {
-		oSpace.push('\n');
+		oSpace.push(lastSymbol);
 	}
 	let nSpace: string[] = n.match(/\s+/g);
 	if (!nSpace) {
-		nSpace = ['\n'];
+		nSpace = [lastSymbol];
 	} else {
-		nSpace.push('\n');
+		nSpace.push(lastSymbol);
 	}
 
 	if (out.n.length === 0) {
@@ -173,10 +195,5 @@ function diffString(o: string, n: string, isHTML: boolean = false): any[] | stri
 	}
 	return (isHTML ? str : result);
 }
-//
-// const textA = 'Bavaria ipsum dolor eana is ma Wuascht, a bissal wos gehd ollaweil und sei Diandldrahn de Sonn nois.';
-// const textB = 'Bavaria ipsum dolor eana is ma Worschd, a bisserl was geht allerweil und sei Diandldrahn de nackata.';
-//
-// console.log(diffString(textA, textB, false));
 
 export default diffString;
