@@ -1,5 +1,6 @@
 import * as Ajv from 'ajv';
-import 'whatwg-fetch'
+
+import Axios from 'axios';
 
 import Article from 'app/models/Article';
 import Author from 'app/models/Author';
@@ -13,25 +14,25 @@ import Schema from './Schema';
 
 export default class ApiParser extends BaseParser {
 	/*
-	* Fetch json from the given api url provided by the site
-	*/
+	 * Fetch json from the given api url provided by the site
+	 */
 	public request(): any {
 		if (!this.url) {
 			return Promise.reject(new Response(false, 'No url provided'));
 		}
 
-		return fetch(this.url).then(response => {
+		return Axios.get(this.url).then(response => {
 			let articleJson = {};
 			if (response.headers['content-type'].indexOf('json') === -1) {
-				if (typeof response === 'string') {
+				if (typeof response.data === 'string') {
 					try {
-						articleJson = JSON.parse(response);
+						articleJson = JSON.parse(response.data);
 					} catch (error) {
 						return Promise.reject(new Response(false, 'Could not parse json'));
 					}
 				}
 			} else {
-				articleJson = response;
+				articleJson = response.data;
 			}
 			// json validator
 			const ajv = new Ajv();
@@ -72,17 +73,6 @@ export default class ApiParser extends BaseParser {
 		}
 
 		return article;
-	}
-
-	private status (response) {
-	if (response.status >= 200 && response.status < 300) {
-		return response
-	}
-	throw new Error(response.statusText)
-	}
-
-	private json(response) {
-		return response.json()
 	}
 
 }
