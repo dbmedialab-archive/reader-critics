@@ -44,7 +44,7 @@ const ExtractSassPlugin = new ExtractTextPlugin({
 
 const webpackConfig = {
 	entry: {
-		app : ['whatwg-fetch', __dirname + '/src/front/index.tsx'],
+		app : __dirname + '/src/front/index.tsx',
 	},
 	output: {
 		filename: 'front.bundle.js',
