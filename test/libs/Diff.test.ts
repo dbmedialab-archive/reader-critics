@@ -29,7 +29,7 @@ const expected: any[] = [
 	{count: 1, value: '.'},
 ];
 
-const expectedMy: DiffStringResultObject[] = [
+const newDiffExpected: DiffStringResultObject[] = [
 	{count: 12, value: 'Bavaria ipsum dolor eana is ma '},
 	{added: false, count: 2, removed: true, value: 'Wuascht, '},
 	{added: true, count: 2, removed: false, value: 'Worschd, '},
@@ -37,8 +37,8 @@ const expectedMy: DiffStringResultObject[] = [
 	{added: false, count: 8, removed: true, value: 'bissal wos gehd ollaweil '},
 	{added: true, count: 8, removed: false, value: 'bisserl was geht allerweil '},
 	{count: 8, value: 'und sei Diandldrahn de '},
-	{added: false, count: 4, removed: true, value: 'Sonn nois.\n'},
-	{added: true, count: 2, removed: false, value: 'nackata.\n'},
+	{added: false, count: 4, removed: true, value: 'Sonn nois.'},
+	{added: true, count: 2, removed: false, value: 'nackata.'},
 ];
 
 describe('«diff» package', function () {
@@ -48,6 +48,6 @@ describe('«diff» package', function () {
 	});
 
 	it('#diffStrings', function () {
-		assert.deepEqual(diffStrings(textA, textB, false), expectedMy);
+		assert.deepEqual(diffStrings(textA, textB, false), newDiffExpected);
 	});
 });
