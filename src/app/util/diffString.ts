@@ -92,7 +92,6 @@ function diff(o: string[], n: string[]): DiffResultObject {
 	Building an object or a string with result of diff operation
  */
 function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffStringResultObject> | string {
-
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
@@ -160,6 +159,7 @@ function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffSt
 		nSpace.push(lastSymbol);
 	}
 
+	// If not new string set all as deleted
 	if (out.n.length === 0) {
 		for (let i = 0; i < out.o.length; i++) {
 			str += '<del>' + encodeURIComponent(out.o[i]) + oSpace[i] + '</del>';
@@ -179,7 +179,7 @@ function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffSt
 				addOptItem(out.n[i] + nSpace[i], true);
 			} else {
 				let pre = '';
-				const preArr = [];
+				const preArr = [];		// String parts to pass to the end as deleted
 
 				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
 					pre += '<del>' + encodeURIComponent(out.o[m]) + oSpace[m] + '</del>';
