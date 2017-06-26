@@ -5,12 +5,10 @@ import {
 
 import { okResponse } from './apiResponse';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
+import { createLog } from 'app/util/applib/logging';
 
 export default function(requ : Request, resp : Response) : void {
-	const { username, email, comment } = requ.body.data;
-	log('Received comment: %o', comment);
+	const { username, email, comment } = requ.body;
+	createLog('suggest');
 	okResponse(resp, { sent: true });
 }

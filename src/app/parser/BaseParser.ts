@@ -1,10 +1,5 @@
-import {
-	AxiosPromise,
-	default as axios,
-} from 'axios';
-
 import * as Promise from 'bluebird';
-
+import 'whatwg-fetch'
 import Article from '../models/Article';
 import Parser from './Parser';
 
@@ -25,9 +20,9 @@ export default class BaseParser implements Parser {
 	}
 
 	// Requests the url
-	protected request() : AxiosPromise {
+	protected request() : Promise<any> {
 		this.requestSent = true;
-		return axios.get(this.url);
+		return fetch(this.url);
 	}
 
 }
