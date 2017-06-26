@@ -5,7 +5,7 @@
 		"await-promise": true,
 		"class-name": true,
 		"curly": true,
-		"cyclomatic-complexity": [true, 22],
+		"cyclomatic-complexity": true,
 		"eofline": true,
 		"indent": [ true, "tabs" ],
 		"linebreak-style": [ true, "LF" ],

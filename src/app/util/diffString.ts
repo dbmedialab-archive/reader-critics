@@ -1,3 +1,4 @@
+// tslint:disable cyclomatic-complexity
 /*
  * Javascript Diff Algorithm
  *  By John Resig (http://ejohn.org/)
@@ -9,7 +10,6 @@
  * More Info:
  *  http://ejohn.org/projects/javascript-diff-algorithm/
  */
-
 interface DiffParsingItem {
 	rows: number[];			// Contains indexes of item's positions
 }
