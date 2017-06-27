@@ -2,7 +2,7 @@ box:
   id: node:8-alpine
   cmd: /bin/sh
 
-js-lint-test-build:
+js-lint-build-test:
   box: finanzcheck/docker-node-java
   steps:
   - script:
