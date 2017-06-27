@@ -1,0 +1,62 @@
+box: node:8-wheezy
+
+js-lint-build:
+  steps:
+  - script:
+    name: set yarn cache
+    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+  - script:
+    name: install dependencies
+    code: yarn
+  - script:
+    name: build production
+    code: NODE_ENV=production yarn run build
+  - script:
+    name: copy production files
+    code: |
+      cp -r out \
+        tmp \
+        run \
+        resources \
+        package.json \
+        yarn.lock \
+        $WERCKER_OUTPUT_DIR
+
+push-image:
+  box: 
+    id: node:8-alpine
+    cmd: /bin/sh
+  steps:
+  - script:
+    name: set yarn cache
+    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+  - script:
+    name: install production dependencies
+    code: |
+      HOME=$YARN_CACHE yarn
+  - internal/docker-push:
+    working-dir: $WERCKER_SOURCE_DIR
+    username: _json_key
+    password: $GCR_DBP_JSON_KEY_FILE
+    cmd: ./run_app.sh
+    tag: latest,$WERCKER_GIT_COMMIT
+    ports: "4000"
+    repository: eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY
+    registry: https://eu.gcr.io/v2
+
+deploy:
+  box:
+    id: eu.gcr.io/dagbladet-projects/kubectl
+    username: _json_key
+    password: $GCR_DBP_JSON_KEY_FILE
+    tag: p01
+    registry: https://eu.gcr.io
+  steps:
+  # Setup namespace
+  - script:
+    name: test and setup environment
+    code: |
+      initkube
+      deploy $WERCKER_GIT_REPOSITORY <<EOL
+        reader-critics=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
+      EOL

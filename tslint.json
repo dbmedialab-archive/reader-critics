@@ -1,0 +1,60 @@
+{
+	"defaultSeverity": "error",
+	"rules": {
+		"arrow-return-shorthand": true,
+		"await-promise": true,
+		"class-name": true,
+		"curly": true,
+		"cyclomatic-complexity": true,
+		"eofline": true,
+		"indent": [ true, "tabs" ],
+		"linebreak-style": [ true, "LF" ],
+		"match-default-export-name": {
+			"severity": "warning"
+		},
+		"max-file-line-count": [ true, 200 ],
+		"max-line-length": [ "warning", 100 ],
+		"new-parens": true,
+		"no-conditional-assignment": true,
+		"no-consecutive-blank-lines": true,
+		"no-duplicate-variable": true,
+		"no-eval": true,
+		"no-irregular-whitespace": true,
+		"no-require-imports": true,
+		"no-reference": true,
+		"no-shadowed-variable": true,
+		"no-string-throw": true,
+		"no-switch-case-fall-through": true,
+		"no-trailing-whitespace": true,
+		"no-unnecessary-initializer": true,
+		"no-unused-variable": {
+			"severity": "warning"
+		},
+		"no-var-keyword": true,
+		"ordered-imports": false,
+		"quotemark": [ true, "single" ],
+		"prefer-const": true,
+		"prefer-for-of": {
+			"severity": "warning"
+		},
+		"semicolon": {
+			"severity": "warning"
+		},
+		"trailing-comma": [ true, {
+			"multiline": "always",
+			"singleline": "never"
+		}],
+		"triple-equals": true,
+		"variable-name": [
+			true,
+			"ban-keywords",
+			"check-format",
+			"allow-pascal-case"
+		],
+		"whitespace": [
+			true,
+			"check-branch",
+			"check-decl"
+		]
+	}
+}
