@@ -23,7 +23,6 @@ const templateName = 'tmp/templates/suggestion.html';
 const styles = [
 	'/static/styles/home.css',
 	'/static/styles/suggestion.css',
-	'/static/front.css',
 ];
 
 const scripts = [

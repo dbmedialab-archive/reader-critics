@@ -24,7 +24,6 @@ const mainTemplate = createMainTemplate();
 
 const styles = [
 	'/static/styles/home.css',
-	'/static/front.css',
 ];
 
 const scripts = [];
