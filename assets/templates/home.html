@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+  This is a temporary template to test the doT engine. The final templates are not
+  intended to be files on the storage but will rather be loaded from the database.
+-->
+<html lang="no">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>Home Page</title>
+    <meta name="description" content="Home Page For Critical Reader">
+    <meta name="keywords" content="">
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+
+    {{~it.styles :stylePath}}
+    <link rel="stylesheet" href="{{=stylePath}}"/>
+    {{~}}
+</head>
+<body>
+<header role='banner'>
+   <h1>Leserkritikk</h1>
+</header>
+<div class="container">
+    <div class="row section frontpage">
+        <div class="content u-full-width">
+            <h2>
+                Velkommen til Leserkritikk!
+            </h2>
+            <p>
+                Leserkritikk er en ny type verktøy laget for at du, leseren, skal kunne bidra med korreksjoner, fakta og synspunkter på våre artikler.
+                Med dagens kommentarfelt legges det ikke til rette for en reell dialog mellom redaksjonen og de engasjerte leserene.
+                Dette ønsker vi å gjøre noe med.
+            </p>
+            <p>
+                Vi vil nå prøve ut deler av denne tjenesten for å se hva slags mottakelse vi får av publikum.
+                Vi håper at du liker det.
+            </p>
+            <p>
+                Bjeff i vei!
+            </p>
+        </div>
+    </div>
+</div>
+
+<footer id="main-footer">
+    <div class="container">
+        <div class="content four columns">
+            <span>Ris eller ros?</span>
+            <a href="/gitilbakemelding">Gi oss din tilbakemelding på verktøyet</a>
+        </div>
+        <div class="content four columns">
+            <span>Ansvarlig redaktør <a href="/cdn-cgi/l/email-protection#d6bcb9beb8f8b7a4b8b3f8bbb7a4bda3a5a5b3b896b2b7b1b4bab7b2b3a2f8b8b9">John Arne Markussen</a>
+            </span>
+            <div itemtype="http://schema.org/Organization" itemscope="">© 2016 <span itemprop="name">DB Medialab</span></div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

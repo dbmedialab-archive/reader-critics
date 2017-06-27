@@ -37,3 +37,6 @@ yarn.lock
 ehthumbs.db
 Thumbs.db
 
+# IDE and Editors
+/.idea
+*.sublime-workspace

@@ -4,13 +4,15 @@ import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 
+import { Express } from 'express';
+
 import * as app from 'app/util/applib';
 
 import config from 'app/config';
 import routes from 'app/routes';
 
 let log;
-let expressApp;
+let expressApp : Express;
 let httpPort;
 let httpServer;
 

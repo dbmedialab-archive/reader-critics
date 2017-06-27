@@ -23,7 +23,12 @@ js-lint-test-build:
   - script:
     name: copy production files
     code: |
-      cp -r . \
+      cp -r out \
+        tmp \
+        run \
+        resources \
+        package.json \
+        yarn.lock \
         $WERCKER_OUTPUT_DIR
 
 push-image:
@@ -59,10 +64,5 @@ deploy:
     code: |
       initkube
       deploy $WERCKER_GIT_REPOSITORY <<EOL
-        vote=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
+        reader-critics=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
       EOL
-  - script:
-    name: perserve cache.txt file
-    code: |
-      cp cache.txt "$WERCKER_OUTPUT_DIR"
-
