@@ -327,14 +327,18 @@ export function diffStringHtml(o: string, n: string): string {
 
 	// If not new string set all as deleted
 	if (out.n.length === 0) {
+		str += '<del>';
 		for (let i = 0; i < out.o.length; i++) {
-			str += '<del>' + encodeURIComponent(out.o[i]) + oSpace[i] + '</del>';
+			str += encodeURIComponent(out.o[i]) + oSpace[i];
 		}
+		str += '</del>';
 	} else {
 		if (!out.n[0].text) {
+			str += '<del>';
 			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
-				str += '<del>' + encodeURIComponent(out.o[m]) + oSpace[m] + '</del>';
+				str += encodeURIComponent(out.o[m]) + oSpace[m];
 			}
+			str += '</del>';
 		}
 
 		for (let i = 0; i < out.n.length; i++) {
@@ -346,7 +350,8 @@ export function diffStringHtml(o: string, n: string): string {
 				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
 					pre += encodeURIComponent(out.o[m]) + oSpace[m];
 				}
-				str += '<span>' + out.n[i].text + nSpace[i] + '</span>' + (pre ? '<del>' + pre + '</del>' : '');
+				str += '<span>' + out.n[i].text + nSpace[i] + '</span>';
+				str += (pre ? '<del>' + pre + '</del>' : '');
 			}
 		}
 	}
