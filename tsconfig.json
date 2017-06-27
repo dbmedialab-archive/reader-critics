@@ -13,7 +13,8 @@
 		"paths": {
 			"app/*": [ "app/*" ],
 			"base/*": [ "base/*" ],
-			"front/*": [ "front/*" ]
+			"front/*": [ "front/*" ],
+			"admin/*": [ "admin/*"]
 		},
 
 		"allowJs": false,
