@@ -1,23 +1,19 @@
 import * as React from 'react';
 
-import {
-	diffWords,
-	IDiffResult,
-} from 'diff';
+import {diffString, DiffStringResultObject} from 'app/util/diffString';
 
-export default function(oldText : string, newText : string) : any {
+export default function (oldText: string, newText: string): any {
 	if (oldText === newText) {
 		return <span key='0'>{newText}</span>;
 	}
 
-	const diff : IDiffResult[] = diffWords(oldText, newText);
-	const html : any[] = [];
+	const diff: DiffStringResultObject[] = diffString(oldText, newText);
+	const html: any[] = [];
 
-	diff.forEach((result : IDiffResult, index : number) => {
+	diff.forEach((result: DiffStringResultObject, index: number) => {
 		if (html.length > 0 && canHaveWhiteSpace(result)) {
 			html.push(' ');  // Whitespace to separate tags (and the words they contain)
 		}
-
 		html.push(formatResult(result, index));
 	});
 
@@ -26,20 +22,20 @@ export default function(oldText : string, newText : string) : any {
 
 // Generate <ins> and <del> tags for additions and removals
 
-function formatResult(result : IDiffResult, index : number) {
+function formatResult(result: DiffStringResultObject, index: number) {
 	if (result.added === true) {
-		return <ins key={index}>{result.value.trim()}</ins>;
+		return <ins key={index}>{result.value}</ins>;
 	}
 	if (result.removed === true) {
-		return <del key={index}>{result.value.trim()}</del>;
+		return <del key={index}>{result.value}</del>;
 	}
 
-	return <span key={index}>{result.value.trim()}</span>;
+	return <span key={index}>{result.value}</span>;
 }
 
 // Insert whitespace between tags, when needed (and appropriate)
 
-const punctuationASCII : number[] = [
+const punctuationASCII: number[] = [
 	0x21,  // !
 	0x22,  // "
 	0x27,  // '
@@ -52,7 +48,7 @@ const punctuationASCII : number[] = [
 	0x3F,  // ?
 ];
 
-function canHaveWhiteSpace(result : IDiffResult) : boolean {
+function canHaveWhiteSpace(result: DiffStringResultObject): boolean {
 	if (result.added === true && result.removed === true) {
 		return true;  // Always separate 'diff' tags
 	}
