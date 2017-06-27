@@ -45,7 +45,7 @@
 		"diff": "3.2.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
-		"extract-text-webpack-plugin": "2.1.2",
+		"extract-text-webpack-plugin": "^2.1.2",
 		"find-root": "1.0.0",
 		"json5": "0.5.1",
 		"lodash": "4.17.4",
@@ -54,9 +54,9 @@
 		"node-sass": "4.5.3",
 		"print-env": "0.1.0",
 		"query-string": "4.3.4",
-		"react": "15.6.1",
-		"react-dom": "15.6.1",
-		"sass-loader": "6.0.6",
+		"react": "^15.6.1",
+		"react-dom": "^15.6.1",
+		"sass-loader": "^6.0.6",
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.18.2",
 		"webpack": "2.6.1"
@@ -96,7 +96,7 @@
 		"ts-node": "3.0.6",
 		"tsconfig-paths": "2.2.0",
 		"tslint": "5.4.3",
-		"typescript": "2.3.4",
+		"typescript": "2.4.0",
 		"webpack-dev-server": "2.5.0"
 	}
 }

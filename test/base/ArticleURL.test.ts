@@ -1,4 +1,5 @@
-// import { describe } from 'mocha';
+import 'mocha';
+
 import { assert } from 'chai';
 
 import ArticleURL from 'base/ArticleURL';

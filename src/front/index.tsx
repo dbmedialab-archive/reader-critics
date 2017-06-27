@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import './scss/app.scss';
-
 import FeedbackPageLayout from './feedback/FeedbackPageLayout';
+import SuggestionLayout from './suggest/SuggestionLayout';
 
 const apps = {
 	'feedback': FeedbackPageLayout,
+	'suggestion': SuggestionLayout,
 };
 
 const rootContainer : HTMLElement = document.getElementById('app');

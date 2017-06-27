@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import ArticleElement from '../component/ArticleElement';
+import Article from 'base/Article';
+import ArticleElement from 'front/component/ArticleElement';
 
-import { fetchArticle } from '../apiCommunication';
-import { getArticleURL } from '../uiGlobals';
+import { fetchArticle } from 'front/apiCommunication';
+import { getArticleURL } from 'front/uiGlobals';
 
 export interface FeedbackContainerState {
-	article: any;
+	article: Article;
 }
 
 export default class FeedbackContainer
@@ -34,7 +35,7 @@ extends React.Component <any, FeedbackContainerState> {
 
 		// Iterate article elements and render sub components
 		return <section id='content'>
-			{ this.state.article.map(this.createArticleElement) }
+			{ this.state.article.items.map(this.createArticleElement) }
 		</section>;
 	}
 
