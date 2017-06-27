@@ -5,9 +5,10 @@ import {
 
 import { okResponse } from './apiResponse';
 
-import { createLog } from 'app/util/applib/logging';
+import * as app from 'app/util/applib/logging';
+const log = app.createLog();
 
 export default function (requ: Request, resp: Response): void {
-	createLog('Received feedback');
+	log('Received feedback: %o', requ.body);
 	okResponse(resp);
 }
