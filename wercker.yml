@@ -1,6 +1,9 @@
-box: node:8-wheezy
+box: 
+  id: node:8-alpine
+  cmd: /bin/sh
 
-js-lint-build:
+js-lint-test-build:
+  box: finanzcheck/docker-node-java
   steps:
   - script:
     name: set yarn cache
@@ -9,8 +12,14 @@ js-lint-build:
     name: install dependencies
     code: yarn
   - script:
-    name: build production
-    code: NODE_ENV=production yarn run build
+    name: lint
+    code: yarn lint
+  - script:
+    name: build
+    code: yarn run build
+  - script:
+    name: test
+    code: yarn test
   - script:
     name: copy production files
     code: |
@@ -18,9 +27,6 @@ js-lint-build:
         $WERCKER_OUTPUT_DIR
 
 push-image:
-  box: 
-    id: node:8-alpine
-    cmd: /bin/sh
   steps:
   - script:
     name: set yarn cache
@@ -59,3 +65,4 @@ deploy:
     name: perserve cache.txt file
     code: |
       cp cache.txt "$WERCKER_OUTPUT_DIR"
+
