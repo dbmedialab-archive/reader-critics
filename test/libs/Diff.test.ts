@@ -2,7 +2,7 @@ import 'mocha';
 
 import {assert} from 'chai';
 import {diffWords} from 'diff';
-import diffStrings, {DiffStringResultObject} from '../../src/app/util/diffString';
+import { DiffStringResultObject, diffStringHtml, diffString} from '../../src/app/util/diffString';
 
 const textA = 'Bavaria ipsum dolor eana is ma Wuascht, a bissal wos gehd ollaweil und sei Diandldrahn de Sonn nois.';
 const textB = 'Bavaria ipsum dolor eana is ma Worschd, a bisserl was geht allerweil und sei Diandldrahn de nackata.';
@@ -41,13 +41,15 @@ const newDiffExpected: DiffStringResultObject[] = [
 	{added: true, count: 2, removed: false, value: 'nackata.'},
 ];
 
+console.log(typeof diffString);
+
 describe('«diff» package', function () {
 
 	it('#diffWords', function () {
 		assert.deepEqual(diffWords(textA, textB), expected);
 	});
 
-	it('#diffStrings', function () {
-		assert.deepEqual(diffStrings(textA, textB, false), newDiffExpected);
+	it('#diffString', function () {
+		assert.deepEqual(diffString(textA, textB), newDiffExpected);
 	});
 });

@@ -1,4 +1,5 @@
 // tslint:disable cyclomatic-complexity
+// tslint:disable max-file-line-count
 /*
  * Javascript Diff Algorithm
  *  By John Resig (http://ejohn.org/)
@@ -91,7 +92,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 /*
 	Building an object or a string with result of diff operation
  */
-function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffStringResultObject> | string {
+export default function diffStringDefault(o: string, n: string, isHTML: boolean = false): Array<DiffStringResultObject> | string {
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
@@ -182,10 +183,10 @@ function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffSt
 				const preArr = [];		// String parts to pass to the end as deleted
 
 				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
-					pre += '<del>' + encodeURIComponent(out.o[m]) + oSpace[m] + '</del>';
+					pre += encodeURIComponent(out.o[m]) + oSpace[m];
 					preArr.push(out.o[m] + oSpace[m]);
 				}
-				str += ' ' + out.n[i].text + nSpace[i] + pre;
+				str += '<span>' + out.n[i].text + nSpace[i] + '</span>' + (pre ? '<del>' + pre + '</del>' : '');
 				addItem(out.n[i].text + nSpace[i]);
 				preArr.forEach(function (item) {
 					addOptItem(item, false);
@@ -196,4 +197,163 @@ function diffString(o: string, n: string, isHTML: boolean = false): Array<DiffSt
 	return (isHTML ? str : result);
 }
 
-export default diffString;
+/*
+ Building an object or a string with result of diff operation
+ */
+export function diffString(o: string, n: string): Array<DiffStringResultObject> {
+	// Updates the previous string part adding to it value and count of current item
+	function updatePrevious(value: string) {
+		const lastIndex: number = result.length - 1;
+		const lastItem: DiffStringResultObject = result[lastIndex];
+		const replaceItem: DiffStringResultObject = Object.assign({}, lastItem, {
+			count: lastItem.count + 2,
+			value: lastItem.value + value,
+		});
+
+		result.splice(lastIndex, 1, replaceItem);
+	}
+
+	// Adding a new string part with added/deleted flags
+	function addOptItem(value: string, isAdding: boolean) {
+		const lastIndex: number = result.length - 1;
+		const lastItem: DiffStringResultObject = result[lastIndex];
+		const optItem: DiffStringResultObject = {
+			count: 2,
+			added: isAdding,
+			removed: !isAdding,
+			value: value,
+		};
+
+		if (lastItem && (isAdding ?
+				(lastItem.added && !lastItem.removed) :
+				(!lastItem.added && lastItem.removed))) {
+			updatePrevious(value);
+		} else {
+			result.push(optItem);
+		}
+	}
+
+	// Adding a new string part for item that has not been changed
+	function addItem(value: string) {
+		const lastIndex: number = result.length - 1;
+		const lastItem: DiffStringResultObject = result[lastIndex];
+		if (lastItem && !lastItem.added && !lastItem.removed) {
+			updatePrevious(value);
+		} else {
+			result.push({count: 2, value: value});
+		}
+	}
+
+	const result: DiffStringResultObject[] = [];
+	const lastSymbol: string = '';
+
+	o = o.replace(/\s+$/, '');
+	n = n.replace(/\s+$/, '');
+
+	// Pre-Parsing the strings
+	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+
+	// Setting an array of space characters to add
+	let oSpace: string[] = o.match(/\s+/g);
+	if (!oSpace) {
+		oSpace = [lastSymbol];
+	} else {
+		oSpace.push(lastSymbol);
+	}
+	let nSpace: string[] = n.match(/\s+/g);
+	if (!nSpace) {
+		nSpace = [lastSymbol];
+	} else {
+		nSpace.push(lastSymbol);
+	}
+
+	// If not new string set all as deleted
+	if (out.n.length === 0) {
+		for (let i = 0; i < out.o.length; i++) {
+			addOptItem(out.o[i] + oSpace[i], false);
+		}
+	} else {
+		if (!out.n[0].text) {
+			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
+				addOptItem(out.o[m] + oSpace[m], false);
+			}
+		}
+
+		for (let i = 0; i < out.n.length; i++) {
+			if (!out.n[i].text) {
+				addOptItem(out.n[i] + nSpace[i], true);
+			} else {
+				const preArr = [];		// String parts to pass to the end as deleted
+
+				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
+					preArr.push(out.o[m] + oSpace[m]);
+				}
+				addItem(out.n[i].text + nSpace[i]);
+				preArr.forEach(function (item) {
+					addOptItem(item, false);
+				});
+			}
+		}
+	}
+	return result;
+}
+
+/*
+ Building an object or a string with result of diff operation
+ */
+export function diffStringHtml(o: string, n: string): string {
+	const lastSymbol: string = '\n';	// If building an html text using the '/n' as an end of string
+	let str: string = '';
+
+	o = o.replace(/\s+$/, '');
+	n = n.replace(/\s+$/, '');
+
+	// Pre-Parsing the strings
+	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+
+	// Setting an array of space characters to add
+	let oSpace: string[] = o.match(/\s+/g);
+	if (!oSpace) {
+		oSpace = [lastSymbol];
+	} else {
+		oSpace.push(lastSymbol);
+	}
+	let nSpace: string[] = n.match(/\s+/g);
+	if (!nSpace) {
+		nSpace = [lastSymbol];
+	} else {
+		nSpace.push(lastSymbol);
+	}
+
+	// If not new string set all as deleted
+	if (out.n.length === 0) {
+		str += '<del>';
+		for (let i = 0; i < out.o.length; i++) {
+			str += encodeURIComponent(out.o[i]) + oSpace[i];
+		}
+		str += '</del>';
+	} else {
+		if (!out.n[0].text) {
+			str += '<del>';
+			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
+				str += encodeURIComponent(out.o[m]) + oSpace[m];
+			}
+			str += '</del>';
+		}
+
+		for (let i = 0; i < out.n.length; i++) {
+			if (!out.n[i].text) {
+				str += '<ins>' + encodeURIComponent(out.n[i]) + nSpace[i] + '</ins>';
+			} else {
+				let pre = '';
+
+				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
+					pre += encodeURIComponent(out.o[m]) + oSpace[m];
+				}
+				str += '<span>' + out.n[i].text + nSpace[i] + '</span>';
+				str += (pre ? '<del>' + pre + '</del>' : '');
+			}
+		}
+	}
+	return str;
+}
