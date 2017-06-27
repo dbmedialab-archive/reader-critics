@@ -1,5 +1,0 @@
-interface Website {
-
-	getHostMatchers();
-
-}
