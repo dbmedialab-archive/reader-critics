@@ -1,4 +1,0 @@
-#!/bin/sh
-
-node_modules/.bin/tslint --project tsconfig.json --type-check --config tslint.json 'src/**/*.{ts,tsx}'
-

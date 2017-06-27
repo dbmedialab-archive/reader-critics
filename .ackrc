@@ -1,5 +1,0 @@
---type-add=ts:ext:ts,tsx
---ignore-dir=out
---ignore-dir=node_modules
---ignore-dir=tmp
-
