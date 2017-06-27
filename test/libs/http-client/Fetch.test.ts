@@ -23,41 +23,44 @@ describe('fetch promise based HTTP client', () => {
 	});
 
 	// Tests
+	// catching network error
+	// 3xx-5xx responses are NOT network errors, and should be handled in then()
+	// you only need one catch() at the end of your promise chain
+	// src: https://github.com/bitinn/node-fetch#usage
 
 	it('Valid route should return HTTP 200', (done) => {
 		fetch(baseURL)
 			.then((resp) => {
-				console.log(resp);
 				expect(resp.status, 'response.status').to.not.be.undefined;
 				expect(resp.status, 'response.status').to.equal(200);
 				done();
 			})
-			.catch((error) =>{
-				done(new Error('Fetch entered "catch" instead of "then"'));
+			.catch((error) => {
+				done(new Error(error));
 			});
 	});
 
 	it('False route should return HTTP 404', (done) => {
 		fetch(`${baseURL}not-found`)
 			.then((resp) => {
-				done(new Error('Fetch entered "then" instead of "catch"'));
-			})
-			.catch((error)=>{
-				expect(error.response.status, 'response.status').to.not.be.undefined;
-				expect(error.response.status, 'response.status').to.equal(404);
+				expect(resp.status, 'response.status').to.not.be.undefined;
+				expect(resp.status, 'response.status').to.equal(404);
 				done();
+			})
+			.catch((error) => {
+				done(new Error(error));
 			});
 	});
 
 	it('Crash route should return HTTP 500', (done) => {
 		fetch(`${baseURL}crash-me`)
-			.then(() => {
-				done(new Error('Fetch entered "then" instead of "catch"'));
+			.then((resp) => {
+				expect(resp.status, 'response.status').to.not.be.undefined;
+				expect(resp.status, 'response.status').to.equal(500);
+				done();
 			})
 			.catch((error) => {
-				expect(error.response.status, 'response.status').to.not.be.undefined;
-				expect(error.response.status, 'response.status').to.equal(500);
-				done();
+				done(new Error(error));
 			});
 	});
 
