@@ -6,7 +6,6 @@ import {
 
 import * as app from 'app/util/applib';
 
-
 //TO DO remove this test handler
 import testPageHandler from './ui/testPageHandler/index';
 

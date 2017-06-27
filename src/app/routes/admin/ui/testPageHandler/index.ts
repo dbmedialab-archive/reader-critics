@@ -39,7 +39,6 @@ export default function (requ : Request, resp : Response) {
 	.end();
 }
 
-
 function createMainTemplate() {
 	// Currently loads the template from a static file.
 	// The template will later be determined dynamically based on website url / domain.
