@@ -7,33 +7,50 @@ import Parser from 'base/Parser';
 abstract class BaseParser implements Parser {
 
 	parse(rawHTML : string, url : ArticleURL) : Promise <Article> {
-		const version : string = this.parseVersion();
-		const authors : ArticleAuthor[] = this.parseByline();
+		let version : string;
+		let authors : ArticleAuthor[];
+		let titles : ArticleItem[];
+		let content : ArticleItem[];
 
-		const items : ArticleItem[] = [
-			...this.parseTitles(),
-			...this.parseContent(),
-		];
+		// Create parser promises
+		const pVersion = this.parseVersion()
+			.then((v : string) => version = v);
 
-		const parsedArticle : Article = {
+		const pAuthors = this.parseByline()
+			.then((a : ArticleAuthor[]) => authors = a);
+
+		const pTitles = this.parseTitles()
+			.then((t : ArticleItem[]) => titles = t);
+
+		const pContent = this.parseContent()
+			.then((c : ArticleItem[]) => content = c);
+
+		// Execute all promises and assemble an article object
+		return Promise.all([
+			pVersion,
+			pAuthors,
+			pTitles,
+			pContent,
+		]).then(() : Article => ({
 			url,
 			version,
 			authors,
-			items,
-		};
-
-		return Promise.resolve(parsedArticle);
+			items: [
+				...titles,
+				...content,
+			],
+		}));
 	}
 
 	// Prototypes
 
-	protected abstract parseVersion() : string;
+	protected abstract parseVersion() : Promise <string>;
 
-	protected abstract parseByline() : ArticleAuthor[];
+	protected abstract parseByline() : Promise <ArticleAuthor[]>;
 
-	protected abstract parseTitles() : ArticleItem[];
+	protected abstract parseTitles() : Promise <ArticleItem[]>;
 
-	protected abstract parseContent() : ArticleItem[];
+	protected abstract parseContent() : Promise <ArticleItem[]>;
 
 }
 
