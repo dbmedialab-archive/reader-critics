@@ -8,5 +8,22 @@ import ArticleAuthor from 'base/ArticleAuthor';
  * and <meta property="article:bylineEmail" content="...">
  */
 export function getOpenGraphAuthors(select : Cheerio) : ArticleAuthor[] {
-	return [];
+	const metaName = select('head').find('meta[property="article:byline"]');
+	const metaMail = select('head').find('meta[property="article:bylineEmail"]');
+
+	if (metaName.length < 1 && metaMail.length < 1) {
+		return [];
+	}
+
+	const splitName = metaName.attr('content').split(',');
+	const splitMail = metaMail.attr('content').split(',');
+
+	if (splitName.length !== splitMail.length) {
+		return [];
+	}
+
+	return splitName.map((name : string, index : number) => ({
+		name: name.trim(),
+		email: splitMail[index].trim(),
+	}));
 }
