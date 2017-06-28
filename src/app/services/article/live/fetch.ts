@@ -33,8 +33,7 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 	.then(() => {
 		log('### after Promise.all');
 		log('raw:', rawArticle.substring(0, 300));
-		log('parser:', siteParser);
+		log('parser:', siteParser.parse);
 	})
 	.then(() => siteParser.parse(rawArticle));
 }
-
