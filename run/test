@@ -29,6 +29,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 		--help)
 			printUsage
 			;;
+		--app)
+			DONT_TEST_ALL=true
+			TEST_APP=true
+			;;
 		--libs)
 			DONT_TEST_ALL=true
 			TEST_LIBS=true
@@ -79,6 +83,7 @@ runMocha()
 	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
 
 	# Run Mocha
+	export CWD=`pwd`
 	node_modules/.bin/mocha --opts ${1}
 	RETURN_VALUE=$?
 
@@ -121,6 +126,12 @@ runNightwatch()
 }
 
 ### Test parts
+
+testBackendApp()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_APP ]) ; then return ; fi
+	runMocha "test/mocha-app.opts" "Backend Application"
+}
 
 testLibraries()
 {
@@ -184,6 +195,7 @@ runAllTests()
 {
 	testLibraries
 	testBaseSource
+	testBackendApp
 	testFrontend
 }
 
