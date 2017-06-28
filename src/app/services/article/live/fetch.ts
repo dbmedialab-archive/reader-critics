@@ -35,5 +35,5 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 		log('raw:', rawArticle.substring(0, 300));
 		log('parser:', siteParser.parse);
 	})
-	.then(() => siteParser.parse(rawArticle));
+	.then(() => siteParser.parse(rawArticle, url));
 }
