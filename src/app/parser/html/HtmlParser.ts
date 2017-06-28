@@ -4,7 +4,7 @@ import * as Promise from 'bluebird';
 
 import Article from 'app/models/Article';
 import BaseParser from '../BaseParser';
-
+/*
 export default class HtmlParser extends BaseParser {
 	private parsedElements = {};
 	private parsedArticle: {content: {}, title: {}};
@@ -160,3 +160,4 @@ export default class HtmlParser extends BaseParser {
 		});
 	}
 }
+*/

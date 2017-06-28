@@ -1,7 +1,7 @@
 import * as express from 'express';
 
 import config from '../config';
-
+/*
 import ApiParser from '../parser/api/ApiParser';
 import HtmlParser from '../parser/html/HtmlParser';
 
@@ -46,3 +46,4 @@ export default class ArticleController {
 		});
 	}
 }
+*/
