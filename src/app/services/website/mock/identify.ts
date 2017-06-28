@@ -5,6 +5,7 @@ import * as app from 'app/util/applib';
 
 const wsDagbladet : Website = {
 	name: 'dagbladet.no',
+	parserClass: 'DagbladetParser',
 };
 
 const wsVG : Website = {
