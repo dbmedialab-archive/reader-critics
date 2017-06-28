@@ -29,14 +29,13 @@ const getParserName = (website : Website) : string =>
 // Class loader
 
 const isClassFunction = (classFn : any) : boolean =>
-	(typeof classFn === 'function') && true;
+	(typeof classFn === 'function') && (typeof classFn.prototype === 'object');
 
 function loadParserClass(importName : string) : Promise <Function> {
 	// If you have TSlint on and your IDE is yelling "error" here, this actually works!
 	return import(importName)
-	.then((parserModule) => {
-		const classFn = parserModule.default;
-
+	.then(parserModule => parserModule.default)
+	.then((classFn : any) => {
 		if (!isClassFunction(classFn)) {
 			return Promise.reject(new TypeError(`Default export of ${importName} is not a class`));
 		}
