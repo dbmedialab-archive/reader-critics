@@ -7,8 +7,6 @@ import * as app from 'app/util/applib';
 
 import { ParserNotFoundError } from 'app/util/errors';
 
-// import DagbladetParser from 'app/parser/impl/DagbladetParser';
-
 const log = app.createLog();
 
 // getParserFor
