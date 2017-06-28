@@ -4,18 +4,16 @@ import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 abstract class BaseParser implements Parser {
 
 	parse(rawHTML : string, url : ArticleURL) : Promise <Article> {
-		log('parse()');
 		const version : string = this.parseVersion();
 		const authors : ArticleAuthor[] = this.parseByline();
 
-		const items : ArticleItem[] = [...this.parseTitles(), ...this.parseContent()];
+		const items : ArticleItem[] = [
+			...this.parseTitles(),
+			...this.parseContent(),
+		];
 
 		const parsedArticle : Article = {
 			url,
