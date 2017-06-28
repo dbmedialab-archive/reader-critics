@@ -34,7 +34,7 @@ export default function(requ : Request, resp : Response) : void {
 
 		const website = websiteService.identify(articleURL);
 
-		log(articleURL);
+		log(articleURL.href);
 
 		// Fetch the article from the database. If not stored, will return undefined
 		articleService.load(articleURL, version)

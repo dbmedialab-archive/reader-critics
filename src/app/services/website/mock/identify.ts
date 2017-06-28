@@ -3,8 +3,6 @@ import Website from 'base/Website';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog();
-
 const wsDagbladet : Website = {
 	name: 'dagbladet.no',
 };
@@ -20,8 +18,6 @@ const wsAftenposten : Website = {
 export default function(articleURL : ArticleURL|string) : Website {
 	const url : string = (articleURL instanceof ArticleURL)
 		? articleURL.href : articleURL;
-
-	log(url);
 
 	const websites : Website[] = [
 		wsDagbladet,
