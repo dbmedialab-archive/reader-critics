@@ -1,0 +1,67 @@
+import * as fs from 'fs';
+
+import Parser from 'base/Parser';
+import Website from 'base/Website';
+
+import * as app from 'app/util/applib';
+
+import { ParserNotFoundError } from 'app/util/errors';
+
+// import DagbladetParser from 'app/parser/impl/DagbladetParser';
+
+const log = app.createLog();
+
+// getParserFor
+
+export default function(website : Website) : Promise <Parser> {
+	const importName = `app/parser/impl/${getParserName(website)}`;
+	log('"%s" resolves to %s', website.name, importName);
+
+	return loadParserClass(importName).then(createParserInstance);
+}
+
+// Parser class name
+
+const hasParser = (website : Website) : boolean =>
+	(typeof website.parserClass === 'string') && (website.parserClass !== null);
+
+const getParserName = (website : Website) : string =>
+	hasParser(website) ? website.parserClass : 'GenericParser';
+
+// Class loader
+
+const isClassFunction = (classFn : any) : boolean =>
+	(typeof classFn === 'function') && true;
+
+function loadParserClass(importName : string) : Promise <Function> {
+	// If you have TSlint on and your IDE is yelling "error" here, this actually works!
+	return import(importName)
+	.then((parserModule) => {
+		const classFn = parserModule.default;
+
+		if (!isClassFunction(classFn)) {
+			return Promise.reject(new TypeError(`Default export of ${importName} is not a class`));
+		}
+
+		return classFn;
+	})
+	.catch((error) => {
+		if (error.code === 'MODULE_NOT_FOUND') {
+			return Promise.reject(new ParserNotFoundError(`${importName} not found`));
+		}
+
+		log('Class import error:', error);
+		return Promise.reject(error);  // FIXME Emitting an error currently shuts down the app. Catch upstream?
+	});
+}
+
+// Create a new instance
+
+function createParserInstance(parserClass : Function) : Parser {
+	// Create a new instance using the class prototype
+	const parserInstance = Object.create(parserClass.prototype);
+	// Call constructor with no arguments, creates "this" context
+	parserClass.constructor.call(parserInstance);
+	// That's all!
+	return <Parser> parserInstance;
+}
