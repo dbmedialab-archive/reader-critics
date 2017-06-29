@@ -9,10 +9,13 @@ js-lint-build-test:
       name: install openjdk jre8
       code: |-
         sudo apt-get update
-        sudo apt-get install software-properties-common -y
-        sudo add-apt-repository "deb http://ftp.debian.org/debian jessie-backports main" -y
+        sudo apt-get install software-properties-common python-software-properties -y
+        sudo add-apt-repository "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main"
+        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
         sudo apt-get update
-        sudo apt-get install openjdk-8-jre -qq
+        echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
+        sudo apt-get install oracle-java8-installer -qq
+        sudo apt-get install oracle-java8-set-default -y
   - script:
     name: set yarn cache
     code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
