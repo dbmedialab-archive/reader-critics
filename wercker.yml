@@ -8,7 +8,8 @@ js-lint-build-test:
   - script:
       name: install openjdk jre8
       code: |-
-        sudo add-apt-repository "deb http://ftp.de.debian.org/debian jessie-backports main"
+        sudo apt-get update
+        sudo apt-add-repository "deb http://ftp.debian.org/debian jessie-backports main"
         sudo apt-get update
         sudo apt-get install openjdk-8-jre -qq
   - script:
