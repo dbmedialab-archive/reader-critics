@@ -24,13 +24,13 @@ export default function (oldText: string, newText: string): any {
 
 function formatResult(result: DiffStringResultObject, index: number) {
 	if (result.added === true) {
-		return <ins key={index}>{result.value}</ins>;
+		return <ins key={index}>{result.value.trim()}</ins>;
 	}
 	if (result.removed === true) {
-		return <del key={index}>{result.value}</del>;
+		return <del key={index}>{result.value.trim()}</del>;
 	}
 
-	return <span key={index}>{result.value}</span>;
+	return <span key={index}>{result.value.trim()}</span>;
 }
 
 // Insert whitespace between tags, when needed (and appropriate)
