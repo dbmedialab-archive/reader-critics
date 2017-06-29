@@ -13,11 +13,9 @@ function authenticate(req, res, next) {
 			if (isMatch) {
 				req.user = adminUser;
 			}
-			log('User added to request');
 			next();
 		});
 	} else {
-		log('User not added to request');
 		next();
 	}
 }
@@ -38,21 +36,20 @@ function generateToken (req, res, next) {
 
 	const secret = jwtConf.jwtSecret;
 	req.token = jwt.sign(jwtPayload, secret, jwtData);
-	log('Token generated');
+	next();
 }
 
-function respondJWT (req, res) {
+function respondJWT (req, res, next) {
 	if (!req.user) {
-		log('Unauthorized');
 		res.status(401).json({
 			error: 'Unathorized',
 		});
 	} else {
-		log('Authorized');
 		res.status(200).json({
 			jwt: req.token,
 		});
 	}
+	next();
 }
 
 export default { authenticate, generateToken, respondJWT };
