@@ -1,4 +1,4 @@
-box: 
+box:
   id: node:8-alpine
   cmd: /bin/sh
 
@@ -13,19 +13,26 @@ js-lint-build-test:
     code: yarn
   - script:
     name: lint
-    code: yarn lint
+    code: run/lint
   - script:
     name: build
-    code: yarn run build
+    code: run/build
   - script:
-    name: test
-    code: yarn test
+    name: test libraries
+    code: run/test --libs
+  - script:
+    name: test badr
+    code: run/test --base
+  - script:
+    name: test backend app
+    code: run/test --app
   - script:
     name: copy production files
     code: |
-      cp -r out \
-        tmp \
+      cp -r assets \
+        out \
         run \
+        tmp \
         resources \
         package.json \
         yarn.lock \
