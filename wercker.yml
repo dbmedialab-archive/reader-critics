@@ -1,21 +1,16 @@
-box:
-  id: node:8-alpine
-  cmd: /bin/sh
+box: openjdk:8
 
 js-lint-build-test:
-  box: node:8
   steps:
   - script:
-      name: install openjdk jre8
-      code: |-
-        sudo apt-get update
-        sudo apt-get install software-properties-common python-software-properties -y
-        sudo add-apt-repository "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main"
-        sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-        sudo apt-get update
-        echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | sudo /usr/bin/debconf-set-selections
-        sudo apt-get install oracle-java8-installer -qq
-        sudo apt-get install oracle-java8-set-default -y
+    name: 'install node'
+    code: |
+      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+      export NVM_DIR="$HOME/.nvm"
+      source /root/.bashrc
+      nvm install v8
+      nvm use node
+      npm i -g yarn
   - script:
     name: set yarn cache
     code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
@@ -56,6 +51,9 @@ js-lint-build-test:
         $WERCKER_OUTPUT_DIR
 
 push-image:
+  box: 
+    id: node:8-alpine
+    cmd: /bin/sh
   steps:
   - script:
     name: set yarn cache
