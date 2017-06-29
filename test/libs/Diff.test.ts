@@ -41,8 +41,6 @@ const newDiffExpected: DiffStringResultObject[] = [
 	{added: true, count: 2, removed: false, value: 'nackata.'},
 ];
 
-console.log(typeof diffString);
-
 describe('«diff» package', function () {
 
 	it('#diffWords', function () {
