@@ -8,7 +8,8 @@ import faviconRoute from './faviconRoute';
 import feedbackRoute from './feedbackRoute';
 import homeRoute from './homeRoute';
 import suggestionRoute from './suggestionRoute';
-import adminRoute from './adminRoute';
+import adminRoute from './admin/adminRoute';
+import adminApiRoute from './admin/api/adminApiRoute';
 
 import staticRoute from './staticRoute';
 
@@ -39,6 +40,7 @@ function setRoutes(expressApp : express.Application) {
 	expressApp.use('/api', apiRoute);
 	expressApp.use('/fb', feedbackRoute);
 	expressApp.use('/suggestion-box', suggestionRoute);
+	expressApp.use('/admin/api', adminApiRoute);
 	expressApp.use('/admin', adminRoute);
 
 	expressApp.use('/', homeRoute);
