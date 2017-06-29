@@ -18,11 +18,11 @@ describe('Html Parser', function() {
 			});
 	});
 
-	it('Parser works correctly', function() {
-		article.elements.forEach((item) => {
-			console.log(item);
-		});
-		assert.equal(true, true);
-	});
+	// it('Parser works correctly', function() {
+	// 	article.elements.forEach((item) => {
+	// 		console.log(item);
+	// 	});
+	// 	assert.equal(true, true);
+	// });
 
 });
