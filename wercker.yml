@@ -15,13 +15,16 @@ js-lint-build-test:
     name: lint
     code: run/lint
   - script:
+    name: check node
+    code: node --version
+  - script:
     name: build
     code: run/build
   - script:
     name: test libraries
     code: run/test --libs
   - script:
-    name: test badr
+    name: test base modules
     code: run/test --base
   - script:
     name: test backend app
