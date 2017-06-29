@@ -10,20 +10,15 @@
 	},
 	"scripts": {
 		"build": "run/build",
-
-    "build:dev": "npm run build:app && npm run watch:front",
+		"build:dev": "npm run build:app && npm run watch:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig.json",
 		"watch:app": "node_modules/.bin/tsc --project tsconfig.json --watch",
-
-    "build:front": "webpack --config webpack-front.js",
+		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
-
-    "build:admin": "webpack --config webpack-admin.js",
+		"build:admin": "webpack --config webpack-admin.js",
 		"watch:admin": "webpack --config webpack-admin.js --watch",
-		
 		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
 		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
-
 		"lint": "run/lint",
 		"test": "run/test",
 		"start": "run/app"
@@ -42,7 +37,7 @@
 	"dependencies": {
 		"ansicolors": "0.3.2",
 		"app-module-path": "2.2.0",
-		"axios": "^0.16.2",
+		"axios": "0.16.2",
 		"bluebird": "3.5.0",
 		"body-parser": "1.17.2",
 		"callsite": "1.0.0",
@@ -51,7 +46,6 @@
 		"convict": "4.0.0",
 		"css-loader": "0.28.4",
 		"debug": "2.6.8",
-		"diff": "3.2.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
 		"extract-text-webpack-plugin": "2.1.2",
@@ -80,7 +74,6 @@
 		"@types/classnames": "2.2.0",
 		"@types/core-js": "0.9.42",
 		"@types/debug": "0.0.29",
-		"@types/diff": "3.2.0",
 		"@types/express": "4.0.36",
 		"@types/lodash": "4.14.67",
 		"@types/mocha": "2.2.41",
