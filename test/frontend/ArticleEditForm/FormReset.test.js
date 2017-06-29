@@ -31,9 +31,9 @@ const elFormCancelBtn = elFeedbackForm + ' .button.cancel';
 // Some text snippets for display and input fields
 
 const expectedText = 'I dag landet Donald Trump i Israel.';
-const changedText = 'Bavaria lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
+const changedText = 'Bavaria I dag lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
 const userComment = 'Here be some comment';
-const diffyText = 'Bavaria I lorem dag ipsum landet dolor Donald Kreiz Trump Birnbaum';
+const diffyText = '(Dagbladet): Bavaria I dag landet Donald Trump i Israel. Kort tid etter ble han historisk da han, som den første sittende amerikanske presidenten, besøkte Vestmuren, bedre kjent som klagemuren, i Jerusalem. lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
 
 describe('ArticleEditForm Reset Tests', function() {
 
