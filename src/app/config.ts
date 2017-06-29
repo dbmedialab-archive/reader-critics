@@ -16,7 +16,7 @@ const config = convict({
 		env: 'PARSER',
 	},
 	jwt: {
-		jwtSecret: crypto.randomBytes(32),
+		jwtSecret: 'secret',/*crypto.randomBytes(32)*/
 		jwtDuration: '2 hours',
 		env: 'JWT',
 	},

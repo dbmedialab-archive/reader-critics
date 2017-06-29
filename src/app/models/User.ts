@@ -1,16 +1,16 @@
 import BaseModel from './Base';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import EncryptionError from '../errors/EncryptionError';
 
 const rounds = 10;
 
 export default class User extends BaseModel {
-	private id: number;
 	private name: string;
 	private login: string;
 	private password: string;
+	public id: number;
 
-	constructor (properties: Object) {
+	constructor (properties : Object) {
 		super(['name', 'email', 'password']);
 
 		if (!this.validate(properties)) {
@@ -39,12 +39,14 @@ export default class User extends BaseModel {
 	}
 
 	public setPassword(password: string) {
-		bcrypt.hash(password, rounds, function(err, hash) {
-			this.password = hash;
+		bcrypt.genSalt(rounds, function(saltErr, salt) {
+			bcrypt.hash(password, salt, function(hashErr, hash) {
+				this.password = hash;
+			});
 		});
 	}
 
-	public comparePassword(password: string, cb: () => boolean): boolean {
-		return bcrypt.compare(password, this.password).then(cb);
+	public comparePassword(password: string, cb: (isMatch: boolean) => void): void {
+		bcrypt.compare(password, this.password, cb);
 	}
 }

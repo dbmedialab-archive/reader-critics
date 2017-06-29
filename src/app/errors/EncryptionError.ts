@@ -1,3 +1,4 @@
+import * as app from 'app/util/applib';
 const log = app.createLog();
 
 export default class EncryptingError extends Error {
