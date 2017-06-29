@@ -1,41 +1,44 @@
-import {
-	default as axios,
-	AxiosResponse,
-} from 'axios';
+import 'whatwg-fetch';
 
 const rxUnencoded = /:\/\//;
 
-export function fetchArticle(url : string, version : string) : Promise<any> {
+export const fetchArticle = ((url: string, version: string): Promise<any> => {
 	const encodedURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
 		: url;
 
-	return axios.get(`/api/article/?url=${encodedURL}`)
-	.then((resp : AxiosResponse) => {
-		const d = resp.data;
+	return fetch(`/api/article/?url=${encodedURL}`)
+		.then(status)
+		.then(json)
+		.then(function (json) {
+			return json;
+		}).catch(function (error) {
+			console.log('request failed', error);
+		});
+});
 
-		if (d.success === true) {
-			return d.data.article;
-		}
+export const sendSuggestion = ((data: any): Promise<any> => {
+	const apiUrl = `/api/suggest/`;
+	return fetch(apiUrl, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+	}).then(status)
+		.then(json)
+		.then(function (json) {
+			return json;
+		}).catch(function (error) {
+			console.log('request failed', error);
+		});
+});
 
-		return Promise.reject(new Error(`Failed to load article at ${url}`));
-	});
+function status(response) {
+	if (response.status >= 200 && response.status < 300) {
+		return response;
+	}
+	throw new Error(response.statusText);
 }
 
-export function sendSuggestion(data: any) : Promise<any> {
-	const apiUrl = `/api/suggest/`;
-
-	return axios.post(apiUrl, {
-		data,
-	})
-		.then((resp : AxiosResponse) => {
-			const d = resp.data;
-
-			if (d.success === true) {
-				console.log(d);
-				return d.data;
-			}
-
-			return Promise.reject(new Error(`Failed to send Suggestion form`));
-		});
+function json(response) {
+	return response.json();
 }
