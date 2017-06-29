@@ -1,4 +1,5 @@
 import * as convict from 'convict';
+import * as crypto from 'crypto';
 
 const config = convict({
 	http: {
@@ -13,6 +14,11 @@ const config = convict({
 		doc: 'Fallback setting for the article parser',
 		fallback: 'html',
 		env: 'PARSER',
+	},
+	jwt: {
+		jwtSecret: crypto.randomBytes(32),
+		jwtDuration: '2 hours',
+		env: 'JWT',
 	},
 });
 

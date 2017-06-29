@@ -5,6 +5,7 @@ import EncryptionError from '../errors/EncryptionError';
 const rounds = 10;
 
 export default class User extends BaseModel {
+	private id: number;
 	private name: string;
 	private login: string;
 	private password: string;
@@ -15,6 +16,7 @@ export default class User extends BaseModel {
 		if (!this.validate(properties)) {
 			console.error('Failed to validate user! Heres the props that failed: ', properties);
 		}
+		this.id = 0;
 		this.name = properties['name'];
 		this.login = properties['login'];
 		this.setPassword(properties['password']);
@@ -42,7 +44,7 @@ export default class User extends BaseModel {
 		});
 	}
 
-	public checkPassword(password: string, cb: () => boolean): boolean {
+	public comparePassword(password: string, cb: () => boolean): boolean {
 		return bcrypt.compare(password, this.password).then(cb);
 	}
 }
