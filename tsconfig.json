@@ -11,10 +11,10 @@
 
 		"baseUrl": "./src",
 		"paths": {
+			"admin/*": [ "admin/*"],
 			"app/*": [ "app/*" ],
 			"base/*": [ "base/*" ],
-			"front/*": [ "front/*" ],
-			"admin/*": [ "admin/*"]
+			"front/*": [ "front/*" ]
 		},
 
 		"allowJs": false,
