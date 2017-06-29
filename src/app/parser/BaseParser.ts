@@ -26,12 +26,14 @@ abstract class BaseParser implements Parser {
 			.then((c : ArticleItem[]) => content = c);
 
 		// Execute all promises and assemble an article object
-		return Promise.all([
+		return this.initialize()
+		.then(() => Promise.all([
 			pVersion,
 			pAuthors,
 			pTitles,
 			pContent,
-		]).then(() : Article => ({
+		]))
+		.then(() : Article => ({
 			url,
 			version,
 			authors,
@@ -40,6 +42,15 @@ abstract class BaseParser implements Parser {
 				...content,
 			],
 		}));
+	}
+
+	/*
+	 * Parser initialization. Override this with your own code if you need
+	 * some asynchronous bootstrap functions to run before the parser will
+	 * be ready. Don't forget to return a Promise! (void return value)
+	 */
+	protected initialize() : Promise <void> {
+		return Promise.resolve();
 	}
 
 	// Prototypes
