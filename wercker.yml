@@ -1,4 +1,4 @@
-box: openjdk
+box: openjdk:8
 
 js-lint-build-test:
   steps:
