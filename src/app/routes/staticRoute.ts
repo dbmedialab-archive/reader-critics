@@ -14,6 +14,9 @@ const staticRoute : Router = Router();
 staticRoute.use('/images', serveStatic(path.join(app.rootPath, 'assets/images')));
 staticRoute.use('/styles', serveStatic(path.join(app.rootPath, 'assets/styles')));
 
+staticRoute.use('/admin/images', serveStatic(path.join(app.rootPath, 'assets/admin/images')));
+staticRoute.use('/admin/styles', serveStatic(path.join(app.rootPath, 'assets/admin/styles')));
+
 // We don't bundle frontend libraries together with the compiled sources, but rather host
 // them from static endpoints. Fair tradeoff between enabled browser caching but not using
 // a CDN for those libs and being able to upgrade them easily through NPM or Yarn locally.

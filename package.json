@@ -15,6 +15,14 @@
 		"watch:app": "node_modules/.bin/tsc --project tsconfig.json --watch",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
+		"build:admin": "webpack --config webpack-admin.js",
+		"watch:admin": "webpack --config webpack-admin.js --watch",
+		
+		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
+		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
+
+
+
 		"lint": "run/lint",
 		"test": "run/test",
 		"start": "run/app"
@@ -93,6 +101,8 @@
 		"geckodriver": "1.7.1",
 		"mocha": "3.4.2",
 		"nightwatch": "0.9.16",
+		"nodemon": "^1.11.0",
+		"npm-run-all": "^4.0.2",
 		"selenium-server-standalone-jar": "3.4.0",
 		"source-map-support": "0.4.15",
 		"ts-node": "3.1.0",

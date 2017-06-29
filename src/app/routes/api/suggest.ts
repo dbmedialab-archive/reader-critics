@@ -11,6 +11,6 @@ const log = app.createLog();
 
 export default function(requ : Request, resp : Response) : void {
 	const { username, email, comment } = requ.body.data;
-	log('Received comment: %o', comment);
+	log('Received comment: %o', comment,username, email);
 	okResponse(resp, { sent: true });
 }
