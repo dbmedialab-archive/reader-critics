@@ -99,8 +99,8 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 				/>
 			</fieldset>
 			<fieldset className='actions'>
-				<a onClick={(e)=>this.onCancel(e)} className='button cancel'>Avbryt</a>
-				<a onClick={(e)=>this.onSave(e)} className='button save'>Lagre</a>
+				<a title='Avbryt' onClick={(e)=>this.onCancel(e)} className='button cancel'>Avbryt</a>
+				<a title='Lagre' onClick={(e)=>this.onSave(e)} className='button save'>Lagre</a>
 			</fieldset>
 		</form>;
 	}

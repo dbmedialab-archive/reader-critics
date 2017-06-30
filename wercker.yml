@@ -1,7 +1,16 @@
-box: node:8-wheezy
+box: openjdk:8
 
-js-lint-build:
+js-lint-build-test:
   steps:
+  - script:
+    name: 'install node'
+    code: |
+      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+      export NVM_DIR="$HOME/.nvm"
+      source /root/.bashrc
+      nvm install v8
+      nvm use node
+      npm i -g yarn
   - script:
     name: set yarn cache
     code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
@@ -9,14 +18,33 @@ js-lint-build:
     name: install dependencies
     code: yarn
   - script:
-    name: build production
-    code: NODE_ENV=production yarn run build
+    name: lint
+    code: run/lint
+  - script:
+    name: check node
+    code: node --version
+  - script:
+    name: build
+    code: run/build
+  - script:
+    name: test libraries
+    code: run/test --libs
+  - script:
+    name: test base modules
+    code: run/test --base
+  #- script:
+  #  name: test backend app
+  #  code: run/test --app
+  #- script:
+  #  name: test frontend
+  #  code: run/test --frontend
   - script:
     name: copy production files
     code: |
-      cp -r out \
-        tmp \
+      cp -r assets \
+        out \
         run \
+        tmp \
         resources \
         package.json \
         yarn.lock \

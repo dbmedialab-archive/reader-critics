@@ -3,10 +3,12 @@ import {
 	Response,
 } from 'express';
 
+import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 
-import { Article } from 'app/services';
+import { articleService } from 'app/services';
 import { EmptyError } from 'app/util/errors';
+import * as app from 'app/util/applib/logging';
 
 import {
 	okResponse,
@@ -14,23 +16,21 @@ import {
 	ResponseOptions,
 } from './apiResponse';
 
-import * as app from 'app/util/applib';
-
 const log = app.createLog();
 
 // Main handler, checks for URL parameter and invalid requests
 
-export default function(requ : Request, resp : Response) : void {
+export default function (requ: Request, resp: Response): void {
 	try {
 		const articleURL = new ArticleURL(requ.query.url);
 		log('Requesting article at', articleURL.href);
 
-		Article.getArticle(articleURL)
-		.then(article => okResponse(resp, { article }))
-		.catch(error => errorResponse(resp, error));
+		articleService.getArticle(articleURL)
+			.then((article: Article) => okResponse(resp, { article }))
+			.catch(error => errorResponse(resp, error));
 	}
 	catch (error) {
-		const options : ResponseOptions = {
+		const options: ResponseOptions = {
 			status: 400,  // "Bad Request" in any case
 		};
 

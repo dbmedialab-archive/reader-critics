@@ -28,7 +28,7 @@ describe('FeedbackFormContainer', function() {
 
 	it('Check existence of article elements', function(client) {
 		page
-			.assert.containsText(article_el_1 + ' h1', 'Her blir Donald Trump historisk');
+			.assert.containsText(article_el_1 + ' h1', 'Her blir Donald Trump sowas von historisk');
 	});
 
 	it('Check CSS classes on article elements', function(client) {

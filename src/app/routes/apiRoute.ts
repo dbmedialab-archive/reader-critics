@@ -8,6 +8,7 @@ import * as bodyParser from 'body-parser';
 
 import articleHandler from './api/articleHandler';
 import feedbackPostHandler from './api/feedbackPostHandler';
+import suggestionHandler from './api/suggest';
 
 import * as app from 'app/util/applib';
 
@@ -25,6 +26,7 @@ apiRoute.use(bodyParser.json({
 
 apiRoute.get('/article', articleHandler);
 apiRoute.put('/feedback', feedbackPostHandler);
+apiRoute.post('/suggest', suggestionHandler);
 
 apiRoute.get('/*', defaultHandler);
 

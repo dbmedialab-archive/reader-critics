@@ -1,24 +1,39 @@
-import {
-	default as axios,
-	AxiosPromise,
-	AxiosResponse,
-} from 'axios';
+import 'whatwg-fetch';
 
 const rxUnencoded = /:\/\//;
 
-export function fetchArticle(url : string, version : string) : Promise<any> {
+const json = (response) => response.json().then(j => j.data);
+
+export const fetchArticle = ((url: string, version: string): Promise<any> => {
 	const encodedURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
 		: url;
 
-	return axios.get(`/api/article/?url=${encodedURL}`)
-	.then((resp : AxiosResponse) => {
-		const d = resp.data;
+	return fetch(`/api/article/?url=${encodedURL}`)
+		.then(status)
+		.then(json)
+		.then(data => data.article)
+		.catch(function (error) {
+			console.log('request failed', error);
+		});
+});
 
-		if (d.success === true) {
-			return d.data.article;
-		}
-
-		return Promise.reject(new Error(`Failed to load article at ${url}`));
+export const sendSuggestion = ((data: any): Promise<any> => {
+	return fetch('/api/suggest/', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(data),
+	})
+	.then(status)
+	.then(json)
+	.catch(function (error) {
+		console.log('request failed', error);
 	});
+});
+
+function status(response) {
+	if (response.status >= 200 && response.status < 300) {
+		return response;
+	}
+	throw new Error(response.statusText);
 }

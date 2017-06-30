@@ -1,10 +1,10 @@
 # Distribution paths
 /node_modules/
+/out/admin/
 /out/app/
 /out/base/
 /out/bundle/
 /out/front/
-
 # Packages
 *.7z
 *.dmg
@@ -25,7 +25,7 @@
 *.bak
 *.orig
 *.swp
-tsconfig.json
+package-lock.json
 yarn.lock
 
 # OS generated files
