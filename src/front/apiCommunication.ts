@@ -2,6 +2,8 @@ import 'whatwg-fetch';
 
 const rxUnencoded = /:\/\//;
 
+const json = (response) => response.json().then(j => j.data);
+
 export const fetchArticle = ((url: string, version: string): Promise<any> => {
 	const encodedURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
@@ -10,26 +12,23 @@ export const fetchArticle = ((url: string, version: string): Promise<any> => {
 	return fetch(`/api/article/?url=${encodedURL}`)
 		.then(status)
 		.then(json)
-		.then(function (json) {
-			return json;
-		}).catch(function (error) {
+		.then(data => data.article)
+		.catch(function (error) {
 			console.log('request failed', error);
 		});
 });
 
 export const sendSuggestion = ((data: any): Promise<any> => {
-	const apiUrl = `/api/suggest/`;
-	return fetch(apiUrl, {
+	return fetch('/api/suggest/', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(data),
-	}).then(status)
-		.then(json)
-		.then(function (json) {
-			return json;
-		}).catch(function (error) {
-			console.log('request failed', error);
-		});
+	})
+	.then(status)
+	.then(json)
+	.catch(function (error) {
+		console.log('request failed', error);
+	});
 });
 
 function status(response) {
@@ -37,8 +36,4 @@ function status(response) {
 		return response;
 	}
 	throw new Error(response.statusText);
-}
-
-function json(response) {
-	return response.json();
 }
