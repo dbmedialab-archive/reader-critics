@@ -3,51 +3,46 @@
 html, body, * {
 	margin: 0;
 	padding: 0;
-	box-sizing: border-box; 
+	box-sizing: border-box;
 }
 
 @keyframes appear {
 	from {
-		opacity: 0; 
+		opacity: 0;
     }
 	to {
-		opacity: 1; 
-    } 
+		opacity: 1;
+    }
 }
 
 @keyframes disappear {
 	from {
-		opacity: 1; 
+		opacity: 1;
     }
 	to {
-		opacity: 0; 
-    } 
+		opacity: 0;
+    }
 }
 
 body {
 	font-family: 'Roboto', sans-serif;
-	font-size: 16px; 
+	font-size: 16px;
 }
 
 header[role=banner] {
 	height: 3rem;
 	margin-bottom: 1rem;
 	background: #fff;
-	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3); 
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
 }
 header[role=banner] h1 {
-	background-image: url("/static/images/logo/leserkritikk-logo-color.svg");
+	background-image: url("/static/images/logo.svg");
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: 10rem;
-	text-indent: -10000px; 
+	text-indent: -10000px;
 }
-div#page-container {
-    padding-top: 60px;
-    background-image: url(/static/images/leserkritikk-logo.png);
-    background-repeat: no-repeat;
-    background-position: 0 0;
-}
+
 
 img,
 legend {
