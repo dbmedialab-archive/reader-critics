@@ -15,10 +15,6 @@ const log = app.createLog();
 
 const adminApiRoute : Router = Router();
 
-passport.use(jwtStrategy);
-passport.serializeUser(serializeUser);
-passport.deserializeUser(deserializeUser);
-
 adminApiRoute.use(bodyParser.urlencoded({
 	extended: true,
 }));
@@ -28,13 +24,11 @@ adminApiRoute.use(bodyParser.urlencoded({
  */
 adminApiRoute.post('/login', apiLoginHandler);
 
+// Protecting routes with jwt
+adminApiRoute.use('/*', passport.authenticate('jwt', {session: true}));
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
-adminApiRoute.use(passport.initialize());
-adminApiRoute.use(passport.session());
-adminApiRoute.use('/*', passport.authenticate('jwt', {session: true}));
-
 adminApiRoute.get('/users', usersHandler);
 adminApiRoute.get('/*', defaultHandler);
 

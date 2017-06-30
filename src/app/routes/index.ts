@@ -3,6 +3,9 @@ import * as express from 'express';
 import { Application, Request, Response } from 'express';
 import { parse } from 'url';
 
+import * as passport from 'passport';
+import { jwtStrategy, serializeUser, deserializeUser } from 'app/middleware/config/passportConfig';
+
 import apiRoute from './apiRoute';
 import faviconRoute from './faviconRoute';
 import feedbackRoute from './feedbackRoute';
@@ -23,6 +26,13 @@ export default function(expressApp : Application) {
 	if (!app.isProduction) {
 		expressApp.use(logRequest);
 	}
+
+	// Passport init
+	passport.use(jwtStrategy);
+	passport.serializeUser(serializeUser);
+	passport.deserializeUser(deserializeUser);
+	expressApp.use(passport.initialize());
+	expressApp.use(passport.session());
 
 	setOptions(expressApp);
 	setRoutes(expressApp);
