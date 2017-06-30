@@ -63,7 +63,7 @@
 		"sass-loader": "6.0.6",
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.18.2",
-		"webpack": "3.0.0",
+		"webpack": "2.6.1",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
@@ -80,7 +80,7 @@
 		"@types/node": "8.0.6",
 		"@types/react": "15.0.33",
 		"@types/react-dom": "15.5.1",
-		"@types/webpack": "3.0.1",
+		"@types/webpack": "2.2.16",
 		"awesome-typescript-loader": "3.2.1",
 		"babel-core": "6.25.0",
 		"babel-loader": "7.1.1",
