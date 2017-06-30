@@ -1,17 +1,27 @@
 import BaseModel from './Base';
 import * as bcrypt from 'bcrypt';
-import EncryptionError from '../errors/EncryptionError';
 
 const rounds = 10;
 
-export default class User extends BaseModel {
+export interface IUser {
+	name: string;
+	login: string;
+	id: number;
+	token?: string;
+	setPassword: (password: string) => void;
+	comparePassword: (password: string, cb: (isMatch: boolean) => void) => void;
+	toString: () => any;
+}
+
+// TODO rewrite it on DB added
+export default class User extends BaseModel implements IUser {
 	public name: string;
 	public login: string;
 	private password: string;
 	public id: number;
 
 	constructor (properties : Object) {
-		super(['name', 'email', 'password']);
+		super(['name', 'login', 'password']);
 
 		if (!this.validate(properties)) {
 			console.error('Failed to validate user! Heres the props that failed: ', properties);
@@ -32,5 +42,11 @@ export default class User extends BaseModel {
 
 	public comparePassword(password: string, cb: (isMatch: boolean) => void): void {
 		bcrypt.compare(password, this.password, cb);
+	}
+
+	public toString() {
+		const obj = Object.assign({}, super.toString());
+		delete obj['failedProperties'];
+		return obj;
 	}
 }
