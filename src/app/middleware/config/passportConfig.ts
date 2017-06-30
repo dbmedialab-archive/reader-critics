@@ -32,7 +32,7 @@ export function deserializeUser(id: number | null, done: (err: string | null, us
 
 export const jwtStrategy = new JwtStrategy(jwtOptions, (jwtPayload, next) => {
 	// TODO rewrite it on DB added
-	const user = users[_.findIndex(users, {id: jwtPayload.id})];
+	const user = users[_.findIndex(users, {id: jwtPayload.id, login: jwtPayload.login})];
 	if (user) {
 		next(null, user);
 	} else {

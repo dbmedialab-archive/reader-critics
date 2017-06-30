@@ -18,11 +18,33 @@ export function apiLoginHandler(req, res) {
 
 		user.comparePassword(req.body.password, function (isMatch: boolean) {
 			if (isMatch) {
-				const payload = {id: user.id};
+				const payload = {id: user.id, login: user.login};
 				const resUser = user.toString();
 				req.user = user;
 				resUser.token = jwt.sign(payload, jwtOptions.secretOrKey);
 				res.json({message: 'ok', user: resUser});
+			} else {
+				res.status(403).json({message: 'password did not match'});
+			}
+		});
+	}
+}
+
+export function loginHandler(req, res) {
+	if (req.body.login && req.body.password) {
+		// TODO rewrite it on DB added
+		const user = users[_.findIndex(users, {login: req.body.login})];
+		if (!user) {
+			return res.status(403).json({message: 'User not found'});
+		}
+
+		user.comparePassword(req.body.password, function (isMatch: boolean) {
+			if (isMatch) {
+				const payload = {id: user.id, login: user.login};
+				const resUser = user.toString();
+				req.user = user;
+				resUser.token = jwt.sign(payload, jwtOptions.secretOrKey);
+				res.redirect('testpage');
 			} else {
 				res.status(403).json({message: 'password did not match'});
 			}
