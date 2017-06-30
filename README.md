@@ -20,7 +20,7 @@
 /assets                        Static route base folder
     /images                    Images!
     /styles                    CSS things
-		/templates                 doT style templates for some of the (mostly) static pages
+    /templates                 doT style templates for some of the (mostly) static pages
 /doc                           Documentation and schematics
 /kubefiles                     Kubernetes and Wercker configuration
 /out                           Target directory for compiled code
@@ -42,20 +42,20 @@
     /base                      Tests for base modules
     /frontend                  Browsertests (Nightwatch)
     /libs                      Tests for used libraries (core Node.js and other modules)
-		mocha-app.opts             Mocha options for running backend tests
+    mocha-app.opts             Mocha options for running backend tests
     mocha-base.opts            Mocha options for running base module tests
     mocha-libs.opts            Mocha options for running library tests
     nightwatch-frontend.js     Nightwatch configuration for frontend tests
     test-tools-frontend.js     Common helper functions for frontend tests
 /tmp                           Home of the temporary files
     /src-archive               Early React drafts
-    /templates                 HTML page templates, doT format
+    /templates                 HTML page templates, doT format (temporary)
 .ackrc                         Project local settings for the "ack" tool
 .editorconfig                  Configures indentation and whitespace. These are not only suggestions!
 .gitignore                     Guess what
-package.json                   Well, obviously this is a Node.js project
-tsconfig.json                  Common configuration for the TypeScript compiler
-tslint.json                    TypeScript linter config
+package.json                   Dependencies and everything
+tsconfig.json                  TypeScript compiler configuration
+tslint.json                    TypeScript linter configuration
 webpack-admin.js               Webpack configuration for admin UI
 webpack-front.js               Webpack configuration for user frontend
 wercker.yml                    Wercker configuration
