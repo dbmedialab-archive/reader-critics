@@ -10,20 +10,15 @@
 	},
 	"scripts": {
 		"build": "run/build",
-
-    "build:dev": "npm run build:app && npm run watch:front",
+		"build:dev": "npm run build:app && npm run watch:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig.json",
 		"watch:app": "node_modules/.bin/tsc --project tsconfig.json --watch",
-
-    "build:front": "webpack --config webpack-front.js",
+		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
-
-    "build:admin": "webpack --config webpack-admin.js",
+		"build:admin": "webpack --config webpack-admin.js",
 		"watch:admin": "webpack --config webpack-admin.js --watch",
-
 		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
 		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
-
 		"lint": "run/lint",
 		"test": "run/test",
 		"start": "run/app"

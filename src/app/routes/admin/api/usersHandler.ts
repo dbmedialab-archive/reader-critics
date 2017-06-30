@@ -15,7 +15,7 @@ const log = app.createLog();
 import { EmptyError } from 'app/util/errors';
 export default function(requ : Request, resp : Response) : void {
 	try {
-		log('Requesting article at', '');
+		log('Requesting users at', '');
 
 		okResponse(resp, {});
 	}
