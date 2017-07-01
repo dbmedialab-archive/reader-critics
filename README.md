@@ -1,8 +1,10 @@
 # Reader Critics
 
-[![Wercker status](https://app.wercker.com/status/becb14dfb1645c8010f604bdbb6aeeca/s/develop "wercker status")](https://app.wercker.com/project/byKey/becb14dfb1645c8010f604bdbb6aeeca)
+[![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
-[![Codeship Status for dbmedialab/reader-critics](https://app.codeship.com/projects/50e81240-2277-0135-9adb-62dd7db260b1/status?branch=develop)](https://app.codeship.com/projects/221684)
+[![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
+&nbsp;
+[![Wercker status](https://app.wercker.com/status/becb14dfb1645c8010f604bdbb6aeeca/s/develop "wercker status")](https://app.wercker.com/project/byKey/becb14dfb1645c8010f604bdbb6aeeca)
 &nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 
