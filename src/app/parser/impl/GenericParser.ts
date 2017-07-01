@@ -16,16 +16,13 @@ const log = app.createLog();
 
 export default class GenericParser extends BaseParser implements Parser {
 
-	protected rawHTML : string;
-
 	protected select : Cheerio;
 
 	protected readArticle : any;
 
-	parse(rawHTML : string, url : ArticleURL) : Promise <Article> {
-		this.rawHTML = rawHTML;
-		this.select = Cheerio.load(rawHTML);
-		return super.parse(rawHTML, url);
+	parse() : Promise <Article> {
+		this.select = Cheerio.load(this.rawArticle);
+		return super.parse();
 	}
 
 	protected parseVersion() : Promise <string> {
@@ -59,7 +56,7 @@ export default class GenericParser extends BaseParser implements Parser {
 		}
 
 		return new Promise((resolve, reject) => {
-			NodeRead(this.rawHTML, (err, article) => {
+			NodeRead(this.rawArticle, (err, article) => {
 				if (err) {
 					return reject(err);
 				}

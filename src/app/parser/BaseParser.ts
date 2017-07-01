@@ -6,7 +6,14 @@ import Parser from 'base/Parser';
 
 abstract class BaseParser implements Parser {
 
-	parse(rawHTML : string, url : ArticleURL) : Promise <Article> {
+	constructor(
+		protected readonly rawArticle : string,
+		protected readonly articleURL : ArticleURL,
+	) {}
+
+	// protected readonly rawHTML : string;
+
+	parse() : Promise <Article> {
 		let version : string;
 		let authors : ArticleAuthor[];
 		let titles : ArticleItem[];
@@ -34,7 +41,7 @@ abstract class BaseParser implements Parser {
 			pContent,
 		]))
 		.then(() : Article => ({
-			url,
+			url: this.articleURL,
 			version,
 			authors,
 			items: [

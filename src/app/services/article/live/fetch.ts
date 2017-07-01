@@ -7,6 +7,7 @@ import {
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
+import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
 
 import { parserService } from 'app/services';
@@ -20,20 +21,18 @@ const log = app.createLog();
  * @param url The source of the article
  */
 export default function(website : Website, url : ArticleURL) : Promise <Article> {
-	let siteParser : Parser;
+	let parserFactory : ParserFactory;
 	let rawArticle : string;
 
 	const parserPromise = parserService.getParserFor(website)
-		.then((p : Parser) => siteParser = p);
+		.then((fact : ParserFactory) => parserFactory = fact);
 
 	const fetchPromise = axios.get(url.href)
 		.then((resp : AxiosResponse) => rawArticle = resp.data);
 
 	return Promise.all([parserPromise, fetchPromise])
 	.then(() => {
-		log('### after Promise.all');
-		log('raw:', rawArticle.substring(0, 300));
-		log('parser:', siteParser.parse);
-	})
-	.then(() => siteParser.parse(rawArticle, url));
+		const parser = parserFactory.newInstance(rawArticle, url);
+		return parser.parse();
+	});
 }

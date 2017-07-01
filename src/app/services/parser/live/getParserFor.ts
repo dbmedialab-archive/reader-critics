@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 
 import Parser from 'base/Parser';
+import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
 
 import * as app from 'app/util/applib';
@@ -11,11 +12,11 @@ const log = app.createLog();
 
 // getParserFor
 
-export default function(website : Website) : Promise <Parser> {
+export default function(website : Website) : Promise <ParserFactory> {
 	const importName = `app/parser/impl/${getParserName(website)}`;
 	log('"%s" resolves to %s', website.name, importName);
 
-	return loadParserClass(importName).then(createParserInstance);
+	return loadParserClass(importName).then(createParserFactory);
 }
 
 // Parser class name
@@ -52,13 +53,17 @@ function loadParserClass(importName : string) : Promise <Function> {
 	});
 }
 
-// Create a new instance
+// Create factory
 
-function createParserInstance(parserClass : Function) : Parser {
-	// Create a new instance using the class prototype
-	const parserInstance = Object.create(parserClass.prototype);
-	// Call constructor with no arguments, creates "this" context
-	parserClass.constructor.call(parserInstance);
-	// That's all!
-	return <Parser> parserInstance;
+function createParserFactory(parserClass : Function) : ParserFactory {
+	return {
+		newInstance: (...args) : Parser => {
+			// Create a new instance using the class prototype
+			const parserInstance = Object.create(parserClass.prototype);
+			// Call constructor, creates "this" context
+			parserClass.constructor.call(parserInstance, ...args);
+			// That's all!
+			return <Parser> parserInstance;
+		},
+	};
 }
