@@ -7,8 +7,6 @@ engines:
     enabled: true
   markdownlint:
     enabled: true
-  nodesecurity:
-    enabled: true
   scss-lint:
     enabled: true
   shellcheck:
