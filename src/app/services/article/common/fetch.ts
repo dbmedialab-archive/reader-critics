@@ -10,7 +10,10 @@ import Parser from 'base/Parser';
 import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
 
-import { parserService } from 'app/services';
+import {
+	articleService,
+	parserService,
+} from 'app/services';
 
 import * as app from 'app/util/applib';
 
@@ -23,15 +26,19 @@ const log = app.createLog();
 export default function(website : Website, url : ArticleURL) : Promise <Article> {
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
-	let parser : Parser;
 
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
 
-	const fetchPromise = axios.get(url.href)
-		.then((resp : AxiosResponse) => rawArticle = resp.data);
+	const fetchPromise = articleService.download(url)
+		.then((data : string) => {
+			rawArticle = data;
+		});
 
-	return Promise.all([parserPromise, fetchPromise])
-	.then(() => parser = parserFactory.newInstance(rawArticle, url))
-	.then(parser.parse);
+	return Promise.all([parserPromise, fetchPromise]).then(() => {
+		log('all resolved');
+		const parser = parserFactory.newInstance(rawArticle, url);
+		log('parser:', parser);
+		return parser.parse();
+	});
 }

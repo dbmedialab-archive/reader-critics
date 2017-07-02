@@ -34,6 +34,13 @@ export default function(requ : Request, resp : Response) : void {
 
 		const website = websiteService.identify(articleURL);
 
+		if (website === undefined) {
+			const msg = 'Could not identify website';
+			return errorResponse(resp, new Error(msg), msg, {
+				status: 400,
+			});
+		}
+
 		log(articleURL.href);
 
 		// Fetch the article from the database. If not stored, will return undefined
