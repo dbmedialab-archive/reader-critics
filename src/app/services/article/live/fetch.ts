@@ -23,6 +23,7 @@ const log = app.createLog();
 export default function(website : Website, url : ArticleURL) : Promise <Article> {
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
+	let parser : Parser;
 
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
@@ -31,8 +32,6 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 		.then((resp : AxiosResponse) => rawArticle = resp.data);
 
 	return Promise.all([parserPromise, fetchPromise])
-	.then(() => {
-		const parser = parserFactory.newInstance(rawArticle, url);
-		return parser.parse();
-	});
+	.then(() => parser = parserFactory.newInstance(rawArticle, url))
+	.then(parser.parse);
 }
