@@ -56,7 +56,7 @@
 		"node-fetch": "1.7.1",
 		"node-read": "0.1.7",
 		"node-sass": "4.5.3",
-		"print-env": "0.1.0",
+		"print-env": "0.1.1",
 		"query-string": "4.3.4",
 		"react": "15.6.1",
 		"react-dom": "15.6.1",
