@@ -15,13 +15,13 @@ import * as app from 'app/util/applib';
 const log = app.createLog();
 
 // Template stuff
-const styles = [
+const styles: string[] = [
 	'/static/styles/home.css',
 	'/static/styles/suggestion.css',
 	'/static/admin.css',
 ];
 
-const scripts = [
+const scripts: string[] = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
 	'/static/admin.bundle.js',
@@ -30,14 +30,13 @@ const scripts = [
 const mainTemplate = createTemplate();
 
 function createTemplate() {
-	const templatePath = path.join(app.rootPath, 'tmp/templates/admin.html');
-	const templateRaw = readFileSync(templatePath);
+	const templatePath: string = path.join(app.rootPath, 'tmp/templates/admin.html');
+	const templateRaw: Buffer = readFileSync(templatePath);
 
 	return doT.template(templateRaw);
 }
 
-export function loginPageHandler(req : Request, res : Response) {
-	log('Login Page router', req.params);
+export function loginPageHandler(req : Request, res : Response): void {
 	res.send(mainTemplate({
 		view: 'login',
 		styles,
@@ -47,7 +46,7 @@ export function loginPageHandler(req : Request, res : Response) {
 	res.status(200).end();
 }
 
-export function logoutHandler(req, res) {
+export function logoutHandler(req, res): void {
 	req.logOut();
 	req.session.destroy(function(err){
 		if (err){
@@ -58,8 +57,7 @@ export function logoutHandler(req, res) {
 	});
 }
 
-export function testPageHandler(req : Request, res : Response) {
-	log('Test Page router', req.params);
+export function testPageHandler(req : Request, res : Response): void {
 	res.send(mainTemplate({
 		view: 'testpage',
 		styles,
@@ -69,7 +67,7 @@ export function testPageHandler(req : Request, res : Response) {
 	res.status(200).end();
 }
 
-export function loginHandler(req, res) {
+export function loginHandler(req, res): void {
 	passport.authenticate('local', (err, user) => {
 		if (err) {
 			return res.redirect('login');
@@ -85,8 +83,6 @@ export function loginHandler(req, res) {
 			if (error) {
 				return res.status(404).json('Authentication problems');
 			}
-			console.log('handler 94');
-			console.log(req.user);
 			res.redirect('/admin/testpage');
 		});
 	})(req, res);

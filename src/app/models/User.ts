@@ -37,8 +37,6 @@ export default class User extends BaseModel implements IUser {
 	}
 
 	public comparePassword(password: string, cb: (err: string, isMatch: boolean) => void): void {
-		console.log(password);
-		console.log(this.password);
 		bcrypt.compare(password, this.password, cb);
 	}
 

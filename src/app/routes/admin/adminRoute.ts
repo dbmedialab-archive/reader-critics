@@ -13,6 +13,7 @@ import { sessionConf } from 'app/middleware/config/sessionConfig';
 const log = app.createLog();
 
 const adminRoute : Router = Router();
+const secret: string = sessionConf.secret;
 
 adminRoute.use(bodyParser.json({
 	inflate: true,
@@ -22,7 +23,7 @@ adminRoute.use(bodyParser.json({
 adminRoute.use(bodyParser.urlencoded({
 	extended: true,
 }));
-adminRoute.use(cookieParser(sessionConf.secret));
+adminRoute.use(cookieParser(secret));
 
 adminRoute.get('/login', isLoggedOff, loginPageHandler);
 adminRoute.post('/login', isLoggedOff, loginHandler);
@@ -37,14 +38,14 @@ function defaultHandler(requ : Request, resp : Response) : void {
 	resp.status(404).end('Unknown admin endpoint\n');
 }
 
-function isLoggedOff(req, res, next) {
+function isLoggedOff(req, res, next: () => void): void {
 	if (!req.isAuthenticated()) {
 		return next();
 	}
 	res.redirect('testpage');
 }
 
-function isLoggedIn(req, res, next) {
+function isLoggedIn(req, res, next: () => void): void {
 	if (req.isAuthenticated()) {
 		return next();
 	}
