@@ -14,9 +14,11 @@ engines:
   tslint:
     enabled: true
     channel: beta
+    config:
+      config: 'tslint.json'
 
 ratings:
   paths:
-  - "assets/**.css"
-  - "src/**.scss"
-  - "run/**.sh"
+  - 'assets/**.css'
+  - 'src/**.scss'
+  - 'run/**.sh'
