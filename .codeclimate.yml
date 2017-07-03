@@ -12,10 +12,8 @@ engines:
   shellcheck:
     enabled: true
   tslint:
-    enabled: true
+    enabled: false
     channel: beta
-    config:
-      config: tslint.json
 
 ratings:
   paths:
