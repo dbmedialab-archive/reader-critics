@@ -15,7 +15,7 @@ engines:
     enabled: true
     channel: beta
     config:
-      config: 'tslint.json'
+      config: './tslint.json'
 
 ratings:
   paths:
