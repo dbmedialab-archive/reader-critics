@@ -76,9 +76,9 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.setState( state );
 	}
 
-	private handleSubmit(e : any) {
+	private handleSubmit(e: any) {
 		e.preventDefault();
-		sendSuggestion(this.state).then(function (res) {
+		sendSuggestion(this.state).then(function (res: any) {
 			console.log(res);
 		});
 	}
