@@ -58,7 +58,6 @@ function loadParserClass(importName : string) : Promise <Function> {
 function createParserFactory(parserClass : Function) : ParserFactory {
 	return {
 		newInstance: (...arghs) : Parser => {
-			log('newInstance', app.inspect(parserClass));
 			// Create a new instance using the class prototype
 	//		const parserInstance = Object.create(parserClass.prototype);
 			// Call constructor, creates "this" context
