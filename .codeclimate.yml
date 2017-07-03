@@ -1,0 +1,22 @@
+engines:
+  csslint:
+    enabled: true
+  fixme:
+    enabled: true
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: true
+  scss-lint:
+    enabled: true
+  shellcheck:
+    enabled: true
+  tslint:
+    enabled: false
+    channel: beta
+
+ratings:
+  paths:
+  - 'assets/**.css'
+  - 'src/**.scss'
+  - 'run/**.sh'
