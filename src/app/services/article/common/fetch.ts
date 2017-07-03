@@ -35,10 +35,6 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 			rawArticle = data;
 		});
 
-	return Promise.all([parserPromise, fetchPromise]).then(() => {
-		log('all resolved');
-		const parser = parserFactory.newInstance(rawArticle, url);
-		log('parser:', parser);
-		return parser.parse();
-	});
+	return Promise.all([parserPromise, fetchPromise])
+	.then(() => parserFactory.newInstance(rawArticle, url).parse());
 }

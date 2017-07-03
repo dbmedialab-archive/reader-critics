@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 
+import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
@@ -34,8 +35,7 @@ const isClassFunction = (classFn : any) : boolean =>
 
 function loadParserClass(importName : string) : Promise <Function> {
 	// If you have TSlint on and your IDE is yelling "error" here, this actually works!
-	return import(importName)
-	.then(parserModule => parserModule.default)
+	return import(importName).then(parserModule => parserModule.default)
 	.then((classFn : any) => {
 		if (!isClassFunction(classFn)) {
 			return Promise.reject(new TypeError(`Default export of ${importName} is not a class`));
@@ -57,11 +57,20 @@ function loadParserClass(importName : string) : Promise <Function> {
 
 function createParserFactory(parserClass : Function) : ParserFactory {
 	return {
-		newInstance: (...args) : Parser => {
+		newInstance: (...arghs) : Parser => {
+			log('newInstance', app.inspect(parserClass));
 			// Create a new instance using the class prototype
-			const parserInstance = Object.create(parserClass.prototype);
+	//		const parserInstance = Object.create(parserClass.prototype);
 			// Call constructor, creates "this" context
-			parserClass.constructor.call(parserInstance, ...args);
+	//		log('instance:', app.inspect(parserInstance));
+	//		log('the_type:', typeof parserInstance);
+			// log(rawArticle.substr(0, 80));
+			// log(articleURL);
+
+			// https://stackoverflow.com/a/8843181
+			const parserInstance = new (Function.prototype.bind.call(parserClass, null, ...arghs));
+
+			//parserClass.constructor.call(parserInstance, null, ...arghs);
 			// That's all!
 			return <Parser> parserInstance;
 		},
