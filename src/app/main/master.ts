@@ -10,9 +10,6 @@ const log = app.createLog('master');
 
 const workerMap = {};
 
-const pckgFilePath = path.join(app.rootPath, 'package.json');
-const pckgFile = readFileSync(pckgFilePath);
-const pckgConfig = JSON.parse(pckgFile.toString());
 /**
  * Main function of master process
  */
@@ -94,6 +91,9 @@ function notifyTestMaster() : Promise <void> {
 
 function checkEngineVersion(): Promise<any> {
 	log('Check NodeJS version');
+	const pckgFilePath = path.join(app.rootPath, 'package.json');
+	const pckgFile = readFileSync(pckgFilePath);
+	const pckgConfig = JSON.parse(pckgFile.toString());
 	return new Promise((resolve, reject) => {
 		if (semver.gte(process.version, pckgConfig.engines.node)) {
 			resolve();
