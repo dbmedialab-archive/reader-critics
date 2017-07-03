@@ -1,14 +1,18 @@
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
-
-import printEnvironment from 'print-env';
-
+import * as path from 'path';
 import * as app from 'app/util/applib';
+import * as semver from 'semver';
+import { readFileSync } from 'fs';
+import printEnvironment from 'print-env';
 
 const log = app.createLog('master');
 
 const workerMap = {};
 
+const pckgFilePath = path.join(app.rootPath, 'package.json');
+const pckgFile = readFileSync(pckgFilePath);
+const pckgConfig = JSON.parse(pckgFile.toString());
 /**
  * Main function of master process
  */
@@ -37,7 +41,15 @@ export default function() {
 		}));
 	}
 
-	Promise.all(startupPromises)
+	function allWorkersStartedPromise() : Promise <void> {
+		return new Promise((resolve)=>{
+			Promise.all(startupPromises).then(()=>{
+				resolve();
+			});
+		});
+	}
+	checkEngineVersion()
+		.then(allWorkersStartedPromise)
 		.then(notifyTestMaster)
 		.catch(startupErrorHandler);
 }
@@ -78,4 +90,15 @@ function notifyTestMaster() : Promise <void> {
 
 	// Sync resolve
 	return Promise.resolve();
+}
+
+function checkEngineVersion(): Promise<any> {
+	log('Check NodeJS version');
+	return new Promise((resolve, reject) => {
+		if (semver.gte(process.version, pckgConfig.engines.node)) {
+			resolve();
+		} else {
+			throw new Error('Version of NodeJS is less than ' + pckgConfig.engines.node);
+		}
+	});
 }

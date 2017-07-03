@@ -17,12 +17,8 @@
 		"watch:front": "webpack --config webpack-front.js --watch",
 		"build:admin": "webpack --config webpack-admin.js",
 		"watch:admin": "webpack --config webpack-admin.js --watch",
-		
 		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
 		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
-
-
-
 		"lint": "run/lint",
 		"test": "run/test",
 		"start": "run/app"
@@ -66,6 +62,7 @@
 		"react": "15.6.1",
 		"react-dom": "15.6.1",
 		"sass-loader": "6.0.6",
+		"semver": "^5.3.0",
 		"serve-favicons": "2.1.5",
 		"style-loader": "0.18.2",
 		"webpack": "2.6.1",
