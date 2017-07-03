@@ -9,7 +9,7 @@ export interface IUser {
 	id: number;
 	token?: string;
 	setPassword: (password: string) => void;
-	comparePassword: (password: string, cb: (isMatch: boolean) => void) => void;
+	comparePassword: (password: string, cb: (err: string, isMatch: boolean) => void) => void;
 	toString: () => any;
 }
 
@@ -20,7 +20,7 @@ export default class User extends BaseModel implements IUser {
 	private password: string;
 	public id: number;
 
-	constructor (properties : Object) {
+	constructor(properties: Object) {
 		super(['name', 'login', 'password']);
 
 		if (!this.validate(properties)) {
@@ -33,14 +33,12 @@ export default class User extends BaseModel implements IUser {
 	}
 
 	public setPassword(password: string) {
-		bcrypt.genSalt(rounds, function(saltErr, salt) {
-			bcrypt.hash(password, salt, function(hashErr, hash) {
-				this.password = hash;
-			});
-		});
+		this.password = bcrypt.hashSync(password, rounds); // TODO replace with async for DB before-save hook
 	}
 
-	public comparePassword(password: string, cb: (isMatch: boolean) => void): void {
+	public comparePassword(password: string, cb: (err: string, isMatch: boolean) => void): void {
+		console.log(password);
+		console.log(this.password);
 		bcrypt.compare(password, this.password, cb);
 	}
 

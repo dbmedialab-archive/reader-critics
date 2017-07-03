@@ -3,8 +3,9 @@ import * as express from 'express';
 import { Application, Request, Response } from 'express';
 import { parse } from 'url';
 
+import * as session from 'express-session';
 import * as passport from 'passport';
-import { jwtStrategy, serializeUser, deserializeUser } from 'app/middleware/config/passportConfig';
+import { jwtStrategy, serializeUser, deserializeUser, localStrategy } from 'app/middleware/config/passportConfig';
 
 import apiRoute from './apiRoute';
 import faviconRoute from './faviconRoute';
@@ -15,6 +16,7 @@ import adminRoute from './admin/adminRoute';
 import adminApiRoute from './admin/api/adminApiRoute';
 
 import staticRoute from './staticRoute';
+import { sessionConf } from 'app/middleware/config/sessionConfig';
 
 import * as app from 'app/util/applib';
 
@@ -27,8 +29,10 @@ export default function(expressApp : Application) {
 		expressApp.use(logRequest);
 	}
 
+	expressApp.use(session(sessionConf));
 	// Passport init
 	passport.use(jwtStrategy);
+	passport.use(localStrategy);
 	passport.serializeUser(serializeUser);
 	passport.deserializeUser(deserializeUser);
 	expressApp.use(passport.initialize());
