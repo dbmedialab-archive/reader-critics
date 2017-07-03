@@ -68,7 +68,7 @@ function createParserFactory(parserClass : Function) : ParserFactory {
 			// log(articleURL);
 
 			// https://stackoverflow.com/a/8843181
-			const parserInstance = new (Function.prototype.bind.call(parserClass, null, ...arghs));
+			const parserInstance = new (Function.prototype.bind.call(parserClass, null, ...arghs))();
 
 			//parserClass.constructor.call(parserInstance, null, ...arghs);
 			// That's all!
