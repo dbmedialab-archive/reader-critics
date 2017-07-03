@@ -36,11 +36,11 @@ export default class DagbladetParser extends GenericParser {
 	}
 
 	// protected parseTitles() : Promise <ArticleItem[]> {
-	// 	return Promise.resolve([]);  // TODO copy over basic parser with node-read
+	// 	return Promise.resolve([]);
 	// }
 
 	// protected parseContent() : Promise <ArticleItem[]> {
-	// 	return Promise.resolve([]);  // TODO copy over basic parser with node-read
+	// 	return Promise.resolve([]);
 	// }
 
 }

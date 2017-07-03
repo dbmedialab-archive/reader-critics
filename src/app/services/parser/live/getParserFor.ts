@@ -47,9 +47,7 @@ function loadParserClass(importName : string) : Promise <Function> {
 		if (error.code === 'MODULE_NOT_FOUND') {
 			return Promise.reject(new ParserNotFoundError(`${importName} not found`));
 		}
-
-		log('Class import error:', error);
-		return Promise.reject(error);  // FIXME Emitting an error currently shuts down the app. Catch upstream?
+		return Promise.reject(error);
 	});
 }
 
