@@ -3,12 +3,12 @@ import * as ReactDOM from 'react-dom';
 
 import './scss/admin.scss';
 
-import TestContainer from 'app/routes/admin/ui/testpage/TestContainer';
+import TestLayout from 'app/routes/admin/ui/testpage/TestLayout';
 import LoginLayout from 'app/routes/admin/ui/login/LoginLayout';
 
 const apps = {
 	'login': LoginLayout,
-	'testpage': TestContainer,
+	'testpage': TestLayout,
 };
 
 const rootContainer : HTMLElement = document.getElementById('app');

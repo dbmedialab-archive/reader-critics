@@ -3,13 +3,13 @@ import * as React from 'react';
 // Common components
 import Header from 'front/common/Header';
 import Footer from 'front/common/Footer';
-import LoginContainer from 'app/routes/admin/ui/login/LoginContainer';
+import TestContainer from 'app/routes/admin/ui/testpage/TestContainer';
 
-const LoginLayout : React.StatelessComponent <any> =
+const TestLayout : React.StatelessComponent <any> =
 	() => <div>
 		<Header/>
-		<LoginContainer/>
+		<TestContainer/>
 		<Footer/>
 	</div>;
 
-export default LoginLayout;
+export default TestLayout;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { InputError } from 'front/form/InputError';
-import { sendAuthRequest } from 'admin/apiAdminCommunication';
 
 export interface AuthFormPayload {
 	login: string;
@@ -78,7 +77,7 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 		return (
 			<form name='authBox' className='eleven login columns feedbackform' method='post' action='login'>
 				<fieldset className='text'>
-					<label htmlFor='login'>Login</label>
+					<label htmlFor='login'>Brukernavn</label>
 					<input
 						type='text'
 						name='login'
@@ -93,9 +92,9 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 					/>
 				</fieldset>
 				<fieldset className='text'>
-					<label htmlFor='password'>Password</label>
+					<label htmlFor='password'>Passord</label>
 					<input
-						type='text'
+						type='password'
 						name='password'
 						ref={r => this.passwordInput = r}
 						id='password'
@@ -108,7 +107,7 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 					/>
 				</fieldset>
 				<fieldset className='actions'>
-					<button type='submit' disabled={!isDisabled} className='button button-primary'>Lagre</button>
+					<button type='submit' disabled={!isDisabled} className='button button-primary'>Logg Inn</button>
 				</fieldset>
 			</form>
 		);
