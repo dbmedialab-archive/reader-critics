@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import AuthenticationError from 'admin/errors/AuthenticationError';
 
 const rxUnencoded = /:\/\//;
 
