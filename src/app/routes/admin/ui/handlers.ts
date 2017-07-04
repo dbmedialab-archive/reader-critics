@@ -57,6 +57,7 @@ export function logoutHandler(req, res): void {
 	});
 }
 
+// TODO remove test handler
 export function testPageHandler(req : Request, res : Response): void {
 	res.send(mainTemplate({
 		view: 'testpage',
