@@ -20,7 +20,7 @@ const config = convict({
 		env: 'PARSER',
 	},
 	jwt: {
-		jwtSecret: 'secret',		// TODO something with multi-threading for secret with crypto
+		jwtSecret: '0edeeb08eef4689cf52f8401f87ddaae97b3e31f24032a1a2a4f66fae8841c98',	// TODO something with multi-threading for secret with crypto
 		jwtDuration: '2 hours',
 		env: 'JWT',
 	},
