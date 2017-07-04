@@ -1,12 +1,12 @@
 {
 	"name": "reader-critics",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"license": "UNLICENSED",
-	"private": true,
-	"description": "Kildekritikk (Reader Critics)",
+	"private": false,
+	"description": "Kildekritikk v2 (Reader Critics)",
 	"main": "out/start.js",
 	"engines": {
-		"node": "7.10.0"
+		"node": "^8.1.2"
 	},
 	"scripts": {
 		"build": "run/build",
@@ -23,16 +23,16 @@
 		"test": "run/test",
 		"start": "run/app"
 	},
-	"babel": {
-		"presets": [
-			"es2015",
-			"stage-1"
-		]
-	},
 	"authors": [
 		"Philipp Gröschler",
+		"Christoph Schmitz",
+		"Dimitriy Borshchov",
+		"Dmitry Marchenko",
 		"Ole Nedrebrø",
-		"Simen Berge"
+		"Sebastian Brage Hansen",
+		"Simen Berge",
+		"Tibor Vukovic",
+		"Valeriy Donika"
 	],
 	"dependencies": {
 		"ansicolors": "0.3.2",
@@ -41,7 +41,7 @@
 		"bluebird": "3.5.0",
 		"body-parser": "1.17.2",
 		"callsite": "1.0.0",
-		"cheerio": "1.0.0-rc.1",
+		"cheerio": "1.0.0-rc.2",
 		"classnames": "2.2.5",
 		"convict": "4.0.0",
 		"css-loader": "0.28.4",
