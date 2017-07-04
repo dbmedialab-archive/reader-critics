@@ -5,8 +5,9 @@ import * as findRoot from 'find-root';
 import { isTest } from './environment';
 
 /** The filesystem root of the whole project */
-export const rootPath : string
-	= findRoot((isTest && process.env.CWD !== undefined) ? process.env.CWD : path.dirname(require.main.filename));
+export const rootPath : string = findRoot((isTest && process.env.CWD !== undefined)
+	? process.env.CWD
+	: path.dirname(require.main.filename));
 
 export function loadResource(relativePath : string) : Promise <Buffer> {
 	return new Promise((resolve, reject) => {

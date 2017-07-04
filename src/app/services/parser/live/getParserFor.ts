@@ -1,7 +1,3 @@
-import * as fs from 'fs';
-
-import ArticleURL from 'base/ArticleURL';
-import Parser from 'base/Parser';
 import Website from 'base/Website';
 
 import ParserFactory, { createFactory } from 'base/ParserFactory';

@@ -32,7 +32,7 @@ const feedbackRoute : Router = Router();
 // will happen when an encoded URL is detected.
 feedbackRoute.get('/*', mainHandler);
 
-// TODO add "post" endpoint that can make use of additional query parameters, "version" most importantly
+// TODO add "post" endpoint that can make use of additional query parameters, "version" most of all
 
 export default feedbackRoute;
 

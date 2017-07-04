@@ -14,8 +14,8 @@ import {
 import { EmptyError } from 'app/util/errors';
 
 import {
-	okResponse,
 	errorResponse,
+	okResponse,
 	ResponseOptions,
 } from './apiResponse';
 

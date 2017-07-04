@@ -1,4 +1,3 @@
-import Parser from 'base/Parser';
 import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
 
