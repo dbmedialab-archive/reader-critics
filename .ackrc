@@ -1,4 +1,7 @@
 --type-add=ts:ext:ts,tsx
---ignore-dir=app
+--ignore-dir=assets
+--ignore-dir=out
 --ignore-dir=node_modules
+--ignore-dir=resources
+--ignore-dir=tmp
 

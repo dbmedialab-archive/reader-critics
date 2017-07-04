@@ -1,0 +1,13 @@
+#!/bin/sh
+
+rm -rf out/admin out/app out/base out/bundle out/front
+
+echo -e "\033[1;38;5;214mBuilding App ...\033[0m"
+node_modules/.bin/tsc --pretty --diagnostics --project tsconfig.json
+
+echo -e "\033[1;38;5;208mBuilding Frontend ...\033[0m"
+node_modules/.bin/webpack --config webpack-front.js
+
+echo -e "\033[1;38;5;220mBuilding Admin UI ...\033[0m"
+node_modules/.bin/webpack --config webpack-admin.js
+

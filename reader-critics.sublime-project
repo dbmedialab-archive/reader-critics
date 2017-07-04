@@ -1,0 +1,30 @@
+{
+	"SublimeLinter":
+	{
+		"linters":
+		{
+			"eslint":
+			{
+				"chdir": "${project}/src"
+			},
+			"tslint":
+			{
+				"args":
+				[
+					"--project",
+					"${project}/tsconfig.json",
+					"--type-check"
+				]
+			}
+		}
+	},
+	"folders":
+	[
+		{
+			"path": "src"
+		},
+		{
+			"path": "test"
+		}
+	]
+}

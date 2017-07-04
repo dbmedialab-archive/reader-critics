@@ -1,0 +1,10 @@
+#!/bin/sh
+
+clear
+
+export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-retry-as-promised,-send"
+export NODE_ENV=${NODE_ENV:-"development"}
+export WEB_CONCURRENCY=2
+
+node_modules/.bin/nodemon --watch out/app --ext js --delay 1 out/start.js
+

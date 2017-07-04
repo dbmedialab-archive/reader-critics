@@ -1,0 +1,90 @@
+box: openjdk:8
+
+js-lint-build-test:
+  steps:
+  - script:
+    name: 'install node'
+    code: |
+      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+      export NVM_DIR="$HOME/.nvm"
+      source /root/.bashrc
+      nvm install v8
+      nvm use node
+      npm i -g yarn
+  - script:
+    name: set yarn cache
+    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+  - script:
+    name: install dependencies
+    code: yarn
+  - script:
+    name: lint
+    code: run/lint
+  - script:
+    name: check node
+    code: node --version
+  - script:
+    name: build
+    code: run/build
+  - script:
+    name: test libraries
+    code: run/test --libs
+  - script:
+    name: test base modules
+    code: run/test --base
+  #- script:
+  #  name: test backend app
+  #  code: run/test --app
+  #- script:
+  #  name: test frontend
+  #  code: run/test --frontend
+  - script:
+    name: copy production files
+    code: |
+      cp -r assets \
+        out \
+        run \
+        tmp \
+        resources \
+        package.json \
+        yarn.lock \
+        $WERCKER_OUTPUT_DIR
+
+push-image:
+  box: 
+    id: node:8-alpine
+    cmd: /bin/sh
+  steps:
+  - script:
+    name: set yarn cache
+    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+  - script:
+    name: install production dependencies
+    code: |
+      HOME=$YARN_CACHE yarn
+  - internal/docker-push:
+    working-dir: $WERCKER_SOURCE_DIR
+    username: _json_key
+    password: $GCR_DBP_JSON_KEY_FILE
+    cmd: ./run_app.sh
+    tag: latest,$WERCKER_GIT_COMMIT
+    ports: "4000"
+    repository: eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY
+    registry: https://eu.gcr.io/v2
+
+deploy:
+  box:
+    id: eu.gcr.io/dagbladet-projects/kubectl
+    username: _json_key
+    password: $GCR_DBP_JSON_KEY_FILE
+    tag: p01
+    registry: https://eu.gcr.io
+  steps:
+  # Setup namespace
+  - script:
+    name: test and setup environment
+    code: |
+      initkube
+      deploy $WERCKER_GIT_REPOSITORY <<EOL
+        reader-critics=eu.gcr.io/dagbladet-projects/$WERCKER_GIT_REPOSITORY:$WERCKER_GIT_COMMIT
+      EOL
