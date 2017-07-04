@@ -1,6 +1,5 @@
 import 'whatwg-fetch';
 
-const rxUnencoded = /:\/\//;
 const currentView = document.getElementById('app').getAttribute('name');
 
 export const sendAuthRequest = ((data: any): Promise<any> => {
