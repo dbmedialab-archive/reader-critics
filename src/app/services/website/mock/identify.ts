@@ -1,8 +1,6 @@
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
-import * as app from 'app/util/applib';
-
 const wsDagbladet : Website = {
 	name: 'dagbladet.no',
 	// parserClass: 'DagbladetParser',

@@ -92,7 +92,10 @@ function diff(o: string[], n: string[]): DiffResultObject {
 /*
 	Building an object or a string with result of diff operation
  */
-export default function diffStringDefault(o: string, n: string, isHTML: boolean = false): Array<DiffStringResultObject> | string {
+export default function diffStringDefault(
+	o : string, n : string, isHTML : boolean = false,
+) : Array<DiffStringResultObject> | string
+{
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
@@ -137,7 +140,8 @@ export default function diffStringDefault(o: string, n: string, isHTML: boolean 
 	}
 
 	const result: DiffStringResultObject[] = [];
-	const lastSymbol: string = isHTML ? '\n' : '';	// If building an html text using the '/n' as an end of string
+	// If building an html text using the '/n' as an end of string
+	const lastSymbol: string = isHTML ? '\n' : '';
 	let str: string = '';
 
 	o = o.replace(/\s+$/, '');
