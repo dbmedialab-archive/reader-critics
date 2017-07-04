@@ -6,3 +6,9 @@ interface ParserFactory {
 }
 
 export default ParserFactory;
+
+export const createFactory = (constructorFn : Function) : ParserFactory => ({
+	newInstance: (...arghs) : Parser => new (
+		Function.prototype.bind.call(constructorFn, null, ...arghs)
+	)(),
+});

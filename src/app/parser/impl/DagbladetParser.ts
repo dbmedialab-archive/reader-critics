@@ -37,10 +37,10 @@ export default class DagbladetParser extends GenericParser {
 
 	// protected parseTitles() : Promise <ArticleItem[]> {
 	// 	return Promise.resolve([]);
-	// }
+	// } TODO
 
 	// protected parseContent() : Promise <ArticleItem[]> {
 	// 	return Promise.resolve([]);
-	// }
+	// } TODO
 
 }
