@@ -68,22 +68,20 @@ export function testPageHandler(req : Request, res : Response): void {
 }
 
 export function loginHandler(req, res): void {
-	passport.authenticate('local', (err, user) => {
-		if (err) {
-			return res.redirect('login');
+	passport.authenticate('local', (error, user) => {
+		if (error) {
+			return res.status(401).json({error});
 		}
 
 		if (!user) {
-			return res.redirect('login');
+			return res.status(401).json({error: 'User not found'});
 		}
 
-		user = user.toString();
-
-		req.logIn(user, (error) => {
-			if (error) {
-				return res.status(404).json('Authentication problems');
+		req.logIn(user, (err) => {
+			if (err) {
+				return res.status(401).json({error: err});
 			}
-			res.redirect('/admin/testpage');
+			return res.status(200).json({error: false, status: 'ok'});
 		});
 	})(req, res);
 }

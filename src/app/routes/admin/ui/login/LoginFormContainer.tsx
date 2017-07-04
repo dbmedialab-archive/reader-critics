@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { InputError } from 'front/form/InputError';
+import {InputError} from 'front/form/InputError';
+import {ResponseError} from 'front/form/ResponseError';
+import {sendAuthRequest} from 'admin/apiAdminCommunication';
 
 export interface AuthFormPayload {
 	login: string;
 	password: string;
+	authError: string;
 	touched: {
 		login: boolean,
 		password: boolean,
@@ -11,8 +14,8 @@ export interface AuthFormPayload {
 }
 
 export default class LoginFormContainer extends React.Component <any, AuthFormPayload> {
-	private passwordInput : any;
-	private loginInput : any;
+	private passwordInput: any;
+	private loginInput: any;
 
 	constructor(props) {
 		super(props);
@@ -20,6 +23,7 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 		this.state = {
 			login: '',
 			password: '',
+			authError: '',
 			touched: {
 				login: false,
 				password: false,
@@ -29,12 +33,14 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 		this.UpdateState = this.UpdateState.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.hasPasswordError = this.hasPasswordError.bind(this);
+		this.hasAuthError = this.hasAuthError.bind(this);
 		this.hasLoginError = this.hasLoginError.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
 		this.setState({
-			touched: { ...this.state.touched, [field]: true },
+			touched: {...this.state.touched, [field]: true},
 		});
 	}
 
@@ -58,6 +64,10 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 		return false;
 	}
 
+	private hasAuthError() {
+		return this.state.authError;
+	}
+
 	private isFormValid() {
 		return (
 			!this.hasPasswordError() &&
@@ -66,16 +76,23 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 	}
 
 	// Helper class to update the components state when inputing values in text areas.
-	private UpdateState(field : string, ref : any) {
+	private UpdateState(field: string, ref: any) {
 		const state = {};
-		state[ field ] = ref.value;
-		this.setState( state );
+		state[field] = ref.value;
+		this.setState(state);
 	}
 
-	public render() : JSX.Element {
+	private handleSubmit(e: any) {
+		e.preventDefault();
+		sendAuthRequest(this.state).then((res: any): void => {
+			this.setState({authError: res.error});
+		});
+	}
+
+	public render(): JSX.Element {
 		const isDisabled = this.isFormValid();
 		return (
-			<form name='authBox' className='eleven login columns feedbackform' method='post' action='login'>
+			<form name='authBox' className='eleven login columns feedbackform' onSubmit={this.handleSubmit}>
 				<fieldset className='text'>
 					<label htmlFor='login'>Brukernavn</label>
 					<input
@@ -109,6 +126,9 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 				<fieldset className='actions'>
 					<button type='submit' disabled={!isDisabled} className='button button-primary'>Logg Inn</button>
 				</fieldset>
+				<ResponseError
+					errorText={this.hasAuthError()}
+				/>
 			</form>
 		);
 	}

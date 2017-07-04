@@ -4,7 +4,7 @@ import {Strategy as LocalStrategy} from 'passport-local';
 import config from '../../config';
 import {IUser} from 'app/models/User';
 
-interface PassportJWTOptions {
+export interface PassportJWTOptions {
 	secretOrKey: string;
 	[x: string]: any;
 }
@@ -56,11 +56,9 @@ export const localStrategy = new LocalStrategy(localOptions,
 		}
 		user.comparePassword(password, function (err: string, isMatch: boolean) {
 			if (isMatch) {
-				done(null, user);
+				done(null, user.toString());
 			} else {
 				done('Incorrect password');
 			}
 		});
 	});
-
-export default {jwtStrategy, serializeUser, deserializeUser, jwtOptions, localStrategy};

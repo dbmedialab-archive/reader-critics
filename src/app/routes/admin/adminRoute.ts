@@ -27,6 +27,7 @@ adminRoute.use(bodyParser.urlencoded({
 }));
 adminRoute.use(cookieParser(secret));
 
+adminRoute.get('/', homeRoute);
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
@@ -38,4 +39,8 @@ export default adminRoute;
 function defaultHandler(requ : Request, resp : Response) : void {
 	log('Admin router', requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
+}
+
+function homeRoute(requ : Request, resp : Response) : void {
+	resp.redirect('testpage');
 }

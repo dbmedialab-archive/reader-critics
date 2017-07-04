@@ -47,7 +47,6 @@
 		"connect-redis": "^3.3.0",
 		"convict": "4.0.0",
 		"cookie-parser": "^1.4.3",
-		"crypto": "0.0.3",
 		"css-loader": "0.28.4",
 		"debug": "2.6.8",
 		"diff": "3.2.0",
