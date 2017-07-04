@@ -26,4 +26,3 @@ else {
 		throw new Error(`Unknown app type "${name}"`);
 	}
 }
-
