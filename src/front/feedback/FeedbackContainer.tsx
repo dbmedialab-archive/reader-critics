@@ -40,10 +40,10 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 
 	private createArticleElement(item, index : number) {
-		const elemKey = `element-${item.order.elem}`;
+		const elemKey = `element-${item.order.item}`;
 		return <ArticleElement
 			key={elemKey}
-			elemOrder={item.order.elem}
+			elemOrder={item.order.item}
 			typeOrder={item.order.type}
 
 			type={item.type}

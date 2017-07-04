@@ -8,10 +8,6 @@ import Parser from 'base/Parser';
 
 import BaseElements from './BaseElements';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 interface ParserWorkflowPayload {
 	version : any;
 	authors : any;
@@ -70,13 +66,9 @@ abstract class BaseParser extends BaseElements implements Parser {
 	// Prototypes
 
 	protected abstract parseVersion() : Promise <string>;
-
 	protected abstract parseByline() : Promise <ArticleAuthor[]>;
-
 	protected abstract parseTitles() : Promise <ArticleItem[]>;
-
 	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
-
 	protected abstract parseContent() : Promise <ArticleItem[]>;
 
 }
