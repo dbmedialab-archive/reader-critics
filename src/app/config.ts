@@ -24,6 +24,16 @@ const config = convict({
 		jwtDuration: '2 hours',
 		env: 'JWT',
 	},
+	redis: {
+		url: {
+			doc: 'Redis URL to connect to (including auth string)',
+			default: 'redis://localhost:6379',
+			env: 'REDIS_URL',
+		},
+		host: 'localhost',
+		port: 6379,
+		ttl: 260,
+	},
 	// TODO remove it on DB added
 	users: [
 		new User({name: 'admin', login: 'admin', password: 'test'}),
