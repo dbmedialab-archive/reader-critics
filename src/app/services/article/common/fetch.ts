@@ -1,12 +1,5 @@
-import {
-	AxiosPromise,
-	AxiosResponse,
-	default as axios,
-} from 'axios';
-
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
-import Parser from 'base/Parser';
 import ParserFactory from 'base/ParserFactory';
 import Website from 'base/Website';
 
@@ -14,10 +7,6 @@ import {
 	articleService,
 	parserService,
 } from 'app/services';
-
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
 
 /**
  * @param website Needed to determine the parser for this article

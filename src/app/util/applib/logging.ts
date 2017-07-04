@@ -37,11 +37,16 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 	// "createLog" is invoked. Then replace several things in the file path
 	// to create a log channel name in "debug" syntax.
 	const originName = callstack[1].getFileName()
-		.replace(regexFileSuffix, '')  // strip file suffix
-		.replace(regexDeleteIndex, '')  // strip "index"
-		.replace(regexEnvFolder, ':')  // string environment suffixes from...
-		.replace(regexEnvSuffix, '')  // ...service modules etc.
-		.replace(regexForwardSlashes, ':')  // replace slashes with colons
+		// strip file suffix
+		.replace(regexFileSuffix, '')
+		// strip "index"
+		.replace(regexDeleteIndex, '')
+		// string environment suffixes from...
+		.replace(regexEnvFolder, ':')
+		// ...service modules etc.
+		.replace(regexEnvSuffix, '')
+		// replace slashes with colons
+		.replace(regexForwardSlashes, ':');
 
 	// Replace "app" directory name with the application name
 	const pos = originName.lastIndexOf(':app:');

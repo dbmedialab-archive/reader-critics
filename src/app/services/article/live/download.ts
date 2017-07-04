@@ -1,6 +1,6 @@
 import {
-	AxiosResponse,
 	default as axios,
+	AxiosResponse,
 } from 'axios';
 
 import ArticleURL from 'base/ArticleURL';

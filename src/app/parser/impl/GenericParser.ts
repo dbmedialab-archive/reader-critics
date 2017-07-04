@@ -1,20 +1,13 @@
 import * as Cheerio from 'cheerio';
 
-import Article from 'base/Article';
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
-import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 
 import BaseParser from '../BaseParser';
 
 import * as CheerioPlugin from '../util/CheerioPlugin';
 import * as NodeReadPlugin from '../util/NodeReadPlugin';
-
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
 
 const elementTags = [
 	'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'ul', 'img', 'ol', 'a',

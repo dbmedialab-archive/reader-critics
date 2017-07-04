@@ -1,9 +1,6 @@
 import * as Cheerio from 'cheerio';
 
-import Article from 'base/Article';
 import ArticleAuthor from 'base/ArticleAuthor';
-import ArticleItem from 'base/ArticleItem';
-import Parser from 'base/Parser';
 
 // import BaseParser from '../BaseParser';
 import GenericParser from './GenericParser';

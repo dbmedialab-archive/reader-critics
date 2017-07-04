@@ -24,7 +24,9 @@ export interface ArticleElementState {
 	text: string;
 }
 
-export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
+export default class ArticleElement
+extends React.Component <ArticleElementProp, ArticleElementState>
+{
 
 	private references: {
 		editForm: ArticleEditForm;
