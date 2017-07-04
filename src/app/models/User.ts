@@ -43,6 +43,7 @@ export default class User extends BaseModel implements IUser {
 	public toString() {
 		const obj = Object.assign({}, super.toString());
 		delete obj['failedProperties'];
+		delete obj['password'];
 		return obj;
 	}
 }

@@ -2,6 +2,9 @@ import * as convict from 'convict';
 import * as crypto from 'crypto';
 import User from './models/User';
 
+const cryptoBytes = crypto.randomBytes(32);
+const secret = cryptoBytes.toString('hex');
+
 const config = convict({
 	http: {
 		port: {
@@ -17,7 +20,7 @@ const config = convict({
 		env: 'PARSER',
 	},
 	jwt: {
-		jwtSecret: 'secret',/*crypto.randomBytes(32)*/
+		jwtSecret: 'secret',		// TODO something with multi-threading for secret with crypto
 		jwtDuration: '2 hours',
 		env: 'JWT',
 	},
