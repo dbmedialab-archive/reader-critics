@@ -9,6 +9,8 @@ import * as bodyParser from 'body-parser';
 import * as app from 'app/util/applib';
 import { loginPageHandler, logoutHandler, testPageHandler, loginHandler } from './ui/handlers';
 import { sessionConf } from 'app/middleware/config/sessionConfig';
+import isAuthenticated from 'app/middleware/policies/isAuthenticated';
+import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
 
 const log = app.createLog();
 
@@ -25,10 +27,10 @@ adminRoute.use(bodyParser.urlencoded({
 }));
 adminRoute.use(cookieParser(secret));
 
-adminRoute.get('/login', isLoggedOff, loginPageHandler);
-adminRoute.post('/login', isLoggedOff, loginHandler);
-adminRoute.get('/logout', isLoggedIn, logoutHandler);
-adminRoute.get('/testpage', isLoggedIn, testPageHandler);
+adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
+adminRoute.post('/login', isNotAuthenticated, loginHandler);
+adminRoute.get('/logout', isAuthenticated, logoutHandler);
+adminRoute.get('/testpage', isAuthenticated, testPageHandler);
 adminRoute.get('/*', defaultHandler);
 
 export default adminRoute;
@@ -36,18 +38,4 @@ export default adminRoute;
 function defaultHandler(requ : Request, resp : Response) : void {
 	log('Admin router', requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
-}
-
-function isLoggedOff(req, res, next: () => void): void {
-	if (!req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect('testpage');
-}
-
-function isLoggedIn(req, res, next: () => void): void {
-	if (req.isAuthenticated()) {
-		return next();
-	}
-	res.redirect('login');
 }
