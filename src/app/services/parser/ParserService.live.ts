@@ -1,2 +1,1 @@
-// tslint:disable no-require-imports
-export const getParserFor = require('./ParserService.mock');
+export { default as getParserFor } from './live/getParserFor';
