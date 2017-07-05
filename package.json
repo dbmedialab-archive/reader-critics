@@ -103,7 +103,7 @@
 		"source-map-support": "0.4.15",
 		"ts-node": "3.1.0",
 		"tsconfig-paths": "2.2.0",
-		"tslint": "5.4.3",
+		"tslint": "5.5.0",
 		"typescript": "2.4.1",
 		"webpack-dev-server": "2.5.0"
 	}
