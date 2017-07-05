@@ -1,0 +1,55 @@
+// BUTTON
+// Buttons are used for actions.
+// We use "anchors" <a> in the code since we want :before and :after
+// pseudo-class to be avialable when styling.
+.button {
+	text-transform: uppercase;
+	font-size: .8rem;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: .5rem;
+	letter-spacing: .1rem;
+
+	&:before {
+		margin-right: .3rem;
+		@include material-icon;
+		display: inline-block;
+		border-radius: 2rem;
+		border-width: 1px;
+		border-style: solid;
+		position: relative;
+		top: .15rem;
+		padding: .5rem;
+	}
+
+	// BUTTON VARIATIONS
+	&.cancel {
+		&:before {
+			content: "close";
+			border-color: $color-warning;
+		}
+		color: $color-warning;
+	}
+	&.save {
+		&:before {
+			content: "done";
+			border-color: $color-success;
+		}
+		color: $color-success;
+	}
+	&.edit {
+		&:before {
+			content: "edit";
+			border-color: $color-success;
+		}
+		color: $color-success;
+	}
+	&.reset {
+		&:before {
+			content: "delete";
+			border-color: $color-warning;
+		}
+		color: $color-warning;
+	}
+}
