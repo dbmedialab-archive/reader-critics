@@ -1,5 +1,8 @@
+// tslint:disable max-file-line-count
 import * as classnames from 'classnames';
 import * as React from 'react';
+
+import ArticleItemType from 'base/ArticleItemType';
 
 import {
 	default as ArticleEditForm,
@@ -21,7 +24,9 @@ export interface ArticleElementState {
 	text: string;
 }
 
-export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
+export default class ArticleElement
+extends React.Component <ArticleElementProp, ArticleElementState>
+{
 
 	private references: {
 		editForm: ArticleEditForm;
@@ -61,8 +66,6 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 			id={this.props.typeOrder}
 			ref={(i : any) => { this.references.editForm = i; }}
 			originalText={this.state.text}
-			// link={this.state.link}
-			// comment={this.state.comment}
 			onCancel={this.CancelInput.bind(this)}
 			onSave={this.SaveData.bind(this)}
 			type={this.props.type}
@@ -89,52 +92,82 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 
 	private getContentElement() {
 		switch (this.props.type) {
+			case ArticleItemType.MainTitle.toString():
+				return this.MainTitleElement();
 			case 'title':
-				return this.TitleElement();
+				return this.SubTitleElement();
+
 			case 'lead':
-				return this.LeadElement();
-			case 'subtitle':
-				return this.SubtitleElement();
+				return this.LeadInElement();
+			case 'featured':
+				return this.FeaturedImageElement();
+
+			case 'subhead':
+				return this.SubHeadingElement();
+			case 'paragraph':
+				return this.ParagraphElement();
+
 			case 'figure':
 				return this.FigureElement();
-			default:
-				return this.ParagraphElement();
+			case ArticleItemType.Link.toString():
+				return this.LinkElement();
 		}
 	}
 
-	private TitleElement() {
+	private MainTitleElement() {
 		return <div>
-				<label>Tittel</label>
-				<h1>{this.TextDiff()}</h1>
-			</div>;
+			<label>Tittel</label>
+			<h1>{this.TextDiff()}</h1>
+		</div>;
 	}
 
-	private SubtitleElement() {
+	private SubTitleElement() {
 		return <div>
-				<label>Mellomtittel #{this.props.typeOrder}</label>
-				<h3>{this.TextDiff()}</h3>
-			</div>;
+			<label>Tittel</label>
+			<h2>{this.TextDiff()}</h2>
+		</div>;
 	}
 
-	private LeadElement() {
+	private LeadInElement() {
 		return <div>
-				<label>Innledning</label>
-				<p>{this.TextDiff()}</p>
-			</div>;
+			<label>Innledning</label>
+			<p>{this.TextDiff()}</p>
+		</div>;
+	}
+
+	private FeaturedImageElement() {
+		return <div>
+			<label>Featured Image</label>
+			<p>{this.state.text}</p>
+		</div>;
+	}
+
+	private SubHeadingElement() {
+		return <div>
+			<label>Mellomtittel #{this.props.typeOrder}</label>
+			<h3>{this.TextDiff()}</h3>
+		</div>;
 	}
 
 	private ParagraphElement() {
 		return <div>
-				<label>Avsnitt #{this.props.typeOrder}</label>
-				<p>{this.TextDiff()}</p>
-			</div>;
+			<label>Avsnitt #{this.props.typeOrder}</label>
+			<p>{this.TextDiff()}</p>
+		</div>;
 	}
 
 	private FigureElement() {
 		return <div>
-				<label>Bilde #{this.props.typeOrder}</label>
-				<p>{this.state.text}</p>
-			</div>;
+			<label>Bilde #{this.props.typeOrder}</label>
+			<p>{this.state.text}</p>
+		</div>;
+	}
+
+	private LinkElement() {
+		return <div>
+			<label>Link #{this.props.typeOrder}</label>
+			<p>{this.TextDiff()}</p>
+		</div>;
 	}
 
 	// Caclulates and highlights the diff of two sentences.

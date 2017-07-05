@@ -1,11 +1,13 @@
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
 import * as path from 'path';
-import * as app from 'app/util/applib';
 import * as semver from 'semver';
+
 import { readFileSync } from 'fs';
+
 import printEnvironment from 'print-env';
 
+import * as app from 'app/util/applib';
 const log = app.createLog('master');
 
 const workerMap = {};

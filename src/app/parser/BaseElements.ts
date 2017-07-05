@@ -1,0 +1,75 @@
+import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
+
+const clean = (s : string) => s.trim().replace(/\s+/g, ' ');
+
+abstract class BaseElements {
+
+	private totalElementCount : number = 0;
+
+	private elementTypeCounts : any = {};
+
+	constructor() {
+		// Preset element type counters
+		Object.values(ArticleItemType).forEach(t => this.elementTypeCounts[t] = 0);
+	}
+
+	// Generic article element create
+
+	private createEl(type : ArticleItemType, other : any) {
+		return {
+			type,
+			order: {
+				item: ++ this.totalElementCount,
+				type: ++ this.elementTypeCounts[type],
+			},
+			...other,
+		};
+	}
+
+	// Article element creators
+
+	protected createFeaturedImageEl(href : string) : ArticleItem {
+		return this.createEl(ArticleItemType.FeaturedImage, {
+			href,
+		});
+	}
+
+	protected createFigureEl(href : string, altText : string) : ArticleItem {
+		return this.createEl(ArticleItemType.Figure, {
+			href,
+			altText: altText ? altText.trim() : '',
+		});
+	}
+
+	protected createLinkEl(href : string, text : string) : ArticleItem {
+		return this.createEl(ArticleItemType.Link, {
+			href,
+			text: text.trim(),
+		});
+	}
+
+	protected createMainTitleEl(title : string) : ArticleItem {
+		const text = clean(title);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.MainTitle, {
+			text,
+		});
+	}
+
+	protected createSubHeadingEl(subheading : string) : ArticleItem {
+		const text = clean(subheading);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.SubHeading, {
+			text,
+		});
+	}
+
+	protected createParagraphEl(paragraph : string) : ArticleItem {
+		const text = clean(paragraph);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.Paragraph, {
+			text,
+		});
+	}
+
+}
+
+export default BaseElements;

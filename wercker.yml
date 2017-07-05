@@ -33,9 +33,9 @@ js-lint-build-test:
   - script:
     name: test base modules
     code: run/test --base
-  #- script:
-  #  name: test backend app
-  #  code: run/test --app
+  - script:
+    name: test backend app
+    code: run/test --app
   #- script:
   #  name: test frontend
   #  code: run/test --frontend

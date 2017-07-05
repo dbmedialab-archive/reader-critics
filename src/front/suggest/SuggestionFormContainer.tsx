@@ -2,6 +2,9 @@ import * as React from 'react';
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
 
+// tslint:disable-next-line
+const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 export interface FormPayload {
 	username: string;
 	email: string;
@@ -54,7 +57,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	}
 
 	private hasEmailError() {
-		const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		const email = this.state.email;
 		if (!emailPattern.test(email) || !email.length) {
 			return 'Skriv inn gyldig e-postadresse.';
@@ -86,7 +88,11 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
 		return (
-			<form name='suggestBox' className='eleven suggestion columns feedbackform' onSubmit={this.handleSubmit}>
+			<form
+				name='suggestBox'
+				className='eleven suggestion columns feedbackform'
+				onSubmit={this.handleSubmit}
+			>
 				<fieldset className='text'>
 					<label htmlFor='comment'>Username</label>
 					<input
