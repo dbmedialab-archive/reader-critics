@@ -1,6 +1,7 @@
 interface Website {
 
 	name : string;
+	parserClass? : string;
 
 }
 

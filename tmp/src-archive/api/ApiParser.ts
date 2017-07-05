@@ -11,11 +11,11 @@ import Tag from 'app/models/Tag';
 
 import BaseParser from '../BaseParser';
 import Schema from './Schema';
-
+/*
 export default class ApiParser extends BaseParser {
-	/*
-	 * Fetch json from the given api url provided by the site
-	 */
+	/ *
+	* Fetch json from the given api url provided by the site
+	* /
 	public request(): any {
 		if (!this.url) {
 			return Promise.reject(new Response(false, 'No url provided'));
@@ -76,3 +76,4 @@ export default class ApiParser extends BaseParser {
 	}
 
 }
+*/

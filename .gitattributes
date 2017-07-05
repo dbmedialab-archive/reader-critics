@@ -1,0 +1,4 @@
+doc/* linguist-documentation
+kubefiles/* linguist-vendored
+resources/* linguist-vendored
+tmp/* linguist-vendored

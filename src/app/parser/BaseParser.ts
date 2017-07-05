@@ -1,33 +1,76 @@
-import {
-	AxiosPromise,
-	default as axios,
-} from 'axios';
+import * as Bluebird from 'bluebird';
 
-import * as Promise from 'bluebird';
+import Article from 'base/Article';
+import ArticleAuthor from 'base/ArticleAuthor';
+import ArticleItem from 'base/ArticleItem';
+import ArticleURL from 'base/ArticleURL';
+import Parser from 'base/Parser';
 
-import Article from '../models/Article';
-import Parser from './Parser';
+import BaseElements from './BaseElements';
 
-export default class BaseParser implements Parser {
+interface ParserWorkflowPayload {
+	version : any;
+	authors : any;
+	titles : any;
+	featured : any;
+	content : any;
+}
 
-	readonly url: string;
-	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
-	protected requestSent: boolean;
-	protected article: Article;
+abstract class BaseParser extends BaseElements implements Parser {
 
-	constructor (url: string) {
-		this.url = url;
-		this.requestSent = false;
+	constructor(
+		protected readonly rawArticle : string,
+		protected readonly articleURL : ArticleURL,
+	) {
+		super();
 	}
 
-	getArticle(): Promise <Article> {
-		return Promise.resolve(this.article);
+	parse() : Promise <Article> {
+		return this.initialize().then(() => this.parseArticle());
 	}
 
-	// Requests the url
-	protected request() : AxiosPromise {
-		this.requestSent = true;
-		return axios.get(this.url);
+	/**
+	 * Parser initialization. Override this with your own code if you need
+	 * some asynchronous bootstrap functions to run before the parser will
+	 * be ready. Don't forget to return a Promise! (void return value)
+	 */
+	protected initialize() : Promise <any> {
+		return Promise.resolve();
 	}
+
+	/**
+	 * Parser workflow. Taken out of parse() for readability.
+	 */
+	private parseArticle() : Promise <Article> {
+		const workflow : ParserWorkflowPayload = {
+			version: this.parseVersion(),
+			authors: this.parseByline(),
+			titles: this.parseTitles(),
+			featured: this.parseFeaturedImage(),
+			content: this.parseContent(),
+		};
+
+		return Promise.resolve(Bluebird.props(workflow))
+		.then((a : ParserWorkflowPayload) : Article => ({
+			url: this.articleURL,
+			version: a.version,
+			authors: a.authors,
+			items: [
+				...a.titles,
+				...a.featured,
+				...a.content,
+			],
+		}));
+	}
+
+	// Prototypes
+
+	protected abstract parseVersion() : Promise <string>;
+	protected abstract parseByline() : Promise <ArticleAuthor[]>;
+	protected abstract parseTitles() : Promise <ArticleItem[]>;
+	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
+	protected abstract parseContent() : Promise <ArticleItem[]>;
 
 }
+
+export default BaseParser;

@@ -6,31 +6,71 @@ import {
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 
-import { articleService } from 'app/services';
+import {
+	articleService,
+	websiteService,
+} from 'app/services';
+
 import { EmptyError } from 'app/util/errors';
-import * as app from 'app/util/applib/logging';
 
 import {
-	okResponse,
 	errorResponse,
+	okResponse,
 	ResponseOptions,
 } from './apiResponse';
+
+import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
 // Main handler, checks for URL parameter and invalid requests
 
-export default function (requ: Request, resp: Response): void {
+export default function(requ : Request, resp : Response) : void {
 	try {
 		const articleURL = new ArticleURL(requ.query.url);
-		log('Requesting article at', articleURL.href);
+		const version = requ.query.version;
 
-		articleService.getArticle(articleURL)
-			.then((article: Article) => okResponse(resp, { article }))
-			.catch(error => errorResponse(resp, error));
+		let wasFetched = false;
+
+		const website = websiteService.identify(articleURL);
+
+		if (website === undefined) {
+			const msg = 'Could not identify website';
+			return errorResponse(resp, new Error(msg), msg, {
+				status: 400,
+			});
+		}
+
+		log(articleURL.href);
+
+		// Fetch the article from the database. If not stored, will return undefined
+		articleService.load(articleURL, version)
+		.then((article : Article) => {
+			// Article is not in the database, fetch a fresh version from the web
+			if (article === undefined) {
+				wasFetched = true;
+				return articleService.fetch(website, articleURL);
+			}
+			return article;
+		})
+		.then((article : Article) => {
+			// Deliver the API response ...
+			okResponse(resp, { article });
+			return article;
+		})
+		.then((article : Article) => {
+			// After serving the request: if the article is fresh, store it it
+			// the database now
+			if (!wasFetched) {
+				return null;
+			}
+
+			return articleService.save(website, article);
+		})
+		.catch(error => errorResponse(resp, error));
 	}
 	catch (error) {
-		const options: ResponseOptions = {
+		const options : ResponseOptions = {
 			status: 400,  // "Bad Request" in any case
 		};
 

@@ -1,0 +1,64 @@
+{
+	"parserOptions": { "ecmaVersion": 6 },
+	"env": {
+		"browser": false,
+		"mocha": true,
+		"node": true
+	},
+	"settings": {
+	},
+	"globals": {
+		"globals": true,
+		"assert": true,
+		"before": true,
+		"path": true
+	},
+	"rules": {
+		"arrow-body-style": [0],
+		"array-bracket-spacing": [ "warn", "never", {
+			"singleValue": true
+		}],
+		"brace-style": [ "warn", "stroustrup" ],
+		"complexity": [ "error", {
+			"max": 10
+		}],
+		"consistent-return": 0,
+		"func-names": 2,
+		"indent": [ "error", "tab" ],
+		"linebreak-style": [ 2, "unix" ],
+		"max-len": [ "error", {
+			"code": 128,
+			"tabWidth": 2,
+			"comments": 100,
+			"ignoreComments": false
+		}],
+		"no-cond-assign": [ 2, "except-parens" ],
+		"no-console": 0,
+		"no-extra-strict": 0,
+		"no-mixed-operators": ["error", {
+			"allowSamePrecedence": true
+		}],
+		"no-param-reassign": [ "error" ],
+		"no-plusplus": [ 2, {
+			"allowForLoopAfterthoughts": true
+		}],
+		"no-shadow": 0,
+		"no-spaces": 0,
+		"no-tabs": 0,
+		"no-unneeded-ternary": [ 2, {
+			"defaultAssignment": true
+		}],
+		"no-underscore-dangle": [ 0 ],
+		"no-unused-vars": [1, {
+			"vars": "local",
+			"args": "none"
+		}],
+		"no-use-before-define": 0,
+		"quote-props": [ 1, "consistent-as-needed" ],
+		"radix": 0,
+		"space-infix-ops": 2,
+		"spaced-comment": 0,
+		"comma-dangle": [ 2, "always-multiline" ],
+		"no-unused-expressions": 0
+	}
+}

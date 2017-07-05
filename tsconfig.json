@@ -20,6 +20,10 @@
 		"allowJs": false,
 		"declaration": true,
 		"experimentalDecorators": true,
+		"lib": [
+			"DOM",
+			"ES2017"
+		],
 		"jsx": "react",
 		"module": "commonjs",
 		"moduleResolution": "node",

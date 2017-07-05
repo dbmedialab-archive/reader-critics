@@ -1,15 +1,13 @@
 import * as path from 'path';
 
 import {
-	Router,
 	static as serveStatic,
+	Router,
 } from 'express';
 
 import * as app from 'app/util/applib';
 
 const staticRoute : Router = Router();
-
-//express.s
 
 staticRoute.use('/images', serveStatic(path.join(app.rootPath, 'assets/images')));
 staticRoute.use('/styles', serveStatic(path.join(app.rootPath, 'assets/styles')));
