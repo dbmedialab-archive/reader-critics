@@ -16,11 +16,6 @@ const config = convict({
 			env: 'MONGODB_URL',
 		},
 	},
-	parser: {
-		doc: 'Fallback setting for the article parser',
-		fallback: 'html',
-		env: 'PARSER',
-	},
 });
 
 config.validate();
