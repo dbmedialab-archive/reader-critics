@@ -35,7 +35,7 @@
 			"import-sources-order": "any",
 			"named-imports-order": "lowercase-first"
 		}],
-		"quotemark": [ true, "single" ],
+		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
 		"semicolon": [ true, "always" ],
