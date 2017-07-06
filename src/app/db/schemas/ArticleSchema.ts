@@ -15,8 +15,9 @@ const ArticleSchema : Schema = new Schema({
 	items: [Schema.Types.Mixed],
 });
 
-class ArticleDAO {
-
+class ArticleSchemaDecorator {
+	// This is a template I shall try out:
+	// http://mongoosejs.com/docs/advanced_schemas.html
 }
 
 ArticleSchema.index({
@@ -27,6 +28,6 @@ ArticleSchema.index({
 	unique: true,
 });
 
-ArticleSchema.loadClass(ArticleDAO);
+ArticleSchema.loadClass(ArticleSchemaDecorator);
 
 export default ArticleSchema;
