@@ -8,4 +8,4 @@ const Routes : React.StatelessComponent <JSX.Element> =	() =>
 			<Route path="/users" component={Users}/>
 	</Switch>;
 
-export default Routes;
+export Routes;
