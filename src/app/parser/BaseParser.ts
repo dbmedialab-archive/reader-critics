@@ -20,7 +20,7 @@ abstract class BaseParser extends BaseElements implements Parser {
 
 	constructor(
 		protected readonly rawArticle : string,
-		protected readonly articleURL : ArticleURL,
+		protected readonly articleURL : ArticleURL
 	) {
 		super();
 	}

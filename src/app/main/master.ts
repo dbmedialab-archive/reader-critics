@@ -24,7 +24,7 @@ export default function() {
 	log(
 		'%s threads available, running at %sx concurrency',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(app.numConcurrency),
+		colors.brightWhite(app.numConcurrency)
 	);
 
 	const startupPromises : Promise<{}> [] = [];

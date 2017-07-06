@@ -93,7 +93,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 	Building an object or a string with result of diff operation
  */
 export default function diffStringDefault(
-	o : string, n : string, isHTML : boolean = false,
+	o : string, n : string, isHTML : boolean = false
 ) : Array<DiffStringResultObject> | string
 {
 	// Updates the previous string part adding to it value and count of current item

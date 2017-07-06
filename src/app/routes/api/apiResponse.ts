@@ -12,7 +12,11 @@ export interface ResponseOptions {
 
 // Send a "success" response
 
-export function okResponse(resp : Response, data? : any, options? : ResponseOptions) : void {
+export function okResponse(
+	resp : Response,
+	data? : any,
+	options? : ResponseOptions
+) : void {
 	const response : any = {
 		success: true,
 	};
@@ -40,8 +44,8 @@ export function errorResponse(
 	resp : Response,
 	error : Error,
 	message? : string,
-	options? : ResponseOptions,
-) {
+	options? : ResponseOptions
+) : void {
 	const response : any = {
 		success: false,
 		error: error.message,
