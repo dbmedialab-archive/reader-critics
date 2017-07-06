@@ -1,23 +1,24 @@
 import * as colors from 'ansicolors';
-import * as Mongoose from 'mongoose';
 import * as stripUrlAuth from 'strip-url-auth';
+import * as Mongoose from 'mongoose';
 
 import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
-Mongoose.Promise = global.Promise;
-
 const log = app.createLog('db:mongo');
 
-export default function () {
+export default function () : Promise <any> {
 	const mongoURL = config.get('mongodb.url');
-	const options = {
+
+	const options : MoreConnectionOptions = {
+		config: {
+			autoIndex: !app.isProduction,
+		},
 		keepAlive: 120,
-		useMongoClient: true,  // Recommended with Mongoose 4.11+
+		useMongoClient: true,
 	};
 
-	// TODO set config.autoIndex to false in production
 	return Mongoose.connect(mongoURL, options)
 	.then((...args) => {
 		log('Connected to %s', colors.brightWhite(stripUrlAuth(mongoURL)));
@@ -27,4 +28,15 @@ export default function () {
 		log('Failed to connected to %s', colors.brightRed(stripUrlAuth(mongoURL)));
 		return Promise.reject(error);
 	});
+}
+
+// Current @types/mongoose is missing a lot of the recent options,
+// here's some overrides and extensions:
+
+interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
+	autoIndex?: boolean;
+	keepAlive?: number;
+
+	// Recommended with Mongoose 4.11+ but also not yet reflected
+	useMongoClient?: boolean;
 }
