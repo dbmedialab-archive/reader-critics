@@ -18,6 +18,7 @@
 		"build:admin": "webpack --config webpack-admin.js",
 		"watch:admin": "webpack --config webpack-admin.js --watch",
 		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
+		"front:develop": "npm-run-all --parallel start:nodemon watch:front watch:app",
 		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
 		"lint": "run/lint",
 		"test": "run/test",
@@ -103,7 +104,7 @@
 		"source-map-support": "0.4.15",
 		"ts-node": "3.2.0",
 		"tsconfig-paths": "2.2.0",
-		"tslint": "5.4.3",
+		"tslint": "5.5.0",
 		"typescript": "2.4.1",
 		"webpack-dev-server": "2.5.0"
 	}

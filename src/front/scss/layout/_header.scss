@@ -1,0 +1,13 @@
+header[role=banner] {
+	height: 3rem;
+	margin-bottom: 1rem;
+	background: #fff;
+		box-shadow: $shadow-level-2;
+	h1 {
+		background-image: url("/static/images/logo/leserkritikk-logo-color.svg");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 10rem;
+		text-indent: -10000px;
+	}
+}
