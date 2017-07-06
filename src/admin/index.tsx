@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 
 import './scss/admin.scss';
 
-import Routes from 'admin/routes/Routes';
+import {Routes} from 'admin/routes/Routes';
 import {MainStore} from 'admin/stores/MainStore';
 
 class AppRouter extends React.Component<any,any>{
