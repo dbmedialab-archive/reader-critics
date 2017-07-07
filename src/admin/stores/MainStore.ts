@@ -15,7 +15,8 @@ let middleware;
 	middleware = applyMiddleware(reduxThunk, routerMiddleware(history));
 }*/
 
-export const MainStore:Store<any> = createStore<any>(
+const MainStore:Store<any> = createStore<any>(
 	CombineReducer,
 	middleware,
 );
+export default MainStore;

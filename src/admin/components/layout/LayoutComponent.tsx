@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
-import Sidebar from 'admin/components/layout/SidebarComponent';
-import Topbar from 'admin/components/layout/TopbarComponent';
+import SidebarComponent from 'admin/components/layout/SidebarComponent';
+import TopbarComponent from 'admin/components/layout/TopbarComponent';
 
 class LayoutComponent extends React.Component <any, any> {
 	constructor(props) {
@@ -24,11 +24,15 @@ class LayoutComponent extends React.Component <any, any> {
 							</div>
 							:null}
 						<Helmet title={this.props.pageTitle} />
-						<Sidebar>
+						<SidebarComponent>
 							{this.props.toSidebarContent}
-						</Sidebar>
+						</SidebarComponent>
 						<div className="paper-bg wrap-fluid" >
-							<Topbar isSubmenuOpen={this.props.isSubmenuOpen} isAccountMenuOpen={this.props.isAccountMenuOpen} currentUser={this.props.currentUser}/>
+							<TopbarComponent
+								isSubmenuOpen={this.props.isSubmenuOpen}
+								isAccountMenuOpen={this.props.isAccountMenuOpen}
+								currentUser={this.props.currentUser}
+							/>
 							<div className="content-wrapper">
 								<div className="content">
 									{this.props.children}

@@ -1,9 +1,9 @@
 import { combineReducers, Action } from 'redux';
 
-//import {UIReducer} from '/reducers/UIReducer'
+import UIReducer from 'admin/reducers/UIReducer';
 import {routerReducer} from 'react-router-redux';
 
-export const CombineReducer = combineReducers({
-	//UI: UIReducer,
+export const CombineReducer:any = combineReducers({
+	UI: UIReducer,
 	router: routerReducer,
 });

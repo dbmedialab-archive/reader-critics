@@ -1,5 +1,4 @@
-import AppConstants from 'admin/constants/AdminConstants';
-import {MainStore} from 'admin/stores/MainStore';
+import MainStore from 'admin/stores/MainStore';
 import * as UIActionsCreator from 'admin/actions/UIActionsCreator';
 
 export function initModalWindows(windowNames) {

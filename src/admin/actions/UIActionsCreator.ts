@@ -1,18 +1,19 @@
 import AdminConstants from 'admin/constants/AdminConstants';
-export interface Dispatch {
-		type: string;
-		payload: any;
+export interface IAction {
+		type: any;
+		payload?: any;
 }
 
-export function initModalWindows(payload): Dispatch {
+export type TAction = IAction;
+export function initModalWindows(payload): IAction {
 	return {
 		type: AdminConstants.MODAL_INIT,
-		payload: payload,
+		payload,
 	};
 }
-export function modalWindowsChangeState(payload): Dispatch {
+export function modalWindowsChangeState(payload): IAction {
 	return {
 		type: AdminConstants.MODAL_STATE_CHANGED,
-		payload: payload,
+		payload,
 	};
 }
