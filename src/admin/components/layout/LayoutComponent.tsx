@@ -28,7 +28,7 @@ class LayoutComponent extends React.Component <any, any> {
 							{this.props.toSidebarContent}
 						</Sidebar>
 						<div className="paper-bg wrap-fluid" >
-							<Topbar />
+							<Topbar isSubmenuOpen={this.props.isSubmenuOpen} isAccountMenuOpen={this.props.isAccountMenuOpen} currentUser={this.props.currentUser}/>
 							<div className="content-wrapper">
 								<div className="content">
 									{this.props.children}
@@ -48,6 +48,12 @@ const mapStateToProps = (state, ownProps) => {
 			isVisible: false,
 		},
 		pageTitle: 'Users',
+		isSubmenuOpen: false,
+		isAccountMenuOpen: false,
+		currentUser: {
+			name: 'Dmitry',
+			role: 1,
+		},
 	};
 };
 

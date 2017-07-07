@@ -18,7 +18,6 @@ class TopbarComponent extends React.Component <any, any>{
 	}
 	toggleSubmenu(e) {
 		e.stopPropagation();
-
 	}
 	toggleAccountMenu(e) {
 		e.stopPropagation();
@@ -70,20 +69,4 @@ class TopbarComponent extends React.Component <any, any>{
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
-
-	return {
-		isSubmenuOpen: false,
-		isAccountMenuOpen: false,
-		currentUser: {
-			name: 'Dmitry',
-			role: 1,
-		},
-	};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TopbarComponent);
+export default TopbarComponent;
