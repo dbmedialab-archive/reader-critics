@@ -84,37 +84,39 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 
 	private handleSubmit(e: any) {
 		e.preventDefault();
-		sendAuthRequest(this.state).then((res: any): void => {
-			this.setState({authError: res.error});
-		});
+		if (this.isFormValid()) {
+			sendAuthRequest(this.state).then((res: any): void => {
+				this.setState({authError: res.error});
+			});
+		}
 	}
 
 	public render(): JSX.Element {
-		const isDisabled = this.isFormValid();
 		return (
-			<form name='authBox' className='eleven login columns feedbackform' onSubmit={this.handleSubmit}>
-				<fieldset className='text'>
-					<label htmlFor='login'>Brukernavn</label>
+			<form name="authBox" className="eleven login columns feedbackform" onSubmit={this.handleSubmit}>
+				<fieldset className="text">
+					<label htmlFor="login">Brukernavn</label>
 					<input
-						type='text'
-						name='login'
+						type="text"
+						name="login"
 						ref={r => this.loginInput = r}
-						id='login'
+						id="login"
 						onBlur={this.handleBlur('login')}
 						onChange={() => this.UpdateState('login', this.loginInput)}
+						autoFocus
 					/>
 					<InputError
 						errorText={this.hasLoginError()}
 						touchedField={this.state.touched['login']}
 					/>
 				</fieldset>
-				<fieldset className='text'>
-					<label htmlFor='password'>Passord</label>
+				<fieldset className="text">
+					<label htmlFor="password">Passord</label>
 					<input
-						type='password'
-						name='password'
+						type="password"
+						name="password"
 						ref={r => this.passwordInput = r}
-						id='password'
+						id="password"
 						onBlur={this.handleBlur('password')}
 						onChange={() => this.UpdateState('password', this.passwordInput)}
 					/>
@@ -123,10 +125,10 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 						touchedField={this.state.touched['password']}
 					/>
 				</fieldset>
-				<fieldset className='actions'>
+				<fieldset className="actions">
 					<button
-						type='submit' disabled={!isDisabled}
-						className='button button-primary'
+						type="submit"
+						className="button button-primary"
 					>
 						Logg Inn
 					</button>

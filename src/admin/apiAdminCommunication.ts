@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 
-const currentView = document.getElementById('app').getAttribute('name');
+// const currentView = document.getElementById('app').getAttribute('name');
 
 export const sendAuthRequest = ((data: any): Promise<any> => {
 	const apiUrl = `/admin/login/`;
@@ -10,11 +10,12 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 		body: JSON.stringify(data),
 		credentials: 'include',
 	})
-		.then(authCheck)
-		.then(json)
-		.catch(function (error) {
-			console.log('request failed', error);
-		});
+	.then(authCheck)
+	.then(status)
+	.then(json)
+	.catch(function (error) {
+		console.log('request failed', error);
+	});
 });
 
 export const sendUsersRequest = ((): Promise<any> => {
@@ -24,11 +25,12 @@ export const sendUsersRequest = ((): Promise<any> => {
 		headers: { 'Content-Type': 'application/json' },
 		credentials: 'include',
 	})
-		.then(authCheck)
-		.then(json)
-		.catch(function (error) {
-			console.log('request failed', error);
-		});
+	.then(authCheck)
+	.then(status)
+	.then(json)
+	.catch(function (error) {
+		console.log('request failed', error);
+	});
 });
 
 function authCheck(response) {
@@ -46,10 +48,13 @@ function authCheck(response) {
 		document.getElementById('app').setAttribute('name', 'login');
 		throw new Error(response.statusText);
 	} else {
-		if (document.getElementById('app').getAttribute('name') !== currentView) {
-			document.getElementById('app').setAttribute('name', currentView);
-		}
-		return response;
+		/** That might work on previous app structure
+			 if (document.getElementById('app').getAttribute('name') !== currentView) {
+			    document.getElementById('app').setAttribute('name', currentView);
+			 }
+			 return response;
+		 */
+		window.location.pathname = '/admin/testpage';
 	}
 }
 
