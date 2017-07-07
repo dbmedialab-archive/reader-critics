@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import TestFormContainer from 'app/routes/admin/ui/testpage/TestFormContainer';
+import TestFormContainer from 'admin/components/testpage/TestFormContainer';
 
 const TestContainer : React.StatelessComponent <any> =
 	() => <div>

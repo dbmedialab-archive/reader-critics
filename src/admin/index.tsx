@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 
 import './scss/admin.scss';
 
-import TestLayout from 'app/routes/admin/ui/testpage/TestLayout';
-import LoginLayout from 'app/routes/admin/ui/login/LoginLayout';
+import TestLayout from 'admin/components/testpage/TestLayout';
+import LoginLayout from 'admin/components/login/LoginLayout';
 
 const apps = {
 	'login': LoginLayout,

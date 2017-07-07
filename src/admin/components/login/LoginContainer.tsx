@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import LoginFormContainer from 'app/routes/admin/ui/login/LoginFormContainer';
+import LoginFormContainer from 'admin/components/login/LoginFormContainer';
 
 const LoginContainer : React.StatelessComponent <any> =
 	() => <div>

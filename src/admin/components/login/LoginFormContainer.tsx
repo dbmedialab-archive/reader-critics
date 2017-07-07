@@ -38,7 +38,7 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	private handleBlur = (field) => (evt) => {
+	private handleBlur = (field) => () => {
 		this.setState({
 			touched: {...this.state.touched, [field]: true},
 		});
@@ -124,7 +124,12 @@ export default class LoginFormContainer extends React.Component <any, AuthFormPa
 					/>
 				</fieldset>
 				<fieldset className='actions'>
-					<button type='submit' disabled={!isDisabled} className='button button-primary'>Logg Inn</button>
+					<button
+						type='submit' disabled={!isDisabled}
+						className='button button-primary'
+					>
+						Logg Inn
+					</button>
 				</fieldset>
 				<ResponseError
 					errorText={this.hasAuthError()}
