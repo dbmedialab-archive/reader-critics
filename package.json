@@ -106,6 +106,6 @@
 		"tsconfig-paths": "2.2.0",
 		"tslint": "5.5.0",
 		"typescript": "2.4.1",
-		"webpack-dev-server": "2.5.0"
+		"webpack-dev-server": "2.5.1"
 	}
 }
