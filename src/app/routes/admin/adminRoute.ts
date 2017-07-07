@@ -11,7 +11,7 @@ import { loginPageHandler, logoutHandler, testPageHandler, loginHandler } from '
 import { sessionConf } from 'app/middleware/config/sessionConfig';
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
-
+import adminPageHandler from './ui/adminPageHandler';
 const log = app.createLog();
 
 const adminRoute : Router = Router();
@@ -32,11 +32,12 @@ adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
 adminRoute.get('/testpage', isAuthenticated, testPageHandler);
-adminRoute.get('/*', defaultHandler);
+adminRoute.get(['/users'], adminPageHandler);
+adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
 
-function defaultHandler(requ : Request, resp : Response) : void {
+function notFoundHandler(requ : Request, resp : Response) : void {
 	log('Admin router', requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
 }

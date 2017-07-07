@@ -4,7 +4,7 @@ import {diffString, DiffStringResultObject} from 'app/util/diffString';
 
 export default function (oldText: string, newText: string): any {
 	if (oldText === newText) {
-		return <span key='0'>{newText}</span>;
+		return <span key="0">{newText}</span>;
 	}
 
 	const diff: DiffStringResultObject[] = diffString(oldText, newText);
