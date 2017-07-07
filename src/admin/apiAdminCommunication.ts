@@ -12,9 +12,21 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 	})
 		.then(authCheck)
 		.then(json)
-		.then(function (json) {
-			return json;
-		}).catch(function (error) {
+		.catch(function (error) {
+			console.log('request failed', error);
+		});
+});
+
+export const sendUsersRequest = ((): Promise<any> => {
+	const apiUrl = `/admin/api/users/`;
+	return fetch(apiUrl, {
+		method: 'GET',
+		headers: { 'Content-Type': 'application/json' },
+		credentials: 'include',
+	})
+		.then(authCheck)
+		.then(json)
+		.catch(function (error) {
 			console.log('request failed', error);
 		});
 });
@@ -32,10 +44,13 @@ function authCheck(response) {
 
 	if (response.status === 401) {
 		document.getElementById('app').setAttribute('name', 'login');
+		throw new Error(response.statusText);
 	} else {
-		document.getElementById('app').setAttribute('name', currentView);
+		if (document.getElementById('app').getAttribute('name') !== currentView) {
+			document.getElementById('app').setAttribute('name', currentView);
+		}
+		return response;
 	}
-	throw new Error(response.statusText);
 }
 
 function status(response) {

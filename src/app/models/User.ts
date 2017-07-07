@@ -1,4 +1,3 @@
-import BaseModel from './Base';
 import * as bcrypt from 'bcrypt';
 
 const rounds = 10;
@@ -14,18 +13,13 @@ export interface IUser {
 }
 
 // TODO rewrite it on DB added
-export default class User extends BaseModel implements IUser {
+export default class User implements IUser {
 	public name: string;
 	public login: string;
 	private password: string;
 	public id: number;
 
 	constructor(properties: Object) {
-		super(['name', 'login', 'password']);
-
-		if (!this.validate(properties)) {
-			console.error('Failed to validate user! Heres the props that failed: ', properties);
-		}
 		this.id = 0;
 		this.name = properties['name'];
 		this.login = properties['login'];
@@ -33,7 +27,8 @@ export default class User extends BaseModel implements IUser {
 	}
 
 	public setPassword(password: string) {
-		this.password = bcrypt.hashSync(password, rounds); // TODO replace with async for DB before-save hook
+		// TODO replace with async in DB before-save hook
+		this.password = bcrypt.hashSync(password, rounds);
 	}
 
 	public comparePassword(password: string, cb: (err: string, isMatch: boolean) => void): void {
@@ -41,8 +36,7 @@ export default class User extends BaseModel implements IUser {
 	}
 
 	public toString() {
-		const obj = Object.assign({}, super.toString());
-		delete obj['failedProperties'];
+		const obj = Object.assign({}, this);
 		delete obj['password'];
 		return obj;
 	}

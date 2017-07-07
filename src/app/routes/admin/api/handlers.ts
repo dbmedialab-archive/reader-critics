@@ -4,8 +4,8 @@ import {
 } from 'express';
 
 import {
-	okResponse,
 	errorResponse,
+	okResponse,
 } from '../../api/apiResponse';
 
 import * as jwt from 'jsonwebtoken';
@@ -14,6 +14,9 @@ import {jwtOptions} from 'app/middleware/config/passportConfig';
 import config from 'app/config';
 import {IUser} from 'app/models/User';
 import { EmptyError } from 'app/util/errors';
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 
 const users: IUser[] = config.get('users');
 

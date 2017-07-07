@@ -9,6 +9,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as app from 'app/util/applib';
 import {apiLoginHandler, apiTestHandler} from 'app/routes/admin/api/handlers';
+import isAuthenticatedApi from 'app/middleware/policies/isAuthenticatedApi';
 
 const log = app.createLog();
 
@@ -27,11 +28,11 @@ adminApiRoute.use(cookieParser());
 adminApiRoute.post('/login', apiLoginHandler);
 
 // Protecting routes with jwt
-adminApiRoute.use('/*', passport.authenticate('jwt', {session: false}));
+// adminApiRoute.use('/*', passport.authenticate('jwt', {session: false}));
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
-adminApiRoute.get('/users', apiTestHandler);
+adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

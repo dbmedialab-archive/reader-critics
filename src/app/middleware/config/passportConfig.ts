@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 import {ExtractJwt, Strategy as JwtStrategy} from 'passport-jwt';
 import {Strategy as LocalStrategy} from 'passport-local';
+import * as jwt from 'jsonwebtoken';
 import config from '../../config';
 import {IUser} from 'app/models/User';
 
@@ -23,11 +24,13 @@ export const localOptions = {
 	session: true,
 };
 
-export function serializeUser(user: IUser, done: (err: string | null, id: number | null) => void) {
+export function serializeUser(user: IUser,
+								done: (err: string | null, id: number | null) => void) {
 	done(null, user.id);
 }
 
-export function deserializeUser(id: number | null, done: (err: string | null, user?: IUser | null) => void) {
+export function deserializeUser(id: number | null,
+								done: (err: string | null,	user?: IUser | null) => void) {
 	// TODO rewrite it on DB added
 	const user = users[_.findIndex(users, {id: id})];
 	if (user) {
@@ -37,18 +40,22 @@ export function deserializeUser(id: number | null, done: (err: string | null, us
 	}
 }
 
-export const jwtStrategy = new JwtStrategy(jwtOptions, (jwtPayload, next) => {
+export const jwtStrategy = new JwtStrategy(jwtOptions,
+	(jwtPayload,
+		next: (	err: string, user: IUser) => void) => {
 	// TODO rewrite it on DB added
 	const user = users[_.findIndex(users, {id: jwtPayload.id, login: jwtPayload.login})];
 	if (user) {
 		next(null, user);
 	} else {
-		next(null, false);
+		next('User no found', null);
 	}
 });
 
-export const localStrategy = new LocalStrategy(localOptions,
-	(username: string, password: string, done: (err: string | null, user?: IUser | null) => void) => {
+export const localStrategy = new LocalStrategy(localOptions, (
+	username: string,
+	password: string,
+	done: (	err: string | null,	token?: string | null, user?: IUser | null) => void) => {
 		// TODO rewrite it on DB added
 		const user = users[_.findIndex(users, {login: username})];
 		if (!user) {
@@ -56,7 +63,8 @@ export const localStrategy = new LocalStrategy(localOptions,
 		}
 		user.comparePassword(password, function (err: string, isMatch: boolean) {
 			if (isMatch) {
-				done(null, user.toString());
+				const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
+				done(null, token, user.toString());
 			} else {
 				done('Incorrect password');
 			}
