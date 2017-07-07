@@ -8,7 +8,9 @@ import * as bodyParser from 'body-parser';
 
 import articleHandler from './api/articleHandler';
 import feedbackPostHandler from './api/feedbackPostHandler';
-import suggestionHandler from './api/suggest';
+import suggestionHandler from './api/suggestionHandler';
+
+import { errorResponse } from './api/apiResponse';
 
 import * as app from 'app/util/applib';
 
@@ -24,15 +26,20 @@ apiRoute.use(bodyParser.json({
 	strict: true,
 }));
 
+// Public API routes
+
 apiRoute.get('/article', articleHandler);
-apiRoute.put('/feedback', feedbackPostHandler);
+
+apiRoute.post('/feedback', feedbackPostHandler);
 apiRoute.post('/suggest', suggestionHandler);
 
 apiRoute.get('/*', defaultHandler);
 
 export default apiRoute;
 
+// Default handler for unknown routes
+
 function defaultHandler(requ : Request, resp : Response) : void {
-	log('Default API router');
-	resp.status(404).end('Unknown API endpoint\n');
+	errorResponse(resp, undefined, 'Unknown API endpoint', { status: 404 });
 }
+

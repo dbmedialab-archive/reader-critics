@@ -42,16 +42,19 @@ export function okResponse(
 
 export function errorResponse(
 	resp : Response,
-	error : Error,
+	error? : Error,
 	message? : string,
 	options? : ResponseOptions
 ) : void {
 	const response : any = {
 		success: false,
-		error: error.message,
 		message: (message !== undefined) ? message : 'Internal server error',
 		status: 500,
 	};
+
+	if (error !== undefined) {
+		response.error = error.message;
+	}
 
 	if (options !== undefined) {
 		Object.assign(response, options, { success: false });
