@@ -1,12 +1,13 @@
+// tslint:disable max-line-length
 import 'mocha';
 
 import { assert } from 'chai';
 
 import {
-	DiffStringResultObject,
-	diffStringHtml,
 	diffString,
-} from '../../src/app/util/diffString';
+	diffStringHtml,
+	DiffStringResultObject,
+} from 'app/util/diffString';
 
 const text1A = 'Bavaria ipsum dolor eana is ma Wuascht, a bissal wos gehd ollaweil und sei Diandldrahn de Sonn nois.';
 const text1B = 'Bavaria ipsum dolor eana is ma Worschd, a bisserl was geht allerweil und sei Diandldrahn de nackata.';
