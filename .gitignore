@@ -5,6 +5,12 @@
 /out/base/
 /out/bundle/
 /out/front/
+/out/test/
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+
 # Packages
 *.7z
 *.dmg
@@ -25,8 +31,6 @@
 *.bak
 *.orig
 *.swp
-package-lock.json
-yarn.lock
 
 # OS generated files
 .DS_Store

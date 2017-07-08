@@ -1,5 +1,3 @@
-const { openPage } = require('./test-tools-frontend');
-
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
 const seleniumJAR = require('selenium-server-standalone-jar');
@@ -13,7 +11,7 @@ console.log('Gecko driver version:', geckodriver.version);
 // require('tsconfig-paths/register');
 
 const conf = {
-	'src_folders': ['test/frontend'],
+	'src_folders': ['src/test/frontend'],
 	'output_folder': false,
 
 	'selenium': {
