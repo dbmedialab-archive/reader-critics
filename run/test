@@ -83,8 +83,10 @@ runMocha()
 	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
 
 	# Run Mocha
-	export CWD=`pwd`
-	node_modules/.bin/mocha --opts conf/${1}
+	CWD=$(pwd)
+	export CWD
+
+	node_modules/.bin/mocha --opts "conf/${1}"
 	RETURN_VALUE=$?
 
 	# Catch exit code
@@ -110,7 +112,7 @@ runNightwatch()
 	#fi
 
 	# Run Nightwatch
-	node_modules/.bin/nightwatch --config conf/${1} # ${TAGS_CMDL}
+	node_modules/.bin/nightwatch --config "conf/${1}" # ${TAGS_CMDL}
 	RETURN_VALUE=$?
 
 	# Clean up in case stuff breaks (which it does quite often when writing tests)
