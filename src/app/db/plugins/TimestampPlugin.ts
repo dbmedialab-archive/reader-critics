@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose';
-import * as app from 'app/util/applib';
 
 export default function(schema : Schema, options : any) {
 	schema.add({

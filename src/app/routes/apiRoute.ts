@@ -12,10 +12,6 @@ import suggestionHandler from './api/suggestionHandler';
 
 import { errorResponse } from './api/apiResponse';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 // Prepare and export Express router
 
 const apiRoute : Router = Router();
@@ -42,4 +38,3 @@ export default apiRoute;
 function defaultHandler(requ : Request, resp : Response) : void {
 	errorResponse(resp, undefined, 'Unknown API endpoint', { status: 404 });
 }
-

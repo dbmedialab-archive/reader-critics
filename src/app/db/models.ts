@@ -24,7 +24,9 @@ plugin(TimestampPlugin);
 // Create models
 
 export interface ArticleDocument extends Article, Document {}
-export const ArticleModel = model <ArticleDocument> ('Article', ArticleSchema);
+export const ArticleModel : Model <ArticleDocument>
+	= model <ArticleDocument> ('Article', ArticleSchema);
 
 export interface SuggestionDocument extends Suggestion, Document {}
-export const SuggestionModel = model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+export const SuggestionModel : Model <SuggestionDocument>
+	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);
