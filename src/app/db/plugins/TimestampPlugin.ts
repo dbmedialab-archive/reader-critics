@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose';
+import * as app from 'app/util/applib';
 
 export default function(schema : Schema, options : any) {
 	schema.add({
@@ -8,13 +9,13 @@ export default function(schema : Schema, options : any) {
 		},
 	});
 
+	schema.index({ 'date.created': -1 }, { name: 'date_created' });
+
 	schema.pre('save', function (next) {
-		this.date.created = new Date();
+		if (this.date.created === undefined) {
+			this.date.created = new Date();
+		}
 		next();
 	});
 
-	if (options && options.index) {
-		schema.path('date.created').index(options.index);
-		schema.path('date.modified').index(options.index);
-	}
 }
