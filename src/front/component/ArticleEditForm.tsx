@@ -1,3 +1,4 @@
+// tslint:disable max-file-line-count
 import * as React from 'react';
 
 import DynamicList from 'front/component/DynamicList';
@@ -26,7 +27,9 @@ export interface ArticleEditFormState {
 	previous : EditFormPayload;
 }
 
-export default class ArticleEditForm extends React.Component <ArticleEditFormProp, ArticleEditFormState> {
+export default class ArticleEditForm
+extends React.Component <ArticleEditFormProp, ArticleEditFormState>
+{
 
 	private textArea : any;
 	private commentArea : any;
@@ -125,7 +128,8 @@ export default class ArticleEditForm extends React.Component <ArticleEditFormPro
 		const link = this.state.current.links;
 		const current : EditFormPayload = this.state.current;
 
-		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )]; // TODO do this with Array.splice() instead
+		// TODO do this with Array.splice() instead
+		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
 
 		this.setState({
 			current,

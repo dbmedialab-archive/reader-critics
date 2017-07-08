@@ -8,8 +8,6 @@ const containsScheme = /^https?:\/\//;
 
 export default class ArticleURL {
 
-	private url : URL;
-
 	readonly href : string;
 
 	// Constructor
@@ -27,8 +25,8 @@ export default class ArticleURL {
 			throw new TypeError('URL must begin with a HTTP(S) scheme');
 		}
 
-		this.url = new URL(decodedURL);
-		this.href = this.url.toString();
+		const url = new URL(decodedURL);
+		this.href = url.toString();
 	}
 
 	// Accessors

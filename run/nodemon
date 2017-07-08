@@ -6,5 +6,5 @@ export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-retry-as-promised,-s
 export NODE_ENV=${NODE_ENV:-"development"}
 export WEB_CONCURRENCY=2
 
-nodemon --watch out/app --ext js --delay 1 out/start.js
+node_modules/.bin/nodemon --watch out/app --ext js --delay 1 out/start.js
 

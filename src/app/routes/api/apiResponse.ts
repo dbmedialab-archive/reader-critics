@@ -3,6 +3,8 @@ import { isObject } from 'lodash';
 
 import * as app from 'app/util/applib';
 
+const log = app.createLog('api');
+
 // Response Options
 export interface ResponseOptions {
 	status? : number;
@@ -43,23 +45,19 @@ export function errorResponse(
 	const response : any = {
 		success: false,
 		error: error.message,
+		message: (message !== undefined) ? message : 'Internal server error',
+		status: 500,
 	};
 
-	let statusCode = 500;
-
 	if (options !== undefined) {
-		Object.assign(response, options);
-
-		if (options.status) {
-			statusCode = options.status;
-		}
+		Object.assign(response, options, { success: false });
 	}
 
-	if (message !== undefined) {
-		response.message = message;
-	}
+	resp.status(response.status).end(stringify(response));
 
-	resp.status(statusCode).end(stringify(response));
+	if (response.status === 500) {
+		log(error.stack || error);
+	}
 }
 
 // Return the response JSON. Pretty printed format in development mode, because
