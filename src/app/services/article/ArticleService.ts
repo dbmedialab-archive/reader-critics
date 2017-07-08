@@ -1,6 +1,8 @@
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import {
+	Article,
+	ArticleURL,
+	Website,
+} from 'base/';
 
 interface ArticleService {
 
