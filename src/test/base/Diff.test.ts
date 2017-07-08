@@ -5,7 +5,6 @@ import { assert } from 'chai';
 
 import {
 	diffString,
-	diffStringHtml,
 	DiffStringResultObject,
 } from 'app/util/diffString';
 

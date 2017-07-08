@@ -30,8 +30,8 @@ expressApp.get('/', (requ : Request, resp : Response) => {
 
 export function listen(port : number, callback : Function) {
 	server = expressApp.listen(port, callback);
-};
+}
 
 export function close(callback : Function) {
 	server.close(callback);
-};
+}
