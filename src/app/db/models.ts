@@ -1,4 +1,9 @@
-import * as Mongoose from 'mongoose';
+import {
+	model,
+	plugin,
+	Document,
+	Model,
+} from 'mongoose';
 
 import TimestampPlugin from './plugins/TimestampPlugin';
 
@@ -14,12 +19,12 @@ import {
 
 // Install global plugins
 
-Mongoose.plugin(TimestampPlugin);
+plugin(TimestampPlugin);
 
 // Create models
 
-export interface ArticleDocument extends Article, Mongoose.Document { }
-export const ArticleModel = Mongoose.model <ArticleDocument> ('Article', ArticleSchema);
+export interface ArticleDocument extends Article, Document {}
+export const ArticleModel = model <ArticleDocument> ('Article', ArticleSchema);
 
-export interface SuggestionDocument extends Suggestion, Mongoose.Document { }
-export const SuggestionModel = Mongoose.model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+export interface SuggestionDocument extends Suggestion, Document {}
+export const SuggestionModel = model <SuggestionDocument> ('Suggestion', SuggestionSchema);
