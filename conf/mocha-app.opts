@@ -2,4 +2,4 @@
 --require ts-node/register
 --require tsconfig-paths/register
 --recursive
-test/libs/**/*.test.ts
+src/test/app/**/*.test.ts
