@@ -15,7 +15,7 @@ import {
 import {
 	Article,
 	Suggestion,
-} from 'base/';
+} from 'base';
 
 // Install global plugins
 
