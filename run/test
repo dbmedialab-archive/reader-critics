@@ -6,6 +6,8 @@ printUsage()
 {
 	echo "${0} [options]"
 	echo
+	echo "  --app          Only test the backend app"
+	echo "  --db           Only test database code (requires MongoDB)"
 	echo "  --libs         Only execute Javascript library tests"
 	echo "  --base         Only test base modules"
 	echo "  --frontend     Only execute frontend E2E tests"
@@ -40,6 +42,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 		--base)
 			DONT_TEST_ALL=true
 			TEST_BASE=true
+			;;
+		--db)
+			DONT_TEST_ALL=true
+			TEST_DATABASE=true
 			;;
 		--frontend)
 			DONT_TEST_ALL=true
@@ -147,6 +153,12 @@ testBaseSource()
 	runMocha "mocha-base.opts" "Base Sources"
 }
 
+testDatabase()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_DATABASE ]) ; then return ; fi
+	runMocha "mocha-database.opts" "Database"
+}
+
 testFrontend()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_FRONTEND ]) ; then return ; fi
@@ -198,6 +210,7 @@ runAllTests()
 	testLibraries
 	testBaseSource
 	testBackendApp
+	testDatabase
 	testFrontend
 }
 
