@@ -1,5 +1,7 @@
 # Reader Critics
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+&nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
 [![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
@@ -62,3 +64,9 @@ webpack-admin.js               Webpack configuration for admin UI
 webpack-front.js               Webpack configuration for user frontend
 wercker.yml                    Wercker configuration
 ```
+
+### License
+
+**Copyright © 2017 DB Medialab / Aller Media AS** (Oslo, Norway)
+
+Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).

@@ -1,9 +1,9 @@
 {
 	"name": "reader-critics",
-	"version": "0.0.4",
-	"license": "UNLICENSED",
+	"version": "0.0.5",
+	"license": "GPL-3.0",
 	"private": false,
-	"description": "Kildekritikk v2 (Reader Critics)",
+	"description": "Leserkritikk v2 (Reader Critics)",
 	"main": "out/start.js",
 	"engines": {
 		"node": "8.1.2"
