@@ -4,7 +4,7 @@ import {
 	Article,
 	ArticleURL,
 	Website,
-} from 'base/';
+} from 'base';
 
 import * as errors from 'app/db/errors';
 import * as app from 'app/util/applib';

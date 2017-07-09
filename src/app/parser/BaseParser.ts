@@ -1,10 +1,12 @@
 import * as Bluebird from 'bluebird';
 
-import Article from 'base/Article';
-import ArticleAuthor from 'base/ArticleAuthor';
-import ArticleItem from 'base/ArticleItem';
-import ArticleURL from 'base/ArticleURL';
-import Parser from 'base/Parser';
+import {
+	Article,
+	ArticleAuthor,
+	ArticleItem,
+	ArticleURL,
+	Parser,
+} from 'base';
 
 import BaseElements from './BaseElements';
 

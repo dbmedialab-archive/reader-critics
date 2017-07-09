@@ -2,7 +2,7 @@ import {
 	Article,
 	ArticleURL,
 	Website,
-} from 'base/';
+} from 'base';
 
 interface ArticleService {
 
