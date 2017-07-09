@@ -1,5 +1,6 @@
 import 'mocha';
 
+// tslint:disable-next-line
 import { assert } from 'chai';
 
 import {
