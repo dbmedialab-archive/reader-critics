@@ -2,11 +2,7 @@ import 'mocha';
 
 import { expect } from 'chai';
 
-import {
-	default as axios,
-	AxiosPromise,
-	AxiosResponse,
-} from 'axios';
+import { default as axios } from 'axios';
 
 import * as httpServer from './httpServer';
 

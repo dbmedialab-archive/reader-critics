@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 find out/ -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
 
