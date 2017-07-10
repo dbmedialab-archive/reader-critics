@@ -42,10 +42,10 @@ export default function() {
 	log(
 		'%s threads available, running at %sx concurrency',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(app.numConcurrency),
+		colors.brightWhite(app.numConcurrency)
 	);
 
-	const startupPromises : Promise<{}> [] = [];
+	const startupPromises : Promise <{}> [] = [];
 
 	for (let i = 0; i < app.numConcurrency; i++) {
 		const worker : cluster.Worker = cluster.fork();
@@ -65,6 +65,7 @@ export default function() {
 			});
 		});
 	}
+
 	checkEngineVersion()
 		.then(allWorkersStartedPromise)
 		.then(notifyTestMaster)
@@ -83,6 +84,23 @@ cluster.on('listening', (worker : cluster.Worker, address : any) => {
 	workerMap[worker.id].startupResolve();
 	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
 });
+
+// Check current NodeJS version against declaration in package.json
+
+function checkEngineVersion() : Promise <void> {
+	log('Checking NodeJS version');
+	const pckgFilePath = path.join(app.rootPath, 'package.json');
+	const pckgFile = readFileSync(pckgFilePath);
+	const pckgConfig = JSON.parse(pckgFile.toString());
+
+	if (semver.satisfies(process.version, pckgConfig.engines.node)) {
+		return Promise.resolve();
+	}
+
+	return Promise.reject(new Error(
+		`Current NodeJS version does not satisfy "${pckgConfig.engines.node}"`
+	));
+}
 
 // Error handling during startup
 
@@ -107,18 +125,4 @@ function notifyTestMaster() : Promise <void> {
 
 	// Sync resolve
 	return Promise.resolve();
-}
-
-function checkEngineVersion(): Promise<any> {
-	log('Check NodeJS version');
-	const pckgFilePath = path.join(app.rootPath, 'package.json');
-	const pckgFile = readFileSync(pckgFilePath);
-	const pckgConfig = JSON.parse(pckgFile.toString());
-	return new Promise((resolve, reject) => {
-		if (semver.gte(process.version, pckgConfig.engines.node)) {
-			resolve();
-		} else {
-			throw new Error('Version of NodeJS is less than ' + pckgConfig.engines.node);
-		}
-	});
 }

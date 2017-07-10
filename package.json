@@ -6,7 +6,7 @@
 	"description": "Leserkritikk v2 (Reader Critics)",
 	"main": "out/start.js",
 	"engines": {
-		"node": "8.1.2"
+		"node": "^8.1.2"
 	},
 	"scripts": {
 		"build": "run/build",
