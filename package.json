@@ -49,7 +49,7 @@
 		"debug": "2.6.8",
 		"dot": "1.1.2",
 		"express": "4.15.3",
-		"extract-text-webpack-plugin": "2.1.2",
+		"extract-text-webpack-plugin": "3.0.0",
 		"find-root": "1.1.0",
 		"has-color": "0.1.7",
 		"json5": "0.5.1",
