@@ -58,7 +58,7 @@ export function errorResponse(
 	resp : Response,
 	error : Error,
 	message? : string,
-	options? : ResponseOptions,
+	options? : ResponseOptions
 ) {
 	const response : any = {
 		success: false,
