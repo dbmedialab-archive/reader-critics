@@ -110,15 +110,16 @@ function notifyTestMaster() : Promise <void> {
 }
 
 function checkEngineVersion(): Promise<any> {
-	log('Check NodeJS version');
+	log('Checking NodeJS version');
 	const pckgFilePath = path.join(app.rootPath, 'package.json');
 	const pckgFile = readFileSync(pckgFilePath);
 	const pckgConfig = JSON.parse(pckgFile.toString());
-	return new Promise((resolve, reject) => {
-		if (semver.gte(process.version, pckgConfig.engines.node)) {
-			resolve();
-		} else {
-			throw new Error('Version of NodeJS is less than ' + pckgConfig.engines.node);
-		}
-	});
+
+	if (semver.satisfies(process.version, pckgConfig.engines.node)) {
+		return Promise.resolve();
+	}
+
+	return Promise.reject(new Error(
+		`Current NodeJS version does not satisfy "${pckgConfig.engines.node}"`
+	));
 }
