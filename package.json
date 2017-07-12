@@ -81,7 +81,7 @@
 		"@types/lodash": "4.14.68",
 		"@types/mocha": "2.2.41",
 		"@types/node": "8.0.10",
-		"@types/react": "15.0.35",
+		"@types/react": "15.0.37",
 		"@types/react-dom": "15.5.1",
 		"@types/webpack": "3.0.4",
 		"awesome-typescript-loader": "3.2.1",
