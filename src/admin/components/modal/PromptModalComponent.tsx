@@ -140,14 +140,14 @@ const mapStateToProps = (state, ownProps) => {
 				{
 					schema:
 						state.UI.getIn(
-							['modalWindows', ownProps.windowName, promptInput, 'validationSchema'],
+							['modalWindows', ownProps.windowName, promptInput, 'validationSchema']
 						) || Joi.any(),
 					message:
 						state.UI.getIn(
-							['modalWindows', ownProps.windowName, promptInput, 'promptInputErrorValidationMsg'],
+							['modalWindows', ownProps.windowName, promptInput, 'promptInputErrorValidationMsg']
 						) || '',
 				},
-				state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'value']),
+				state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'value'])
 			),
 		},
 		promptTitle: state.UI.getIn(['modalWindows', ownProps.windowName, 'promptTitle'])|| '',

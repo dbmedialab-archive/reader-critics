@@ -40,12 +40,12 @@ export interface PromptInterface {
 
 export function initModalWindows(windowNames) {
 	MainStore.dispatch(
-		UIActionsCreator.initModalWindows({windowNames: windowNames}),
+		UIActionsCreator.initModalWindows({windowNames: windowNames})
 	);
 }
 export function modalWindowsChangeState(windowName, options) {
 	MainStore.dispatch(
-		UIActionsCreator.modalWindowsChangeState({windowName: windowName, options: options}),
+		UIActionsCreator.modalWindowsChangeState({windowName: windowName, options: options})
 	);
 }
 

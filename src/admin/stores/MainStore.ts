@@ -36,6 +36,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const MainStore:Store<any> = createStore<any>(
 	CombineReducer,
-	middleware,
+	middleware
 );
 export default MainStore;
