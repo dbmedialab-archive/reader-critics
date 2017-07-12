@@ -40,7 +40,12 @@
 		"prefer-for-of": true,
 		"semicolon": [ true, "always" ],
 		"trailing-comma": [ true, {
-			"multiline": "always",
+			"multiline": {
+				"objects": "always",
+				"arrays": "always",
+				"functions": "never",
+				"typeLiterals": "ignore"
+			},
 			"singleline": "never"
 		}],
 		"triple-equals": true,

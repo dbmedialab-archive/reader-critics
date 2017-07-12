@@ -83,8 +83,10 @@ runMocha()
 	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
 
 	# Run Mocha
-	export CWD=`pwd`
-	node_modules/.bin/mocha --opts ${1}
+	CWD=$(pwd)
+	export CWD
+
+	node_modules/.bin/mocha --opts "conf/${1}"
 	RETURN_VALUE=$?
 
 	# Catch exit code
@@ -110,7 +112,7 @@ runNightwatch()
 	#fi
 
 	# Run Nightwatch
-	node_modules/.bin/nightwatch --config ${1} # ${TAGS_CMDL}
+	node_modules/.bin/nightwatch --config "conf/${1}" # ${TAGS_CMDL}
 	RETURN_VALUE=$?
 
 	# Clean up in case stuff breaks (which it does quite often when writing tests)
@@ -130,19 +132,19 @@ runNightwatch()
 testBackendApp()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_APP ]) ; then return ; fi
-	runMocha "test/mocha-app.opts" "Backend Application"
+	runMocha "mocha-app.opts" "Backend Application"
 }
 
 testLibraries()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_LIBS ]) ; then return ; fi
-	runMocha "test/mocha-libs.opts" "Libraries"
+	runMocha "mocha-libs.opts" "Libraries"
 }
 
 testBaseSource()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_BASE ]) ; then return ; fi
-	runMocha "test/mocha-base.opts" "Base Sources"
+	runMocha "mocha-base.opts" "Base Sources"
 }
 
 testFrontend()
@@ -181,7 +183,7 @@ testFrontend()
 		sleep 0.2
 	done
 
-	runNightwatch "test/nightwatch-frontend.js" "Frontend"
+	runNightwatch "nightwatch-frontend.js" "Frontend"
 
 	echo "Terminating background process ${NODE_PID}"
 	kill ${NODE_PID}
