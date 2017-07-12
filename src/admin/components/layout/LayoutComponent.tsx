@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
+import * as PreloaderIcon from 'react-preloader-icon';
+import {ICON_TYPE} from 'react-preloader-icon';
+
 import SidebarComponent from 'admin/components/layout/SidebarComponent';
 import TopbarComponent from 'admin/components/layout/TopbarComponent';
 
@@ -19,10 +22,18 @@ class LayoutComponent extends React.Component <any, any> {
 			<div className="off-canvas-wrap">
 				<div className="inner-wrap">
 					<div onClick={this.bodyClicked} style={{height: '100%'}}>
+
 						{this.props.mainPreloader.isVisible?
 							<div className="preloaderSection">
+									<PreloaderIcon
+											type={ICON_TYPE.OVAL}
+											size={50}
+											strokeWidth={3}
+											strokeColor={this.props.mainPreloader.color}
+											duration={600}
+									/>
 							</div>
-							:null}
+						:null}
 						<Helmet title={this.props.pageTitle} />
 						<SidebarComponent>
 							{this.props.toSidebarContent}
@@ -35,6 +46,7 @@ class LayoutComponent extends React.Component <any, any> {
 							/>
 							<div className="content-wrapper">
 								<div className="content">
+									{this.props.mainPreloader.isVisible}
 									{this.props.children}
 								</div>
 							</div>
@@ -48,8 +60,9 @@ class LayoutComponent extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		mainPreloader:{
-			isVisible: false,
+		mainPreloader: {
+			isVisible: state.UI.getIn(['mainPreloader', 'isVisible']),
+			color: state.UI.getIn(['mainPreloader', 'color']),
 		},
 		pageTitle: 'Users',
 		isSubmenuOpen: false,
