@@ -24,7 +24,10 @@ import {
 	Website,
 } from 'base';
 
-import clearCollection from 'app/db/clearCollection';
+import {
+	clearCollection,
+	wrapSave
+} from 'app/db/common';
 
 import * as errors from 'app/db/errors';
 import * as app from 'app/util/applib';
@@ -40,13 +43,5 @@ export function load(url : ArticleURL, version : string) : Promise <Article> {
 }
 
 export function save(website : Website, article : Article) : Promise <void> {
-	log('Saving', article.url.href);
-	return new ArticleModel(article).save()
-	.then(savedObj => {
-		log(app.inspect(savedObj));
-		return Promise.resolve();
-	})
-	.catch(error => Promise.reject(
-		errors.isDuplicateError(error) ? new errors.DuplicateError(error) : error
-	));
+	return wrapSave(new ArticleModel(article).save());
 }

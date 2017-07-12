@@ -24,8 +24,11 @@ import {
 	SuggestionModel,
 } from 'app/db/models';
 
-import clearCollection from 'app/db/clearCollection';
-import leanFilter from 'app/db/leanFilter';
+import {
+	clearCollection,
+	wrapFind,
+	wrapSave
+} from 'app/db/common';
 
 import { isTest } from 'app/util/applib';
 
@@ -38,7 +41,7 @@ export function findSince(since : Date) : Promise <Suggestion[]> {
 		return Promise.reject(new TypeError('Invalid date'));
 	}
 
-	return leanFilter <SuggestionDocument, Suggestion> (SuggestionModel.find({
+	return wrapFind <SuggestionDocument, Suggestion> (SuggestionModel.find({
 		'date.created': {
 			'$gte': since,
 		},
@@ -46,6 +49,5 @@ export function findSince(since : Date) : Promise <Suggestion[]> {
 }
 
 export function save(suggestion : Suggestion) : Promise <void> {
-	console.log('save', suggestion.email);
-	return new SuggestionModel(suggestion).save().then(() => undefined);
+	return wrapSave(new SuggestionModel(suggestion).save());
 }
