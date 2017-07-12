@@ -75,7 +75,7 @@ echo
 # App Configuration
 
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-retry-as-promised,-send"}
+export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-mquery,-retry-as-promised,-send"}
 export WEB_CONCURRENCY=${WEB_CONCURRENCY:-3}
 
 ### Global test runners, save return code
@@ -156,6 +156,7 @@ testBaseSource()
 testDatabase()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_DATABASE ]) ; then return ; fi
+	export DEBUG="${DEBUG},-app:*"
 	runMocha "mocha-database.opts" "Database"
 }
 
