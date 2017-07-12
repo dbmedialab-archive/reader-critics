@@ -16,7 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export {
+import SuggestionService from './SuggestionService';
+
+import {
 	findSince,
 	save,
 } from './SuggestionDAO';
+
+const service : SuggestionService = {
+	findSince,
+	save,
+};
+
+module.exports = service;

@@ -16,10 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as download } from './live/download';
-export { default as fetch } from './common/fetch';
+import ArticleService from './ArticleService';
 
-export {
+import download from './live/download';
+import fetch from './common/fetch';
+
+import {
 	load,
 	save,
 } from './ArticleDAO';
+
+const service : ArticleService = {
+	download,
+	fetch,
+	load,
+	save,
+};
+
+module.exports = service;

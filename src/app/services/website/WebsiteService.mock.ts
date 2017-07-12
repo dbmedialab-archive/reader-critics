@@ -16,4 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as identify } from './mock/identify';
+import WebsiteService from './WebsiteService';
+
+import identify from './mock/identify';
+
+const service : WebsiteService = {
+	identify,
+};
+
+module.exports = service;

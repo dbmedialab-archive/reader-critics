@@ -16,21 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+interface BasicPersistingService {
+	// clear() : Promise <void>;
+}
 
-import download from './mock/download';
-import fetch from './common/fetch';
-
-import {
-	load,
-	save,
-} from './ArticleDAO';
-
-const service : ArticleService = {
-	download,
-	fetch,
-	load,
-	save,
-};
-
-module.exports = service;
+export default BasicPersistingService;
