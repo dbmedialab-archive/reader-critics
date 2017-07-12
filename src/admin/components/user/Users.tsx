@@ -1,15 +1,14 @@
 import * as React from 'react';
 import 'front/scss/app.scss';
 
-
 // Common components
 import  * as UIActions from 'admin/actions/UIActions';
 import AdminConstants from 'admin/constants/AdminConstants';
 
 import Layout from 'admin/components/layout/LayoutComponent';
 import AddUserModalComponent from 'admin/components/modal/AddUserModalComponent';
-import PromptModalComponent from "admin/components/modal/PromptModalComponent";
-import DialogModalComponent from "admin/components/modal/DialogModalComponent";
+import PromptModalComponent from 'admin/components/modal/PromptModalComponent';
+import DialogModalComponent from 'admin/components/modal/DialogModalComponent';
 
 class Users extends React.Component <any, any> {
 	constructor(props) {
@@ -18,12 +17,12 @@ class Users extends React.Component <any, any> {
 		this.showPreloader = this.showPreloader.bind(this);
 	}
 	showModal(): void{
-		let options = {
+		const options = {
 			isOpen: true,
-		}
+		};
 		const windowName = AdminConstants.TEST_MODAL_WINDOW;
 		UIActions.modalWindowsChangeState(windowName, options);
-	}	
+	}
 	showDialog(): void{
 		UIActions.showDialog({
 			noBtnName: 'I dont know',
@@ -33,12 +32,12 @@ class Users extends React.Component <any, any> {
 				alert('Excelent answer');
 			}),
 		});
-	}	
+	}
 	showPrompt(): void{
 		UIActions.showPrompt({
 			okHandler: ((value)=>{
 				alert('You entered '+value);
-			})
+			}),
 		});
 	}
 	showPreloader(): void{

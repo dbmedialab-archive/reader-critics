@@ -62,24 +62,24 @@ function modalStateChanged(action, state) {
 }
 
 function mainPreloaderStateChanged(action, state) {
-	interface preloaderOptios {
+	interface PreloaderOptios {
 		isVisible?: boolean;
 		countOfPreloaders?: number;
 		color?: string;
 	}
-	console.log(action);
-	let mainPreloader = state.getIn(['mainPreloader']),
-				countOfPreloaders = mainPreloader.getIn(['mainPreloader','countOfPreloaders']);
-	const options : preloaderOptios = {};
+	const mainPreloader = state.getIn(['mainPreloader']),
+		options : PreloaderOptios = {};
+	let	countOfPreloaders = mainPreloader.getIn(['mainPreloader','countOfPreloaders']);
 	options.isVisible = action.payload.isVisible;
 	if (options.isVisible) {
 		countOfPreloaders++;
 	} else {
 		countOfPreloaders--;
-		if (countOfPreloaders > 0) options.isVisible = true;
+		if (countOfPreloaders > 0) {
+			options.isVisible = true;
+		}
 	}
 	options.countOfPreloaders = countOfPreloaders;
-	console.log(initialState);
 	action.payload.color && (options.color = action.payload.color);
 	return state.merge({'mainPreloader': options}, {deep: true});
 }

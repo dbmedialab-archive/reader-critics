@@ -7,13 +7,13 @@ import { createLogger } from 'redux-logger';
 import {CombineReducer} from 'admin/reducers/CombineReducer';
 //import ExecutionEnvironment from 'exenv';
 
-import promisemiddleware from 'redux-promise-middleware';
+import promiseMiddleware from 'redux-promise-middleware';
 
 let middleware;
 if (process.env.NODE_ENV !== 'production') {
-	middleware = applyMiddleware(promisemiddleware(), createLogger(), thunk);
+	middleware = applyMiddleware(promiseMiddleware(), createLogger(), thunk);
 } else {
-	middleware = applyMiddleware(promisemiddleware(), thunk);
+	middleware = applyMiddleware(promiseMiddleware(), thunk);
 }
 
 const MainStore:Store<any> = createStore<any>(

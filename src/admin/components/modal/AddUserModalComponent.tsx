@@ -61,20 +61,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 	}
 
-	saveUser(event): void {
-		const error = false;
-		const data = {
-			email: this.props.email.value,
-			profile: {
-				name: this.props.name.value,
-				role: 'admin',
-				bio: 'some bio',
-				field: 'some field',
-			},
-			password: 'somePassword',
-		};
-		//UsersAction.saveUser(data);
-	}
+	saveUser(event): void {}
 
 	closeReset() : void {
 		UIActions.closeReset(this.props.windowName);
@@ -148,11 +135,14 @@ const mapStateToProps = (state, ownProps) => {
 		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
 		name: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'name', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input','name', 'touched']) || false,
+			touched:
+				state.UI.getIn(['modalWindows', ownProps.windowName, 'input','name', 'touched']) || false,
 		},
 		email: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'touched']) || false,
+			value:
+				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'value']) || '',
+			touched:
+				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'touched']) || false,
 		},
 		userId: state.UI.getIn(['modalWindows', ownProps.windowName, 'id']),
 	};

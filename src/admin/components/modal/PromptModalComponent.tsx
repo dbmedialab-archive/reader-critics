@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import ReactModal from 'admin/components/modal/ReactModalComponent';
 import * as UIActions from 'admin/actions/UIActions';
-import Validation from "admin/services/Validation";
+import Validation from 'admin/services/Validation';
 import * as Joi from 'joi-browser';
 
 const promptInput = 'promptInput';
@@ -59,7 +59,8 @@ class PromptModal extends React.Component <any, any> {
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
 	render() : JSX.Element {
-		const promptClassName = this.props.promptInput.touched && this.props.promptInput.valid.isError ? 'is-invalid-input' : '';
+		const promptClassName =
+		this.props.promptInput.touched && this.props.promptInput.valid.isError ?'is-invalid-input':'';
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newComic" closeHandler={this.closePopup}>
 				<div className="modalWindow">
@@ -75,16 +76,34 @@ class PromptModal extends React.Component <any, any> {
 						<div className="row">
 							<div className="medium-12 columns">
 								<label>
-									<input onBlur={this.onBlur} onFocus={this.onFocus} className={promptClassName} name={promptInput} value={this.props.promptInput.value} onChange={this.updatePromptInputValue} type="text" placeholder='' />
-									{this.props.promptInput.touched && ((this.props.promptInput.valid.isError && <span className="form-error is-visible">{this.props.promptInput.valid.message}</span>))}
+									<input
+										onBlur={this.onBlur}
+										onFocus={this.onFocus}
+										className={promptClassName}
+										name={promptInput}
+										value={this.props.promptInput.value}
+										onChange={this.updatePromptInputValue}
+										type="text"
+										placeholder="" />
+									{this.props.promptInput.touched &&
+										((this.props.promptInput.valid.isError &&
+												<span className="form-error is-visible">
+													{this.props.promptInput.valid.message}
+												</span>
+										))
+									}
 								</label>
 							</div>
 						</div>
 					</form>
 					<div className="row button_holder">
 						<div className="medium-12 columns">
-							<a onClick={this.okHandler} className="secondary button save_button" href="#">{this.props.okBtnName}</a>
-							<a onClick={this.cancelHandler} className="secondary button cancel_button" href="#">{this.props.cancelBtnName}</a>
+							<a onClick={this.okHandler} className="secondary button save_button" href="#">
+								{this.props.okBtnName}
+							</a>
+							<a onClick={this.cancelHandler} className="secondary button cancel_button" href="#">
+								{this.props.cancelBtnName}
+							</a>
 						</div>
 					</div>
 				</div>
@@ -101,17 +120,24 @@ const mapStateToProps = (state, ownProps) => {
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'touched']) || false,
 			valid: Validation.validate(
 				{
-					schema: state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'validationSchema']) || Joi.any(),
-					message: state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'promptInputErrorValidationMsg']) || ''
+					schema:
+						state.UI.getIn(
+							['modalWindows', ownProps.windowName, promptInput, 'validationSchema'],
+						) || Joi.any(),
+					message:
+						state.UI.getIn(
+							['modalWindows', ownProps.windowName, promptInput, 'promptInputErrorValidationMsg'],
+						) || '',
 				},
-				state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'value'])
-			)
+				state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'value']),
+			),
 		},
 		promptTitle: state.UI.getIn(['modalWindows', ownProps.windowName, 'promptTitle'])|| '',
 		okHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'okHandler'])|| null,
 		cancelHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'cancelHandler']) || null,
 		okBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'okBtnName'])|| 'Ok',
-		cancelBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'cancelBtnName']) || 'Cancel',
+		cancelBtnName:
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'cancelBtnName']) || 'Cancel',
 	};
 };
 

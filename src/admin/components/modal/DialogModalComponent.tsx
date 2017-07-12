@@ -34,7 +34,11 @@ class DialogModal extends React.Component <any, any> {
 	}
 	render() : JSX.Element {
 		return (
-			<ReactModal isOpen={this.props.isOpen} name={this.props.windowName} closeHandler={this.closePopup}>
+			<ReactModal
+				isOpen={this.props.isOpen}
+				name={this.props.windowName}
+				closeHandler={this.closePopup}
+			>
 				<div className="modalWindow">
 					<div className="closeBtn">
 						<i onClick={this.closePopup} className="fa fa-close"></i>
@@ -46,8 +50,16 @@ class DialogModal extends React.Component <any, any> {
 					</div>
 					<div className="row button_holder">
 						<div className="medium-12 columns">
-							<a onClick={this.yesHandler} className="button alert" href="#">{this.props.yesBtnName}</a>
-							<a onClick={this.noHandler} className="secondary button cancel_button" href="#">{this.props.noBtnName}</a>
+							<a
+								onClick={this.yesHandler}
+								className="button alert"
+								href="#">{this.props.yesBtnName}
+							</a>
+							<a
+								onClick={this.noHandler}
+								className="secondary button cancel_button"
+								href="#">{this.props.noBtnName}
+							</a>
 						</div>
 					</div>
 				</div>
@@ -63,8 +75,10 @@ const mapStateToProps = (state, ownProps) => {
 		yesHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesHandler']) || null,
 		noHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'noHandler']) || null,
 		yesBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesBtnName']) || 'Yes',
-		noBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'noBtnName']) || 'No',
-		closeHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'closeHandler']) || null,
+		noBtnName:
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'noBtnName']) || 'No',
+		closeHandler:
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'closeHandler']) || null,
 	};
 };
 

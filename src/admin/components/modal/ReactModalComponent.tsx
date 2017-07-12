@@ -49,4 +49,3 @@ export default class ReactModal extends React.Component <any, any> {
 		);
 	}
 }
-
