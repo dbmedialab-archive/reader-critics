@@ -26,21 +26,18 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog('db:mongo');
 
-export default function () : Promise <any> {
+export default function () : Promise <void> {
 	const mongoURL = config.get('mongodb.url');
 
 	const options : MoreConnectionOptions = {
-		config: {
-			autoIndex: !app.isProduction,
-		},
+	//	autoIndex: !app.isProduction,  // Option not supported, althout the docs mention it
 		keepAlive: 120,
 		useMongoClient: true,
 	};
 
 	return Mongoose.connect(mongoURL, options)
-	.then((...args) => {
+	.then(() => {
 		log('Connected to %s', colors.brightWhite(stripUrlAuth(mongoURL)));
-		return Promise.resolve(...args);
 	})
 	.catch(error => {
 		log('Failed to connected to %s', colors.brightRed(stripUrlAuth(mongoURL)));
