@@ -61,8 +61,8 @@ class TopbarComponent extends React.Component <any, any>{
 					</section>
 				</nav>
 			</div>
-		)
+		);
 	}
-};
+}
 
 export default TopbarComponent;

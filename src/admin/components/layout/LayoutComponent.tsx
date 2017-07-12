@@ -98,10 +98,10 @@ const mapStateToProps = (state, ownProps) => {
 			role: 1,
 		},
 	};
-}
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LayoutComponent);
