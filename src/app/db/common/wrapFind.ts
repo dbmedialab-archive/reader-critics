@@ -25,7 +25,7 @@ import {
 
 /**
  * @param result A DocumentQuery produced with Model.find()
- * @return An array of plain object of type Z, all excess properties removed
+ * @return An array of plain objects of type Z, all excess properties removed
  */
 export default function <D extends Document, Z> (
 	result : DocumentQuery <D[], D>

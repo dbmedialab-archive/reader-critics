@@ -30,7 +30,7 @@ export default function () : Promise <void> {
 	const mongoURL = config.get('mongodb.url');
 
 	const options : MoreConnectionOptions = {
-	//	autoIndex: !app.isProduction,  // Option not supported, althout the docs mention it
+	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
 		keepAlive: 120,
 		useMongoClient: true,
 	};
