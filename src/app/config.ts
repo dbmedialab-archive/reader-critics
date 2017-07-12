@@ -27,10 +27,12 @@ const config = convict({
 			env: 'HTTP_PORT',
 		},
 	},
-	parser: {
-		doc: 'Fallback setting for the article parser',
-		fallback: 'html',
-		env: 'PARSER',
+	mongodb: {
+		url: {
+			doc: 'MongoDB connection URL for the main backend database',
+			default: 'mongodb://localhost:27017/readercritics',
+			env: 'MONGODB_URL',
+		},
 	},
 });
 

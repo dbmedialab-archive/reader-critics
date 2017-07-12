@@ -16,8 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ParserFactory from 'base/ParserFactory';
-import Website from 'base/Website';
+import {
+	ParserFactory,
+	Website,
+} from 'base';
 
 interface ParserService {
 	getParserFor(website : Website) : Promise <ParserFactory>;

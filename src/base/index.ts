@@ -16,23 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+export { default as Article } from './Article';
+export { default as ArticleAuthor } from './ArticleAuthor';
+export { default as ArticleItem } from './ArticleItem';
+export { default as ArticleItemType } from './ArticleItemType';
+export { default as ArticleURL } from './ArticleURL';
 
-import download from './mock/download';
-import fetch from './common/fetch';
+export { default as Parser } from './Parser';
+export { default as ParserFactory } from './ParserFactory';
 
-import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+export { default as Suggestion } from './Suggestion';
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
-
-module.exports = service;
+export { default as Website } from './Website';

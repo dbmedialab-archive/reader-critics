@@ -16,23 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+import { Schema } from 'mongoose';
 
-import download from './mock/download';
-import fetch from './common/fetch';
+export default function(schema : Schema, options : any) {
+	schema.add({
+		date: {
+			created: Date,
+			modified: Date,
+		},
+	});
 
-import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+	schema.index({ 'date.created': -1 }, { name: 'date_created' });
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
+	schema.pre('save', function (next) {
+		if (this.date.created === undefined) {
+			this.date.created = new Date();
+		}
+		next();
+	});
 
-module.exports = service;
+}

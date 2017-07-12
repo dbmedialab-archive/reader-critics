@@ -16,22 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
-
-import download from './mock/download';
-import fetch from './common/fetch';
+import SuggestionService from './SuggestionService';
 
 import {
 	clear,
-	load,
+	findSince,
 	save,
-} from './ArticleDAO';
+} from './SuggestionDAO';
 
-const service : ArticleService = {
+const service : SuggestionService = {
 	clear,
-	download,
-	fetch,
-	load,
+	findSince,
 	save,
 };
 

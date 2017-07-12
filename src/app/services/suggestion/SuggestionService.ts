@@ -16,23 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
-
-import download from './mock/download';
-import fetch from './common/fetch';
-
 import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+	Suggestion,
+} from 'base/';
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
+import BasicPersistingService from '../BasicPersistingService';
 
-module.exports = service;
+interface SuggestionService extends BasicPersistingService {
+	findSince(since : Date) : Promise <Suggestion[]>;
+	save(suggestion : Suggestion) : Promise <void>;
+}
+
+export default SuggestionService;

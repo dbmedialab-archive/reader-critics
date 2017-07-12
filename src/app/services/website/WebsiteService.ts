@@ -16,13 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import {
+	ArticleURL,
+	Website,
+} from 'base';
 
-interface WebsiteService {
+import BasicPersistingService from '../BasicPersistingService';
 
+interface WebsiteService extends BasicPersistingService {
 	identify(url : ArticleURL|string) : Website;
-
 }
 
 export default WebsiteService;
