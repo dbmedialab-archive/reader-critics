@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-
+import ModalWindow from 'front/component/ModalWindow';
 const Footer : React.StatelessComponent <any> =
 	() => <footer id="main-footer">
 		<div className="container">
@@ -33,6 +33,7 @@ const Footer : React.StatelessComponent <any> =
 					© 2017 <span itemProp="name">DB Medialab</span>
 				</div>
 			</div>
+			<ModalWindow/>
 		</div>
 	</footer>;
 
