@@ -85,7 +85,7 @@
 		"@types/mongodb": "2.2.7",
 		"@types/mongoose": "4.7.18",
 		"@types/node": "8.0.10",
-		"@types/react": "15.0.37",
+		"@types/react": "15.0.38",
 		"@types/react-dom": "15.5.1",
 		"@types/webpack": "3.0.4",
 		"awesome-typescript-loader": "3.2.1",
