@@ -30,8 +30,6 @@ import {
 	wrapSave
 } from 'app/db/common';
 
-import { isTest } from 'app/util/applib';
-
 export function clear() : Promise <void> {
 	return clearCollection(SuggestionModel);
 }

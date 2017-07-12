@@ -29,11 +29,6 @@ import {
 	wrapSave
 } from 'app/db/common';
 
-import * as errors from 'app/db/errors';
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
 }
