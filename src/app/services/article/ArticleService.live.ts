@@ -18,6 +18,8 @@
 
 import ArticleService from './ArticleService';
 
+import { clear } from '../BasicPersistingService';
+
 import download from './live/download';
 import fetch from './common/fetch';
 
@@ -27,6 +29,7 @@ import {
 } from './ArticleDAO';
 
 const service : ArticleService = {
+	clear,
 	download,
 	fetch,
 	load,

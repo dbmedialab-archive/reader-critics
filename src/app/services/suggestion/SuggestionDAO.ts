@@ -17,7 +17,6 @@
 //
 
 import { isValidDate } from 'app/util/applib';
-
 import { Suggestion } from 'base/';
 
 import {
@@ -25,7 +24,14 @@ import {
 	SuggestionModel,
 } from 'app/db/models';
 
+import clearCollection from 'app/db/clearCollection';
 import leanFilter from 'app/db/leanFilter';
+
+import { isTest } from 'app/util/applib';
+
+export function clear() : Promise <void> {
+	return clearCollection(SuggestionModel);
+}
 
 export function findSince(since : Date) : Promise <Suggestion[]> {
 	if (!isValidDate(since)) {

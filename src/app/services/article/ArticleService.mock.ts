@@ -22,11 +22,13 @@ import download from './mock/download';
 import fetch from './common/fetch';
 
 import {
+	clear,
 	load,
 	save,
 } from './ArticleDAO';
 
 const service : ArticleService = {
+	clear,
 	download,
 	fetch,
 	load,

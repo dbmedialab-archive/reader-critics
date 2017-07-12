@@ -19,11 +19,13 @@
 import SuggestionService from './SuggestionService';
 
 import {
+	clear,
 	findSince,
 	save,
 } from './SuggestionDAO';
 
 const service : SuggestionService = {
+	clear,
 	findSince,
 	save,
 };

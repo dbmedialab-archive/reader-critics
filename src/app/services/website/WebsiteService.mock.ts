@@ -20,7 +20,10 @@ import WebsiteService from './WebsiteService';
 
 import identify from './mock/identify';
 
+import { clear } from '../BasicPersistingService';
+
 const service : WebsiteService = {
+	clear,
 	identify,
 };
 

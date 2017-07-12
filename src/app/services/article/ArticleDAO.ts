@@ -24,10 +24,16 @@ import {
 	Website,
 } from 'base';
 
+import clearCollection from 'app/db/clearCollection';
+
 import * as errors from 'app/db/errors';
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+
+export function clear() : Promise <void> {
+	return clearCollection(ArticleModel);
+}
 
 export function load(url : ArticleURL, version : string) : Promise <Article> {
 	return Promise.resolve(undefined);

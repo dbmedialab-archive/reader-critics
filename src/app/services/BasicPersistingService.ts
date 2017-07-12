@@ -16,8 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { isProduction } from 'app/util/applib';
+
 interface BasicPersistingService {
-	// clear() : Promise <void>;
+	clear() : Promise <void>;
 }
 
 export default BasicPersistingService;
+
+// Default implementations
+
+export function clear() : Promise <void> {
+	if (isProduction) {
+		throw new Error('Function can only be used in TEST mode');
+	}
+	throw new Error('Function is not implemented');
+}

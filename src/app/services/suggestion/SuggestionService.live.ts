@@ -18,12 +18,15 @@
 
 import SuggestionService from './SuggestionService';
 
+import { clear } from '../BasicPersistingService';
+
 import {
 	findSince,
 	save,
 } from './SuggestionDAO';
 
 const service : SuggestionService = {
+	clear,
 	findSince,
 	save,
 };

@@ -34,7 +34,7 @@ describe('SuggestionSchema', function () {
 
 	before(function (done) {
 		initDatabase()
-	//	.then(() => SuggestionModel.remove({}))
+		.then(() => suggestionService.clear())
 		.then(() => done())
 		.catch(error => done(error));
 	});

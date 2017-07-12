@@ -18,10 +18,13 @@
 
 import WebsiteService from './WebsiteService';
 
+import { clear } from '../BasicPersistingService';
+
 // Use mock implementation until matching against database works
 import identify from './mock/identify';
 
 const service : WebsiteService = {
+	clear,
 	identify,
 };
 
