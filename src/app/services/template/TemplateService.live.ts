@@ -16,8 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export function getTemplate(customer : any) : Object {
-	return {
-		might_be_a: 'template',
-	};
-}
+import TemplateService from './TemplateService';
+
+import getTemplate from './mock/getTemplate';
+
+const service : TemplateService = {
+	getTemplate,
+};
+
+module.exports = service;

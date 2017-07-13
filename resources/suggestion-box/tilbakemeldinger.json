@@ -1,0 +1,74 @@
+[
+	{
+		"email" : "horst@indiana.net",
+		"comment" : "Ich möchte hier nochmal anmerken was für ein geiles Tool das ist!",
+		"date" : { "created": "2017-07-06T14:36:26Z" },
+		"remote" : { "ipAddress" : "135.230.79.245", "userAgent" : "Vivaldi/1.11.894.3" }
+	},
+	{
+		"email": "torjnaskjd@hotmail.com",
+		"comment": "Jeg ser ikke noen nevneverdige problemer med verktøyet; problemene er at innsendte rettelser ikke følges opp.",
+		"date": { "created": "2017-07-06T12:31:09Z" },
+		"remote" : { "ipAddress" : "218.134.104.233", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"email": "schnick.schnack@online.no",
+		"comment": "Dette virker som et greit verktøy. Jeg setter spesielt pris på at man kan sende inn kommentarer uten å måtte stå frem med navn eller nummer.",
+		"date": { "created": "2017-07-06T08:34:45Z" },
+		"remote" : { "ipAddress" : "157.233.58.169", "userAgent" : "Chrome/59.0.3071.115" }
+	}, {
+		"email": "argh1234@hotmail.no",
+		"comment": "Var det ikke fake news dere skulle avdekke? Hvorfor publiseres da et utsagn fra Solberg som korrekt? Utsagnet hun kom med er da også i en kontekts dere har valgt å overse fullstendig.",
+		"date": { "created": "2017-07-06T07:33:17Z" },
+		"remote" : { "ipAddress" : "195.157.203.160", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"email": "schnick.schnack@gmail.com",
+		"comment": "Synes ideen og opplegget er fint. At man kan velge å kommentere spesifikke avsnitt. Er imidlertid spent på om berettigede kommentarer videreformidles tilbake til kilden for informasjonen?",
+		"date": { "created": "2017-07-06T07:01:13Z" },
+		"remote" : { "ipAddress" : "100.11.244.144", "userAgent" : "AppleWebKit/537.36" }
+	}, {
+		"comment": "Funket utmerket, tror jeg?",
+		"date": { "created": "2017-07-05T23:54:27Z" },
+		"remote" : { "ipAddress" : "86.78.172.194", "userAgent" : "Safari/537.36" }
+	}, {
+		"comment": "Veldig bra!",
+		"date": { "created": "2017-07-05T21:51:29Z" },
+		"remote" : { "ipAddress" : "119.240.70.4", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"comment": "etter en gangs bruk er dommern at det virker bra",
+		"date": { "created": "2017-07-05T16:58:23Z" },
+		"remote" : { "ipAddress" : "112.130.137.127", "userAgent" : "Chrome/59.0.3071.115" }
+	}, {
+		"email": "harry@gmail.com",
+		"comment": "Fungerte meget greit.",
+		"date": { "created": "2017-07-05T11:47:29Z" },
+		"remote" : { "ipAddress" : "74.148.205.127", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"email": "tammtaramtam@yahoo.no",
+		"comment": "Verktøyet er enkelt i bruk!",
+		"date": { "created": "2017-07-04T15:39:56Z" },
+		"remote" : { "ipAddress" : "68.119.59.178", "userAgent" : "AppleWebKit/537.36" }
+	}, {
+		"email": "mork@vegetablab.net",
+		"comment": "Strålende verktøy for internetbesserwissers som meg! :) Hilsen Mork",
+		"date": { "created": "2017-07-04T09:59:56Z" },
+		"remote" : { "ipAddress" : "138.65.205.232", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"comment": "Savner kommentarfelt. Da stilles det enda høyere krav til etterrettelighet. Verktøyet fungerte greit.",
+		"date": { "created": "2017-07-04T07:59:32Z" },
+		"remote" : { "ipAddress" : "251.66.4.89", "userAgent" : "Safari/537.36" }
+	}, {
+		"comment": "Fungerer fint.",
+		"date": { "created": "2017-07-04T02:46:18Z" },
+		"remote" : { "ipAddress" : "205.222.83.231", "userAgent" : "Chrome/59.0.3071.115" }
+	}, {
+		"email": "laleluh@nordtroms.net",
+		"comment": "Det er beklagelig at grasrotinnformasjon ikke er med når det formidles om slike spesielle ideer.",
+		"date": { "created": "2017-07-03T19:07:36Z" },
+		"remote" : { "ipAddress" : "190.2.98.233", "userAgent" : "Mozilla/5.0" }
+	}, {
+		"email": "ey-98dfjdnf.z@me.com",
+		"comment": "Verktøyet fungerer helt fint til å rapportere med. Språkrøkt og faktasjekk er viktige saker!",
+		"date": { "created": "2017-07-03T19:03:27Z" },
+		"remote" : { "ipAddress" : "70.65.37.192", "userAgent" : "AppleWebKit/537.36" }
+	}
+]

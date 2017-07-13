@@ -1,0 +1,42 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
+import {
+	Document,
+	Model,
+} from 'mongoose';
+
+import * as errors from 'app/db/errors';
+
+import { isTest } from 'app/util/applib';
+
+export function clearCollection <T extends Document> (model : Model <T>) : Promise <void> {
+	if (isTest) {
+		return model.remove({}).then(() => undefined);
+	}
+	throw new Error('Function can only be used in TEST mode');
+}
+
+export { default as wrapFind } from './wrapFind';
+
+export function wrapSave(wrapped : Promise <Document>) : Promise <void> {
+	return wrapped.then(() => undefined)
+	.catch(error => Promise.reject(
+		errors.isDuplicateError(error) ? new errors.DuplicateError(error) : error
+	));
+}

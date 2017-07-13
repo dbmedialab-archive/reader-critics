@@ -52,7 +52,7 @@ extends React.Component <any, FeedbackContainerState> {
 		}
 
 		// Iterate article elements and render sub components
-		return <section id='content'>
+		return <section id="content">
 			{ this.state.article.items.map(this.createArticleElement) }
 		</section>;
 	}

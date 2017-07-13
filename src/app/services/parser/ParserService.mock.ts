@@ -16,4 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as getParserFor } from './live/getParserFor';
+import ParserService from './ParserService';
+
+import getParserFor from './live/getParserFor';
+
+const service : ParserService = {
+	getParserFor,
+};
+
+module.exports = service;
