@@ -107,27 +107,27 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		const isDisabled = this.isFormValid();
 		return (
 			<form
-				name='suggestBox'
-				className='eleven suggestion columns feedbackform'
+				name="suggestBox"
+				className="eleven suggestion columns feedbackform"
 				onSubmit={this.handleSubmit}
 			>
-				<fieldset className='text'>
-					<label htmlFor='comment'>Username</label>
+				<fieldset className="text">
+					<label htmlFor="comment">Username</label>
 					<input
-						type='text'
-						name='username'
+						type="text"
+						name="username"
 						ref={r => this.usernameInput = r}
-						id='username'
+						id="username"
 						onChange={() => this.UpdateState('username', this.usernameInput)}
 					/>
 				</fieldset>
-				<fieldset className='text'>
-					<label htmlFor='email'>Email</label>
+				<fieldset className="text">
+					<label htmlFor="email">Email</label>
 					<input
-						type='email'
-						name='email'
+						type="email"
+						name="email"
 						ref={r => this.emailInput = r}
-						id='email'
+						id="email"
 						onBlur={this.handleBlur('email')}
 						onChange={() => this.UpdateState('email', this.emailInput)}
 					/>
@@ -136,14 +136,14 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						touchedField={this.state.touched['email']}
 					/>
 				</fieldset>
-				<fieldset className='text'>
-					<label htmlFor='comment'>Comment</label>
+				<fieldset className="text">
+					<label htmlFor="comment">Comment</label>
 					<textarea
-						name='comment'
+						name="comment"
 						onKeyUp={() => this.UpdateState('comment', this.commentArea)}
 						ref={r => this.commentArea = r}
 						rows={3}
-						id='commentArea'
+						id="commentArea"
 						onBlur={this.handleBlur('comment')}
 					/>
 					<InputError
@@ -151,11 +151,10 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						touchedField={this.state.touched['comment']}
 					/>
 				</fieldset>
-				<fieldset className='actions'>
-					<button type='submit' disabled={!isDisabled} className='button button-primary'>Lagre</button>
+				<fieldset className="actions">
+					<button type="submit" disabled={!isDisabled} className="button button-primary">Lagre</button>
 				</fieldset>
 			</form>
 		);
 	}
-
 }

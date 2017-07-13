@@ -16,11 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import {applyMiddleware, createStore, Store} from 'redux';
+import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
+//import Routes from "../../server/routers/Routes"
+//import AppConstants from 'admin/constants/AppConstants'
+import {CombineReducer} from 'admin/reducers/CombineReducer';
+//import ExecutionEnvironment from 'exenv';
 
-export default Header;
+import promiseMiddleware from 'redux-promise-middleware';
+
+let middleware;
+if (process.env.NODE_ENV !== 'production') {
+	middleware = applyMiddleware(promiseMiddleware(), createLogger(), thunk);
+} else {
+	middleware = applyMiddleware(promiseMiddleware(), thunk);
+}
+
+const MainStore:Store<any> = createStore<any>(
+	CombineReducer,
+	middleware
+);
+export default MainStore;

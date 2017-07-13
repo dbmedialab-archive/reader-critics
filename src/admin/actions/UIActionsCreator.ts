@@ -16,11 +16,22 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import AdminConstants from 'admin/constants/AdminConstants';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
-
-export default Header;
+export type TAction = IAction;
+export function initModalWindows(payload): IAction {
+	return {
+		type: AdminConstants.MODAL_INIT,
+		payload,
+	};
+}
+export function modalWindowsChangeState(payload): IAction {
+	return {
+		type: AdminConstants.MODAL_STATE_CHANGED,
+		payload,
+	};
+}

@@ -16,11 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
-
-export default Header;
+interface UIType {
+	modalWindows: any;
+	topbar: {
+		submenu: {
+			isOpen: boolean,
+		},
+		accountMenu: {
+			isOpen: boolean,
+		},
+	};
+	mainPreloader: {
+		isVisible: boolean,
+		color: string,
+		countOfPreloaders: number,
+	};
+	progressBar: any;
+}
+export default UIType;

@@ -16,11 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import * as keykey from 'keykey';
+const AdminConstants = keykey([
+	'MAIN_PRELOADER_CHANGE_STATE',
+	'MODAL_STATE_CHANGED',
+	'MODAL_INIT',
+	'RESET_FORM_INPUT',
 
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
+	//Modal windows names
+	'TEST_MODAL_WINDOW',
+	'PROMPT_MODAL_WINDOW',
+	'DIALOG_MODAL_WINDOW',
+]);
 
-export default Header;
+export default AdminConstants;
