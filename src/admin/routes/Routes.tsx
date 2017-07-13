@@ -17,10 +17,12 @@
 //
 
 import * as React from 'react';
+import { Route, Switch } from 'react-router';
 
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
+import Users from 'admin/components/user/Users';
 
-export default Header;
+const Routes : React.StatelessComponent <any> =	() =>
+	<Switch>
+			<Route path="/users" component={Users}/>
+	</Switch>;
+export default Routes;

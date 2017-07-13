@@ -18,9 +18,20 @@
 
 import * as React from 'react';
 
-const Header : React.StatelessComponent <any> =
-	() => <header role="banner">
-		<h1>Leserkritikk</h1>
-	</header>;
+import { Link } from 'react-router-dom';
 
-export default Header;
+const MainMenuComponent : React.StatelessComponent <any> = () =>
+		<ul className="menu-nav">
+				<li className="menu-item">
+					<Link
+							to="/users"
+							className="tooltip-tip tooltipster-disable"
+							title="All comics"
+						>
+							<i className="fa fa-list-ul" />
+							<span>Users</span>
+					</Link>
+				</li>
+			</ul>;
+
+export default MainMenuComponent;
