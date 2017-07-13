@@ -135,7 +135,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row button_holder">
 							<div className="medium-12 columns">
-								<a onClick={this.saveUser} className="button" href="#">Save</a>
+								<a onClick={this.saveUser} className="button success" href="#">Save</a>
 								<a onClick={this.closeReset} className="secondary button cancel_button" href="#">Cancel</a>
 							</div>
 						</div>

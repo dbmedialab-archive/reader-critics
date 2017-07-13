@@ -17,6 +17,7 @@
 //
 
 import 'whatwg-fetch';
+import {showError} from 'front/uiHelpers';
 
 const rxUnencoded = /:\/\//;
 
@@ -32,6 +33,8 @@ export const fetchArticle = ((url: string, version: string): Promise<any> => {
 		.then(json)
 		.then(data => data.article)
 		.catch(function (error) {
+			//TO DO make errors
+			showError('Something went wrong', ()=>{alert('this is a callback');});
 			console.log('request failed', error);
 		});
 });
