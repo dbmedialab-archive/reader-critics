@@ -54,12 +54,11 @@ push-image:
     cmd: /bin/sh
   steps:
   - script:
-    name: set yarn cache
-    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+    name: set dependency cache
+    code: npm config set cache $WERCKER_CACHE_DIR/wercker/npm
   - script:
     name: install production dependencies
-    code: |
-      HOME=$YARN_CACHE yarn
+    code: npm install --production
   - internal/docker-push:
     working-dir: $WERCKER_SOURCE_DIR
     username: _json_key
