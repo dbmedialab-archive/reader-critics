@@ -10,13 +10,12 @@ js-lint-build-test:
       source /root/.bashrc
       nvm install v8
       nvm use node
-      npm i -g yarn
   - script:
-    name: set yarn cache
-    code: yarn config set cache-folder $WERCKER_CACHE_DIR/yarn
+    name: set dependency cache
+    code: npm config set cache $WERCKER_CACHE_DIR/wercker/npm
   - script:
     name: install dependencies
-    code: yarn
+    code: npm install
   - script:
     name: lint
     code: run/lint
@@ -47,7 +46,6 @@ js-lint-build-test:
         tmp \
         resources \
         package.json \
-        yarn.lock \
         $WERCKER_OUTPUT_DIR
 
 push-image:
