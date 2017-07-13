@@ -8,7 +8,6 @@
 /out/test/
 
 # Package manager lock files
-package-lock.json
 yarn.lock
 
 # Packages

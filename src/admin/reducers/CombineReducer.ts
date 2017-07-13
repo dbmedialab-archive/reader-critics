@@ -16,11 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import { combineReducers } from 'redux';
 
-const TestContainer : React.StatelessComponent <any> =
-	() => <section id='admin'>
-		testSection
-	</section>;
+import UIReducer from 'admin/reducers/UIReducer';
+import {routerReducer} from 'react-router-redux';
 
-export default TestContainer;
+export const CombineReducer:any = combineReducers({
+	UI: UIReducer,
+	router: routerReducer,
+});
