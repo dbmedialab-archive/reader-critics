@@ -17,29 +17,22 @@
 //
 
 import * as React from 'react';
-import Helmet from 'react-helmet';
-import {connect} from 'react-redux';
 import * as PreloaderIcon from 'react-preloader-icon';
-import {ICON_TYPE} from 'react-preloader-icon';
+
+import Helmet from 'react-helmet';
+
+import { connect } from 'react-redux';
+import { ICON_TYPE } from 'react-preloader-icon';
 
 import SidebarComponent from 'admin/components/layout/SidebarComponent';
 import TopbarComponent from 'admin/components/layout/TopbarComponent';
 
 class LayoutComponent extends React.Component <any, any> {
-	constructor(props) {
-		super(props);
-	}
-	componentWillMount(){
-
-	}
-	bodyClicked() {
-
-	}
 	render() : JSX.Element {
 		return(
 			<div className="off-canvas-wrap">
 				<div className="inner-wrap">
-					<div onClick={this.bodyClicked} style={{height: '100%'}}>
+					<div style={{height: '100%'}}>
 
 						{this.props.mainPreloader.isVisible?
 							<div className="preloaderSection">

@@ -21,26 +21,6 @@ import * as React from 'react';
 import MainMenuComponent from 'admin/components/layout/MainMenuComponent';
 
 class TopbarComponent extends React.Component <any, any>{
-
-	constructor(props) {
-		super(props);
-	}
-	componentWillMount() {
-	}
-	componentDidMount() {
-
-	}
-	componentWillUnmount() {
-
-	}
-	toggleSubmenu(e) {
-		e.stopPropagation();
-	}
-	toggleAccountMenu(e) {
-		e.stopPropagation();
-	}
-	closeAccountMenu(){
-	}
 	render(){
 		const userName = this.props.currentUser.name;
 		let submenuClass = 'top-bar-left show-for-small-only';
@@ -51,7 +31,7 @@ class TopbarComponent extends React.Component <any, any>{
 			<div className="top-bar-nest">
 				<nav className="top-bar" role="navigation">
 					<div className="top-bar-title show-for-small-only">
-						<button className="fa fa-bars" type="button" onClick={this.toggleSubmenu.bind(this)} >
+						<button className="fa fa-bars" type="button" >
 						</button>
 					</div>
 					<div className={submenuClass}>
@@ -59,15 +39,14 @@ class TopbarComponent extends React.Component <any, any>{
 					</div>
 					<section className="top-bar-section ">
 						<ul className="right">
-							<li className={accountMenuClass} onClick={this.toggleAccountMenu.bind(this)}>
+							<li className={accountMenuClass}>
 								<a className="bg-white" href="#">
 									<img alt="" className="admin-pic img-circle" src="/static/admin/images/no_avatar.jpg"/>
 									<span className="admin-pic-text text-gray">{userName}</span>
 								</a>
 								<ul
 									className="dropdown dropdown-nest profile-dropdown"
-									onMouseLeave={this.closeAccountMenu.bind(this)}
-									>
+								>
 									<li>
 										<i className="fa fa-sign-out"></i>
 										<a href="/logout">

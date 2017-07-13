@@ -16,23 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+interface Suggestion {
+	email : string;
+	comment : string;
 
-import download from './mock/download';
-import fetch from './common/fetch';
+	date?: {
+		created : Date;
+	};
 
-import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+	remote: {
+		ipAddress : string;
+		userAgent : string;
+	};
+}
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
-
-module.exports = service;
+export default Suggestion;

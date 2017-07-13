@@ -26,8 +26,6 @@ import * as UIActions from 'admin/actions/UIActions';
 export interface OptionsI {
 	input?: any;
 }
-// tslint:disable-next-line
-const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 class AddUserModalComponent extends React.Component <any, any> {
 	private usernameInput : any;

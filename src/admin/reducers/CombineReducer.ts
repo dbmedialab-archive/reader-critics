@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { combineReducers, Action } from 'redux';
+import { combineReducers } from 'redux';
 
 import UIReducer from 'admin/reducers/UIReducer';
 import {routerReducer} from 'react-router-redux';

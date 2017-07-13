@@ -22,7 +22,6 @@ const AdminConstants = keykey([
 	'MODAL_STATE_CHANGED',
 	'MODAL_INIT',
 	'RESET_FORM_INPUT',
-	'MAIN_PRELOADER_CHANGE_STATE',
 
 	//Modal windows names
 	'TEST_MODAL_WINDOW',
