@@ -82,7 +82,7 @@
 		"serve-favicons": "2.1.5",
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.18.2",
-		"webpack": "3.1.0",
+		"webpack": "3.2.0",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
