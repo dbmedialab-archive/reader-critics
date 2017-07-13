@@ -16,23 +16,36 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
-
-import download from './mock/download';
-import fetch from './common/fetch';
+import { isValidDate } from 'app/util/applib';
+import { Suggestion } from 'base/';
 
 import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+	SuggestionDocument,
+	SuggestionModel,
+} from 'app/db/models';
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
+import {
+	clearCollection,
+	wrapFind,
+	wrapSave
+} from 'app/db/common';
 
-module.exports = service;
+export function clear() : Promise <void> {
+	return clearCollection(SuggestionModel);
+}
+
+export function findSince(since : Date) : Promise <Suggestion[]> {
+	if (!isValidDate(since)) {
+		return Promise.reject(new TypeError('Invalid date'));
+	}
+
+	return wrapFind <SuggestionDocument, Suggestion> (SuggestionModel.find({
+		'date.created': {
+			'$gte': since,
+		},
+	}).sort( { 'date.created': -1 } ));
+}
+
+export function save(suggestion : Suggestion) : Promise <void> {
+	return wrapSave(new SuggestionModel(suggestion).save());
+}

@@ -16,23 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+import { MongoError } from 'mongodb';
 
-import download from './mock/download';
-import fetch from './common/fetch';
+export const isDuplicateError = (err : Error) : boolean => (
+	err instanceof MongoError && err.code === 11000
+);
 
-import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+export class DuplicateError extends Error {
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
+	constructor(err : MongoError) {
+		super(err.message.replace(/^.*key error index:/, '').trim());
+		Object.setPrototypeOf(this, DuplicateError.prototype);
+		this.name = 'DuplicateError';
+	}
 
-module.exports = service;
+}

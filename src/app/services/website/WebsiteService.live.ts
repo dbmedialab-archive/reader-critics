@@ -16,5 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import WebsiteService from './WebsiteService';
+
+import { clear } from '../BasicPersistingService';
+
 // Use mock implementation until matching against database works
-export { default as identify } from './mock/identify';
+import identify from './mock/identify';
+
+const service : WebsiteService = {
+	clear,
+	identify,
+};
+
+module.exports = service;

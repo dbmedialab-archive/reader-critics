@@ -16,23 +16,35 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
+import {
+	model,
+	plugin,
+	Document,
+	Model,
+} from 'mongoose';
 
-import download from './mock/download';
-import fetch from './common/fetch';
+import TimestampPlugin from './plugins/TimestampPlugin';
 
 import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
+	ArticleSchema,
+	SuggestionSchema,
+} from './schemas';
 
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
+import {
+	Article,
+	Suggestion,
+} from 'base';
 
-module.exports = service;
+// Install global plugins
+
+plugin(TimestampPlugin);
+
+// Create models
+
+export interface ArticleDocument extends Article, Document {}
+export const ArticleModel : Model <ArticleDocument>
+	= model <ArticleDocument> ('Article', ArticleSchema);
+
+export interface SuggestionDocument extends Suggestion, Document {}
+export const SuggestionModel : Model <SuggestionDocument>
+	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);

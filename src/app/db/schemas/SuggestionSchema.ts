@@ -16,18 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
+import { Schema } from 'mongoose';
 
-import { okResponse } from './apiResponse';
+const SuggestionSchema : Schema = new Schema({
+	email: String,
+	comment: String,
 
-import * as app from 'app/util/applib/logging';
-const log = app.createLog();
+	remote: {
+		ipAddress: String,
+		userAgent: String,
+	},
+});
 
-export default function(requ : Request, resp : Response) : void {
-	const { username, email, comment } = requ.body.data;
-	log('Received comment: "%s" from "%s" (%s)', comment, username, email);
-	okResponse(resp, { sent: true });
-}
+export default SuggestionSchema;

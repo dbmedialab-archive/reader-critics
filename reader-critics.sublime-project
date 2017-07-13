@@ -25,6 +25,9 @@
 		},
 		{
 			"path": "test"
+		},
+		{
+			"path": "src/app/db"
 		}
 	]
 }

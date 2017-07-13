@@ -16,9 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import Website from 'base/Website';
+import { ArticleModel } from 'app/db/models';
 
-export default function(website : Website, article : Article) : Promise <void> {
-	return Promise.resolve();
+import {
+	Article,
+	ArticleURL,
+	Website,
+} from 'base';
+
+import {
+	clearCollection,
+	wrapSave
+} from 'app/db/common';
+
+export function clear() : Promise <void> {
+	return clearCollection(ArticleModel);
+}
+
+export function load(url : ArticleURL, version : string) : Promise <Article> {
+	return Promise.resolve(undefined);
+}
+
+export function save(website : Website, article : Article) : Promise <void> {
+	return wrapSave(new ArticleModel(article).save());
 }

@@ -16,23 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleService from './ArticleService';
-
-import download from './mock/download';
-import fetch from './common/fetch';
-
-import {
-	clear,
-	load,
-	save,
-} from './ArticleDAO';
-
-const service : ArticleService = {
-	clear,
-	download,
-	fetch,
-	load,
-	save,
-};
-
-module.exports = service;
+export { default as ArticleSchema } from './ArticleSchema';
+export { default as SuggestionSchema } from './SuggestionSchema';
+// export { default as WebsiteSchema } from './WebsiteSchema';

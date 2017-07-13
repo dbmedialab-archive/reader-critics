@@ -22,6 +22,7 @@ declare function require(arg : string) : any;
 
 import ArticleService from './article/ArticleService';
 import ParserService from './parser/ParserService';
+import SuggestionService from './suggestion/SuggestionService';
 import TemplateService from './template/TemplateService';
 import WebsiteService from './website/WebsiteService';
 
@@ -39,6 +40,9 @@ export const articleService : ArticleService
 
 export const parserService : ParserService
 	= require(`./parser/ParserService.${env}`);
+
+export const suggestionService : SuggestionService
+	= require(`./suggestion/SuggestionService.${env}`);
 
 export const templateService : TemplateService
 	= require(`./template/TemplateService.${env}`);

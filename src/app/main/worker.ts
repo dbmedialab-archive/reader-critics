@@ -24,10 +24,12 @@ import * as http from 'http';
 
 import { Express } from 'express';
 
-import * as app from 'app/util/applib';
-
 import config from 'app/config';
 import routes from 'app/routes';
+
+import * as app from 'app/util/applib';
+
+import { initDatabase } from 'app/db';
 
 let log;
 let expressApp : Express;
@@ -49,7 +51,8 @@ export default function() {
 
 	// Main application startup
 
-	Promise.resolve()  // This will be replaced by other initialization calls, e.g. database and such
+	Promise.resolve()
+		.then(initDatabase)
 		.then(startHTTP)
 		.then(initExpress)
 		.catch(startupErrorHandler);
@@ -79,7 +82,17 @@ function initExpress() {
 // Error handling during startup
 
 function startupErrorHandler(error : Error) {
-	log(error.stack || error.toString());
+	const typesThatDoNotPrintATrace = [
+		'MongoError',
+	];
+
+	if (typesThatDoNotPrintATrace.includes(error.name)) {
+		log('%s: %s', error.name, error.message);
+	}
+	else {
+		log(error.stack || error.toString());
+	}
+
 	process.exit(-128);
 }
 
