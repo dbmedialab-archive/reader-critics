@@ -16,11 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import { Schema } from 'mongoose';
 
-const TestContainer : React.StatelessComponent <any> =
-	() => <section id='admin'>
-		testSection
-	</section>;
+const SuggestionSchema : Schema = new Schema({
+	email: String,
+	comment: String,
 
-export default TestContainer;
+	remote: {
+		ipAddress: String,
+		userAgent: String,
+	},
+});
+
+export default SuggestionSchema;

@@ -31,6 +31,6 @@ export const InputError: React.StatelessComponent <InputErrorProps> =
 			return null;
 		}
 		return (
-			<small className='callout secondary alert error'>{props.errorText}</small>
+			<small className="callout secondary alert error">{props.errorText}</small>
 		);
 	};

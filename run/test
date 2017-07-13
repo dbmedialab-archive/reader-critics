@@ -6,6 +6,8 @@ printUsage()
 {
 	echo "${0} [options]"
 	echo
+	echo "  --app          Only test the backend app"
+	echo "  --db           Only test database code (requires MongoDB)"
 	echo "  --libs         Only execute Javascript library tests"
 	echo "  --base         Only test base modules"
 	echo "  --frontend     Only execute frontend E2E tests"
@@ -41,6 +43,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 			DONT_TEST_ALL=true
 			TEST_BASE=true
 			;;
+		--db)
+			DONT_TEST_ALL=true
+			TEST_DATABASE=true
+			;;
 		--frontend)
 			DONT_TEST_ALL=true
 			TEST_FRONTEND=true
@@ -69,7 +75,7 @@ echo
 # App Configuration
 
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-retry-as-promised,-send"}
+export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-mquery,-retry-as-promised,-send"}
 export WEB_CONCURRENCY=${WEB_CONCURRENCY:-3}
 
 ### Global test runners, save return code
@@ -147,6 +153,13 @@ testBaseSource()
 	runMocha "mocha-base.opts" "Base Sources"
 }
 
+testDatabase()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_DATABASE ]) ; then return ; fi
+	export DEBUG="${DEBUG},-app:*"
+	runMocha "mocha-database.opts" "Database"
+}
+
 testFrontend()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_FRONTEND ]) ; then return ; fi
@@ -198,6 +211,7 @@ runAllTests()
 	testLibraries
 	testBaseSource
 	testBackendApp
+	testDatabase
 	testFrontend
 }
 

@@ -86,7 +86,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	public render() {
 		return <form>
-			<fieldset className='text'>
+			<fieldset className="text">
 				<label htmlFor={this.FieldId('content')}>rediger {this.Translate(this.props.type)}</label>
 				<textarea
 					onKeyUp={() => this.UpdateState('text', this.textArea)}
@@ -96,7 +96,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 					id={this.FieldId('content')}
 				/>
 			</fieldset>
-			<fieldset className='comment'>
+			<fieldset className="comment">
 				<label htmlFor={this.FieldId('comment')}>Legg til kommentar</label>
 				<textarea
 					onKeyUp={()=>this.UpdateState( 'comment', this.commentArea )}
@@ -106,7 +106,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 					id={this.FieldId('comment')}
 				/>
 			</fieldset>
-			<fieldset className='link'>
+			<fieldset className="link">
 				<label htmlFor={this.FieldId('link')}>Legg til lenker</label>
 				<DynamicList
 					items={this.state.current.links}
@@ -115,13 +115,13 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 				<input
 					ref={(r) => this.linkInput = r}
 					id={this.FieldId('link')}
-					type='text'
+					type="text"
 					onKeyDown={(e)=> e.keyCode === 13 ? this.AddLinkItem(e) : null}
 				/>
 			</fieldset>
-			<fieldset className='actions'>
-				<a title='Avbryt' onClick={(e)=>this.onCancel(e)} className='button cancel'>Avbryt</a>
-				<a title='Lagre' onClick={(e)=>this.onSave(e)} className='button save'>Lagre</a>
+			<fieldset className="actions">
+				<a title="Avbryt" onClick={(e)=>this.onCancel(e)} className="button cancel">Avbryt</a>
+				<a title="Lagre" onClick={(e)=>this.onSave(e)} className="button save">Lagre</a>
 			</fieldset>
 		</form>;
 	}

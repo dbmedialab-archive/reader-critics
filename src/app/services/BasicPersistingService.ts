@@ -16,9 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
+import { isProduction } from 'app/util/applib';
 
-export default function(url : ArticleURL, version : string) : Promise <Article> {
-	return Promise.resolve(undefined);
+interface BasicPersistingService {
+	clear() : Promise <void>;
+}
+
+export default BasicPersistingService;
+
+// Default implementations
+
+export function clear() : Promise <void> {
+	if (isProduction) {
+		throw new Error('Function can only be used in TEST mode');
+	}
+	throw new Error('Function is not implemented');
 }

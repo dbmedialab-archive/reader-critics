@@ -16,18 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { ArticleModel } from 'app/db/models';
+
 import {
-	Request,
-	Response,
-} from 'express';
+	Article,
+	ArticleURL,
+	Website,
+} from 'base';
 
-import { okResponse } from './apiResponse';
+import {
+	clearCollection,
+	wrapSave
+} from 'app/db/common';
 
-import * as app from 'app/util/applib/logging';
-const log = app.createLog();
+export function clear() : Promise <void> {
+	return clearCollection(ArticleModel);
+}
 
-export default function(requ : Request, resp : Response) : void {
-	const { username, email, comment } = requ.body.data;
-	log('Received comment: "%s" from "%s" (%s)', comment, username, email);
-	okResponse(resp, { sent: true });
+export function load(url : ArticleURL, version : string) : Promise <Article> {
+	return Promise.resolve(undefined);
+}
+
+export function save(website : Website, article : Article) : Promise <void> {
+	return wrapSave(new ArticleModel(article).save());
 }
