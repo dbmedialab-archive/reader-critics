@@ -9,8 +9,6 @@ engines:
       - .js
   fixme:
     enabled: true
-    issue_override:
-      severity: info
   markdownlint:
     enabled: false
     issue_override:
