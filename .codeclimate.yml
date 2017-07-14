@@ -4,7 +4,7 @@ engines:
   eslint:
     enabled: true
     config:
-      config: .eslintrc
+      config: .eslintrc.json
       extensions:
       - .js
   fixme:
