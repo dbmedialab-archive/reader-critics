@@ -12,7 +12,7 @@ engines:
     issue_override:
       severity: info
   markdownlint:
-    enabled: true
+    enabled: false
     issue_override:
       severity: info
 #  scss-lint:
