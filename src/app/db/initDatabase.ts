@@ -31,16 +31,21 @@ export default function () : Promise <void> {
 
 	const options : MoreConnectionOptions = {
 	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
+		connectTimeoutMS: 4000,
 		keepAlive: 120,
 		useMongoClient: true,
+		reconnectTries: Number.MAX_VALUE,
+		socketTimeoutMS: 2000,
 	};
+
+	log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
 
 	return Mongoose.connect(mongoURL, options)
 	.then(() => {
-		log('Connected to %s', colors.brightWhite(stripUrlAuth(mongoURL)));
+		log('Connection ready');
 	})
 	.catch(error => {
-		log('Failed to connected to %s', colors.brightRed(stripUrlAuth(mongoURL)));
+		log('Failed to connected to database:', error.message);
 		return Promise.reject(error);
 	});
 }
@@ -50,7 +55,10 @@ export default function () : Promise <void> {
 
 interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
 	autoIndex?: boolean;
+	connectTimeoutMS?: number;
 	keepAlive?: number;
+	reconnectTries?: number;
+	socketTimeoutMS?: number;
 
 	// Recommended with Mongoose 4.11+ but also not yet reflected
 	useMongoClient?: boolean;
