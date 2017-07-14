@@ -9,6 +9,5 @@ export function showError(msg?, callback?) {
 		callback: callback || null,
 	};
 	const errModal = React.createElement(ModalWindow, props);
-	console.log(errModal, props);
 	ReactDOM.render(errModal, errContainer);
 }
