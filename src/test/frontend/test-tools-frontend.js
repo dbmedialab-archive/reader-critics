@@ -26,8 +26,8 @@ const config = require(`${rootPath}/app/config.js`).default;
 
 const log = require('debug')('nightwatch');
 
-function openPage(client, path = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${path}`);
+function openPage(client, urlPath = '/') {
+	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
 }
 
 module.exports = {

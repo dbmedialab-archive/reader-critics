@@ -100,9 +100,7 @@ describe('ArticleEditForm Reset Tests', () => {
 		.perform(() => done());
 	});
 
-	after((browser, done) => {
-		return browser.end().perform(() => done());
-	});
+	after((browser, done) => browser.end().perform(() => done()));
 
 	// Check if clicking on "Edit" opens the <ArticleEditForm>
 

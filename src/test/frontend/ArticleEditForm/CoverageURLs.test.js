@@ -80,9 +80,7 @@ describe('ArticleEditForm URLs coverage tests', () => {
 		.perform(() => done());
 	});
 
-	after((browser, done) => {
-		return browser.end().perform(() => done());
-	});
+	after((browser, done) => browser.end().perform(() => done()));
 
 	// Check if URL input in <ArticleEditForm> works properly:
 	// On press 'Return' key value has to save into state and clear input (way 1).
