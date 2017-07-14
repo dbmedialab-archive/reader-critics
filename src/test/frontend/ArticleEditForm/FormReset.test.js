@@ -19,13 +19,11 @@
 const assert = require('assert');
 
 const {
-	isFunction,
 	isObject,
 	isString,
 } = require('lodash');
 
 const {
-	log,
 	openPage,
 } = require('../test-tools-frontend');
 
@@ -35,28 +33,29 @@ const timeToWait = 5000;
 
 const elArticle = 'article#article-el-2';
 
-const elContent = elArticle + ' p';
-const elFeedbackForm = elArticle + ' form';
-const elTextArea = elFeedbackForm + ' fieldset.text textarea';
-const elCommentArea = elFeedbackForm + ' fieldset.comment textarea';
+const elContent = `${elArticle} p`;
+const elFeedbackForm = `${elArticle} form`;
+const elTextArea = `${elFeedbackForm} fieldset.text textarea`;
+const elCommentArea = `${elFeedbackForm} fieldset.comment textarea`;
 
-const elEditBtn = elArticle + ' footer .button.edit';
-const elResetBtn = elArticle + ' footer .button.reset';
+const elEditBtn = `${elArticle} footer .button.edit`;
+const elResetBtn = `${elArticle} footer .button.reset`;
 
-const elFormSaveBtn = elFeedbackForm + ' .button.save';
-const elFormCancelBtn = elFeedbackForm + ' .button.cancel';
+const elFormSaveBtn = `${elFeedbackForm} .button.save`;
+const elFormCancelBtn = `${elFeedbackForm} .button.cancel`;
 
 // Some text snippets for display and input fields
 
 const expectedText = 'I dag landet Donald Trump i Israel.';
 const changedText = 'Bavaria I dag lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
 const userComment = 'Here be some comment';
-const diffyText = '(Dagbladet): Bavaria I dag landet Donald Trump i Israel. Kort tid etter ble han historisk da han, som den første sittende amerikanske presidenten, besøkte Vestmuren, bedre kjent som klagemuren, i Jerusalem. lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
+const diffyText = '(Dagbladet): Bavaria I dag landet Donald Trump i Israel. Kort tid etter ble han '
+	+ 'historisk da han, som den første sittende amerikanske presidenten, besøkte Vestmuren, bedre '
+	+ 'kjent som klagemuren, i Jerusalem. lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
 
-describe('ArticleEditForm Reset Tests', function() {
-
-	var thePage;
-	var originalText;
+describe('ArticleEditForm Reset Tests', () => {
+	let thePage;
+	let originalText;
 
 	// Set up the test page and extract some of the text values for
 	// later use. The test case was split up into before() and it(..)
@@ -77,7 +76,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// .perform() functions for these "late evaluations", but that blows
 	// up the code.
 
-	before(function(browser, done) {
+	before((browser, done) => {
 		thePage = openPage(browser, '/fb/http://test/xyz/1')
 
 		// Wait for elements to render
@@ -90,27 +89,24 @@ describe('ArticleEditForm Reset Tests', function() {
 		.assert.containsText(elContent, expectedText)
 
 		// Save current element text for later comparism
-		.getText(elContent, function(result) {
+		.getText(elContent, (result) => {
 			if (!(isObject(result) && isString(result.value))) {
-				return assert.fail(null, null, 'Could not get text content from ArticleElement');
+				assert.fail(null, null, 'Could not get text content from ArticleElement');
+				return;
 			}
 
 			originalText = result.value;
 		})
-		.perform(function() {
-			done();
-		});
+		.perform(() => done());
 	});
 
-	after(function(browser, done) {
-		return browser.end().perform(function() {
-			done();
-		});
+	after((browser, done) => {
+		return browser.end().perform(() => done());
 	});
 
 	// Check if clicking on "Edit" opens the <ArticleEditForm>
 
-	it('should become visible when clicking the "Edit" button', function(browser) {
+	it('should become visible when clicking the "Edit" button', (browser) => {
 		// Click on the "Edit" button and check if <ArticleEditForm>
 		// and the sub components become visible
 		thePage.click(elEditBtn)
@@ -121,14 +117,14 @@ describe('ArticleEditForm Reset Tests', function() {
 		// Check if <ArticleEditForm> and the sub components have become visible,
 		// also if the "text" field contains the same text as its parent component
 		.assert.visible(elFeedbackForm)
-		.assert.value(elTextArea, originalText)
+		.assert.value(elTextArea, originalText);
 	});
 
 	// Check if the text components keep their input.
 	// Form elements in React can be set up in a way that makes them read-only
 	// (for example, declaring them with value=this.state.some)
 
-	it('should accept and keep user input', function(browser) {
+	it('should accept and keep user input', (browser) => {
 		// Focus comment field and type some text into it
 		thePage.click(elCommentArea)
 		.setValue(elCommentArea, userComment)
@@ -149,7 +145,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// Check if "Cancel" button works properly. It should close the form
 	// without text diff
 
-	it('should close form without accepting text diff', function(browser) {
+	it('should close form without accepting text diff', (browser) => {
 		// Click "Cancel" button
 		thePage.click(elFormCancelBtn)
 		.waitForElementNotVisible(elFeedbackForm, timeToWait)
@@ -167,7 +163,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// Form elements in React can be set up in a way that makes them read-only
 	// (for example, declaring them with value=this.state.some)
 
-	it('should accept and keep user input again on the second form show', function(browser) {
+	it('should accept and keep user input again on the second form show', (browser) => {
 		// Click on the "Edit" button and check if <ArticleEditForm>
 		// and the sub components become visible
 		thePage.click(elEditBtn)
@@ -195,7 +191,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// Check if the form closes after clicking "Safe"
 	// A text diff should appear on its parent component
 
-	it('should close the form and display a text diff', function(browser) {
+	it('should close the form and display a text diff', (browser) => {
 		// Click "Save" button
 		thePage.click(elFormSaveBtn)
 		.waitForElementNotVisible(elFeedbackForm, timeToWait)
@@ -212,7 +208,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// Check if the data in form is the same we entered before on next open
 	// of the <ArticleEditForm>.
 
-	it('should open the form and display a text entered before', function(browser) {
+	it('should open the form and display a text entered before', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -232,7 +228,7 @@ describe('ArticleEditForm Reset Tests', function() {
 	// Check if the form is reset to its original values correctly when
 	// clicking the "Reset" button
 
-	it('should reset properly', function(browser) {
+	it('should reset properly', (browser) => {
 		// Click "Reset" button, check for original text, then re-open <ArticleEditForm>
 		thePage.click(elResetBtn)
 		.assert.hidden(elFeedbackForm)
@@ -244,5 +240,4 @@ describe('ArticleEditForm Reset Tests', function() {
 
 		.assert.value(elTextArea, originalText);
 	});
-
 });
