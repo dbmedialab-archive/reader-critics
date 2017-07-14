@@ -28,11 +28,13 @@ import TimestampPlugin from './plugins/TimestampPlugin';
 import {
 	ArticleSchema,
 	SuggestionSchema,
+	WebsiteSchema,
 } from './schemas';
 
 import {
 	Article,
 	Suggestion,
+	Website,
 } from 'base';
 
 // Install global plugins
@@ -48,3 +50,7 @@ export const ArticleModel : Model <ArticleDocument>
 export interface SuggestionDocument extends Suggestion, Document {}
 export const SuggestionModel : Model <SuggestionDocument>
 	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+
+export interface WebsiteDocument extends Website, Document {}
+export const WebsiteModel : Model <WebsiteDocument>
+	= model <WebsiteDocument> ('Suggestion', WebsiteSchema);

@@ -16,6 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as ArticleSchema } from './ArticleSchema';
-export { default as SuggestionSchema } from './SuggestionSchema';
-export { default as WebsiteSchema } from './WebsiteSchema';
+import { Schema } from 'mongoose';
+
+const WebsiteSchema : Schema = new Schema({
+	name: String,
+	hosts: [String],
+	chiefEditors: [String],
+});
+
+WebsiteSchema.index({
+	'name': 1,
+}, {
+	name: 'unique_name',
+	unique: true,
+});
+
+WebsiteSchema.index({
+	'hosts': 1,
+}, {
+	name: 'unique_hosts',
+	unique: true,
+});
+
+export default WebsiteSchema;
