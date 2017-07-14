@@ -33,11 +33,6 @@ const ArticleSchema : Schema = new Schema({
 	items: [Schema.Types.Mixed],
 });
 
-class ArticleSchemaDecorator {
-	// This is a template I shall try out:
-	// http://mongoosejs.com/docs/advanced_schemas.html
-}
-
 ArticleSchema.index({
 	'url': 1,
 	'version': 1,
@@ -45,7 +40,5 @@ ArticleSchema.index({
 	name: 'unique_article_version',
 	unique: true,
 });
-
-ArticleSchema.loadClass(ArticleSchemaDecorator);
 
 export default ArticleSchema;
