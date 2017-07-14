@@ -1,54 +1,59 @@
-// BUTTON
-// Buttons are used for actions.
-// We use "anchors" <a> in the code since we want :before and :after
-// pseudo-class to be avialable when styling.
-.button {
-	text-transform: uppercase;
-	font-size: .8rem;
-	background: none;
-	border: none;
-	cursor: pointer;
-	padding: .5rem;
-
-	&:before {
-		margin-right: .3rem;
-		@include material-icon;
-		display: inline-block;
-		border-radius: 2rem;
-		border-width: 1px;
-		border-style: solid;
-		position: relative;
-		top: .15rem;
-		padding: .5rem;
-	}
-
-	// BUTTON VARIATIONS
-	&.cancel {
-		&:before {
-			content: "close";
-			border-color: $color-warning;
-		}
-		color: $color-warning;
-	}
-	&.save {
-		&:before {
-			content: "done";
-			border-color: $color-success;
-		}
-		color: $color-success;
-	}
-	&.edit {
-		&:before {
-			content: "edit";
-			border-color: $color-success;
-		}
-		color: $color-success;
-	}
-	&.reset {
-		&:before {
-			content: "delete";
-			border-color: $color-warning;
-		}
-		color: $color-warning;
-	}
+button {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+    overflow: visible;
+    text-transform: none;
+    -webkit-appearance: button;
+    cursor: pointer
+}
+button[disabled]{
+    cursor: default;
+}
+button::-moz-focus-inner{
+    border: 0;
+    padding: 0;
+}
+.button, button {
+    display: inline-block;
+    height: 38px;
+    padding: 0 30px;
+    color: #555;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: transparent;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+.button:focus,
+.button:hover,
+button:focus,
+button:hover{
+    color: #333;
+    border-color: #888;
+    outline: 0;
+}
+.button.button-primary,
+button.button-primary {
+    color: #FFF;
+    background-color: #33C3F0;
+    border-color: #33C3F0;
+}
+.button.button-primary:focus,
+.button.button-primary:hover,
+button.button-primary:focus,
+button.button-primary:hover {
+    color: #FFF;
+    background-color: #1EAEDB;
+    border-color: #1EAEDB;
+}
+.button, button {
+    margin-bottom: 1rem;
 }

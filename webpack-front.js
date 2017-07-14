@@ -36,7 +36,11 @@ const OrderPlugin = new webpack.optimize.OccurrenceOrderPlugin();
 
 const UglifyPlugin = new webpack.optimize.UglifyJsPlugin();
 
-const ExtractSassPlugin = new ExtractTextPlugin({
+const ExtractFbSassPlugin = new ExtractTextPlugin({
+	filename: 'fb.css',
+});
+
+const ExtractFrontSassPlugin = new ExtractTextPlugin({
 	filename: 'front.css',
 });
 
@@ -77,8 +81,20 @@ const webpackConfig = {
 				],
 			},
 			{
-				test: /\.scss$/,
-				use: ExtractSassPlugin.extract({
+				test: /fb.scss$/,
+				use: ExtractFbSassPlugin.extract({
+					use: [{
+						loader: 'css-loader?-url',
+					}, {
+						loader: 'sass-loader',
+					}],
+					// use style-loader in development
+					fallback: 'style-loader',
+				}),
+			},
+			{
+				test: /front.scss$/,
+				use: ExtractFrontSassPlugin.extract({
 					use: [{
 						loader: 'css-loader?-url',
 					}, {
@@ -94,7 +110,8 @@ const webpackConfig = {
 	plugins: [
 		TypeScriptPathsPlugin,
 		OrderPlugin,
-		ExtractSassPlugin,
+		ExtractFbSassPlugin,
+		ExtractFrontSassPlugin,
 	],
 
 	// When importing a module whose path matches one of the following, just

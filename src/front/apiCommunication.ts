@@ -33,9 +33,7 @@ export const fetchArticle = ((url: string, version: string): Promise<any> => {
 		.then(json)
 		.then(data => data.article)
 		.catch(function (error) {
-			//TO DO make errors
-			showError('Something went wrong', ()=>{alert('this is a callback');});
-			console.log('request failed', error);
+			showError(error.message);
 		});
 });
 
@@ -48,7 +46,7 @@ export const sendSuggestion = ((data: any): Promise<any> => {
 	.then(status)
 	.then(json)
 	.catch(function (error) {
-		console.log('request failed', error);
+		showError(error.message);
 	});
 });
 
