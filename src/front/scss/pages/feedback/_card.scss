@@ -7,7 +7,7 @@
 	margin: 0 auto 1rem;
 	max-width: $content-max-width;
 	box-sizing: border-box;
-	@media (max-width: $content-max-width){
+	@media (max-width: $content-max-width) {
 		margin: 0 .5rem 1rem;
 	}
 
@@ -30,11 +30,16 @@
 	fieldset {
 		margin: 0;
 		padding: 0;
-		border: none;
+		border: 0;
+
+		&.actions {
+			text-align: center;
+			margin: 1rem 0;
+		}
 	}
 
 	textarea,
-	input[type=text] {
+	input[type='text'] {
 		width: 100%;
 		border: 1px solid $color-success;
 		border-radius: 5px;
@@ -47,13 +52,6 @@
 	footer {
 		text-align: center;
 		margin: 1rem 0;
-	}
-
-	fieldset {
-		&.actions {
-			text-align: center;
-			margin: 1rem 0;
-		}
 	}
 
 	label {
@@ -69,21 +67,24 @@
 	form {
 		display: none;
 	}
+
 	ol {
 		li {
 			font-size: .9rem;
 			list-style: none;
-			&:before {
+
+			&::before {
+				@include material-icon;
 				margin-right: .3rem;
 				font-size: 1.5rem;
-				@include material-icon;
 				display: inline-block;
-				content: "close";
+				content: 'close';
 				color: $color-warning;
 				position: relative;
 				top: .5rem;
 				cursor: pointer;
 			}
+
 			&:last-child {
 				margin-bottom: 1rem;
 			}
@@ -94,30 +95,34 @@
 	// displaying all the input feilds and hiding some options.
 	&.editing {
 		form {
-			display: block;
 			@include appear;
+			display: block;
 		}
+
 		footer {
 			display: none;
 		}
 	}
 
 	&:not(.edited) {
-		.button.reset {
-			display: none;
+		.button {
+			.reset {
+				display: none;
+			}
 		}
 	}
+
 	.button {
 		text-transform: uppercase;
 		font-size: .8rem;
 		background: none;
-		border: none;
+		border: 0;
 		cursor: pointer;
 		padding: .5rem;
 
-		&:before {
-			margin-right: .3rem;
+		&::before {
 			@include material-icon;
+			margin-right: .3rem;
 			display: inline-block;
 			border-radius: 2rem;
 			border-width: 1px;
@@ -129,32 +134,39 @@
 
 		// BUTTON VARIATIONS
 		&.cancel {
-			&:before {
-				content: "close";
+			color: $color-warning;
+
+			&::before {
+				content: 'close';
 				border-color: $color-warning;
 			}
-			color: $color-warning;
 		}
+
 		&.save {
-			&:before {
-				content: "done";
+			color: $color-success;
+
+			&::before {
+				content: 'done';
 				border-color: $color-success;
 			}
-			color: $color-success;
 		}
+
 		&.edit {
-			&:before {
-				content: "edit";
+			color: $color-success;
+
+			&::before {
+				content: 'edit';
 				border-color: $color-success;
 			}
-			color: $color-success;
 		}
+
 		&.reset {
-			&:before {
-				content: "delete";
+			color: $color-warning;
+
+			&::before {
+				content: 'delete';
 				border-color: $color-warning;
 			}
-			color: $color-warning;
 		}
 	}
 }

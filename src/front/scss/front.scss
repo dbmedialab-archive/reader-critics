@@ -2,13 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-@import "layout/settings";
-@import "layout/mixins";
-@import "layout/buttons";
+@import 'layout/settings';
+@import 'layout/mixins';
+@import 'layout/buttons';
 
-@import "layout/main";
-@import "layout/header";
-@import "layout/footer";
-@import "layout/home";
+@import 'layout/main';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/home';
 
-@import "pages/suggestion/suggestion";
+@import 'pages/suggestion/suggestion';

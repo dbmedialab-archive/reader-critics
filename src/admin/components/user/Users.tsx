@@ -17,7 +17,6 @@
 //
 
 import * as React from 'react';
-import 'front/scss/app.scss';
 
 // Common components
 import  * as UIActions from 'admin/actions/UIActions';
