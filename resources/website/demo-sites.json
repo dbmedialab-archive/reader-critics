@@ -1,0 +1,30 @@
+[
+	{
+		"name": "dagbladet.no",
+		"hosts": [
+			"www.dagbladet.no"
+		],
+		"chiefEditors": [
+			"vakt@dagbladet.no"
+		]
+	},
+	{
+		"name": "dinside.no",
+		"hosts": [
+			"www.dinside.no"
+		],
+		"chiefEditors": [
+			"vakt@dinside.no"
+		]
+	},
+	{
+		"name": "morgenposten.no",
+		"hosts": [
+			"www.morgenposten.no",
+			"www.mopo.no"
+		],
+		"chiefEditors": [
+			"redaksjon@morgenposten.no"
+		]
+	}
+]
