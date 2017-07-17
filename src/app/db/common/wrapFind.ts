@@ -16,18 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isArray } from 'lodash';
+import {
+	isArray,
+	isObject,
+} from 'lodash';
 
 import {
 	Document,
 	DocumentQuery,
 } from 'mongoose';
 
+import * as app from 'app/util/applib';
+
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
  */
-export default function <D extends Document, Z> (
+export function wrapFind <D extends Document, Z> (
 	result : DocumentQuery <D[], D>
 ) : Promise <Z[]>
 {
@@ -46,12 +51,36 @@ export default function <D extends Document, Z> (
 	});
 }
 
+/**
+ * @param result A DocumentQuery produced with Model.find()
+ * @return An array of plain objects of type Z, all excess properties removed
+ */
+export function wrapFindOne <D extends Document, Z> (
+	result : DocumentQuery <D, D>
+) : Promise <Z>
+{
+	return result.lean().exec().then(result => {
+		if (result === null) {
+			return Promise.resolve(null);
+		}
+
+		console.log(app.inspect(result));
+
+		if (!isObject(result)) {
+			return Promise.reject(new Error('results.exec() did not return a single object'));
+		}
+
+		return Promise.resolve(filterProperties <Z> (result));
+	});
+}
+
 // Everything that starts with one or more underscores
 const rxPropFilter = /^_+.+/;
 
 // Based on the MDN polyfill for Object.assign, simplified and with a key filter
 const filterProperties = <Z> (from : any) : Z => {
 	const to = Object.create(null);
+
 	for (const key in from) {
 		if (rxPropFilter.test(key)) {
 			continue;
@@ -60,5 +89,8 @@ const filterProperties = <Z> (from : any) : Z => {
 			to[key] = from[key];
 		}
 	}
+
+	// TODO recursive over arrays and sub-objects
+
 	return to;
 };
