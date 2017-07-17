@@ -18,13 +18,16 @@
 
 import WebsiteService from './WebsiteService';
 
-import identify from './mock/identify';
-
-import { clear } from '../BasicPersistingService';
+import {
+	clear,
+	identify,
+	save,
+} from './WebsiteDAO';
 
 const service : WebsiteService = {
 	clear,
 	identify,
+	save,
 };
 
 module.exports = service;

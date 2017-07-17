@@ -16,19 +16,34 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import WebsiteService from './WebsiteService';
-
-import { clear } from '../BasicPersistingService';
+import {
+	ArticleURL,
+	Website,
+} from 'base';
 
 import {
-	identify,
-	save,
-} from './WebsiteDAO';
+	WebsiteDocument,
+	WebsiteModel,
+} from 'app/db/models';
 
-const service : WebsiteService = {
-	clear,
-	identify,
-	save,
-};
+import {
+	clearCollection,
+	wrapFindOne,
+	wrapSave
+} from 'app/db/common';
 
-module.exports = service;
+export function clear() : Promise <void> {
+	return clearCollection(WebsiteModel);
+}
+
+export function identify(articleURL : ArticleURL) : Promise <Website> {
+	// TODO parameter null check
+	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
+		'hosts': articleURL.url.hostname,
+	}));
+}
+
+export function save(website : Website) : Promise <void> {
+	// TODO parameter null check
+	return wrapSave(new WebsiteModel(website).save());
+}
