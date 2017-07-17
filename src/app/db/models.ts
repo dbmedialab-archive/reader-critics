@@ -53,4 +53,4 @@ export const SuggestionModel : Model <SuggestionDocument>
 
 export interface WebsiteDocument extends Website, Document {}
 export const WebsiteModel : Model <WebsiteDocument>
-	= model <WebsiteDocument> ('Suggestion', WebsiteSchema);
+	= model <WebsiteDocument> ('Website', WebsiteSchema);
