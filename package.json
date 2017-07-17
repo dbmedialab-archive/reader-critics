@@ -10,7 +10,7 @@
 	},
 	"main": "out/start.js",
 	"engines": {
-		"node": "^8.1.2"
+		"node": "^8.1.4"
 	},
 	"scripts": {
 		"build": "run/build",
