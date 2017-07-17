@@ -36,8 +36,6 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('identify()', () => {
 		const a : ArticleURL = new ArticleURL('http://www.dagbladet.no/mat/67728317');
-		console.dir(a.href);
-
 		return websiteService.identify(a).then((w : Website) => {
 			console.log('und dann:', app.inspect(w));
 		});

@@ -26,8 +26,6 @@ import {
 	DocumentQuery,
 } from 'mongoose';
 
-import * as app from 'app/util/applib';
-
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
@@ -59,18 +57,16 @@ export function wrapFindOne <D extends Document, Z> (
 	result : DocumentQuery <D, D>
 ) : Promise <Z>
 {
-	return result.lean().exec().then(result => {
-		if (result === null) {
+	return result.lean().exec().then(singleResult => {
+		if (singleResult === null) {
 			return Promise.resolve(null);
 		}
 
-		console.log(app.inspect(result));
-
-		if (!isObject(result)) {
-			return Promise.reject(new Error('results.exec() did not return a single object'));
+		if (!isObject(singleResult)) {
+			return Promise.reject(new Error('result.exec() did not return a single object'));
 		}
 
-		return Promise.resolve(filterProperties <Z> (result));
+		return Promise.resolve(filterProperties <Z> (singleResult));
 	});
 }
 
