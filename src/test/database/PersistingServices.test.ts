@@ -18,66 +18,12 @@
 
 import 'mocha';
 
-import * as Promise from 'bluebird';
-import * as path from 'path';
-
-import { assert } from 'chai';
-
-import { Suggestion } from 'base';
 import { initDatabase } from 'app/db';
-import { suggestionService } from 'app/services';
 
-import * as app from 'app/util/applib';
+import suggestionService from './persisting-services/SuggestionServiceTests';
+import websiteService from './persisting-services/WebsiteServiceTests';
 
-const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldinger.json');
+before(() => initDatabase());
 
-describe('SuggestionService', function () {
-
-	before(function (done) {
-		initDatabase()
-		.then(() => suggestionService.clear())
-		.then(() => done())
-		.catch(error => done(error));
-	});
-
-	it('save()', function(done) {
-		let count : number;
-
-		app.loadJSON(tilbakemeldinger)
-		.then(data => {
-			assert.isArray(data);
-			count = data.length;
-
-			return Promise.mapSeries(data, suggestionService.save);
-		})
-		.then(results => {
-			assert.isArray(results);
-			assert.lengthOf(results, count, 'Number of saved objects does not match');
-
-			done();
-		})
-		.catch(error => done(error));
-	});
-
-	it('findSince()', function(done) {
-		const dateSince = new Date('2017-07-06T00:00:00Z');
-
-		suggestionService.findSince(dateSince)
-		.then((results : Suggestion[]) => {
-			// Date checks
-			results.forEach((result : Suggestion) => {
-				const thatDate = new Date(result.date.created);
-
-				assert.isTrue(app.isValidDate(thatDate), 'Result date is not valid');
-				assert.isTrue(thatDate >= dateSince, 'Result date must be greater than query date');
-			});
-
-			// With the current test data we expect 5 result objects
-			assert.lengthOf(results, 5, 'Number of result objects does not match');
-
-			done();
-		})
-		.catch(error => done(error));
-	});
-
-});
+describe('WebsiteService', websiteService);
+describe('SuggestionService', suggestionService);
