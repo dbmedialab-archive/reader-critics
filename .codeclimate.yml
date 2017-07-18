@@ -1,10 +1,18 @@
 engines:
 #  csslint:
 #    enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc.json
+      extensions:
+      - .js
   fixme:
     enabled: true
-#  markdownlint:
-#    enabled: true
+  markdownlint:
+    enabled: false
+    issue_override:
+      severity: info
 #  scss-lint:
 #    enabled: true
   shellcheck:
@@ -18,6 +26,7 @@ ratings:
 #  - 'assets/**.css'
 #  - 'src/**.scss'
   - 'run/**.sh'
+  - 'src/**.js'
 
 exclude_paths:
 - 'assets/**'
@@ -25,5 +34,4 @@ exclude_paths:
 - 'kubefiles/**'
 - 'node_modules/**'
 - 'resources/**'
-- 'src/test/frontend/**'
 - 'tmp/**'
