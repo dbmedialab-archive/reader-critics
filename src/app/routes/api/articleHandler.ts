@@ -1,10 +1,31 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import {
 	Request,
 	Response,
 } from 'express';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
+import {
+	Article,
+	ArticleURL,
+	Website,
+} from 'base';
 
 import {
 	articleService,
@@ -30,16 +51,8 @@ export default function(requ : Request, resp : Response) : void {
 		const articleURL = new ArticleURL(requ.query.url);
 		const version = requ.query.version;
 
+		let website : Website;
 		let wasFetched = false;
-
-		const website = websiteService.identify(articleURL);
-
-		if (website === undefined) {
-			const msg = 'Could not identify website';
-			return errorResponse(resp, new Error(msg), msg, {
-				status: 400,
-			});
-		}
 
 		log(articleURL.href);
 
@@ -49,7 +62,14 @@ export default function(requ : Request, resp : Response) : void {
 			// Article is not in the database, fetch a fresh version from the web
 			if (article === undefined) {
 				wasFetched = true;
-				return articleService.fetch(website, articleURL);
+				return websiteService.identify(articleURL).then((w : Website) => {
+					if (website === undefined) {
+						return Promise.reject(new Error('Could not identify website'));
+					}
+
+					website = w;
+					return articleService.fetch(website, articleURL);
+				});
 			}
 			return article;
 		})

@@ -1,0 +1,95 @@
+.fab {
+	pointer-events: none;
+	overflow: hidden;
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 1rem;
+	text-align: right;
+	margin: 0 auto;
+
+	span {
+		pointer-events: all;
+		background-color: $color-success;
+		color: $color-background;
+		padding: .75rem 0 .75rem .5rem;
+		position: relative;
+		top: -.5rem;
+		left: -1rem;
+		opacity: 0;
+		box-shadow: $shadow-level-3;
+
+		&.disabled {
+			@include disappear;
+			opacity: 0;
+		}
+
+		&::before {
+			@include material-icon;
+			margin-right: .3rem;
+			content: 'close';
+			font-size: 1.5rem;
+			position: relative;
+			top: .30rem;
+			cursor: pointer;
+		}
+
+		&::after {
+			border-style: solid;
+			border-width: .5rem;
+			border-color: transparent transparent transparent $color-success;
+			content: '';
+			display: inline-block;
+			position: relative;
+			right: -1rem;
+			top: .1rem;
+			cursor: pointer;
+		}
+	}
+
+	a {
+		pointer-events: all;
+		position: relative;
+		font-size: 0;
+		color: transparent;
+
+		&::before {
+			@include material-icon;
+			background-color: $color-success;
+			color: $color-background;
+			font-size: 2rem;
+			margin-right: .3rem;
+			display: inline-block;
+			border-radius: 3rem;
+			position: relative;
+			padding: 1.5rem;
+			content: 'done';
+			cursor: pointer;
+			box-shadow: $shadow-level-3;
+		}
+	}
+
+	&.disabled {
+		a {
+			transition: bottom $speed-appear;
+			bottom: -6rem;
+		}
+	}
+
+	&.enabled {
+		a {
+			transition: bottom $speed-disappear;
+			bottom: 0;
+		}
+
+		span {
+			@include appear;
+			opacity: 1;
+
+			&.disabled {
+				@include disappear;
+				opacity: 0;
+			}
+		}
+	}
+}

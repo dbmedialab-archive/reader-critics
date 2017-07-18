@@ -1,27 +1,22 @@
 $color-main-bg: #2f323a;
 $color-main-bg-darken: #25272E;
-$color-highlight-strip: rgba(255,235,59,0.7);
-$color-border-light: rgba(0,0,0,0.1);
-$color-border-medium: rgba(0, 0, 0, 0.4);
-$color-drop-denied: rgba(255, 0, 0, 0.3);
-$color-drop-granted: rgba(146, 205, 24, 0.3);
-$color-icon-light: rgba(172,172,172,1);
-$color-icon-darken: rgba(136,136,136,1);
-
-$background-item-light: rgba(0,0,0,0.1);
-$green-color: rgba(146, 205, 24, 0.3);
-
+$color-highlight-strip: rgba(255, 235, 59, .7);
+$color-border-light: rgba(0, 0, 0, .1);
+$color-border-medium: rgba(0, 0, 0, .4);
+$color-drop-denied: rgba(255, 0, 0, .3);
+$color-drop-granted: rgba(146, 205, 24, .3);
+$color-icon-light: rgba(172, 172, 172, 1);
+$color-icon-darken: rgba(136, 136, 136, 1);
+$background-item-light: rgba(0, 0, 0, .1);
+$green-color: rgba(146, 205, 24, .3);
 //radius
 $modal-windows-radius: 3px;
 $button-radius: 3px;
 $table-radius: 3px;
-
-
 $react-dates-color-primary: $color-main-bg;
 $react-dates-color-primary-dark: $color-main-bg-darken;
 $react-dates-width-day-picker: 300px !default;
-
 //Glyphicons 
 
 //$glyphicons-halflings-font-path: '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/fonts'ж
-//$glyphicons-halflings-font-path:  'http://getbootstrap.com/dist/fonts/';
+//$glyphicons-halflings-font-path:'http://getbootstrap.com/dist/fonts/';

@@ -4,12 +4,13 @@ html, body, * {
 	padding: 0;
 	box-sizing: border-box;
 }
+
 .container {
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 20px;
-    box-sizing: border-box
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 20px;
+	box-sizing: border-box;
 }
 
 // ANIMATIONS
@@ -17,6 +18,7 @@ html, body, * {
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
@@ -25,10 +27,12 @@ html, body, * {
 	from {
 		opacity: 1;
 	}
+
 	to {
 		opacity: 0;
 	}
 }
+
 // AAAAND AWAY WE GO!
 body {
 	font-family: 'Roboto', sans-serif;
@@ -39,15 +43,17 @@ ins {
 	color: $color-success;
 	text-decoration: none;
 }
+
 del {
 	color: $color-warning;
 }
 
 a {
-    background-color: transparent;
-    color: #1EAEDB
+	background-color: transparent;
+	color: #1EAEDB;
 }
+
 a:active,
 a:hover {
-    outline: 0
+	outline: 0;
 }
