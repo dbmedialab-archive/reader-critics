@@ -1,3 +1,21 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as path from 'path';
 import * as Promise from 'bluebird';
 
@@ -34,25 +52,43 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
+	it('get', () => {
+		return Promise.all([
+			websiteService.get('dagbladet.no'),
+			websiteService.get('something-else.xyz'),
+		])
+		.then((results : Website[]) => {
+			assertWebsiteObject(results[0], 'dagbladet.no');
+			assert.isNull(results[1]);
+		});
+	});
+
 	it('identify()', () => {
 		const a : ArticleURL = new ArticleURL('http://www.dagbladet.no/mat/67728317');
 		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
 
 		return Promise.all([
 			websiteService.identify(a),
-			websiteService.identify(b)
+			websiteService.identify(b),
 		])
 		.then((results : Website[]) => {
-			assert.isObject(results[0]);
-
-			[ 'name', 'hosts', 'chiefEditors' ].forEach(prop => {
-				assert.property(results[0], prop);
-			});
-
-			assert.isArray(results[0].hosts);
-			assert.isArray(results[0].chiefEditors);
-
-			assert.isNull(results[1])
+			assertWebsiteObject(results[0], 'dagbladet.no');
+			assert.isNull(results[1]);
 		});
 	});
+}
+
+const assertWebsiteObject = (w : Website, name? : string) => {
+	assert.isObject(w);
+
+	[ 'name', 'hosts', 'chiefEditors' ].forEach(prop => {
+		assert.property(w, prop);
+	});
+
+	assert.isArray(w.hosts);
+	assert.isArray(w.chiefEditors);
+
+	if (name) {
+		assert.strictEqual(w.name, name);
+	}
 }

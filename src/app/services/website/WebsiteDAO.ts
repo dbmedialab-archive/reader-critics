@@ -36,6 +36,16 @@ export function clear() : Promise <void> {
 	return clearCollection(WebsiteModel);
 }
 
+/**
+ * Returns a single Website object if the exact name is found in the database.
+ * "name" is the primary key on the websites collection.
+ */
+export function get(name : string) : Promise <Website> {
+	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
+		name,
+	}));
+}
+
 export function identify(articleURL : ArticleURL) : Promise <Website> {
 	// TODO parameter null check
 	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({

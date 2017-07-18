@@ -20,12 +20,14 @@ import WebsiteService from './WebsiteService';
 
 import {
 	clear,
+	get,
 	identify,
 	save,
 } from './WebsiteDAO';
 
 const service : WebsiteService = {
 	clear,
+	get,
 	identify,
 	save,
 };
