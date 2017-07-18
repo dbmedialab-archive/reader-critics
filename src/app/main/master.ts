@@ -39,13 +39,22 @@ export default function() {
 
 	printEnvironment(app.createLog('env'));
 
+	checkEngineVersion()
+		.then(startWorkers)
+		.then(notifyTestMaster)
+		.catch(startupErrorHandler);
+}
+
+// Cluster startup
+
+function startWorkers() : Promise <any> {
+	const startupPromises : Promise <any> [] = [];
+
 	log(
 		'%s threads available, running at %sx concurrency',
 		colors.brightWhite(app.numThreads),
 		colors.brightWhite(app.numConcurrency)
 	);
-
-	const startupPromises : Promise <{}> [] = [];
 
 	for (let i = 0; i < app.numConcurrency; i++) {
 		const worker : cluster.Worker = cluster.fork();
@@ -58,18 +67,7 @@ export default function() {
 		}));
 	}
 
-	function allWorkersStartedPromise() : Promise <void> {
-		return new Promise((resolve)=>{
-			Promise.all(startupPromises).then(()=>{
-				resolve();
-			});
-		});
-	}
-
-	checkEngineVersion()
-		.then(allWorkersStartedPromise)
-		.then(notifyTestMaster)
-		.catch(startupErrorHandler);
+	return Promise.all(startupPromises);
 }
 
 // Cluster Events
