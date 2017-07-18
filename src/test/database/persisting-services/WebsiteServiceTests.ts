@@ -91,4 +91,4 @@ const assertWebsiteObject = (w : Website, name? : string) => {
 	if (name) {
 		assert.strictEqual(w.name, name);
 	}
-}
+};
