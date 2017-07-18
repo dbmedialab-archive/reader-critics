@@ -19,7 +19,7 @@
 import * as React from 'react';
 
 const Footer : React.StatelessComponent <any> =
-	() => <footer id="main-footer">
+	() => <footer className="main-footer">
 		<div className="container">
 			<div className="content four columns">
 				<span>Ris eller ros?</span>
@@ -34,6 +34,8 @@ const Footer : React.StatelessComponent <any> =
 				</div>
 			</div>
 		</div>
+		<div id="err-section"></div>
+
 	</footer>;
 
 export default Footer;

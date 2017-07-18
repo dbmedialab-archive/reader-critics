@@ -35,7 +35,7 @@ const log = app.createLog();
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'/static/front.css',
+	'/static/fb.css',
 ];
 
 const scripts = [

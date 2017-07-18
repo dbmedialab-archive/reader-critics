@@ -19,9 +19,10 @@
 		"before": true
 	},
 	"rules": {
+		"brace-style": [ "error", "stroustrup" ],
 		"indent": [ "error", "tab" ],
 		"no-tabs": 0,
-		"no-unused-vars": [1, {
+		"no-unused-vars": [ "warn", {
 			"vars": "local",
 			"args": "none"
 		}]

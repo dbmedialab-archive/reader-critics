@@ -90,8 +90,8 @@ class AddUserModalComponent extends React.Component <any, any> {
 	render() : JSX.Element {
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newUser" closeHandler={this.closePopup}>
-				<div className="modalWindow">
-					<div className="closeBtn">
+				<div className="modal-window">
+					<div className="close-btn">
 						<i onClick={this.closeReset} className="fa fa-close"></i>
 					</div>
 					<div className="row">
@@ -133,10 +133,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 								</fieldset>
 							</div>
 						</div>
-						<div className="row button_holder">
+						<div className="row button-holder">
 							<div className="medium-12 columns">
-								<a onClick={this.saveUser} className="button" href="#">Save</a>
-								<a onClick={this.closeReset} className="secondary button cancel_button" href="#">Cancel</a>
+								<a onClick={this.saveUser} className="button success" href="#">Save</a>
+								<a onClick={this.closeReset} className="secondary button cancel-button" href="#">Cancel</a>
 							</div>
 						</div>
 					</form>
