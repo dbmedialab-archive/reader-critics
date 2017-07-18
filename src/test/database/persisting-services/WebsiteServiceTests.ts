@@ -36,8 +36,23 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('identify()', () => {
 		const a : ArticleURL = new ArticleURL('http://www.dagbladet.no/mat/67728317');
-		return websiteService.identify(a).then((w : Website) => {
-			console.log('und dann:', app.inspect(w));
+		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
+
+		return Promise.all([
+			websiteService.identify(a),
+			websiteService.identify(b)
+		])
+		.then((results : Website[]) => {
+			assert.isObject(results[0]);
+
+			[ 'name', 'hosts', 'chiefEditors' ].forEach(prop => {
+				assert.property(results[0], prop);
+			});
+
+			assert.isArray(results[0].hosts);
+			assert.isArray(results[0].chiefEditors);
+
+			assert.isNull(results[1])
 		});
 	});
 }
