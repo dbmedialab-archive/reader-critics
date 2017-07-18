@@ -28,12 +28,19 @@ import {
 } from 'base';
 
 import { websiteService } from 'app/services';
+import { EmptyError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
 const demoSites = path.join('resources', 'website', 'demo-sites.json');
 
 export default function(this: ISuiteCallbackContext) {
+	it('parameter checks', () => {
+		assert.throws(() => websiteService.get(null), EmptyError);
+		assert.throws(() => websiteService.identify(null), EmptyError);
+		assert.throws(() => websiteService.save(null), EmptyError);
+	});
+
 	it('clear()', () => websiteService.clear());
 
 	it('save()', () => {

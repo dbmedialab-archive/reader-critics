@@ -32,6 +32,8 @@ import {
 	wrapSave
 } from 'app/db/common';
 
+import emptyCheck from 'app/util/emptyCheck';
+
 export function clear() : Promise <void> {
 	return clearCollection(WebsiteModel);
 }
@@ -41,19 +43,20 @@ export function clear() : Promise <void> {
  * "name" is the primary key on the websites collection.
  */
 export function get(name : string) : Promise <Website> {
+	emptyCheck(name);
 	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
 		name,
 	}));
 }
 
 export function identify(articleURL : ArticleURL) : Promise <Website> {
-	// TODO parameter null check
+	emptyCheck(articleURL);
 	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
 		'hosts': articleURL.url.hostname,
 	}));
 }
 
 export function save(website : Website) : Promise <void> {
-	// TODO parameter null check
+	emptyCheck(website);
 	return wrapSave(new WebsiteModel(website).save());
 }
