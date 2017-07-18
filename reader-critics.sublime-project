@@ -21,7 +21,19 @@
 	"folders":
 	[
 		{
-			"path": "src"
+			"path": "src/admin"
+		},
+		{
+			"path": "src/app"
+		},
+		{
+			"path": "src/base"
+		},
+		{
+			"path": "src/front"
+		},
+		{
+			"path": "src/test"
 		}
 	]
 }
