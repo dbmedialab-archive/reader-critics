@@ -17,10 +17,10 @@
 //
 
 import * as React from 'react';
+import 'front/scss/fb.scss';
 
 import Article from 'base/Article';
 import ArticleElement from 'front/component/ArticleElement';
-
 import { fetchArticle } from 'front/apiCommunication';
 import { getArticleURL } from 'front/uiGlobals';
 

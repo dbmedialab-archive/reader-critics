@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-/* eslint-disable prefer-template, quote-props, import/no-extraneous-dependencies */
+/* eslint-disable quote-props, import/no-extraneous-dependencies */
 
 const path = require('path');
 const webpack = require('webpack');
@@ -24,6 +24,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const LodashPlugin = require('lodash-webpack-plugin');
 
+const { isArray } = require('lodash');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -58,19 +59,42 @@ const OrderPlugin = new webpack.optimize.OccurrenceOrderPlugin();
 
 const UglifyPlugin = new webpack.optimize.UglifyJsPlugin();
 
-// Main config, see other (sometimes environment depending) settings below
+// SASS Plugin, can be used multiple times
 
-module.exports = (applicationPart) => {
-	const ExtractSassPlugin = new ExtractTextPlugin({
-		filename: applicationPart + '.css',
-	});
+const createSassModule = (sassPlugin, pattern) => ({
+	test: pattern,
+	use: sassPlugin.extract({
+		use: [{
+			loader: 'css-loader?-url',
+		}, {
+			loader: 'sass-loader',
+		}],
+		// use style-loader in development
+		fallback: 'style-loader',
+	}),
+});
 
+/**
+ * Main Webpack configuration.
+ * Creates a config object with project-default settings that can be extended
+ * later, before finally returning the finished configuration to Webpack.
+ *
+ * @param applicationPart The name of the application part that to be bundled,
+ *   referring to a sub directory in /src
+ * @param scssParts (optional) An array of strings that are names of discrete
+ *   SCSS configs inside that application part. If you want to create more than
+ *   one final CSS file during a build, create for example the main files
+ *   "basic.scss" and "other.scss" somewhere in the source sub directory. The
+ *   array parameter would then be [ 'basic', 'other' ] and the resulting CSS
+ *   files "basic.css" and "other.css" will arrive in /out/bundle
+ */
+module.exports = (applicationPart, scssParts) => {
 	const webpackConfig = {
 		entry: {
 			app: path.join(__dirname, 'src', applicationPart, 'index.tsx'),
 		},
 		output: {
-			filename: applicationPart + '.bundle.js',
+			filename: `${applicationPart}.bundle.js`,
 			path: path.join(__dirname, 'out', 'bundle'),
 			publicPath: '/static',
 		},
@@ -99,25 +123,12 @@ module.exports = (applicationPart) => {
 						TypeScriptLoader,
 					],
 				},
-				{
-					test: /\.scss$/,
-					use: ExtractSassPlugin.extract({
-						use: [{
-							loader: 'css-loader?-url',
-						}, {
-							loader: 'sass-loader',
-						}],
-						// use style-loader in development
-						fallback: 'style-loader',
-					}),
-				},
 			],
 		},
 
 		plugins: [
 			TypeScriptPathsPlugin,
 			OrderPlugin,
-			ExtractSassPlugin,
 		],
 
 		// When importing a module whose path matches one of the following, just
@@ -129,6 +140,32 @@ module.exports = (applicationPart) => {
 			'react-dom': 'ReactDOM',
 		},
 	};
+
+	// Create SASS plugins
+
+	if (scssParts === undefined) {
+		// The second parameter to the main function here can be left empty. In this
+		// case a default SASS plugin with a target name of 'applicationPart' will
+		// be created which takes in all .scss files found in the source folder
+		const sassPlugin = new ExtractTextPlugin({
+			filename: `${applicationPart}.css`,
+		});
+
+		webpackConfig.module.rules.push(createSassModule(sassPlugin, /\.scss$/));
+		webpackConfig.plugins.push(sassPlugin);
+	}
+	else if (isArray(scssParts)) {
+		scssParts.forEach((scssName) => {
+			const sassPlugin = new ExtractTextPlugin({
+				filename: `${scssName}.css`,
+			});
+
+			const scssPattern = new RegExp(`${scssName}.scss$`);
+
+			webpackConfig.module.rules.push(createSassModule(sassPlugin, scssPattern));
+			webpackConfig.plugins.push(sassPlugin);
+		});
+	}
 
 	// Enable source maps in development
 

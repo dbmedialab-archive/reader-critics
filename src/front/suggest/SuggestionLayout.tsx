@@ -17,8 +17,7 @@
 //
 
 import * as React from 'react';
-import '../scss/app.scss';
-
+import 'front/scss/front.scss';
 // Common components
 import Header from 'front/common/Header';
 import Footer from 'front/common/Footer';

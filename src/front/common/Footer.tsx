@@ -34,6 +34,8 @@ const Footer : React.StatelessComponent <any> =
 				</div>
 			</div>
 		</div>
+		<div id="err-section"></div>
+
 	</footer>;
 
 export default Footer;
