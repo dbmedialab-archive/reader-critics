@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { isString } from 'lodash';
+
 import {
 	ArticleURL,
 	Website,
@@ -49,10 +51,20 @@ export function get(name : string) : Promise <Website> {
 	}));
 }
 
-export function identify(articleURL : ArticleURL) : Promise <Website> {
+export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 	emptyCheck(articleURL);
+	let hostname : string;
+
+	if (isString(articleURL)) {
+		const url = new URL(articleURL);
+		hostname = url.hostname;
+	}
+	else {
+		hostname = articleURL.url.hostname;
+	}
+
 	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
-		'hosts': articleURL.url.hostname,
+		'hosts': hostname,
 	}));
 }
 
