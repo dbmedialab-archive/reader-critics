@@ -16,18 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import { Schema } from 'mongoose';
 
-import BasicPersistingService from '../BasicPersistingService';
+const WebsiteSchema : Schema = new Schema({
+	name: String,
+	hosts: [String],
+	chiefEditors: [String],
+});
 
-interface WebsiteService extends BasicPersistingService {
-	get(name : string) : Promise <Website>;
-	identify(url : ArticleURL) : Promise <Website>;
+WebsiteSchema.index({
+	'name': 1,
+}, {
+	name: 'unique_name',
+	unique: true,
+});
 
-	save(website : Website) : Promise <void>;
-}
+WebsiteSchema.index({
+	'hosts': 1,
+}, {
+	name: 'unique_hosts',
+	unique: true,
+});
 
-export default WebsiteService;
+export default WebsiteSchema;

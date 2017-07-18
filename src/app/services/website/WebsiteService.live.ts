@@ -20,12 +20,17 @@ import WebsiteService from './WebsiteService';
 
 import { clear } from '../BasicPersistingService';
 
-// Use mock implementation until matching against database works
-import identify from './mock/identify';
+import {
+	get,
+	identify,
+	save,
+} from './WebsiteDAO';
 
 const service : WebsiteService = {
+	get,
 	clear,
 	identify,
+	save,
 };
 
 module.exports = service;

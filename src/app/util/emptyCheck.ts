@@ -16,18 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import { EmptyError } from './errors';
 
-import BasicPersistingService from '../BasicPersistingService';
+const emptyCheck = (...args) : void => args.forEach((v : any, i : number) => {
+	if (v === null || v === undefined) {
+		throw new EmptyError(`Checked parameter ${i + 1} is null or undefined`);
+	}
+});
 
-interface WebsiteService extends BasicPersistingService {
-	get(name : string) : Promise <Website>;
-	identify(url : ArticleURL) : Promise <Website>;
-
-	save(website : Website) : Promise <void>;
-}
-
-export default WebsiteService;
+export default emptyCheck;

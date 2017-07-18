@@ -21,8 +21,11 @@ import {
 	Response,
 } from 'express';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
+import {
+	Article,
+	ArticleURL,
+	Website,
+} from 'base';
 
 import {
 	articleService,
@@ -48,16 +51,8 @@ export default function(requ : Request, resp : Response) : void {
 		const articleURL = new ArticleURL(requ.query.url);
 		const version = requ.query.version;
 
+		let website : Website;
 		let wasFetched = false;
-
-		const website = websiteService.identify(articleURL);
-
-		if (website === undefined) {
-			const msg = 'Could not identify website';
-			return errorResponse(resp, new Error(msg), msg, {
-				status: 400,
-			});
-		}
 
 		log(articleURL.href);
 
@@ -67,7 +62,14 @@ export default function(requ : Request, resp : Response) : void {
 			// Article is not in the database, fetch a fresh version from the web
 			if (article === undefined) {
 				wasFetched = true;
-				return articleService.fetch(website, articleURL);
+				return websiteService.identify(articleURL).then((w : Website) => {
+					if (website === undefined) {
+						return Promise.reject(new Error('Could not identify website'));
+					}
+
+					website = w;
+					return articleService.fetch(website, articleURL);
+				});
 			}
 			return article;
 		})
