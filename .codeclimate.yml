@@ -31,5 +31,4 @@ exclude_paths:
 - 'kubefiles/**'
 - 'node_modules/**'
 - 'resources/**'
-- 'src/test/frontend/**'
 - 'tmp/**'
