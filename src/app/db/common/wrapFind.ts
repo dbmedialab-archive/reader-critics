@@ -86,7 +86,5 @@ const filterProperties = <Z> (from : any) : Z => {
 		}
 	}
 
-	// TODO recursive over arrays and sub-objects
-
 	return to;
 };
