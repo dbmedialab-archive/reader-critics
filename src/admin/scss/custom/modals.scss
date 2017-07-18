@@ -1,33 +1,38 @@
-.modalWindow {
+.modal-window {
 	background: #fff;
 	border-radius: $modal-windows-radius;
-	border: none;
+	border: 0;
 	outline: none;
 	padding: 40px 20px 20px;
-	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
 	width: 800px;
-	.closeBtn{
+
+	.close-btn {
 		position: absolute;
 		right: 20px;
 		top: 30px;
 		z-index: 104;
-		i{
-			padding-right: 0.9375rem; 
+
+		i {
+			padding-right: .9375rem;
 			cursor: pointer;
 			font-size: 22px;
 		}
-	}
-	.hint-title{
-		font-size: 2rem;
-		padding: 0 0.9375rem 0.9375rem;
-	}
-	.hint-img{
-		width: 100%;
-		height: 100%;
 
 	}
-	form{
-		label{
+
+	.hint-title {
+		font-size: 2rem;
+		padding: 0 .9375rem .9375rem;
+	}
+
+	.hint-img {
+		width: 100%;
+		height: 100%;
+	}
+
+	form {
+		label {
 			color: #777;
 			line-height: 1.5;
 		}
@@ -35,304 +40,61 @@
 		input {
 			background: #fff;
 			box-shadow: none;
-			&.upload{
+
+			&.upload {
 				display: none;
 			}
+
 		}
+
 	}
+
 	> .row > img {
-		padding-left: 0.9375rem;
-		padding-right: 0.9375rem;
+		padding-left: .9375rem;
+		padding-right: .9375rem;
 	}
-	.button_holder {
+
+	.button-holder {
 		margin-top: 20px;
-		.button{
+
+		.button {
 			border-radius: $button-radius;
 			text-transform: uppercase;
 			font-size: 1rem;
-			&.secondary{
-				&, &:focus, &:active, &:visited{
+
+			&.secondary {
+				&,
+				&:focus,
+				&:active,
+				&:visited {
 					background-color: $color-main-bg;
 				}
-				&:hover{
+
+				&:hover {
 					background-color: $color-main-bg-darken;
-				};
+				}
+
+				;
 			}
-			&.cancel_button {
+
+			&.cancel-button {
 				margin-left: 30px;
 				float: right;
 			}
 		}
 	}
-	.select_holder{
-		select {
-			background-color: #D9D9D8;
-		}
-	}
-	.user-comics{
-		border:1px solid #cacaca;
-		padding: 8px 10px;
-		max-height: 200px;
-		overflow-y: auto;
-	}
-	.comic_holder{
-
-		display: -webkit-flex;
-		display: flex;
-		-webkit-flex-direction: row; 
-		flex-direction: row;
-		-webkit-justify-content: flex-start;
-		justify-content: flex-start;
-		padding: 5px;
-		.comic-thumb{
-			-webkit-flex: 1 0 0; 
-   			flex: 1 0 0;
-		}
-
-		.comic-title{
-			-webkit-flex: 7 0 0;
-   			flex: 7 0 0;
-   			position: relative;
-			.title{
-				@include middle-position();
-				padding-left: 0.5rem;
-				font-size: 2rem;
-				color: #888;
-			}
-		}
-		.comic-action{
-			-webkit-flex: 1 0 0;
-   			flex: 1 0 0;
-   			text-align: center;
-   			position: relative;
-   			.buttons{
-   				@include middle-position();
-				padding-left: 0.5rem;
-				font-size: 2rem;
-				color: #888;
-				i{
-					cursor: pointer;
-				}
-   			}
-		}
-	}
-	.SingleDatePicker{
-		display: block;
-		.SingleDatePickerInput{
-			border: 1px solid rgb(202, 202, 202);
-			margin: 0 0 1rem;
-			.DateInput{
-				height: 2.4375rem;
-				width: 100%;
-				font-size: 13px;
-				color: #8a8a8a;
-				font-weight: 100;
-				line-height: normal;
-				input.DateInput__input{
-					font-size: 13px;
-					margin: 0;
-				}
-				.DateInput__display-text{
-					padding: 0;
-					&.DateInput__display-text--has-input{
-						color: #0a0a0a;
-					}
-				}
-			}
-			&>button{
-				position: absolute;
-				top: 0;
-				right: 0;
-				margin:0;
-				svg{
-					height: 10px;
-					width: 13px;
-					margin-top: -5px;
-
-				}
-				&.SingleDatePickerInput__clear-date--hover{
-					border-radius: 0;
-				}
-			}
-		}
-
-	}
-	.publish-schedule-holder{
-		.publish-schedule{
-			font-size: 13px;
-			color: #8a8a8a;
-			width: 100%;
-			display: block;
-			line-height: normal;
-			font-weight: 100;
-			border: 1px solid #cacaca;
-			margin: 0 0 1rem;
-			.dayChecker{
-				width: 14.28%;
-				display: inline-block;
-				text-align: center;
-				padding: 1rem 0;
-				cursor: pointer;
-				background-color: #fff;
-				@include transition(background-color, .3s, linear);
-
-				&:hover, &.checked{
-					background-color: #92cd18;
-					label{
-						span{
-							color: #fff;
-							font-weight: 700;
-						}
-					}	
-				}
-
-				label{
-					display: inline-block;
-					position: relative;
-					text-align: center;
-					cursor: pointer;
-					font-size: 1.2rem;
-					input{
-						margin: 0;
-						cursor: pointer;
-					}
-					span{
-						display: block;
-						color: #8a8a8a;
-						&.weekend{
-							color: red;
-						}
-					}
-				}
-			}
-
-
-		}
-	}
-	.contact_details{
-		textarea{
-			min-height: 100px;
-		}
-	}
-	.additional-settings-section{
-		margin-bottom: 1.5rem;
-		.additional-btn{
-			color: #2199e8;
-			padding: 0 2px;
-			background-color: #fff;
-			position: absolute;
-						
-			cursor: pointer;
-			display: inline-block;
-			-webkit-transition: color .3s, transform .3s;
-    		transition: color .3s, transform .3s;
-
-			&:hover{
-				color: #1583cc;
-			};
-		}
-		.additonal-content{
-			max-height: 0;
-			overflow-y: hidden;
-			margin-top: 10px;
-			@include transition(max-height, .3s, ease-in-out);
-			.additional-content-section{
-				border: 1px solid #cacaca;
-				padding: 0.9375rem 0.9375rem;
-			}
-			.enable-ftp{
-				position: relative;
-				font-size: 1rem;
-				.caption{
-					position: absolute;
-					left:15px;
-					cursor: pointer;
-				}
-			}
-		}
-		&.opened{
-			.additional-btn{
-				padding: 0 2px;
-				transform: translateX(5px);
-			}
-			.additonal-content{
-				max-height: 200px;
-			}
-		}
-	}
-	.is-comic-active-checkbox{
-		cursor: pointer;
-		margin-top: 0.3rem;
-		font-size: 1.2rem;
-		position: relative;
-		.caption{
-			padding-left: 5px;
-			text-transform: uppercase;
-			position: absolute;
-			left: 15px;
-			cursor: pointer;
-		}
-	}
-	.owners-holder{
-		padding-bottom: 10px;
-		span{
-			margin-right: 5px;
-			line-height: 1.5;
-			font-size: 1rem;
-			font-weight: bold;
-		}
-		i{
-			color: #FFF;
-			font-size: 1rem;
-			margin-left: 20px;
-			&:hover{
-				cursor: pointer;
-			}
-		}
-	}
-
-}
-.progress-bar {
-	width: 300px;
-	position: absolute;
-	top: 54%;
-	left: 50%;
-	margin-left: -150px;
-	>.progress{
-		height: 2rem;
-		.progress-meter-text{
-			font-size: 1.5rem;
-		}
-		>.progress-meter{
-			>.progress-meter-text{
-				&.small-percent{
-					left: 25px;
-				}
-			}
-		}
-	}
-	.message-please-wait{
-		position: relative;
-		width: 150%;
-		height: 100%;
-		color: #FFF;
-		font-size: 1.5rem;
-		margin-left: -25%;
-		text-align: center;
-		background-color: rgba(0, 0, 0, 0.5);
-		border-radius: $modal-windows-radius;
-		padding: 0.5rem;
-	}
 }
 
 @media #{$medium-only} {
-	.modalWindow {
+	.modal-window {
 		width: 500px;
 	}
+
 }
 
 @media #{$small-only} {
-	.modalWindow {
+	.modal-window {
 		width: 350px;
 	}
+
 }

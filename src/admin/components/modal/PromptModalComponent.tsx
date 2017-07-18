@@ -81,8 +81,8 @@ class PromptModal extends React.Component <any, any> {
 		this.props.promptInput.touched && this.props.promptInput.valid.isError ?'is-invalid-input':'';
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newComic" closeHandler={this.closePopup}>
-				<div className="modalWindow">
-					<div className="closeBtn">
+				<div className="modal-window">
+					<div className="close-btn">
 						<i onClick={this.closePopup} className="fa fa-close"></i>
 					</div>
 					<div className="row">
@@ -114,12 +114,12 @@ class PromptModal extends React.Component <any, any> {
 							</div>
 						</div>
 					</form>
-					<div className="row button_holder">
+					<div className="row button-holder">
 						<div className="medium-12 columns">
 							<a onClick={this.okHandler} className="secondary button save_button" href="#">
 								{this.props.okBtnName}
 							</a>
-							<a onClick={this.cancelHandler} className="secondary button cancel_button" href="#">
+							<a onClick={this.cancelHandler} className="secondary button cancel-button" href="#">
 								{this.props.cancelBtnName}
 							</a>
 						</div>

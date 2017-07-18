@@ -10,32 +10,35 @@
 
 	span {
 		pointer-events: all;
-		&.disabled {
-			@include disappear;
-			opacity: 0;
-		}
 		background-color: $color-success;
 		color: $color-background;
-		padding: .75rem 0rem .75rem .5rem;
+		padding: .75rem 0 .75rem .5rem;
 		position: relative;
 		top: -.5rem;
 		left: -1rem;
 		opacity: 0;
 		box-shadow: $shadow-level-3;
-		&:before {
-			margin-right: .3rem;
+
+		&.disabled {
+			@include disappear;
+			opacity: 0;
+		}
+
+		&::before {
 			@include material-icon;
-			content: "close";
+			margin-right: .3rem;
+			content: 'close';
 			font-size: 1.5rem;
 			position: relative;
 			top: .30rem;
 			cursor: pointer;
 		}
-		&:after {
+
+		&::after {
 			border-style: solid;
 			border-width: .5rem;
 			border-color: transparent transparent transparent $color-success;
-			content: "";
+			content: '';
 			display: inline-block;
 			position: relative;
 			right: -1rem;
@@ -47,19 +50,20 @@
 	a {
 		pointer-events: all;
 		position: relative;
-		font-size: 0rem;
+		font-size: 0;
 		color: transparent;
-		&:before {
+
+		&::before {
+			@include material-icon;
 			background-color: $color-success;
 			color: $color-background;
 			font-size: 2rem;
 			margin-right: .3rem;
-			@include material-icon;
 			display: inline-block;
 			border-radius: 3rem;
 			position: relative;
 			padding: 1.5rem;
-			content: "done";
+			content: 'done';
 			cursor: pointer;
 			box-shadow: $shadow-level-3;
 		}
@@ -71,14 +75,17 @@
 			bottom: -6rem;
 		}
 	}
+
 	&.enabled {
 		a {
 			transition: bottom $speed-disappear;
-			bottom: 0rem;
+			bottom: 0;
 		}
+
 		span {
-			opacity: 1;
 			@include appear;
+			opacity: 1;
+
 			&.disabled {
 				@include disappear;
 				opacity: 0;

@@ -57,8 +57,8 @@ class DialogModal extends React.Component <any, any> {
 				name={this.props.windowName}
 				closeHandler={this.closePopup}
 			>
-				<div className="modalWindow">
-					<div className="closeBtn">
+				<div className="modal-window">
+					<div className="close-btn">
 						<i onClick={this.closePopup} className="fa fa-close"></i>
 					</div>
 					<div className="row">
@@ -66,7 +66,7 @@ class DialogModal extends React.Component <any, any> {
 							<p className="lead">{this.props.dialogTitle}</p>
 						</div>
 					</div>
-					<div className="row button_holder">
+					<div className="row button-holder">
 						<div className="medium-12 columns">
 							<a
 								onClick={this.yesHandler}
@@ -75,7 +75,7 @@ class DialogModal extends React.Component <any, any> {
 							</a>
 							<a
 								onClick={this.noHandler}
-								className="secondary button cancel_button"
+								className="secondary button cancel-button"
 								href="#">{this.props.noBtnName}
 							</a>
 						</div>

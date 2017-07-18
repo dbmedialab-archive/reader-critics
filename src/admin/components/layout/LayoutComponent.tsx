@@ -35,7 +35,7 @@ class LayoutComponent extends React.Component <any, any> {
 					<div style={{height: '100%'}}>
 
 						{this.props.mainPreloader.isVisible?
-							<div className="preloaderSection">
+							<div className="preloader-section">
 									<PreloaderIcon
 											type={ICON_TYPE.OVAL}
 											size={50}
