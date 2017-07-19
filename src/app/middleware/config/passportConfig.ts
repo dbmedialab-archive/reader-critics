@@ -1,9 +1,21 @@
 import * as _ from 'lodash';
-import {ExtractJwt, Strategy as JwtStrategy} from 'passport-jwt';
-import {Strategy as LocalStrategy} from 'passport-local';
 import * as jwt from 'jsonwebtoken';
+
+import {
+	ExtractJwt,
+	Strategy as JwtStrategy,
+	StrategyOptions as JwtStrategyOptions,
+} from 'passport-jwt';
+
+import {
+	Strategy as LocalStrategy,
+	IStrategyOptions as LocalStrategyOptions,
+} from 'passport-local';
+
 import config from '../../config';
 import {IUser} from 'app/models/User';
+
+import { User } from 'base';
 
 export interface PassportJWTOptions {
 	secretOrKey: string;
@@ -13,12 +25,12 @@ export interface PassportJWTOptions {
 const jwtConf = config.get('jwt');
 const users: IUser[] = config.get('users');
 
-export const jwtOptions: PassportJWTOptions = {
+export const jwtOptions : JwtStrategyOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeader(),
 	secretOrKey: jwtConf.jwtSecret,
 };
 
-export const localOptions = {
+export const localOptions : LocalStrategyOptions = {
 	usernameField: 'login',
 	passwordField: 'password',
 	session: true,
@@ -40,9 +52,7 @@ export function deserializeUser(id: number | null,
 	}
 }
 
-export const jwtStrategy = new JwtStrategy(jwtOptions,
-	(jwtPayload,
-		next: (	err: string, user: IUser) => void) => {
+const jwtVerify = (jwtPayload, next: (err: string, user: IUser) => void) => {
 	// TODO rewrite it on DB added
 	const user = users[_.findIndex(users, {id: jwtPayload.id, login: jwtPayload.login})];
 	if (user) {
@@ -50,23 +60,29 @@ export const jwtStrategy = new JwtStrategy(jwtOptions,
 	} else {
 		next('User no found', null);
 	}
-});
+};
 
-export const localStrategy = new LocalStrategy(localOptions, (
+export const jwtStrategy = new JwtStrategy(jwtOptions, jwtVerify);
+
+const localVerify = (
 	username: string,
 	password: string,
-	done: (	err: string | null,	token?: string | null, user?: IUser | null) => void) => {
-		// TODO rewrite it on DB added
-		const user = users[_.findIndex(users, {login: username})];
-		if (!user) {
-			return done('User not found');
+	done: (err : string, token? : string, user? : IUser) => void) => {
+	const user : User = {};
+
+	// TODO rewrite it on DB added
+	const _user = users[_.findIndex(users, {login: username})];
+	if (!user) {
+		return done('User not found');
+	}
+	user.comparePassword(password, function (err: string, isMatch: boolean) {
+		if (isMatch) {
+			const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
+			done(null, token, user.toString());
+		} else {
+			done('Incorrect password');
 		}
-		user.comparePassword(password, function (err: string, isMatch: boolean) {
-			if (isMatch) {
-				const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
-				done(null, token, user.toString());
-			} else {
-				done('Incorrect password');
-			}
-		});
 	});
+};
+
+export const localStrategy = new LocalStrategy(localOptions, localVerify);
