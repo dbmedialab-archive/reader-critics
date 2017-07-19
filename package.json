@@ -139,7 +139,7 @@
 		"typescript": "2.4.1"
 	},
 	"optionalDependencies": {
-		"geckodriver": "1.7.1",
+		"geckodriver": "1.8.0",
 		"webpack-dev-server": "2.5.1"
 	},
 	"greenkeeper": {
