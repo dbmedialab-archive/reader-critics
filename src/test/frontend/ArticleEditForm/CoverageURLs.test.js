@@ -16,16 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const assert = require('assert');
-
 const {
-	isFunction,
-	isObject,
-	isString,
-} = require('lodash');
-
-const {
-	log,
 	openPage,
 } = require('../test-tools-frontend');
 
@@ -35,32 +26,29 @@ const timeToWait = 5000;
 
 const elArticle = 'article#article-el-2';
 
-const elContent = elArticle + ' p';
-const elFeedbackForm = elArticle + ' form';
-const elTextArea = elFeedbackForm + ' fieldset.text textarea';
-const elLinkInput = elFeedbackForm + ' fieldset.link input';
-const elLinkOl = elFeedbackForm + ' fieldset.link ol';
-const elLinkLi0 = elFeedbackForm + ' fieldset.link ol li:nth-child(1)';
-const elLinkLi1 = elFeedbackForm + ' fieldset.link ol li:nth-child(2)';
-const elLinkLi2 = elFeedbackForm + ' fieldset.link ol li:nth-child(3)';
+const elContent = `${elArticle} p`;
+const elFeedbackForm = `${elArticle} form`;
+const elTextArea = `${elFeedbackForm} fieldset.text textarea`;
+const elLinkInput = `${elFeedbackForm} fieldset.link input`;
+const elLinkOl = `${elFeedbackForm} fieldset.link ol`;
+const elLinkLi0 = `${elFeedbackForm} fieldset.link ol li:nth-child(1)`;
+const elLinkLi1 = `${elFeedbackForm} fieldset.link ol li:nth-child(2)`;
+const elLinkLi2 = `${elFeedbackForm} fieldset.link ol li:nth-child(3)`;
 
-const elEditBtn = elArticle + ' footer .button.edit';
+const elEditBtn = `${elArticle} footer .button.edit`;
 
-const elFormSaveBtn = elFeedbackForm + ' .button.save';
-const elFormCancelBtn = elFeedbackForm + ' .button.cancel';
+const elFormSaveBtn = `${elFeedbackForm} .button.save`;
+const elFormCancelBtn = `${elFeedbackForm} .button.cancel`;
 
 // Some text snippets for display and input fields
 
 const changedText = 'Bavaria lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
-const expectedText = 'I dag landet Donald Trump i Israel.';
 const linkText0 = 'http://www.wikipedia.org/0';
 const linkText1 = 'http://www.wikipedia.org/1';
 const linkText2 = 'http://www.wikipedia.org/2';
 
-describe('ArticleEditForm URLs coverage tests', function() {
-
-	var thePage;
-	var originalText;
+describe('ArticleEditForm URLs coverage tests', () => {
+	let thePage;
 
 	// Set up the test page and extract some of the text values for
 	// later use. The test case was split up into before() and it(..)
@@ -81,7 +69,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 	// .perform() functions for these "late evaluations", but that blows
 	// up the code.
 
-	before(function(browser, done) {
+	before((browser, done) => {
 		thePage = openPage(browser, '/fb/http://test/xyz/1')
 
 		// Wait for elements to render
@@ -89,35 +77,17 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		.waitForElementVisible('div#app section#content', timeToWait)
 		.waitForElementVisible('section#content > article.title', timeToWait)
 
-		// Ensure we're addressing the right container. Remember that
-		// containsText() is a substring match! strictEquals has to be done manually.
-		.assert.containsText(elContent, expectedText)
-
-		// Save current element text for later comparism
-		.getText(elContent, function(result) {
-			if (!(isObject(result) && isString(result.value))) {
-				return assert.fail(null, null, 'Could not get text content from ArticleElement');
-			}
-
-			originalText = result.value;
-		})
-		.perform(function() {
-			done();
-		});
+		.perform(() => done());
 	});
 
-	after(function(browser, done) {
-		return browser.end().perform(function() {
-			done();
-		});
-	});
+	after((browser, done) => browser.end().perform(() => done()));
 
 	// Check if URL input in <ArticleEditForm> works properly:
 	// On press 'Return' key value has to save into state and clear input (way 1).
 	// If any data is entered into field and press 'Lagre' button it also
 	// should be saved
 
-	it('should open the form and set URL\'s by two ways', function(browser) {
+	it('should open the form and set URL\'s by two ways', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -142,7 +112,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		// Check if content has changed
 		.assert.value(elLinkInput, linkText0)
 
-		//Press "Enter" key on input
+		// Press "Enter" key on input
 		.click(elLinkInput)
 		.sendKeys(elLinkInput, browser.Keys.RETURN)
 
@@ -157,7 +127,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		// Check if content has changed
 		.assert.value(elLinkInput, linkText1)
 
-		//Press "Enter" key
+		// Press "Enter" key
 		.click(elLinkInput)
 		.sendKeys(elLinkInput, browser.Keys.RETURN)
 
@@ -181,7 +151,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 	// Check if the links in form are the same we entered before on next open
 	// of the <ArticleEditForm>.
 
-	it('should open the form and display the links entered before', function(browser) {
+	it('should open the form and display the links entered before', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -193,13 +163,11 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		.assert.containsText(elLinkOl, linkText0)
 		.assert.containsText(elLinkOl, linkText1)
 		.assert.containsText(elLinkOl, linkText2);
-
 	});
 
 	// Check if the links in form are the same ordered we entered them before
 
-	it('should display the links entered before are in a correct order', function(browser) {
-
+	it('should display the links entered before are in a correct order', (browser) => {
 		// Check if the fields contain that links we had entered
 		thePage.assert.containsText(elLinkLi0, linkText0)
 		.assert.containsText(elLinkLi1, linkText1)
@@ -212,7 +180,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 
 	// Check if we can remove URLs from the list
 
-	it('should remove the link', function(browser) {
+	it('should remove the link', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -231,7 +199,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 
 	// Check if removed URL is not in a list on next open of <ArticleEditForm>
 
-	it('should removed URL not be in a list on next open', function(browser) {
+	it('should removed URL not be in a list on next open', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -260,8 +228,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 	// Check if the links in form are the same ordered we added them
 	// after remove one of them
 
-	it('should display the links entered in a correct order after remove one of them', function(browser) {
-
+	it('should display the links entered in a correct order after remove one of them', (browser) => {
 		// Check if the fields contain that links we had entered
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -281,7 +248,7 @@ describe('ArticleEditForm URLs coverage tests', function() {
 
 	// Check if we can discard removing URLs from the list
 
-	it('should not remove the link on discard', function(browser) {
+	it('should not remove the link on discard', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
 		.waitForElementVisible(elFeedbackForm, timeToWait)
@@ -315,5 +282,4 @@ describe('ArticleEditForm URLs coverage tests', function() {
 		thePage.click(elFormCancelBtn)
 		.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
-
 });

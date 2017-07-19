@@ -16,34 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
-
-import * as Promise from 'bluebird';
 import * as path from 'path';
+import * as Promise from 'bluebird';
 
 import { assert } from 'chai';
+import { ISuiteCallbackContext } from 'mocha';
 
 import { Suggestion } from 'base';
-import { initDatabase } from 'app/db';
 import { suggestionService } from 'app/services';
 
 import * as app from 'app/util/applib';
 
 const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldinger.json');
 
-describe('SuggestionService', function () {
+export default function(this: ISuiteCallbackContext) {
+	it('clear()', () => suggestionService.clear());
 
-	before(function (done) {
-		initDatabase()
-		.then(() => suggestionService.clear())
-		.then(() => done())
-		.catch(error => done(error));
-	});
-
-	it('save()', function(done) {
+	it('save()', () => {
 		let count : number;
 
-		app.loadJSON(tilbakemeldinger)
+		return app.loadJSON(tilbakemeldinger)
 		.then(data => {
 			assert.isArray(data);
 			count = data.length;
@@ -53,16 +45,13 @@ describe('SuggestionService', function () {
 		.then(results => {
 			assert.isArray(results);
 			assert.lengthOf(results, count, 'Number of saved objects does not match');
-
-			done();
-		})
-		.catch(error => done(error));
+		});
 	});
 
-	it('findSince()', function(done) {
+	it('findSince()', () => {
 		const dateSince = new Date('2017-07-06T00:00:00Z');
 
-		suggestionService.findSince(dateSince)
+		return suggestionService.findSince(dateSince)
 		.then((results : Suggestion[]) => {
 			// Date checks
 			results.forEach((result : Suggestion) => {
@@ -74,10 +63,6 @@ describe('SuggestionService', function () {
 
 			// With the current test data we expect 5 result objects
 			assert.lengthOf(results, 5, 'Number of result objects does not match');
-
-			done();
-		})
-		.catch(error => done(error));
+		});
 	});
-
-});
+}

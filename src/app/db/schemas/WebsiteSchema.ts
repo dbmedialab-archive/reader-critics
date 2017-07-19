@@ -16,21 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const findRoot = require('find-root');
-const path = require('path');
+import { Schema } from 'mongoose';
 
-const rootPath = path.join(findRoot(path.dirname(__dirname)), 'out');
+const WebsiteSchema : Schema = new Schema({
+	name: String,
+	hosts: [String],
+	chiefEditors: [String],
+});
 
-// eslint-disable-next-line import/no-dynamic-require
-const config = require(`${rootPath}/app/config.js`).default;
+WebsiteSchema.index({
+	'name': 1,
+}, {
+	name: 'unique_name',
+	unique: true,
+});
 
-const log = require('debug')('nightwatch');
+WebsiteSchema.index({
+	'hosts': 1,
+}, {
+	name: 'unique_hosts',
+	unique: true,
+});
 
-function openPage(client, urlPath = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
-}
-
-module.exports = {
-	log,
-	openPage,
-};
+export default WebsiteSchema;

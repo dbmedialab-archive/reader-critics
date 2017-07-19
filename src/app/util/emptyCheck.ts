@@ -16,21 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const findRoot = require('find-root');
-const path = require('path');
+import { EmptyError } from './errors';
 
-const rootPath = path.join(findRoot(path.dirname(__dirname)), 'out');
+const emptyCheck = (...args) : void => args.forEach((v : any, i : number) => {
+	if (v === null || v === undefined) {
+		throw new EmptyError(`Checked parameter ${i + 1} is null or undefined`);
+	}
+});
 
-// eslint-disable-next-line import/no-dynamic-require
-const config = require(`${rootPath}/app/config.js`).default;
-
-const log = require('debug')('nightwatch');
-
-function openPage(client, urlPath = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
-}
-
-module.exports = {
-	log,
-	openPage,
-};
+export default emptyCheck;

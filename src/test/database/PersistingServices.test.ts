@@ -16,34 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import 'mocha';
 
-const wsDagbladet : Website = {
-	name: 'dagbladet.no',
-	// parserClass: 'DagbladetParser',
-};
+import { initDatabase } from 'app/db';
 
-const wsVG : Website = {
-	name: 'vg.no',
-};
+import suggestionService from './persisting-services/SuggestionServiceTests';
+import websiteService from './persisting-services/WebsiteServiceTests';
 
-const wsAftenposten : Website = {
-	name: 'aftenposten.no',
-};
+before(() => initDatabase());
 
-export default function(articleURL : ArticleURL|string) : Website {
-	const url : string = (articleURL instanceof ArticleURL)
-		? articleURL.href : articleURL;
-
-	const websites : Website[] = [
-		wsDagbladet,
-		wsVG,
-		wsAftenposten,
-	];
-
-	return websites.find((site : Website) => {
-		const rx = new RegExp(`^https?:\/\/.*${site.name}/`);
-		return rx.test(url);
-	});
-}
+describe('WebsiteService', websiteService);
+describe('SuggestionService', suggestionService);

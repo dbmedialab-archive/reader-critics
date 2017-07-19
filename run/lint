@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
+echo -e "\033[1;38;5;214mTSlint ...\033[0m"
 node_modules/.bin/tslint \
 	--project tsconfig.json --type-check --config tslint.json \
 	'src/**/*.{ts,tsx}'
 
-sass-lint -c .sass-lint.yml --no-exit -v
+echo -e "\033[1;38;5;208mESlint ...\033[0m"
+node_modules/.bin/eslint src/**/*.js
+
+echo -e "\033[1;38;5;220mSASSlint ...\033[0m"
+node_modules/.bin/sass-lint -c .sass-lint.yml --no-exit -v
+

@@ -24,7 +24,10 @@ import {
 import BasicPersistingService from '../BasicPersistingService';
 
 interface WebsiteService extends BasicPersistingService {
-	identify(url : ArticleURL|string) : Website;
+	get(name : string) : Promise <Website>;
+	identify(url : ArticleURL|string) : Promise <Website>;
+
+	save(website : Website) : Promise <void>;
 }
 
 export default WebsiteService;
