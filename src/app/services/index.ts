@@ -24,6 +24,7 @@ import ArticleService from './article/ArticleService';
 import ParserService from './parser/ParserService';
 import SuggestionService from './suggestion/SuggestionService';
 import TemplateService from './template/TemplateService';
+import UserService from './user/UserService';
 import WebsiteService from './website/WebsiteService';
 
 // Determine execution environment
@@ -46,6 +47,9 @@ export const suggestionService : SuggestionService
 
 export const templateService : TemplateService
 	= require(`./template/TemplateService.${env}`);
+
+export const userService : UserService
+	= require(`./template/UserService.${env}`);
 
 export const websiteService : WebsiteService
 	= require(`./website/WebsiteService.${env}`);
