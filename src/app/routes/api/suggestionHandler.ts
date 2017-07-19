@@ -20,6 +20,7 @@ import {
 	Request,
 	Response,
 } from 'express';
+import { default as axios } from 'axios';
 
 import { Suggestion } from 'base/';
 import { SuggestionModel } from 'app/db/models';
@@ -35,7 +36,7 @@ const adjust = (requ : Request, field : string, len : number) => (
 	String(requ.body[field]).valueOf().substr(0, len)
 );
 
-export default function(requ : Request, resp : Response) : void {
+function sendSuggestion(requ){
 	const email = adjust(requ, 'email', maxEmailLength);
 	const comment = adjust(requ, 'comment', maxCommentLength);
 
@@ -49,9 +50,52 @@ export default function(requ : Request, resp : Response) : void {
 	};
 
 	log('Received comment from "%s"', email);
+	return new SuggestionModel(suggest).save();
+}
 
-	new SuggestionModel(suggest).save().then(() => {
-		okResponse(resp, { sent: true });
-	})
-	.catch(error => errorResponse(resp, error));
+function getErrorCode (errorCode) {
+	const ERROR_CODES = {
+		'missing-input-secret': 'Unexpected Server Error (1)',
+		'invalid-input-secret': 'Unexpected Server Error (2)',
+		'missing-input-response': 'Missing reCAPTCHA value',
+		'invalid-input-response': 'Invalid reCATPCHA value',
+		'timeout-or-duplicate': 'The validation has timed out and is no longer valid',
+		'bad-request': 'The request is invalid or malformed',
+	};
+	if (Array.isArray(errorCode)) {
+		const errors = errorCode.map(function (code) {
+			return getErrorCode(code);
+		});
+		return errors.join('\r\n');
+	}
+	return ERROR_CODES[errorCode] || (
+		errorCode ? ('Unexpected reCAPTCHA error: ' + errorCode) : 'Unexpected reCAPTCHA error');
+}
+
+export default function(requ : Request, resp : Response) : void {
+	if (!requ.body.captcha) {
+		const msg = 'Missing captcha parameter';
+		return errorResponse(resp, new Error(msg), msg, {
+			status: 400,
+		});
+	}
+	const secretKey = '6LdTeikUAAAAAIRt_4uVbT3HlZLUrHb3EeeqDtti';
+	const captchaVerifyURL = 'https://www.google.com/recaptcha/api/siteverify?secret='
+	+secretKey+'&response='+requ.body.captcha+'&remoteip='+requ.connection.remoteAddress.toString();
+	axios.post(captchaVerifyURL)
+		.then(function(response) {
+			console.log(response);
+			if (response.data && response.data.success) {
+				sendSuggestion(requ)
+					.then(() => {
+						okResponse(resp, { sent: true });
+					})
+					.catch(error => errorResponse(resp, error));
+			} else {
+				const msg = getErrorCode(response.data['error-codes']);
+				errorResponse(resp, new Error(msg), msg, {
+					status: 400,
+				});
+			}
+		});
 }

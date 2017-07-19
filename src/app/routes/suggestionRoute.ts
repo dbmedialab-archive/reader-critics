@@ -46,6 +46,7 @@ const scripts = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
 	'/static/front.bundle.js',
+	'//www.google.com/recaptcha/api.js?hl=no',
 ];
 
 const mainTemplate = createMainTemplate();

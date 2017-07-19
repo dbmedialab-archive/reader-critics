@@ -77,8 +77,7 @@ export function errorResponse(
 	if (options !== undefined) {
 		Object.assign(response, options, { success: false });
 	}
-
-	resp.status(response.status).end(stringify(response));
+	resp.status(response.status).send(stringify(response));
 
 	if (response.status === 500) {
 		log(error.stack || error);

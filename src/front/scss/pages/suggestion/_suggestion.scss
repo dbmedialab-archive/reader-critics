@@ -93,6 +93,20 @@
 			opacity: .5;
 		}
 	}
+
+	fieldset {
+		p {
+			&.thank-message {
+				font-family: 'Roboto', sans-serif;
+				font-size: 14px;
+				color: #888;
+			}
+		}
+
+		input, textarea {
+			margin-bottom: .5rem;
+		}
+	}
 }
 @media only screen and (max-width: 480px) {
 	.confirmation {
