@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import {ExtractJwt, Strategy as JwtStrategy} from 'passport-jwt';
-import {Strategy as LocalStrategy} from 'passport-local';
+import {ExtractJwt, Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
+import {Strategy as LocalStrategy, VerifyFunction} from 'passport-local';
 import * as jwt from 'jsonwebtoken';
 import config from '../../config';
 import {IUser} from 'app/models/User';
@@ -13,7 +13,7 @@ export interface PassportJWTOptions {
 const jwtConf = config.get('jwt');
 const users: IUser[] = config.get('users');
 
-export const jwtOptions: PassportJWTOptions = {
+export const jwtOptions: StrategyOptions = {
 	jwtFromRequest: ExtractJwt.fromAuthHeader(),
 	secretOrKey: jwtConf.jwtSecret,
 };
@@ -55,7 +55,7 @@ export const jwtStrategy = new JwtStrategy(jwtOptions,
 export const localStrategy = new LocalStrategy(localOptions, (
 	username: string,
 	password: string,
-	done: (	err: string | null,	token?: string | null, user?: IUser | null) => void) => {
+	done: (err : string|null, user? : IUser) => void) => {
 		// TODO rewrite it on DB added
 		const user = users[_.findIndex(users, {login: username})];
 		if (!user) {
@@ -64,7 +64,7 @@ export const localStrategy = new LocalStrategy(localOptions, (
 		user.comparePassword(password, function (err: string, isMatch: boolean) {
 			if (isMatch) {
 				const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
-				done(null, token, user.toString());
+				done(null, user);
 			} else {
 				done('Incorrect password');
 			}
