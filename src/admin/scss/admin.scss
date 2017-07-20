@@ -45,15 +45,14 @@
 @import '../../../node_modules/foundation-sites/scss/components/thumbnail';
 @import '../../../node_modules/foundation-sites/scss/components/tooltip';
 
-@import "custom/settings";
+@import 'custom/settings';
 
 
 @mixin foundation-everything($flex: false) {
 	@include foundation-global-styles;
 	@if not $flex {
 		@include foundation-grid;
-	}
-	@else {
+	}	@else {
 		@include foundation-flex-grid;
 	}
 	@include foundation-typography;
@@ -95,11 +94,10 @@
 Our custom styles
  */
 
-#root > [data-reactroot] { height: 100% }
-@import "custom/mixins";
-@import "custom/main";
-@import "custom/topbar";
-@import "custom/sidebar";
-@import "custom/modals";
-@import "custom/users";
+@import 'custom/mixins';
+@import 'custom/main';
+@import 'custom/topbar';
+@import 'custom/sidebar';
+@import 'custom/modals';
+@import 'custom/users';
 

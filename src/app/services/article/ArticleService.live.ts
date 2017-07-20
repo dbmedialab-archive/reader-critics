@@ -1,5 +1,39 @@
-export { default as download } from './live/download';
-export { default as fetch } from './common/fetch';
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
 
-export { default as load } from './live/load';
-export { default as save } from './live/save';
+import ArticleService from './ArticleService';
+
+import { clear } from '../BasicPersistingService';
+
+import download from './live/download';
+import fetch from './common/fetch';
+
+import {
+	load,
+	save,
+} from './ArticleDAO';
+
+const service : ArticleService = {
+	clear,
+	download,
+	fetch,
+	load,
+	save,
+};
+
+module.exports = service;
