@@ -8,7 +8,7 @@ import {
 import { User } from 'base';
 import { userService } from 'app/services';
 
-export const options : IStrategyOptions = {
+const options : IStrategyOptions = {
 	usernameField: 'login',
 	passwordField: 'password',
 	// session: true,

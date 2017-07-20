@@ -1,3 +1,5 @@
+import * as jwt from 'jsonwebtoken';
+
 import {
 	Request,
 	Response,
@@ -8,39 +10,55 @@ import {
 	okResponse,
 } from '../../api/apiResponse';
 
-import * as jwt from 'jsonwebtoken';
-import * as _ from 'lodash';
-import {jwtOptions} from 'app/middleware/config/passportConfig';
-import config from 'app/config';
-import {IUser} from 'app/models/User';
 import { EmptyError } from 'app/util/errors';
+import { options as jwtOptions } from 'app/middleware/config/strategy/jwt';
+import { User } from 'base';
+import { userService } from 'app/services';
+
+import config from 'app/config';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-const users: IUser[] = config.get('users');
+export function apiLoginHandler(requ : Request, resp : Response) : void {
+	// Use the same message for every error type to prevent attacks.
+	// For example, saying "Wrong password" will tell a attackers that they
+	// already found a valid username.
+	const message = 'Permission denied';
 
-export function apiLoginHandler(req: Request, res: Response): void {
-	if (req.body.login && req.body.password) {
-		// TODO rewrite it on DB added
-		const user = users[_.findIndex(users, {login: req.body.login})];
-		if (!user) {
-			errorResponse(res, new Error('User not found'), 'User not found', {status: 401});
-		} else {
-			user.comparePassword(req.body.password, function (err: string, isMatch: boolean) {
-				if (isMatch) {
-					const payload = {id: user.id, login: user.login};
-					const resUser = user.toString();
-					resUser.token = jwt.sign(payload, jwtOptions.secretOrKey);
-					okResponse(res, {user: resUser});
-				} else {
-					errorResponse(res, new Error('Incorrect password'), 'Incorrect password', {status: 401});
-				}
-			});
-		}
-	} else {
-		res.status(403).json({message: 'Permission denied'});
+	if (!(requ.body.login && requ.body.password)) {
+		errorResponse(resp, undefined, message, { status: 403 });
 	}
+
+	let user : User;
+
+	userService.get(requ.body.login).then((u : User) => {
+		if (user === null) {
+			return Promise.reject(new Error(message));
+		}
+
+		user = u;
+		return userService.checkPassword(user, requ.body.password);
+	})
+	.then((authenticated : boolean) => {
+		if (!authenticated) {
+			return Promise.reject(new Error(message));
+		}
+
+		const payload = {
+			username: user.name,
+		};
+
+		const data = Object.assign({}, payload, {
+			token: jwt.sign(payload, jwtOptions.secretOrKey),
+		});
+
+		okResponse(resp, data);
+	})
+	.catch(error => {
+		errorResponse(resp, error, message, { status: 401 });
+	});
 }
 
 export function apiTestHandler(requ : Request, resp : Response) : void {
