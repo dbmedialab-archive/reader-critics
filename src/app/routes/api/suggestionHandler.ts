@@ -25,6 +25,7 @@ import { default as axios } from 'axios';
 import { Suggestion } from 'base/';
 import { SuggestionModel } from 'app/db/models';
 import { errorResponse, okResponse } from './apiResponse';
+import config from 'app/config';
 
 import * as app from 'app/util/applib/logging';
 const log = app.createLog();
@@ -79,12 +80,11 @@ export default function(requ : Request, resp : Response) : void {
 			status: 400,
 		});
 	}
-	const secretKey = '6LdTeikUAAAAAIRt_4uVbT3HlZLUrHb3EeeqDtti';
+	const secretKey = config.get('RECAPTCHA_SECRET_KEY');
 	const captchaVerifyURL = 'https://www.google.com/recaptcha/api/siteverify?secret='
 	+secretKey+'&response='+requ.body.captcha+'&remoteip='+requ.connection.remoteAddress.toString();
 	axios.post(captchaVerifyURL)
 		.then(function(response) {
-			console.log(response);
 			if (response.data && response.data.success) {
 				sendSuggestion(requ)
 					.then(() => {

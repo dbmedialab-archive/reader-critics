@@ -27,6 +27,7 @@ import * as doT from 'dot';
 import * as path from 'path';
 import { readFileSync } from 'fs';
 import  notFoundHandler  from './notFoundHandler';
+import config from 'app/config';
 
 const log = app.createLog();
 const suggestionRoute : Router = Router();
@@ -46,7 +47,7 @@ const scripts = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
 	'/static/front.bundle.js',
-	'//www.google.com/recaptcha/api.js?hl=no',
+	'//www.google.com/recaptcha/api.js?hl='+config.get('RECAPTCHA_LANGUAGE'),
 ];
 
 const mainTemplate = createMainTemplate();
@@ -61,6 +62,10 @@ function suggestionHandler(requ : Request, resp : Response) {
 				version: '2017.05.11-something',
 			},
 			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}),
+		recaptcha: JSON.stringify({
+			publicKey: config.get('RECAPTCHA_PUBLIC_KEY'),
+			language: config.get('RECAPTCHA_LANGUAGE'),
 		}),
 		styles,
 		scripts,
