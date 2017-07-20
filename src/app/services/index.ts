@@ -49,7 +49,7 @@ export const templateService : TemplateService
 	= require(`./template/TemplateService.${env}`);
 
 export const userService : UserService
-	= require(`./template/UserService.${env}`);
+	= require(`./user/UserService.${env}`);
 
 export const websiteService : WebsiteService
 	= require(`./website/WebsiteService.${env}`);
