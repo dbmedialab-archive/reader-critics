@@ -47,7 +47,7 @@ export function loginPageHandler(req : Request, res : Response): void {
 }
 
 export function loginHandler(req, res, next): void {
-	passport.authenticate('local', (error, token, user) => {
+	passport.authenticate('local', (error, user) => {
 		if (error) {
 			return res.status(401).json({error});
 		}
@@ -60,7 +60,7 @@ export function loginHandler(req, res, next): void {
 			if (err) {
 				return res.status(401).json({error: err});
 			}
-			return res.status(200).json({error: false, status: 'ok', user, token});
+			return res.status(200).json({error: false, status: 'ok', user});
 		});
 	})(req, res, next);
 }
