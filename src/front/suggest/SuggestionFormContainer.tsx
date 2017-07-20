@@ -19,9 +19,7 @@
 import * as React from 'react';
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
-
-// tslint:disable-next-line
-const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import Validator, {IValidation} from 'base/Validator';
 
 export interface FormPayload {
 	username: string;
@@ -37,6 +35,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private usernameInput : any;
 	private commentArea : any;
 	private emailInput : any;
+	private validator : IValidation;
 
 	constructor(props) {
 		super(props);
@@ -50,6 +49,8 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				comment: false,
 			},
 		};
+
+		this.validator = new Validator();
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.UpdateState = this.UpdateState.bind(this);
@@ -68,16 +69,19 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		if (!this.state.comment) {
 			return 'Fylle ut feltet';
 		}
-		if (this.state.comment.length > 2000) {
-			return 'Tilbakemelding er for lang (maksimum 2000 tegn).';
+
+		const validation = this.validator.validate('suggestionComment',
+			this.state.email, {presence: 'required'});
+		if (validation.isError) {
+			return validation.message;
 		}
 		return false;
 	}
 
 	private hasEmailError() {
-		const email = this.state.email;
-		if (!emailPattern.test(email) || !email.length) {
-			return 'Skriv inn gyldig e-postadresse.';
+		const validation = this.validator.validate('userMail', this.state.email, {presence: 'required'});
+		if (validation.isError) {
+			return validation.message;
 		}
 		return false;
 	}
