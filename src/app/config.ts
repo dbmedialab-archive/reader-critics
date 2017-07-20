@@ -58,9 +58,9 @@ const config = convict({
 				default: 'redis://localhost:6379',
 				env: 'REDIS_URL',
 			},
-			// host: 'localhost',
-			// port: 6379,
-			// ttl: 260,
+			host: 'localhost',
+			port: 6379,
+			ttl: 260,
 		},
 	},
 	auth: {
