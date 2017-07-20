@@ -1,4 +1,4 @@
-export default function isLoggedOff(req, res, next: () => void): void {
+export default function (req, res, next: () => void): void {
 	if (!req.isAuthenticated()) {
 		return next();
 	}

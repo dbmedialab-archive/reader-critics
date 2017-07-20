@@ -14,13 +14,13 @@ function sendRequest(event) {
 const TestFormContainer: React.StatelessComponent<any> =
 	() => (
 		<form
-			name='testBox' action='/admin/logout' method='GET'
-			className='eleven login columns feedbackform'
+			name="testBox" action="/admin/logout" method="GET"
+			className="eleven login columns feedbackform"
 		>
-			<button type='submit' className='button button-primary'>
+			<button type="submit" className="button button-primary">
 				Logg ut
 			</button>
-			<button className='button button-primary' onClick={sendRequest}>
+			<button className="button button-primary" onClick={sendRequest}>
 				Check users
 			</button>
 		</form>

@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 import {ExtractJwt, Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
-import {Strategy as LocalStrategy, VerifyFunction} from 'passport-local';
-import * as jwt from 'jsonwebtoken';
+import {Strategy as LocalStrategy} from 'passport-local';
 import config from '../../config';
 import {IUser} from 'app/models/User';
 
@@ -63,7 +62,8 @@ export const localStrategy = new LocalStrategy(localOptions, (
 		}
 		user.comparePassword(password, function (err: string, isMatch: boolean) {
 			if (isMatch) {
-				const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
+				// const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
+				// TODO what to do with the token?
 				done(null, user);
 			} else {
 				done('Incorrect password');

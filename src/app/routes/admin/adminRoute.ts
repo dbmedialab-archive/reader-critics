@@ -25,7 +25,7 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as app from 'app/util/applib';
-import { loginPageHandler, logoutHandler, testPageHandler, loginHandler } from './ui/handlers';
+import { loginHandler, loginPageHandler, logoutHandler, testPageHandler } from './ui/handlers';
 import { sessionConf } from 'app/middleware/config/sessionConfig';
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';

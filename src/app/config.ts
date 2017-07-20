@@ -17,11 +17,7 @@
 //
 
 import * as convict from 'convict';
-import * as crypto from 'crypto';
 import User from './models/User';
-
-const cryptoBytes = crypto.randomBytes(32);
-const secret = cryptoBytes.toString('hex');
 
 const config = convict({
 	http: {

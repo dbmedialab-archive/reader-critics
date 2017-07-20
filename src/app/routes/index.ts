@@ -23,7 +23,12 @@ import { parse } from 'url';
 
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { jwtStrategy, serializeUser, deserializeUser, localStrategy } from 'app/middleware/config/passportConfig';
+import {
+	deserializeUser,
+	jwtStrategy,
+	localStrategy,
+	serializeUser,
+} from 'app/middleware/config/passportConfig';
 
 import apiRoute from './apiRoute';
 import faviconRoute from './faviconRoute';

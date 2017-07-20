@@ -11,6 +11,6 @@ export const ResponseError: React.StatelessComponent <ResponseErrorProps> =
 			return null;
 		}
 		return (
-			<small className='callout secondary alert error'>{props.errorText}</small>
+			<small className="callout secondary alert error">{props.errorText}</small>
 		);
 	};

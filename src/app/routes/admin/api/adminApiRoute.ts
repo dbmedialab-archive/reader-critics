@@ -22,14 +22,18 @@ import {
 	Router,
 } from 'express';
 
-import * as passport from 'passport';
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-import * as app from 'app/util/applib';
-import {apiLoginHandler, apiTestHandler} from 'app/routes/admin/api/handlers';
+
+import {
+	apiLoginHandler,
+	apiTestHandler
+} from 'app/routes/admin/api/handlers';
+
+import { errorResponse } from 'app/routes/api/apiResponse';
+
 import isAuthenticatedApi from 'app/middleware/policies/isAuthenticatedApi';
 
-const log = app.createLog();
 
 const adminApiRoute : Router = Router();
 
@@ -38,6 +42,7 @@ adminApiRoute.use(bodyParser.json({
 	limit: '512kb',
 	strict: true,
 }));
+
 adminApiRoute.use(cookieParser());
 
 /**
@@ -56,6 +61,5 @@ adminApiRoute.get('/*', defaultHandler);
 export default adminApiRoute;
 
 function defaultHandler(requ: Request, resp: Response) : void {
-	log('Admin api router', requ.params);
-	resp.status(404).end('Unknown admin api endpoint\n');
+	errorResponse(resp, undefined, 'Unknown API endpoint', { status: 404 });
 }
