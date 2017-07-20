@@ -1,16 +1,25 @@
-import * as _ from 'lodash';
 import * as jwt from 'jsonwebtoken';
-import { jwtOptions } from 'app/middleware/config/passportConfig';
 import * as passport from 'passport';
+
+import {
+	NextFunction,
+	Request,
+	Response,
+} from 'express';
+
 import config from 'app/config';
 
-const users = config.get('users');
-const jwtSession = config.get('jwt').session;
+const jwtSession = config.get('auth.jwt.session');
 
-export default function isAuthenticated(req, res, next: () => void): void {
-	if (req.isAuthenticated()) {
+export default function isAuthenticated(
+	requ : Request,
+	resp : Response,
+	next: NextFunction
+) : void {
+	if (requ.isAuthenticated()) {
 		return next();
-	} else {
-		return passport.authenticate('jwt', jwtSession)(req, res, next);
+	}
+	else {
+		return passport.authenticate('jwt', jwtSession)(requ, resp, next);
 	}
 }
