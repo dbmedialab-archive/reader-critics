@@ -1,0 +1,34 @@
+engines:
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc.json
+      extensions:
+      - .js
+  fixme:
+    enabled: true
+  markdownlint:
+    enabled: false
+    issue_override:
+      severity: info
+  sass-lint:
+    enabled: true
+  shellcheck:
+    enabled: true
+  tslint:
+    enabled: false
+    channel: beta
+
+ratings:
+  paths:
+  - 'src/**.js'
+  - 'src/**.scss'
+  - 'run/**.sh'
+
+exclude_paths:
+- 'assets/**'
+- 'conf/**'
+- 'kubefiles/**'
+- 'node_modules/**'
+- 'resources/**'
+- 'tmp/**'
