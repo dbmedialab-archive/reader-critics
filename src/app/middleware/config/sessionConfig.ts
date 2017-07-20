@@ -7,6 +7,9 @@ const client = redis.createClient();
 const redisStore = connectRedis(session);
 const {host, port, ttl} = config.get('redis');
 
+const secret = config.get('auth.session.secret');
+const maxAge = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
+
 export const sessionConf = {
 	store: new redisStore({
 		host: host,
@@ -14,12 +17,12 @@ export const sessionConf = {
 		client,
 		ttl: ttl,
 	}),
-	secret: 'reader-critic-session-secret',		// TODO replace with needed
+	secret,
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
 		path: '/admin',
 		secure: false,
-		maxAge: (60 * 60 * 1000),
+		maxAge,
 	},
 };
