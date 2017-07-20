@@ -16,31 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as session from 'express-session';
-import * as redis from 'redis';
-import * as connectRedis from 'connect-redis';
-import config from 'app/config';
+import {
+	IStrategyOptions,
+	IVerifyOptions,
+	Strategy,
+} from 'passport-local';
 
-const client = redis.createClient();
-const redisStore = connectRedis(session);
-const {host, port, ttl} = config.get('db.redis');
+import { User } from 'base';
+import { userService } from 'app/services';
 
-const secret = config.get('auth.session.secret');
-const maxAge = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
+import { RetrieveCallback } from '../passportConfig';
 
-export const sessionConf = {
-	store: new redisStore({
-		host: host,
-		port: port,
-		client,
-		ttl: ttl,
-	}),
-	secret,
-	resave: false,
-	saveUninitialized: false,
-	cookie: {
-		path: '/admin',
-		secure: false,
-		maxAge,
-	},
+const options : IStrategyOptions = {
+	usernameField: 'login',
+	passwordField: 'password',
+	// session: true,
 };
+
+function verify(username : string, password : string, done : RetrieveCallback) {
+	userService.get(username).then((user : User) => {
+		done(user === null ? 'User not found' : null, user);
+	});
+}
+
+export const localStrategy : Strategy = new Strategy(options, verify);

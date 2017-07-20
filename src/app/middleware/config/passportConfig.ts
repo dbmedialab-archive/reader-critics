@@ -1,72 +1,46 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as _ from 'lodash';
-import {ExtractJwt, Strategy as JwtStrategy, StrategyOptions } from 'passport-jwt';
-import {Strategy as LocalStrategy} from 'passport-local';
-import config from '../../config';
-import {IUser} from 'app/models/User';
+import * as jwt from 'jsonwebtoken';
 
-export interface PassportJWTOptions {
-	secretOrKey: string;
-	[x: string]: any;
+import config from 'app/config';
+
+import { User } from 'base';
+import { userService } from 'app/services';
+
+export type SerializeCallback = (err : string|null, username : string|null) => void;
+export type RetrieveCallback = (err : string|null, user? : User) => void;
+
+// export interface PassportJWTOptions {  FIXME unused code?
+// 	secretOrKey: string;
+// 	[x: string]: any;
+// }
+
+export { jwtStrategy } from './strategy/jwt';
+export { localStrategy } from './strategy/local';
+
+export function serializeUser(user : User, done: SerializeCallback) {
+	done(null, user.name);
 }
 
-const jwtConf = config.get('jwt');
-const users: IUser[] = config.get('users');
-
-export const jwtOptions: StrategyOptions = {
-	jwtFromRequest: ExtractJwt.fromAuthHeader(),
-	secretOrKey: jwtConf.jwtSecret,
-};
-
-export const localOptions = {
-	usernameField: 'login',
-	passwordField: 'password',
-	session: true,
-};
-
-export function serializeUser(user: IUser,
-								done: (err: string | null, id: number | null) => void) {
-	done(null, user.id);
-}
-
-export function deserializeUser(id: number | null,
-								done: (err: string | null,	user?: IUser | null) => void) {
-	// TODO rewrite it on DB added
-	const user = users[_.findIndex(users, {id: id})];
-	if (user) {
-		done(null, user);
-	} else {
-		done('User not found');
-	}
-}
-
-export const jwtStrategy = new JwtStrategy(jwtOptions,
-	(jwtPayload,
-		next: (	err: string, user: IUser) => void) => {
-	// TODO rewrite it on DB added
-	const user = users[_.findIndex(users, {id: jwtPayload.id, login: jwtPayload.login})];
-	if (user) {
-		next(null, user);
-	} else {
-		next('User no found', null);
-	}
-});
-
-export const localStrategy = new LocalStrategy(localOptions, (
-	username: string,
-	password: string,
-	done: (err : string|null, user? : IUser) => void) => {
-		// TODO rewrite it on DB added
-		const user = users[_.findIndex(users, {login: username})];
-		if (!user) {
-			return done('User not found');
-		}
-		user.comparePassword(password, function (err: string, isMatch: boolean) {
-			if (isMatch) {
-				// const token = jwt.sign({ id: user.id, login: user.login }, jwtOptions.secretOrKey);
-				// TODO what to do with the token?
-				done(null, user);
-			} else {
-				done('Incorrect password');
-			}
-		});
+export function deserializeUser(username : string, done : RetrieveCallback) {
+	userService.get(username).then((user : User) => {
+		done(user === null ? 'User not found' : null, user)
 	});
+}

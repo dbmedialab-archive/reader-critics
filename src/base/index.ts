@@ -27,4 +27,7 @@ export { default as ParserFactory } from './ParserFactory';
 
 export { default as Suggestion } from './Suggestion';
 
+export { default as User } from './User';
+export { default as UserRole } from './UserRole';
+
 export { default as Website } from './Website';

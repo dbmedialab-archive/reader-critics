@@ -6,9 +6,15 @@ import * as passport from 'passport';
 import { readFileSync } from 'fs';
 
 import {
+	NextFunction,
 	Request,
 	Response,
 } from 'express';
+
+import {
+	errorResponse,
+	okResponse,
+} from 'app/routes/api/apiResponse';
 
 import * as app from 'app/util/applib';
 
@@ -36,53 +42,56 @@ function createTemplate() {
 	return doT.template(templateRaw);
 }
 
-export function loginPageHandler(req : Request, res : Response): void {
-	res.send(mainTemplate({
+export function loginPageHandler(requ : Request, resp : Response) : void {
+	resp.send(mainTemplate({
 		view: 'login',
 		styles,
 		scripts,
 	}));
 
-	res.status(200).end();
+	resp.status(200).end();
 }
 
-export function loginHandler(req, res, next): void {
-	passport.authenticate('local', (error, user) => {
-		if (error) {
-			return res.status(401).json({error});
+export function loginHandler(requ : Request, resp : Response, next : NextFunction) : void {
+	const notAuth = (error) => errorResponse(resp, error, 'Not authorized', {
+		status: 401,
+	});
+
+	const callback = (error, user, info) => {
+		if (error || user === false) {
+			return notAuth(error || new Error('Invalid credentials'));
 		}
 
-		if (!user) {
-			return res.status(401).json({error: 'User not found'});
-		}
-
-		req.logIn(user, (err) => {
-			if (err) {
-				return res.status(401).json({error: err});
+		requ.logIn(user, (loginErr) => {
+			if (loginErr) {
+				return notAuth(loginErr);
 			}
-			return res.status(200).json({error: false, status: 'ok', user});
+
+			okResponse(resp, user);
 		});
-	})(req, res, next);
+	};
+
+	passport.authenticate('local', callback)(requ, resp, next);
 }
 
-export function logoutHandler(req, res): void {
-	req.logOut();
-	req.session.destroy(function(err){
-		if (err){
+export function logoutHandler(requ /*: Request*/, resp : Response): void {
+	requ.logOut();
+	requ.session.destroy((err) => {  // "session" does not exist on type Request. What now?
+		if (err) {
 			log(err);
 		} else {
-			res.redirect('login');
+			resp.redirect('login');
 		}
 	});
 }
 
 // TODO remove test handler
-export function testPageHandler(req : Request, res : Response): void {
-	res.send(mainTemplate({
+export function testPageHandler(requ : Request, resp : Response): void {
+	resp.send(mainTemplate({
 		view: 'testpage',
 		styles,
 		scripts,
 	}));
 
-	res.status(200).end();
+	resp.status(200).end();
 }
