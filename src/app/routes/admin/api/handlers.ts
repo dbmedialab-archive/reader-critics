@@ -47,7 +47,7 @@ export function apiTestHandler(requ : Request, resp : Response) : void {
 	try {
 		log('Requesting users at', '');
 
-		okResponse(resp, {});
+		okResponse(resp);
 	}
 	catch (error) {
 		const options = {
