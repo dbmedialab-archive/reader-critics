@@ -23,12 +23,14 @@ import fetch from './common/fetch';
 
 import {
 	clear,
+	count,
 	load,
 	save,
 } from './ArticleDAO';
 
 const service : ArticleService = {
 	clear,
+	count,
 	download,
 	fetch,
 	load,

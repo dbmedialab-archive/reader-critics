@@ -59,7 +59,13 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	it('get', () => {
+	it('count()', () => {
+		return websiteService.count().then(count => {
+			assert.strictEqual(count, 3);
+		});
+	});
+
+	it('get()', () => {
 		return Promise.all([
 			websiteService.get('dagbladet.no'),
 			websiteService.get('something-else.xyz'),

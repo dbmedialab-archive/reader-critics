@@ -26,11 +26,16 @@ import {
 
 import {
 	clearCollection,
+	getCount,
 	wrapSave
 } from 'app/db/common';
 
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
+}
+
+export function count() : Promise <number> {
+	return getCount(ArticleModel);
 }
 
 export function load(url : ArticleURL, version : string) : Promise <Article> {

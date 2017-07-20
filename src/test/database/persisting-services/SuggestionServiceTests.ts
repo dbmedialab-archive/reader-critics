@@ -48,6 +48,12 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
+	it('count()', () => {
+		return suggestionService.count().then(count => {
+			assert.strictEqual(count, 15);
+		});
+	});
+
 	it('findSince()', () => {
 		const dateSince = new Date('2017-07-06T00:00:00Z');
 
