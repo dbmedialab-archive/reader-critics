@@ -21,10 +21,13 @@ import {
 	Website,
 } from 'base';
 
+import { ObjectID } from 'app/db';
+
 import BasicPersistingService from '../BasicPersistingService';
 
 interface WebsiteService extends BasicPersistingService {
 	get(name : string) : Promise <Website>;
+	getID(website : Website) : Promise <ObjectID>;
 	identify(url : ArticleURL|string) : Promise <Website>;
 
 	save(website : Website) : Promise <void>;

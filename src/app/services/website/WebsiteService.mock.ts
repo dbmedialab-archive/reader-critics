@@ -22,6 +22,7 @@ import {
 	clear,
 	count,
 	get,
+	getID,
 	identify,
 	save,
 } from './WebsiteDAO';
@@ -30,6 +31,7 @@ const service : WebsiteService = {
 	clear,
 	count,
 	get,
+	getID,
 	identify,
 	save,
 };

@@ -27,6 +27,7 @@ import { isTest } from 'app/util/applib';
 
 export {
 	wrapFind,
+	wrapFindID,
 	wrapFindOne,
 } from './wrapFind';
 

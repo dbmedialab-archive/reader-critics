@@ -30,6 +30,12 @@ import {
 	wrapSave
 } from 'app/db/common';
 
+import { ObjectID } from 'app/db';
+
+import {
+	websiteService
+} from 'app/services';
+
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
 }
@@ -39,9 +45,12 @@ export function count() : Promise <number> {
 }
 
 export function load(url : ArticleURL, version : string) : Promise <Article> {
-	return Promise.resolve(undefined);
+	return Promise.resolve(null);
 }
 
 export function save(website : Website, article : Article) : Promise <void> {
-	return wrapSave(new ArticleModel(article).save());
+	return websiteService.getID(website)
+	.then((id : ObjectID) => wrapSave(new ArticleModel(Object.assign({
+		_website: id,
+	}, article)).save()));
 }

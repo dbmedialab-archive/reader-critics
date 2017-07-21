@@ -30,6 +30,11 @@ const ArticleSchema : Schema = new Schema({
 	},
 	version: String,
 
+	_website: {
+		type: Schema.Types.ObjectId,
+		ref: 'Website',
+	},
+
 	items: [Schema.Types.Mixed],
 });
 

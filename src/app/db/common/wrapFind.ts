@@ -26,6 +26,8 @@ import {
 	DocumentQuery,
 } from 'mongoose';
 
+import { ObjectID } from 'app/db';
+
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
@@ -49,6 +51,14 @@ export function wrapFind <D extends Document, Z> (
 	});
 }
 
+export function wrapFindID <D extends Document> (
+	result : DocumentQuery <D, D>
+) : Promise <ObjectID>
+{
+	return rawFindOne(result)
+	.then((doc : D) => Promise.resolve(doc._id));
+}
+
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
@@ -57,16 +67,24 @@ export function wrapFindOne <D extends Document, Z> (
 	result : DocumentQuery <D, D>
 ) : Promise <Z>
 {
-	return result.lean().exec().then(singleResult => {
-		if (singleResult === null) {
+	return rawFindOne(result)
+	.then((doc : D) => Promise.resolve(filterProperties<Z>(doc)));
+}
+
+function rawFindOne <D extends Document> (
+	result : DocumentQuery <D, D>
+) : Promise <D>
+{
+	return result.lean().exec().then((doc : D) => {
+		if (doc === null) {
 			return Promise.resolve(null);
 		}
 
-		if (!isObject(singleResult)) {
+		if (!isObject(doc)) {
 			return Promise.reject(new Error('result.exec() did not return a single object'));
 		}
 
-		return Promise.resolve(filterProperties <Z> (singleResult));
+		return Promise.resolve(doc);
 	});
 }
 

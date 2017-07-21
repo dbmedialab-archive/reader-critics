@@ -16,7 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { Schema } from 'mongoose';
+
 // tslint:disable-next-line
 require('mongoose').Promise = global.Promise;
+
+export type ObjectID = Schema.Types.ObjectId;
 
 export { default as initDatabase } from './initDatabase';
