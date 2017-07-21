@@ -21,7 +21,7 @@ import {connect} from 'react-redux';
 import ReactModal from 'admin/components/modal/ReactModalComponent';
 import * as UIActions from 'admin/actions/UIActions';
 import * as Joi from 'joi-browser';
-import Validator from 'base/Validator';
+import Validator from 'admin/services/Validation';
 
 const promptInput = 'promptInput';
 

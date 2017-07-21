@@ -20,8 +20,6 @@
 // tslint:disable:max-line-length
 import * as Joi from 'joi-browser';
 
-import Validation from 'admin/services/Validation';
-
 export interface IValidation {
 	validate(validationItem: { schema: string; isJoi: boolean; } | string,
 			data: string,
@@ -32,22 +30,36 @@ export interface IValidation {
 		};
 }
 
-export default class Validator extends Validation implements IValidation {
-	//Users
-	userName = {
-		schema: Joi.string().regex(/^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/),
-		message: 'User name should contain only alphanumeric characters, dash, underscore!',
-	};
+export default class Validation implements IValidation {
+	validate(validationItem, data, options = {}) {
+		const self = this;
+		let schema,
+			errorText = 'Validation error';
+		if (typeof validationItem === 'string') {
+			schema = self[validationItem].schema;
+			errorText = self[validationItem].message;
+		} else if (typeof validationItem === 'object'
+					&& validationItem.schema
+					&& validationItem.schema.isJoi) {
+			schema = validationItem.schema;
+			errorText = validationItem.message;
+		}
+		if (!schema) {
+			throw new Error('Validation schema is not valid');
+		}
 
-	userType = {
-		schema: Joi.number().integer().min(1).max(3),
-		message: 'Choose proper user role!',
-	};
-
-	userMail = {
-		schema: Joi.string().regex(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/),
-		message: 'User mail should be valid email address!', //'Skriv inn gyldig e-postadresse.'
-	};
+		return Joi.validate(data, schema, options, function (error, value) {
+			const response = {
+				isError: false,
+				message: errorText,
+			};
+			if (error === null) {
+				return response;
+			}
+			response.isError = true;
+			return response;
+		});
+	}
 
 	//Suggestion-box
 	suggestionComment = {
