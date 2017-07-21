@@ -16,14 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { combineReducers } from 'redux';
+import AdminConstants from 'admin/constants/AdminConstants';
+import User from 'base/User';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-import UIReducer from 'admin/reducers/UIReducer';
-import {routerReducer} from 'react-router-redux';
-import UserReducer from 'admin/reducers/UserReducer';
-
-export const CombineReducer:any = combineReducers({
-	UI: UIReducer,
-	router: routerReducer,
-	user: UserReducer,
-});
+export type TAction = IAction;
+export function authenticateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.AUTHENTICATE_USER,
+		payload,
+	};
+}
+export function deauthenticateUser(): IAction {
+	return {
+		type: AdminConstants.DEAUTHENTICATE_USER,
+		payload: {},
+	};
+}
+export function updateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.UPDATE_CURRENT_USER,
+		payload,
+	};
+}

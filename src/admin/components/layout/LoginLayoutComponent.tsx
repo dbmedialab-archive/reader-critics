@@ -23,7 +23,6 @@ import Helmet from 'react-helmet';
 
 import { connect } from 'react-redux';
 import { ICON_TYPE } from 'react-preloader-icon';
-import SidebarComponent from 'admin/components/layout/SidebarComponent';
 
 class LoginLayoutComponent extends React.Component <any, any> {
 	render() : JSX.Element {
@@ -64,13 +63,7 @@ const mapStateToProps = (state, ownProps) => {
 			isVisible: state.UI.getIn(['mainPreloader', 'isVisible']),
 			color: state.UI.getIn(['mainPreloader', 'color']),
 		},
-		pageTitle: 'Authorization',
-		isSubmenuOpen: false,
-		isAccountMenuOpen: false,
-		currentUser: {
-			name: 'Dmitry',
-			role: 1,
-		},
+		pageTitle: 'Authentication',
 	};
 };
 

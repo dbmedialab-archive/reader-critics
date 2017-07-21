@@ -16,14 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { combineReducers } from 'redux';
+import MainStore from 'admin/stores/MainStore';
+import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
+import * as UserActions from './UserActions';
+import AdminConstants from 'admin/constants/AdminConstants';
+import User from 'base/User';
 
-import UIReducer from 'admin/reducers/UIReducer';
-import {routerReducer} from 'react-router-redux';
-import UserReducer from 'admin/reducers/UserReducer';
+export function authenticate(user: User) {
+	MainStore.dispatch(
+		UserActionsCreator.authenticateUser(user)
+	);
+}
+export function deauthenticate() {
+	MainStore.dispatch(
+		UserActionsCreator.deauthenticateUser()
+	);
+}
 
-export const CombineReducer:any = combineReducers({
-	UI: UIReducer,
-	router: routerReducer,
-	user: UserReducer,
-});
+export function update(user: User) {
+	MainStore.dispatch(
+		UserActionsCreator.updateUser(user)
+	);
+}

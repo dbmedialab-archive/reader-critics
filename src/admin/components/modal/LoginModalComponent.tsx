@@ -22,6 +22,7 @@ import {connect} from 'react-redux';
 import ReactModal from './ReactModalComponent';
 
 import * as UIActions from 'admin/actions/UIActions';
+import * as UserActions from 'admin/actions/UserActions';
 import {InputError} from 'front/form/InputError';
 import {sendAuthRequest} from 'admin/apiAdminCommunication';
 
@@ -32,7 +33,6 @@ export interface OptionsI {
 class LoginModalComponent extends React.Component <any, any> {
 	private loginInput: any;
 	private passwordInput: any;
-
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -76,8 +76,7 @@ class LoginModalComponent extends React.Component <any, any> {
 	updateInputValue(event) {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].value = event.target.value;
-		// Drop server error
-		this.updateErrorState();
+		this.updateErrorState();            // Drop server error
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
 
@@ -107,6 +106,7 @@ class LoginModalComponent extends React.Component <any, any> {
 				if (res.error || (!res.success && res.message)) {
 					this.updateErrorState(res.error || res.message, true);
 				} else {
+					UserActions.authenticate(res.data);
 					UIActions.hideLoginDialog();
 					this.props.getBack();
 				}

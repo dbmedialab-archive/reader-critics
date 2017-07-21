@@ -77,8 +77,8 @@ const mapStateToProps = (state, ownProps) => {
 		isSubmenuOpen: false,
 		isAccountMenuOpen: false,
 		currentUser: {
-			name: 'Dmitry',
-			role: 1,
+			role: state.user.getIn(['role']) || null,
+			name: state.user.getIn(['name']) || '',
 		},
 	};
 };
