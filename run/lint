@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-echo -e "\033[1;38;5;214mTSlint ...\033[0m"
+echo -e "\033[1;38;5;39mTSlint ...\033[0m"
 node_modules/.bin/tslint \
 	--project tsconfig.json --type-check --config tslint.json \
-	'src/**/*.{ts,tsx}'
+	'src/**/*.{ts,tsx}' \
+	| tail -n +2 | head -n -1
 
-echo -e "\033[1;38;5;208mESlint ...\033[0m"
+echo -e "\033[1;38;5;76mESlint ...\033[0m"
 node_modules/.bin/eslint src/**/*.js
 
 echo -e "\033[1;38;5;220mSASSlint ...\033[0m"
