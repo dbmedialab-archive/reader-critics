@@ -18,11 +18,9 @@
 
 import { ArticleModel } from 'app/db/models';
 
-import {
-	Article,
-	ArticleURL,
-	Website,
-} from 'base';
+import Article from 'base/Article';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import {
 	clearCollection,

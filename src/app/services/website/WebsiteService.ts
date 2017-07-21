@@ -16,17 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
 interface WebsiteService extends BasicPersistingService {
 	get(name : string) : Promise <Website>;
 	identify(url : ArticleURL|string) : Promise <Website>;
-
 	save(website : Website) : Promise <void>;
 }
 

@@ -21,11 +21,9 @@ import {
 	Response,
 } from 'express';
 
-import {
-	Article,
-	ArticleURL,
-	Website,
-} from 'base';
+import Article from 'base/Article';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import {
 	articleService,
@@ -60,10 +58,10 @@ export default function(requ : Request, resp : Response) : void {
 		articleService.load(articleURL, version)
 		.then((article : Article) => {
 			// Article is not in the database, fetch a fresh version from the web
-			if (article === undefined) {
+			if (article === null) {
 				wasFetched = true;
 				return websiteService.identify(articleURL).then((w : Website) => {
-					if (website === undefined) {
+					if (website === null) {
 						return Promise.reject(new Error('Could not identify website'));
 					}
 
@@ -99,6 +97,7 @@ export default function(requ : Request, resp : Response) : void {
 		}
 		else {
 			errorResponse(resp, error, 'URL parameter invalid', options);
+			log(error.stack);
 		}
 	}
 }

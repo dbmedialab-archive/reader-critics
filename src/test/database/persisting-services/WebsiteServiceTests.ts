@@ -22,10 +22,8 @@ import * as Promise from 'bluebird';
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import { websiteService } from 'app/services';
 import { EmptyError } from 'app/util/errors';
