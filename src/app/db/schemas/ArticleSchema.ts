@@ -18,7 +18,7 @@
 
 import { Schema } from 'mongoose';
 
-import ArticleURL from 'base/';
+import ArticleURL from 'base/ArticleURL';
 
 const ArticleSchema : Schema = new Schema({
 	url: {

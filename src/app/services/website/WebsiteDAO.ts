@@ -18,10 +18,8 @@
 
 import { isString } from 'lodash';
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import { ObjectID } from 'app/db';
 

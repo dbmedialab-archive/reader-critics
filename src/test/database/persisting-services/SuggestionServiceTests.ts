@@ -22,8 +22,9 @@ import * as Promise from 'bluebird';
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
-import { Suggestion } from 'base';
 import { suggestionService } from 'app/services';
+
+import Suggestion from 'base/Suggestion';
 
 import * as app from 'app/util/applib';
 

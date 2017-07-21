@@ -16,10 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import { ObjectID } from 'app/db';
 
@@ -29,7 +27,6 @@ interface WebsiteService extends BasicPersistingService {
 	get(name : string) : Promise <Website>;
 	getID(website : Website) : Promise <ObjectID>;
 	identify(url : ArticleURL|string) : Promise <Website>;
-
 	save(website : Website) : Promise <void>;
 }
 
