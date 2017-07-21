@@ -22,7 +22,7 @@ import {
 	Strategy,
 } from 'passport-local';
 
-import { User } from 'base';
+import User from 'base/User';
 import { userService } from 'app/services';
 
 import { RetrieveCallback } from '../passportConfig';
@@ -35,7 +35,12 @@ const options : IStrategyOptions = {
 
 function verify(username : string, password : string, done : RetrieveCallback) {
 	userService.get(username).then((user : User) => {
-		done(user === null ? 'User not found' : null, user);
+		if (user) {
+			return userService.checkPassword(user, password).then((isMatch) => {
+				done(isMatch ? null : 'Invalid credentials', user);
+			});
+		}
+		done('User not found', user);
 	});
 }
 

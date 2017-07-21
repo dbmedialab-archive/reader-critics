@@ -22,8 +22,6 @@ const log = app.createLog();
 
 // Template stuff
 const styles: string[] = [
-	'/static/styles/home.css',
-	'/static/styles/suggestion.css',
 	'/static/admin.css',
 ];
 
@@ -44,7 +42,6 @@ function createTemplate() {
 
 export function loginPageHandler(requ : Request, resp : Response) : void {
 	resp.send(mainTemplate({
-		view: 'login',
 		styles,
 		scripts,
 	}));
@@ -57,7 +54,7 @@ export function loginHandler(requ : Request, resp : Response, next : NextFunctio
 		status: 401,
 	});
 
-	const callback = (error, user, info) => {
+	const callback = (error, user) => {
 		if (error || user === false) {
 			return notAuth(error || new Error('Invalid credentials'));
 		}
@@ -74,14 +71,13 @@ export function loginHandler(requ : Request, resp : Response, next : NextFunctio
 	passport.authenticate('local', callback)(requ, resp, next);
 }
 
-export function logoutHandler(requ /*: Request*/, resp : Response): void {
+export function logoutHandler(requ : Request, resp : Response): void {
 	requ.logOut();
 	requ.session.destroy((err) => {  // "session" does not exist on type Request. What now?
 		if (err) {
 			log(err);
-		} else {
-			resp.redirect('login');
 		}
+		return loginPageHandler(requ, resp);
 	});
 }
 

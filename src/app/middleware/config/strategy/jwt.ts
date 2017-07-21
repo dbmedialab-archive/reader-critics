@@ -22,7 +22,7 @@ import {
 	StrategyOptions,
 } from 'passport-jwt';
 
-import { User } from 'base';
+import User from 'base/User';
 import { userService } from 'app/services';
 import { RetrieveCallback } from '../passportConfig';
 

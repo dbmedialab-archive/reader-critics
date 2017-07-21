@@ -38,6 +38,7 @@ function sendRequest(url: string, method: string = 'GET', data?: any): Promise<a
 	.then(json)
 	.catch(function (error) {
 		console.log('request failed', error);
+		return {error: error.message};
 	});
 }
 
@@ -50,26 +51,13 @@ function authCheck(response: Response): any {
 	const currentPath = window.location.pathname;
 
 	if (currentPath === '/admin/login') {
-		if (response.status !== 200) {
-			return response;
-		}
-		window.location.pathname = 'admin/testpage';
 		return response;
 	}
 
 	if (response.status === 401) {
-		/** That might work on previous app structure
-		 document.getElementById('app').setAttribute('name', 'login');
-		 */
-		window.location.pathname = '/admin/login';
+		window.history.pushState({}, 'Authorization', '/admin/login');
 		throw new Error(response.statusText);
 	} else {
-		/** That might work on previous app structure
-			 if (document.getElementById('app').getAttribute('name') !== currentView) {
-			    document.getElementById('app').setAttribute('name', currentView);
-			 }
-			 return response;
-		 */
 		return response;
 	}
 }
@@ -83,7 +71,9 @@ function status(response) {
 	if (response.status >= 200 && response.status < 300) {
 		return response;
 	}
-	throw new Error(response.statusText);
+	return response.json().then(json => {
+		throw new Error(json.message || response.statusText);
+	});
 }
 
 /**

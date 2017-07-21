@@ -28,6 +28,7 @@ convict.addFormat({
 	name: 'hex-secret',
 	validate: (value) => {
 		if (!isHexSecret(value)) {
+			log(value);
 			throw new Error('Must be a 64 character hex key');
 		}
 	},
@@ -73,7 +74,7 @@ const config = convict({
 		},
 		jwt: {
 			secret: {
-				default: null,
+				default: '1BAAF7B9ECF206FB500B1AF0DBD776E32A2B35EE1BE59A784C892008596B7DFB',
 				doc: '64 character hexadecimal random sequence for signing JSON web tokens',
 				format: 'hex-secret',
 				env: 'AUTH_JWT_SECRET',
@@ -86,7 +87,7 @@ const config = convict({
 		},
 		session: {
 			secret: {
-				default: null,
+				default: '1BAAF7B9ECF206FB500B1AF0DBD776E32A2B35EE1BE59A784C892008596B7DFA',
 				doc: '64 character hexadecimal random sequence for signing session tokens',
 				format: 'hex-secret',
 				env: 'AUTH_SESSION_SECRET',

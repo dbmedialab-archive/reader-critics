@@ -45,12 +45,10 @@ adminRoute.use(bodyParser.urlencoded({
 }));
 adminRoute.use(cookieParser(secret));
 
-adminRoute.get('/', homeRoute);
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
-adminRoute.get('/testpage', isAuthenticated, testPageHandler);
-adminRoute.get(['/users'], adminPageHandler);
+adminRoute.get(['/', '/testpage', '/users'], isAuthenticated, adminPageHandler);
 adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
@@ -58,8 +56,4 @@ export default adminRoute;
 function notFoundHandler(requ : Request, resp : Response) : void {
 	log('Admin router', requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
-}
-
-function homeRoute(requ : Request, resp : Response) : void {
-	resp.redirect('testpage');
 }

@@ -27,6 +27,7 @@ const AdminConstants = keykey([
 	'TEST_MODAL_WINDOW',
 	'PROMPT_MODAL_WINDOW',
 	'DIALOG_MODAL_WINDOW',
+	'LOGIN_DIALOG_MODAL_WINDOW',
 ]);
 
 export default AdminConstants;

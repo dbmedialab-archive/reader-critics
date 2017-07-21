@@ -1,7 +1,9 @@
-import {
-	User,
-	UserRole
-} from 'base';
+// import {
+// 	User,
+// 	UserRole
+// } from 'base';
+import User from 'base/User';
+import UserRole from 'base/UserRole';
 
 export default function (username : string) : Promise <User> {
 	if (username !== 'admin') {
