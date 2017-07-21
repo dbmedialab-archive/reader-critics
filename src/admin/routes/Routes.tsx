@@ -21,7 +21,6 @@ import { Route, Switch } from 'react-router';
 
 import Users from 'admin/components/user/Users';
 import Login from 'admin/components/login/Login';
-import TestLayout from 'admin/components/testpage/TestLayout';
 
 const Routes : React.StatelessComponent <any> =	() =>
 	<Switch>
@@ -29,6 +28,5 @@ const Routes : React.StatelessComponent <any> =	() =>
 		<Route path="/login" component={Login}/>
 		<Route path="/logout" component={Login}/>
 		<Route path="/users" component={Users}/>
-		<Route path="/testpage" component={TestLayout}/>
 	</Switch>;
 export default Routes;

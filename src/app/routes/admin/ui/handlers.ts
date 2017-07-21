@@ -80,14 +80,3 @@ export function logoutHandler(requ : Request, resp : Response): void {
 		return loginPageHandler(requ, resp);
 	});
 }
-
-// TODO remove test handler
-export function testPageHandler(requ : Request, resp : Response): void {
-	resp.send(mainTemplate({
-		view: 'testpage',
-		styles,
-		scripts,
-	}));
-
-	resp.status(200).end();
-}

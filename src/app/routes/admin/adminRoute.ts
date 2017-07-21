@@ -25,7 +25,7 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as app from 'app/util/applib';
-import { loginHandler, loginPageHandler, logoutHandler, testPageHandler } from './ui/handlers';
+import { loginHandler, loginPageHandler, logoutHandler} from './ui/handlers';
 import { sessionConf } from 'app/middleware/config/sessionConfig';
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
@@ -48,7 +48,7 @@ adminRoute.use(cookieParser(secret));
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
-adminRoute.get(['/', '/testpage', '/users'], isAuthenticated, adminPageHandler);
+adminRoute.get(['/', '/users'], isAuthenticated, adminPageHandler);
 adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
