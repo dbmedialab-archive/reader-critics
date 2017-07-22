@@ -103,7 +103,7 @@
 		"@types/mocha": "2.2.41",
 		"@types/mongodb": "2.2.7",
 		"@types/mongoose": "4.7.19",
-		"@types/node": "8.0.14",
+		"@types/node": "8.0.15",
 		"@types/react": "15.0.38",
 		"@types/react-dom": "15.5.1",
 		"@types/react-redux": "4.4.45",
