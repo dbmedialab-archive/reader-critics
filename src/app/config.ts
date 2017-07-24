@@ -18,6 +18,22 @@
 
 import * as convict from 'convict';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog('config');
+
+const isHexSecret = (val : any) => /^[a-fA-F0-9]{64}$/.test(val);
+
+convict.addFormat({
+	name: 'hex-secret',
+	validate: (value) => {
+		if (!isHexSecret(value)) {
+			log(value);
+			throw new Error('Must be a 64 character hex key');
+		}
+	},
+});
+
 const config = convict({
 	http: {
 		port: {
@@ -27,15 +43,75 @@ const config = convict({
 			env: 'HTTP_PORT',
 		},
 	},
-	mongodb: {
-		url: {
-			doc: 'MongoDB connection URL for the main backend database',
-			default: 'mongodb://localhost:27017/readercritics',
-			env: 'MONGODB_URL',
+	db: {
+		mongo: {
+			url: {
+				doc: 'MongoDB connection URL for the main backend database',
+				format: String,
+				default: 'mongodb://localhost:27017/readercritics',
+				env: 'MONGODB_URL',
+			},
+		},
+		redis: {
+			url: {
+				doc: 'Redis URL to connect to (including auth string)',
+				format: String,
+				default: 'redis://localhost:6379',
+				env: 'REDIS_URL',
+			},
+			host: 'localhost',
+			port: 6379,
+			ttl: 260,
+		},
+	},
+	auth: {
+		bcrypt: {
+			rounds: {
+				doc: 'Number of salt rounds when hashing passwords with BCrypt',
+				default: 14,  // takes ~900ms on a Skylake E5v3 Xeon
+				env: 'AUTH_BCRYPT_ROUNDS',
+			},
+		},
+		jwt: {
+			secret: {
+				default: null,
+				doc: '64 character hexadecimal random sequence for signing JSON web tokens',
+				format: 'hex-secret',
+				env: 'AUTH_JWT_SECRET',
+			},
+			session: {
+				default: true,
+				format: Boolean,
+				env: 'AUTH_JWT_SESSION',
+			},
+		},
+		session: {
+			secret: {
+				default: null,
+				doc: '64 character hexadecimal random sequence for signing session tokens',
+				format: 'hex-secret',
+				env: 'AUTH_SESSION_SECRET',
+			},
+			ttl: {
+				default: 30,
+				doc: 'Lifetime of a session in minutes',
+				format: 'nat',
+				env: 'AUTH_SESSION_TTL',
+			},
 		},
 	},
 });
 
-config.validate();
+try {
+	config.validate();
+
+	if (config.get('auth.jwt.secret') === config.get('auth.session.secret')) {
+		throw new Error('JWT and session secret are identical');
+	}
+}
+catch (error) {
+	log('Configuration error:', error.message);
+	process.exit(128);
+}
 
 export default config;

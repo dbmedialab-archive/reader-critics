@@ -16,17 +16,24 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import MainStore from 'admin/stores/MainStore';
+import User from 'base/User';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+export function authenticate(user: User) {
+	MainStore.dispatch(
+		UserActionsCreator.authenticateUser(user)
+	);
+}
+export function deauthenticate() {
+	MainStore.dispatch(
+		UserActionsCreator.deauthenticateUser()
+	);
+}
+
+export function update(user: User) {
+	MainStore.dispatch(
+		UserActionsCreator.updateUser(user)
+	);
+}
