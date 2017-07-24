@@ -15,9 +15,6 @@ engines:
     enabled: true
   shellcheck:
     enabled: true
-  tslint:
-    enabled: false
-    channel: beta
 
 ratings:
   paths:

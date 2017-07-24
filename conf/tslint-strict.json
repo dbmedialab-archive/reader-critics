@@ -1,0 +1,10 @@
+{
+	"extends": "../tslint.json",
+	"rules": {
+		"await-promise": true,
+		"match-default-export-name": [ true, {
+			"severity": "warning"
+		}],
+		"no-unused-variable": true
+	}
+}
