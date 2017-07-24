@@ -24,12 +24,13 @@ const ArticleSchema : Schema = new Schema({
 	url: {
 		type: String,
 		set: (url : ArticleURL) : string => {
-			console.log('schema set:', url);
 			return url.href;
 		},
 	},
 	version: String,
 
+	// TODO mit setter versuchen der string in ObjectID umwandelt -> von Schema ableiten und
+	// generischen Setter in Klasse, oder Plugin schreiben.
 	_website: {
 		type: Schema.Types.ObjectId,
 		ref: 'Website',

@@ -47,7 +47,7 @@ export function count() : Promise <number> {
  */
 export function get(name : string) : Promise <Website> {
 	emptyCheck(name);
-	return wrapFindOne (WebsiteModel.findOne({ name }));
+	return wrapFindOne(WebsiteModel.findOne({ name }));
 }
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {

@@ -26,7 +26,6 @@ import {
 	DocumentQuery,
 } from 'mongoose';
 
-// import { ObjectID } from 'app/db';
 import { filterMeta } from 'app/db/filter';
 
 /**
@@ -47,17 +46,9 @@ export function wrapFind <D extends Document, Z> (
 			return Promise.reject(new Error('results.exec() did not return an array'));
 		}
 
-		return Promise.resolve(results.map(item => <Z> filterMeta(item)));
+		return Promise.resolve(results.map(item => filterMeta<Z>(item)));
 	});
 }
-
-// export function wrapFindID <D extends Document> (
-// 	result : DocumentQuery <D, D>
-// ) : Promise <ObjectID>
-// {
-// 	return rawFindOne(result)
-// 	.then((doc : D) => Promise.resolve(doc._id));
-// }
 
 /**
  * @param result A DocumentQuery produced with Model.find()
@@ -79,9 +70,3 @@ export function wrapFindOne <D extends Document, Z> (
 		return Promise.resolve(filterMeta<Z>(doc));
 	});
 }
-
-// function rawFindOne <D extends Document> (
-// 	result : DocumentQuery <D, D>
-// ) : Promise <D>
-// {
-// }

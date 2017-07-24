@@ -70,7 +70,6 @@ export default function(this: ISuiteCallbackContext) {
 		])
 		.then((results : Website[]) => {
 			assertWebsiteObject(results[0], 'dagbladet.no');
-			console.dir(results[0]);
 			assert.isNull(results[1]);
 		});
 	});

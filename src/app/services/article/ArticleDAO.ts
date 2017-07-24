@@ -28,8 +28,6 @@ import {
 	wrapSave
 } from 'app/db/common';
 
-// import { ObjectID } from 'app/db';
-
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
 }
@@ -43,7 +41,7 @@ export function load(url : ArticleURL, version : string) : Promise <Article> {
 }
 
 export function save(website : Website, article : Article) : Promise <void> {
-	return wrapSave(new ArticleModel(Object.assign({
-		_website: website.ID,
-	}, article)).save());
+	return wrapSave(new ArticleModel(article).save()); /*Object.assign({
+		// _website: new ObjectID('12345678abcd'), // website.ID,
+	}, article)).save());*/
 }

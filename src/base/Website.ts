@@ -16,8 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// import { ObjectID } from 'app/db';
+
 interface Website {
-	ID : string;
+	// ID : ObjectID;
 	name : string;
 	parserClass? : string;
 

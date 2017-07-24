@@ -8,14 +8,24 @@ const testData = {
 	'_id': '12345',
 	'name': 'dagbladet.no',
 	'date': {
-		'created': '2017-07-21T14:46:52.224Z',
+		'created': new Date('2017-07-21T14:46:52.224Z'),
 	},
 	'chiefEditors': [{
 		'name': 'Quak',
 		'email': 'vakt@mopo.no',
 		'_id': '67890',
 	}],
-	'hosts': [ 'www.mopo.no' ],
+	'hosts': [
+		'www.mopo.no',
+		'www.morgenposten.no',
+	],
+	'singleElement': [
+		123456,
+	],
+	'dateArray': [
+		new Date('2012-07-21T19:24:09Z'),
+		new Date('2016-01-09T11:25:38Z'),
+	],
 	'subDocument': {
 		'_id': 'abcdef',
 		'quak': 'Here be data',
@@ -25,20 +35,30 @@ const testData = {
 };
 
 const expected = {
-	'ID': '12345',
+	'_id': '12345',
 	'name': 'dagbladet.no',
 	'date': {
-		'created': '2017-07-21T14:46:52.224Z',
+		'created': new Date('2017-07-21T14:46:52.224Z'),
 	},
 	'chiefEditors': [{
 		'name': 'Quak',
 		'email': 'vakt@mopo.no',
 	}],
+	'hosts': [
+		'www.mopo.no',
+		'www.morgenposten.no',
+	],
+	'singleElement': [
+		123456,
+	],
+	'dateArray': [
+		new Date('2012-07-21T19:24:09Z'),
+		new Date('2016-01-09T11:25:38Z'),
+	],
 	'subDocument': {
 		'quak': 'Here be data',
 		'uint': 10001,
 	},
-	'hosts': [ 'www.mopo.no' ],
 };
 
 describe('Filter', () => {
