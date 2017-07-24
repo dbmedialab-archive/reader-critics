@@ -27,7 +27,7 @@ import * as app from 'app/util/applib';
 const log = app.createLog('db:mongo');
 
 export default function () : Promise <void> {
-	const mongoURL = config.get('mongodb.url');
+	const mongoURL = config.get('db.mongo.url');
 
 	const options : MoreConnectionOptions = {
 	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
