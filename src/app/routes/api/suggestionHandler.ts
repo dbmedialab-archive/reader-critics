@@ -21,7 +21,8 @@ import {
 	Response,
 } from 'express';
 
-import { Suggestion } from 'base/';
+import Suggestion from 'base/Suggestion';
+
 import { SuggestionModel } from 'app/db/models';
 import { errorResponse, okResponse } from './apiResponse';
 

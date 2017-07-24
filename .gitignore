@@ -45,3 +45,4 @@ Thumbs.db
 # IDE and Editors
 /.idea
 *.sublime-workspace
+/.vscode

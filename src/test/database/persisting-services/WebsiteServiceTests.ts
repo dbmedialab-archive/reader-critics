@@ -22,10 +22,8 @@ import * as Promise from 'bluebird';
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import { websiteService } from 'app/services';
 import { EmptyError } from 'app/util/errors';
@@ -59,7 +57,13 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	it('get', () => {
+	it('count()', () => {
+		return websiteService.count().then(count => {
+			assert.strictEqual(count, 3);
+		});
+	});
+
+	it('get()', () => {
 		return Promise.all([
 			websiteService.get('dagbladet.no'),
 			websiteService.get('something-else.xyz'),

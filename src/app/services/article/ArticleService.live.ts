@@ -24,12 +24,14 @@ import download from './live/download';
 import fetch from './common/fetch';
 
 import {
+	count,
 	load,
 	save,
 } from './ArticleDAO';
 
 const service : ArticleService = {
 	clear,
+	count,
 	download,
 	fetch,
 	load,
