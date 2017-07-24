@@ -16,17 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import AdminConstants from 'admin/constants/AdminConstants';
+import User from 'base/User';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
-
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+export type TAction = IAction;
+export function authenticateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.AUTHENTICATE_USER,
+		payload,
+	};
+}
+export function deauthenticateUser(): IAction {
+	return {
+		type: AdminConstants.DEAUTHENTICATE_USER,
+		payload: {},
+	};
+}
+export function updateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.UPDATE_CURRENT_USER,
+		payload,
+	};
+}

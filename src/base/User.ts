@@ -16,17 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import UserRole from './UserRole';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+interface User {
+	name : string;
+	email : string;
+	role : UserRole;
+}
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+export default User;
