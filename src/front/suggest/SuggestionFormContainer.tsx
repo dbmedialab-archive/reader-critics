@@ -19,7 +19,7 @@
 import * as React from 'react';
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
-import Validator, {IValidation} from 'base/Validator';
+import Validator, {IValidation} from 'base/Validation';
 
 export interface FormPayload {
 	username: string;
@@ -71,7 +71,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		}
 
 		const validation = this.validator.validate('suggestionComment',
-			this.state.email, {presence: 'required'});
+			this.state.comment, {presence: 'required'});
 		if (validation.isError) {
 			return validation.message;
 		}
