@@ -65,12 +65,12 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('get()', () => {
 		return Promise.all([
-			// websiteService.get('dagbladet.no'),
+			websiteService.get('dagbladet.no'),
 			websiteService.get('something-else.xyz'),
 		])
 		.then((results : Website[]) => {
 			assertWebsiteObject(results[0], 'dagbladet.no');
-			// console.dir(results[0]);
+			console.dir(results[0]);
 			assert.isNull(results[1]);
 		});
 	});
@@ -80,11 +80,11 @@ export default function(this: ISuiteCallbackContext) {
 		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
 
 		return Promise.all([
-			// websiteService.identify(a),
+			websiteService.identify(a),
 			websiteService.identify(b),
 		])
 		.then((results : Website[]) => {
-			// assertWebsiteObject(results[0], 'dagbladet.no');
+			assertWebsiteObject(results[0], 'dagbladet.no');
 			assert.isNull(results[1]);
 		});
 	});

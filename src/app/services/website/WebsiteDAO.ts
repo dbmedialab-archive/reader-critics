@@ -21,12 +21,7 @@ import { isString } from 'lodash';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
-import { ObjectID } from 'app/db';
-
-import {
-	WebsiteDocument,
-	WebsiteModel,
-} from 'app/db/models';
+import { WebsiteModel } from 'app/db/models';
 
 import {
 	clearCollection,
@@ -54,11 +49,6 @@ export function get(name : string) : Promise <Website> {
 	emptyCheck(name);
 	return wrapFindOne (WebsiteModel.findOne({ name }));
 }
-
-// export function getID(website : Website) : Promise <ObjectID> {
-// 	emptyCheck(website);
-// 	return wrapFindID(WebsiteModel.findOne({ name: website.name }));
-// }
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 	emptyCheck(articleURL);

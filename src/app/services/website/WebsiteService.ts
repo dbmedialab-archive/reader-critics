@@ -19,8 +19,6 @@
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
-import { ObjectID } from 'app/db';
-
 import BasicPersistingService from '../BasicPersistingService';
 
 interface WebsiteService extends BasicPersistingService {
