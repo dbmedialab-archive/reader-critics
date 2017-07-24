@@ -11,6 +11,10 @@ npm install
 ```
 `yarn` does work fine as well, is a whole lot faster and also **required** for adding new dependencies, if you don't have at least NPM v5.0! Previous versions of NPM always rewrite the whole _package.json_ with space indentation. If your commit/pull request changes the indentation, it _will be rejected_.
 
+### Redis
+We use Redis to store session data about authentication for admin pages. Instructions on how to start Redis server locally:
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
+
 ### Database
 _<< Update documentation with instructions as soon as this is implemented >>_
 

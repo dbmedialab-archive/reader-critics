@@ -26,7 +26,7 @@ const MainMenuComponent : React.StatelessComponent <any> = () =>
 					<Link
 							to="/users"
 							className="tooltip-tip tooltipster-disable"
-							title="All comics"
+							title="All users"
 						>
 							<i className="fa fa-list-ul" />
 							<span>Users</span>
