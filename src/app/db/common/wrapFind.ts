@@ -27,6 +27,7 @@ import {
 } from 'mongoose';
 
 import { ObjectID } from 'app/db';
+import { filterMeta } from 'app/db/filter';
 
 /**
  * @param result A DocumentQuery produced with Model.find()
@@ -46,18 +47,17 @@ export function wrapFind <D extends Document, Z> (
 			return Promise.reject(new Error('results.exec() did not return an array'));
 		}
 
-		const unfiltered = <Array <D>> results;
-		return Promise.resolve(unfiltered.map(item => filterProperties <Z> (item)));
+		return Promise.resolve(results.map(item => <Z> filterMeta(item)));
 	});
 }
 
-export function wrapFindID <D extends Document> (
-	result : DocumentQuery <D, D>
-) : Promise <ObjectID>
-{
-	return rawFindOne(result)
-	.then((doc : D) => Promise.resolve(doc._id));
-}
+// export function wrapFindID <D extends Document> (
+// 	result : DocumentQuery <D, D>
+// ) : Promise <ObjectID>
+// {
+// 	return rawFindOne(result)
+// 	.then((doc : D) => Promise.resolve(doc._id));
+// }
 
 /**
  * @param result A DocumentQuery produced with Model.find()
@@ -66,14 +66,6 @@ export function wrapFindID <D extends Document> (
 export function wrapFindOne <D extends Document, Z> (
 	result : DocumentQuery <D, D>
 ) : Promise <Z>
-{
-	return rawFindOne(result)
-	.then((doc : D) => Promise.resolve(filterProperties<Z>(doc)));
-}
-
-function rawFindOne <D extends Document> (
-	result : DocumentQuery <D, D>
-) : Promise <D>
 {
 	return result.lean().exec().then((doc : D) => {
 		if (doc === null) {
@@ -84,25 +76,12 @@ function rawFindOne <D extends Document> (
 			return Promise.reject(new Error('result.exec() did not return a single object'));
 		}
 
-		return Promise.resolve(doc);
+		return Promise.resolve(filterMeta<Z>(doc));
 	});
 }
 
-// Everything that starts with one or more underscores
-const rxPropFilter = /^_+.+/;
-
-// Based on the MDN polyfill for Object.assign, simplified and with a key filter
-const filterProperties = <Z> (from : any) : Z => {
-	const to = Object.create(null);
-
-	for (const key in from) {
-		if (rxPropFilter.test(key)) {
-			continue;
-		}
-		if (Object.prototype.hasOwnProperty.call(from, key)) {
-			to[key] = from[key];
-		}
-	}
-
-	return to;
-};
+// function rawFindOne <D extends Document> (
+// 	result : DocumentQuery <D, D>
+// ) : Promise <D>
+// {
+// }

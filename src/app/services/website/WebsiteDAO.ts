@@ -31,7 +31,7 @@ import {
 import {
 	clearCollection,
 	getCount,
-	wrapFindID,
+	// wrapFindID,
 	wrapFindOne,
 	wrapSave
 } from 'app/db/common';
@@ -55,10 +55,10 @@ export function get(name : string) : Promise <Website> {
 	return wrapFindOne (WebsiteModel.findOne({ name }));
 }
 
-export function getID(website : Website) : Promise <ObjectID> {
-	emptyCheck(website);
-	return wrapFindID(WebsiteModel.findOne({ name: website.name }));
-}
+// export function getID(website : Website) : Promise <ObjectID> {
+// 	emptyCheck(website);
+// 	return wrapFindID(WebsiteModel.findOne({ name: website.name }));
+// }
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 	emptyCheck(articleURL);

@@ -2,7 +2,7 @@ import 'mocha';
 
 import { assert } from 'chai';
 
-import filter from 'app/services/PropertyFilter';
+import { filterMeta } from 'app/db/filter';
 
 const testData = {
 	'_id': '12345',
@@ -25,6 +25,7 @@ const testData = {
 };
 
 const expected = {
+	'ID': '12345',
 	'name': 'dagbladet.no',
 	'date': {
 		'created': '2017-07-21T14:46:52.224Z',
@@ -40,6 +41,6 @@ const expected = {
 	'hosts': [ 'www.mopo.no' ],
 };
 
-describe('PropertyFilter', () => {
-	it('default filter', () => assert.deepEqual(filter(testData), expected));
+describe('Filter', () => {
+	it('Meta property filter', () => assert.deepEqual(filterMeta(testData), expected));
 });

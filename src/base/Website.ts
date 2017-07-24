@@ -17,11 +17,12 @@
 //
 
 interface Website {
+	ID : string;
 	name : string;
 	parserClass? : string;
 
-	hosts: string[];
-	chiefEditors: string[];
+	hosts : string[];
+	chiefEditors : string[];
 }
 
 export default Website;
