@@ -23,19 +23,17 @@ import {
 	Model,
 } from 'mongoose';
 
-import TimestampPlugin from './plugins/TimestampPlugin';
-
 import {
 	ArticleSchema,
 	SuggestionSchema,
 	WebsiteSchema,
 } from './schemas';
 
-import {
-	Article,
-	Suggestion,
-	Website,
-} from 'base';
+import Article from 'base/Article';
+import Suggestion from 'base/Suggestion';
+import Website from 'base/Website';
+
+import TimestampPlugin from './plugins/TimestampPlugin';
 
 // Install global plugins
 

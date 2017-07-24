@@ -20,6 +20,7 @@ import WebsiteService from './WebsiteService';
 
 import {
 	clear,
+	count,
 	get,
 	identify,
 	save,
@@ -27,6 +28,7 @@ import {
 
 const service : WebsiteService = {
 	clear,
+	count,
 	get,
 	identify,
 	save,

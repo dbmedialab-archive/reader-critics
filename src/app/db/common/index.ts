@@ -37,6 +37,10 @@ export function clearCollection <T extends Document> (model : Model <T>) : Promi
 	throw new Error('Function can only be used in TEST mode');
 }
 
+export function getCount <T extends Document> (model : Model <T>) : Promise <number> {
+	return model.count({}).then(result => Promise.resolve(result));
+}
+
 export function wrapSave(wrapped : Promise <Document>) : Promise <void> {
 	return wrapped.then(() => undefined)
 	.catch(error => Promise.reject(

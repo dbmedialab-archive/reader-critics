@@ -18,10 +18,8 @@
 
 import { isString } from 'lodash';
 
-import {
-	ArticleURL,
-	Website,
-} from 'base';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import {
 	WebsiteDocument,
@@ -30,6 +28,7 @@ import {
 
 import {
 	clearCollection,
+	getCount,
 	wrapFindOne,
 	wrapSave
 } from 'app/db/common';
@@ -38,6 +37,10 @@ import emptyCheck from 'app/util/emptyCheck';
 
 export function clear() : Promise <void> {
 	return clearCollection(WebsiteModel);
+}
+
+export function count() : Promise <number> {
+	return getCount(WebsiteModel);
 }
 
 /**
