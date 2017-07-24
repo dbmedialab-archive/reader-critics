@@ -16,17 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import * as session from 'express-session';
+import * as redis from 'redis';
+import * as connectRedis from 'connect-redis';
+import config from 'app/config';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+const client = redis.createClient();
+const redisStore = connectRedis(session);
+const {host, port, ttl} = config.get('db.redis');
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+const secret = config.get('auth.session.secret');
+const maxAge = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
+
+export const sessionConf = {
+	store: new redisStore({
+		host: host,
+		port: port,
+		client,
+		ttl: ttl,
+	}),
+	secret,
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		path: '/admin',
+		secure: false,
+		maxAge,
+	},
+};
