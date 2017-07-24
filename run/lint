@@ -9,8 +9,8 @@ outputLint()
 		fi
 	done <<< "${1}"
 
-	if [ ${2} -ne 0 ] ; then
-		exit ${2}
+	if [ "${2}" -ne 0 ] ; then
+		exit "${2}"
 	fi
 }
 
