@@ -16,13 +16,15 @@ engines:
   shellcheck:
     enabled: true
   tslint:
-    enabled: false
+    enabled: true
     channel: beta
+    config: tslint.json
 
 ratings:
   paths:
   - 'src/**.js'
   - 'src/**.scss'
+  - 'src/**.ts'
   - 'run/**.sh'
 
 exclude_paths:
