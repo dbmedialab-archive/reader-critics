@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
 
-// const currentView = document.getElementById('app').getAttribute('name');
-
 /**
  * Sends an authentication request
  * @type {(data:any)=>Promise<any>}

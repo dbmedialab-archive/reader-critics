@@ -74,7 +74,7 @@ const config = convict({
 		},
 		jwt: {
 			secret: {
-				default: '1BAAF7B9ECF206FB500B1AF0DBD776E32A2B35EE1BE59A784C892008596B7DFB',
+				default: null,
 				doc: '64 character hexadecimal random sequence for signing JSON web tokens',
 				format: 'hex-secret',
 				env: 'AUTH_JWT_SECRET',
@@ -87,7 +87,7 @@ const config = convict({
 		},
 		session: {
 			secret: {
-				default: '1BAAF7B9ECF206FB500B1AF0DBD776E32A2B35EE1BE59A784C892008596B7DFA',
+				default: null,
 				doc: '64 character hexadecimal random sequence for signing session tokens',
 				format: 'hex-secret',
 				env: 'AUTH_SESSION_SECRET',
