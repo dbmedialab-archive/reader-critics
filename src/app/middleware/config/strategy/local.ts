@@ -18,7 +18,6 @@
 
 import {
 	IStrategyOptions,
-	IVerifyOptions,
 	Strategy,
 } from 'passport-local';
 

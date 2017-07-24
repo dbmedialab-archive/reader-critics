@@ -33,8 +33,6 @@ import { options as jwtOptions } from 'app/middleware/config/strategy/jwt';
 import { User } from 'base';
 import { userService } from 'app/services';
 
-import config from 'app/config';
-
 import * as app from 'app/util/applib';
 
 const log = app.createLog();

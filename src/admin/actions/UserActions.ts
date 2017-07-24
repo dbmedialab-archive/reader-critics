@@ -17,10 +17,9 @@
 //
 
 import MainStore from 'admin/stores/MainStore';
-import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
-import * as UserActions from './UserActions';
-import AdminConstants from 'admin/constants/AdminConstants';
 import User from 'base/User';
+
+import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
 
 export function authenticate(user: User) {
 	MainStore.dispatch(

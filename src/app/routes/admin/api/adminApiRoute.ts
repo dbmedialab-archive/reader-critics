@@ -34,7 +34,6 @@ import { errorResponse } from 'app/routes/api/apiResponse';
 
 import isAuthenticatedApi from 'app/middleware/policies/isAuthenticatedApi';
 
-
 const adminApiRoute : Router = Router();
 
 adminApiRoute.use(bodyParser.json({

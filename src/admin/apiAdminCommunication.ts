@@ -69,8 +69,8 @@ function status(response) {
 	if (response.status >= 200 && response.status < 300) {
 		return response;
 	}
-	return response.json().then(json => {
-		throw new Error(json.message || response.statusText);
+	return response.json().then(data => {
+		throw new Error(data.message || response.statusText);
 	});
 }
 
