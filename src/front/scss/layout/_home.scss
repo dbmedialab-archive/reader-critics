@@ -522,30 +522,20 @@ p {
 	padding: 0;
 }
 
-@media only screen and (max-width: 480px) {
-	.container {
+@media only screen and (max-width: 768px) {
+	.section .content {
+		padding: 30px 60px;
+	}
+
+	.main-header .container {
 		padding: 0;
 	}
 
-	.section .content {
-		padding: 20px;
+	.main-header .logo {
+		margin-left: 10px;
 	}
-
-	.arrow-box h3 img {
-		display: none;
-		visibility: hidden;
-	}
-
-	.edit-icon {
-		position: absolute;
-		top: -5%;
-		left: 0;
-		float: left;
-		width: 15px;
-		height: 15px;
-	}
-
 }
+
 
 @media (min-width: 550px) {
 	.column,
@@ -692,12 +682,27 @@ p {
 
 }
 
-@media only screen and (max-width: 768px) {
-	.main-header .container {
+@media only screen and (max-width: 480px) {
+	.container {
 		padding: 0;
 	}
 
-	.main-header .logo {
-		margin-left: 10px;
+	.section .content {
+		padding: 20px;
 	}
+
+	.arrow-box h3 img {
+		display: none;
+		visibility: hidden;
+	}
+
+	.edit-icon {
+		position: absolute;
+		top: -5%;
+		left: 0;
+		float: left;
+		width: 15px;
+		height: 15px;
+	}
+
 }
