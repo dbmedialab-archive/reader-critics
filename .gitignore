@@ -7,6 +7,8 @@
 /out/front/
 /out/test/
 
+# App config file 
+config.json5
 # Package manager lock files
 package-lock.json
 yarn.lock

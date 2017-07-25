@@ -17,14 +17,16 @@
 //
 
 import * as React from 'react';
+import * as Recaptcha from 'react-recaptcha';
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
 import Validator, {IValidation} from 'base/Validation';
 
+let recaptchaInstance;
 export interface FormPayload {
-	username: string;
 	email: string;
 	comment: string;
+	captcha:string | null;
 	touched: {
 		email: boolean,
 		comment: boolean,
@@ -32,7 +34,6 @@ export interface FormPayload {
 }
 
 export default class SuggestionFormContainer extends React.Component <any, FormPayload> {
-	private usernameInput : any;
 	private commentArea : any;
 	private emailInput : any;
 	private validator : IValidation;
@@ -41,9 +42,9 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		super(props);
 
 		this.state = {
-			username: '',
 			email: '',
 			comment: '',
+			captcha: null,
 			touched: {
 				email: false,
 				comment: false,
@@ -56,6 +57,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.UpdateState = this.UpdateState.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.hasCommentError = this.hasCommentError.bind(this);
+		this.verifyCallback = this.verifyCallback.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
@@ -66,7 +68,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private hasCommentError() {
 		if (!this.state.comment) {
-			return 'Fylle ut feltet';
+			return 'Fortell oss hva du synes om å gi tilbakemeldinger på denne måten';
 		}
 
 		const validation = this.validator.validate('suggestionComment',
@@ -79,7 +81,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private isFormValid() {
 		return (
-			!this.hasCommentError()
+			!this.hasCommentError() && this.state.captcha
 		);
 	}
 
@@ -92,33 +94,52 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private handleSubmit(e: any) {
 		e.preventDefault();
-		sendSuggestion(this.state).then(function (res: any) {
-			console.log(res);
+		sendSuggestion(this.state)
+		.then((res) => {
+			console.log('res', res);
+		})
+		.catch((err) => {
+			this.recaptchaReset();
 		});
+	}
+	private verifyCallback(response){
+		this.setState({
+			captcha:response,
+		});
+	}
+	private recaptchaReset(){
+		recaptchaInstance.reset();
+	}
+	private onloadCallback(){
+		//RE-Captcha was loaded
 	}
 
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
+		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
+		// TODO Change language for recaptcha. Recaptcha component, 'hl' prop
+		// const recaptchaLang = window['recaptcha'] ? window['recaptcha'].language : '';
 		return (
 			<form
 				name="suggestBox"
-				className="eleven suggestion columns feedbackform"
+				className="twelve suggestion columns feedbackform"
 				onSubmit={this.handleSubmit}
+				action="javascript:alert(grecaptcha.getResponse(widgetId1));"
 			>
-				<fieldset className="text">
-					<label htmlFor="comment">Username</label>
-					<input
-						type="text"
-						name="username"
-						ref={r => this.usernameInput = r}
-						id="username"
-						onChange={() => this.UpdateState('username', this.usernameInput)}
-					/>
+				<fieldset>
+					<p className="thank-message">
+						Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en
+						tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på.
+						Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte,
+						forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit,
+						hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg
+						hvis de skulle trenge det.
+					</p>
 				</fieldset>
 				<fieldset className="text">
 					<label htmlFor="email">Email</label>
 					<input
-						type="email"
+						type="text"
 						name="email"
 						ref={r => this.emailInput = r}
 						id="email"
@@ -141,9 +162,20 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						touchedField={this.state.touched['comment']}
 					/>
 				</fieldset>
+				<fieldset>
+					<Recaptcha
+						ref={e => recaptchaInstance = e}
+						sitekey={publicKey}
+						render="explicit"
+						hl="no"
+						verifyCallback={this.verifyCallback}
+						onloadCallback={this.onloadCallback}
+					/>
+				</fieldset>
 				<fieldset className="actions">
 					<button type="submit" disabled={!isDisabled} className="button button-primary">Lagre</button>
 				</fieldset>
+
 			</form>
 		);
 	}

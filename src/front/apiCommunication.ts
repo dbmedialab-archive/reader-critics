@@ -21,8 +21,6 @@ import {showError} from 'front/uiHelpers';
 
 const rxUnencoded = /:\/\//;
 
-const json = (response) => response.json().then(j => j.data);
-
 export const fetchArticle = ((url: string, version: string): Promise<any> => {
 	const encodedURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
@@ -30,29 +28,31 @@ export const fetchArticle = ((url: string, version: string): Promise<any> => {
 
 	return fetch(`/api/article/?url=${encodedURL}`)
 		.then(status)
-		.then(json)
 		.then(data => data.article)
 		.catch(function (error) {
 			showError(error.message);
+			return Promise.reject(error);
 		});
 });
 
 export const sendSuggestion = ((data: any): Promise<any> => {
-	return fetch('/api/suggest/', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(data),
-	})
-	.then(status)
-	.then(json)
-	.catch(function (error) {
-		showError(error.message);
-	});
+		return fetch('/api/suggest/', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(data),
+		})
+		.then(status)
+		.catch(function (error) {
+			showError(error.message);
+			return Promise.reject(error);
+		});
 });
 
 function status(response) {
-	if (response.status >= 200 && response.status < 300) {
-		return response;
-	}
-	throw new Error(response.statusText);
+	return response.json().then((data)=>{
+		if (response.status >= 200 && response.status < 300) {
+			return data;
+		}
+		throw new Error(data.message || data.error || response.statusText);
+	});
 }
