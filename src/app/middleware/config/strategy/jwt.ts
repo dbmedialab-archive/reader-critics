@@ -16,17 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import {
+	ExtractJwt,
+	Strategy as JwtStrategy,
+	StrategyOptions,
+} from 'passport-jwt';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+import User from 'base/User';
+import { userService } from 'app/services';
+import { RetrieveCallback } from '../passportConfig';
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+import config from 'app/config';
+
+export const options : StrategyOptions = {
+	jwtFromRequest: ExtractJwt.fromAuthHeader(),
+	secretOrKey: config.get('auth.jwt.secret'),
+};
+
+function verify(jwtPayload, done : RetrieveCallback) {
+	userService.get(jwtPayload.username).then((user : User) => {
+		done(user === null ? 'User not found' : null, user);
+	});
+}
+
+export const jwtStrategy = new JwtStrategy(options, verify);
