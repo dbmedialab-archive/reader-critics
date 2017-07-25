@@ -18,9 +18,11 @@
 
 import { isProduction } from 'app/util/applib';
 
-interface BasicPersistingService {
+interface BasicPersistingService <T> {
 	clear() : Promise <void>;
 	count() : Promise <number>;
+
+	getRange(skip : number, limit : number, sort? : Object) : Promise <T[]>;
 }
 
 export default BasicPersistingService;
