@@ -56,7 +56,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.UpdateState = this.UpdateState.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.hasCommentError = this.hasCommentError.bind(this);
-		this.hasEmailError = this.hasEmailError.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
@@ -125,10 +124,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						id="email"
 						onBlur={this.handleBlur('email')}
 						onChange={() => this.UpdateState('email', this.emailInput)}
-					/>
-					<InputError
-						errorText={this.hasEmailError()}
-						touchedField={this.state.touched['email']}
 					/>
 				</fieldset>
 				<fieldset className="text">
