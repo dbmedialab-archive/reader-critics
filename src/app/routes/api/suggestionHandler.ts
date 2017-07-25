@@ -51,7 +51,6 @@ function sendSuggestion(requ){
 	};
 
 	log('Received comment from "%s"', email);
-
 	return new SuggestionModel(suggest).save();
 }
 
