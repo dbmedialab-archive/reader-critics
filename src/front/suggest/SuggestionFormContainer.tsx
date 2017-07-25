@@ -114,6 +114,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		const isDisabled = this.isFormValid();
 		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
 		const recaptchaLang = window['recaptcha'] ? window['recaptcha'].language : '';
+		//TODO Change language for recaptcha. Recaptcha component, 'hl' prop
 		return (
 			<form
 				name="suggestBox"
@@ -162,7 +163,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						ref={e => recaptchaInstance = e}
 						sitekey={publicKey}
 						render="explicit"
-						hl={recaptchaLang}
+						hl='no'
 						verifyCallback={this.verifyCallback}
 						onloadCallback={this.onloadCallback}
 					/>

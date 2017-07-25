@@ -35,23 +35,26 @@ const config = convict({
 			env: 'MONGODB_URL',
 		},
 	},
-	RECAPTCHA_SECRET_KEY: {
-		doc: 'Secret Google Recaptcha key',
-		default: '',
-		env: 'RECAPTCHA_SECRET_KEY',
-	},
-	RECAPTCHA_PUBLIC_KEY: {
-		doc: 'Public Google Recaptcha key',
-		default: '',
-		env: 'RECAPTCHA_PUBLIC_KEY',
-	},
-	RECAPTCHA_LANGUAGE: {
-		doc: 'Google Recaptcha language',
-		default: 'no',
-		env: 'RECAPTCHA_LANGUAGE',
+	recaptcha: {
+		key: {
+			secret: {
+				doc: 'Secret Google Recaptcha key',
+				default: '',
+				env: 'RECAPTCHA_SECRET_KEY',
+			},
+			public: {
+				doc: 'Public Google Recaptcha key',
+				default: '',
+				env: 'RECAPTCHA_PUBLIC_KEY',
+			},
+		},
 	},
 });
-config.loadFile(path.join(rootPath, 'config.json5'));
+try {
+	config.loadFile(path.join(rootPath, 'config.json5'));
+} catch (err) {
+	console.log('Can\'t find file /config.json5. Server\'s setting will be apply');
+}
 config.validate();
 
 export default config;

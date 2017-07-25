@@ -47,7 +47,7 @@ const scripts = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
 	'/static/front.bundle.js',
-	'//www.google.com/recaptcha/api.js?hl='+config.get('RECAPTCHA_LANGUAGE'),
+	'//www.google.com/recaptcha/api.js?hl=no', //TODO Change language for recaptcha
 ];
 
 const mainTemplate = createMainTemplate();
@@ -64,8 +64,7 @@ function suggestionHandler(requ : Request, resp : Response) {
 			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}),
 		recaptcha: JSON.stringify({
-			publicKey: config.get('RECAPTCHA_PUBLIC_KEY'),
-			language: config.get('RECAPTCHA_LANGUAGE'),
+			publicKey: config.get('recaptcha.key.public'),
 		}),
 		styles,
 		scripts,

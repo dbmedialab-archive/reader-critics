@@ -80,7 +80,7 @@ export default function(requ : Request, resp : Response) : void {
 			status: 400,
 		});
 	}
-	const secretKey = config.get('RECAPTCHA_SECRET_KEY');
+	const secretKey = config.get('recaptcha.key.secret');
 	const captchaVerifyURL = 'https://www.google.com/recaptcha/api/siteverify?secret='
 	+secretKey+'&response='+requ.body.captcha+'&remoteip='+requ.connection.remoteAddress.toString();
 	axios.post(captchaVerifyURL)

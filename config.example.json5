@@ -5,10 +5,10 @@
 	mongodb: {
 		url: fill,
 	},
-	//required
-	RECAPTCHA_SECRET_KEY: fill,
-	//required
-	RECAPTCHA_PUBLIC_KEY: fill,
-	//List of all possible languages you can find here https://developers.google.com/recaptcha/docs/language
-	RECAPTCHA_LANGUAGE: fill,
+	recaptcha: {
+		key: {
+			secret: fill,
+			public: fill,
+		},
+	},
 }
