@@ -31,3 +31,5 @@ spec:
               configMapKeyRef:
                 name: reader-critics-config
                 key: NODE_ENV
+        - name: redis-cache
+          image: redis

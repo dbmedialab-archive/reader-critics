@@ -16,17 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import User from 'base/User';
+import { userService } from 'app/services';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+export type SerializeCallback = (err : string|null, username : string|null) => void;
+export type RetrieveCallback = (err : string|null, user? : User) => void;
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+export { jwtStrategy } from './strategy/jwt';
+export { localStrategy } from './strategy/local';
+
+export function serializeUser(user : User, done: SerializeCallback) {
+	done(null, user.name);
+}
+
+export function deserializeUser(username : string, done : RetrieveCallback) {
+	userService.get(username).then((user : User) => {
+		done(user === null ? 'User not found' : null, user);
+	});
+}

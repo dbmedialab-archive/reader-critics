@@ -16,17 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import {
+	IStrategyOptions,
+	Strategy,
+} from 'passport-local';
 
-import Users from 'admin/components/user/Users';
-import Login from 'admin/components/login/Login';
+import User from 'base/User';
+import { userService } from 'app/services';
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-	</Switch>;
-export default Routes;
+import { RetrieveCallback } from '../passportConfig';
+
+const options : IStrategyOptions = {
+	usernameField: 'login',
+	passwordField: 'password',
+	// session: true,
+};
+
+function verify(username : string, password : string, done : RetrieveCallback) {
+	userService.get(username).then((user : User) => {
+		if (user) {
+			return userService.checkPassword(user, password).then((isMatch) => {
+				done(isMatch ? null : 'Invalid credentials', user);
+			});
+		}
+		done('User not found', user);
+	});
+}
+
+export const localStrategy : Strategy = new Strategy(options, verify);

@@ -22,16 +22,33 @@ import {
 	Router,
 } from 'express';
 
+import * as cookieParser from 'cookie-parser';
+import * as bodyParser from 'body-parser';
 import * as app from 'app/util/applib';
-
-//TO DO remove this test handler
+import { loginHandler, loginPageHandler, logoutHandler} from './ui/handlers';
+import { sessionConf } from 'app/middleware/config/sessionConfig';
+import isAuthenticated from 'app/middleware/policies/isAuthenticated';
+import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
 import adminPageHandler from './ui/adminPageHandler';
-
 const log = app.createLog();
 
 const adminRoute : Router = Router();
+const secret: string = sessionConf.secret;
 
-adminRoute.get(['/users'], adminPageHandler);
+adminRoute.use(bodyParser.json({
+	inflate: true,
+	limit: '512kb',
+	strict: true,
+}));
+adminRoute.use(bodyParser.urlencoded({
+	extended: true,
+}));
+adminRoute.use(cookieParser(secret));
+
+adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
+adminRoute.post('/login', isNotAuthenticated, loginHandler);
+adminRoute.get('/logout', isAuthenticated, logoutHandler);
+adminRoute.get(['/', '/users'], isAuthenticated, adminPageHandler);
 adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
