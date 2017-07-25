@@ -59,7 +59,7 @@ export default function(this: ISuiteCallbackContext) {
 			.then((a : any) => {
 				assert.isNotNull(a);
 				return Object.assign(a, {
-					url: new ArticleURL(a.url)
+					url: new ArticleURL(a.url),
 				});
 			})
 			// Identify the website that this article belongs to

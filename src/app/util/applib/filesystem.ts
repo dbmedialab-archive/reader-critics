@@ -57,9 +57,9 @@ export function loadJSON(relativePath : string) : Promise <any> {
 		.then(buffer => JSON5.parse(buffer.toString()));
 }
 
-export function scanDir(path : string) : Promise <string[]> {
+export function scanDir(folderName : string) : Promise <string[]> {
 	return new Promise((resolve, reject) => {
-		fs.readdir(path, (err, files : string[]) => {
+		fs.readdir(folderName, (err, files : string[]) => {
 			return err ? reject(err) : resolve(files);
 		});
 	});

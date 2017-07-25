@@ -20,7 +20,6 @@ import { Schema } from 'mongoose';
 
 import ArticleURL from 'base/ArticleURL';
 
-import { ObjectID } from 'app/db';
 import { objectReference } from 'app/db/common';
 
 const ArticleSchema : Schema = new Schema({
