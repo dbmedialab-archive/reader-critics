@@ -1,13 +1,47 @@
 #!/usr/bin/env bash
 
-echo -e "\033[1;38;5;214mTSlint ...\033[0m"
-node_modules/.bin/tslint \
-	--project tsconfig.json --type-check --config tslint.json \
-	'src/**/*.{ts,tsx}'
+outputLint()
+{
+	while IFS= read -r line
+	do
+		if [ ! -z "${line}" ]; then
+			echo "${line}"
+		fi
+	done <<< "${1}"
 
-echo -e "\033[1;38;5;208mESlint ...\033[0m"
-node_modules/.bin/eslint src/**/*.js
+	if [ "${2}" -ne 0 ] ; then
+		exit "${2}"
+	fi
+}
+
+### TSlint
+
+echo -e "\033[1;38;5;39mTSlint ...\033[0m"
+
+TS_OUT=$(node_modules/.bin/tslint \
+	--project tsconfig.json \
+	--type-check \
+	--config conf/tslint-strict.json \
+	'src/**/*.{ts,tsx}' \
+	2>&1)
+RETURN_VALUE=$?
+
+outputLint "${TS_OUT}" ${RETURN_VALUE}
+
+### ESlint
+
+echo -e "\033[1;38;5;76mESlint ...\033[0m"
+
+ES_OUT=$(node_modules/.bin/eslint src/**/*.js 2>&1)
+RETURN_VALUE=$?
+
+outputLint "${ES_OUT}" ${RETURN_VALUE}
+
+### SASSlint
 
 echo -e "\033[1;38;5;220mSASSlint ...\033[0m"
-node_modules/.bin/sass-lint -c .sass-lint.yml --no-exit -v
 
+SASS_OUT=$(node_modules/.bin/sass-lint -c .sass-lint.yml --no-exit -v 2>&1)
+RETURN_VALUE=$?
+
+outputLint "${SASS_OUT}" ${RETURN_VALUE}

@@ -33,6 +33,7 @@ yarn.lock
 *.bak
 *.orig
 *.swp
+/*.sh
 
 # OS generated files
 .DS_Store
@@ -45,4 +46,5 @@ Thumbs.db
 
 # IDE and Editors
 /.idea
-*.sublime-workspace
+*.sublime-*
+/.vscode

@@ -18,19 +18,22 @@
 
 import { ArticleModel } from 'app/db/models';
 
-import {
-	Article,
-	ArticleURL,
-	Website,
-} from 'base';
+import Article from 'base/Article';
+import ArticleURL from 'base/ArticleURL';
+import Website from 'base/Website';
 
 import {
 	clearCollection,
+	getCount,
 	wrapSave
 } from 'app/db/common';
 
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
+}
+
+export function count() : Promise <number> {
+	return getCount(ArticleModel);
 }
 
 export function load(url : ArticleURL, version : string) : Promise <Article> {

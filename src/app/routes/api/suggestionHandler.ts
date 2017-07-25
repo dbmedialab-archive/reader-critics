@@ -22,8 +22,9 @@ import {
 } from 'express';
 import { default as axios } from 'axios';
 
-import { Suggestion } from 'base/';
-import { SuggestionModel } from 'app/db/models';
+import Suggestion from 'base/Suggestion';
+import { suggestionService } from 'app/services';
+
 import { errorResponse, okResponse } from './apiResponse';
 import config from 'app/config';
 
@@ -51,7 +52,8 @@ function sendSuggestion(requ){
 	};
 
 	log('Received comment from "%s"', email);
-	return new SuggestionModel(suggest).save();
+
+	return suggestionService.save(suggest);
 }
 
 function getErrorCode (errorCode) {
