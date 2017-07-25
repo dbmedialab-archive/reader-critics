@@ -95,7 +95,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			console.log('res', res);
 		})
 		.catch((err) => {
-			console.log('err', err);
 			this.recaptchaReset();
 		});
 	}
@@ -113,6 +112,9 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
+		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
+		// TODO Change language for recaptcha. Recaptcha component, 'hl' prop
+		// const recaptchaLang = window['recaptcha'] ? window['recaptcha'].language : '';
 		return (
 			<form
 				name="suggestBox"
@@ -159,8 +161,9 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				<fieldset>
 					<Recaptcha
 						ref={e => recaptchaInstance = e}
-						sitekey="6LdTeikUAAAAAKpqA7RfakaKfd0oSekLDhI4-dAB"
+						sitekey={publicKey}
 						render="explicit"
+						hl="no"
 						verifyCallback={this.verifyCallback}
 						onloadCallback={this.onloadCallback}
 					/>

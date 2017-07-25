@@ -1,0 +1,27 @@
+{
+	http: {
+		port: optional,
+	},
+	db: {
+		mongodb: {
+			url: fill,
+		},
+		redis: {
+			url: fill,
+		},
+	},
+	auth: {
+		jwt: {
+			secret: fill,
+		},
+		session: {
+			secret: fill,
+		},
+	},
+	recaptcha: {
+		key: {
+			secret: fill,
+			public: fill,
+		},
+	},
+}
