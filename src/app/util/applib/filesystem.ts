@@ -16,9 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as fs from 'fs';
-import * as path from 'path';
 import * as findRoot from 'find-root';
+import * as fs from 'fs';
+import * as JSON5 from 'json5';
+import * as path from 'path';
 
 import { isTest } from './environment';
 
@@ -53,5 +54,13 @@ export function loadResource(relativePath : string) : Promise <Buffer> {
 
 export function loadJSON(relativePath : string) : Promise <any> {
 	return loadResource(relativePath)
-		.then(buffer => JSON.parse(buffer.toString()));
+		.then(buffer => JSON5.parse(buffer.toString()));
+}
+
+export function scanDir(path : string) : Promise <string[]> {
+	return new Promise((resolve, reject) => {
+		fs.readdir(path, (err, files : string[]) => {
+			return err ? reject(err) : resolve(files);
+		});
+	});
 }
