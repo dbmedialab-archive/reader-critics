@@ -16,10 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// import { ObjectID } from 'app/db';
+import PersistedModel from 'base/zz/PersistedModel';
 
-interface Website {
-	// ID : ObjectID;
+interface Website extends PersistedModel {
 	name : string;
 	parserClass? : string;
 

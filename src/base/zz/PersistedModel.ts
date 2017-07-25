@@ -16,31 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+interface PersistedModel {
+	ID : String;
+}
 
-import ArticleURL from 'base/ArticleURL';
-
-import { ObjectID } from 'app/db';
-import { objectReference } from 'app/db/common';
-
-const ArticleSchema : Schema = new Schema({
-	url: {
-		type: String,
-		set: (url : ArticleURL) : string => url.href,
-	},
-	version: String,
-
-	_website: objectReference('Website'),
-
-	items: [Schema.Types.Mixed],
-});
-
-ArticleSchema.index({
-	'url': 1,
-	'version': 1,
-}, {
-	name: 'unique_article_version',
-	unique: true,
-});
-
-export default ArticleSchema;
+export default PersistedModel;
