@@ -78,18 +78,9 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		return false;
 	}
 
-	private hasEmailError() {
-		const validation = this.validator.validate('userMail', this.state.email, {presence: 'required'});
-		if (validation.isError) {
-			return validation.message;
-		}
-		return false;
-	}
-
 	private isFormValid() {
 		return (
-			!this.hasCommentError() &&
-			!this.hasEmailError()
+			!this.hasCommentError()
 		);
 	}
 
