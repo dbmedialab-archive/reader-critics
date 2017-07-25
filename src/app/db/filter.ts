@@ -21,7 +21,7 @@ function filter(from : any, level : number) : any {
 
 		// Store the hex string of the top level object ID
 		if (key === '_id' && level === 0) {
-			to['_id'] = from['_id'].toString();
+			to['ID'] = from['_id'].toString();
 			continue;
 		}
 

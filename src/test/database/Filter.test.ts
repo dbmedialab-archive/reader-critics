@@ -35,7 +35,7 @@ const testData = {
 };
 
 const expected = {
-	'_id': '12345',
+	'ID': '12345',
 	'name': 'dagbladet.no',
 	'date': {
 		'created': new Date('2017-07-21T14:46:52.224Z'),
