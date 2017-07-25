@@ -20,6 +20,7 @@ import { isProduction } from 'app/util/applib';
 
 interface BasicPersistingService {
 	clear() : Promise <void>;
+	count() : Promise <number>;
 }
 
 export default BasicPersistingService;

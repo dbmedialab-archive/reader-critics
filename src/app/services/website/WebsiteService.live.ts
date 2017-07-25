@@ -21,14 +21,16 @@ import WebsiteService from './WebsiteService';
 import { clear } from '../BasicPersistingService';
 
 import {
+	count,
 	get,
 	identify,
 	save,
 } from './WebsiteDAO';
 
 const service : WebsiteService = {
-	get,
 	clear,
+	count,
+	get,
 	identify,
 	save,
 };

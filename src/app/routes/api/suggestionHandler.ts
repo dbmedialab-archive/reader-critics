@@ -22,7 +22,8 @@ import {
 } from 'express';
 import { default as axios } from 'axios';
 
-import { Suggestion } from 'base/';
+import Suggestion from 'base/Suggestion';
+
 import { SuggestionModel } from 'app/db/models';
 import { errorResponse, okResponse } from './apiResponse';
 
