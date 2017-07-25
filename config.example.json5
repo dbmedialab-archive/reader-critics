@@ -1,9 +1,22 @@
 {
 	http: {
-		port: fill,
+		port: optional,
 	},
-	mongodb: {
-		url: fill,
+	db: {
+		mongodb: {
+			url: fill,
+		},
+		redis: {
+			url: fill,
+		},
+	},
+	auth: {
+		jwt: {
+			secret: fill,
+		},
+		session: {
+			secret: fill,
+		},
 	},
 	recaptcha: {
 		key: {
