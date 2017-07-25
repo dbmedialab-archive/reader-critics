@@ -51,6 +51,7 @@ function sendSuggestion(requ){
 	};
 
 	log('Received comment from "%s"', email);
+
 	return new SuggestionModel(suggest).save();
 }
 
@@ -85,7 +86,6 @@ export default function(requ : Request, resp : Response) : void {
 	+secretKey+'&response='+requ.body.captcha+'&remoteip='+requ.connection.remoteAddress.toString();
 	axios.post(captchaVerifyURL)
 		.then(function(response) {
-			console.log(response);
 			if (response.data && response.data.success) {
 				sendSuggestion(requ)
 					.then(() => {
