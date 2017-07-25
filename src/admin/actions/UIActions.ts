@@ -112,3 +112,21 @@ export function hideMainPreloader(props = null){
 	options.isVisible = false;
 	UIActions.toggleMainPreloader(options);
 }
+
+export function showLoginDialog(options) {
+	options.isOpen = true;
+	UIActions.modalWindowsChangeState(AdminConstants.LOGIN_DIALOG_MODAL_WINDOW, options);
+}
+
+export function hideLoginDialog() {
+	const options: PromptInterface = {
+		isOpen: false,
+		yesHandler: null,
+		noHandler: null,
+		yesBtnName: '',
+		noBtnName: '',
+		dialogTitle: '',
+	};
+
+	UIActions.modalWindowsChangeState(AdminConstants.LOGIN_DIALOG_MODAL_WINDOW, options);
+}

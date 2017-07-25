@@ -16,8 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Suggestion from 'base/Suggestion';
+
 import { isValidDate } from 'app/util/applib';
-import { Suggestion } from 'base/';
 
 import {
 	SuggestionDocument,
@@ -26,12 +27,17 @@ import {
 
 import {
 	clearCollection,
+	getCount,
 	wrapFind,
 	wrapSave
 } from 'app/db/common';
 
 export function clear() : Promise <void> {
 	return clearCollection(SuggestionModel);
+}
+
+export function count() : Promise <number> {
+	return getCount(SuggestionModel);
 }
 
 export function findSince(since : Date) : Promise <Suggestion[]> {

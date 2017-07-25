@@ -46,9 +46,7 @@ class LayoutComponent extends React.Component <any, any> {
 							</div>
 						:null}
 						<Helmet title={this.props.pageTitle} />
-						<SidebarComponent>
-							{this.props.toSidebarContent}
-						</SidebarComponent>
+						<SidebarComponent />
 						<div className="paper-bg wrap-fluid" >
 							<TopbarComponent
 								isSubmenuOpen={this.props.isSubmenuOpen}
@@ -79,8 +77,8 @@ const mapStateToProps = (state, ownProps) => {
 		isSubmenuOpen: false,
 		isAccountMenuOpen: false,
 		currentUser: {
-			name: 'Dmitry',
-			role: 1,
+			role: state.user.getIn(['role']) || null,
+			name: state.user.getIn(['name']) || '',
 		},
 	};
 };

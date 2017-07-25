@@ -20,8 +20,10 @@ import { combineReducers } from 'redux';
 
 import UIReducer from 'admin/reducers/UIReducer';
 import {routerReducer} from 'react-router-redux';
+import UserReducer from 'admin/reducers/UserReducer';
 
 export const CombineReducer:any = combineReducers({
 	UI: UIReducer,
 	router: routerReducer,
+	user: UserReducer,
 });

@@ -16,15 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as Article } from './Article';
-export { default as ArticleAuthor } from './ArticleAuthor';
-export { default as ArticleItem } from './ArticleItem';
-export { default as ArticleItemType } from './ArticleItemType';
-export { default as ArticleURL } from './ArticleURL';
+import AdminConstants from 'admin/constants/AdminConstants';
+import User from 'base/User';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-export { default as Parser } from './Parser';
-export { default as ParserFactory } from './ParserFactory';
-
-export { default as Suggestion } from './Suggestion';
-
-export { default as Website } from './Website';
+export type TAction = IAction;
+export function authenticateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.AUTHENTICATE_USER,
+		payload,
+	};
+}
+export function deauthenticateUser(): IAction {
+	return {
+		type: AdminConstants.DEAUTHENTICATE_USER,
+		payload: {},
+	};
+}
+export function updateUser(payload: User): IAction {
+	return {
+		type: AdminConstants.UPDATE_CURRENT_USER,
+		payload,
+	};
+}

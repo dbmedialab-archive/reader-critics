@@ -22,8 +22,9 @@ import * as Promise from 'bluebird';
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
-import { Suggestion } from 'base';
 import { suggestionService } from 'app/services';
+
+import Suggestion from 'base/Suggestion';
 
 import * as app from 'app/util/applib';
 
@@ -45,6 +46,12 @@ export default function(this: ISuiteCallbackContext) {
 		.then(results => {
 			assert.isArray(results);
 			assert.lengthOf(results, count, 'Number of saved objects does not match');
+		});
+	});
+
+	it('count()', () => {
+		return suggestionService.count().then(count => {
+			assert.strictEqual(count, 15);
 		});
 	});
 
