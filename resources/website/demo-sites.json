@@ -5,7 +5,10 @@
 			"www.dagbladet.no"
 		],
 		"chiefEditors": [
-			"vakt@dagbladet.no"
+			{
+				"name": "Vakt Sjef",
+				"email": "vakt@dagbladet.no"
+			}
 		]
 	},
 	{
@@ -14,7 +17,10 @@
 			"www.dinside.no"
 		],
 		"chiefEditors": [
-			"vakt@dinside.no"
+			{
+				"name": "Vakt Sjef",
+				"email": "vakt@dinside.no"
+			}
 		]
 	},
 	{
@@ -24,7 +30,10 @@
 			"www.mopo.no"
 		],
 		"chiefEditors": [
-			"redaksjon@morgenposten.no"
+			{
+				"name": "Like A. Boss",
+				"email": "redaksjon@morgenposten.no"
+			}
 		]
 	}
 ]

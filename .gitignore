@@ -9,6 +9,7 @@
 
 # App config file 
 config.json5
+
 # Package manager lock files
 package-lock.json
 yarn.lock
@@ -45,6 +46,6 @@ ehthumbs.db
 Thumbs.db
 
 # IDE and Editors
-/.idea
+.idea
 *.sublime-*
-/.vscode
+.vscode

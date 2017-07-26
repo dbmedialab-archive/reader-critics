@@ -25,8 +25,11 @@ import Website from 'base/Website';
 import {
 	clearCollection,
 	getCount,
-	wrapSave
+	wrapFindOne,
+	wrapSave,
 } from 'app/db/common';
+
+import emptyCheck from 'app/util/emptyCheck';
 
 export function clear() : Promise <void> {
 	return clearCollection(ArticleModel);
@@ -36,10 +39,18 @@ export function count() : Promise <number> {
 	return getCount(ArticleModel);
 }
 
-export function load(url : ArticleURL, version : string) : Promise <Article> {
-	return Promise.resolve(undefined);
+export function get(articleURL : ArticleURL, version : string) : Promise <Article> {
+	emptyCheck(articleURL, version);
+
+	return wrapFindOne(ArticleModel.findOne({
+		url: articleURL.href,
+		version,
+	}));
 }
 
 export function save(website : Website, article : Article) : Promise <void> {
-	return wrapSave(new ArticleModel(article).save());
+	emptyCheck(website, article);
+	return wrapSave(new ArticleModel(Object.assign({
+		_website: website.ID,
+	}, article)).save());
 }
