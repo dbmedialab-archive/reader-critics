@@ -128,7 +128,7 @@
 		"@types/redux-promise-middleware": "0.0.6",
 		"@types/seamless-immutable": "7.1.0",
 		"@types/webpack": "3.0.5",
-		"awesome-typescript-loader": "3.2.1",
+		"awesome-typescript-loader": "3.2.2",
 		"babel-core": "6.25.0",
 		"babel-eslint": "^7.2.3",
 		"babel-loader": "7.1.1",
