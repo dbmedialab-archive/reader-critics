@@ -20,7 +20,7 @@ import Suggestion from 'base/Suggestion';
 import BasicPersistingService from '../BasicPersistingService';
 
 interface SuggestionService extends BasicPersistingService <Suggestion> {
-	findSince(since : Date) : Promise <Suggestion[]>;
+	getSince(since : Date) : Promise <Suggestion[]>;
 	save(suggestion : Suggestion) : Promise <void>;
 }
 
