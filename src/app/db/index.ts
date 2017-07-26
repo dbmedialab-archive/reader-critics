@@ -19,4 +19,6 @@
 // tslint:disable-next-line
 require('mongoose').Promise = global.Promise;
 
+export { ObjectID } from 'mongodb';
+
 export { default as initDatabase } from './initDatabase';
