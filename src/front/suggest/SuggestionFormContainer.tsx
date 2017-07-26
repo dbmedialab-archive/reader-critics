@@ -18,11 +18,14 @@
 
 import * as React from 'react';
 import * as Recaptcha from 'react-recaptcha';
+
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
-import Validator, {IValidation} from 'base/Validation';
+
+import Validation from 'base/Validation';
 
 let recaptchaInstance;
+
 export interface FormPayload {
 	email: string;
 	comment: string;
@@ -36,7 +39,7 @@ export interface FormPayload {
 export default class SuggestionFormContainer extends React.Component <any, FormPayload> {
 	private commentArea : any;
 	private emailInput : any;
-	private validator : IValidation;
+	private validator : Validation;
 
 	constructor(props) {
 		super(props);
@@ -51,7 +54,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			},
 		};
 
-		this.validator = new Validator();
+		this.validator = new Validation();
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.UpdateState = this.UpdateState.bind(this);

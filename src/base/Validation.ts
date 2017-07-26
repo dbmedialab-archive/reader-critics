@@ -16,16 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable:max-line-length
 import * as Joi from 'joi-browser';
 
 export interface IValidation {
-	validate(validationItem: { schema: string; isJoi: boolean; } | string,
-			data: string,
-			options?: any):
-		{
-			isError: boolean,
-			message: string
+	validate(
+		validationItem : { schema : string; isJoi : boolean; } | string,
+		data : string,
+		options? : any ) : {
+			isError : boolean,
+			message : string
 		};
 }
 
@@ -43,6 +42,7 @@ export default class Validation implements IValidation {
 			schema = validationItem.schema;
 			errorText = validationItem.message;
 		}
+
 		if (!schema) {
 			throw new Error('Validation schema is not valid');
 		}
