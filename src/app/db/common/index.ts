@@ -19,10 +19,12 @@
 import {
 	Document,
 	Model,
+	Schema,
 } from 'mongoose';
 
 import * as errors from 'app/db/errors';
 
+import { ObjectID } from 'app/db';
 import { isTest } from 'app/util/applib';
 
 export {
@@ -47,3 +49,13 @@ export function wrapSave(wrapped : Promise <Document>) : Promise <void> {
 		errors.isDuplicateError(error) ? new errors.DuplicateError(error) : error
 	));
 }
+
+export const objectReference = (
+	modelName : string,
+	required : boolean = true
+) : Object => ({
+	type: Schema.Types.ObjectId,
+	ref: modelName,
+	required,
+	set: (id : string) : ObjectID => new ObjectID(id),
+});

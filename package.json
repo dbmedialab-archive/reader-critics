@@ -70,7 +70,7 @@
 		"keymirror": "0.1.1",
 		"lodash": "4.17.4",
 		"moment": "2.18.1",
-		"mongoose": "4.11.4",
+		"mongoose": "4.11.3",
 		"node-fetch": "1.7.1",
 		"node-read": "0.1.7",
 		"node-sass": "4.5.3",

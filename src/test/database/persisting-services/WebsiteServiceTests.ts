@@ -33,6 +33,8 @@ import * as app from 'app/util/applib';
 const demoSites = path.join('resources', 'website', 'demo-sites.json');
 
 export default function(this: ISuiteCallbackContext) {
+	let websiteCount : number;
+
 	it('parameter checks', () => {
 		assert.throws(() => websiteService.get(null), EmptyError);
 		assert.throws(() => websiteService.identify(null), EmptyError);
@@ -41,27 +43,20 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('clear()', () => websiteService.clear());
 
-	it('save()', () => {
-		let count : number;
+	it('save()', () => app.loadJSON(demoSites).then(data => {
+		assert.isArray(data);
+		websiteCount = data.length;
 
-		return app.loadJSON(demoSites)
-		.then(data => {
-			assert.isArray(data);
-			count = data.length;
+		return Promise.mapSeries(data, websiteService.save);
+	})
+	.then(results => {
+		assert.isArray(results);
+		assert.lengthOf(results, websiteCount, 'Number of saved objects does not match');
+	}));
 
-			return Promise.mapSeries(data, websiteService.save);
-		})
-		.then(results => {
-			assert.isArray(results);
-			assert.lengthOf(results, count, 'Number of saved objects does not match');
-		});
-	});
-
-	it('count()', () => {
-		return websiteService.count().then(count => {
-			assert.strictEqual(count, 3);
-		});
-	});
+	it('count()', () => websiteService.count().then(count => {
+		assert.strictEqual(count, websiteCount);
+	}));
 
 	it('get()', () => {
 		return Promise.all([
