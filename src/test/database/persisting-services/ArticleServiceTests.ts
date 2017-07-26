@@ -80,4 +80,29 @@ export default function(this: ISuiteCallbackContext) {
 	it('count()', () => articleService.count().then(count => {
 		assert.strictEqual(count, articleCount);
 	}));
+
+	it('get()', () => {
+		const a : ArticleURL = new ArticleURL('http://www.mopo.no/2');
+		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
+
+		return Promise.all([
+			articleService.get(a, '201707251349'),
+			articleService.get(b, 'nil'),
+		])
+		.then((results : Article[]) => {
+			assertArticleObject(results[0]);
+			assert.isNull(results[1]);
+		});
+	});
 }
+
+const assertArticleObject = (a : Article, name? : string) => {
+	assert.isObject(a);
+
+	[ 'url', 'version', 'authors', 'items' ].forEach(prop => {
+		assert.property(a, prop);
+	});
+
+	assert.isArray(a.authors);
+	assert.isArray(a.items);
+};

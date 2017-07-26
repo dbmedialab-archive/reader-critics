@@ -25,7 +25,8 @@ import Website from 'base/Website';
 import {
 	clearCollection,
 	getCount,
-	wrapSave
+	wrapFindOne,
+	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
@@ -38,9 +39,13 @@ export function count() : Promise <number> {
 	return getCount(ArticleModel);
 }
 
-export function load(url : ArticleURL, version : string) : Promise <Article> {
-	emptyCheck(url, version);
-	return Promise.resolve(null);
+export function get(articleURL : ArticleURL, version : string) : Promise <Article> {
+	emptyCheck(articleURL, version);
+
+	return wrapFindOne(ArticleModel.findOne({
+		url: articleURL.href,
+		version,
+	}));
 }
 
 export function save(website : Website, article : Article) : Promise <void> {

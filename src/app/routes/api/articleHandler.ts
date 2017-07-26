@@ -54,36 +54,34 @@ export default function(requ : Request, resp : Response) : void {
 
 		log(articleURL.href);
 
-		// Fetch the article from the database. If not stored, will return undefined
-		articleService.load(articleURL, version)
+		// Fetch the article from the database. If not stored, will return null
+		articleService.get(articleURL, version)
 		.then((article : Article) => {
-			// Article is not in the database, fetch a fresh version from the web
-			if (article === null) {
-				wasFetched = true;
-				return websiteService.identify(articleURL).then((w : Website) => {
-					if (website === null) {
-						return Promise.reject(new Error('Could not identify website'));
-					}
-
-					website = w;
-					return articleService.fetch(website, articleURL);
-				});
+			if (article !== null) {
+				return article;
 			}
-			return article;
+
+			// Article is not in the database, fetch a fresh version from the web
+			wasFetched = true;
+
+			return websiteService.identify(articleURL).then((w : Website) => {
+				if (website === null) {
+					return Promise.reject(new Error('Could not identify website'));
+				}
+
+				website = w;
+				return articleService.fetch(website, articleURL);
+			});
 		})
+		// Deliver the API response ...
 		.then((article : Article) => {
-			// Deliver the API response ...
 			okResponse(resp, { article });
 			return article;
 		})
+		// After serving the request: if the article is just fetched, store it in
+		// the database now
 		.then((article : Article) => {
-			// After serving the request: if the article is fresh, store it it
-			// the database now
-			if (!wasFetched) {
-				return null;
-			}
-
-			return articleService.save(website, article);
+			return wasFetched ? articleService.save(website, article).catch(error => log) : null;
 		})
 		.catch(error => errorResponse(resp, error));
 	}
