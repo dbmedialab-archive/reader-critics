@@ -26,6 +26,8 @@ import {
 	DocumentQuery,
 } from 'mongoose';
 
+import { filterMeta } from 'app/db/filter';
+
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
@@ -44,8 +46,7 @@ export function wrapFind <D extends Document, Z> (
 			return Promise.reject(new Error('results.exec() did not return an array'));
 		}
 
-		const unfiltered = <Array <D>> results;
-		return Promise.resolve(unfiltered.map(item => filterProperties <Z> (item)));
+		return Promise.resolve(results.map(item => filterMeta<Z>(item)));
 	});
 }
 
@@ -57,34 +58,15 @@ export function wrapFindOne <D extends Document, Z> (
 	result : DocumentQuery <D, D>
 ) : Promise <Z>
 {
-	return result.lean().exec().then(singleResult => {
-		if (singleResult === null) {
+	return result.lean().exec().then((doc : D) => {
+		if (doc === null) {
 			return Promise.resolve(null);
 		}
 
-		if (!isObject(singleResult)) {
+		if (!isObject(doc)) {
 			return Promise.reject(new Error('result.exec() did not return a single object'));
 		}
 
-		return Promise.resolve(filterProperties <Z> (singleResult));
+		return Promise.resolve(filterMeta<Z>(doc));
 	});
 }
-
-// Everything that starts with one or more underscores
-const rxPropFilter = /^_+.+/;
-
-// Based on the MDN polyfill for Object.assign, simplified and with a key filter
-const filterProperties = <Z> (from : any) : Z => {
-	const to = Object.create(null);
-
-	for (const key in from) {
-		if (rxPropFilter.test(key)) {
-			continue;
-		}
-		if (Object.prototype.hasOwnProperty.call(from, key)) {
-			to[key] = from[key];
-		}
-	}
-
-	return to;
-};

@@ -6,5 +6,8 @@ export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-retry-as-promised,-s
 export NODE_ENV=${NODE_ENV:-"development"}
 export WEB_CONCURRENCY=2
 
+export AUTH_JWT_SECRET="0000000011111111222222223333333344444444555555556666666677777777"
+export AUTH_SESSION_SECRET="8888888899999999aaaaaaaabbbbbbbbccccccccddddddddeeeeeeeeffffffff"
+
 node_modules/.bin/nodemon --watch out/app --ext js --delay 1 out/start.js
 

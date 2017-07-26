@@ -16,7 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as path from 'path';
 import * as convict from 'convict';
+
+import { rootPath } from 'app/util/applib';
 
 import * as app from 'app/util/applib';
 
@@ -100,7 +103,28 @@ const config = convict({
 			},
 		},
 	},
+	recaptcha: {
+		key: {
+			secret: {
+				doc: 'Secret Google Recaptcha key',
+				default: '',
+				env: 'RECAPTCHA_SECRET_KEY',
+			},
+			public: {
+				doc: 'Public Google Recaptcha key',
+				default: '',
+				env: 'RECAPTCHA_PUBLIC_KEY',
+			},
+		},
+	},
 });
+
+try {
+	config.loadFile(path.join(rootPath, 'config.json5'));
+}
+catch (err) {
+	log('Can\'t find file /config.json5. Environment settings will be apply');
+}
 
 try {
 	config.validate();

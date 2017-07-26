@@ -16,33 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+interface PersistedModel {
+	ID : String;
+}
 
-const WebsiteSchema : Schema = new Schema({
-	name: {
-		type: String,
-		required: true,
-	},
-	hosts: {
-		type: [String],
-		required: true,
-	},
-
-	chiefEditors: [Schema.Types.Mixed],
-});
-
-WebsiteSchema.index({
-	'name': 1,
-}, {
-	name: 'unique_name',
-	unique: true,
-});
-
-WebsiteSchema.index({
-	'hosts': 1,
-}, {
-	name: 'unique_hosts',
-	unique: true,
-});
-
-export default WebsiteSchema;
+export default PersistedModel;
