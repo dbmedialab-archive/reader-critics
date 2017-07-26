@@ -25,12 +25,17 @@ import { objectReference } from 'app/db/common';
 const ArticleSchema : Schema = new Schema({
 	url: {
 		type: String,
+		required: true,
 		set: (url : ArticleURL) : string => url.href,
 	},
-	version: String,
+	version: {
+		type: String,
+		required: true,
+	},
 
 	_website: objectReference('Website'),
 
+	authors: [Schema.Types.Mixed],
 	items: [Schema.Types.Mixed],
 });
 

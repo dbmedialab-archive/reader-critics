@@ -19,12 +19,16 @@
 import { Schema } from 'mongoose';
 
 const WebsiteSchema : Schema = new Schema({
-	name: String,
-	hosts: [String],
-	chiefEditors: [{
-		name: String,
-		email: String,
-	}],
+	name: {
+		type: String,
+		required: true,
+	},
+	hosts: {
+		type: [String],
+		required: true,
+	},
+
+	chiefEditors: [Schema.Types.Mixed],
 });
 
 WebsiteSchema.index({

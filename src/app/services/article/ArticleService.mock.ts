@@ -24,7 +24,7 @@ import fetch from './common/fetch';
 import {
 	clear,
 	count,
-	load,
+	get,
 	save,
 } from './ArticleDAO';
 
@@ -33,7 +33,7 @@ const service : ArticleService = {
 	count,
 	download,
 	fetch,
-	load,
+	get,
 	save,
 };
 
