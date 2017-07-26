@@ -50,8 +50,12 @@ export function wrapSave(wrapped : Promise <Document>) : Promise <void> {
 	));
 }
 
-export const objectReference = (modelName : string) : Object => ({
+export const objectReference = (
+	modelName : string,
+	required : boolean = true
+) : Object => ({
 	type: Schema.Types.ObjectId,
 	ref: modelName,
+	required,
 	set: (id : string) : ObjectID => new ObjectID(id),
 });
