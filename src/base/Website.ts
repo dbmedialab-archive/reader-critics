@@ -16,12 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-interface Website {
+import PersistedModel from 'base/zz/PersistedModel';
+
+interface Website extends PersistedModel {
 	name : string;
 	parserClass? : string;
 
-	hosts: string[];
-	chiefEditors: string[];
+	hosts : string[];
+	chiefEditors : string[];
 }
 
 export default Website;

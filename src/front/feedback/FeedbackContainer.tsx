@@ -22,7 +22,10 @@ import 'front/scss/fb.scss';
 import Article from 'base/Article';
 import ArticleElement from 'front/component/ArticleElement';
 import { fetchArticle } from 'front/apiCommunication';
-import { getArticleURL } from 'front/uiGlobals';
+import {
+	getArticleURL,
+	getArticleVersion,
+} from 'front/uiGlobals';
 
 export interface FeedbackContainerState {
 	article: Article;
@@ -40,9 +43,11 @@ extends React.Component <any, FeedbackContainerState> {
 
 	componentWillMount() {
 		const self = this;
-		fetchArticle(getArticleURL(), '').then(article => self.setState({
-			article,
-		}));
+		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
+			self.setState({
+				article,
+			});
+		});
 	}
 
 	public render() {
