@@ -16,20 +16,20 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { SuggestionModel } from 'app/db/models';
+
 import SuggestionService from './SuggestionService';
 
+import { basicFunctions } from '../BasicDAO';
+
 import {
-	clear,
-	count,
 	getSince,
 	save,
 } from './SuggestionDAO';
 
-const service : SuggestionService = {
-	clear,
-	count,
+const service : SuggestionService = basicFunctions(SuggestionModel, {
 	getSince,
 	save,
-};
+});
 
 module.exports = service;

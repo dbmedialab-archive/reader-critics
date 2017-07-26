@@ -23,25 +23,14 @@ import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
 import {
-	clearCollection,
-	getCount,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-export function clear() : Promise <void> {
-	return clearCollection(ArticleModel);
-}
-
-export function count() : Promise <number> {
-	return getCount(ArticleModel);
-}
-
 export function get(articleURL : ArticleURL, version : string) : Promise <Article> {
 	emptyCheck(articleURL, version);
-
 	return wrapFindOne(ArticleModel.findOne({
 		url: articleURL.href,
 		version,

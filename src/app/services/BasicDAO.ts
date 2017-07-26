@@ -16,28 +16,34 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Suggestion from 'base/Suggestion';
-import SuggestionService from './SuggestionService';
+import {
+	Document,
+	Model,
+} from 'mongoose';
 
 import {
-	SuggestionDocument,
-	SuggestionModel,
-} from 'app/db/models';
+	clearCollection,
+	getCount,
+} from 'app/db/common';
 
-import { basicFunctions } from '../BasicDAO';
+import { isProduction } from 'app/util/applib';
 
-import {
-	getSince,
-	save,
-} from './SuggestionDAO';
+import BasicPersistingService from './BasicPersistingService';
 
-const service : SuggestionService = basicFunctions <
-	SuggestionDocument,
-	SuggestionService,
-	Suggestion
-> (SuggestionModel, {
-	getSince,
-	save,
-});
+// Default implementations
 
-module.exports = service;
+export const basicFunctions = <T extends Document, X extends BasicPersistingService <Y>, Y> (
+	serviceModel : Model <T>,
+	serviceFunctions : Object
+) : X => <X> Object.assign({
+
+	clear: () : Promise <void> => {
+		if (isProduction) {
+			throw new Error('Function can only be used in TEST mode');
+		}
+		return clearCollection(serviceModel);
+	},
+
+	count: () : Promise <number> => getCount(serviceModel),
+
+}, serviceFunctions);
