@@ -40,7 +40,7 @@ export function count() : Promise <number> {
 	return getCount(SuggestionModel);
 }
 
-export function findSince(since : Date) : Promise <Suggestion[]> {
+export function getSince(since : Date) : Promise <Suggestion[]> {
 	if (!isValidDate(since)) {
 		return Promise.reject(new TypeError('Invalid date'));
 	}

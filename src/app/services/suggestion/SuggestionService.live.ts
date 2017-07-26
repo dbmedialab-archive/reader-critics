@@ -22,14 +22,14 @@ import { clear } from '../BasicPersistingService';
 
 import {
 	count,
-	findSince,
+	getSince,
 	save,
 } from './SuggestionDAO';
 
 const service : SuggestionService = {
 	clear,
 	count,
-	findSince,
+	getSince,
 	save,
 };
 
