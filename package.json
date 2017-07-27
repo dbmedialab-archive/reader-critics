@@ -169,7 +169,8 @@
 			"eslint-plugin-jsx-a11y",
 			"eslint-plugin-react",
 			"geckodriver",
-			"npm-run-all"
+			"npm-run-all",
+			"webpack-bundle-analyzer"
 		]
 	}
 }
