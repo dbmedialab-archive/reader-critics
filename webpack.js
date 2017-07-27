@@ -158,7 +158,7 @@ module.exports = (applicationPart, scssParts) => {
 				// Name of Webpack Stats JSON file that will be generated if
 				// `generateStatsFile` is `true`.
 				// Relative to bundles output directory.
-				statsFilename: 'stats.json',
+				statsFilename: `${applicationPart}-stats.json`,
 				// Options for `stats.toJson()` method.
 				// For example you can exclude sources of your modules from stats file
 				// with `source: false` option.
