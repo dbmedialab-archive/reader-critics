@@ -26,6 +26,7 @@ import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
+import { defaultLimit } from 'app/services/BasicPersistingService';
 import {
 	articleService,
 	websiteService,
@@ -92,6 +93,38 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Article[]) => {
 			assertArticleObject(results[0]);
 			assert.isNull(results[1]);
+		});
+	});
+
+	it('getRange()', () => {
+		const testLimit = 2;
+
+		return Promise.all([
+			// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
+			articleService.getRange(),
+			// #2 should return exactly "testLimit" items:
+			articleService.getRange(0, testLimit),
+			// #3 skipping past the number of stored items should yield an empty result:
+			articleService.getRange(articleCount),
+		]).then((results : [Article[]]) => {
+			results.forEach(result => {
+				assert.isArray(result);
+				result.forEach(item => assertArticleObject(item));
+			});
+
+			const lengthCheck = [
+				Math.min(articleCount, defaultLimit),
+				testLimit,
+				0,
+			];
+
+			results.forEach((result : Article[], index : number) => {
+				assert.lengthOf(
+					result,
+					lengthCheck[index],
+					`Incorrect number of objects in test range #${index + 1}`
+				);
+			});
 		});
 	});
 }

@@ -16,26 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Article from 'base/Article';
 import ArticleService from './ArticleService';
 
-import { clear } from '../BasicPersistingService';
+import {
+	ArticleDocument,
+	ArticleModel
+} from 'app/db/models';
+
+import createPersistingService from '../createPersistingService';
 
 import download from './live/download';
 import fetch from './common/fetch';
 
 import {
-	count,
 	get,
 	save,
 } from './ArticleDAO';
 
-const service : ArticleService = {
-	clear,
-	count,
-	download,
-	fetch,
-	get,
-	save,
-};
+const service : ArticleService
+	= createPersistingService <ArticleDocument, ArticleService, Article> (
+		ArticleModel, {
+			download,
+			fetch,
+			get,
+			save,
+		}
+	);
 
 module.exports = service;

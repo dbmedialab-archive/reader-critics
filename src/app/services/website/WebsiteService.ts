@@ -21,7 +21,7 @@ import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
-interface WebsiteService extends BasicPersistingService {
+interface WebsiteService extends BasicPersistingService <Website> {
 	get(name : string) : Promise <Website>;
 	identify(url : ArticleURL|string) : Promise <Website>;
 	save(website : Website) : Promise <void>;

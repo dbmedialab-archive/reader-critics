@@ -22,7 +22,7 @@ import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
-interface ArticleService extends BasicPersistingService {
+interface ArticleService extends BasicPersistingService <Article> {
 	download(url : ArticleURL) : Promise <string>;
 	fetch(website : Website, url : ArticleURL) : Promise <Article>;
 

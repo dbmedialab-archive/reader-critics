@@ -25,6 +25,7 @@ import { ISuiteCallbackContext } from 'mocha';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
+import { defaultLimit } from 'app/services/BasicPersistingService';
 import { websiteService } from 'app/services';
 import { EmptyError } from 'app/util/errors';
 
@@ -66,6 +67,38 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Website[]) => {
 			assertWebsiteObject(results[0], 'dagbladet.no');
 			assert.isNull(results[1]);
+		});
+	});
+
+	it('getRange()', () => {
+		const testLimit = 2;
+
+		return Promise.all([
+			// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
+			websiteService.getRange(),
+			// #2 should return exactly "testLimit" items:
+			websiteService.getRange(0, testLimit),
+			// #3 skipping past the number of stored items should yield an empty result:
+			websiteService.getRange(websiteCount),
+		]).then((results : [Website[]]) => {
+			results.forEach(result => {
+				assert.isArray(result);
+				result.forEach(item => assertWebsiteObject(item));
+			});
+
+			const lengthCheck = [
+				Math.min(websiteCount, defaultLimit),
+				testLimit,
+				0,
+			];
+
+			results.forEach((result : Website[], index : number) => {
+				assert.lengthOf(
+					result,
+					lengthCheck[index],
+					`Incorrect number of objects in test range #${index + 1}`
+				);
+			});
 		});
 	});
 
