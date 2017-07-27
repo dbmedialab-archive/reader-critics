@@ -47,9 +47,9 @@ export default function <T extends Document, X extends BasicPersistingService <Y
 
 		count: () : Promise <number> => getCount(serviceModel),
 
-		// getRange : (skip : number, limit : number, sort? : Object) : Promise <Y[]> => {
-		// 	return Promise.resolve([]);
-		// },
+		getRange : (skip : number, limit : number, sort? : Object) : Promise <Y[]> => {
+			return Promise.resolve([]);
+		},
 	};
 
 	return <X> Object.assign(basicFunctions, serviceFunctions);

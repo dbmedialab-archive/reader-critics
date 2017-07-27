@@ -20,7 +20,7 @@ interface BasicPersistingService <T> {
 	clear() : Promise <void>;
 	count() : Promise <number>;
 
-	// getRange(skip : number, limit : number, sort? : Object) : Promise <T[]>;
+	getRange(skip : number, limit : number, sort? : Object) : Promise <T[]>;
 }
 
 export default BasicPersistingService;
