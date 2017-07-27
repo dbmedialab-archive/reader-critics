@@ -20,7 +20,7 @@ interface BasicPersistingService <T> {
 	clear() : Promise <void>;
 	count() : Promise <number>;
 
-	getRange(skip : number, limit : number, sort? : Object) : Promise <T[]>;
+	getRange(skip? : number, limit? : number, sort? : Object) : Promise <T[]>;
 }
 
 export default BasicPersistingService;
@@ -28,3 +28,7 @@ export default BasicPersistingService;
 export function clear() : Promise <void> {
 	throw new Error('Function is not implemented');
 }
+
+export const defaultLimit : number = 25;
+export const defaultSkip : number = 0;
+export const defaultSort : Object = { 'date.created': -1 };

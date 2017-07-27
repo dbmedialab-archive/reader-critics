@@ -24,11 +24,16 @@ import {
 import {
 	clearCollection,
 	getCount,
+	wrapFind,
 } from 'app/db/common';
 
 import { isProduction } from 'app/util/applib';
 
-import BasicPersistingService from './BasicPersistingService';
+import BasicPersistingService, {
+	defaultLimit,
+	defaultSkip,
+	defaultSort,
+} from './BasicPersistingService';
 
 // Default implementations
 
@@ -47,9 +52,13 @@ export default function <T extends Document, X extends BasicPersistingService <Y
 
 		count: () : Promise <number> => getCount(serviceModel),
 
-		getRange : (skip : number, limit : number, sort? : Object) : Promise <Y[]> => {
-			return Promise.resolve([]);
-		},
+		getRange: (
+			skip : number = defaultSkip,
+			limit : number = defaultLimit,
+			sort : Object = defaultSort
+		) : Promise <Y[]> => wrapFind<T, Y>(
+			serviceModel.find().sort(sort).skip(skip).limit(limit)
+		),
 	};
 
 	return <X> Object.assign(basicFunctions, serviceFunctions);
