@@ -145,7 +145,7 @@ module.exports = (applicationPart, scssParts) => {
 				analyzerPort: 8888,
 				// Path to bundle report file that will be generated in `static` mode.
 				// Relative to bundles output directory.
-				reportFilename: `${applicationPart}-report.html`,
+				reportFilename: `webpack-report-${applicationPart}.html`,
 				// Module sizes to show in report by default.
 				// Should be one of `stat`, `parsed` or `gzip`.
 				// See "Definitions" section for more information.
@@ -158,7 +158,7 @@ module.exports = (applicationPart, scssParts) => {
 				// Name of Webpack Stats JSON file that will be generated if
 				// `generateStatsFile` is `true`.
 				// Relative to bundles output directory.
-				statsFilename: `${applicationPart}-stats.json`,
+				statsFilename: `webpack-stats-${applicationPart}.json`,
 				// Options for `stats.toJson()` method.
 				// For example you can exclude sources of your modules from stats file
 				// with `source: false` option.
@@ -166,8 +166,8 @@ module.exports = (applicationPart, scssParts) => {
 				// https://github.com/webpack/webpack/blob/webpack-1/lib/Stats.js#L21
 				statsOptions: null,
 				// Log level. Can be 'info', 'warn', 'error' or 'silent'.
-				logLevel: 'info'
-			})
+				logLevel: 'info',
+			}),
 		],
 
 		// When importing a module whose path matches one of the following, just
