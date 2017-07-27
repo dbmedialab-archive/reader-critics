@@ -23,14 +23,14 @@ import {
 	Model,
 } from 'mongoose';
 
-import {
-	ArticleSchema,
-	SuggestionSchema,
-	WebsiteSchema,
-} from './schemas';
+import ArticleSchema from './schemas/ArticleSchema';
+import SuggestionSchema from './schemas/SuggestionSchema';
+import UserSchema from './schemas/UserSchema';
+import WebsiteSchema from './schemas/WebsiteSchema';
 
 import Article from 'base/Article';
 import Suggestion from 'base/Suggestion';
+import User from 'base/User';
 import Website from 'base/Website';
 
 import TimestampPlugin from './plugins/TimestampPlugin';
@@ -48,6 +48,10 @@ export const ArticleModel : Model <ArticleDocument>
 export interface SuggestionDocument extends Suggestion, Document {}
 export const SuggestionModel : Model <SuggestionDocument>
 	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+
+export interface UserDocument extends User, Document {}
+export const UserModel : Model <UserDocument>
+	= model <UserDocument> ('User', UserSchema);
 
 export interface WebsiteDocument extends Website, Document {}
 export const WebsiteModel : Model <WebsiteDocument>

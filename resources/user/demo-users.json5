@@ -1,0 +1,45 @@
+[
+	{
+		name: 'Axel Egon Unterbichler',
+		email: 'axel.egon@mopo.no',
+		role: 'editor',
+	},
+	{
+		name: 'Hubertus Hasenzahn',
+		email: 'hubert@mopo.no',
+		role: 'editor',
+	},
+	{
+		name: 'Indiana Horst',
+		email: 'horst@indiana.net',
+		role: 'normal',
+	},
+	{
+		name: 'Ernst Eisenbichler',
+		email: 'ee@aller.com',
+		role: 'normal',
+	},
+	{
+		name: 'Philipp Gröschler',
+		email: 'philipp@sol.no',
+		role: 'sysadmin',
+	},
+	{
+		name: 'Christoph Schmitz',
+		email: 'christoph.schmitz@dagbladet.no',
+		role: 'sysadmin',
+	},
+	{
+		name: 'Schmitz\' Katze',
+		role: 'normal',
+	},
+	{
+		email: 'prost.mahlzeit@lulu.org',
+		role: 'normal',
+	},
+	{
+		name: 'Brahmaputra Pradesh Meghna',
+		email: 'bpm@dagbladet.no',
+		role: 'siteadmin',
+	}
+]

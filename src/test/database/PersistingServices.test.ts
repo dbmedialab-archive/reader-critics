@@ -22,11 +22,13 @@ import { initDatabase } from 'app/db';
 
 import articleService from './persisting-services/ArticleServiceTests';
 import suggestionService from './persisting-services/SuggestionServiceTests';
+import userService from './persisting-services/UserServiceTests';
 import websiteService from './persisting-services/WebsiteServiceTests';
 
 before(() => initDatabase());
 
 // Order of execution has to be preserved:
 describe('WebsiteService', websiteService);
+describe('UserService', userService);
 describe('ArticleService', articleService);
 describe('SuggestionService', suggestionService);

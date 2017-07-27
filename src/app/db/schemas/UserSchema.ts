@@ -16,6 +16,35 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as ArticleSchema } from './ArticleSchema';
-export { default as SuggestionSchema } from './SuggestionSchema';
-export { default as WebsiteSchema } from './WebsiteSchema';
+import { Schema } from 'mongoose';
+
+import UserRole from 'base/UserRole';
+
+const UserSchema : Schema = new Schema({
+	name: {
+		type: String,
+		required: false,
+		default: null,
+	},
+	email: {
+		type: String,
+		required: false,
+		default: null,
+	},
+	role: {
+		type: String,
+		required: true,
+		enum: Object.values(UserRole),
+		default: UserRole.Normal,
+	},
+});
+
+UserSchema.index({
+	'name': 1,
+	'email': 1,
+}, {
+	name: 'unique_name',
+	unique: true,
+});
+
+export default UserSchema;
