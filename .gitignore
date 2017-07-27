@@ -1,5 +1,6 @@
 # Distribution paths
 /node_modules/
+/stats/
 /out/admin/
 /out/app/
 /out/base/
