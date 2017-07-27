@@ -24,8 +24,6 @@ import {
 	UserModel
 } from 'app/db/models';
 
-import { clear } from '../BasicPersistingService';
-
 import createPersistingService from '../createPersistingService';
 
 import {

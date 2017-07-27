@@ -21,7 +21,7 @@ import User from 'base/User';
 import { UserModel } from 'app/db/models';
 
 import {
-	wrapFindOne,
+	// wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
@@ -31,7 +31,6 @@ export function save(user : User) : Promise <void> {
 	emptyCheck(user);
 	return wrapSave(new UserModel(user).save());
 }
-
 
 /*
 public comparePassword(password: string, cb: (err: string, isMatch: boolean) => void): void {

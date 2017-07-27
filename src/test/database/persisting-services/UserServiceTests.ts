@@ -37,7 +37,7 @@ export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
 	it('parameter checks', () => {
-		// TODO assert.throws(() => userService.get(null), EmptyError);
+		// assert.throws(() => userService.get(null), EmptyError);
 		assert.throws(() => userService.save(null), EmptyError);
 	});
 
