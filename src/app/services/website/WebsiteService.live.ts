@@ -24,7 +24,7 @@ import {
 	WebsiteModel
 } from 'app/db/models';
 
-import { basicFunctions } from '../BasicDAO';
+import createPersistingService from '../createPersistingService';
 
 import {
 	get,
@@ -32,14 +32,13 @@ import {
 	save,
 } from './WebsiteDAO';
 
-const service : WebsiteService = basicFunctions <
-	WebsiteDocument,
-	WebsiteService,
-	Website
-> (WebsiteModel, {
-	get,
-	identify,
-	save,
-});
+const service : WebsiteService
+	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
+		WebsiteModel, {
+			get,
+			identify,
+			save,
+		}
+	);
 
 module.exports = service;

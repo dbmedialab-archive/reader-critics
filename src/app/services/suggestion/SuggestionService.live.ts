@@ -24,20 +24,19 @@ import {
 	SuggestionModel,
 } from 'app/db/models';
 
-import { basicFunctions } from '../BasicDAO';
+import createPersistingService from '../createPersistingService';
 
 import {
 	getSince,
 	save,
 } from './SuggestionDAO';
 
-const service : SuggestionService = basicFunctions <
-	SuggestionDocument,
-	SuggestionService,
-	Suggestion
-> (SuggestionModel, {
-	getSince,
-	save,
-});
+const service : SuggestionService
+	= createPersistingService <SuggestionDocument, SuggestionService, Suggestion> (
+		SuggestionModel, {
+			getSince,
+			save,
+		}
+	);
 
 module.exports = service;

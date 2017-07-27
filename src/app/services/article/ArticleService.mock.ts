@@ -24,7 +24,7 @@ import {
 	ArticleModel
 } from 'app/db/models';
 
-import { basicFunctions } from '../BasicDAO';
+import createPersistingService from '../createPersistingService';
 
 import download from './mock/download';
 import fetch from './common/fetch';
@@ -34,15 +34,14 @@ import {
 	save,
 } from './ArticleDAO';
 
-const service : ArticleService = basicFunctions <
-	ArticleDocument,
-	ArticleService,
-	Article
-> (ArticleModel, {
-	download,
-	fetch,
-	get,
-	save,
-});
+const service : ArticleService
+	= createPersistingService <ArticleDocument, ArticleService, Article> (
+		ArticleModel, {
+			download,
+			fetch,
+			get,
+			save,
+		}
+	);
 
 module.exports = service;

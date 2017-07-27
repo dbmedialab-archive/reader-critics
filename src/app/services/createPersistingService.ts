@@ -32,18 +32,25 @@ import BasicPersistingService from './BasicPersistingService';
 
 // Default implementations
 
-export const basicFunctions = <T extends Document, X extends BasicPersistingService <Y>, Y> (
+export default function <T extends Document, X extends BasicPersistingService <Y>, Y> (
 	serviceModel : Model <T>,
 	serviceFunctions : Object
-) : X => <X> Object.assign({
+) : X
+{
+	const basicFunctions : BasicPersistingService <Y> = {
+		clear: () : Promise <void> => {
+			if (isProduction) {
+				throw new Error('Function can only be used in TEST mode');
+			}
+			return clearCollection(serviceModel);
+		},
 
-	clear: () : Promise <void> => {
-		if (isProduction) {
-			throw new Error('Function can only be used in TEST mode');
-		}
-		return clearCollection(serviceModel);
-	},
+		count: () : Promise <number> => getCount(serviceModel),
 
-	count: () : Promise <number> => getCount(serviceModel),
+		// getRange : (skip : number, limit : number, sort? : Object) : Promise <Y[]> => {
+		// 	return Promise.resolve([]);
+		// },
+	};
 
-}, serviceFunctions);
+	return <X> Object.assign(basicFunctions, serviceFunctions);
+}
