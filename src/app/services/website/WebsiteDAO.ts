@@ -21,10 +21,7 @@ import { isString } from 'lodash';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
-import {
-	WebsiteDocument,
-	WebsiteModel,
-} from 'app/db/models';
+import { WebsiteModel } from 'app/db/models';
 
 import {
 	clearCollection,
@@ -49,9 +46,7 @@ export function count() : Promise <number> {
  */
 export function get(name : string) : Promise <Website> {
 	emptyCheck(name);
-	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
-		name,
-	}));
+	return wrapFindOne(WebsiteModel.findOne({ name }));
 }
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {
@@ -66,9 +61,7 @@ export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 		hostname = articleURL.url.hostname;
 	}
 
-	return wrapFindOne <WebsiteDocument, Website> (WebsiteModel.findOne({
-		'hosts': hostname,
-	}));
+	return wrapFindOne (WebsiteModel.findOne({ 'hosts': hostname }));
 }
 
 export function save(website : Website) : Promise <void> {

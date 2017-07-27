@@ -20,10 +20,13 @@ import 'mocha';
 
 import { initDatabase } from 'app/db';
 
+import articleService from './persisting-services/ArticleServiceTests';
 import suggestionService from './persisting-services/SuggestionServiceTests';
 import websiteService from './persisting-services/WebsiteServiceTests';
 
 before(() => initDatabase());
 
+// Order of execution has to be preserved:
 describe('WebsiteService', websiteService);
+describe('ArticleService', articleService);
 describe('SuggestionService', suggestionService);

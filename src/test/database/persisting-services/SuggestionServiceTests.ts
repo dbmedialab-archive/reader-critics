@@ -55,10 +55,10 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	it('findSince()', () => {
+	it('getSince()', () => {
 		const dateSince = new Date('2017-07-06T00:00:00Z');
 
-		return suggestionService.findSince(dateSince)
+		return suggestionService.getSince(dateSince)
 		.then((results : Suggestion[]) => {
 			// Date checks
 			results.forEach((result : Suggestion) => {

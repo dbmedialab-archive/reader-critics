@@ -20,16 +20,22 @@ import { Schema } from 'mongoose';
 
 import ArticleURL from 'base/ArticleURL';
 
+import { objectReference } from 'app/db/common';
+
 const ArticleSchema : Schema = new Schema({
 	url: {
 		type: String,
-		set: (url : ArticleURL) : string => {
-			console.log('schema set:', url);
-			return url.href;
-		},
+		required: true,
+		set: (url : ArticleURL) : string => url.href,
 	},
-	version: String,
+	version: {
+		type: String,
+		required: true,
+	},
 
+	_website: objectReference('Website'),
+
+	authors: [Schema.Types.Mixed],
 	items: [Schema.Types.Mixed],
 });
 
