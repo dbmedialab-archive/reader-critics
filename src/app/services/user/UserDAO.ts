@@ -31,8 +31,6 @@ import emptyCheck from 'app/util/emptyCheck';
 
 import { EmptyError } from 'app/util/errors';
 
-import * as app from 'app/util/applib';
-
 const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);
 
 export function get(username : String|null, email? : String|null) : Promise <User> {
