@@ -76,6 +76,21 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
+	it('checkPassword()', () => {
+		return Promise.all([
+			userService.get('Indiana Horst')
+				.then(u => userService.checkPassword(u, 'nix')),
+			userService.get('Ernst Eisenbichler')
+				.then(u => userService.checkPassword(u, 'test123')),
+			userService.get('Philipp Gröschler', 'philipp@sol.no')
+				.then(u => userService.checkPassword(u, 'freshguacamole')),
+		]).then((results : boolean[]) => {
+			assert.isFalse(results[0]);
+			assert.isTrue(results[1]);
+			assert.isFalse(results[2]);
+		});
+	});
+
 	it('getRange()', () => {
 		const testLimit = 5;
 

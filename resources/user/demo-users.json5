@@ -1,3 +1,5 @@
+// When adding password hashes to the test users, use a low number of Bcrypt
+// salting rounds to not unnecessarily slow down the tests!
 [
 	{
 		name: 'Axel Egon Unterbichler',
@@ -18,11 +20,15 @@
 		name: 'Ernst Eisenbichler',
 		email: 'ee@aller.com',
 		role: 'normal',
+		// "test123"
+		password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
 	},
 	{
 		name: 'Philipp Gröschler',
 		email: 'philipp@sol.no',
 		role: 'sysadmin',
+		// "holyguacamole"
+		password: '$2a$04$PHXSTABybBgrKN/cxyZ8Reaxm2JA0xLb6vQeufvXJ6eYhiucGV8iW',
 	},
 	{
 		name: 'Christoph Schmitz',

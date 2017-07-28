@@ -16,11 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isNil, isString } from 'lodash';
+import * as bcrypt from 'bcrypt';
+
+import {
+	isNil,
+	isString
+} from 'lodash';
 
 import User from 'base/User';
 
-import { UserModel } from 'app/db/models';
+import {
+	UserDocument,
+	UserModel
+} from 'app/db/models';
 
 import {
 	wrapFindOne,
@@ -30,6 +38,17 @@ import {
 import emptyCheck from 'app/util/emptyCheck';
 
 import { EmptyError } from 'app/util/errors';
+
+export function checkPassword(user : User, password : string) : Promise <boolean> {
+	return UserModel.findOne({
+		name: user.name,
+		email: user.email,
+	})
+	.select('+password').exec().then((u : UserDocument) => {
+		const hash = u.get('password');
+		return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
+	});
+}
 
 const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);
 
@@ -49,8 +68,6 @@ export function get(username : String|null, email? : String|null) : Promise <Use
 
 	return wrapFindOne(UserModel.findOne(query));
 }
-
-	//Users.findOne({_id: id}).select('+password').exec(...);
 
 export function save(user : User) : Promise <void> {
 	emptyCheck(user);
