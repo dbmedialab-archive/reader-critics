@@ -43,7 +43,7 @@ export default function(this: ISuiteCallbackContext) {
 		assert.throws(() => userService.get(''), EmptyError);
 		assert.throws(() => userService.get('', ''), EmptyError);
 
-		assert.doesNotThrow(() => userService.get('Jack Peralta'), Error);
+		assert.doesNotThrow(() => userService.get('Jake Peralta'), Error);
 		assert.doesNotThrow(() => userService.get(null, 'det.peralta@99prec.nyc'), Error);
 
 		assert.throws(() => userService.save(null), EmptyError);
