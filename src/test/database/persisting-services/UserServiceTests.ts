@@ -57,9 +57,11 @@ export default function(this: ISuiteCallbackContext) {
 
 		return Promise.mapSeries(data, userService.save);
 	})
-	.then(results => {
+	.then((results : User[]) => {
 		assert.isArray(results);
 		assert.lengthOf(results, userCount, 'Number of saved objects does not match');
+
+		results.forEach(u => assertUserObject(u));
 	}));
 
 	it('count()', () => userService.count().then(count => {
@@ -132,7 +134,7 @@ const assertUserObject = (u : User, noPassword = true, name? : string) => {
 	});
 
 	if (noPassword) {
-		assert.notProperty(u, 'passwort');
+		assert.notProperty(u, 'password');
 	}
 
 	if (u.name === null) {

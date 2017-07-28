@@ -43,6 +43,15 @@ const UserSchema : Schema = new Schema({
 		default: null,
 		select: false,
 	},
+}, {
+	toObject: {
+		retainKeyOrder: true,
+		transform: (doc : Document, converted : any) => {
+			// Throw away password hash
+			delete converted.password;
+			return converted;
+		},
+	},
 });
 
 UserSchema.index({
