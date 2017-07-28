@@ -27,12 +27,19 @@ import Suggestion from 'base/Suggestion';
 import { defaultLimit } from 'app/services/BasicPersistingService';
 import { suggestionService } from 'app/services';
 
+import { EmptyError } from 'app/util/errors';
+
 import * as app from 'app/util/applib';
 
 const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldinger.json');
 
 export default function(this: ISuiteCallbackContext) {
 	let totalCount : number;
+
+	it('parameter checks', () => {
+		assert.throws(() => suggestionService.getSince(null), EmptyError);
+		assert.throws(() => suggestionService.save(null), EmptyError);
+	});
 
 	it('clear()', () => suggestionService.clear());
 
