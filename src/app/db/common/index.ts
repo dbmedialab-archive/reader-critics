@@ -32,6 +32,8 @@ export {
 	wrapFindOne,
 } from './wrapFind';
 
+export { wrapSave } from './wrapSave';
+
 export function clearCollection <T extends Document> (model : Model <T>) : Promise <void> {
 	if (isTest) {
 		return model.remove({}).then(() => undefined);
@@ -41,13 +43,6 @@ export function clearCollection <T extends Document> (model : Model <T>) : Promi
 
 export function getCount <T extends Document> (model : Model <T>) : Promise <number> {
 	return model.count({}).then(result => Promise.resolve(result));
-}
-
-export function wrapSave(wrapped : Promise <Document>) : Promise <void> {
-	return wrapped.then(() => undefined)
-	.catch(error => Promise.reject(
-		errors.isDuplicateError(error) ? new errors.DuplicateError(error) : error
-	));
 }
 
 export const objectReference = (

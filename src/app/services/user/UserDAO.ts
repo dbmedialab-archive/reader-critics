@@ -69,9 +69,9 @@ export function get(username : String|null, email? : String|null) : Promise <Use
 	return wrapFindOne(UserModel.findOne(query));
 }
 
-export function save(user : User) : Promise <void> {
+export function save(user : User) : Promise <User> {
 	emptyCheck(user);
-	return wrapSave(new UserModel(user).save());
+	return wrapSave<User>(new UserModel(user).save());
 }
 
 /*
