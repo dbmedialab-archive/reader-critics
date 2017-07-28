@@ -16,11 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Person from './Person';
-import UserRole from './UserRole';
-
-interface User extends Person {
-	role : UserRole;
+interface Person {
+	name : string;
+	email : string;
 }
 
-export default User;
+export default Person;
