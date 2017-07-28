@@ -16,20 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isProduction } from 'app/util/applib';
-
-interface BasicPersistingService {
+interface BasicPersistingService <T> {
 	clear() : Promise <void>;
 	count() : Promise <number>;
+
+	getRange(skip? : number, limit? : number, sort? : Object) : Promise <T[]>;
 }
 
 export default BasicPersistingService;
 
-// Default implementations
-
 export function clear() : Promise <void> {
-	if (isProduction) {
-		throw new Error('Function can only be used in TEST mode');
-	}
 	throw new Error('Function is not implemented');
 }
+
+export const defaultLimit : number = 25;
+export const defaultSkip : number = 0;
+export const defaultSort : Object = { 'date.created': -1 };

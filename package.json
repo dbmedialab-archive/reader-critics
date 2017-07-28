@@ -121,7 +121,7 @@
 		"@types/passport": "0.3.3",
 		"@types/passport-jwt": "2.0.22",
 		"@types/passport-local": "1.0.30",
-		"@types/react": "15.0.39",
+		"@types/react": "15.6.0",
 		"@types/react-dom": "15.5.1",
 		"@types/react-redux": "4.4.47",
 		"@types/react-router": "4.0.14",
@@ -152,7 +152,8 @@
 		"ts-node": "3.3.0",
 		"tsconfig-paths": "2.2.0",
 		"tslint": "5.5.0",
-		"typescript": "2.4.2"
+		"typescript": "2.4.2",
+		"webpack-bundle-analyzer": "^2.8.3"
 	},
 	"optionalDependencies": {
 		"geckodriver": "^1.8.0",
@@ -169,7 +170,8 @@
 			"eslint-plugin-jsx-a11y",
 			"eslint-plugin-react",
 			"geckodriver",
-			"npm-run-all"
+			"npm-run-all",
+			"webpack-bundle-analyzer"
 		]
 	}
 }

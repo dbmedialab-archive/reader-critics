@@ -16,21 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Suggestion from 'base/Suggestion';
 import SuggestionService from './SuggestionService';
 
-import { clear } from '../BasicPersistingService';
+import {
+	SuggestionDocument,
+	SuggestionModel,
+} from 'app/db/models';
+
+import createPersistingService from '../createPersistingService';
 
 import {
-	count,
 	getSince,
 	save,
 } from './SuggestionDAO';
 
-const service : SuggestionService = {
-	clear,
-	count,
-	getSince,
-	save,
-};
+const service : SuggestionService
+	= createPersistingService <SuggestionDocument, SuggestionService, Suggestion> (
+		SuggestionModel, {
+			getSince,
+			save,
+		}
+	);
 
 module.exports = service;

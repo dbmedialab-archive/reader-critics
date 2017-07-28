@@ -26,21 +26,14 @@ import {
 } from 'app/db/models';
 
 import {
-	clearCollection,
-	getCount,
 	wrapFind,
 	wrapSave
 } from 'app/db/common';
 
-export function clear() : Promise <void> {
-	return clearCollection(SuggestionModel);
-}
-
-export function count() : Promise <number> {
-	return getCount(SuggestionModel);
-}
+import emptyCheck from 'app/util/emptyCheck';
 
 export function getSince(since : Date) : Promise <Suggestion[]> {
+	emptyCheck(since);
 	if (!isValidDate(since)) {
 		return Promise.reject(new TypeError('Invalid date'));
 	}
@@ -53,5 +46,6 @@ export function getSince(since : Date) : Promise <Suggestion[]> {
 }
 
 export function save(suggestion : Suggestion) : Promise <void> {
+	emptyCheck(suggestion);
 	return wrapSave(new SuggestionModel(suggestion).save());
 }

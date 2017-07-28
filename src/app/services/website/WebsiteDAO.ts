@@ -24,21 +24,11 @@ import Website from 'base/Website';
 import { WebsiteModel } from 'app/db/models';
 
 import {
-	clearCollection,
-	getCount,
 	wrapFindOne,
 	wrapSave
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
-
-export function clear() : Promise <void> {
-	return clearCollection(WebsiteModel);
-}
-
-export function count() : Promise <number> {
-	return getCount(WebsiteModel);
-}
 
 /**
  * Returns a single Website object if the exact name is found in the database.

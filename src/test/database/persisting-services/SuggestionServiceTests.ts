@@ -22,36 +22,73 @@ import * as Promise from 'bluebird';
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
+import Suggestion from 'base/Suggestion';
+
+import { defaultLimit } from 'app/services/BasicPersistingService';
 import { suggestionService } from 'app/services';
 
-import Suggestion from 'base/Suggestion';
+import { EmptyError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
 const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldinger.json');
 
 export default function(this: ISuiteCallbackContext) {
+	let totalCount : number;
+
+	it('parameter checks', () => {
+		assert.throws(() => suggestionService.getSince(null), EmptyError);
+		assert.throws(() => suggestionService.save(null), EmptyError);
+	});
+
 	it('clear()', () => suggestionService.clear());
 
 	it('save()', () => {
-		let count : number;
-
 		return app.loadJSON(tilbakemeldinger)
 		.then(data => {
 			assert.isArray(data);
-			count = data.length;
+			totalCount = data.length;
 
 			return Promise.mapSeries(data, suggestionService.save);
 		})
 		.then(results => {
 			assert.isArray(results);
-			assert.lengthOf(results, count, 'Number of saved objects does not match');
+			assert.lengthOf(results, totalCount, 'Number of saved objects does not match');
 		});
 	});
 
 	it('count()', () => {
 		return suggestionService.count().then(count => {
-			assert.strictEqual(count, 15);
+			assert.strictEqual(count, totalCount);
+		});
+	});
+
+	it('getRange()', () => {
+		const testLimit = 10;
+
+		return Promise.all([
+			// #1 should return the lesser of "defaultLimit" or "totalCount" number of items:
+			suggestionService.getRange(),
+			// #2 should return exactly "testLimit" items:
+			suggestionService.getRange(0, testLimit),
+			// #3 skipping past the number of stored items should yield an empty result:
+			suggestionService.getRange(totalCount),
+		]).then((results : [Suggestion[]]) => {
+			results.forEach(result => assert.isArray(result));
+
+			const lengthCheck = [
+				Math.min(totalCount, defaultLimit),
+				testLimit,
+				0,
+			];
+
+			results.forEach((result : Suggestion[], index : number) => {
+				assert.lengthOf(
+					result,
+					lengthCheck[index],
+					`Incorrect number of objects in test range #${index + 1}`
+				);
+			});
 		});
 	});
 

@@ -16,22 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Website from 'base/Website';
 import WebsiteService from './WebsiteService';
 
 import {
-	clear,
-	count,
+	WebsiteDocument,
+	WebsiteModel
+} from 'app/db/models';
+
+import createPersistingService from '../createPersistingService';
+
+import {
 	get,
 	identify,
 	save,
 } from './WebsiteDAO';
 
-const service : WebsiteService = {
-	clear,
-	count,
-	get,
-	identify,
-	save,
-};
+const service : WebsiteService
+	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
+		WebsiteModel, {
+			get,
+			identify,
+			save,
+		}
+	);
 
 module.exports = service;
