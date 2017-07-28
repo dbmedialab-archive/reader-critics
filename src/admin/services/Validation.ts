@@ -19,25 +19,36 @@
 // tslint:disable:max-line-length
 'use strict';
 
-import * as Joi from 'joi-browser';
 import Validation from 'base/Validation';
+import {IValidationRules} from 'base/ValidationRules';
+import customValidations from 'base/ValidationCustomValidations';
+
+const additionalRules: IValidationRules = {
+	userName: {
+		type: 'string',
+		pattern: /^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/,
+		error: 'User name should contain only alphanumeric characters, dash, underscore!',
+	},
+
+	userType: {
+		type: 'string',
+		exec: customValidations.isUserRole,
+		error: 'Choose proper user role!',
+	},
+
+	userMail: {
+		type: 'string',
+		exec: customValidations.isEmail,
+		error: 'User mail should be valid email address!', //'Skriv inn gyldig e-postadresse.'
+	},
+};
 
 class Validator extends Validation {
-	//Users
-	userName = {
-		schema: Joi.string().regex(/^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/),
-		message: 'User name should contain only alphanumeric characters, dash, underscore!',
-	};
+	constructor() {
+		super();
+		this.addValidationRules(additionalRules);
+	}
 
-	userType = {
-		schema: Joi.number().integer().min(1).max(3),
-		message: 'Choose proper user role!',
-	};
-
-	userMail = {
-		schema: Joi.string().regex(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/),
-		message: 'User mail should be valid email address!', //'Skriv inn gyldig e-postadresse.'
-	};
 }
 
 export default Validator;

@@ -75,7 +75,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		}
 
 		const validation = this.validator.validate('suggestionComment',
-			this.state.comment, {presence: 'required'});
+			this.state.comment, {required: true});
 		if (validation.isError) {
 			return validation.message;
 		}

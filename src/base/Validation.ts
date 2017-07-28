@@ -16,53 +16,56 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Joi from 'joi-browser';
+import * as inspector from 'schema-inspector';
+import ValidationRules, {IValidationRule} from 'base/ValidationRules';
+
+export interface IOptions {
+	required?: Boolean;
+}
 
 export interface IValidation {
 	validate(
-		validationItem : { schema : string; isJoi : boolean; } | string,
-		data : string,
-		options? : any ) : {
+		validationItem : { schema : string | IValidationRule; errorText? : string; },
+		data : any, options: IOptions) : {
 			isError : boolean,
 			message : string
 		};
 }
 
 export default class Validation implements IValidation {
-	validate(validationItem, data, options = {}) {
-		const self = this;
-		let schema,
-			errorText = 'Validation error';
+	protected validationRules: {};
+	private validator;
+
+	constructor() {
+		this.validator = inspector;
+		this.validationRules = ValidationRules;
+	}
+
+	protected addValidationRules(rules) {
+		Object.assign(this.validationRules, rules);
+	}
+
+	validate(validationItem, data, options:IOptions = {}) {
+		let schema;
+		const errorText = validationItem.errorText;
+		const { required } = options;
+
 		if (typeof validationItem === 'string') {
-			schema = self[validationItem].schema;
-			errorText = self[validationItem].message;
-		} else if (typeof validationItem === 'object'
-					&& validationItem.schema
-					&& validationItem.schema.isJoi) {
+			schema = this.validationRules[validationItem];
+		} else {
 			schema = validationItem.schema;
-			errorText = validationItem.message;
 		}
 
 		if (!schema) {
 			throw new Error('Validation schema is not valid');
 		}
 
-		return Joi.validate(data, schema, options, function (error, value) {
-			const response = {
-				isError: false,
-				message: errorText,
-			};
-			if (error === null) {
-				return response;
-			}
-			response.isError = true;
-			return response;
-		});
-	}
+		schema.optional = !required;
 
-	//Suggestion-box
-	suggestionComment = {
-		schema: Joi.string().max(2000).required(),
-		message: 'Tilbakemelding er for lang (maksimum 2000 tegn).',
-	};
+		const validation = this.validator.validate(schema, data);
+		return {
+			isError: !validation.valid,
+			message: errorText || validation.error[0],
+		};
+	}
 }
