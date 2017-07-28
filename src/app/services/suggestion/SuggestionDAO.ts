@@ -30,7 +30,10 @@ import {
 	wrapSave
 } from 'app/db/common';
 
+import emptyCheck from 'app/util/emptyCheck';
+
 export function getSince(since : Date) : Promise <Suggestion[]> {
+	emptyCheck(since);
 	if (!isValidDate(since)) {
 		return Promise.reject(new TypeError('Invalid date'));
 	}
@@ -43,5 +46,6 @@ export function getSince(since : Date) : Promise <Suggestion[]> {
 }
 
 export function save(suggestion : Suggestion) : Promise <void> {
+	emptyCheck(suggestion);
 	return wrapSave(new SuggestionModel(suggestion).save());
 }

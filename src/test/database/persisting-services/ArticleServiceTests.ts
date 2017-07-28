@@ -42,7 +42,7 @@ export default function(this: ISuiteCallbackContext) {
 	let articleCount : number;
 
 	it('parameter checks', () => {
-		// assert.throws(() => articleService.get(null), EmptyError);
+		assert.throws(() => articleService.get(null, null), EmptyError);
 		assert.throws(() => articleService.save(null, null), EmptyError);
 	});
 
