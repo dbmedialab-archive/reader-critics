@@ -37,14 +37,33 @@ const UserSchema : Schema = new Schema({
 		enum: Object.values(UserRole),
 		default: UserRole.Normal,
 	},
+	password: {
+		type: String,
+		required: false,
+		default: null,
+		select: false,
+	},
 });
 
 UserSchema.index({
 	'name': 1,
-	'email': 1,
 }, {
 	name: 'unique_name',
 	unique: true,
+});
+
+UserSchema.index({
+	'email': 1,
+}, {
+	name: 'unique_email',
+	unique: true,
+});
+
+UserSchema.index({
+	'role': 1,
+}, {
+	name: 'user_roles',
+	sparse: true,
 });
 
 export default UserSchema;

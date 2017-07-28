@@ -16,16 +16,43 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { isNil, isString } from 'lodash';
+
 import User from 'base/User';
 
 import { UserModel } from 'app/db/models';
 
 import {
-	// wrapFindOne,
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
+
+import { EmptyError } from 'app/util/errors';
+
+import * as app from 'app/util/applib';
+
+const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);
+
+export function get(username : String|null, email? : String|null) : Promise <User> {
+	if (isEmpty(username) && isEmpty(email)) {
+		throw new EmptyError('At least one of "username" or "email" must be set');
+	}
+
+	const query : any = {};
+
+	if (isString(username)) {
+		query.name = username;
+	}
+	if (isString(email)) {
+		query.email = email;
+	}
+
+	return wrapFindOne(UserModel.findOne(query));
+}
+
+	//Users.findOne({_id: id}).select('+password').exec(...);
 
 export function save(user : User) : Promise <void> {
 	emptyCheck(user);

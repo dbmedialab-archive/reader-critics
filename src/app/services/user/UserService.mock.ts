@@ -27,11 +27,11 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import {
+	get,
 	save,
 } from './UserDAO';
 
 import checkPassword from './mock/checkPassword';
-import get from './mock/get';
 
 const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (

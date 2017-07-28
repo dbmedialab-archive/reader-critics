@@ -16,10 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { isNil } from 'lodash';
+
 import { EmptyError } from './errors';
 
 const emptyCheck = (...args) : void => args.forEach((v : any, i : number) => {
-	if (v === null || v === undefined) {
+	if (isNil(v)) {
 		throw new EmptyError(`Checked parameter ${i + 1} is null or undefined`);
 	}
 });

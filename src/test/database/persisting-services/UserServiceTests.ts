@@ -37,7 +37,15 @@ export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
 	it('parameter checks', () => {
-		// assert.throws(() => userService.get(null), EmptyError);
+		assert.throws(() => userService.get(null), EmptyError);
+		assert.throws(() => userService.get(null, null), EmptyError);
+
+		assert.throws(() => userService.get(''), EmptyError);
+		assert.throws(() => userService.get('', ''), EmptyError);
+
+		assert.doesNotThrow(() => userService.get('Jack Peralta'), Error);
+		assert.doesNotThrow(() => userService.get(null, 'det.peralta@99prec.nyc'), Error);
+
 		assert.throws(() => userService.save(null), EmptyError);
 	});
 
@@ -57,6 +65,16 @@ export default function(this: ISuiteCallbackContext) {
 	it('count()', () => userService.count().then(count => {
 		assert.strictEqual(count, userCount);
 	}));
+
+	it('get()', () => {
+		return Promise.all([
+			userService.get('Indiana Horst'),
+			userService.get(null, 'prost.mahlzeit@lulu.org'),
+			userService.get('Ernst Eisenbichler', 'ee@aller.com'),
+		]).then((results : User[]) => {
+			results.forEach(u => assertUserObject(u));
+		});
+	});
 
 	it('getRange()', () => {
 		const testLimit = 5;
@@ -91,12 +109,16 @@ export default function(this: ISuiteCallbackContext) {
 	});
 }
 
-const assertUserObject = (u : User, name? : string) => {
+const assertUserObject = (u : User, noPassword = true, name? : string) => {
 	assert.isObject(u);
 
 	[ 'ID', 'name', 'email', 'role' ].forEach(prop => {
 		assert.property(u, prop);
 	});
+
+	if (noPassword) {
+		assert.notProperty(u, 'passwort');
+	}
 
 	if (u.name === null) {
 		assert.isString(u.email);
