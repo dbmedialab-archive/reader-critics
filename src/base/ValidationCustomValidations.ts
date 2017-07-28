@@ -16,7 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
 import UserRole from 'base/UserRole';
-import * as _ from 'lodash';
 
 export interface ICustomValidations {
 	[index: string]: (schema: String, v: any) => void;
@@ -26,11 +25,6 @@ const validations = {
 	isEmail: (schema: String, v:any) => {
 		if (!/^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/.test(v)) {
 			this.report(`${schema} must me an email`);
-		}
-	},
-	isUserRole: (schema: String, v:any) => {
-		if (!_.includes(UserRole, v)) {
-			this.report(`${schema} must be a valid user role`);
 		}
 	},
 };

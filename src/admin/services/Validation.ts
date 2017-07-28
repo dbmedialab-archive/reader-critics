@@ -32,7 +32,8 @@ const additionalRules: IValidationRules = {
 
 	userType: {
 		type: 'string',
-		exec: customValidations.isUserRole,
+		gte: 1,
+		lte: 3,
 		error: 'Choose proper user role!',
 	},
 
