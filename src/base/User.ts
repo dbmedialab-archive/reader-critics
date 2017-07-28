@@ -18,8 +18,9 @@
 
 import Person from './Person';
 import UserRole from './UserRole';
+import PersistedModel from './zz/PersistedModel';
 
-interface User extends Person {
+interface User extends PersistedModel, Person {
 	role : UserRole;
 }
 
