@@ -22,8 +22,6 @@ import {
 	Schema,
 } from 'mongoose';
 
-import * as errors from 'app/db/errors';
-
 import { ObjectID } from 'app/db';
 import { isTest } from 'app/util/applib';
 
