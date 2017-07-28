@@ -17,16 +17,86 @@
 //
 
 import {
+	isEmpty,
+	isObject,
+	isString,
+} from 'lodash';
+
+import {
 	Request,
 	Response,
 } from 'express';
 
-import { okResponse } from './apiResponse';
+import User from 'base/User';
+import UserRole from 'base/UserRole';
 
-import * as app from 'app/util/applib/logging';
+import {
+	userService
+} from 'app/services';
+
+import {
+	errorResponse,
+	okResponse,
+} from './apiResponse';
+
+import * as app from 'app/util/applib';
+
 const log = app.createLog();
 
-export default function (requ: Request, resp: Response): void {
+type FeedbackData = {
+	article: any,
+	feedback: any,
+	user: any,
+};
+
+export default function (requ : Request, resp : Response) : void {
+	if (!checkIncomingData(requ)) {
+		const msg = 'Invalid feedback data';
+		return errorResponse(resp, new Error(msg), msg, {
+			status: 400,
+		});
+	}
+
+	const feedback : FeedbackData = requ.body.data;
+	log('Feedback!', feedback);
+
+	Promise.all([
+		getUser(feedback.user),
+	]).then();
+
 	log('Received feedback: %o', requ.body);
 	okResponse(resp);
+}
+
+function getUser(userData : any) : Promise <User> {
+	const name = isString(userData.name) ? userData.name : null;
+	const email = isString(userData.email) ? userData.email : null;
+
+	if (isEmpty(name) && isEmpty(email)) {
+		return Promise.resolve(null);
+	}
+
+	userService.get(name, email).then((u : User) => {
+		if (u !== null) {
+			return Promise.resolve(u);
+		}
+
+		const newUser : User = {
+			name,
+			email,
+			role: UserRole.Normal,
+		};
+
+		userService.save(newUser);
+	});
+
+	return Promise.resolve(null);
+}
+
+function checkIncomingData(requ : Request) : boolean {
+	const fb = isObject(requ.body) ? requ.body.data : undefined;
+	return isObject(fb)
+		&& isObject(fb.article)
+		&& isObject(fb.feedback)
+		&& isObject(fb.user);
 }
