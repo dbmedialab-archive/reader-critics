@@ -25,7 +25,7 @@ import {
 import * as app from 'app/util/applib';
 
 import ArticleURL from 'base/ArticleURL';
-import { EmptyError } from 'app/util/errors';
+import { EmptyError, NotFoundError } from 'app/util/errors';
 
 import emptyHandler from './feedback/emptyHandler';
 import feedbackHandler from './feedback/feedbackHandler';
@@ -56,21 +56,10 @@ export default feedbackRoute;
 
 // Main handler, checks the URL parameter and diverts to the respective handlers
 
-function mainHandler(requ : Request, resp : Response) : void {
-	try {
-		const articleURL = new ArticleURL(requ.params[0]);
+function mainHandler(requ : Request, resp : Response, next : Function) : void {
+	ArticleURL.from(requ.params[0]).then(articleURL => {
 		log('Feedback main router to "%s"', articleURL);
-
 		return feedbackHandler(requ, resp, articleURL);
-	}
-	catch (error) {
-		if (error instanceof TypeError) {
-			log('URL parameter invalid');
-			return paramErrorHandler(requ, resp);
-		}
-		else if (error instanceof EmptyError) {
-			log('Empty request without parameters');
-			return emptyHandler(requ, resp);
-		}
-	}
+	})
+	.catch((error : Error) => next(error));
 }

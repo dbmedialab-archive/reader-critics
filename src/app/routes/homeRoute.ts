@@ -25,28 +25,27 @@ import {
 import * as app from 'app/util/applib';
 import * as doT from 'dot';
 import * as path from 'path';
+
 import { readFileSync } from 'fs';
-import  notFoundHandler  from './notFoundHandler';
+
 const log = app.createLog();
 
 // Prepare and export Express router
 
 const homeRoute : Router = Router();
+export default homeRoute;
+
+// Main handler, checks for URL parameter and "empty" requests
 
 homeRoute.get('/', homeHandler);
-homeRoute.get('/*', notFoundHandler);
-
-export default homeRoute;
 
 const mainTemplate = createMainTemplate();
 
 const styles = [
-	'/static/styles/home.css',
+	'/static/front.css',
 ];
 
 const scripts = [];
-
-// Main handler, checks for URL parameter and "empty" requests
 
 function homeHandler(requ : Request, resp : Response) {
 	log('Homepage router', requ.params);
@@ -59,7 +58,6 @@ function homeHandler(requ : Request, resp : Response) {
 	resp.status(200).end();
 }
 
-// Everything else
 function createMainTemplate() {
 	// Currently loads the template from a static file.
 	// The template will later be determined dynamically based on website url / domain.
