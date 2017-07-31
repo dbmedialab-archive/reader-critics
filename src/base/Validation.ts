@@ -57,7 +57,10 @@ export default class Validation implements IValidation {
 		}
 
 		if (!schema) {
-			throw new Error('Validation schema is not valid');
+			return {
+				isError: true,
+				message: 'Invalid validation schema',
+			};
 		}
 
 		schema.optional = !required;
