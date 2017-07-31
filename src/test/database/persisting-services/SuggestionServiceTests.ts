@@ -17,7 +17,6 @@
 //
 
 import * as path from 'path';
-import * as Promise from 'bluebird';
 
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
