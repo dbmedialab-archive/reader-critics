@@ -29,6 +29,12 @@ const WebsiteSchema : Schema = new Schema({
 	},
 
 	chiefEditors: [Schema.Types.Mixed],
+
+	parserClass: {
+		type: String,
+		required: false,
+		default: null,
+	},
 });
 
 WebsiteSchema.index({
