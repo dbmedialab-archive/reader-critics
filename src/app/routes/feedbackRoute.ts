@@ -61,7 +61,7 @@ function mainHandler(requ : Request, resp : Response) : void {
 		const articleURL = new ArticleURL(requ.params[0]);
 		log('Feedback main router to "%s"', articleURL);
 
-		return feedbackHandler(requ, resp, articleURL);
+		feedbackHandler(requ, resp, articleURL);
 	}
 	catch (error) {
 		if (error instanceof TypeError) {
