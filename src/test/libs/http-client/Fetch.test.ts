@@ -16,10 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import fetch from 'node-fetch';
-import * as Promise from 'bluebird';
-fetch.Promise = Promise;
 import 'mocha';
+import fetch from 'node-fetch';
 
 import { expect } from 'chai';
 

@@ -23,6 +23,7 @@ import { parse } from 'url';
 
 import * as session from 'express-session';
 import * as passport from 'passport';
+
 import {
 	deserializeUser,
 	jwtStrategy,
@@ -30,15 +31,20 @@ import {
 	serializeUser,
 } from 'app/middleware/config/passportConfig';
 
+import adminRoute from './admin/adminRoute';
+import adminApiRoute from './admin/api/adminApiRoute';
 import apiRoute from './apiRoute';
 import faviconRoute from './faviconRoute';
 import feedbackRoute from './feedbackRoute';
 import homeRoute from './homeRoute';
-import suggestionRoute from './suggestionRoute';
-import adminRoute from './admin/adminRoute';
-import adminApiRoute from './admin/api/adminApiRoute';
-
 import staticRoute from './staticRoute';
+import suggestionRoute from './suggestionRoute';
+
+import {
+	catchAllErrorHandler,
+	notFoundHandler,
+} from './errorHandlers';
+
 import { sessionConf } from 'app/middleware/config/sessionConfig';
 
 import * as app from 'app/util/applib';
@@ -53,16 +59,19 @@ export default function(expressApp : Application) {
 	}
 
 	expressApp.use(session(sessionConf));
+
 	// Passport init
 	passport.use(jwtStrategy);
 	passport.use(localStrategy);
 	passport.serializeUser(serializeUser);
 	passport.deserializeUser(deserializeUser);
+
 	expressApp.use(passport.initialize());
 	expressApp.use(passport.session());
 
 	setOptions(expressApp);
 	setRoutes(expressApp);
+	setErrorHandlers(expressApp);
 }
 
 // Express routes
@@ -81,6 +90,8 @@ function setRoutes(expressApp : express.Application) {
 	expressApp.use('/admin', adminRoute);
 
 	expressApp.use('/', homeRoute);
+
+	expressApp.use(notFoundHandler);
 }
 
 // Express application options
@@ -92,6 +103,12 @@ function setOptions(expressApp : express.Application) {
 	expressApp.set('views', undefined);
 
 	expressApp.set('x-powered-by', false);
+}
+
+// Express error handlers
+
+function setErrorHandlers(expressApp : express.Application) {
+	expressApp.use(catchAllErrorHandler);
 }
 
 // Log all express requests

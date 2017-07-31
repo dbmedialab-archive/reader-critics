@@ -18,7 +18,6 @@
 
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
-import * as Promise from 'bluebird';
 import * as express from 'express';
 import * as http from 'http';
 
