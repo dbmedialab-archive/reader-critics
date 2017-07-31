@@ -31,7 +31,7 @@ import { EmptyError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
-const demoSites = path.join('resources', 'website', 'demo-sites.json');
+const demoSites = path.join('resources', 'website', 'demo-sites.json5');
 
 export default function(this: ISuiteCallbackContext) {
 	let websiteCount : number;

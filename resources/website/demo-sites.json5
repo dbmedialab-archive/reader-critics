@@ -1,0 +1,39 @@
+[
+	{
+		name: 'dagbladet.no',
+		hosts: [
+			'www.dagbladet.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Vakt Sjef',
+				email: 'vakt@dagbladet.no'
+			}
+		]
+	},
+	{
+		name: 'dinside.no',
+		hosts: [
+			'www.dinside.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Vakt Sjef',
+				email: 'vakt@dinside.no'
+			}
+		]
+	},
+	{
+		name: 'morgenposten.no',
+		hosts: [
+			'www.morgenposten.no',
+			'www.mopo.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Like A. Boss',
+				email: 'redaksjon@morgenposten.no'
+			}
+		]
+	}
+]
