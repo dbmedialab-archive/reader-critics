@@ -22,14 +22,11 @@ import {
 	Router,
 } from 'express';
 
-import * as app from 'app/util/applib';
-
 import ArticleURL from 'base/ArticleURL';
-import { EmptyError, NotFoundError } from 'app/util/errors';
 
-import emptyHandler from './feedback/emptyHandler';
 import feedbackHandler from './feedback/feedbackHandler';
-import paramErrorHandler from './feedback/paramErrorHandler';
+
+import * as app from 'app/util/applib';
 
 const log = app.createLog();
 

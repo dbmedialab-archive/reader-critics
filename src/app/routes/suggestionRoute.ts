@@ -31,8 +31,6 @@ import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog();
-
 const suggestionRoute : Router = Router();
 
 suggestionRoute.get('/', suggestionHandler);
