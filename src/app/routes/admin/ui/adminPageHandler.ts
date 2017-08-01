@@ -60,8 +60,8 @@ export default function (requ : Request, resp : Response) {
 function createMainTemplate() {
 	// Currently loads the template from a static file.
 	// The template will later be determined dynamically based on website url / domain.
-	const templatePath = path.join(app.rootPath, 'tmp/templates/admin.html');
-	const templateRaw = readFileSync(templatePath);
+	const templatePath : string = path.join(app.rootPath, 'tmp/templates/admin.html');
+	const templateRaw : string = readFileSync(templatePath).toString();
 
 	return doT.template(templateRaw);
 }

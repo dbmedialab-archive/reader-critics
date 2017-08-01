@@ -29,11 +29,22 @@ export default class ArticleURL {
 	readonly url : URL;
 	readonly href : string;
 
+	public static from(origURL : string) : Promise <ArticleURL> {
+		return new Promise <ArticleURL> ((resolve, reject) => {
+			try {
+				return resolve(new ArticleURL(origURL));
+			}
+			catch (error) {
+				return reject(error);
+			}
+		});
+	}
+
 	// Constructor
 
 	constructor(origURL : string) {
 		if (isEmpty(origURL)) {
-			throw new EmptyError('URL is empty');
+			throw new EmptyError('Article URL is undefined or empty');
 		}
 
 		const decodedURL : string = containsHex.test(origURL)

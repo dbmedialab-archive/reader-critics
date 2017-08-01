@@ -16,10 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-if (typeof window['feedbackParam'] !== 'object') {
-	throw new Error('Global feedback parameters are not defined');
-}
-
 interface FeedbackParameters {
 	article : {
 		url : string,
@@ -27,7 +23,7 @@ interface FeedbackParameters {
 	};
 }
 
-const globals : FeedbackParameters = window['feedbackParam'];
+const globals : FeedbackParameters = window['app'] || { article: {} };
 
 export function getArticleURL() : string {
 	return globals.article.url;

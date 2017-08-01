@@ -1,0 +1,71 @@
+[
+	{
+		name: 'dagbladet.no',
+		hosts: [
+			'dagbladet.no',
+			'www.dagbladet.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Vakt Sjef',
+				email: 'vakt@dagbladet.no'
+			}
+		],
+
+		layout: {
+			templates: {
+				feedbackPage: '<!DOCTYPE html>\n\
+<html lang="no">\n\
+	<head>\n\
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">\n\
+		<meta name="description" content="Dagbladet.no Leserkritikk">\n\
+		<meta name="keywords" content="">\n\
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">\n\
+		<title>Leserkritikk</title>\n\
+		{{~it.styles :stylePath}}\n\
+		<link rel="stylesheet" href="{{=stylePath}}"/>\n\
+		{{~}}\n\
+	</head>\n\
+	<body>\n\
+		<script>\n\
+			window.app = Object.freeze({{=it.params}});\n\
+		</script>\n\
+		<div id="test">Dette er Dagbladets testside</div>\n\
+		<div id="app" name="feedback"></div>\n\
+		{{~it.scripts :scriptPath}}\n\
+		<script src="{{=scriptPath}}"></script>\n\
+		{{~}}\n\
+	</body>\n\
+</html>',
+			},
+		},
+	},
+	{
+		name: 'dinside.no',
+		hosts: [
+			'dinside.no',
+			'www.dinside.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Vakt Sjef',
+				email: 'vakt@dinside.no'
+			}
+		]
+	},
+	{
+		name: 'morgenposten.no',
+		hosts: [
+			'morgenposten.no',
+			'mopo.no',
+			'www.morgenposten.no',
+			'www.mopo.no'
+		],
+		chiefEditors: [
+			{
+				name: 'Like A. Boss',
+				email: 'redaksjon@morgenposten.no'
+			}
+		]
+	}
+]

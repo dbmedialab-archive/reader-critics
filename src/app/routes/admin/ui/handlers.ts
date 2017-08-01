@@ -34,8 +34,8 @@ const scripts: string[] = [
 const mainTemplate = createTemplate();
 
 function createTemplate() {
-	const templatePath: string = path.join(app.rootPath, 'tmp/templates/admin.html');
-	const templateRaw: Buffer = readFileSync(templatePath);
+	const templatePath : string = path.join(app.rootPath, 'tmp/templates/admin.html');
+	const templateRaw : string = readFileSync(templatePath).toString();
 
 	return doT.template(templateRaw);
 }
