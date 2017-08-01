@@ -16,9 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Person from './Person';
-import UserRole from './UserRole';
 import PersistedModel from './zz/PersistedModel';
+import Person from './zz/Person';
+import UserRole from './UserRole';
 
 interface User extends PersistedModel, Person {
 	role : UserRole;
