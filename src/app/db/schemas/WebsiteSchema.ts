@@ -29,6 +29,27 @@ const WebsiteSchema : Schema = new Schema({
 	},
 
 	chiefEditors: [Schema.Types.Mixed],
+
+	parserClass: {
+		type: String,
+		required: false,
+		default: null,
+	},
+
+	layout: {
+		templates: {
+			feedbackPage: {
+				type: String,
+				required: false,
+				default: null,
+			},
+		},
+		scssVariables: {
+			type: Object,
+			required: false,
+			default: null,
+		},
+	},
 });
 
 WebsiteSchema.index({

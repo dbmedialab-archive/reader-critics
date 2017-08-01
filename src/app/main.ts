@@ -18,8 +18,12 @@
 
 import * as cluster from 'cluster';
 
+import * as Bluebird from 'bluebird';
+
 import master from './main/master';
 import worker from './main/worker';
+
+global.Promise = Bluebird;
 
 if (cluster.isMaster) {
 	master();

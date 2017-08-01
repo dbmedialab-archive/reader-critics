@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Bluebird from 'bluebird';
-
 import Article from 'base/Article';
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
@@ -68,7 +66,7 @@ abstract class BaseParser extends BaseElements implements Parser {
 			content: this.parseContent(),
 		};
 
-		return Promise.resolve(Bluebird.props(workflow))
+		return Promise.resolve(Promise.props(workflow))
 		.then((a : ParserWorkflowPayload) : Article => ({
 			url: this.articleURL,
 			version: a.version,
