@@ -33,15 +33,9 @@ const EndUserSchema : Schema = new Schema({
 
 EndUserSchema.index({
 	'name': 1,
-}, {
-	name: 'unique_name',
-	unique: true,
-});
-
-EndUserSchema.index({
 	'email': 1,
 }, {
-	name: 'unique_email',
+	name: 'unique_enduser',
 	unique: true,
 });
 
