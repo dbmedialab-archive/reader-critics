@@ -14,13 +14,34 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import Website from 'base/Website';
-import PageTemplate from 'base/PageTemplate';
+/**
+ * This file contains validation rules to pass to validator
+ */
 
-interface TemplateService {
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
+/**
+ * To see a full list ov available props visit https://www.npmjs.com/package/schema-inspector
+ * Note that exec param can also be an array of functions
+ */
+// import {ICustomValidations} from 'base/ValidationCustomValidations';
+
+export interface IValidationRule {
+	type: String | String[];
+	// exec?: ICustomValidations | Array<ICustomValidations>;
+	error?: String;
+	[index: string]: any;
 }
 
-export default TemplateService;
+export interface IValidationRules {
+	[index: string]: IValidationRule;
+}
+
+const ValidationRules: IValidationRules = {
+	suggestionComment: {
+		type: 'string',
+		maxLength: 2000,
+		error: 'Tilbakemelding er for lang (maksimum 2000 tegn).',
+	},
+};
+
+export default ValidationRules;

@@ -20,8 +20,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import ReactModal from 'admin/components/modal/ReactModalComponent';
 import * as UIActions from 'admin/actions/UIActions';
-import Validation from 'admin/services/Validation';
-import * as Joi from 'joi-browser';
+import Validator from 'admin/services/Validation';
 
 const promptInput = 'promptInput';
 
@@ -136,12 +135,12 @@ const mapStateToProps = (state, ownProps) => {
 		promptInput: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'value']) || '',
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, promptInput, 'touched']) || false,
-			valid: Validation.validate(
+			valid: new Validator().validate(
 				{
 					schema:
 						state.UI.getIn(
 							['modalWindows', ownProps.windowName, promptInput, 'validationSchema']
-						) || Joi.any(),
+						) || '',
 					message:
 						state.UI.getIn(
 							['modalWindows', ownProps.windowName, promptInput, 'promptInputErrorValidationMsg']

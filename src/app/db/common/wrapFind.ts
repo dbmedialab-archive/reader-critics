@@ -41,12 +41,13 @@ export function wrapFind <D extends Document, Z> (
 	// in the query issuing an array of "lean" documents, the case where exec()
 	// only produces a single object is when using cursors.
 	// We type-check for array and later on cast to the desired target type.
-	return result.lean().exec().then(results => {
-		if (!isArray(results)) {
-			return Promise.reject(new Error('results.exec() did not return an array'));
-		}
-
-		return Promise.resolve(results.map(item => filterMeta<Z>(item)));
+	return new Promise((resolve, reject) => {
+		result.lean().exec().then(results => {
+			if (!isArray(results)) {
+				return reject(new Error('results.exec() did not return an array'));
+			}
+			return resolve(results.map(item => filterMeta<Z>(item)));
+		});
 	});
 }
 
@@ -58,15 +59,17 @@ export function wrapFindOne <D extends Document, Z> (
 	result : DocumentQuery <D, D>
 ) : Promise <Z>
 {
-	return result.lean().exec().then((doc : D) => {
-		if (doc === null) {
-			return Promise.resolve(null);
-		}
+	return new Promise((resolve, reject) => {
+		result.lean().exec().then((doc : D) => {
+			if (doc === null) {
+				return resolve(null);
+			}
 
-		if (!isObject(doc)) {
-			return Promise.reject(new Error('result.exec() did not return a single object'));
-		}
+			if (!isObject(doc)) {
+				return reject(new Error('result.exec() did not return a single object'));
+			}
 
-		return Promise.resolve(filterMeta<Z>(doc));
+			return resolve(filterMeta<Z>(doc));
+		});
 	});
 }

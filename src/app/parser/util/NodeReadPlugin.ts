@@ -16,10 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Bluebird from 'bluebird';
 import * as nodeRead from 'node-read';
 
-const promisifiedRead : Function = Bluebird.promisify(nodeRead);
+const promisifiedRead : Function = Promise.promisify(nodeRead);
 
 export interface NodeReadArticle {
 	content : any;
