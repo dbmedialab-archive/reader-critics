@@ -16,53 +16,40 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable:max-line-length
 'use strict';
 
-import * as Joi from 'joi-browser';
+import Validation from 'base/Validation';
+import {IValidationRules} from 'base/ValidationRules';
+import customValidations from 'base/ValidationCustomValidations';
 
-const Validation = {
-	validate: function(validationItem, data){
-		const self = this;
-		let schema,
-			errorText = 'Validation error';
-		if (typeof validationItem === 'string') {
-			schema = self[validationItem].schema;
-			errorText = self[validationItem].message;
-		} else if (typeof validationItem === 'object'
-				&& validationItem.schema
-				&& validationItem.schema.isJoi) {
-			schema = validationItem.schema;
-			errorText = validationItem.message;
-		}
-		if (!schema) {
-			throw new Error('Validation schema is not valid');
-		}
-
-		return Joi.validate(data, schema, function(error, value){
-			const response = {
-				isError: false,
-				message: errorText,
-			};
-			if (error === null){
-				return response;
-			}
-			response.isError = true;
-			return response;
-		});
-	},
-	//Users
+const additionalRules: IValidationRules = {
 	userName: {
-		schema: Joi.string().regex(/^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/),
-		message: 'User name should contain only alphanumeric characters, dash, underscore!',
+		type: 'string',
+		pattern: /^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/,
+		error: 'User name should contain only alphanumeric characters, dash, underscore!',
 	},
+
 	userType: {
-		schema: Joi.number().integer().min(1).max(3),
-		message: 'Choose proper user role!',
+		type: 'string',
+		gte: 1,
+		lte: 3,
+		error: 'Choose proper user role!',
 	},
+
 	userMail: {
-		schema: Joi.string().email(),
-		message: 'User mail should be valid email address!',
+		type: 'string',
+		exec: customValidations.isEmail,
+		error: 'User mail should be valid email address!', //'Skriv inn gyldig e-postadresse.'
 	},
 };
 
-export default Validation;
+class Validator extends Validation {
+	constructor() {
+		super();
+		this.addValidationRules(additionalRules);
+	}
+
+}
+
+export default Validator;
