@@ -18,11 +18,6 @@
 
 import * as bcrypt from 'bcrypt';
 
-import {
-	isNil,
-	isString
-} from 'lodash';
-
 import User from 'base/User';
 
 import {
@@ -39,6 +34,8 @@ import emptyCheck from 'app/util/emptyCheck';
 
 import { EmptyError } from 'app/util/errors';
 
+import genericGetUser from './dao/genericGetUser';
+
 export function checkPassword(user : User, password : string) : Promise <boolean> {
 	return UserModel.findOne({
 		name: user.name,
@@ -50,23 +47,8 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 	});
 }
 
-const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);
-
 export function get(username : String|null, email? : String|null) : Promise <User> {
-	if (isEmpty(username) && isEmpty(email)) {
-		throw new EmptyError('At least one of "username" or "email" must be set');
-	}
-
-	const query : any = {};
-
-	if (isString(username)) {
-		query.name = username;
-	}
-	if (isString(email)) {
-		query.email = email;
-	}
-
-	return wrapFindOne(UserModel.findOne(query));
+	return genericGetUser <UserDocument, User> (UserModel, username, email);
 }
 
 export function save(user : User) : Promise <User> {
