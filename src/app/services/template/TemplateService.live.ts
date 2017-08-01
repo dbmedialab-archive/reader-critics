@@ -18,10 +18,10 @@
 
 import TemplateService from './TemplateService';
 
-import getTemplate from './mock/getTemplate';
+import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
 
 const service : TemplateService = {
-	getTemplate,
+	getFeedbackPageTemplate,
 };
 
 module.exports = service;
