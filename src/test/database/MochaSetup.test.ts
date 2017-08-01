@@ -1,1 +1,1 @@
-../MochaSetup.test.ts
+import '../MochaSetup.test.ts';
