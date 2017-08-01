@@ -2,6 +2,7 @@
 	{
 		name: 'dagbladet.no',
 		hosts: [
+			'dagbladet.no',
 			'www.dagbladet.no'
 		],
 		chiefEditors: [
@@ -13,32 +14,28 @@
 
 		layout: {
 			templates: {
-				feedbackPage: '<!DOCTYPE html> \
-<html lang="no"> \
-	<head> \
-		<meta http-equiv="content-type" content="text/html; charset=utf-8"> \
-		<meta name="description" content="Dagbladet.no Leserkritikk"> \
-		<meta name="keywords" content=""> \
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"> \
-		<title>Leserkritikk</title> \
-\
-		{{~it.styles :stylePath}} \
-		<link rel="stylesheet" href="{{=stylePath}}"/> \
-		{{~}} \
-	</head> \
-	<body> \
-		<script> \
-			window.feedbackParam = Object.freeze({{=it.feedbackParam}}); \
-		</script> \
-		<div id="test">Dette er Dagbladets testside</div> \
-\
-		<div id="app" name="feedback"></div> \
-\
-		{{~it.scripts :scriptPath}} \
-		<script src="{{=scriptPath}}"></script> \
-		{{~}} \
-\
-	</body> \
+				feedbackPage: '<!DOCTYPE html>\n\
+<html lang="no">\n\
+	<head>\n\
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">\n\
+		<meta name="description" content="Dagbladet.no Leserkritikk">\n\
+		<meta name="keywords" content="">\n\
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">\n\
+		<title>Leserkritikk</title>\n\
+		{{~it.styles :stylePath}}\n\
+		<link rel="stylesheet" href="{{=stylePath}}"/>\n\
+		{{~}}\n\
+	</head>\n\
+	<body>\n\
+		<script>\n\
+			window.app = Object.freeze({{=it.params}});\n\
+		</script>\n\
+		<div id="test">Dette er Dagbladets testside</div>\n\
+		<div id="app" name="feedback"></div>\n\
+		{{~it.scripts :scriptPath}}\n\
+		<script src="{{=scriptPath}}"></script>\n\
+		{{~}}\n\
+	</body>\n\
 </html>',
 			},
 		},
@@ -46,6 +43,7 @@
 	{
 		name: 'dinside.no',
 		hosts: [
+			'dinside.no',
 			'www.dinside.no'
 		],
 		chiefEditors: [
@@ -58,6 +56,8 @@
 	{
 		name: 'morgenposten.no',
 		hosts: [
+			'morgenposten.no',
+			'mopo.no',
 			'www.morgenposten.no',
 			'www.mopo.no'
 		],
