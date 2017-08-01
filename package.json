@@ -108,7 +108,7 @@
 		"@types/bluebird-global": "3.5.3",
 		"@types/body-parser": "1.16.4",
 		"@types/callsite": "1.0.30",
-		"@types/chai": "4.0.1",
+		"@types/chai": "4.0.2",
 		"@types/classnames": "2.2.0",
 		"@types/core-js": "0.9.42",
 		"@types/debug": "0.0.29",
