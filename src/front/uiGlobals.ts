@@ -23,7 +23,7 @@ interface FeedbackParameters {
 	};
 }
 
-const globals : FeedbackParameters = window['feedbackParam'] || { article: {} };
+const globals : FeedbackParameters = window['app'] || { article: {} };
 
 export function getArticleURL() : string {
 	return globals.article.url;
