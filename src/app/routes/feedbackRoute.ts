@@ -23,8 +23,15 @@ import {
 } from 'express';
 
 import ArticleURL from 'base/ArticleURL';
+import PageTemplate from 'base/PageTemplate';
+import Website from 'base/Website';
 
-import feedbackHandler from './feedback/feedbackHandler';
+import {
+	templateService,
+	websiteService,
+} from 'app/services';
+
+import { NotFoundError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
@@ -55,8 +62,35 @@ export default feedbackRoute;
 
 function mainHandler(requ : Request, resp : Response, next : Function) : void {
 	ArticleURL.from(requ.params[0]).then(articleURL => {
-		log('Feedback main router to "%s"', articleURL);
-		feedbackHandler(requ, resp, articleURL);
+		log('Feedback to "%s"', articleURL);
+		return feedbackHandler(requ, resp, articleURL);
 	})
 	.catch((error : Error) => next(error));
+}
+
+// Serve feedback page
+
+function feedbackHandler(
+	requ : Request,
+	resp : Response,
+	articleURL : ArticleURL
+) : Promise <void> {
+	return websiteService.identify(articleURL).then((w : Website) => {
+		if (w === null) {
+			return Promise.reject(new NotFoundError('Could not identify website'));
+		}
+		return templateService.getFeedbackPageTemplate(w);
+	})
+	.then((template : PageTemplate) => {
+		resp.set('Content-Type', 'text/html')
+		.send(template.setParams({
+			article: {
+				url: articleURL.href,
+				version: '2017.05.11-something',
+			},
+			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}).render())
+		.status(200)
+		.end();
+	});
 }
