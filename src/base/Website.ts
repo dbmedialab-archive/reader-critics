@@ -24,6 +24,13 @@ interface Website extends PersistedModel {
 
 	hosts : string[];
 	chiefEditors : string[];
+
+	layout : {
+		templates : {
+			feedbackPage? : string;
+		},
+		scssVariables? : Object;
+	};
 }
 
 export default Website;

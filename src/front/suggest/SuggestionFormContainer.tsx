@@ -18,13 +18,14 @@
 
 import * as React from 'react';
 import * as Recaptcha from 'react-recaptcha';
+
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
 
-// tslint:disable-next-line
-const emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+import Validation from 'base/Validation';
 
 let recaptchaInstance;
+
 export interface FormPayload {
 	email: string;
 	comment: string;
@@ -38,6 +39,7 @@ export interface FormPayload {
 export default class SuggestionFormContainer extends React.Component <any, FormPayload> {
 	private commentArea : any;
 	private emailInput : any;
+	private validator : Validation;
 
 	constructor(props) {
 		super(props);
@@ -51,6 +53,8 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				comment: false,
 			},
 		};
+
+		this.validator = new Validation();
 
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.UpdateState = this.UpdateState.bind(this);
@@ -69,8 +73,11 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		if (!this.state.comment) {
 			return 'Fortell oss hva du synes om å gi tilbakemeldinger på denne måten';
 		}
-		if (this.state.comment.length > 2000) {
-			return 'Tilbakemelding er for lang (maksimum 2000 tegn).';
+
+		const validation = this.validator.validate('suggestionComment',
+			this.state.comment, {required: true});
+		if (validation.isError) {
+			return validation.message;
 		}
 		return false;
 	}

@@ -14,19 +14,19 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import {
-	Request,
-	Response,
-} from 'express';
-import * as app from 'app/util/applib';
-const log = app.createLog();
-/**
- * @param request
- * @param res
- */
-export default function (request : Request, res : Response) {
-	log('404 not found');
-	res.status(404).end('Not what you\'re looking fo');
+//tslint:disable max-line-length
+
+export interface ICustomValidations {
+	[index: string]: (schema: String, v: any) => void;
 }
+
+const customValidations = {
+	isEmail: (schema: String, v:any) => {
+		if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i.test(v)) {
+			this.report(`${schema} must me an email`);
+		}
+	},
+};
+
+export default customValidations;

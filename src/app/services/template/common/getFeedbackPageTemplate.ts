@@ -16,11 +16,36 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as doT from 'dot';
+import * as path from 'path';
+
+import { isEmpty } from 'lodash';
+
 import Website from 'base/Website';
 import PageTemplate from 'base/PageTemplate';
 
-interface TemplateService {
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-}
+import * as app from 'app/util/applib';
+import emptyCheck from 'app/util/emptyCheck';
 
-export default TemplateService;
+const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');
+
+export default function(website : Website) : Promise <PageTemplate> {
+	emptyCheck(website);
+
+	const rawTemplate = () : Promise <string> => {
+		const raw = website.layout.templates.feedbackPage;
+		return isEmpty(raw)
+			? app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
+			: Promise.resolve(raw);
+	};
+
+	return rawTemplate().then((raw : string) => {
+		return new PageTemplate (doT.template(raw))
+			.pushStyle('/static/fb.css')
+			.pushScript(
+				'/static/react/react.js',
+				'/static/react/react-dom.js',
+				'/static/front.bundle.js'
+			);
+	});
+}

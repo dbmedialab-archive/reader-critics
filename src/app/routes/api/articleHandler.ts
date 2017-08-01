@@ -65,7 +65,8 @@ export default function(requ : Request, resp : Response) : void {
 			wasFetched = true;
 
 			return websiteService.identify(articleURL).then((w : Website) => {
-				if (website === null) {
+				if (w === null) {
+					log('not identified');
 					return Promise.reject(new Error('Could not identify website'));
 				}
 

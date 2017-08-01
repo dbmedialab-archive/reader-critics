@@ -22,14 +22,23 @@ import {
 	Router,
 } from 'express';
 
-import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
-import * as app from 'app/util/applib';
-import { loginHandler, loginPageHandler, logoutHandler} from './ui/handlers';
+import * as cookieParser from 'cookie-parser';
+
+import {
+	loginHandler,
+	loginPageHandler,
+	logoutHandler
+} from './ui/handlers';
+
 import { sessionConf } from 'app/middleware/config/sessionConfig';
+
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
 import adminPageHandler from './ui/adminPageHandler';
+
+import * as app from 'app/util/applib';
+
 const log = app.createLog();
 
 const adminRoute : Router = Router();
@@ -40,15 +49,18 @@ adminRoute.use(bodyParser.json({
 	limit: '512kb',
 	strict: true,
 }));
+
 adminRoute.use(bodyParser.urlencoded({
 	extended: true,
 }));
+
 adminRoute.use(cookieParser(secret));
 
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
 adminRoute.get(['/', '/users'], isAuthenticated, adminPageHandler);
+
 adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
