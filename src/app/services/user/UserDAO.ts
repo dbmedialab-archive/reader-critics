@@ -26,13 +26,10 @@ import {
 } from 'app/db/models';
 
 import {
-	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
-
-import { EmptyError } from 'app/util/errors';
 
 import genericGetUser from './dao/genericGetUser';
 

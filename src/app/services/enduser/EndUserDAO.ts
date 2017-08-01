@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as bcrypt from 'bcrypt';
-
 import EndUser from 'base/EndUser';
 
 import {
