@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
-// genericGetUser
+
 import {
 	isNil,
 	isString
@@ -52,4 +52,4 @@ export default function <D extends Document, Z extends Person> (
 	return wrapFindOne(dbmodel.findOne(query));
 }
 
-const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);
+export const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);

@@ -18,6 +18,8 @@
 
 import { Schema } from 'mongoose';
 
+import { isEmpty } from 'app/services/user/dao/genericGetUser';
+
 const EndUserSchema : Schema = new Schema({
 	name: {
 		type: String,
@@ -29,6 +31,15 @@ const EndUserSchema : Schema = new Schema({
 		required: false,
 		default: null,
 	},
+});
+
+EndUserSchema.pre('validate', function (next : Function) {
+	if (isEmpty(this.get('name')) && isEmpty(this.get('email'))) {
+		next(Error('At least one of "name" and "email" is required'));
+	}
+	else {
+		next();
+	}
 });
 
 EndUserSchema.index({

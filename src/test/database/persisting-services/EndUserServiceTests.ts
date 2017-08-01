@@ -23,8 +23,9 @@ import { ISuiteCallbackContext } from 'mocha';
 
 import EndUser from 'base/EndUser';
 
-import { defaultLimit } from 'app/services/BasicPersistingService';
 import { enduserService } from 'app/services';
+import { defaultLimit } from 'app/services/BasicPersistingService';
+import { anonymousEndUser } from 'app/services/enduser/EndUserService';
 import { EmptyError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
@@ -35,12 +36,11 @@ export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
 	it('parameter checks', () => {
-		assert.throws(() => enduserService.get(null), EmptyError);
-		assert.throws(() => enduserService.get(null, null), EmptyError);
-
-		assert.throws(() => enduserService.get(''), EmptyError);
-		assert.throws(() => enduserService.get('', ''), EmptyError);
-
+		// No checks for empty parameters to get() will be here, because this
+		// function returns the "Anonymous" user if all parameters are empty.
+		// This anonymous user is created in the get() function, should it not
+		// exist in the current database.
+		// But at least we can test for some parameter combinations here:
 		assert.doesNotThrow(() => enduserService.get('Jake Peralta'), Error);
 		assert.doesNotThrow(() => enduserService.get(null, 'det.peralta@99prec.nyc'), Error);
 
@@ -107,9 +107,20 @@ export default function(this: ISuiteCallbackContext) {
 			});
 		});
 	});
+
+	it('anonymous save()', () => enduserService
+		.save({ name: null, email: null })
+		.then(() => assert.fail())
+		.catch(() => assert.ok(true))
+	);
+
+	it('anonymous get()', () => enduserService
+		.get(null, null)
+		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
+	);
 }
 
-const assertUserObject = (u : EndUser, noPassword = true, name? : string) => {
+const assertUserObject = (u : EndUser, name? : string) => {
 	assert.isObject(u);
 
 	[ 'ID', 'name', 'email' ].forEach(prop => {

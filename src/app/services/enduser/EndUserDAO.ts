@@ -29,10 +29,43 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
-import genericGetUser from '../user/dao/genericGetUser';
+import genericGetUser, { isEmpty } from '../user/dao/genericGetUser';
 
-export function get(username : String|null, email? : String|null) : Promise <EndUser> {
-	return genericGetUser<EndUserDocument, EndUser>(EndUserModel, username, email);
+import { anonymousEndUser } from 'app/services/enduser/EndUserService';
+
+/**
+ * Fetch an EndUser object from the database. Opposite to system users (@see User)
+ * an end user can be completely anonymous, because the frontend does not force
+ * users to give their name and e-mail address.
+ * With both parameters (username and email) empty, the function retrieves the
+ * common "Anonymous" user object. Should this object not exist in the database
+ * yet, the function will create a new object there and return it.
+ *
+ * @param username string
+ * @param email string
+ */
+export function get(username : string|null, email? : string|null) : Promise <EndUser> {
+	const isAnonymous = isEmpty(username) && isEmpty(email);
+
+	return genericGetUser<EndUserDocument, EndUser>(
+		EndUserModel,
+		isAnonymous ? anonymousEndUser : username,
+		isAnonymous ? null : email
+	)
+	.then((endUser : EndUser) => {
+		if (endUser !== null) {
+			return endUser;
+		}
+
+		if (isAnonymous) {
+			return save({
+				name: anonymousEndUser,
+				email: null,
+			});
+		}
+
+		return null;
+	});
 }
 
 export function save(user : EndUser) : Promise <EndUser> {
