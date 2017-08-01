@@ -16,21 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
+import PersistedModel from './zz/PersistedModel';
+import Person from './zz/Person';
 
-import { initDatabase } from 'app/db';
+// Differentiation: an "end user" is a person using the front-end (literally) of
+// this application. They cannot log in and don't have any other properties than
+// what is defined in the "Person" interface.
+// The definition here is made to add the features of "PersistedModel" and also
+// for keeping "Person" as an abstract concept in the background.
 
-import articleService from './persisting-services/ArticleServiceTests';
-import enduserService from './persisting-services/EndUserServiceTests';
-import suggestionService from './persisting-services/SuggestionServiceTests';
-import userService from './persisting-services/UserServiceTests';
-import websiteService from './persisting-services/WebsiteServiceTests';
+interface EndUser extends PersistedModel, Person {}
 
-before(() => initDatabase());
-
-// Order of execution has to be preserved:
-describe('WebsiteService', websiteService);
-describe('UserService', userService);
-describe('EndUserService', enduserService);
-describe('ArticleService', articleService);
-describe('SuggestionService', suggestionService);
+export default EndUser;

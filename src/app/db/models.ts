@@ -24,11 +24,13 @@ import {
 } from 'mongoose';
 
 import ArticleSchema from './schemas/ArticleSchema';
+import EndUserSchema from './schemas/EndUserSchema';
 import SuggestionSchema from './schemas/SuggestionSchema';
 import UserSchema from './schemas/UserSchema';
 import WebsiteSchema from './schemas/WebsiteSchema';
 
 import Article from 'base/Article';
+import EndUser from 'base/EndUser';
 import Suggestion from 'base/Suggestion';
 import User from 'base/User';
 import Website from 'base/Website';
@@ -44,6 +46,10 @@ plugin(TimestampPlugin);
 export interface ArticleDocument extends Article, Document {}
 export const ArticleModel : Model <ArticleDocument>
 	= model <ArticleDocument> ('Article', ArticleSchema);
+
+export interface EndUserDocument extends EndUser, Document {}
+export const EndUserModel : Model <EndUserDocument>
+	= model <EndUserDocument> ('EndUser', EndUserSchema);
 
 export interface SuggestionDocument extends Suggestion, Document {}
 export const SuggestionModel : Model <SuggestionDocument>

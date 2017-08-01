@@ -21,6 +21,7 @@ declare function require(arg : string) : any;
 // Import service interfaces
 
 import ArticleService from './article/ArticleService';
+import EndUserService from './enduser/EndUserService';
 import ParserService from './parser/ParserService';
 import SuggestionService from './suggestion/SuggestionService';
 import TemplateService from './template/TemplateService';
@@ -38,6 +39,9 @@ const env : string = app.env === 'test' ? 'mock' : 'live';
 
 export const articleService : ArticleService
 	= require(`./article/ArticleService.${env}`);
+
+export const enduserService : EndUserService
+	= require(`./enduser/EndUserService.${env}`);
 
 export const parserService : ParserService
 	= require(`./parser/ParserService.${env}`);

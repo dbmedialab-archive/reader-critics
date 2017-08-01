@@ -1,0 +1,45 @@
+[
+	{
+		name: 'Indiana Horst',
+		email: 'horst@indiana.net',
+	},
+	{
+		name: 'Schmitz\' Katze',
+	},
+	{
+		name: 'Ragnhild Esben Hummel',
+	},
+	{
+		name: 'Finn Hans Nilsen',
+	},
+	{
+		name: 'Oddmund Thomas Rasmussen',
+	},
+	{
+		name: 'Ruth Lovise Amundsen',
+	},
+	{
+		name: 'Kjellfrid Ola Wolff',
+	},
+	{
+		email: 'prost.mahlzeit@lulu.org',
+	},
+	{
+		email: 'Christen.Mikael@storstrand.no',
+	},
+	{
+		email: 'elin@gro.org',
+	},
+	{
+		email: 'stein.ha@alexandersen.net',
+	},
+	{
+		email: 'ma_re@skjeggestad.org',
+	},
+	{
+		email: 'kresten.steensen@koeb.dk',
+	},
+	{
+		email: 'ejvind@jacobsen.name',
+	},
+]

@@ -16,21 +16,40 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
+import {
+	isNil,
+	isString
+} from 'lodash';
 
-import { initDatabase } from 'app/db';
+import {
+	Document,
+	Model,
+} from 'mongoose';
 
-import articleService from './persisting-services/ArticleServiceTests';
-import enduserService from './persisting-services/EndUserServiceTests';
-import suggestionService from './persisting-services/SuggestionServiceTests';
-import userService from './persisting-services/UserServiceTests';
-import websiteService from './persisting-services/WebsiteServiceTests';
+import Person from 'base/zz/Person';
 
-before(() => initDatabase());
+import { wrapFindOne } from 'app/db/common';
+import { EmptyError } from 'app/util/errors';
 
-// Order of execution has to be preserved:
-describe('WebsiteService', websiteService);
-describe('UserService', userService);
-describe('EndUserService', enduserService);
-describe('ArticleService', articleService);
-describe('SuggestionService', suggestionService);
+export default function <D extends Document, Z extends Person> (
+	dbmodel : Model<D>,
+	username : String|null,
+	email? : String|null
+) : Promise <Z> {
+	if (isEmpty(username) && isEmpty(email)) {
+		throw new EmptyError('At least one of "username" or "email" must be set');
+	}
+
+	const query : any = {};
+
+	if (isString(username)) {
+		query.name = username;
+	}
+	if (isString(email)) {
+		query.email = email;
+	}
+
+	return wrapFindOne(dbmodel.findOne(query));
+}
+
+export const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);

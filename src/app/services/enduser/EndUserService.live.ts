@@ -16,21 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
+import EndUser from 'base/EndUser';
+import EndUserService from './EndUserService';
 
-import { initDatabase } from 'app/db';
+import {
+	EndUserDocument,
+	EndUserModel
+} from 'app/db/models';
 
-import articleService from './persisting-services/ArticleServiceTests';
-import enduserService from './persisting-services/EndUserServiceTests';
-import suggestionService from './persisting-services/SuggestionServiceTests';
-import userService from './persisting-services/UserServiceTests';
-import websiteService from './persisting-services/WebsiteServiceTests';
+import createPersistingService from '../createPersistingService';
 
-before(() => initDatabase());
+import {
+	get,
+	save,
+} from './EndUserDAO';
 
-// Order of execution has to be preserved:
-describe('WebsiteService', websiteService);
-describe('UserService', userService);
-describe('EndUserService', enduserService);
-describe('ArticleService', articleService);
-describe('SuggestionService', suggestionService);
+const service : EndUserService
+	= createPersistingService <EndUserDocument, EndUserService,	EndUser> (
+		EndUserModel, {
+			get,
+			save,
+		}
+	);
+
+module.exports = service;
