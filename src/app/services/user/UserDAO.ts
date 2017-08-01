@@ -48,20 +48,10 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 }
 
 export function get(username : String|null, email? : String|null) : Promise <User> {
-	return genericGetUser <UserDocument, User> (UserModel, username, email);
+	return genericGetUser<UserDocument, User>(UserModel, username, email);
 }
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
 	return wrapSave<User>(new UserModel(user).save());
 }
-
-/*
-public comparePassword(password: string, cb: (err: string, isMatch: boolean) => void): void {
-	bcrypt.compare(password, this.password, cb);
-}
-
-bcrypt.compare(myPlaintextPassword, hash).then(function(res) {
-    // res == true
-});
-*/
