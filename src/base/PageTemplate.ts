@@ -26,12 +26,12 @@ import {
 
 export default class PageTemplate {
 
-	private scripts : string[];
-	private styles : string[];
-
-	private title : string = 'Leserkritikk';
+	private scripts : string[] = [];
+	private styles : string[] = [];
 
 	private params : Object = {};
+
+	private title : string = 'Leserkritikk';
 
 	constructor(private readonly dotRender : RenderFunction) {}
 
