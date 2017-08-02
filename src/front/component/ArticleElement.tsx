@@ -191,7 +191,9 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	private TextDiff() : any {
-		return textDiffToHTML(this.props.originalText, this.state.text);
+		return this.state.text === undefined
+			? this.props.originalText
+			: textDiffToHTML(this.props.originalText, this.state.text);
 	}
 
 	// Changes the state for the component so correct css-classes are applied
