@@ -16,22 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from './Article';
-import FeedbackItem from './FeedbackItem';
-import FeedbackStatus from './FeedbackStatus';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
+import Feedback from 'base/Feedback';
+import FeedbackService from './FeedbackService';
 
-interface Feedback extends PersistedModel {
-	article : Article
-	user : User
+import {
+	FeedbackDocument,
+	FeedbackModel
+} from 'app/db/models';
 
-	items : FeedbackItem[]
-	status : FeedbackStatus
+import createPersistingService from '../createPersistingService';
 
-	date : {
-		statusChange : Date
-	}
-}
+import create from './common/create';
 
-export default Feedback;
+const service : FeedbackService
+	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
+		FeedbackModel, {
+			create,
+		}
+	);
+
+module.exports = service;

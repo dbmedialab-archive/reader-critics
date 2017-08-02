@@ -16,22 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from './Article';
-import FeedbackItem from './FeedbackItem';
-import FeedbackStatus from './FeedbackStatus';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
+import { Schema } from 'mongoose';
 
-interface Feedback extends PersistedModel {
-	article : Article
-	user : User
+import { objectReference } from 'app/db/common';
 
-	items : FeedbackItem[]
-	status : FeedbackStatus
+import FeedbackStatus from 'base/FeedbackStatus';
 
-	date : {
-		statusChange : Date
-	}
-}
+const FeedbackSchema : Schema = new Schema({
+	_article: objectReference('Article'),
+	_user: objectReference('User'),
 
-export default Feedback;
+	email: String,
+	comment: String,
+
+	status: {
+		type: String,
+		required: true,
+		enum: Object.values(FeedbackStatus),
+		default: FeedbackStatus.New,
+	},
+
+	items: [Schema.Types.Mixed],
+
+	date: {
+		statusChange: Date,
+	},
+});
+
+export default FeedbackSchema;

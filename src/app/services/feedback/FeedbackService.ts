@@ -16,22 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from './Article';
-import FeedbackItem from './FeedbackItem';
-import FeedbackStatus from './FeedbackStatus';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
+import Article from 'base/Article';
+import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+import User from 'base/User';
 
-interface Feedback extends PersistedModel {
-	article : Article
-	user : User
+import BasicPersistingService from '../BasicPersistingService';
 
-	items : FeedbackItem[]
-	status : FeedbackStatus
-
-	date : {
-		statusChange : Date
-	}
+interface FeedbackService extends BasicPersistingService <Feedback> {
+	create(article : Article, user : User, items : FeedbackItem[]) : Feedback;
+	// save(feedback : Feedback);
 }
 
-export default Feedback;
+export default FeedbackService;

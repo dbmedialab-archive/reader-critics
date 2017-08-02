@@ -16,22 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from './Article';
-import FeedbackItem from './FeedbackItem';
-import FeedbackStatus from './FeedbackStatus';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
+import Article from 'base/Article';
+import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
+import User from 'base/User';
 
-interface Feedback extends PersistedModel {
-	article : Article
-	user : User
-
+const create = (
+	article : Article,
+	user : User,
 	items : FeedbackItem[]
-	status : FeedbackStatus
+) : Feedback => ({
+	article,
+	user,
 
-	date : {
-		statusChange : Date
-	}
-}
+	items,
+	status: FeedbackStatus.New,
 
-export default Feedback;
+	date: {
+		statusChange: new Date(),
+	},
+});
+
+export default create;
