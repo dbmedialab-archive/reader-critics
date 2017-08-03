@@ -24,6 +24,10 @@ import Parser from 'base/Parser';
 
 import BaseElements from './BaseElements';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
 interface ParserWorkflowPayload {
 	version : any;
 	authors : any;
@@ -42,7 +46,11 @@ abstract class BaseParser extends BaseElements implements Parser {
 	}
 
 	parse() : Promise <Article> {
-		return this.initialize().then(() => this.parseArticle());
+		log('parse');
+		return this.initialize().then(() => {
+			log('begin parseArticle');
+			return this.parseArticle();
+		});
 	}
 
 	/**

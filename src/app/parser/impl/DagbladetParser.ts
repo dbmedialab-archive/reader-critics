@@ -37,17 +37,22 @@ export default class DagbladetParser extends GenericParser {
 	protected select : Cheerio;
 
 	protected initialize() : Promise <any> {
-		return CheerioPlugin.create(this.rawArticle)
-			.then((s : Cheerio) => this.select = s);
+		log('initialize');
+		return super.initialize();
+		// return CheerioPlugin.create(this.rawArticle)
+		// 	.then((s : Cheerio) => this.select = s);
 	}
 
 	protected parseVersion() : Promise <string> {
-		log('parsing a version');
-		return Promise.resolve(getOpenGraphModifiedTime(this.select));
+		const version = getOpenGraphModifiedTime(this.select);
+		log('parsing version:', version);
+		return Promise.resolve(version);
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		return Promise.resolve(getOpenGraphAuthors(this.select));
+		const authors = getOpenGraphAuthors(this.select);
+		log('parsing byline:', authors);
+		return Promise.resolve(authors);
 	}
 
 	// protected parseTitles() : Promise <ArticleItem[]> {
