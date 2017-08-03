@@ -22,6 +22,7 @@ declare function require(arg : string) : any;
 
 import ArticleService from './article/ArticleService';
 import EndUserService from './enduser/EndUserService';
+import FeedbackService from './feedback/FeedbackService';
 import ParserService from './parser/ParserService';
 import SuggestionService from './suggestion/SuggestionService';
 import TemplateService from './template/TemplateService';
@@ -42,6 +43,9 @@ export const articleService : ArticleService
 
 export const enduserService : EndUserService
 	= require(`./enduser/EndUserService.${env}`);
+
+export const feedbackService : FeedbackService
+	= require(`./feedback/FeedbackService.${env}`);
 
 export const parserService : ParserService
 	= require(`./parser/ParserService.${env}`);
