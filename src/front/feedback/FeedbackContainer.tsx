@@ -99,7 +99,7 @@ extends React.Component <any, FeedbackContainerState> {
 
 		const user = this.demoUsers[Math.floor(Math.random() * this.demoUsers.length)];
 
-		console.log({
+		sendFeedback({
 			article: {
 				url: getArticleURL(),
 				version: getArticleVersion(),
@@ -108,6 +108,10 @@ extends React.Component <any, FeedbackContainerState> {
 			feedback: {
 				items,
 			},
+		})
+		.then((response) => {
+			alert('Feedback successfully sent');
+			console.log(response);
 		});
 	}
 
