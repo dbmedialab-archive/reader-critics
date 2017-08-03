@@ -17,14 +17,14 @@
 //
 
 import Article from 'base/Article';
+import EndUser from 'base/User';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
-import User from 'base/User';
 
 const create = (
 	article : Article,
-	user : User,
+	user : EndUser,
 	items : FeedbackItem[]
 ) : Feedback => ({
 	article,
