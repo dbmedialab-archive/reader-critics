@@ -30,7 +30,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import { EmptyError } from 'app/util/errors';
+import { EmptyError, NotFoundError } from 'app/util/errors';
 
 import {
 	errorResponse,
@@ -45,58 +45,67 @@ const log = app.createLog();
 // Main handler, checks for URL parameter and invalid requests
 
 export default function(requ : Request, resp : Response) : void {
-	try {
-		const articleURL = new ArticleURL(requ.query.url);
-		const version = requ.query.version;
+	const version = requ.query.version;
 
-		let website : Website;
-		let wasFetched = false;
+	let articleURL : ArticleURL;
+	let website : Website;
+	let wasFetched = false;
 
+	ArticleURL.from(requ.query.url)
+	.then((url : ArticleURL) => {
+		articleURL = url;
 		log(articleURL.href);
-
 		// Fetch the article from the database. If not stored, will return null
-		articleService.get(articleURL, version)
-		.then((article : Article) => {
-			if (article !== null) {
-				return article;
+		return articleService.get(articleURL, version);
+	})
+	.then((article : Article) => {
+		if (article !== null) {
+			return article;
+		}
+
+		// Article is not in the database, fetch a fresh version from the web
+		wasFetched = true;
+
+		return websiteService.identify(articleURL).then((w : Website) => {
+			if (w === null) {
+				log('not identified');
+				return Promise.reject(new Error('Could not identify website'));
 			}
 
-			// Article is not in the database, fetch a fresh version from the web
-			wasFetched = true;
+			website = w;
+			return articleService.fetch(website, articleURL);
+		});
+	})
+	// Deliver the API response ...
+	.then((article : any) => {
+		article.url = article.url.href;
+		okResponse(resp, { article });
+		return article;
+	})
+	// After serving the request: if the article is just fetched, store it in
+	// the database now
+	.then((article : Article) => {
+		return wasFetched ? articleService.save(website, article).catch(error => log) : null;
+	})
+	.catch(error => {
+		if (error instanceof NotFoundError) {
+			return errorResponse(resp, error);
+		}
 
-			return websiteService.identify(articleURL).then((w : Website) => {
-				if (w === null) {
-					log('not identified');
-					return Promise.reject(new Error('Could not identify website'));
-				}
-
-				website = w;
-				return articleService.fetch(website, articleURL);
-			});
-		})
-		// Deliver the API response ...
-		.then((article : Article) => {
-			okResponse(resp, { article });
-			return article;
-		})
-		// After serving the request: if the article is just fetched, store it in
-		// the database now
-		.then((article : Article) => {
-			return wasFetched ? articleService.save(website, article).catch(error => log) : null;
-		})
-		.catch(error => errorResponse(resp, error));
-	}
-	catch (error) {
 		const options : ResponseOptions = {
-			status: 400,  // "Bad Request" in any case
+			status: 400,
 		};
 
 		if (error instanceof EmptyError) {
 			errorResponse(resp, error, 'Mandatory URL parameter is missing or empty', options);
 		}
+		// else if (error instanceof TypeError) {
+		// 	errorResponse(resp, error, 'URL parameter invalid', options);
+		// }
 		else {
-			errorResponse(resp, error, 'URL parameter invalid', options);
+			// Whatever passes down until here is probably a 500 internal server terror
+			errorResponse(resp, error);
 			log(error.stack);
 		}
-	}
+	});
 }
