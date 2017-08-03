@@ -27,11 +27,10 @@ import {
 	Response,
 } from 'express';
 
-import User from 'base/User';
-import UserRole from 'base/UserRole';
+import EndUser from 'base/EndUser';
 
 import {
-	userService
+	enduserService
 } from 'app/services';
 
 import {
@@ -52,49 +51,41 @@ type FeedbackData = {
 export default function (requ : Request, resp : Response) : void {
 	if (!checkIncomingData(requ)) {
 		const msg = 'Invalid feedback data';
+		log(msg, requ.body);
 		return errorResponse(resp, new Error(msg), msg, {
 			status: 400,
 		});
 	}
 
-	const feedback : FeedbackData = requ.body.data;
-	log('Feedback!', feedback);
+	const feedback : FeedbackData = requ.body;
+	log('Feedback!', app.inspect(feedback));
 
 	Promise.all([
 		getUser(feedback.user),
-	]).then();
-
-	log('Received feedback: %o', requ.body);
-	okResponse(resp);
+	])
+	.then(() => {
+		okResponse(resp);
+	})
+	.catch(error => errorResponse(resp, error));
 }
 
-function getUser(userData : any) : Promise <User> {
+// Fetch user object from database or create a new one
+
+function getUser(userData : any) : Promise <EndUser> {
 	const name = isString(userData.name) ? userData.name : null;
 	const email = isString(userData.email) ? userData.email : null;
 
-	if (isEmpty(name) && isEmpty(email)) {
-		return Promise.resolve(null);
-	}
-
-	userService.get(name, email).then((u : User) => {
-		if (u !== null) {
-			return Promise.resolve(u);
-		}
-
-		const newUser : User = {
-			name,
-			email,
-			role: UserRole.Normal,
-		};
-
-		userService.save(newUser);
-	});
-
-	return Promise.resolve(null);
+	return enduserService.get(name, email)
+	.then((u : EndUser) => u !== null ? u : enduserService.save({
+		name,
+		email,
+	}));
 }
 
+// Rudimentary schema check
+
 function checkIncomingData(requ : Request) : boolean {
-	const fb = isObject(requ.body) ? requ.body.data : undefined;
+	const fb = requ.body || {};
 	return isObject(fb)
 		&& isObject(fb.article)
 		&& isObject(fb.feedback)
