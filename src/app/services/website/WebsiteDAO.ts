@@ -17,6 +17,7 @@
 //
 
 import { isString } from 'lodash';
+import { URL } from 'url';
 
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
@@ -41,20 +42,14 @@ export function get(name : string) : Promise <Website> {
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 	emptyCheck(articleURL);
-	let hostname : string;
 
-	if (isString(articleURL)) {
-		const url = new URL(articleURL);
-		hostname = url.hostname;
-	}
-	else {
-		hostname = articleURL.url.hostname;
-	}
+	const url = new URL(isString(articleURL) ? articleURL : articleURL.href);
+	const hostname = url.hostname;
 
 	return wrapFindOne (WebsiteModel.findOne({ 'hosts': hostname }));
 }
 
-export function save(website : Website) : Promise <void> {
+export function save(website : Website) : Promise <Website> {
 	emptyCheck(website);
 	return wrapSave(new WebsiteModel(website).save());
 }
