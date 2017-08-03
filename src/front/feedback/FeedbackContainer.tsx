@@ -20,8 +20,15 @@ import * as React from 'react';
 import 'front/scss/fb.scss';
 
 import Article from 'base/Article';
+import FeedbackItem from 'base/FeedbackItem';
+
 import ArticleElement from 'front/component/ArticleElement';
-import { fetchArticle } from 'front/apiCommunication';
+
+import {
+	fetchArticle,
+	sendFeedback,
+} from 'front/apiCommunication';
+
 import {
 	getArticleURL,
 	getArticleVersion,
@@ -34,6 +41,8 @@ export interface FeedbackContainerState {
 export default class FeedbackContainer
 extends React.Component <any, FeedbackContainerState> {
 
+	private articleElements : ArticleElement[] = [];
+
 	constructor() {
 		super();
 		this.state = {
@@ -44,6 +53,9 @@ extends React.Component <any, FeedbackContainerState> {
 	componentWillMount() {
 		const self = this;
 		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
+			console.log(article);
+			// FIXME ganz mieser Hack:
+			window['app'].article.version = article.version;
 			self.setState({
 				article,
 			});
@@ -58,7 +70,7 @@ extends React.Component <any, FeedbackContainerState> {
 
 		// Iterate article elements and render sub components
 		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement) }
+			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
 		</section>;
 	}
 
@@ -66,6 +78,7 @@ extends React.Component <any, FeedbackContainerState> {
 		const elemKey = `element-${item.order.item}`;
 		return <ArticleElement
 			key={elemKey}
+			ref={(i : any) => { this.articleElements.push(i); }}
 			elemOrder={item.order.item}
 			typeOrder={item.order.type}
 
@@ -73,5 +86,62 @@ extends React.Component <any, FeedbackContainerState> {
 			originalText={item.text}
 		/>;
 	}
+
+	public sendFeedback() {
+		const items : FeedbackItem[] = this.articleElements
+			.map((element : ArticleElement) => element.getCurrentData())
+			.filter((item : FeedbackItem) => item !== null);
+
+		if (items.length <= 0) {
+			alert('The feedback is still empty, nothing was sent');
+			return;
+		}
+
+		const user = this.demoUsers[Math.floor(Math.random() * this.demoUsers.length)];
+
+		console.log({
+			article: {
+				url: getArticleURL(),
+				version: getArticleVersion(),
+			},
+			user,
+			feedback: {
+				items,
+			},
+		});
+	}
+
+	private readonly demoUsers : Object[] = [
+		{
+			name: 'Indiana Horst',
+			email: 'horst@indiana.net',
+		}, {
+			name: 'Schmitz\' Katze',
+		}, {
+			name: 'Ragnhild Esben Hummel',
+		}, {
+			name: 'Finn Hans Nilsen',
+		}, {
+			name: 'Oddmund Thomas Rasmussen',
+		}, {
+			name: 'Ruth Lovise Amundsen',
+		}, {
+			name: 'Kjellfrid Ola Wolff',
+		}, {
+			email: 'prost.mahlzeit@lulu.org',
+		}, {
+			email: 'Christen.Mikael@storstrand.no',
+		}, {
+			email: 'elin@gro.org',
+		}, {
+			email: 'stein.ha@alexandersen.net',
+		}, {
+			email: 'ma_re@skjeggestad.org',
+		}, {
+			email: 'kresten.steensen@koeb.dk',
+		}, {
+			email: 'ejvind@jacobsen.name',
+		},
+	];
 
 }
