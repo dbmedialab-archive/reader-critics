@@ -4,6 +4,7 @@
 		"hosts": [
 			"www.dagbladet.no"
 		],
+		parserClass: 'DagbladetParser',
 		"chiefEditors": [
 			{
 				"name": "Vakt Sjef",
