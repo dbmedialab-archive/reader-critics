@@ -17,14 +17,14 @@
 //
 
 import Article from './Article';
+import EndUser from './EndUser';
 import FeedbackItem from './FeedbackItem';
 import FeedbackStatus from './FeedbackStatus';
 import PersistedModel from './zz/PersistedModel';
-import User from './User';
 
 interface Feedback extends PersistedModel {
 	article : Article
-	user : User
+	user : EndUser
 
 	items : FeedbackItem[]
 	status : FeedbackStatus

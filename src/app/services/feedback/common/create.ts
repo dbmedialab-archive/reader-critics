@@ -17,7 +17,7 @@
 //
 
 import Article from 'base/Article';
-import EndUser from 'base/User';
+import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
