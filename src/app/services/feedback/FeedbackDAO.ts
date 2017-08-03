@@ -16,16 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
-import FeedbackItem from 'base/FeedbackItem';
 
-import BasicPersistingService from '../BasicPersistingService';
+import { FeedbackModel } from 'app/db/models';
 
-interface FeedbackService extends BasicPersistingService <Feedback> {
-	create(article : Article, user : EndUser, items : FeedbackItem[]) : Feedback;
-	save(feedback : Feedback);
+import {
+	wrapSave
+} from 'app/db/common';
+
+import emptyCheck from 'app/util/emptyCheck';
+
+export function save(feedback : Feedback) : Promise <Feedback> {
+	emptyCheck(feedback);
+
+	return wrapSave <Feedback> (new FeedbackModel(Object.assign({
+		_article: feedback.article.ID,
+		_user: feedback.user.ID,
+	}, feedback)).save());
 }
-
-export default FeedbackService;

@@ -28,10 +28,15 @@ import createPersistingService from '../createPersistingService';
 
 import create from './common/create';
 
+import {
+	save,
+} from './FeedbackDAO';
+
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
 			create,
+			save,
 		}
 	);
 
