@@ -17,46 +17,61 @@
 //
 
 import 'whatwg-fetch';
-import {showError} from 'front/uiHelpers';
+
+import { showError } from 'front/uiHelpers';
 
 const rxUnencoded = /:\/\//;
 
-export const fetchArticle = ((url: string, version: string): Promise<any> => {
+// Fetch data
+
+export const fetchArticle = ((url : string, version : string) : Promise <any> => {
 	const encURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
 		: url;
 	const encVersion = encodeURIComponent(version);
 
 	return fetch(`/api/article/?url=${encURL}&version=${encVersion}`)
-	.then(status)
-	.then(data => data.article)
-	.catch(function (error) {
-		showError(error.message);
-		return Promise.reject(error);
-	});
+	.then(checkStatus)
+	.then(data => data.article);
 });
 
-export const sendSuggestion = ((data: any): Promise<any> => {
-	return fetch('/api/suggest/', {
+// Send all kinds of data
+
+export const sendFeedback = ((data : any) : Promise <any> => {
+	return postData('/api/feedback/', data).then(checkStatus);
+});
+
+export const sendSuggestion = ((data : any) : Promise <any> => {
+	return postData('/api/suggest/', data).then(checkStatus);
+});
+
+// POST data
+
+function postData(uri : string, data : any) : Promise <any> {
+	return fetch(uri, {
 		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
+		headers: {
+			'Content-Type': 'application/json',
+		},
 		body: JSON.stringify(data),
-	})
-	.then(status)
-	.catch(function (error) {
-		showError(error.message);
-		return Promise.reject(error);
 	});
-});
+}
 
-function status(resp : Response) {
-	return resp.json().then((payload)=>{
-		if (!payload.data) {
-			throw new Error ('No "data" property in response payload');
+// Check response for success and display error popup if necessary
+
+function checkStatus(resp : Response) : Promise <any> {
+	const bail = (message) => {
+		showError(message);
+		return Promise.reject(Promise.reject(new Error(message)));
+	};
+
+	return resp.json().then((payload) => {
+		if (resp.status < 200 || resp.status >= 300 || !payload.success) {
+			return bail(payload.message || payload.error || resp.statusText);
 		}
 
-		if (resp.status < 200 || resp.status >= 300 || !payload.success) {
-			throw new Error(payload.message || payload.error || resp.statusText);
+		if (!payload.data) {
+			return bail('No "data" property in response payload');
 		}
 
 		return payload.data;
