@@ -27,7 +27,7 @@ import {
 	wrapFind,
 } from 'app/db/common';
 
-import { isProduction } from 'app/util/applib';
+import { isTest } from 'app/util/applib';
 
 import BasicPersistingService, {
 	defaultLimit,
@@ -44,7 +44,7 @@ export default function <T extends Document, X extends BasicPersistingService <Y
 {
 	const basicFunctions : BasicPersistingService <Y> = {
 		clear: () : Promise <void> => {
-			if (isProduction) {
+			if (!isTest) {
 				throw new Error('Function can only be used in TEST mode');
 			}
 			return clearCollection(serviceModel);

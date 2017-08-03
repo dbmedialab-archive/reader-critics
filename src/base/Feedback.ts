@@ -16,23 +16,22 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import Article from './Article';
+import EndUser from './EndUser';
+import FeedbackItem from './FeedbackItem';
+import FeedbackStatus from './FeedbackStatus';
+import PersistedModel from './zz/PersistedModel';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+interface Feedback extends PersistedModel {
+	article : Article
+	user : EndUser
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+	items : FeedbackItem[]
+	status : FeedbackStatus
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+	date : {
+		statusChange : Date
+	}
+}
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
-
-export default FeedbackPageLayout;
+export default Feedback;

@@ -16,23 +16,28 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import Feedback from 'base/Feedback';
+import FeedbackService from './FeedbackService';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import {
+	FeedbackDocument,
+	FeedbackModel
+} from 'app/db/models';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+import createPersistingService from '../createPersistingService';
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+import create from './common/create';
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
+import {
+	save,
+} from './FeedbackDAO';
 
-export default FeedbackPageLayout;
+const service : FeedbackService
+	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
+		FeedbackModel, {
+			create,
+			save,
+		}
+	);
+
+module.exports = service;

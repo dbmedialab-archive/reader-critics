@@ -31,7 +31,7 @@
 		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
-		"semicolon": [ true, "always" ],
+		"semicolon": [ true, "always", "ignore-interfaces" ],
 		"trailing-comma": [ true, {
 			"multiline": {
 				"objects": "always",

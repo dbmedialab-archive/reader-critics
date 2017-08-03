@@ -17,9 +17,9 @@
 //
 
 import { Response } from 'express';
-import { isObject } from 'lodash';
 
 import * as app from 'app/util/applib';
+import { NotFoundError } from 'app/util/errors';
 
 const log = app.createLog('api');
 
@@ -39,9 +39,7 @@ export function okResponse(
 		success: true,
 	};
 
-	if (isObject(data)) {
-		Object.assign(response, { data });
-	}
+	response.data = data || {};
 
 	let statusCode = 200;
 
@@ -66,9 +64,17 @@ export function errorResponse(
 ) : void {
 	const response : any = {
 		success: false,
-		message: (message !== undefined) ? message : 'Internal server error',
-		status: 500,
+		message: (message !== undefined) ? message : (
+			(error !== undefined) ? error.message : 'Internal server error'
+		),
 	};
+
+	if (error instanceof NotFoundError) {
+		response.status = 404;
+	}
+	else {
+		response.status = 500;
+	}
 
 	if (error !== undefined) {
 		response.error = error.message;

@@ -21,6 +21,7 @@ import * as classnames from 'classnames';
 import * as React from 'react';
 
 import ArticleItemType from 'base/ArticleItemType';
+import FeedbackItem from 'base/FeedbackItem';
 
 import {
 	default as ArticleEditForm,
@@ -32,7 +33,7 @@ import textDiffToHTML from './textDiffToHTML';
 export interface ArticleElementProp {
 	elemOrder : number;
 	typeOrder : number;
-	type : string;
+	type : ArticleItemType;
 	originalText : string;
 }
 
@@ -59,6 +60,32 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			editing: false,
 			text: props.originalText,
 		};
+	}
+
+	public getCurrentData() : FeedbackItem {
+		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+
+		if (formData.text === this.props.originalText
+			&& !formData.comment
+			&& formData.links.length <= 0
+		) {
+			// If no input was made, return an empty result. The top handler will discard it later.
+			return null;
+		}
+
+		if (formData.text === this.props.originalText) {
+			// If the text wasn't changed, delete it before submitting
+			formData.text = '';
+		}
+
+		return Object.assign({
+			type: this.props.type,
+
+			order: {
+				item: this.props.elemOrder,
+				type: this.props.typeOrder,
+			},
+		}, formData);
 	}
 
 	public render() : JSX.Element {
@@ -217,8 +244,6 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
 	private restoreOriginalContent(e : any) {
-		console.log('restoreOriginalContent "%s"', this.props.originalText);
-
 		this.setState({
 			edited: false,
 			text: this.props.originalText,
@@ -237,7 +262,6 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// This is passed to the child as a prop and used as callback.
 	private SaveData(fromState : EditFormPayload) {
 		this.DisableEditing();
-
 		this.setState({
 			edited: true,
 			text: fromState.text,

@@ -16,23 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import EndUser from 'base/EndUser';
+import EndUserService from './EndUserService';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import {
+	EndUserDocument,
+	EndUserModel
+} from 'app/db/models';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+import createPersistingService from '../createPersistingService';
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+import {
+	get,
+	save,
+} from './EndUserDAO';
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
+const service : EndUserService
+	= createPersistingService <EndUserDocument, EndUserService,	EndUser> (
+		EndUserModel, {
+			get,
+			save,
+		}
+	);
 
-export default FeedbackPageLayout;
+module.exports = service;

@@ -16,23 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import PersistedModel from './zz/PersistedModel';
+import Person from './zz/Person';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+// Differentiation: an "end user" is a person using the front-end (literally) of
+// this application. They cannot log in and don't have any other properties than
+// what is defined in the "Person" interface.
+// The definition here is made to add the features of "PersistedModel" and also
+// for keeping "Person" as an abstract concept in the background.
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+interface EndUser extends PersistedModel, Person {}
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
-
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
-
-export default FeedbackPageLayout;
+export default EndUser;

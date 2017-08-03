@@ -23,15 +23,19 @@ import {
 	Model,
 } from 'mongoose';
 
-import {
-	ArticleSchema,
-	SuggestionSchema,
-	WebsiteSchema,
-} from './schemas';
-
 import Article from 'base/Article';
+import EndUser from 'base/EndUser';
+import Feedback from 'base/Feedback';
 import Suggestion from 'base/Suggestion';
+import User from 'base/User';
 import Website from 'base/Website';
+
+import ArticleSchema from './schemas/ArticleSchema';
+import EndUserSchema from './schemas/EndUserSchema';
+import FeedbackSchema from './schemas/FeedbackSchema';
+import SuggestionSchema from './schemas/SuggestionSchema';
+import UserSchema from './schemas/UserSchema';
+import WebsiteSchema from './schemas/WebsiteSchema';
 
 import TimestampPlugin from './plugins/TimestampPlugin';
 
@@ -39,15 +43,38 @@ import TimestampPlugin from './plugins/TimestampPlugin';
 
 plugin(TimestampPlugin);
 
+// Model names enum, because magic strings are bad!
+
+export enum ModelNames {
+	Article = 'Article',
+	EndUser = 'EndUser',
+	Feedback = 'Feedback',
+	Suggestion = 'Suggestion',
+	User = 'User',
+	Website = 'Website',
+}
+
 // Create models
 
 export interface ArticleDocument extends Article, Document {}
 export const ArticleModel : Model <ArticleDocument>
-	= model <ArticleDocument> ('Article', ArticleSchema);
+	= model <ArticleDocument> (ModelNames.Article, ArticleSchema);
+
+export interface EndUserDocument extends EndUser, Document {}
+export const EndUserModel : Model <EndUserDocument>
+	= model <EndUserDocument> ('EndUser', EndUserSchema);
+
+export interface FeedbackDocument extends Feedback, Document {}
+export const FeedbackModel : Model <FeedbackDocument>
+	= model <FeedbackDocument> (ModelNames.Feedback, FeedbackSchema);
 
 export interface SuggestionDocument extends Suggestion, Document {}
 export const SuggestionModel : Model <SuggestionDocument>
 	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+
+export interface UserDocument extends User, Document {}
+export const UserModel : Model <UserDocument>
+	= model <UserDocument> ('User', UserSchema);
 
 export interface WebsiteDocument extends Website, Document {}
 export const WebsiteModel : Model <WebsiteDocument>

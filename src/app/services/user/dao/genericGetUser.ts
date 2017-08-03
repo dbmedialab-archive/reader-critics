@@ -16,6 +16,40 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as ArticleSchema } from './ArticleSchema';
-export { default as SuggestionSchema } from './SuggestionSchema';
-export { default as WebsiteSchema } from './WebsiteSchema';
+import {
+	isNil,
+	isString
+} from 'lodash';
+
+import {
+	Document,
+	Model,
+} from 'mongoose';
+
+import Person from 'base/zz/Person';
+
+import { wrapFindOne } from 'app/db/common';
+import { EmptyError } from 'app/util/errors';
+
+export default function <D extends Document, Z extends Person> (
+	dbmodel : Model<D>,
+	username : String|null,
+	email? : String|null
+) : Promise <Z> {
+	if (isEmpty(username) && isEmpty(email)) {
+		throw new EmptyError('At least one of "username" or "email" must be set');
+	}
+
+	const query : any = {};
+
+	if (isString(username)) {
+		query.name = username;
+	}
+	if (isString(email)) {
+		query.email = email;
+	}
+
+	return wrapFindOne(dbmodel.findOne(query));
+}
+
+export const isEmpty = (v) => isNil(v) ? true : (isString(v) && v.length <= 0);

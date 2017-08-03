@@ -16,11 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import PersistedModel from './zz/PersistedModel';
+import Person from './zz/Person';
 import UserRole from './UserRole';
 
-interface User {
-	name : string;
-	email : string;
+interface User extends PersistedModel, Person {
 	role : UserRole;
 }
 

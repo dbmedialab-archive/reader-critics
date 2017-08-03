@@ -16,23 +16,38 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import { Schema } from 'mongoose';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import { isEmpty } from 'app/services/user/dao/genericGetUser';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+const EndUserSchema : Schema = new Schema({
+	name: {
+		type: String,
+		required: false,
+		default: null,
+	},
+	email: {
+		type: String,
+		required: false,
+		default: null,
+	},
+});
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+EndUserSchema.pre('validate', function (next : Function) {
+	if (isEmpty(this.get('name')) && isEmpty(this.get('email'))) {
+		next(Error('At least one of "name" and "email" is required'));
+	}
+	else {
+		next();
+	}
+});
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
+EndUserSchema.index({
+	'name': 1,
+	'email': 1,
+}, {
+	name: 'unique_enduser',
+	unique: true,
+});
 
-export default FeedbackPageLayout;
+export default EndUserSchema;

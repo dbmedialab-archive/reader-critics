@@ -16,23 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import {
+	Document,
+} from 'mongoose';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import * as errors from 'app/db/errors';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+import { filterMeta } from 'app/db/filter';
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
-
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
-
-export default FeedbackPageLayout;
+export function wrapSave <Z> (wrapped : Promise <Document>) : Promise <Z> {
+	return wrapped.then((doc : Document) => filterMeta<Z>(doc.toObject()))
+	.catch(error => Promise.reject(
+		errors.isDuplicateError(error) ? new errors.DuplicateError(error) : error
+	));
+}

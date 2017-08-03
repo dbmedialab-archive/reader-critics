@@ -16,23 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import Feedback from 'base/Feedback';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import { FeedbackModel } from 'app/db/models';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+import {
+	wrapSave
+} from 'app/db/common';
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+import emptyCheck from 'app/util/emptyCheck';
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
+export function save(feedback : Feedback) : Promise <Feedback> {
+	emptyCheck(feedback);
 
-export default FeedbackPageLayout;
+	return wrapSave <Feedback> (new FeedbackModel(Object.assign({
+		_article: feedback.article.ID,
+		_user: feedback.user.ID,
+	}, feedback)).save());
+}

@@ -16,23 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import { Schema } from 'mongoose';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+import { objectReference } from 'app/db/common';
 
-import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
+import FeedbackStatus from 'base/FeedbackStatus';
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
+const FeedbackSchema : Schema = new Schema({
+	_article: objectReference('Article'),
+	_user: objectReference('User'),
 
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
-	</div>;
-};
+	email: String,
+	comment: String,
 
-export default FeedbackPageLayout;
+	status: {
+		type: String,
+		required: true,
+		enum: Object.values(FeedbackStatus),
+		default: FeedbackStatus.New,
+	},
+
+	items: [Schema.Types.Mixed],
+
+	date: {
+		statusChange: Date,
+	},
+});
+
+export default FeedbackSchema;
