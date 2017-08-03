@@ -17,7 +17,6 @@
 //
 
 import { Response } from 'express';
-import { isObject } from 'lodash';
 
 import * as app from 'app/util/applib';
 import { NotFoundError } from 'app/util/errors';

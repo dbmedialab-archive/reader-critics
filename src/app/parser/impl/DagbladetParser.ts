@@ -20,10 +20,7 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 
-// import BaseParser from '../BaseParser';
 import GenericParser from './GenericParser';
-
-import * as CheerioPlugin from '../util/CheerioPlugin';
 
 import { getOpenGraphAuthors } from '../util/AuthorParser';
 import { getOpenGraphModifiedTime } from '../util/VersionParser';
