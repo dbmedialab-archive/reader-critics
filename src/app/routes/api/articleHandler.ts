@@ -76,16 +76,19 @@ export default function(requ : Request, resp : Response) : void {
 			return articleService.fetch(website, articleURL);
 		});
 	})
+
 	// Deliver the API response ...
-	.then((article : any) => {
-		article.url = article.url.href;
+	.then((article : Article) => {
 		okResponse(resp, { article });
 		return article;
 	})
 	// After serving the request: if the article is just fetched, store it in
 	// the database now
 	.then((article : Article) => {
-		return wasFetched ? articleService.save(website, article).catch(error => log) : null;
+		if (wasFetched) {
+			articleService.save(website, article)
+			.catch(error => log(error));
+		}
 	})
 	.catch(error => {
 		if (error instanceof NotFoundError) {
