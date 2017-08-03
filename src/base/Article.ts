@@ -19,8 +19,9 @@
 import ArticleAuthor from './ArticleAuthor';
 import ArticleItem from './ArticleItem';
 import ArticleURL from './ArticleURL';
+import PersistedModel from './zz/PersistedModel';
 
-interface Article {
+interface Article extends PersistedModel {
 	// Defining a unique version of one article
 	url : ArticleURL;
 	version : string;
