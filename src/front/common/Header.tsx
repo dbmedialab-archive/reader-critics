@@ -17,16 +17,11 @@
 //
 
 import * as React from 'react';
-import Helmet from 'react-helmet';
 
-const Header : React.StatelessComponent <any> = (props : any) => {
-		const pageTitle = props.pageTitle || 'Leserkritikk';
-		return (
-			<header role="banner">
-				<h1>Leserkritikk</h1>
-				<Helmet title={pageTitle} />
-			</header>
-		);
-	};
+const Header : React.StatelessComponent <any> = () => (
+	<header role="banner">
+		<h1>Leserkritikk</h1>
+	</header>
+);
 
 export default Header;

@@ -24,7 +24,7 @@ import DynamicList from 'front/component/DynamicList';
 export interface EditFormPayload {
 	text : string;
 	comment : string;
-	links: Array <string>;
+	links : Array <string>;
 }
 
 export interface ArticleEditFormProp {
@@ -48,7 +48,6 @@ export interface ArticleEditFormState {
 export default class ArticleEditForm
 extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 {
-
 	private textArea : any;
 	private commentArea : any;
 	private linkInput : any;
@@ -66,6 +65,10 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 			current: initial,
 			previous: initial,
 		};
+	}
+
+	public getCurrentData() : EditFormPayload {
+		return this.state.current;
 	}
 
 	public reset(originalText : string) {
@@ -128,9 +131,9 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	// Helper class to update the components state when inputing values in text areas.
 	private UpdateState(field : string, ref : any) {
-		const state = {};
-		state[ field ] = ref.value;
-		this.setState( state );
+		const newState = this.state;
+		newState.current[field] = ref.value;
+		this.setState(newState);
 	}
 
 	// @param {string} type
@@ -180,7 +183,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 			this.AddLinkItem();
 		}
 
-		console.log('onSave', this.props.onSave, this.state);
 		this.props.onSave(this.state);
 	}
 
@@ -201,7 +203,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		this.setState({
 			current,
 		}, () => {
-			console.log('AddItem this=', this);
 			this.linkInput.value = '';
 		});
 	}

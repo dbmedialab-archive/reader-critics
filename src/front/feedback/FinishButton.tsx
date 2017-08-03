@@ -17,15 +17,33 @@
 //
 
 import * as React from 'react';
+import * as classnames from 'classnames';
 
-export default ({
-	SendForm,
-	HideMessage,
-	appear,
-	message = 'Klikk her når du er ferdig med skjemaet.',
-	close = false,
-} : any) => <div
-	className={`fab ${appear ? 'enabled' : 'disabled'} ${close ? 'disabled' : 'enabled'}`}>
-		{ message ? <span onClick={HideMessage}>{message}</span> : null }
-		<a onClick={SendForm}>Send skjema</a>
+export interface FinishButtonProps {
+	SendForm? : Function;
+	HideMessage? : Function,
+	message? : string;
+	appear? : boolean,
+	close? : boolean;
+}
+
+const FinishButton : React.StatelessComponent <FinishButtonProps> = (props) => {
+	const css = classnames('fab', {
+		enabled: props.appear && !props.close,
+	});
+
+	return <div className={css}>
+		{ props.message ? <span onClick={() => props.HideMessage}>{props.message}</span> : null }
+		<a onClick={() => { props.SendForm(); }}>Send skjema</a>
 	</div>;
+};
+
+FinishButton.defaultProps = {
+	SendForm: () => alert('Send feedback!'),
+	HideMessage: () => null,
+	message: 'Klikk her når du er ferdig med skjemaet.',
+	appear: false,
+	close: false,
+};
+
+export default FinishButton;
