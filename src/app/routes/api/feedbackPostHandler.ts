@@ -17,7 +17,6 @@
 //
 
 import {
-	isEmpty,
 	isObject,
 	isString,
 } from 'lodash';
@@ -27,10 +26,14 @@ import {
 	Response,
 } from 'express';
 
+import Article from 'base/Article';
+import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 
 import {
-	enduserService
+	articleService,
+	enduserService,
+	feedbackService,
 } from 'app/services';
 
 import {
@@ -58,20 +61,36 @@ export default function (requ : Request, resp : Response) : void {
 	}
 
 	const feedback : FeedbackData = requ.body;
-	log('Feedback!', app.inspect(feedback));
+	log('Feedback:', app.inspect(feedback));
+
+	let article : Article;
+	let user : EndUser;
 
 	Promise.all([
-		getUser(feedback.user),
+		getArticle(feedback.article).then((a : Article) => article = a),
+		getUser(feedback.user).then((u : EndUser) => user = u),
 	])
 	.then(() => {
-		okResponse(resp);
+		const fb = feedbackService.create(article, user, feedback.feedback.items);
+		return feedbackService.save(fb);
 	})
+	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
+}
+
+// Fetch article object
+
+function getArticle(articleData : any) : Promise <Article> {
+	log('getArticle', articleData);
+	// TODO parameter checks?
+	return ArticleURL.from(articleData.url)
+	.then(url => articleService.get(url, articleData.version));
 }
 
 // Fetch user object from database or create a new one
 
 function getUser(userData : any) : Promise <EndUser> {
+	log('getUser', userData);
 	const name = isString(userData.name) ? userData.name : null;
 	const email = isString(userData.email) ? userData.email : null;
 
