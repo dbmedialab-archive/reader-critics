@@ -16,31 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable no-require-imports
+import * as app from 'app/util/applib';
 
-import * as cluster from 'cluster';
-import * as Bluebird from 'bluebird';
+const log = app.createLog('error');
 
-global.Promise = Bluebird;
+// Error handling during startup
 
-export const typeJobWorker = 'job-worker';
-export const typeWebWorker = 'web-worker';
+export default function (error : Error) {
+	const typesThatDoNotPrintATrace = [
+		'MongoError',
+	];
 
-declare function require(arg : string) : any;
-
-if (cluster.isMaster) {
-	require('./main/master').default();
-}
-else {
-	switch (process.env.WORKER_TYPE) {
-		case typeJobWorker:
-			require('./main/jobWorker').default();
-			break;
-		case typeWebWorker:
-			require('./main/webWorker').default();
-			break;
-		default:
-			console.log(`Invalid worker type "${process.env.WORKER_TYPE}", exiting`);
-			process.exit(-129);
+	if (typesThatDoNotPrintATrace.includes(error.name)) {
+		log('%s: %s', error.name, error.message);
 	}
+	else {
+		log(error.stack || error.toString());
+	}
+
+	process.exit(-128);
 }

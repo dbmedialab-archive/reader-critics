@@ -16,31 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable no-require-imports
-
+import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
-import * as Bluebird from 'bluebird';
 
-global.Promise = Bluebird;
+import * as app from 'app/util/applib';
 
-export const typeJobWorker = 'job-worker';
-export const typeWebWorker = 'web-worker';
+import { initDatabase } from 'app/db';
 
-declare function require(arg : string) : any;
+import startupErrorHandler from './startupErrorHandler';
 
-if (cluster.isMaster) {
-	require('./main/master').default();
-}
-else {
-	switch (process.env.WORKER_TYPE) {
-		case typeJobWorker:
-			require('./main/jobWorker').default();
-			break;
-		case typeWebWorker:
-			require('./main/webWorker').default();
-			break;
-		default:
-			console.log(`Invalid worker type "${process.env.WORKER_TYPE}", exiting`);
-			process.exit(-129);
-	}
+let log;
+
+/**
+ * Main function of worker process
+ */
+export default function() {
+	log = app.createLog('worker');
+	log('Starting %s worker - ID %d', colors.brightYellow('job'), cluster.worker.id);
+
+	// Main application startup
+
+	Promise.resolve()
+		.then(initDatabase)
+		.catch(startupErrorHandler);
 }

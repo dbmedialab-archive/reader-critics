@@ -26,11 +26,16 @@ import { isNil } from 'lodash';
 export const numThreads : number = os.cpus().length;
 
 /**
- * The desired cluster concurrency. If the environment variable WEB_CONCURRENCY is defined and its
- * value is between 1 and the number of available CPUs, this number is taken.
- * The number of CPUs is the hard maximum for concurrency, so values in WEB_CONCURRENCY greater than
- * the processor thread count are capped.
- * At least one master-worker couple will be spawned to handle interprocess messages and events.
+ * The desired cluster concurrency. If the environment variable WEB_CONCURRENCY
+ * is defined and its value is between 1 and the number of available CPUs, this
+ * number is taken as base value.
+ * The calculated concurrency number + 1 is taken for the end result. A small
+ * share of the available cores will be occupied by job workers while the
+ * majority of threads will spawn web workers.
+ * The number of available CPU cores is the maximum for concurrency, so values
+ * in WEB_CONCURRENCY greater than the processor thread count are capped.
+ * At least one master-webworker-jobworker couple will be spawned to handle
+ * interprocess messages and queue events.
  */
 export const numConcurrency : number = (function() {
 	if (!isNil(process.env.WEB_CONCURRENCY)) {
