@@ -23,7 +23,7 @@ import * as kue from 'kue';
 import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
-import { initMessageQueue } from 'app/queue';
+import { initJobWorkerQueue } from 'app/queue';
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -38,15 +38,8 @@ export default function() {
 
 	// Main application startup
 
-	const jobReceiver = {
-		onNewFeedback : (job : kue.Job, done : kue.DoneCallback) => {
-			log('New feedback in queue!', job.data);
-			done();
-		},
-	};
-
 	Promise.resolve()
 		.then(initDatabase)
-		.then(() => initMessageQueue(jobReceiver))
+		.then(initJobWorkerQueue)
 		.catch(startupErrorHandler);
 }
