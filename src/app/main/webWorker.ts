@@ -80,21 +80,4 @@ function initExpress() {
 	return Promise.resolve();  // Sync finish
 }
 
-// Error handling during startup
-/*
-function startupErrorHandler(error : Error) {
-	const typesThatDoNotPrintATrace = [
-		'MongoError',
-	];
-
-	if (typesThatDoNotPrintATrace.includes(error.name)) {
-		log('%s: %s', error.name, error.message);
-	}
-	else {
-		log(error.stack || error.toString());
-	}
-
-	process.exit(-128);
-}
-*/
 // TODO Graceful shutdown
