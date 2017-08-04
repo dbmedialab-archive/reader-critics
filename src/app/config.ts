@@ -19,6 +19,11 @@
 import * as path from 'path';
 import * as convict from 'convict';
 
+import {
+	dbMessageQueue,
+	dbSessionCache,
+} from 'app/db/createRedisConnection';
+
 import { rootPath } from 'app/util/applib';
 
 import * as app from 'app/util/applib';
@@ -57,10 +62,19 @@ const config = convict({
 		},
 		redis: {
 			url: {
-				doc: 'Redis URL to connect to (including auth string)',
-				format: String,
-				default: 'redis://localhost:6379',
-				env: 'REDIS_URL',
+				// See app/db/createRedisConnection for details about the constants
+				[dbMessageQueue]: {
+					doc: 'Redis URL for the database that holds the message queue',
+					format: String,
+					default: 'redis://localhost:6379/1',
+					env: 'REDIS_URL_MESSAGE_QUEUE',
+				},
+				[dbSessionCache]: {
+					doc: 'Redis URL for the database that holds the session cache',
+					format: String,
+					default: 'redis://localhost:6379/2',
+					env: 'REDIS_URL_SESSION_CACHE',
+				},
 			},
 			host: 'localhost',
 			port: 6379,
@@ -71,7 +85,10 @@ const config = convict({
 		bcrypt: {
 			rounds: {
 				doc: 'Number of salt rounds when hashing passwords with BCrypt',
-				default: 14,  // takes ~900ms on a Skylake E5v3 Xeon
+				// BCrypt documentation recommends chosing the number of salt rounds so
+				// that the salting process takes about one second on the target machine.
+				// The default of 14 rounds takes ~900ms on a Skylake E5v3 Xeon (tested)
+				default: 14,
 				env: 'AUTH_BCRYPT_ROUNDS',
 			},
 		},

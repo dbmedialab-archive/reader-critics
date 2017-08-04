@@ -1,6 +1,7 @@
 import * as kue from 'kue';
 
 import { createRedisConnection } from 'app/db';
+import { dbMessageQueue } from 'app/db/createRedisConnection';
 
 import MessageType from './MessageType';
 
@@ -14,7 +15,7 @@ export function initMessageQueue(jobReceiver? : any) : Promise <void> {
 	log('initMessageQueue');
 	queue = kue.createQueue({
 		redis: {
-			createClientFactory: () => createRedisConnection(),
+			createClientFactory: () => createRedisConnection(dbMessageQueue),
 		},
 	});
 
