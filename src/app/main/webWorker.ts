@@ -30,6 +30,8 @@ import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
 
+import startupErrorHandler from './startupErrorHandler';
+
 let log;
 let expressApp : Express;
 let httpPort;
@@ -40,7 +42,7 @@ let httpServer;
  */
 export default function() {
 	log = app.createLog('worker');
-	log('Starting web worker %d', cluster.worker.id);
+	log('Starting %s worker - ID %d', colors.brightGreen('web'), cluster.worker.id);
 
 	// Create Express application
 	expressApp = express();
@@ -79,7 +81,7 @@ function initExpress() {
 }
 
 // Error handling during startup
-
+/*
 function startupErrorHandler(error : Error) {
 	const typesThatDoNotPrintATrace = [
 		'MongoError',
@@ -94,5 +96,5 @@ function startupErrorHandler(error : Error) {
 
 	process.exit(-128);
 }
-
+*/
 // TODO Graceful shutdown
