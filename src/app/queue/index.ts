@@ -6,11 +6,11 @@ import MessageType from './MessageType';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog('master');
+const log = app.createLog();
 
 let queue : kue.Queue;
 
-export function initMessageQueue() : Promise <void> {
+export function initMessageQueue(jobReceiver? : any) : Promise <void> {
 	log('initMessageQueue');
 	queue = kue.createQueue({
 		redis: {
@@ -18,16 +18,29 @@ export function initMessageQueue() : Promise <void> {
 		},
 	});
 
-	queue.process(MessageType.NewFeedback, (job : kue.Job, done) => {
-		log('New feedback in queue!', job.data)
-		done();
-	});
+	if (jobReceiver) {
+		log('Job receiver:', jobReceiver);
+
+		Object.keys(MessageType).forEach((msgType : string) => {
+			const handler = jobReceiver[`on${msgType}`];
+			if (handler) {
+				queue.process(MessageType[msgType], handler);
+				log(`Installed handler for "${msgType}" messages`);
+			}
+			else {
+				log(`No handler found for message type "${msgType}"`);
+			}
+		});
+	}
+	else {
+		log('No job receiver');
+	}
 
 	return Promise.resolve();
 }
 
 export function sendMessage(type : MessageType, payload : any, options? : any) : Promise <void> {
-	log('sending message');
+	log(`sending "${type}" message`);
 	queue.create(type, payload).priority('normal').attempts(5).save();
 
 	return Promise.resolve();
