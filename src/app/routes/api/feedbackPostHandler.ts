@@ -30,11 +30,15 @@ import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 
+import MessageType from 'app/queue/MessageType';
+
 import {
 	articleService,
 	enduserService,
 	feedbackService,
 } from 'app/services';
+
+import { sendMessage } from 'app/queue';
 
 import {
 	errorResponse,
@@ -74,6 +78,7 @@ export default function (requ : Request, resp : Response) : void {
 		const fb = feedbackService.create(article, user, feedback.feedback.items);
 		return feedbackService.save(fb);
 	})
+	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
 	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
 }

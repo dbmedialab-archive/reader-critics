@@ -29,6 +29,7 @@ import routes from 'app/routes';
 import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
+import { initMessageQueue } from 'app/queue';
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -54,6 +55,7 @@ export default function() {
 
 	Promise.resolve()
 		.then(initDatabase)
+		.then(initMessageQueue)
 		.then(startHTTP)
 		.then(initExpress)
 		.catch(startupErrorHandler);
