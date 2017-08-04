@@ -2,7 +2,7 @@
 
 clear
 
-export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-retry-as-promised,-send"
+export DEBUG="*,-body-parser:*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
 export NODE_ENV=${NODE_ENV:-"development"}
 export WEB_CONCURRENCY=2
 

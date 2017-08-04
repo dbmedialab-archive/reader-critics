@@ -17,28 +17,32 @@
 //
 
 import * as colors from 'ansicolors';
-import * as cluster from 'cluster';
+import * as Redis from 'ioredis';
+import * as stripUrlAuth from 'strip-url-auth';
+
+import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
-import { initDatabase } from 'app/db';
-import { initJobWorkerQueue } from 'app/queue';
+const log = app.createLog('redis');
 
-import startupErrorHandler from './startupErrorHandler';
+export const dbMessageQueue = 'message-queue';
+export const dbSessionCache = 'session-cache';
 
-let log;
+export default function(which : string) : Redis.Redis {
+	if (![dbMessageQueue, dbSessionCache].includes(which)) {
+		throw new Error(`Unknown Redis database "${which}"`);
+	}
 
-/**
- * Main function of worker process
- */
-export default function() {
-	log = app.createLog('worker');
-	log('Starting %s worker - ID %d', colors.brightYellow('job'), cluster.worker.id);
+	const url = config.get(`db.redis.url.${which}`);
+	const redis : Redis.Redis = new Redis(url);
 
-	// Main application startup
+	redis.on('connect', () => {
+		log('Connecting to', colors.brightWhite(stripUrlAuth(stripUrlAuth(url))));
+	});
+	redis.on('reconnecting', () => {
+		log('Redis $%s" is reconnecting', colors.brightWhite(stripUrlAuth(stripUrlAuth(url))));
+	});
 
-	Promise.resolve()
-		.then(initDatabase)
-		.then(initJobWorkerQueue)
-		.catch(startupErrorHandler);
+	return redis;
 }
