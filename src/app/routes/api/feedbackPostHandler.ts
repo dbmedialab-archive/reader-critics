@@ -17,96 +17,19 @@
 //
 
 import {
-	isObject,
-	isString,
-} from 'lodash';
-
-import {
 	Request,
 	Response,
 } from 'express';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
-import EndUser from 'base/EndUser';
-
-import {
-	articleService,
-	enduserService,
-	feedbackService,
-} from 'app/services';
+import validateAndStore from 'app/feedback/validateAndStore';
 
 import {
 	errorResponse,
 	okResponse,
 } from './apiResponse';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
-type FeedbackData = {
-	article: any,
-	feedback: any,
-	user: any,
-};
-
 export default function (requ : Request, resp : Response) : void {
-	if (!checkIncomingData(requ)) {
-		const msg = 'Invalid feedback data';
-		log(msg, requ.body);
-		return errorResponse(resp, new Error(msg), msg, {
-			status: 400,
-		});
-	}
-
-	const feedback : FeedbackData = requ.body;
-	log('Feedback:', app.inspect(feedback));
-
-	let article : Article;
-	let user : EndUser;
-
-	Promise.all([
-		getArticle(feedback.article).then((a : Article) => article = a),
-		getUser(feedback.user).then((u : EndUser) => user = u),
-	])
-	.then(() => {
-		const fb = feedbackService.create(article, user, feedback.feedback.items);
-		return feedbackService.save(fb);
-	})
+	validateAndStore(requ.body)
 	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
-}
-
-// Fetch article object
-
-function getArticle(articleData : any) : Promise <Article> {
-	log('getArticle', articleData);
-	// TODO parameter checks?
-	return ArticleURL.from(articleData.url)
-	.then(url => articleService.get(url, articleData.version));
-}
-
-// Fetch user object from database or create a new one
-
-function getUser(userData : any) : Promise <EndUser> {
-	log('getUser', userData);
-	const name = isString(userData.name) ? userData.name : null;
-	const email = isString(userData.email) ? userData.email : null;
-
-	return enduserService.get(name, email)
-	.then((u : EndUser) => u !== null ? u : enduserService.save({
-		name,
-		email,
-	}));
-}
-
-// Rudimentary schema check
-
-function checkIncomingData(requ : Request) : boolean {
-	const fb = requ.body || {};
-	return isObject(fb)
-		&& isObject(fb.article)
-		&& isObject(fb.feedback)
-		&& isObject(fb.user);
 }
