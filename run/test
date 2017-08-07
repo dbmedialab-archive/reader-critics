@@ -6,6 +6,8 @@ printUsage()
 {
 	echo "${0} [options]"
 	echo
+	echo "  --app          Only test the backend app"
+	echo "  --db           Only test database code (requires MongoDB)"
 	echo "  --libs         Only execute Javascript library tests"
 	echo "  --base         Only test base modules"
 	echo "  --frontend     Only execute frontend E2E tests"
@@ -41,6 +43,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 			DONT_TEST_ALL=true
 			TEST_BASE=true
 			;;
+		--db)
+			DONT_TEST_ALL=true
+			TEST_DATABASE=true
+			;;
 		--frontend)
 			DONT_TEST_ALL=true
 			TEST_FRONTEND=true
@@ -69,8 +75,11 @@ echo
 # App Configuration
 
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-retry-as-promised,-send"}
+export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-mquery,-retry-as-promised,-send"}
 export WEB_CONCURRENCY=${WEB_CONCURRENCY:-3}
+
+export AUTH_JWT_SECRET="0000000011111111222222223333333344444444555555556666666677777777"
+export AUTH_SESSION_SECRET="0000000011111111222222223333333344444444555555556666666677777789"
 
 ### Global test runners, save return code
 
@@ -83,8 +92,10 @@ runMocha()
 	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
 
 	# Run Mocha
-	export CWD=`pwd`
-	node_modules/.bin/mocha --opts ${1}
+	CWD=$(pwd)
+	export CWD
+
+	node_modules/.bin/mocha --opts "conf/${1}"
 	RETURN_VALUE=$?
 
 	# Catch exit code
@@ -110,7 +121,7 @@ runNightwatch()
 	#fi
 
 	# Run Nightwatch
-	node_modules/.bin/nightwatch --config ${1} # ${TAGS_CMDL}
+	node_modules/.bin/nightwatch --config "conf/${1}" # ${TAGS_CMDL}
 	RETURN_VALUE=$?
 
 	# Clean up in case stuff breaks (which it does quite often when writing tests)
@@ -130,19 +141,26 @@ runNightwatch()
 testBackendApp()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_APP ]) ; then return ; fi
-	runMocha "test/mocha-app.opts" "Backend Application"
+	runMocha "mocha-app.opts" "Backend Application"
 }
 
 testLibraries()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_LIBS ]) ; then return ; fi
-	runMocha "test/mocha-libs.opts" "Libraries"
+	runMocha "mocha-libs.opts" "Libraries"
 }
 
 testBaseSource()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_BASE ]) ; then return ; fi
-	runMocha "test/mocha-base.opts" "Base Sources"
+	runMocha "mocha-base.opts" "Base Sources"
+}
+
+testDatabase()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_DATABASE ]) ; then return ; fi
+	export DEBUG="${DEBUG},-app:*"
+	runMocha "mocha-database.opts" "Database"
 }
 
 testFrontend()
@@ -181,7 +199,7 @@ testFrontend()
 		sleep 0.2
 	done
 
-	runNightwatch "test/nightwatch-frontend.js" "Frontend"
+	runNightwatch "nightwatch-frontend.js" "Frontend"
 
 	echo "Terminating background process ${NODE_PID}"
 	kill ${NODE_PID}
@@ -196,6 +214,7 @@ runAllTests()
 	testLibraries
 	testBaseSource
 	testBackendApp
+	testDatabase
 	testFrontend
 }
 

@@ -1,7 +1,25 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import { Response } from 'express';
-import { isObject } from 'lodash';
 
 import * as app from 'app/util/applib';
+import { NotFoundError } from 'app/util/errors';
 
 const log = app.createLog('api');
 
@@ -12,14 +30,16 @@ export interface ResponseOptions {
 
 // Send a "success" response
 
-export function okResponse(resp : Response, data? : any, options? : ResponseOptions) : void {
+export function okResponse(
+	resp : Response,
+	data? : any,
+	options? : ResponseOptions
+) : void {
 	const response : any = {
 		success: true,
 	};
 
-	if (isObject(data)) {
-		Object.assign(response, { data });
-	}
+	response.data = data || {};
 
 	let statusCode = 200;
 
@@ -38,22 +58,32 @@ export function okResponse(resp : Response, data? : any, options? : ResponseOpti
 
 export function errorResponse(
 	resp : Response,
-	error : Error,
+	error? : Error,
 	message? : string,
-	options? : ResponseOptions,
-) {
+	options? : ResponseOptions
+) : void {
 	const response : any = {
 		success: false,
-		error: error.message,
-		message: (message !== undefined) ? message : 'Internal server error',
-		status: 500,
+		message: (message !== undefined) ? message : (
+			(error !== undefined) ? error.message : 'Internal server error'
+		),
 	};
+
+	if (error instanceof NotFoundError) {
+		response.status = 404;
+	}
+	else {
+		response.status = 500;
+	}
+
+	if (error !== undefined) {
+		response.error = error.message;
+	}
 
 	if (options !== undefined) {
 		Object.assign(response, options, { success: false });
 	}
-
-	resp.status(response.status).end(stringify(response));
+	resp.status(response.status).send(stringify(response));
 
 	if (response.status === 500) {
 		log(error.stack || error);

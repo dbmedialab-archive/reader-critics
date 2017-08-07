@@ -1,10 +1,38 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as React from 'react';
+import 'front/scss/fb.scss';
 
 import Article from 'base/Article';
+import FeedbackItem from 'base/FeedbackItem';
+
 import ArticleElement from 'front/component/ArticleElement';
 
-import { fetchArticle } from 'front/apiCommunication';
-import { getArticleURL } from 'front/uiGlobals';
+import {
+	fetchArticle,
+	sendFeedback,
+} from 'front/apiCommunication';
+
+import {
+	getArticleURL,
+	getArticleVersion,
+} from 'front/uiGlobals';
 
 export interface FeedbackContainerState {
 	article: Article;
@@ -12,6 +40,8 @@ export interface FeedbackContainerState {
 
 export default class FeedbackContainer
 extends React.Component <any, FeedbackContainerState> {
+
+	private articleElements : ArticleElement[] = [];
 
 	constructor() {
 		super();
@@ -22,9 +52,15 @@ extends React.Component <any, FeedbackContainerState> {
 
 	componentWillMount() {
 		const self = this;
-		fetchArticle(getArticleURL(), '').then(article => self.setState({
-			article,
-		}));
+		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
+			console.log(article);
+			// FIXME ganz mieser Hack:
+			window['app'].article.version = article.version;
+			console.log('set version to:', window['app'].article.version);
+			self.setState({
+				article,
+			});
+		});
 	}
 
 	public render() {
@@ -34,8 +70,8 @@ extends React.Component <any, FeedbackContainerState> {
 		}
 
 		// Iterate article elements and render sub components
-		return <section id='content'>
-			{ this.state.article.items.map(this.createArticleElement) }
+		return <section id="content">
+			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
 		</section>;
 	}
 
@@ -43,6 +79,7 @@ extends React.Component <any, FeedbackContainerState> {
 		const elemKey = `element-${item.order.item}`;
 		return <ArticleElement
 			key={elemKey}
+			ref={(i : any) => { this.articleElements.push(i); }}
 			elemOrder={item.order.item}
 			typeOrder={item.order.type}
 
@@ -50,5 +87,66 @@ extends React.Component <any, FeedbackContainerState> {
 			originalText={item.text}
 		/>;
 	}
+
+	public sendFeedback() {
+		const items : FeedbackItem[] = this.articleElements
+			.map((element : ArticleElement) => element.getCurrentData())
+			.filter((item : FeedbackItem) => item !== null);
+
+		if (items.length <= 0) {
+			alert('The feedback is still empty, nothing was sent');
+			return;
+		}
+
+		const user = this.demoUsers[Math.floor(Math.random() * this.demoUsers.length)];
+
+		sendFeedback({
+			article: {
+				url: getArticleURL(),
+				version: getArticleVersion(),
+			},
+			user,
+			feedback: {
+				items,
+			},
+		})
+		.then((response) => {
+			alert('Feedback successfully sent');
+			console.log(response);
+		});
+	}
+
+	private readonly demoUsers : Object[] = [
+		{
+			name: 'Indiana Horst',
+			email: 'horst@indiana.net',
+		}, {
+			name: 'Schmitz\' Katze',
+		}, {
+			name: 'Ragnhild Esben Hummel',
+		}, {
+			name: 'Finn Hans Nilsen',
+		}, {
+			name: 'Oddmund Thomas Rasmussen',
+		}, {
+			name: 'Ruth Lovise Amundsen',
+		}, {
+			name: 'Kjellfrid Ola Wolff',
+		}, {
+			email: 'prost.mahlzeit@lulu.org',
+		}, {
+			email: 'Christen.Mikael@storstrand.no',
+		}, {
+			email: 'elin@gro.org',
+		}, {
+			email: 'stein.ha@alexandersen.net',
+		}, {
+			email: 'ma_re@skjeggestad.org',
+		}, {
+			email: 'kresten.steensen@koeb.dk',
+		}, {
+			email: 'ejvind@jacobsen.name',
+		},
+	];
 
 }

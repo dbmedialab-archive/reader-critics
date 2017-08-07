@@ -2,16 +2,12 @@
 	"defaultSeverity": "error",
 	"rules": {
 		"arrow-return-shorthand": true,
-		"await-promise": true,
 		"class-name": true,
 		"curly": true,
 		"cyclomatic-complexity": [ true, 10 ],
 		"eofline": true,
 		"indent": [ true, "tabs" ],
 		"linebreak-style": [ true, "LF" ],
-		"match-default-export-name": [ true, {
-			"severity": "warning"
-		}],
 		"max-file-line-count": [ true, 200 ],
 		"max-line-length": [ true, 100 ],
 		"new-parens": true,
@@ -27,20 +23,22 @@
 		"no-switch-case-fall-through": true,
 		"no-trailing-whitespace": true,
 		"no-unnecessary-initializer": true,
-		"no-unused-variable": [ true, {
-			"severity": "warning"
-		}],
 		"no-var-keyword": true,
 		"ordered-imports": [ true, {
 			"import-sources-order": "any",
 			"named-imports-order": "lowercase-first"
 		}],
-		"quotemark": [ true, "single" ],
+		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
-		"semicolon": [ true, "always" ],
+		"semicolon": [ true, "always", "ignore-interfaces" ],
 		"trailing-comma": [ true, {
-			"multiline": "always",
+			"multiline": {
+				"objects": "always",
+				"arrays": "always",
+				"functions": "never",
+				"typeLiterals": "ignore"
+			},
 			"singleline": "never"
 		}],
 		"triple-equals": true,

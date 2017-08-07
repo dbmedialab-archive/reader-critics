@@ -1,10 +1,20 @@
 # Distribution paths
 /node_modules/
+/stats/
 /out/admin/
 /out/app/
 /out/base/
 /out/bundle/
 /out/front/
+/out/test/
+
+# App config file 
+config.json5
+
+# Package manager lock files
+package-lock.json
+yarn.lock
+
 # Packages
 *.7z
 *.dmg
@@ -25,8 +35,7 @@
 *.bak
 *.orig
 *.swp
-package-lock.json
-yarn.lock
+/*.sh
 
 # OS generated files
 .DS_Store
@@ -38,5 +47,6 @@ ehthumbs.db
 Thumbs.db
 
 # IDE and Editors
-/.idea
-*.sublime-workspace
+.idea
+*.sublime-*
+.vscode

@@ -1,3 +1,21 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
 import * as path from 'path';
@@ -6,6 +24,11 @@ import * as semver from 'semver';
 import { readFileSync } from 'fs';
 
 import printEnvironment from 'print-env';
+
+import {
+	typeJobWorker,
+	typeWebWorker,
+} from '../main';
 
 import * as app from 'app/util/applib';
 const log = app.createLog('master');
@@ -21,36 +44,49 @@ export default function() {
 
 	printEnvironment(app.createLog('env'));
 
+	checkEngineVersion()
+		.then(startWorkers)
+		.then(notifyTestMaster)
+		.catch(startupErrorHandler);
+}
+
+// Cluster startup
+
+function startWorkers() : Promise <any> {
+	const startupPromises : Promise <any> [] = [];
+
+	const numJobWorkers = 1;  // TODO this number should scale with available CPU cores
+	const numWebWorkers = app.numConcurrency;
+
 	log(
-		'%s threads available, running at %sx concurrency',
+		'%s threads available, running %s %s workers and %s %s workers',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(app.numConcurrency),
+		colors.brightWhite(numWebWorkers),
+		colors.brightGreen('web'),
+		colors.brightWhite(numJobWorkers),
+		colors.brightYellow('job')
 	);
 
-	const startupPromises : Promise<{}> [] = [];
+	const numTotal = numWebWorkers + numJobWorkers;
 
-	for (let i = 0; i < app.numConcurrency; i++) {
-		const worker : cluster.Worker = cluster.fork();
+	for (let i = 0; i < numTotal; i++) {
+		const workerType = i < numWebWorkers ? typeWebWorker : typeJobWorker;
+
+		const worker : cluster.Worker = cluster.fork({
+			WORKER_TYPE: workerType,
+		});
+
 		log('Starting up worker %d', worker.id);
 
 		startupPromises.push(new Promise((resolve) => {
 			workerMap[worker.id] = {
 				startupResolve: resolve,
+				workerType,
 			};
 		}));
 	}
 
-	function allWorkersStartedPromise() : Promise <void> {
-		return new Promise((resolve)=>{
-			Promise.all(startupPromises).then(()=>{
-				resolve();
-			});
-		});
-	}
-	checkEngineVersion()
-		.then(allWorkersStartedPromise)
-		.then(notifyTestMaster)
-		.catch(startupErrorHandler);
+	return Promise.all(startupPromises);
 }
 
 // Cluster Events
@@ -65,6 +101,23 @@ cluster.on('listening', (worker : cluster.Worker, address : any) => {
 	workerMap[worker.id].startupResolve();
 	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
 });
+
+// Check current NodeJS version against declaration in package.json
+
+function checkEngineVersion() : Promise <void> {
+	log('Checking NodeJS version');
+	const pckgFilePath = path.join(app.rootPath, 'package.json');
+	const pckgFile = readFileSync(pckgFilePath);
+	const pckgConfig = JSON.parse(pckgFile.toString());
+
+	if (semver.satisfies(process.version, pckgConfig.engines.node)) {
+		return Promise.resolve();
+	}
+
+	return Promise.reject(new Error(
+		`Current NodeJS version does not satisfy "${pckgConfig.engines.node}"`
+	));
+}
 
 // Error handling during startup
 
@@ -89,18 +142,4 @@ function notifyTestMaster() : Promise <void> {
 
 	// Sync resolve
 	return Promise.resolve();
-}
-
-function checkEngineVersion(): Promise<any> {
-	log('Check NodeJS version');
-	const pckgFilePath = path.join(app.rootPath, 'package.json');
-	const pckgFile = readFileSync(pckgFilePath);
-	const pckgConfig = JSON.parse(pckgFile.toString());
-	return new Promise((resolve, reject) => {
-		if (semver.gte(process.version, pckgConfig.engines.node)) {
-			resolve();
-		} else {
-			throw new Error('Version of NodeJS is less than ' + pckgConfig.engines.node);
-		}
-	});
 }

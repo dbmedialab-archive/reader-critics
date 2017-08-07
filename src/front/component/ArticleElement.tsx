@@ -1,8 +1,27 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 // tslint:disable max-file-line-count
 import * as classnames from 'classnames';
 import * as React from 'react';
 
 import ArticleItemType from 'base/ArticleItemType';
+import FeedbackItem from 'base/FeedbackItem';
 
 import {
 	default as ArticleEditForm,
@@ -14,7 +33,7 @@ import textDiffToHTML from './textDiffToHTML';
 export interface ArticleElementProp {
 	elemOrder : number;
 	typeOrder : number;
-	type : string;
+	type : ArticleItemType;
 	originalText : string;
 }
 
@@ -41,6 +60,32 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			editing: false,
 			text: props.originalText,
 		};
+	}
+
+	public getCurrentData() : FeedbackItem {
+		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+
+		if (formData.text === this.props.originalText
+			&& !formData.comment
+			&& formData.links.length <= 0
+		) {
+			// If no input was made, return an empty result. The top handler will discard it later.
+			return null;
+		}
+
+		if (formData.text === this.props.originalText) {
+			// If the text wasn't changed, delete it before submitting
+			formData.text = '';
+		}
+
+		return Object.assign({
+			type: this.props.type,
+
+			order: {
+				item: this.props.elemOrder,
+				type: this.props.typeOrder,
+			},
+		}, formData);
 	}
 
 	public render() : JSX.Element {
@@ -173,7 +218,9 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	private TextDiff() : any {
-		return textDiffToHTML(this.props.originalText, this.state.text);
+		return this.state.text === undefined
+			? this.props.originalText
+			: textDiffToHTML(this.props.originalText, this.state.text);
 	}
 
 	// Changes the state for the component so correct css-classes are applied
@@ -197,8 +244,6 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
 	private restoreOriginalContent(e : any) {
-		console.log('restoreOriginalContent "%s"', this.props.originalText);
-
 		this.setState({
 			edited: false,
 			text: this.props.originalText,
@@ -217,7 +262,6 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// This is passed to the child as a prop and used as callback.
 	private SaveData(fromState : EditFormPayload) {
 		this.DisableEditing();
-
 		this.setState({
 			edited: true,
 			text: fromState.text,

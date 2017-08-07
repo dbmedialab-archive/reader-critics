@@ -1,17 +1,39 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import {
 	Request,
 	Response,
 	Router,
 } from 'express';
 
-import * as app from 'app/util/applib';
-
 import ArticleURL from 'base/ArticleURL';
-import { EmptyError } from 'app/util/errors';
+import PageTemplate from 'base/PageTemplate';
+import Website from 'base/Website';
 
-import emptyHandler from './feedback/emptyHandler';
-import feedbackHandler from './feedback/feedbackHandler';
-import paramErrorHandler from './feedback/paramErrorHandler';
+import {
+	templateService,
+	websiteService,
+} from 'app/services';
+
+import { NotFoundError } from 'app/util/errors';
+
+import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
@@ -38,21 +60,37 @@ export default feedbackRoute;
 
 // Main handler, checks the URL parameter and diverts to the respective handlers
 
-function mainHandler(requ : Request, resp : Response) : void {
-	try {
-		const articleURL = new ArticleURL(requ.params[0]);
-		log('Feedback main router to "%s"', articleURL);
-
+function mainHandler(requ : Request, resp : Response, next : Function) : void {
+	ArticleURL.from(requ.params[0]).then(articleURL => {
+		log('Feedback to "%s"', articleURL);
 		return feedbackHandler(requ, resp, articleURL);
-	}
-	catch (error) {
-		if (error instanceof TypeError) {
-			log('URL parameter invalid');
-			return paramErrorHandler(requ, resp);
+	})
+	.catch((error : Error) => next(error));
+}
+
+// Serve feedback page
+
+function feedbackHandler(
+	requ : Request,
+	resp : Response,
+	articleURL : ArticleURL
+) : Promise <void> {
+	return websiteService.identify(articleURL).then((w : Website) => {
+		if (w === null) {
+			return Promise.reject(new NotFoundError('Could not identify website'));
 		}
-		else if (error instanceof EmptyError) {
-			log('Empty request without parameters');
-			return emptyHandler(requ, resp);
-		}
-	}
+		return templateService.getFeedbackPageTemplate(w);
+	})
+	.then((template : PageTemplate) => {
+		resp.set('Content-Type', 'text/html')
+		.send(template.setParams({
+			article: {
+				url: articleURL.href,
+				version: '2017.05.11-something',
+			},
+			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		}).render())
+		.status(200)
+		.end();
+	});
 }
