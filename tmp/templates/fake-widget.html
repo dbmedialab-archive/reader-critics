@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Fake Widget - Leserkritikk</title>
+
+	<style>
+		body, form {
+			font-family: 'Noto Sans', 'Bitstream Vera Sans', 'Verdana', 'Arial';
+			font-size: 1.2em;
+		}
+
+		add {
+			color: rgba(89, 126, 151, 1);
+		}
+		del {
+			color: rgba(185, 79, 112, 1);
+		}
+		h1, h3 {
+			color: rgba(76, 76, 76, 1);
+		}
+
+		div#fakeWidget {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		div#fakeWidget, input[type="text"] {
+			width: 800px;
+		}
+
+		div#buttons, div#presetLinks {
+			margin-top: 25px;
+		}
+
+		div#buttons > button {
+			padding: 10px;
+		}
+
+		div#presetLinks > a {
+			font-family: 'Noto Mono', 'Monospace', 'Courier New';
+			font-size: 0.7em;
+			color: rgba(89, 126, 151, 1);
+			text-decoration: none;
+		}
+		div#presetLinks > a:hover {
+			color: rgba(255, 170, 0, 1);
+		}
+
+		input[type="text"] {
+			padding: 5px;
+			font-family: 'Noto Mono', 'Monospace', 'Courier New';
+			font-size: 1.0em;
+		}
+
+		form > p {
+			margin-bottom: 2px;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function submitHandler(e) {
+			if (e && e.preventDefault) {
+				e.preventDefault();
+			}
+			const frm = document.forms.widget;
+			console.log(frm);
+			//frm.action = 'http://localhost:4000/fb/http://www.mopo.no/2';
+			//return false;
+			frm.submit();
+		}
+	</script>
+
+	<div id="fakeWidget">
+		<h1><add>LESER</add><del>KRITIKK</del> &bull; FAKE WIDGET</h1>
+		<h3>... for loading article feedback with a version parameter</h3>
+
+		<form id="widget" method="post" target="_blank" action="http://localhost:4000/fb/">
+			<p>Article URL:</p>
+			<input type="text" name="articleURL"/>
+			<p>Article Version:</p>
+			<input type="text" name="version"/>
+
+			<div id="buttons">
+				<button type="button" onClick="submitHandler()">Go ahead</button>
+			</div>
+
+			<div id="presetLinks">
+				<h3>Some test links (NODE_ENV="test")</h3>
+				<a target="_blank" href="http://localhost:4000/fb/?articleURL=http%3A%2F%2Fwww.mopo.no%2F2&version=201707251349">
+					http://www.mopo.no/2 &bull; <i>version</i> 201707251349
+				</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
