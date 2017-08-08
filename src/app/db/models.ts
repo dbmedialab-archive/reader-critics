@@ -39,20 +39,11 @@ import WebsiteSchema from './schemas/WebsiteSchema';
 
 import TimestampPlugin from './plugins/TimestampPlugin';
 
+import { ModelNames } from './names';
+
 // Install global plugins
 
 plugin(TimestampPlugin);
-
-// Model names enum, because magic strings are bad!
-
-export enum ModelNames {
-	Article = 'Article',
-	EndUser = 'EndUser',
-	Feedback = 'Feedback',
-	Suggestion = 'Suggestion',
-	User = 'User',
-	Website = 'Website',
-}
 
 // Create models
 
@@ -62,7 +53,7 @@ export const ArticleModel : Model <ArticleDocument>
 
 export interface EndUserDocument extends EndUser, Document {}
 export const EndUserModel : Model <EndUserDocument>
-	= model <EndUserDocument> ('EndUser', EndUserSchema);
+	= model <EndUserDocument> (ModelNames.EndUser, EndUserSchema);
 
 export interface FeedbackDocument extends Feedback, Document {}
 export const FeedbackModel : Model <FeedbackDocument>
@@ -70,12 +61,12 @@ export const FeedbackModel : Model <FeedbackDocument>
 
 export interface SuggestionDocument extends Suggestion, Document {}
 export const SuggestionModel : Model <SuggestionDocument>
-	= model <SuggestionDocument> ('Suggestion', SuggestionSchema);
+	= model <SuggestionDocument> (ModelNames.Suggestion, SuggestionSchema);
 
 export interface UserDocument extends User, Document {}
 export const UserModel : Model <UserDocument>
-	= model <UserDocument> ('User', UserSchema);
+	= model <UserDocument> (ModelNames.User, UserSchema);
 
 export interface WebsiteDocument extends Website, Document {}
 export const WebsiteModel : Model <WebsiteDocument>
-	= model <WebsiteDocument> ('Website', WebsiteSchema);
+	= model <WebsiteDocument> (ModelNames.Website, WebsiteSchema);
