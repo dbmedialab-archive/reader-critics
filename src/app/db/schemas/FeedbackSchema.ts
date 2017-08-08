@@ -27,9 +27,6 @@ const FeedbackSchema : Schema = new Schema({
 	_article: objectReference(ModelNames.Article),
 	_enduser: objectReference(ModelNames.EndUser),
 
-	email: String,
-	comment: String,
-
 	status: {
 		type: String,
 		required: true,
