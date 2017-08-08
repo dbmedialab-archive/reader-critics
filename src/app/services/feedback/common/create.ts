@@ -24,11 +24,11 @@ import FeedbackStatus from 'base/FeedbackStatus';
 
 const create = (
 	article : Article,
-	user : EndUser,
+	enduser : EndUser,
 	items : FeedbackItem[]
 ) : Feedback => ({
 	article,
-	user,
+	enduser,
 
 	items,
 	status: FeedbackStatus.New,
