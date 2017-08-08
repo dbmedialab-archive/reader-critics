@@ -30,8 +30,6 @@ import * as path from 'path';
 
 import { readFileSync } from 'fs';
 
-const log = app.createLog();
-
 // Prepare and export Express router
 
 const fakeWidgetRoute : Router = Router();
