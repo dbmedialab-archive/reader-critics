@@ -33,8 +33,17 @@
 			margin-top: 25px;
 		}
 
-		div#buttons > button {
-			padding: 10px;
+		div#buttons button, select {
+			font-size: 12pt;
+			height: 2.5rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
+			float: left;
+			margin-right: 10px;
+		}
+
+		div#buttons button {
+			font-weight: bold;
 		}
 
 		div#presetLinks > a {
@@ -65,9 +74,8 @@
 				e.preventDefault();
 			}
 			const frm = document.forms.widget;
-			console.log(frm);
-			//frm.action = 'http://localhost:4000/fb/http://www.mopo.no/2';
-			//return false;
+			frm.method = document.getElementById('submitMethod').value;
+			frm.action = 'http://localhost:4000/fb/';
 			frm.submit();
 		}
 	</script>
@@ -76,14 +84,19 @@
 		<h1><add>LESER</add><del>KRITIKK</del> &bull; FAKE WIDGET</h1>
 		<h3>... for loading article feedback with a version parameter</h3>
 
-		<form id="widget" method="post" target="_blank" action="http://localhost:4000/fb/">
+		<form id="widget" target="_blank">
 			<p>Article URL:</p>
 			<input type="text" name="articleURL"/>
 			<p>Article Version:</p>
 			<input type="text" name="version"/>
 
 			<div id="buttons">
+				<select id="submitMethod">
+					<option>get</option>
+					<option>post</option>
+				</select>
 				<button type="button" onClick="submitHandler()">Go ahead</button>
+				<br style="clear: both;"/>
 			</div>
 
 			<div id="presetLinks">
