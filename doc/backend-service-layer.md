@@ -5,6 +5,8 @@ The service layer is the main abstraction between the object persistence on the 
 * The persistence layer is isolated and abstracted from the communication layer, which reduces repetitious code when accessing persistence and enforces validation and security routines.
 * The service layer offers a common interface and the implementations behind these functions can be easily switched out by the service factory. When run in "test" environment, all functions that access remote resources like external network sites are replaced by mock functions that load static resources from the local filesystem. This is mainly to have dependable tests, but also useful for other problems.
 
+_The interface declarations and implementations are still in development and will most definitely undergo some changes. Therefore, the excerps included in this document should not be treated as an API documentation of any kind. Please take a look at the real source code for any details, files and folders from all examples used here are linked from this document._
+
 ## Services
 
 Service name | Persisting? | Purpose
@@ -86,8 +88,3 @@ The two function parameters are:
 * An object with a map of the remaining functions that have to be implemented additionally to those of `createPersistingService` to create a full, valid implementation of the service interface.
 
 If this all sounds a bit complicated, think of this structure as a means of creating singleton instances that inherit from a common supertype (`BasicPersistingService`). Due to JavaScript not really being class-based, this implementation is closer to the core and also allows for easy and transparent implementation of a sort of "multiple inheritance" or mixins in the future, should we need it.
-
-
-## WIP
-
-_This document is not yet finished_
