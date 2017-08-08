@@ -58,6 +58,36 @@ By further convention, there are three different possible sub folders inside a s
 * `live` -- implementations with network/resource access
 * `mock` -- replacing network/resource responses with static content
 
+## Persisting Services
+
+Like the name implies, these services are able to persist the objects they are responsible for to the database. They also offer several common functions and queries as well as specialized (= unique for a service) query functions.
+
+All common functions are defined in the interface [BasicPersistingService](/src/app/services/BasicPersistingService.ts) and their implementations, as far as it is possible to have generic code for them, can be found in [createPersistingService](/src/app/services/createPersistingService.ts), which is used to apply these functions to the export set of a service.
+
+Example, [article service live implementation](/src/app/services/article/ArticleService.live.ts):
+```javascript
+const service : ArticleService
+	= createPersistingService <ArticleDocument, ArticleService, Article> (
+		ArticleModel, {
+			download,
+			fetch,
+			...
+		}
+	);
+```
+
+The function `createPersistingService` takes three generic type arguments:
+* The subtype of a [Mongoose Document](http://mongoosejs.com/docs/api.html#document-js) as defined in [models.ts](/src/app/db/models.ts)
+* The service interface, for type casting the compiled object and fulfilling the export type
+* The object model of the service's main object, mostly for function return types
+
+The two function parameters are:
+* The [Mongoose model](http://mongoosejs.com/docs/api.html#model-js) instance, created from its according schema (again, from [models.ts](/src/app/db/models.ts))
+* An object with a map of the remaining functions that have to be implemented additionally to those of `createPersistingService` to create a full, valid implementation of the service interface.
+
+If this all sounds a bit complicated, think of this structure as a means of creating singleton instances that inherit from a common supertype (`BasicPersistingService`). Due to JavaScript not really being class-based, this implementation is closer to the core and also allows for easy and transparent implementation of a sort of "multiple inheritance" or mixins in the future, should we need it.
+
+
 ## WIP
 
 _This document is not yet finished_
