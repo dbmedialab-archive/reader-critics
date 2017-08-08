@@ -21,6 +21,7 @@ import { Schema } from 'mongoose';
 import ArticleURL from 'base/ArticleURL';
 
 import { objectReference } from 'app/db/common';
+import { ModelNames } from 'app/db/models';
 
 const ArticleSchema : Schema = new Schema({
 	url: {
@@ -33,7 +34,7 @@ const ArticleSchema : Schema = new Schema({
 		required: true,
 	},
 
-	_website: objectReference('Website'),
+	_website: objectReference(ModelNames.Website),
 
 	authors: [Schema.Types.Mixed],
 	items: [Schema.Types.Mixed],
