@@ -88,3 +88,13 @@ The two function parameters are:
 * An object with a map of the remaining functions that have to be implemented additionally to those of `createPersistingService` to create a full, valid implementation of the service interface.
 
 If this all sounds a bit complicated, think of this structure as a means of creating singleton instances that inherit from a common supertype (`BasicPersistingService`). Due to JavaScript not really being class-based, this implementation is closer to the core and also allows for easy and transparent implementation of a sort of "multiple inheritance" or mixins in the future, should we need it.
+
+## Data Access Objects (DAO)
+
+All the persisting services follow the pattern that their database access functions are declared together in a module which is called a "DAO". Those function could be declared in individual modules, but this would introduce a lot of repetition for example with the import declarations, which are mostly the same. Hence, all database functions of a (live) service share the same module.
+
+The DAO implements all functions which are unique to a certain service, or which can't be implemented generically in [createPersistingService](/src/app/services/createPersistingService.ts).
+
+_Please be aware that at this time of writing, most of the **live** as well as **mock** share the database code. This means that even when executed in "test" environment, the code will try to access the configured database. **This is especially important to remember, because the database tests executed in `run/test --db` will clear all collections and write new objects for testing purposes**._
+
+If you don't want this to happen when executing the tests, tune the database to write to a different destination (means, change the `MONGODB_URL` environment variable either in development mode or test mode, use one for testing (can be overwritten) and one to hold you development data.
