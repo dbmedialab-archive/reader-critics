@@ -20,29 +20,12 @@ import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
-import User from 'base/User';
-import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
 interface FeedbackService extends BasicPersistingService <Feedback> {
 	create(article : Article, user : EndUser, items : FeedbackItem[]) : Feedback;
 	save(feedback : Feedback);
-
-	getByUser(
-		website : Website,
-		user : User,
-		skip? : number,
-		limit? : number,
-		sort? : Object
-	) : Promise <Feedback[]>;
-
-	getByWebsite(
-		website : Website,
-		skip? : number,
-		limit? : number,
-		sort? : Object
-	) : Promise <Feedback[]>;
 }
 
 export default FeedbackService;
