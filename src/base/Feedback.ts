@@ -24,7 +24,7 @@ import PersistedModel from './zz/PersistedModel';
 
 interface Feedback extends PersistedModel {
 	article : Article
-	user : EndUser
+	enduser : EndUser
 
 	items : FeedbackItem[]
 	status : FeedbackStatus

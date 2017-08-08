@@ -16,32 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+/**
+ * Model names enum, because magic strings are bad!
+ */
 
-import { objectReference } from 'app/db/common';
-import { ModelNames } from 'app/db/names';
-
-import FeedbackStatus from 'base/FeedbackStatus';
-
-const FeedbackSchema : Schema = new Schema({
-	_article: objectReference(ModelNames.Article),
-	_enduser: objectReference(ModelNames.EndUser),
-
-	email: String,
-	comment: String,
-
-	status: {
-		type: String,
-		required: true,
-		enum: Object.values(FeedbackStatus),
-		default: FeedbackStatus.New,
-	},
-
-	items: [Schema.Types.Mixed],
-
-	date: {
-		statusChange: Date,
-	},
-});
-
-export default FeedbackSchema;
+export enum ModelNames {
+	Article = 'Article',
+	EndUser = 'EndUser',
+	Feedback = 'Feedback',
+	Suggestion = 'Suggestion',
+	User = 'User',
+	Website = 'Website',
+}
