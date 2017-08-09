@@ -26,11 +26,15 @@ import {
 	parserService,
 } from 'app/services';
 
+import emptyCheck from 'app/util/emptyCheck';
+
 /**
  * @param website Needed to determine the parser for this article
  * @param url The source of the article
  */
 export default function(website : Website, url : ArticleURL) : Promise <Article> {
+	emptyCheck(website, url);
+
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
 
