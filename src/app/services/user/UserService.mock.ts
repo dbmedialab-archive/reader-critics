@@ -28,6 +28,7 @@ import createPersistingService from '../createPersistingService';
 
 import {
 	checkPassword,
+	findOrInsert,
 	get,
 	save,
 } from './UserDAO';
@@ -36,6 +37,7 @@ const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
 		UserModel, {
 			checkPassword,
+			findOrInsert,
 			get,
 			save,
 		}

@@ -18,6 +18,7 @@
 
 import * as bcrypt from 'bcrypt';
 
+import Person from 'base/zz/Person';
 import User from 'base/User';
 
 import {
@@ -26,11 +27,14 @@ import {
 } from 'app/db/models';
 
 import {
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
+// FIXME genericGetUser might be outdated because of the username/email constraint in UserSchema
+// (parameter checks look for either name or mail, but schema wants both, not null)
 import genericGetUser from './dao/genericGetUser';
 
 export function checkPassword(user : User, password : string) : Promise <boolean> {
@@ -51,4 +55,18 @@ export function get(username : String|null, email? : String|null) : Promise <Use
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
 	return wrapSave<User>(new UserModel(user).save());
+}
+
+export function findOrInsert(user : Person) : Promise <User> {
+	emptyCheck(user);
+	return wrapFindOne(UserModel.findOneAndUpdate({
+		name: user.name,
+		email: user.email,
+	},
+	user,
+	{
+		upsert: true,
+		new: true,
+		setDefaultsOnInsert: true,
+	}));
 }
