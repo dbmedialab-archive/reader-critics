@@ -11,14 +11,14 @@ _The interface declarations and implementations are still in development and wil
 
 Service name | Persisting? | Purpose
 ------------ | ----------- | -------
-Article | yes | Download external articles, store and load article objects
-End User | yes | Controls end user objects (persons that use the feedback frontend)
-Feedback | yes | Store and load feedback objects, various queries for statistics
-Parser | no | Control the parser engine, parse articles into objects
-Suggestion | yes | Store and load comments from the suggestion box
-Template | no | Provide templates for frontend and mail formatting
-User | yes | Store and load user objects, authentification
-Website | yes | Store and load website objects, control depending services
+[Article](/src/app/services/article/ArticleService.ts) | yes | Download external articles, store and load article objects
+[End User](/src/app/services/enduser/EndUserService.ts) | yes | Controls end user objects (persons that use the feedback frontend)
+[Feedback](/src/app/services/feedback/FeedbackService.ts) | yes | Store and load feedback objects, various queries for statistics
+[Parser](/src/app/services/parser/ParserService.ts) | no | Control the parser engine, parse articles into objects
+[Suggestion](/src/app/services/suggestion/SuggestionService.ts) | yes | Store and load comments from the suggestion box
+[Template](/src/app/services/template/TemplateService.ts) | no | Provide templates for frontend and mail formatting
+[User](/src/app/services/user/UserService.ts) | yes | Store and load user objects, authentification
+[Website](/src/app/services/website/WebsiteService.ts) | yes | Store and load website objects, control depending services
 
 ## Implementation and Conventions
 
