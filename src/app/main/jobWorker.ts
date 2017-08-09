@@ -16,29 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+import * as colors from 'ansicolors';
+import * as cluster from 'cluster';
 
-import { objectReference } from 'app/db/common';
-import { ModelNames } from 'app/db/names';
+import * as app from 'app/util/applib';
 
-import FeedbackStatus from 'base/FeedbackStatus';
+import { initDatabase } from 'app/db';
+import { initJobWorkerQueue } from 'app/queue';
 
-const FeedbackSchema : Schema = new Schema({
-	_article: objectReference(ModelNames.Article),
-	_enduser: objectReference(ModelNames.EndUser),
+import startupErrorHandler from './startupErrorHandler';
 
-	status: {
-		type: String,
-		required: true,
-		enum: Object.values(FeedbackStatus),
-		default: FeedbackStatus.New,
-	},
+let log;
 
-	items: [Schema.Types.Mixed],
+/**
+ * Main function of worker process
+ */
+export default function() {
+	log = app.createLog('worker');
+	log('Starting %s worker - ID %d', colors.brightYellow('job'), cluster.worker.id);
 
-	date: {
-		statusChange: Date,
-	},
-});
+	// Main application startup
 
-export default FeedbackSchema;
+	Promise.resolve()
+		.then(initDatabase)
+		.then(initJobWorkerQueue)
+		.catch(startupErrorHandler);
+}

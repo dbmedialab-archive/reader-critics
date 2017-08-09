@@ -16,37 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export class EmptyError extends Error {
-	constructor(message : string) {
-		super(message);
-		Object.setPrototypeOf(this, EmptyError.prototype);
-	}
-}
+import * as app from 'app/util/applib';
 
-export class InvalidRequestError extends Error {
-	constructor(message : string) {
-		super(message);
-		Object.setPrototypeOf(this, InvalidRequestError.prototype);
-	}
-}
+const log = app.createLog('error');
 
-export class NotFoundError extends Error {
-	constructor(message : string) {
-		super(message);
-		Object.setPrototypeOf(this, NotFoundError.prototype);
-	}
-}
+// Error handling during startup
 
-export class ParserNotFoundError extends NotFoundError {
-	constructor(message : string) {
-		super(message);
-		Object.setPrototypeOf(this, ParserNotFoundError.prototype);
-	}
-}
+export default function (error : Error) {
+	const typesThatDoNotPrintATrace = [
+		'MongoError',
+	];
 
-export class SchemaValidationError extends Error {
-	constructor(message : string) {
-		super(message);
-		Object.setPrototypeOf(this, SchemaValidationError.prototype);
+	if (typesThatDoNotPrintATrace.includes(error.name)) {
+		log('%s: %s', error.name, error.message);
 	}
+	else {
+		log(error.stack || error.toString());
+	}
+
+	process.exit(-128);
 }

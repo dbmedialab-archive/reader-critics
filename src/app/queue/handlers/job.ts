@@ -16,29 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+import {
+	DoneCallback,
+	Job,
+} from 'kue';
 
-import { objectReference } from 'app/db/common';
-import { ModelNames } from 'app/db/names';
+import * as app from 'app/util/applib';
 
-import FeedbackStatus from 'base/FeedbackStatus';
+const log = app.createLog('api');
 
-const FeedbackSchema : Schema = new Schema({
-	_article: objectReference(ModelNames.Article),
-	_enduser: objectReference(ModelNames.EndUser),
-
-	status: {
-		type: String,
-		required: true,
-		enum: Object.values(FeedbackStatus),
-		default: FeedbackStatus.New,
-	},
-
-	items: [Schema.Types.Mixed],
-
-	date: {
-		statusChange: Date,
-	},
-});
-
-export default FeedbackSchema;
+export function onNewFeedback(job : Job, done : DoneCallback) {
+	log('New feedback in queue!', job.data);
+	done();
+}

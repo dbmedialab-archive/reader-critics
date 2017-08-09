@@ -25,6 +25,11 @@ import { readFileSync } from 'fs';
 
 import printEnvironment from 'print-env';
 
+import {
+	typeJobWorker,
+	typeWebWorker,
+} from '../main';
+
 import * as app from 'app/util/applib';
 const log = app.createLog('master');
 
@@ -50,19 +55,33 @@ export default function() {
 function startWorkers() : Promise <any> {
 	const startupPromises : Promise <any> [] = [];
 
+	const numJobWorkers = 1;  // TODO this number should scale with available CPU cores
+	const numWebWorkers = app.numConcurrency;
+
 	log(
-		'%s threads available, running at %sx concurrency',
+		'%s threads available, running %s %s workers and %s %s workers',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(app.numConcurrency)
+		colors.brightWhite(numWebWorkers),
+		colors.brightGreen('web'),
+		colors.brightWhite(numJobWorkers),
+		colors.brightYellow('job')
 	);
 
-	for (let i = 0; i < app.numConcurrency; i++) {
-		const worker : cluster.Worker = cluster.fork();
+	const numTotal = numWebWorkers + numJobWorkers;
+
+	for (let i = 0; i < numTotal; i++) {
+		const workerType = i < numWebWorkers ? typeWebWorker : typeJobWorker;
+
+		const worker : cluster.Worker = cluster.fork({
+			WORKER_TYPE: workerType,
+		});
+
 		log('Starting up worker %d', worker.id);
 
 		startupPromises.push(new Promise((resolve) => {
 			workerMap[worker.id] = {
 				startupResolve: resolve,
+				workerType,
 			};
 		}));
 	}

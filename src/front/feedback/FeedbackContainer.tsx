@@ -56,6 +56,7 @@ extends React.Component <any, FeedbackContainerState> {
 			console.log(article);
 			// FIXME ganz mieser Hack:
 			window['app'].article.version = article.version;
+			console.log('set version to:', window['app'].article.version);
 			self.setState({
 				article,
 			});

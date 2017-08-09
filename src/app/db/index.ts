@@ -22,3 +22,5 @@ require('mongoose').Promise = global.Promise;
 export { ObjectID } from 'mongodb';
 
 export { default as initDatabase } from './initDatabase';
+
+export { default as createRedisConnection } from './createRedisConnection';

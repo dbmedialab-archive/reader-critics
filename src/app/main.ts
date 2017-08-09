@@ -16,18 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable no-require-imports
+
 import * as cluster from 'cluster';
-
 import * as Bluebird from 'bluebird';
-
-import master from './main/master';
-import worker from './main/worker';
 
 global.Promise = Bluebird;
 
+export const typeJobWorker = 'job-worker';
+export const typeWebWorker = 'web-worker';
+
+declare function require(arg : string) : any;
+
 if (cluster.isMaster) {
-	master();
+	require('./main/master').default();
 }
 else {
-	worker();
+	switch (process.env.WORKER_TYPE) {
+		case typeJobWorker:
+			require('./main/jobWorker').default();
+			break;
+		case typeWebWorker:
+			require('./main/webWorker').default();
+			break;
+		default:
+			console.log(`Invalid worker type "${process.env.WORKER_TYPE}", exiting`);
+			process.exit(-129);
+	}
 }

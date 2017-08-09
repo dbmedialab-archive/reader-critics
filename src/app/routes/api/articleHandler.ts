@@ -86,7 +86,7 @@ export default function(requ : Request, resp : Response) : void {
 	// the database now
 	.then((article : Article) => {
 		if (wasFetched) {
-			articleService.save(website, article)
+			return articleService.save(website, article)
 			.catch(error => log(error));
 		}
 	})

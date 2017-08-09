@@ -29,6 +29,9 @@ import routes from 'app/routes';
 import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
+import { initWebWorkerQueue } from 'app/queue';
+
+import startupErrorHandler from './startupErrorHandler';
 
 let log;
 let expressApp : Express;
@@ -40,7 +43,7 @@ let httpServer;
  */
 export default function() {
 	log = app.createLog('worker');
-	log('Starting web worker %d', cluster.worker.id);
+	log('Starting %s worker - ID %d', colors.brightGreen('web'), cluster.worker.id);
 
 	// Create Express application
 	expressApp = express();
@@ -52,6 +55,7 @@ export default function() {
 
 	Promise.resolve()
 		.then(initDatabase)
+		.then(initWebWorkerQueue)
 		.then(startHTTP)
 		.then(initExpress)
 		.catch(startupErrorHandler);
@@ -76,23 +80,6 @@ function startHTTP() {
 function initExpress() {
 	routes(expressApp);
 	return Promise.resolve();  // Sync finish
-}
-
-// Error handling during startup
-
-function startupErrorHandler(error : Error) {
-	const typesThatDoNotPrintATrace = [
-		'MongoError',
-	];
-
-	if (typesThatDoNotPrintATrace.includes(error.name)) {
-		log('%s: %s', error.name, error.message);
-	}
-	else {
-		log(error.stack || error.toString());
-	}
-
-	process.exit(-128);
 }
 
 // TODO Graceful shutdown

@@ -1,3 +1,5 @@
+// fake-widget
+
 //
 // LESERKRITIKK v2 (aka Reader Critics)
 // Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
@@ -16,29 +18,36 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
+import {
+	Request,
+	Response,
+	Router,
+} from 'express';
 
-import { objectReference } from 'app/db/common';
-import { ModelNames } from 'app/db/names';
+import * as app from 'app/util/applib';
+import * as doT from 'dot';
+import * as path from 'path';
 
-import FeedbackStatus from 'base/FeedbackStatus';
+import { readFileSync } from 'fs';
 
-const FeedbackSchema : Schema = new Schema({
-	_article: objectReference(ModelNames.Article),
-	_enduser: objectReference(ModelNames.EndUser),
+// Prepare and export Express router
 
-	status: {
-		type: String,
-		required: true,
-		enum: Object.values(FeedbackStatus),
-		default: FeedbackStatus.New,
-	},
+const fakeWidgetRoute : Router = Router();
+export default fakeWidgetRoute;
 
-	items: [Schema.Types.Mixed],
+// Main handler, checks for URL parameter and "empty" requests
 
-	date: {
-		statusChange: Date,
-	},
-});
+fakeWidgetRoute.get('/', fakeWidgetHandler);
 
-export default FeedbackSchema;
+const mainTemplate = createMainTemplate();
+
+function fakeWidgetHandler(requ : Request, resp : Response) {
+	resp.set('Content-Type', 'text/html');
+	resp.send(mainTemplate());
+	resp.status(200).end();
+}
+
+function createMainTemplate() {
+	const tplPath = path.join(app.rootPath, 'tmp', 'templates', 'fake-widget.html');
+	return doT.template(readFileSync(tplPath).toString());
+}
