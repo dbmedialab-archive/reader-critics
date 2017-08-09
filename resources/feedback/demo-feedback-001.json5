@@ -3,7 +3,7 @@
 		url: 'http://www.dagbladet.no/67728317',
 		version: '2017-06-21T12:04:54.000Z',
 	},
-	user: {
+	enduser: {
 		email: 'ma_re@skjeggestad.org',
 	},
 	feedback: {
