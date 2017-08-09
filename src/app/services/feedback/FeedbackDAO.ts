@@ -31,6 +31,6 @@ export function save(feedback : Feedback) : Promise <Feedback> {
 
 	return wrapSave <Feedback> (new FeedbackModel(Object.assign({
 		_article: feedback.article.ID,
-		_user: feedback.user.ID,
+		_enduser: feedback.enduser.ID,
 	}, feedback)).save());
 }
