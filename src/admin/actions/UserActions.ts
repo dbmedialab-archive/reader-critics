@@ -20,6 +20,9 @@ import MainStore from 'admin/stores/MainStore';
 import User from 'base/User';
 
 import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
+import * as AppConstants from '../constants/AppConstants';
+import * as UIActions from 'admin/actions/UIActions';
+import * as Api from 'admin/services/Api';
 
 export function authenticate(user: User) {
 	MainStore.dispatch(
@@ -35,5 +38,58 @@ export function deauthenticate() {
 export function update(user: User) {
 	MainStore.dispatch(
 		UserActionsCreator.updateUser(user)
+	);
+}
+
+/**
+ * Create || Update User in DB
+ * @param user
+ */
+export function saveUser(user) {
+	Api.saveUser(user).then((response) => {
+		if (!user.id){
+			this.addUser(response);
+		}else{
+			this.editUser(user);
+		}
+	});
+	UIActions.closeReset(AppConstants.USER_MODAL_NAME);
+}
+
+/**
+ * Fetch Users from DB
+ */
+export function getUsers() {
+	UIActions.showMainPreloader();
+	Api.getUsers()
+		.then((response) => {
+			if (typeof response !== 'undefined'){
+				MainStore.dispatch(UserActionsCreator.getUsers(response));
+				UIActions.hideMainPreloader();
+			}
+		})
+		.catch((error) => UIActions.hideMainPreloader());
+}
+
+export function editUser(user) {
+	MainStore.dispatch(UserActionsCreator.editUser(user));
+}
+
+/**
+ * Delete User by ID
+ * @param user
+ */
+export function deleteUser(user) {
+	UIActions.showMainPreloader();
+	Api.deleteUser(user).then(
+		MainStore.dispatch(
+			UserActionsCreator.deleteUser(user)
+		))
+		.then((error) => UIActions.hideMainPreloader());
+}
+
+export function addUser(user) {
+	MainStore.dispatch(
+		UserActionsCreator.addUser(user)
 	);
 }
