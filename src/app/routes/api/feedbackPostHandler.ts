@@ -21,7 +21,7 @@ import {
 	Response,
 } from 'express';
 
-import validateAndStore from 'app/feedback/validateAndStore';
+import { feedbackService } from 'app/services';
 
 import {
 	errorResponse,
@@ -29,7 +29,7 @@ import {
 } from './apiResponse';
 
 export default function (requ : Request, resp : Response) : void {
-	validateAndStore(requ.body)
+	feedbackService.validateAndSave(requ.body)
 	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
 }
