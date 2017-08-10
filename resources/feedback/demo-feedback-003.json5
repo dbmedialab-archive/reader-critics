@@ -1,9 +1,9 @@
 {
 	article: {
 		url: 'http://www.mopo.no/1',
-		version: '201707251349',
+		version: 'final-draft',
 	},
-	enduser: {
+	user: {
 		name: 'Schmitz\' Katze'
 	},
 	feedback: {
