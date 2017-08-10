@@ -30,19 +30,12 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 export function save(
 	article : Article,
 	enduser : EndUser,
 	items : FeedbackItem[]
 ) : Promise <Feedback> {
 	emptyCheck(article, enduser, items);
-
-	log('article:', app.inspect(article));
-	log('enduser:', app.inspect(enduser));
 
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
