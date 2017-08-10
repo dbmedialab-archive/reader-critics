@@ -1,6 +1,6 @@
 box:
   id: dbmedialab/nodejs-openjdk
-  cmd: /bin/bash
+  cmd: /bin/bash -l
 
 js-lint-build-test:
   steps:
