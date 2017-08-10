@@ -34,3 +34,7 @@ export default function(requ : Request, resp : Response) : void {
 		errorResponse(resp, error);
 	}
 }
+
+export function create (requ: Request, resp: Response) : void {
+	
+}
