@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+echo -e "\033[1;38mBuild and watch App sources ...\033[0m"
+
+node_modules/.bin/tsc --pretty --project tsconfig.json --watch | grep -v '^$' --color=always
+

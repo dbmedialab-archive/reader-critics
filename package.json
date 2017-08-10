@@ -16,7 +16,7 @@
 		"build": "run/build",
 		"build:dev": "npm run build:app && npm run watch:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig.json",
-		"watch:app": "node_modules/.bin/tsc --project tsconfig.json --watch",
+		"watch:app": "run/watch-app",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
 		"build:admin": "webpack --config webpack-admin.js",
