@@ -35,7 +35,7 @@ const ArticleSchema : Schema = new Schema({
 	},
 
 	authors: [objectReference(ModelNames.User)],
-	website: objectReference(ModelNames.Website, { select: false }),
+	website: objectReference(ModelNames.Website),
 
 	items: [Schema.Types.Mixed],
 }, {

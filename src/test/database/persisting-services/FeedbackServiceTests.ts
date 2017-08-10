@@ -16,20 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
+/*
+import * as path from 'path';
 
-import { feedbackService } from 'app/services';
-
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
-
-export default function (requ : Request, resp : Response) : void {
-	feedbackService.validateAndSave(requ.body)
-	.then(() => okResponse(resp))
-	.catch(error => errorResponse(resp, error));
-}
+import { assert } from 'chai';
+import { ISuiteCallbackContext } from 'mocha';
+*/
