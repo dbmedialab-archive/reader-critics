@@ -18,6 +18,7 @@
 
 import * as bcrypt from 'bcrypt';
 
+import Person from 'base/zz/Person';
 import User from 'base/User';
 
 import {
@@ -26,12 +27,11 @@ import {
 } from 'app/db/models';
 
 import {
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
-
-import genericGetUser from './dao/genericGetUser';
 
 export function checkPassword(user : User, password : string) : Promise <boolean> {
 	return UserModel.findOne({
@@ -44,11 +44,33 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 	});
 }
 
-export function get(username : String|null, email? : String|null) : Promise <User> {
-	return genericGetUser<UserDocument, User>(UserModel, username, email);
+export function get(name : String, email? : String) : Promise <User> {
+	emptyCheck(name);  // Do not check optional "email" parameter
+	const query : any = { name };
+
+	if (email !== undefined) {
+		query.email = email;
+	}
+
+	// Better be paranoid about the password hash!
+	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
 }
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
 	return wrapSave<User>(new UserModel(user).save());
+}
+
+export function findOrInsert(user : Person) : Promise <User> {
+	emptyCheck(user);
+	return wrapFindOne(UserModel.findOneAndUpdate({
+		name: user.name,
+		email: user.email,
+	},
+	user,
+	{
+		upsert: true,
+		new: true,
+		setDefaultsOnInsert: true,
+	}));
 }

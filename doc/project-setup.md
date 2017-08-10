@@ -3,7 +3,7 @@
 ## Dependencies:
 * Node.js ≥ v8.1.4
 * NPM ≥ v5.0
-* MongoDB ≥ v2.2 (DBRef feature), preferrably ≥ v3.4
+* MongoDB ≥ v2.4 (_upsert_, _setDefaultsOnInsert_), preferrably ≥ v3.4
 * Redis ≥ v3.0
 
 ## Setup

@@ -24,15 +24,14 @@ import {
 import ArticleURL from 'base/ArticleURL';
 
 import * as app from 'app/util/applib';
+import emptyCheck from 'app/util/emptyCheck';
 import { NotFoundError } from 'app/util/errors';
 
 const log = app.createLog();
 
-/**
- * @param url The source of the article
- * @return Whatever the request returned, as a plain string
- */
 export default function(url : ArticleURL) : Promise <string> {
+	emptyCheck(url);
+
 	log(url.href);
 	return axios.get(url.href)
 	.then((resp : AxiosResponse) => resp.data)
