@@ -21,11 +21,13 @@ import UserRole from 'base/UserRole';
 import * as Immutable from 'seamless-immutable';
 import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
+import * as UserConstants from '../constants/UserConstants';
 
 const initialState = Immutable.from<User>({
 	name: '',
 	email: '',
 	role: UserRole.Normal,
+	users: [],
 });
 
 function updateUser(action, state) {
@@ -44,6 +46,10 @@ function deauthenticateUser(action, state) {
 	});
 }
 
+function receiveUsers(action, state) {
+	return state.merge({users: action.payload});
+}
+
 function UserReducer(state: User = initialState, action: UserActionsCreator.TAction): User {
 	switch (action.type) {
 		case AdminConstants.AUTHENTICATE_USER:
@@ -52,6 +58,8 @@ function UserReducer(state: User = initialState, action: UserActionsCreator.TAct
 			return deauthenticateUser(action, state);
 		case AdminConstants.UPDATE_CURRENT_USER:
 			return updateUser(action, state);
+		case UserConstants.USERS_RECEIVED:
+			return receiveUsers(action, state);
 		default:
 			return state;
 	}

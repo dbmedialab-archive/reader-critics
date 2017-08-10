@@ -22,7 +22,7 @@ import User from 'base/User';
 import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
 import * as AppConstants from '../constants/AppConstants';
 import * as UIActions from 'admin/actions/UIActions';
-import * as Api from 'admin/services/Api';
+import * as apiAdminCommunication from 'admin/apiAdminCommunication';
 
 export function authenticate(user: User) {
 	MainStore.dispatch(
@@ -46,7 +46,7 @@ export function update(user: User) {
  * @param user
  */
 export function saveUser(user) {
-	Api.saveUser(user).then((response) => {
+	apiAdminCommunication.saveUser(user).then((response) => {
 		if (!user.id){
 			this.addUser(response);
 		}else{
@@ -60,9 +60,11 @@ export function saveUser(user) {
  * Fetch Users from DB
  */
 export function getUsers() {
+	console.log('getUsers');
 	UIActions.showMainPreloader();
-	Api.getUsers()
+	apiAdminCommunication.getUsers()
 		.then((response) => {
+			console.log(response);
 			if (typeof response !== 'undefined'){
 				MainStore.dispatch(UserActionsCreator.getUsers(response));
 				UIActions.hideMainPreloader();
@@ -81,7 +83,7 @@ export function editUser(user) {
  */
 export function deleteUser(user) {
 	UIActions.showMainPreloader();
-	Api.deleteUser(user).then(
+	apiAdminCommunication.deleteUser(user).then(
 		MainStore.dispatch(
 			UserActionsCreator.deleteUser(user)
 		))

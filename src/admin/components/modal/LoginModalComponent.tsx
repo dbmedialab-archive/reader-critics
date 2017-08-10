@@ -45,6 +45,7 @@ class LoginModalComponent extends React.Component <any, any> {
 		this.updateInputValue = this.updateInputValue.bind(this);
 		this.loginUser = this.loginUser.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.updateErrorState = this.updateErrorState.bind(this);
 	}
 
 	componentWillMount() {

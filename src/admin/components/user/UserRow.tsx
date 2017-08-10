@@ -26,11 +26,9 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 			isOpen: true,
 			userId: this.props.id || null,
 		};
-		userRes.input['name'] = { value: user.profile.name };
+		userRes.input['name'] = { value: user.name };
 		userRes.input['email'] = { value: user.email };
-		userRes.input['bio'] = { value: user.profile.bio };
-		userRes.input['field'] = { value: user.profile.field };
-		userRes.input['role'] = { value: user.profile.role };
+		userRes.input['role'] = { value: user.role };
 		userRes.input['password'] = { value: user.password };
 		UIActions.modalWindowsChangeState(windowName, userRes);
 	}
@@ -49,7 +47,7 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 	public render() : JSX.Element {
 		return (
 			<div className="row user_row">
-				<div className="column small-4 medium-4"><p>{this.props.profile.name}</p></div>
+				<div className="column small-4 medium-4"><p>{this.props.name}</p></div>
 				<div className="column small-4 medium-3"><p>{this.props.email}</p></div>
 				<div className="column small-2 medium-3">
 					<button onClick={this.onEdit} className="button" type="button success">Edit</button>

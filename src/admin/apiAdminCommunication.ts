@@ -9,15 +9,6 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 });
 
 /**
- * Test request to be sure that we cn get data from admin api
- * TODO remove it after any one real admin api request is done
- * @type {()=>Promise<any>}
- */
-export const sendUsersRequest = ((): Promise<any> => {
-	return sendRequest(`/admin/api/users/`, 'GET');
-});
-
-/**
  * Wrapper to send requests to backend
  * @param url                   URL to get data from
  * @param method                Request method
@@ -59,6 +50,29 @@ function authCheck(response: Response): any {
 		return response;
 	}
 }
+
+/**
+ * Save or update user
+ * @type {(data: any) => Promise<any>}
+ */
+export const saveUser = ((data: any): Promise<any> => {
+	const userId = data.id || '';
+	const method = userId.length ? 'PUT' : 'POST';
+	return sendRequest(`/admin/api/users/${userId}`, method, data);
+});
+/**
+ * Get users
+ * @type {() => Promise<any>}
+ */
+export const getUsers = ((): Promise<any> =>
+	sendRequest(`/admin/api/users/`, 'GET'));
+
+/**
+ * Delete User
+ * @type {(userId: any) => Promise<any>}
+ */
+export const deleteUser = ((userId: any): Promise<any> =>
+	sendRequest(`/admin/api/users/${userId}`, 'DELETE', userId));
 
 /**
  * Check for errors from backend
