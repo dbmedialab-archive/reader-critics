@@ -34,10 +34,21 @@ const ArticleSchema : Schema = new Schema({
 		required: true,
 	},
 
-	_website: objectReference(ModelNames.Website),
+	authors: [objectReference(ModelNames.User)],
+	website: objectReference(ModelNames.Website, { select: false }),
 
-	authors: [Schema.Types.Mixed],
 	items: [Schema.Types.Mixed],
+}, {
+	toObject: {
+		retainKeyOrder: true,
+		transform: (doc : Document, converted : any) => {
+			converted.authors.forEach(author => {
+				delete author.date;
+				delete author.role;
+			});
+			return converted;
+		},
+	},
 });
 
 ArticleSchema.index({

@@ -42,6 +42,7 @@
 		role: 'sysadmin',
 	},
 	{
+		name: 'Einprosit Dergemütlichkeit',
 		email: 'prost.mahlzeit@lulu.org',
 		role: 'normal',
 	},
@@ -49,5 +50,10 @@
 		name: 'Brahmaputra Pradesh Meghna',
 		email: 'bpm@dagbladet.no',
 		role: 'siteadmin',
-	}
+	},
+	{
+		name: 'Stamatis Skeates',
+		email: 'stamatis@ote.gr',
+		role: 'normal',
+	},
 ]

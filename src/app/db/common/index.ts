@@ -45,10 +45,15 @@ export function getCount <T extends Document> (model : Model <T>) : Promise <num
 
 export const objectReference = (
 	modelName : string,
-	required : boolean = true
-) : Object => ({
+	options : {
+		required? : boolean,
+		select? : boolean,
+	} = {
+		required: true,
+		select: true,
+	}
+) : Object => Object.assign(options, {
 	type: Schema.Types.ObjectId,
 	ref: modelName,
-	required,
 	set: (id : string) : ObjectID => new ObjectID(id),
 });

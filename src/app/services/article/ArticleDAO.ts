@@ -16,30 +16,68 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { ArticleModel } from 'app/db/models';
-
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
+import Person from 'base/zz/Person';
 import Website from 'base/Website';
+import User from 'base/User';
+
+import { ArticleModel } from 'app/db/models';
 
 import {
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
+import {
+	userService,
+} from 'app/services';
+
 import emptyCheck from 'app/util/emptyCheck';
 
 export function get(articleURL : ArticleURL, version : string) : Promise <Article> {
 	emptyCheck(articleURL, version);
+
 	return wrapFindOne(ArticleModel.findOne({
 		url: articleURL.href,
 		version,
-	}));
+	}).populate('authors'));  // Website is not populated to not spill confidential data
 }
 
-export function save(website : Website, article : Article) : Promise <void> {
+export function save(website : Website, article : Article) : Promise <Article> {
 	emptyCheck(website, article);
-	return wrapSave(new ArticleModel(Object.assign({
-		_website: website.ID,
-	}, article)).save());
+
+	return makeDocument(website, article)
+	.then(doc => wrapSave(new ArticleModel(doc).save()));
 }
+
+export function upsert(website : Website, article : Article) : Promise <Article> {
+	emptyCheck(website, article);
+
+	const query = {
+		url: article.url,
+		version: article.version,
+	};
+	const options = {
+		upsert: true,
+		setDefaultsOnInsert: true,
+	};
+
+	return makeDocument(website, article)
+	.then(doc => ArticleModel.update(query, doc, options).exec());
+}
+
+// Helper functions for save() and upsert()
+
+const makeDocument = (website : Website, article : Article) => getUsers(article)
+	.then((authors : User[]) => {
+		return Object.assign({}, article, {
+			authors: authors.map(author => author.ID),
+			website: website.ID,
+		});
+	});
+
+const getUsers = (article : Article) : Promise <User[]> => Promise.all(
+	// For some reason, TypeScript rejects Promise.map here. I stopped bothering
+	article.authors.map((author : Person) => userService.findOrInsert(author))
+);
