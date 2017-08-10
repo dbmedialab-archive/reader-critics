@@ -27,7 +27,8 @@ import * as bodyParser from 'body-parser';
 
 import {
 	apiLoginHandler,
-	apiTestHandler
+	apiTestHandler,
+	fbListHandler
 } from 'app/routes/admin/api/handlers';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
@@ -55,6 +56,7 @@ adminApiRoute.post('/login', apiLoginHandler);
  * All api request that have NOT to to pass without authentication have to be placed here
  */
 adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
+adminApiRoute.get('/fb', fbListHandler);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;
