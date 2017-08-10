@@ -29,12 +29,14 @@ import createPersistingService from '../createPersistingService';
 import validateAndSave from './common/validateAndSave';
 
 import {
+	getByArticle,
 	save,
 } from './FeedbackDAO';
 
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
+			getByArticle,
 			save,
 			validateAndSave,
 		}

@@ -37,6 +37,16 @@ import BasicPersistingService from '../BasicPersistingService';
  */
 interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
+	 * Get all feedback objects related to one article.
+	 */
+	getByArticle(
+		article : Article,
+		skip? : number,
+		limit? : number,
+		sort? : Object
+	) : Promise <Feedback[]>;
+
+	/**
 	 * Save the new feedback object and create references to all involved objects.
 	 * The references to the Website and User objects are copied over from the
 	 * provided Article object. This is needed for complex querying with filters.

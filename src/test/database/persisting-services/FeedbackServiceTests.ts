@@ -16,13 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-
 import * as path from 'path';
 
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
 
+import ArticleURL from 'base/ArticleURL';
+import Feedback from 'base/Feedback';
+
 import {
+	articleService,
 	feedbackService,
 } from 'app/services';
 
@@ -42,7 +45,6 @@ export default function(this: ISuiteCallbackContext) {
 			return app.loadJSON(path.join(feedbackDir, filename))
 			.then((a : any) => {
 				assert.isNotNull(a);
-				console.log(app.inspect(a));
 				return feedbackService.validateAndSave(a);
 			});
 		});
@@ -51,4 +53,25 @@ export default function(this: ISuiteCallbackContext) {
 	it('count()', () => feedbackService.count().then(count => {
 		assert.strictEqual(count, feedbackCount);
 	}));
+
+	it('getByArticle()', () => {
+		return ArticleURL.from('http://www.mopo.no/1')
+		.then(articleURL => articleService.get(articleURL, 'final-draft'))
+		.then(article => feedbackService.getByArticle(article))
+		.then((results : Feedback[]) => {
+			assert.lengthOf(results, 1);
+			results.forEach(feedback => assertFeedbackObject(feedback));
+		});
+	});
 }
+
+const assertFeedbackObject = (f : Feedback) => {
+	assert.isObject(f);
+
+	[ 'article', 'enduser', 'articleAuthors', 'items', 'status' ].forEach(prop => {
+		assert.property(f, prop);
+	});
+
+	assert.isArray(f.articleAuthors);
+	assert.isArray(f.items);
+};
