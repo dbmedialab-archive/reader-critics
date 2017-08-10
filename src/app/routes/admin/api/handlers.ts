@@ -31,11 +31,7 @@ import {
 import { EmptyError } from 'app/util/errors';
 import { options as jwtOptions } from 'app/middleware/config/strategy/jwt';
 import { User } from 'base';
-import { userService, feedbackService } from 'app/services';
-
-import {
-	FeedbackModel
-} from 'app/db/models';
+import { userService } from 'app/services';
 
 import * as app from 'app/util/applib';
 
@@ -99,28 +95,5 @@ export function apiTestHandler(requ : Request, resp : Response) : void {
 			errorResponse(resp, error, 'URL parameter invalid', options);
 		}
 	}
-}
-
-/**
- * Provides with whole list of existing feedbacks
- * Not filtering, no page or limit query params are taken into account 
- */
-export function fbListHandler (requ: Request, resp: Response) : void {
-	//@TODO check auth
-	//@TODO pagination params
-	const notFound = "Resourse not found";
-
-	/*FeedbackModel.find({}).populate("_article").exec(function(err, feedbc){	
-	});*/
-	feedbackService.getRange().then((fbacks) => {
-		if (fbacks.length) {
-			okResponse(resp, fbacks);
-		} else {
-			errorResponse(resp, undefined, notFound, { status: 404 });
-		}
-		
-	}).catch((err) => {
-		errorResponse(resp, undefined, err.stack, { status: 500 });
-	});
 }
 
