@@ -1,5 +1,11 @@
 box: openjdk:8
 
+services:
+  - name: redis
+    id: redis:4.0
+  - mongo: mongo
+    id: mongo:3.0
+
 js-lint-build-test:
   steps:
   - script:
