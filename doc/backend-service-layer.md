@@ -9,16 +9,18 @@ _The interface declarations and implementations are still in development and wil
 
 ## Services
 
-Service name | Persisting? | Purpose
------------- | ----------- | -------
-[Article](/src/app/services/article/ArticleService.ts) | yes | Download external articles, store and load article objects
-[End User](/src/app/services/enduser/EndUserService.ts) | yes | Controls end user objects (persons that use the feedback frontend)
-[Feedback](/src/app/services/feedback/FeedbackService.ts) | yes | Store and load feedback objects, various queries for statistics
-[Parser](/src/app/services/parser/ParserService.ts) | no | Control the parser engine, parse articles into objects
-[Suggestion](/src/app/services/suggestion/SuggestionService.ts) | yes | Store and load comments from the suggestion box
-[Template](/src/app/services/template/TemplateService.ts) | no | Provide templates for frontend and mail formatting
-[User](/src/app/services/user/UserService.ts) | yes | Store and load user objects, authentification
-[Website](/src/app/services/website/WebsiteService.ts) | yes | Store and load website objects, control depending services
+Service<br/>name | DB | Main<br/>model | Purpose
+---------------- |:--:|:--------------:| -------
+[Article](/src/app/services/article/ArticleService.ts) | ✖ | [🔗](/src/base/Article.ts) | Download external articles, store and load article objects
+[End User](/src/app/services/enduser/EndUserService.ts) | ✖ | [🔗](/src/base/EndUser.ts) | Controls end user objects (persons that use the feedback frontend)
+[Feedback](/src/app/services/feedback/FeedbackService.ts) | ✖ | [🔗](/src/base/Feedback.ts) | Store and load feedback objects, various queries for statistics
+[Parser](/src/app/services/parser/ParserService.ts) | - | | Control the parser engine, parse articles into objects
+[Suggestion](/src/app/services/suggestion/SuggestionService.ts) | ✖ | [🔗](/src/base/Suggestion.ts) | Store and load comments from the suggestion box
+[Template](/src/app/services/template/TemplateService.ts) | - | | Provide templates for frontend and mail formatting
+[User](/src/app/services/user/UserService.ts) | ✖ | [🔗](/src/base/User.ts) | Store and load user objects, authentification
+[Website](/src/app/services/website/WebsiteService.ts) | ✖ | [🔗](/src/base/Website.ts) | Store and load website objects, control depending services
+
+_DB = Does this service use the database to persist objects?_ If yes, a link to the main model interface for its objects can be found in the next column. See [the section about persistence](#persisting-services) for more details.
 
 ## Implementation and Conventions
 
@@ -56,11 +58,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 As seen above, the factory choses an implementation based on the environment, this means that there will always be two files (`[service name].live.ts` and `[service name].mock.ts`) with different suffixes inside a service sub folder, that define which functions are exported for which environment. So for example, if a service is not yet implemented completely, it can reuse some of the mock functions to provide a complete live interface, and then these functions could be implemented one after another until two different complete implementations exist. All the while, tests can be run on top of the new service to ensure that the new implementation behaves exactly as specified with the mock functions (assuming the test has full coverage).
 
 By further convention, there are three different possible sub folders inside a service folder which contain the modules with the function implementations:
-* `common` -- contains functions that are used in both environments, those that have no direct reliance on external resources (example: [fetch()](/src/app/services/article/common/fetch.ts))
-* `live` -- implementations with network/resource access
-* `mock` -- replacing network/resource responses with static content
+* `common` – contains functions that are used in both environments, those that have no direct reliance on external resources (example: [fetch()](/src/app/services/article/common/fetch.ts))
+* `live` – implementations with network/resource access
+* `mock` – replacing network/resource responses with static content
 
-## Persisting Services
+## Persisting Services <a name="persisting-services"/>
 
 Like the name implies, these services are able to persist the objects they are responsible for to the database. They also offer several common functions and queries as well as specialized (= unique for a service) query functions.
 
@@ -79,7 +81,7 @@ const service : ArticleService
 ```
 
 The function `createPersistingService` takes three generic type arguments:
-* The subtype of a [Mongoose Document](http://mongoosejs.com/docs/api.html#document-js) as defined in [models.ts](/src/app/db/models.ts)
+* The sub type of a [Mongoose Document](http://mongoosejs.com/docs/api.html#document-js) as defined in [models.ts](/src/app/db/models.ts)
 * The service interface, for type casting the compiled object and fulfilling the export type
 * The object model of the service's main object, mostly for function return types
 
