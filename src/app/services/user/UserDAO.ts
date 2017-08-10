@@ -33,10 +33,6 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
-// FIXME genericGetUser might be outdated because of the username/email constraint in UserSchema
-// (parameter checks look for either name or mail, but schema wants both, not null)
-import genericGetUser from './dao/genericGetUser';
-
 export function checkPassword(user : User, password : string) : Promise <boolean> {
 	return UserModel.findOne({
 		name: user.name,
@@ -48,8 +44,15 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 	});
 }
 
-export function get(username : String|null, email? : String|null) : Promise <User> {
-	return genericGetUser<UserDocument, User>(UserModel, username, email);
+export function get(name : String, email? : String) : Promise <User> {
+	emptyCheck(name);  // Do not check optional "email" parameter
+	const query : any = { name };
+
+	if (email !== undefined) {
+		query.email = email;
+	}
+
+	return wrapFindOne(UserModel.findOne(query).select('-password'));  // Better be paranoid!
 }
 
 export function save(user : User) : Promise <User> {
