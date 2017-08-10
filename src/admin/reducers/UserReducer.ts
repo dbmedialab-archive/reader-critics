@@ -16,14 +16,20 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 // details.  You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import User from 'base/User';
+import Users from 'base/Users';
 import UserRole from 'base/UserRole';
 import * as Immutable from 'seamless-immutable';
 import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UserConstants from '../constants/UserConstants';
 
-const initialState = Immutable.from<User>({
+interface UsersInit extends User, Users {
+	users: Users[];
+}
+
+const initialState = Immutable.from<UsersInit>({
 	name: '',
 	email: '',
 	role: UserRole.Normal,

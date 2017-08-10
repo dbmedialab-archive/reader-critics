@@ -23,7 +23,6 @@ import UserRow from 'admin/components/user/UserRow';
 import * as AppConstants from 'admin/constants/AppConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as UserActions from 'admin/actions/UserActions';
-import {sendAuthRequest} from 'admin/apiAdminCommunication';
 
 class UserList extends React.Component <any, any> {
 	constructor(props) {
@@ -33,6 +32,14 @@ class UserList extends React.Component <any, any> {
 				value: '',
 				touched: false,
 			},
+			users: [
+				{
+					'id': '5964e04c6a2f9c5fae26625c',
+					'email': 'valo44n1x@gmail.com',
+					'role': 'admin',
+					'name': 'Valeriy',
+				},
+			],
 		};
 		this.updateErrorState = this.updateErrorState.bind(this);
 		this.onCreate = this.onCreate.bind(this);

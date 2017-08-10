@@ -16,12 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-import UserRole from './UserRole';
+import User from './User';
 
-interface User extends PersistedModel, Person {
-	role : UserRole;
+interface Users extends User {
+	users: User[];
 }
 
-export default User;
+export default Users;
