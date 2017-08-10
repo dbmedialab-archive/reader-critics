@@ -2,7 +2,7 @@ box: openjdk:8
 
 services:
   - name: redis
-    id: redis:4.0
+    id: redis:3.2
   - mongo: mongo
     id: mongo:3.0
 
@@ -32,6 +32,13 @@ js-lint-build-test:
   - script:
     name: build
     code: run/build
+  - script:
+    name: set db envs
+    code: | 
+      export MONGODB_URL="mongodb://$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/readercritics"
+      export REDIS_URL_MESSAGE_QUEUE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/1"
+      export REDIS_URL_SESSION_CACHE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/2"
+      set | sort
   - script:
     name: test libraries
     code: run/test --libs
