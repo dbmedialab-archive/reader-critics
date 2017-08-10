@@ -37,12 +37,6 @@ import {
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// type FeedbackData = {
-// 	article: any,
-// 	feedback: any,
-// 	user: any,
-// };
-
 // Validate and store to database
 
 export default function(data : any) : Promise <Feedback> {
@@ -55,11 +49,9 @@ export default function(data : any) : Promise <Feedback> {
 
 	return Promise.all([
 		getArticle(data.article).then((a : Article) => article = a),
-		getUser(data.user).then((u : EndUser) => user = u),
+		getEndUser(data.user).then((u : EndUser) => user = u),
 	])
-	.then(() => feedbackService.save(
-		feedbackService.create(article, user, data.feedback.items)
-	));
+	.then(() => feedbackService.save(article, user, data.feedback.items));
 }
 
 // Fetch article object
@@ -69,7 +61,7 @@ function getArticle(articleData : any) : Promise <Article> {
 	const version = articleData.version;
 
 	return ArticleURL.from(url)
-	.then(articleURL => articleService.get(articleURL, version))
+	.then(articleURL => articleService.get(articleURL, version, true))
 	.then((article : Article) => (article === null
 		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
 		: article
@@ -78,7 +70,7 @@ function getArticle(articleData : any) : Promise <Article> {
 
 // Fetch user object from database or create a new one
 
-function getUser(userData : any) : Promise <EndUser> {
+function getEndUser(userData : any) : Promise <EndUser> {
 	const name = isString(userData.name) ? userData.name : null;
 	const email = isString(userData.email) ? userData.email : null;
 

@@ -16,7 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Article from 'base/Article';
+import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import { FeedbackModel } from 'app/db/models';
 
@@ -26,11 +30,39 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
-export function save(feedback : Feedback) : Promise <Feedback> {
-	emptyCheck(feedback);
+import * as app from 'app/util/applib';
 
-	return wrapSave <Feedback> (new FeedbackModel(Object.assign({
-		_article: feedback.article.ID,
-		_enduser: feedback.enduser.ID,
-	}, feedback)).save());
+const log = app.createLog();
+
+export function save(
+	article : Article,
+	enduser : EndUser,
+	items : FeedbackItem[]
+) : Promise <Feedback> {
+	emptyCheck(article, enduser, items);
+
+	log('article:', app.inspect(article));
+	log('enduser:', app.inspect(enduser));
+
+	return makeDocument(article, enduser, items)
+	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }
+
+const makeDocument = (
+	article : Article,
+	enduser : EndUser,
+	items : FeedbackItem[]
+) => Promise.resolve({
+	article: article.ID,
+	enduser: enduser.ID,
+
+	website: article.website.ID,
+	articleAuthors: article.authors.map(author => author.ID),
+
+	items,
+	status: FeedbackStatus.New,
+
+	date: {
+		statusChange: new Date(),
+	},
+});
