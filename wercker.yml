@@ -1,16 +1,9 @@
-box: openjdk:8
+box:
+  id: dbmedialab/nodejs-openjdk
+  cmd: /bin/bash -l
 
 js-lint-build-test:
   steps:
-  - script:
-    name: 'install node'
-    code: |
-      apt-get update && apt-get install build-essential -y
-      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-      export NVM_DIR="$HOME/.nvm"
-      source /root/.bashrc
-      nvm install v8
-      nvm use node
   - script:
     name: set dependency cache
     code: npm config set cache $WERCKER_CACHE_DIR/wercker/npm
