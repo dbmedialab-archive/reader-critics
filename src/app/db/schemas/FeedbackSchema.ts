@@ -19,15 +19,13 @@
 import { Schema } from 'mongoose';
 
 import { objectReference } from 'app/db/common';
+import { ModelNames } from 'app/db/names';
 
 import FeedbackStatus from 'base/FeedbackStatus';
 
 const FeedbackSchema : Schema = new Schema({
-	_article: objectReference('Article'),
-	_user: objectReference('User'),
-
-	email: String,
-	comment: String,
+	_article: objectReference(ModelNames.Article),
+	_enduser: objectReference(ModelNames.EndUser),
 
 	status: {
 		type: String,

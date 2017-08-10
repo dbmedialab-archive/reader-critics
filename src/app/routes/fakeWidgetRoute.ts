@@ -1,3 +1,5 @@
+// fake-widget
+
 //
 // LESERKRITIKK v2 (aka Reader Critics)
 // Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
@@ -16,24 +18,36 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import {
+	Request,
+	Response,
+	Router,
+} from 'express';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+import * as app from 'app/util/applib';
+import * as doT from 'dot';
+import * as path from 'path';
 
-	// Byline
-	authors : User[];
+import { readFileSync } from 'fs';
 
-	website? : Website;
+// Prepare and export Express router
 
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
+const fakeWidgetRoute : Router = Router();
+export default fakeWidgetRoute;
+
+// Main handler, checks for URL parameter and "empty" requests
+
+fakeWidgetRoute.get('/', fakeWidgetHandler);
+
+const mainTemplate = createMainTemplate();
+
+function fakeWidgetHandler(requ : Request, resp : Response) {
+	resp.set('Content-Type', 'text/html');
+	resp.send(mainTemplate());
+	resp.status(200).end();
 }
 
-export default Article;
+function createMainTemplate() {
+	const tplPath = path.join(app.rootPath, 'tmp', 'templates', 'fake-widget.html');
+	return doT.template(readFileSync(tplPath).toString());
+}

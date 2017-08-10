@@ -13,42 +13,42 @@
 	],
 	items: [
 		{
-			order: { elem: 1, type: 1 },
+			order: { item: 1, type: 1 },
 			text: "Bavaria ipsum dolor sit amet a bissal Marei sit, da Kini!",
 			type: "title",
 		},
 		{
-			order: { elem: 2, type: 1 },
+			order: { item: 2, type: 1 },
 			text: "(Morgenposten): Erat nomoi Freibia, Freibia! Jo mei is des schee enim des is schee placerat sint. Meidromml deserunt is ma Wuascht reprehenderit measi oamoi!",
 			type: "paragraph",
 		},
 		{
-			order: { elem: 3, type: 2 },
+			order: { item: 3, type: 2 },
 			text: "Da Kini nimmds duo amet, suscipit Biagadn Sauwedda wisi. Dolor nia need Hendl naa nix schoo, Xaver ullamco oba. Fugiat erat eirmod noch da Giasinga Heiwog.",
 			type: "paragraph",
 		},
 		{
-			order: { elem: 4, type: 1 },
+			order: { item: 4, type: 1 },
 			text: "Leonhardifahrt",
 			type: "subhead",
 		},
 		{
-			order: { elem: 5, type: 3 },
+			order: { item: 5, type: 3 },
 			text: "Zidern adipisici hawadere midananda a dolor cupiditat eu hendrerit. A bravs ad ut an sed amoi tincidunt erat praesent sog i.",
 			type: "paragraph",
 		},
 		{
-			order: { elem: 6, type: 4 },
+			order: { item: 6, type: 4 },
 			text: "Ea do i consetetur luja Kuaschwanz lorem sit singd es. Klampfn Brotzeit vel des muas ma hoid kenna, auf’d Schellnsau naa diam est veniam cillum!",
 			type: "paragraph",
 		},
 		{
-			order: { elem: 7, type: 2 },
+			order: { item: 7, type: 2 },
 			text: "A Prosit der Gmiadlichkeit",
 			type: "subhead",
 		},
 		{
-			order: { elem: 8, type: 5 },
+			order: { item: 8, type: 5 },
 			text: "Unbandig Meidromml Weiznglasl oans i moan scho aa gor Bladl, Radler. Diam sed dolores Schorsch Resi mehra vel esse owe. Ea Ramasuri dolor, obandln.",
 			type: "paragraph",
 		},

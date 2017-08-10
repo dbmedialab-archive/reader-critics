@@ -23,6 +23,13 @@ export class EmptyError extends Error {
 	}
 }
 
+export class InvalidRequestError extends Error {
+	constructor(message : string) {
+		super(message);
+		Object.setPrototypeOf(this, InvalidRequestError.prototype);
+	}
+}
+
 export class NotFoundError extends Error {
 	constructor(message : string) {
 		super(message);
