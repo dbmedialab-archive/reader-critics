@@ -52,7 +52,8 @@ export function get(name : String, email? : String) : Promise <User> {
 		query.email = email;
 	}
 
-	return wrapFindOne(UserModel.findOne(query).select('-password'));  // Better be paranoid!
+	// Better be paranoid about the password hash!
+	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
 }
 
 export function save(user : User) : Promise <User> {
