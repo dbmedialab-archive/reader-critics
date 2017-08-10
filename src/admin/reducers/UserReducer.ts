@@ -20,7 +20,8 @@
 import User from 'base/User';
 import Users from 'base/Users';
 import UserRole from 'base/UserRole';
-import * as Immutable from 'seamless-immutable';
+import * as Immutable from 'seamless-immutable'	;
+import { Action } from 'redux-actions';
 import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UserConstants from '../constants/UserConstants';
@@ -36,7 +37,7 @@ const initialState = Immutable.from<UsersInit>({
 	users: [],
 });
 
-function updateUser(action, state) {
+function updateUser(action: Action, state) {
 	return state.merge({
 		name: action.payload.name,
 		email: action.payload.email,
@@ -44,7 +45,7 @@ function updateUser(action, state) {
 	});
 }
 
-function deauthenticateUser(action, state) {
+function deauthenticateUser(action: Action, state) {
 	return state.merge({
 		name: '',
 		email: '',
@@ -52,8 +53,41 @@ function deauthenticateUser(action, state) {
 	});
 }
 
-function receiveUsers(action, state) {
+function receiveUsers(action: Action, state) {
 	return state.merge({users: action.payload});
+}
+
+function deleteUser(action, state) {
+	let users = [];
+	const userId = action.payload;
+	const mutableArray = Immutable.asMutable(state.users);
+	users = Immutable(mutableArray.filter(user => user.id !== userId));
+	return { ...state, users };
+}
+
+function addUser(action: Action, state) {
+	const user = action.payload;
+	let users = state.users;
+	if (user) {
+		const mutableArray = Immutable.asMutable(users);
+		mutableArray.push(user);
+		users = Immutable(mutableArray);
+	}
+	return { ...state, users };
+}
+
+function saveUser(action: Action, state) {
+	const user = action.payload;
+	return {...state, user};
+}
+
+function editUser(action: Action, state) {
+	const userId = action.payload.id;
+	const userIndex = state.users.findIndex(user => user.id === userId);
+	const mutableUsers = Immutable.asMutable(state.users);
+	mutableUsers[userIndex] = action.payload;
+	const users = Immutable(mutableUsers);
+	return {...state, users};
 }
 
 function UserReducer(state: User = initialState, action: UserActionsCreator.TAction): User {
@@ -66,6 +100,12 @@ function UserReducer(state: User = initialState, action: UserActionsCreator.TAct
 			return updateUser(action, state);
 		case UserConstants.USERS_RECEIVED:
 			return receiveUsers(action, state);
+		case UserConstants.DELETE_USER:
+			return deleteUser(action, state);
+		case UserConstants.EDIT_USER:
+			return editUser(action, state);
+		case UserConstants.SAVE_USER:
+			return saveUser(action, state);
 		default:
 			return state;
 	}

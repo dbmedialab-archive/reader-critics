@@ -22,6 +22,7 @@ import UserRole from './UserRole';
 
 interface User extends PersistedModel, Person {
 	role : UserRole;
+
 }
 
 export default User;

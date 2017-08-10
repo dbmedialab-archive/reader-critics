@@ -28,11 +28,13 @@ const AdminConstants = keykey([
 	'PROMPT_MODAL_WINDOW',
 	'DIALOG_MODAL_WINDOW',
 	'LOGIN_DIALOG_MODAL_WINDOW',
+	'PROMPT_MODAL_NAME',
 
 	//User actions
 	'AUTHENTICATE_USER',
 	'DEAUTHENTICATE_USER',
 	'UPDATE_CURRENT_USER',
+	'USER_MODAL_NAME',
 ]);
 
 export default AdminConstants;

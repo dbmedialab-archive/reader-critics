@@ -20,7 +20,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import UserRow from 'admin/components/user/UserRow';
 
-import * as AppConstants from 'admin/constants/AppConstants';
+import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as UserActions from 'admin/actions/UserActions';
 
@@ -51,7 +51,7 @@ class UserList extends React.Component <any, any> {
 
 	public onCreate(e: any): void {
 		e.preventDefault();
-		const windowName = AppConstants.USER_MODAL_NAME;
+		const windowName = AdminConstants.USER_MODAL_NAME;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: true});
 	}
 	updateErrorState(message: string = '', touched: boolean = false): void {
@@ -63,11 +63,13 @@ class UserList extends React.Component <any, any> {
 		});
 	}
 	public render() : JSX.Element {
-		const content = this.props.users.map((user) =>
+		//TODO edit to props instead of state when backend will works
+		const content = this.state.users.map((user) =>
 			<UserRow
 				id={user.id}
 				key={user.id}
 				email={user.email}
+				role={user.role}
 				name={user.name}
 			/>
 	);

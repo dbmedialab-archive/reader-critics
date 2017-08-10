@@ -20,7 +20,7 @@ import MainStore from 'admin/stores/MainStore';
 import User from 'base/User';
 
 import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
-import * as AppConstants from '../constants/AppConstants';
+import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as apiAdminCommunication from 'admin/apiAdminCommunication';
 
@@ -53,14 +53,13 @@ export function saveUser(user) {
 			this.editUser(user);
 		}
 	});
-	UIActions.closeReset(AppConstants.USER_MODAL_NAME);
+	UIActions.closeReset(AdminConstants.USER_MODAL_NAME);
 }
 
 /**
  * Fetch Users from DB
  */
 export function getUsers() {
-	console.log('getUsers');
 	UIActions.showMainPreloader();
 	apiAdminCommunication.getUsers()
 		.then((response) => {
@@ -83,6 +82,8 @@ export function editUser(user) {
  */
 export function deleteUser(user) {
 	UIActions.showMainPreloader();
+	console.log(user);
+	UserActionsCreator.deleteUser(user);
 	apiAdminCommunication.deleteUser(user).then(
 		MainStore.dispatch(
 			UserActionsCreator.deleteUser(user)

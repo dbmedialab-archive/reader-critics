@@ -121,11 +121,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 			email: this.props.email.value,
 			password: this.props.password.value,
 			id: this.props.userId || null,
-			profile: {
-				name: this.props.name.value,
-				role: this.props.role.value,
-			},
+			name: this.props.name.value,
+			role: this.props.role.value,
 		};
+		console.log(data);
 		UsersAction.saveUser(data);
 	}
 
@@ -239,16 +238,6 @@ const mapStateToProps = (state, ownProps) => {
 		email: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'value']) || '',
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'touched'])
-			|| false,
-		},
-		bio: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'bio', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'bio', 'touched'])
-			|| false,
-		},
-		field: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'field', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'field', 'touched'])
 			|| false,
 		},
 		role: {

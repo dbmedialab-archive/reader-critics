@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { UserProps } from 'admin/types/User';
-import * as AppConstants from 'admin/constants/AppConstants';
+import AdminConstants from 'admin/constants/AdminConstants';
 
 import * as UIActions from 'admin/actions/UIActions';
 import * as UsersAction  from 'admin/actions/UserActions';
@@ -19,7 +19,7 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 
 	public onEdit(e: any) :void {
 		e.preventDefault();
-		const windowName = AppConstants.USER_MODAL_NAME;
+		const windowName = AdminConstants.USER_MODAL_NAME;
 			const user = this.props;
 		const userRes = {
 			input: {},
@@ -35,7 +35,7 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 
 	public onDestroy(e: any) :void {
 		e.preventDefault();
-		const windowName = AppConstants.USER_MODAL_NAME;
+		const windowName = AdminConstants.USER_MODAL_NAME;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: false});
 		UIActions.showDialog({
 			noBtnName: 'Cancel',
