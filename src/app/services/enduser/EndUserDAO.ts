@@ -16,6 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import {
+	isNil,
+	isString
+} from 'lodash';
+
 import EndUser from 'base/EndUser';
 
 import {
@@ -24,34 +29,46 @@ import {
 } from 'app/db/models';
 
 import {
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-import genericGetUser, { isEmpty } from '../user/dao/genericGetUser';
-
 import { anonymousEndUser } from 'app/services/enduser/EndUserService';
+
+export const isParamEmpty = v => isNil(v) || (isString(v) && v.length <= 0);
 
 /**
  * Fetch an EndUser object from the database. Opposite to system users (@see User)
  * an end user can be completely anonymous, because the frontend does not force
  * users to give their name and e-mail address.
- * With both parameters (username and email) empty, the function retrieves the
+ * With both parameters (name and email) empty, the function retrieves the
  * common "Anonymous" user object. Should this object not exist in the database
  * yet, the function will create a new object there and return it.
  *
- * @param username string
+ * @param name string
  * @param email string
  */
-export function get(username : string|null, email? : string|null) : Promise <EndUser> {
-	const isAnonymous = isEmpty(username) && isEmpty(email);
+export function get(name : string|null, email? : string|null) : Promise <EndUser> {
+	const isAnonymous = isParamEmpty(name) && isParamEmpty(email);
+	let query : any = {};
 
-	return genericGetUser<EndUserDocument, EndUser>(
-		EndUserModel,
-		isAnonymous ? anonymousEndUser : username,
-		isAnonymous ? null : email
-	)
+	if (isAnonymous) {
+		query = {
+			name: anonymousEndUser,
+		};
+	}
+	else {
+		if (!isParamEmpty(name)) {
+			query.name = name;
+		}
+		if (!isParamEmpty(email)) {
+			query.email = email;
+		}
+	}
+
+	return wrapFindOne<EndUserDocument, EndUser>(EndUserModel.findOne(query))
 	.then((endUser : EndUser) => {
 		if (endUser !== null) {
 			return endUser;
@@ -68,7 +85,7 @@ export function get(username : string|null, email? : string|null) : Promise <End
 	});
 }
 
-export function save(user : EndUser) : Promise <EndUser> {
-	emptyCheck(user);
-	return wrapSave<EndUser>(new EndUserModel(user).save());
+export function save(enduser : EndUser) : Promise <EndUser> {
+	emptyCheck(enduser);
+	return wrapSave<EndUser>(new EndUserModel(enduser).save());
 }

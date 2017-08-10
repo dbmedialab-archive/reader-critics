@@ -54,7 +54,8 @@ export default function(requ : Request, resp : Response) : void {
 	ArticleURL.from(requ.query.url)
 	.then((url : ArticleURL) => {
 		articleURL = url;
-		log(articleURL.href);
+		log('article: "%s"', articleURL.href);
+		log('version: "%s"', version);
 		// Fetch the article from the database. If not stored, will return null
 		return articleService.get(articleURL, version);
 	})
@@ -73,6 +74,11 @@ export default function(requ : Request, resp : Response) : void {
 			}
 
 			website = w;
+			// The article returned at this point could be already in the database:
+			// Incoming versions that do not match anything in the DB will end up here
+			// and the version of the now parsed article might indeed exist already.
+			// This needs an "exists" check later to see if it actually needs to be
+			// stored or can be ignored.
 			return articleService.fetch(website, articleURL);
 		});
 	})
@@ -83,10 +89,13 @@ export default function(requ : Request, resp : Response) : void {
 		return article;
 	})
 	// After serving the request: if the article is just fetched, store it in
-	// the database now
+	// the database now. This step is done after delivering the response to the
+	// client to save the rtt to the database in the response time.
 	.then((article : Article) => {
 		if (wasFetched) {
-			return articleService.save(website, article)
+			// Using upsert here because of the different-version-approximation
+			// described above. Should the article already exist, it is ignored.
+			return articleService.upsert(website, article)
 			.catch(error => log(error));
 		}
 	})

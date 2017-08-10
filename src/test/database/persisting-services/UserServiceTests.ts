@@ -44,7 +44,7 @@ export default function(this: ISuiteCallbackContext) {
 		assert.throws(() => userService.get('', ''), EmptyError);
 
 		assert.doesNotThrow(() => userService.get('Jake Peralta'), Error);
-		assert.doesNotThrow(() => userService.get(null, 'det.peralta@99prec.nyc'), Error);
+		assert.throws(() => userService.get(null, 'det.peralta@99prec.nyc'), EmptyError);
 
 		assert.throws(() => userService.save(null), EmptyError);
 	});
@@ -71,7 +71,7 @@ export default function(this: ISuiteCallbackContext) {
 	it('get()', () => {
 		return Promise.all([
 			userService.get('Indiana Horst'),
-			userService.get(null, 'prost.mahlzeit@lulu.org'),
+			userService.get('Stamatis Skeates', 'stamatis@ote.gr'),
 			userService.get('Ernst Eisenbichler', 'ee@aller.com'),
 		]).then((results : User[]) => {
 			results.forEach(u => assertUserObject(u));

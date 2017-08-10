@@ -32,6 +32,7 @@ import fetch from './common/fetch';
 import {
 	get,
 	save,
+	upsert,
 } from './ArticleDAO';
 
 const service : ArticleService
@@ -41,6 +42,7 @@ const service : ArticleService
 			fetch,
 			get,
 			save,
+			upsert,
 		}
 	);
 
