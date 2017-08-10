@@ -22,6 +22,7 @@ import { initDatabase } from 'app/db';
 
 import articleService from './persisting-services/ArticleServiceTests';
 import enduserService from './persisting-services/EndUserServiceTests';
+import feedbackService from './persisting-services/FeedbackServiceTests';
 import suggestionService from './persisting-services/SuggestionServiceTests';
 import userService from './persisting-services/UserServiceTests';
 import websiteService from './persisting-services/WebsiteServiceTests';
@@ -34,3 +35,4 @@ describe('UserService', userService);
 describe('EndUserService', enduserService);
 describe('ArticleService', articleService);
 describe('SuggestionService', suggestionService);
+describe('FeedbackService', feedbackService);

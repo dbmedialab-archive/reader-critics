@@ -16,9 +16,39 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-/*
+
 import * as path from 'path';
 
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
-*/
+
+import {
+	feedbackService,
+} from 'app/services';
+
+import * as app from 'app/util/applib';
+
+const feedbackDir = path.join('resources', 'feedback');
+
+export default function(this: ISuiteCallbackContext) {
+	let feedbackCount : number;
+
+	it('clear()', () => feedbackService.clear());
+
+	it('validateAndSave()', () => app.scanDir(feedbackDir).then((files : string[]) => {
+		feedbackCount = files.length;
+
+		return Promise.mapSeries(files, (filename : string) => {
+			return app.loadJSON(path.join(feedbackDir, filename))
+			.then((a : any) => {
+				assert.isNotNull(a);
+				console.log(app.inspect(a));
+				return feedbackService.validateAndSave(a);
+			});
+		});
+	}));
+
+	it('count()', () => feedbackService.count().then(count => {
+		assert.strictEqual(count, feedbackCount);
+	}));
+}
