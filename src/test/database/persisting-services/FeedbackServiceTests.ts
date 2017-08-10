@@ -16,7 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+/*
 import * as path from 'path';
 
 import { assert } from 'chai';
 import { ISuiteCallbackContext } from 'mocha';
+*/
