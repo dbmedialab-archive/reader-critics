@@ -21,6 +21,8 @@ import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
+import User from 'base/User';
+import Website from 'base/Website';
 
 import { FeedbackModel } from 'app/db/models';
 
@@ -52,6 +54,28 @@ export function getByArticle(
 	}).sort(sort).skip(skip).limit(limit));
 }
 
+// getByArticleAuthor
+
+export function getByArticleAuthor(
+	author : User,
+	website? : Website,
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]> {
+	emptyCheck(author);
+
+	const query : any = {
+		articleAuthors: author.ID,
+	};
+
+	if (website !== undefined) {
+		query.website = website.ID;
+	}
+
+	return wrapFind(FeedbackModel.find(query).sort(sort).skip(skip).limit(limit));
+}
+
 // save
 
 export function save(
@@ -60,6 +84,10 @@ export function save(
 	items : FeedbackItem[]
 ) : Promise <Feedback> {
 	emptyCheck(article, enduser, items);
+
+	console.log('------------------------------------------------------------');
+	console.log('article object in feedback.save:', article);
+	console.log('\n');
 
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
@@ -74,7 +102,10 @@ const makeDocument = (
 	enduser: enduser.ID,
 
 	website: article.website.ID,
-	articleAuthors: article.authors.map(author => author.ID),
+	articleAuthors: article.authors.map(author => {
+		console.log('mapping author', author);
+		return author.ID;
+	}),
 
 	items,
 	status: FeedbackStatus.New,
