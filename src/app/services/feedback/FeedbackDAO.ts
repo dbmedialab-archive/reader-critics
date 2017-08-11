@@ -87,3 +87,15 @@ const makeDocument = (
 		statusChange: new Date(),
 	},
 });
+
+export function getRange(
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]> {
+	return wrapFind(
+		FeedbackModel.find({})
+		.sort(sort).skip(skip).limit(limit)
+		.populate('article')
+	);
+}

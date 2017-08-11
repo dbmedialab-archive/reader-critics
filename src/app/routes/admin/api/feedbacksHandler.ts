@@ -21,9 +21,9 @@ import {
 	Response,
 } from 'express';
 
-//import {
-//	FeedbackModel
-//} from 'app/db/models';
+import {
+	FeedbackModel
+} from 'app/db/models';
 
 import {
 	errorResponse,
@@ -40,11 +40,25 @@ export function list (requ: Request, resp: Response) {
 	//@TODO check auth
 	//@TODO pagination params
 	const notFound = "Resourse not found";
-
-	/*FeedbackModel.find({}).populate("_article").exec(function(err, feedbc){	
-	});*/
-	feedbackService.getRange().then((fbacks) => {
-		if (fbacks.length) {
+	// this fallback will work until we have getRange() in DAO module supporting populate()
+	FeedbackModel.find({}).populate({
+		path: "article",
+		populate:
+			{
+				path: 'authors'
+			}
+		}).exec(function(err, feedbacks){
+			if (err) {
+				return errorResponse(resp, undefined, err.stack, { status: 500 });
+			}
+			
+			if (feedbacks.length) {
+				return okResponse(resp, feedbacks);
+			} else {
+				errorResponse(resp, undefined, notFound, { status: 404 });
+			}
+	});
+	/*feedbackService.getRange().then((fbacks) => {
 			okResponse(resp, fbacks);
 		} else {
 			errorResponse(resp, undefined, notFound, { status: 404 });
@@ -52,5 +66,5 @@ export function list (requ: Request, resp: Response) {
 		
 	}).catch((err) => {
 		errorResponse(resp, undefined, err.stack, { status: 500 });
-	});
+	});*/
 }
