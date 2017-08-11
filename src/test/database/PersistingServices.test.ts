@@ -30,9 +30,9 @@ import websiteService from './persisting-services/WebsiteServiceTests';
 before(() => initDatabase());
 
 // Order of execution has to be preserved:
-describe.skip('WebsiteService', websiteService);
-describe.skip('UserService', userService);
-describe.skip('EndUserService', enduserService);
+describe('WebsiteService', websiteService);
+describe('UserService', userService);
+describe('EndUserService', enduserService);
 describe('ArticleService', articleService);
-describe.skip('SuggestionService', suggestionService);
+describe('SuggestionService', suggestionService);
 describe('FeedbackService', feedbackService);
