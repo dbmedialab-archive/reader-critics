@@ -16,21 +16,86 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import Article from 'base/Article';
+import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import { FeedbackModel } from 'app/db/models';
 
 import {
-	wrapSave
+	wrapFind,
+	wrapSave,
 } from 'app/db/common';
+
+import {
+	defaultLimit,
+	defaultSkip,
+	defaultSort,
+} from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-export function save(feedback : Feedback) : Promise <Feedback> {
-	emptyCheck(feedback);
+// getByArticle
 
-	return wrapSave <Feedback> (new FeedbackModel(Object.assign({
-		_article: feedback.article.ID,
-		_enduser: feedback.enduser.ID,
-	}, feedback)).save());
+export function getByArticle(
+	article : Article,
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]> {
+	emptyCheck(article);
+
+	return wrapFind(
+		FeedbackModel.find({
+			article: article.ID,
+		})
+		.sort(sort).skip(skip).limit(limit)
+		.populate('article')
+	);
+}
+
+// save
+
+export function save(
+	article : Article,
+	enduser : EndUser,
+	items : FeedbackItem[]
+) : Promise <Feedback> {
+	emptyCheck(article, enduser, items);
+
+	return makeDocument(article, enduser, items)
+	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
+}
+
+const makeDocument = (
+	article : Article,
+	enduser : EndUser,
+	items : FeedbackItem[]
+) => Promise.resolve({
+	article: article.ID,
+	enduser: enduser.ID,
+
+	website: article.website.ID,
+	articleAuthors: article.authors.map(author => author.ID),
+
+	items,
+	status: FeedbackStatus.New,
+
+	date: {
+		statusChange: new Date(),
+	},
+});
+
+export function getRange(
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]> {
+	return wrapFind(
+		FeedbackModel.find({})
+		.sort(sort).skip(skip).limit(limit)
+		.populate('article')
+	);
 }
