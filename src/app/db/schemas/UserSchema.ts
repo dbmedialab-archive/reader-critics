@@ -23,13 +23,11 @@ import UserRole from 'base/UserRole';
 const UserSchema : Schema = new Schema({
 	name: {
 		type: String,
-		required: false,
-		default: null,
+		required: true,
 	},
 	email: {
 		type: String,
-		required: false,
-		default: null,
+		required: true,
 	},
 	role: {
 		type: String,
@@ -47,7 +45,7 @@ const UserSchema : Schema = new Schema({
 	toObject: {
 		retainKeyOrder: true,
 		transform: (doc : Document, converted : any) => {
-			// Throw away password hash
+			// Make sure the password hash is thrown away
 			delete converted.password;
 			return converted;
 		},

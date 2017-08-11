@@ -1,0 +1,33 @@
+{
+	article: {
+		url: 'http://www.mopo.no/2',
+		version: '201707251349',
+	},
+	user: {
+		email: 'horst@indiana.net',
+	},
+	feedback: {
+		items: [
+			{
+				links: [],
+				comment: 'Ich glaub wenns so fria scho Freibier gibt, kommt da garnix bei raus. Echt jetzt, Junge!',
+				text: '',
+				order: {
+					type: 1,
+					item: 2
+				},
+				type: 'paragraph'
+			},
+			{
+				links: [],
+				comment: 'Wo is des?',
+				text: '',
+				order: {
+					type: 1,
+					item: 4
+				},
+				type: 'subhead'
+			}
+		],
+	}
+}
