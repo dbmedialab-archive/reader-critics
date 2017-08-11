@@ -42,6 +42,9 @@ const ArticleSchema : Schema = new Schema({
 	toObject: {
 		retainKeyOrder: true,
 		transform: (doc : Document, converted : any) => {
+			// console.log('------------------------------------------------------------');
+			// console.log('ArticleSchema transform:', converted);
+			// console.log('\n');
 			converted.authors.forEach(author => {
 				delete author.date;
 				delete author.role;

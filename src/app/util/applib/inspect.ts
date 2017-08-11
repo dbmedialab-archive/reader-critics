@@ -22,7 +22,7 @@ import * as hasColor from 'has-color';
 
 export function inspect(obj : any) : string {
 	return util.inspect(obj, {
-		breakLength: Infinity,
+		breakLength: 128,
 		colors: <boolean> hasColor,
 		depth: null,
 		showHidden: true,

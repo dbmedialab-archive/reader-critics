@@ -16,6 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as colors from 'ansicolors';
 import * as path from 'path';
 
 import { assert } from 'chai';
@@ -27,6 +28,7 @@ import Feedback from 'base/Feedback';
 import {
 	articleService,
 	feedbackService,
+	userService,
 } from 'app/services';
 
 import * as app from 'app/util/applib';
@@ -51,7 +53,10 @@ export default function(this: ISuiteCallbackContext) {
 	}));
 
 	it('count()', () => feedbackService.count().then(count => {
-		assert.strictEqual(count, feedbackCount);
+		assert.strictEqual(
+			count, feedbackCount,
+			`Expected object count of ${feedbackCount} but got ${count} instead`
+		);
 	}));
 
 	it('getByArticle()', () => {
@@ -63,15 +68,46 @@ export default function(this: ISuiteCallbackContext) {
 			results.forEach(feedback => assertFeedbackObject(feedback));
 		});
 	});
+
+	it('getByArticleAuthor()', () => {
+		return userService.get('Axel Egon Unterbichler')
+		.then(author => {
+			// console.error(colors.brightCyan(
+			// 	'--- author object to query ----------------------------------------------------'
+			// ));
+			// console.error(author);
+			// console.error('\n');
+			return feedbackService.getByArticleAuthor(author);
+		})
+		.then((results : Feedback[]) => {
+//			assert.lengthOf(results, 2);
+			results.forEach((feedback, index) => {
+				// console.error(colors.brightYellow(
+				// 	`--- queried feedback #${index} -------------------------------------------------------`
+				// ));
+				// console.error(app.inspect(feedback));
+				// console.error(colors.brightYellow(
+				// 	'-------------------------------------------------------------------------------\n'
+				// ));
+				assertFeedbackObject(feedback);
+			});
+		});
+	});
 }
 
 const assertFeedbackObject = (f : Feedback) => {
 	assert.isObject(f);
 
-	[ 'article', 'enduser', 'articleAuthors', 'items', 'status' ].forEach(prop => {
+	[ 'article', 'enduser', 'items', 'status' ].forEach(prop => {
 		assert.property(f, prop);
 	});
 
-	assert.isArray(f.articleAuthors);
+	[ 'articleAuthors' ].forEach(prop => {
+		assert.notProperty(f, prop);
+	});
+
+	assert.isObject(f.date);
+	assert.isObject(f.enduser);
 	assert.isArray(f.items);
+	assert.isArray(f.article.authors);
 };

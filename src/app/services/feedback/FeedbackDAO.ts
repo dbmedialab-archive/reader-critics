@@ -55,6 +55,7 @@ export function getByArticle(
 		})
 		.sort(sort).skip(skip).limit(limit)
 		.populate('article')
+		.populate('enduser')
 	);
 }
 
@@ -77,7 +78,17 @@ export function getByArticleAuthor(
 		query.website = website.ID;
 	}
 
-	return wrapFind(FeedbackModel.find(query).sort(sort).skip(skip).limit(limit));
+	return wrapFind(
+		FeedbackModel.find(query)
+		.sort(sort).skip(skip).limit(limit)
+		.populate({
+			path: 'article',
+			populate: {
+				path: 'authors',
+			},
+		})
+		.populate('enduser')
+	);
 }
 
 // save
@@ -89,9 +100,9 @@ export function save(
 ) : Promise <Feedback> {
 	emptyCheck(article, enduser, items);
 
-	console.log('------------------------------------------------------------');
-	console.log('article object in feedback.save:', article);
-	console.log('\n');
+	// console.log('------------------------------------------------------------');
+	// console.log('article object in feedback.save:', article);
+	// console.log('\n');
 
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
@@ -106,10 +117,7 @@ const makeDocument = (
 	enduser: enduser.ID,
 
 	website: article.website.ID,
-	articleAuthors: article.authors.map(author => {
-		console.log('mapping author', author);
-		return author.ID;
-	}),
+	articleAuthors: article.authors.map(author => author.ID),
 
 	items,
 	status: FeedbackStatus.New,
