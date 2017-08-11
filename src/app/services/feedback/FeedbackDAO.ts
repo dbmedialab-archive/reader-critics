@@ -47,9 +47,13 @@ export function getByArticle(
 ) : Promise <Feedback[]> {
 	emptyCheck(article);
 
-	return wrapFind(FeedbackModel.find({
-		article: article.ID,
-	}).sort(sort).skip(skip).limit(limit));
+	return wrapFind(
+		FeedbackModel.find({
+			article: article.ID,
+		})
+		.sort(sort).skip(skip).limit(limit)
+		.populate('article')
+	);
 }
 
 // save
