@@ -32,7 +32,8 @@ class FeedbackItem extends React.Component <any, any> {
 
 		});
 		const {feedback} = this.props;
-		const feedbackDateTime = feedback.date.statusChange.toLocaleDateString() + ' ' + feedback.date.statusChange.toLocaleTimeString();
+		const feedbackDateTime = feedback.date.statusChange.toLocaleDateString() + ' '
+					+ feedback.date.statusChange.toLocaleTimeString();
 
 		return (
 			<div className="feedback-item">

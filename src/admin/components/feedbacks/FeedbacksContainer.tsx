@@ -33,13 +33,14 @@ class FeedbacksContainer extends React.Component <any, any> {
 	}
 	render(){
 		const feedbacks = this.props.feedbacks.map((feedback)=>{
-			return feedback.items.map((item: FeedbackItem)=>{
+			return feedback.items.map((item)=>{
 				const feedbackObj = {
 					...item,
 					article: feedback.article,
 					date: feedback.date,
 
 				};
+				console.log(item);
 				return <FeedbackItem feedback={feedbackObj} key={item.id}/>;
 			});
 		});
