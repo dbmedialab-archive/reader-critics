@@ -3,7 +3,7 @@
 		url: 'http://www.mopo.no/2',
 		version: '201707251349',
 	},
-	enduser: {
+	user: {
 		email: 'horst@indiana.net',
 	},
 	feedback: {

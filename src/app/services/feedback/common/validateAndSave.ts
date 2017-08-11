@@ -40,8 +40,11 @@ import {
 // Validate and store to database
 
 export default function(data : any) : Promise <Feedback> {
-	if (!validateSchema(data)) {
-		return Promise.reject(new SchemaValidationError('Invalid feedback data'));
+	try {
+		validateSchema(data);
+	}
+	catch (error) {
+		return Promise.reject(error);
 	}
 
 	let article : Article;
@@ -83,10 +86,18 @@ function getEndUser(userData : any) : Promise <EndUser> {
 
 // Schema Validation
 
-function validateSchema(data : any) : boolean {
+function validateSchema(data : any) {
 	// TODO see RC-110 for schema validation
-	return isObject(data)
-		&& isObject(data.article)
-		&& isObject(data.feedback)
-		&& isObject(data.user);
+	if (!isObject(data)) {
+		throw new SchemaValidationError('Invalid feedback data');
+	}
+	if (!isObject(data.article)) {
+		throw new SchemaValidationError('Feedback data is missing "article" object');
+	}
+	if (!isObject(data.feedback)) {
+		throw new SchemaValidationError('Feedback data is missing "feedback" object');
+	}
+	if (!isObject(data.user)) {
+		throw new SchemaValidationError('Feedback data is missing "user" object');
+	}
 }
