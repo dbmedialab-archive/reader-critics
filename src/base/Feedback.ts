@@ -24,12 +24,12 @@ import PersistedModel from './zz/PersistedModel';
 
 interface Feedback extends PersistedModel {
 	article : Article
-	enduser : EndUser
+	enduser? : EndUser
 
-	items : FeedbackItem[]
-	status : FeedbackStatus
+	items? : FeedbackItem[]
+	status? : FeedbackStatus
 
-	date : {
+	date? : {
 		statusChange : Date
 	}
 }

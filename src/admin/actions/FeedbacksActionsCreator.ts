@@ -16,30 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import { Link } from 'react-router-dom';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-const MainMenuComponent : React.StatelessComponent <any> = () =>
-		<ul className="menu-nav">
-				<li className="menu-item">
-					<Link
-							to="/users"
-							className="tooltip-tip tooltipster-disable"
-							title="All users"
-						>
-							<i className="fa fa-users" />
-							<span>Users</span>
-					</Link>
-					<Link
-							to="/comments"
-							className="tooltip-tip tooltipster-disable"
-							title="All comments"
-						>
-							<i className="fa fa-list-ul" />
-							<span>Comments</span>
-					</Link>
-				</li>
-			</ul>;
+export type TAction = IAction;
 
-export default MainMenuComponent;
+export function setFeedbackList(payload): IAction {
+	return {
+		type: AdminConstants.FEEDBACK_LIST_RECEIVED,
+		payload,
+	};
+}
