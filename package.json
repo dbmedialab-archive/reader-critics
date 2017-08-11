@@ -106,7 +106,6 @@
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
-		"@types/ansicolors": "0.0.30",
 		"@types/bluebird": "3.5.8",
 		"@types/bluebird-global": "3.5.3",
 		"@types/body-parser": "1.16.4",

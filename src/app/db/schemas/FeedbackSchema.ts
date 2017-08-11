@@ -16,20 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as colors from 'ansicolors';
-
-import {
-	Document,
-	DocumentToObjectOptions,
-	Schema,
-} from 'mongoose';
+import { Schema } from 'mongoose';
 
 import { objectReference } from 'app/db/common';
 import { ModelNames } from 'app/db/names';
 
 import FeedbackStatus from 'base/FeedbackStatus';
-
-import * as app from 'app/util/applib';
 
 const FeedbackSchema : Schema = new Schema({
 	// Direct references to related objects
