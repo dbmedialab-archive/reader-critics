@@ -63,7 +63,7 @@
 		"foundation-sites": "6.2.1",
 		"has-color": "0.1.7",
 		"immutable": "3.8.1",
-		"ioredis": "3.1.2",
+		"ioredis": "3.1.4",
 		"joi-browser": "10.6.0",
 		"json5": "0.5.1",
 		"jsonwebtoken": "7.4.2",
