@@ -25,10 +25,38 @@ import FeedbackStatus from 'base/FeedbackStatus';
 import { FeedbackModel } from 'app/db/models';
 
 import {
-	wrapSave
+	wrapFind,
+	wrapSave,
 } from 'app/db/common';
 
+import {
+	defaultLimit,
+	defaultSkip,
+	defaultSort,
+} from 'app/services/BasicPersistingService';
+
 import emptyCheck from 'app/util/emptyCheck';
+
+// getByArticle
+
+export function getByArticle(
+	article : Article,
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]> {
+	emptyCheck(article);
+
+	return wrapFind(
+		FeedbackModel.find({
+			article: article.ID,
+		})
+		.sort(sort).skip(skip).limit(limit)
+		.populate('article')
+	);
+}
+
+// save
 
 export function save(
 	article : Article,
