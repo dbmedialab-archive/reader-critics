@@ -21,11 +21,14 @@ import {
 	Job,
 } from 'kue';
 
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog('api');
 
 export function onNewFeedback(job : Job, done : DoneCallback) {
 	log('New feedback in queue!', job.data);
+	SendGridMailer(JSON.stringify(job.data, null, 2));
 	done();
 }
