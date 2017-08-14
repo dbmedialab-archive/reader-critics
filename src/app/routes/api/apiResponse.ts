@@ -58,6 +58,34 @@ export function okResponse(
 	resp.status(statusCode).end(stringify(response));
 }
 
+/**
+ * Sends success API response
+ * API means JSON
+ */
+export function okApiResponse(
+	resp : Response,
+	data? : any,
+	options? : ResponseOptions
+) : void {
+	const response : any = {
+		success: true,
+	};
+
+	response.data = data || {};
+
+	let statusCode = 200;
+
+	if (options !== undefined) {
+		Object.assign(response, options);
+
+		if (options.status) {
+			statusCode = options.status;
+		}
+	}
+
+	resp.status(statusCode).json(response);
+}
+
 // Send a "failure" response
 
 export function errorResponse(
