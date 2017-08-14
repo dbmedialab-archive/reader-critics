@@ -33,11 +33,10 @@ const FeedbackSchema : Schema = new Schema({
 	website: objectReference(ModelNames.Website, {
 		select: false,
 	}),
-	articleAuthors: [
-		objectReference(ModelNames.User, {
-			select: false,
-		}),
-	],
+	articleAuthors: {
+		type: [objectReference(ModelNames.User)],
+		select: false,
+	},
 
 	// Processing status
 	status: {
