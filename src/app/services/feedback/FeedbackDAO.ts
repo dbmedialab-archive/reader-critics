@@ -24,18 +24,13 @@ import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
-import { FeedbackModel } from 'app/db/models';
-
 import {
 	wrapFind,
 	wrapSave,
 } from 'app/db/common';
 
-import {
-	defaultLimit,
-	defaultSkip,
-	defaultSort,
-} from 'app/services/BasicPersistingService';
+import { FeedbackModel } from 'app/db/models';
+import { FindOptions } from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
 
@@ -43,16 +38,18 @@ import emptyCheck from 'app/util/emptyCheck';
 
 export function getByArticle(
 	article : Article,
-	skip : number = defaultSkip,
-	limit : number = defaultLimit,
-	sort : Object = defaultSort
+	options? : FindOptions
 ) : Promise <Feedback[]> {
 	emptyCheck(article);
 
-	return wrapFind(
-		FeedbackModel.find({
-			article: article.ID,
-		})
+	return wrapFind(FeedbackModel.find({
+		article: article.ID,
+	}), {
+		...options,
+		populateFn: populateFeedback,
+	}
+
+)
 		.sort(sort).skip(skip).limit(limit)
 		.populate('article')
 		.populate('enduser')

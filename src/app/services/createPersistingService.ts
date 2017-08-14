@@ -37,6 +37,64 @@ import BasicPersistingService, {
 
 // Default implementations
 
+class BasicPersistingServiceImpl <
+	T extends Document,
+	X extends BasicPersistingService <Y>,
+	Y
+> {
+	protected serviceModel : Model <T>;
+
+	constructor(serviceModel : Model <T>) {
+		console.log('constructor BasicPersistingServiceImpl');
+		this.serviceModel = serviceModel;
+	}
+
+	public clear() : Promise <void> {
+		if (!isTest) {
+			throw new Error('Function can only be used in TEST mode');
+		}
+		return clearCollection(this.serviceModel);
+	}
+
+	public count () : Promise <number> {
+		return getCount(this.serviceModel);
+	}
+
+	public getRange (
+		skip : number = defaultSkip,
+		limit : number = defaultLimit,
+		sort : Object = defaultSort
+	) : Promise <Y[]> {
+		console.log('getRange.this', this);
+		return wrapFind<T, Y>(
+			this.serviceModel.find()
+			.sort(sort).skip(skip).limit(limit)
+		);
+	}
+}
+
+export default function <T extends Document, X extends BasicPersistingService <Y>, Y> (
+	serviceModel : Model <T>,
+	serviceFunctions : any
+) : X
+{
+	const ServiceClass = function() {
+		console.log('constructor ServiceClass');
+		// BasicPersistingServiceImpl.constructor.call(this);
+		Function.prototype.bind.call(BasicPersistingServiceImpl.constructor, this);
+	};
+
+	// subclass extends superclass
+	ServiceClass.prototype = Object.create(BasicPersistingServiceImpl.prototype);
+	ServiceClass.prototype.constructor = BasicPersistingServiceImpl;
+
+	Object.assign(ServiceClass, serviceFunctions);
+
+	const impl = new ServiceClass();
+	return <X> impl;
+}
+
+/*
 export default function <T extends Document, X extends BasicPersistingService <Y>, Y> (
 	serviceModel : Model <T>,
 	serviceFunctions : Object
@@ -56,10 +114,15 @@ export default function <T extends Document, X extends BasicPersistingService <Y
 			skip : number = defaultSkip,
 			limit : number = defaultLimit,
 			sort : Object = defaultSort
-		) : Promise <Y[]> => wrapFind<T, Y>(
-			serviceModel.find().sort(sort).skip(skip).limit(limit)
-		),
+		) : Promise <Y[]> => {
+			console.log('getRange.this', this.default);
+			return wrapFind<T, Y>(
+				serviceModel.find()
+				.sort(sort).skip(skip).limit(limit)
+			);
+		},
 	};
 
 	return <X> Object.assign(basicFunctions, serviceFunctions);
 }
+*/

@@ -29,6 +29,12 @@ export function clear() : Promise <void> {
 	throw new Error('Function is not implemented');
 }
 
+export interface FindOptions {
+	skip? : number;
+	limit? : number;
+	sort? : Object;
+}
+
 export const defaultLimit : number = 25;
 export const defaultSkip : number = 0;
 export const defaultSort : Object = { 'date.created': -1 };

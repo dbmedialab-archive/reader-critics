@@ -28,12 +28,31 @@ import {
 
 import { filterMeta } from 'app/db/filter';
 
+import {
+	defaultLimit,
+	defaultSkip,
+	defaultSort,
+	FindOptions,
+} from 'app/services/BasicPersistingService';
+
+export type PopulateFunction = <D extends Document> (query : DocumentQuery <D[], D>)
+	=> DocumentQuery <D[], D>;
+
+export interface WrapFindOptions extends FindOptions {
+	populateFn? : PopulateFunction;
+};
+
 /**
  * @param result A DocumentQuery produced with Model.find()
  * @return An array of plain objects of type Z, all excess properties removed
  */
 export function wrapFind <D extends Document, Z> (
-	result : DocumentQuery <D[], D>
+	result : DocumentQuery <D[], D>,
+	options : WrapFindOptions = {
+		skip: defaultSkip,
+		limit: defaultLimit,
+		sort: defaultSort,
+	}
 ) : Promise <Z[]>
 {
 	// Due to the typings of Mongoose, type information gets lost on the way
