@@ -98,6 +98,7 @@
 		"schema-inspector": "^1.6.8",
 		"seamless-immutable": "7.1.2",
 		"semver": "5.4.1",
+		"sendgrid": "5.2.1",
 		"serve-favicons": "2.1.5",
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.18.2",
