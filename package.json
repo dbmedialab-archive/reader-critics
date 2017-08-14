@@ -24,6 +24,7 @@
 		"start:nodemon": "nodemon out/start.js localhost 8080 --watch out/",
 		"front:develop": "npm-run-all --parallel start:nodemon watch:front watch:app",
 		"admin:develop": "npm-run-all --parallel start:nodemon watch:admin watch:app",
+		"back:develop": "npm-run-all --parallel start:nodemon watch:app",
 		"lint": "run/lint",
 		"test": "run/test",
 		"test:sass-lint": "sass-lint -c .sass-lint.yml --no-exit -v",
