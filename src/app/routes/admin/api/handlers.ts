@@ -96,4 +96,3 @@ export function apiTestHandler(requ : Request, resp : Response) : void {
 		}
 	}
 }
-

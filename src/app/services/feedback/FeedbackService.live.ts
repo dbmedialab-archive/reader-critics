@@ -33,7 +33,6 @@ import {
 	getByArticleAuthor,
 	getRange,
 	save,
-	getRange,
 } from './FeedbackDAO';
 
 const service : FeedbackService
@@ -44,7 +43,6 @@ const service : FeedbackService
 			getRange,
 			save,
 			validateAndSave,
-			getRange,
 		}
 	);
 

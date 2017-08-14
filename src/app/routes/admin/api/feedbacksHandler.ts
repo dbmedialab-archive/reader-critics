@@ -22,10 +22,6 @@ import {
 } from 'express';
 
 import {
-	FeedbackModel
-} from 'app/db/models';
-
-import {
 	errorResponse,
 	okResponse,
 } from 'app/routes/api/apiResponse';
@@ -34,37 +30,18 @@ import { feedbackService } from 'app/services';
 
 /**
  * Provides with whole list of existing feedbacks
- * Not filtering, no page or limit query params are taken into account 
+ * Not filtering, no page or limit query params are taken into account
  */
 export function list (requ: Request, resp: Response) {
-	//@TODO check auth
-	//@TODO pagination params
-	const notFound = "Resourse not found";
-	// this fallback will work until we have getRange() in DAO module supporting populate()
-	FeedbackModel.find({}).populate({
-		path: "article",
-		populate:
-			{
-				path: 'authors'
-			}
-		}).exec(function(err, feedbacks){
-			if (err) {
-				return errorResponse(resp, undefined, err.stack, { status: 500 });
-			}
-			
-			if (feedbacks.length) {
-				return okResponse(resp, feedbacks);
-			} else {
-				errorResponse(resp, undefined, notFound, { status: 404 });
-			}
-	});
-	/*feedbackService.getRange().then((fbacks) => {
+	const notFound = 'Resourse not found';
+	feedbackService.getRange().then((fbacks) => {
+		if (fbacks.length > 0) {
 			okResponse(resp, fbacks);
 		} else {
 			errorResponse(resp, undefined, notFound, { status: 404 });
 		}
-		
+
 	}).catch((err) => {
 		errorResponse(resp, undefined, err.stack, { status: 500 });
-	});*/
+	});
 }
