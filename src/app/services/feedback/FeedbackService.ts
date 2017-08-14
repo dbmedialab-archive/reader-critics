@@ -20,6 +20,8 @@ import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import User from 'base/User';
+import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
@@ -41,6 +43,18 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 */
 	getByArticle(
 		article : Article,
+		skip? : number,
+		limit? : number,
+		sort? : Object
+	) : Promise <Feedback[]>;
+
+	/**
+	 * Get all feedback objects related to one article author, optionally filter
+	 * also by website.
+	 */
+	getByArticleAuthor(
+		author : User,
+		website? : Website,
 		skip? : number,
 		limit? : number,
 		sort? : Object

@@ -4,23 +4,23 @@ import {
 } from 'lodash';
 
 export function filterMeta <Z> (from : any) : Z {
-	return <Z> filter(from, 0);
+	return <Z> filter(from);
 }
 
 // Everything that starts with one or more underscores
 const rxPropFilter = /^_+.+/;
 
 // Based on the MDN polyfill for Object.assign, simplified and with a key filter
-function filter(from : any, level : number) : any {
+function filter(from : any) : any {
 	const to = Object.create(null);
 	// Array map function, see below
-	const arrayFilter = item => isPlainObject(item) ? filter(item, level + 1) : item;
+	const arrayFilter = item => isPlainObject(item) ? filter(item) : item;
 
 	for (const key in from) {
 		const v = from[key];
 
 		// Store the hex string of the top level object ID
-		if (key === '_id' && level === 0) {
+		if (key === '_id') {
 			to['ID'] = from['_id'].toString();
 			continue;
 		}
@@ -40,7 +40,7 @@ function filter(from : any, level : number) : any {
 			// Do not go for normal isObject check here, this will catch Date objects
 			// and the like! Those should just be copied like primitive values.
 			else if (isPlainObject(v)) {
-				to[key] = filter(v, level + 1);
+				to[key] = filter(v);
 			}
 			// Whatever remains, just copy it over
 			else {
