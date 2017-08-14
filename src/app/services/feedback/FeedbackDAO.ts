@@ -16,6 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import {
+	Document,
+	DocumentQuery,
+} from 'mongoose';
+
 import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
@@ -41,33 +46,33 @@ import emptyCheck from 'app/util/emptyCheck';
 
 // getByArticle
 
-export function getByArticle(
+export function getByArticle (
 	article : Article,
 	skip : number = defaultSkip,
 	limit : number = defaultLimit,
 	sort : Object = defaultSort
-) : Promise <Feedback[]> {
+) : Promise <Feedback[]>
+{
 	emptyCheck(article);
 
-	return wrapFind(
+	return wrapFind(populateFeedback(
 		FeedbackModel.find({
 			article: article.ID,
 		})
 		.sort(sort).skip(skip).limit(limit)
-		.populate('article')
-		.populate('enduser')
-	);
+	));
 }
 
 // getByArticleAuthor
 
-export function getByArticleAuthor(
+export function getByArticleAuthor (
 	author : User,
 	website? : Website,
 	skip : number = defaultSkip,
 	limit : number = defaultLimit,
 	sort : Object = defaultSort
-) : Promise <Feedback[]> {
+) : Promise <Feedback[]>
+{
 	emptyCheck(author);
 
 	const query : any = {
@@ -78,26 +83,49 @@ export function getByArticleAuthor(
 		query.website = website.ID;
 	}
 
-	return wrapFind(
+	return wrapFind(populateFeedback(
 		FeedbackModel.find(query)
 		.sort(sort).skip(skip).limit(limit)
-		.populate({
-			path: 'article',
-			populate: {
-				path: 'authors',
-			},
-		})
-		.populate('enduser')
-	);
+	));
+}
+
+// getRange, using internal populate
+
+export function getRange (
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]>
+{
+	return wrapFind(populateFeedback(
+		FeedbackModel.find()
+		.sort(sort).skip(skip).limit(limit)
+	));
+}
+
+// Internal populate
+
+function populateFeedback <D extends Document> (
+	query : DocumentQuery <D[], D>
+) : DocumentQuery <D[], D>
+{
+	return query.populate({
+		path: 'article',
+		populate: {
+			path: 'authors',
+		},
+	})
+	.populate('enduser');
 }
 
 // save
 
-export function save(
+export function save (
 	article : Article,
 	enduser : EndUser,
 	items : FeedbackItem[]
-) : Promise <Feedback> {
+) : Promise <Feedback>
+{
 	emptyCheck(article, enduser, items);
 
 	// console.log('------------------------------------------------------------');
