@@ -42,13 +42,13 @@ export function get(
 ) : Promise <Article> {
 	emptyCheck(articleURL, version);
 
-	const result = ArticleModel.findOne({
+	let result = ArticleModel.findOne({
 		url: articleURL.href,
 		version,
 	});
 
 	if (populated) {
-		result.populate('authors').populate('website');
+		result = result.populate('authors').populate('website');
 	}
 
 	return wrapFindOne(result);

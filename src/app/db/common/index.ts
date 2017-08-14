@@ -34,7 +34,9 @@ export { wrapSave } from './wrapSave';
 
 export function clearCollection <T extends Document> (model : Model <T>) : Promise <void> {
 	if (isTest) {
-		return model.remove({}).then(() => undefined);
+		return model.remove({})
+		.then(() => model.collection.dropIndexes())
+		.then(() => undefined);
 	}
 	throw new Error('Function can only be used in TEST mode');
 }
