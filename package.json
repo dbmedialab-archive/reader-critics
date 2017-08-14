@@ -153,7 +153,7 @@
 		"mocha": "3.5.0",
 		"nightwatch": "0.9.16",
 		"sass-lint": "1.10.2",
-		"selenium-server-standalone-jar": "3.4.0",
+		"selenium-server-standalone-jar": "3.5.0",
 		"source-map-support": "0.4.15",
 		"supports-color": "^4.2.1",
 		"ts-node": "3.3.0",
