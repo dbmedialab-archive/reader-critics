@@ -65,6 +65,9 @@ export function wrapFindOne <D extends Document, Z> (
 			if (doc === null) {
 				return resolve(null);
 			}
+			// console.log('------------------------------------------------------------');
+			// console.log('wrapFindOne:', doc);
+			// console.log('\n');
 			return doc.toObject();
 		})
 		.then((doc : any) => {

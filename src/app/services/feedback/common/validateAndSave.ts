@@ -48,13 +48,18 @@ export default function(data : any) : Promise <Feedback> {
 	}
 
 	let article : Article;
-	let user : EndUser;
+	let enduser : EndUser;
 
 	return Promise.all([
-		getArticle(data.article).then((a : Article) => article = a),
-		getEndUser(data.user).then((u : EndUser) => user = u),
+		getArticle(data.article).then((a : Article) => {
+			// console.log('------------------------------------------------------------');
+			// console.log('validateAndSave got article:', a);
+			// console.log('\n');
+			article = a;
+		}),
+		getEndUser(data.user).then((u : EndUser) => enduser = u),
 	])
-	.then(() => feedbackService.save(article, user, data.feedback.items));
+	.then(() => feedbackService.save(article, enduser, data.feedback.items));
 }
 
 // Fetch article object

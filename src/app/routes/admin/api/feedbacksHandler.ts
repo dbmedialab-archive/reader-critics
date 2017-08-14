@@ -16,15 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as util from 'util';
+import {
+	Request,
+	Response,
+} from 'express';
 
-import * as hasColor from 'has-color';
+import {
+	errorResponse,
+	okResponse,
+} from 'app/routes/api/apiResponse';
 
-export function inspect(obj : any) : string {
-	return util.inspect(obj, {
-		breakLength: 128,
-		colors: <boolean> hasColor,
-		depth: null,
-		showHidden: true,
+import { feedbackService } from 'app/services';
+
+/**
+ * Provides with whole list of existing feedbacks
+ * Not filtering, no page or limit query params are taken into account
+ */
+export function list (requ: Request, resp: Response) {
+	const notFound = 'Resourse not found';
+	feedbackService.getRange().then((fbacks) => {
+		if (fbacks.length > 0) {
+			okResponse(resp, fbacks);
+		} else {
+			errorResponse(resp, undefined, notFound, { status: 404 });
+		}
+
+	}).catch((err) => {
+		errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
 }
