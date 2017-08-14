@@ -132,5 +132,5 @@ export function getFeedbackList() {
 		},
 	];
 
-	FeedbacksActions.setFeedbackList(feedbacks);
+	//FeedbacksActions.setFeedbackList(feedbacks);
 }
