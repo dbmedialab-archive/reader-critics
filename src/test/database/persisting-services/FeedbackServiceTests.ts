@@ -16,6 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// import * as colors from 'ansicolors';
 import * as path from 'path';
 
 import { assert } from 'chai';
@@ -71,15 +72,10 @@ export default function(this: ISuiteCallbackContext) {
 	it('getByArticleAuthor()', () => {
 		return userService.get('Axel Egon Unterbichler')
 		.then(author => {
-			// console.error(colors.brightCyan(
-			// 	'--- author object to query ----------------------------------------------------'
-			// ));
-			// console.error(author);
-			// console.error('\n');
 			return feedbackService.getByArticleAuthor(author);
 		})
 		.then((results : Feedback[]) => {
-//			assert.lengthOf(results, 2);
+			assert.lengthOf(results, 2);
 			results.forEach((feedback, index) => {
 				// console.error(colors.brightYellow(
 				// 	`--- queried feedback #${index} -------------------------------------------------------`
@@ -105,8 +101,23 @@ const assertFeedbackObject = (f : Feedback) => {
 		assert.notProperty(f, prop);
 	});
 
+	// Test if "article" object was populated
+	assert.isObject(f.article);
+	[ 'authors', 'items', 'url', 'version' ].forEach(prop => {
+		assert.property(f.article, prop);
+	});
+
+	// Test if "article.authors" array was populated
+	assert.isArray(f.article.authors);
+	f.article.authors.forEach(author => {
+		assert.isObject(author);
+		[ 'email', 'name' ].forEach(prop => {
+			assert.property(author, prop);
+		});
+	});
+
 	assert.isObject(f.date);
 	assert.isObject(f.enduser);
+
 	assert.isArray(f.items);
-	assert.isArray(f.article.authors);
 };
