@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 
-class FeedbackItemComponent extends React.Component <any, any> {
+class FeedbackItem extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
 	}
@@ -89,4 +89,4 @@ class FeedbackItemComponent extends React.Component <any, any> {
 	);
 	}
 }
-export default FeedbackItemComponent;
+export default FeedbackItem;

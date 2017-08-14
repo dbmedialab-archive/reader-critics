@@ -19,9 +19,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import FeedbackItemType from 'base/FeedbackItem';
+import FeedbackItem from 'base/FeedbackItem';
 import Layout from 'admin/components/layout/LayoutComponent';
-import FeedbackItem from 'admin/components/feedbacks/FeedbackItem';
+import FeedbackItemComponent from 'admin/components/feedbacks/FeedbackItemComponent';
 import * as FeedbacksActions from 'admin/actions/FeedbacksActions';
 
 class FeedbacksContainer extends React.Component <any, any> {
@@ -33,14 +33,14 @@ class FeedbacksContainer extends React.Component <any, any> {
 	}
 	render(){
 		const feedbacks = this.props.feedbacks.map((feedback)=>{
-			return feedback.items.map((item: FeedbackItemType)=>{
+			return feedback.items.map((item: FeedbackItem)=>{
 				const feedbackObj = {
 					...item,
 					article: feedback.article,
 					date: feedback.date,
 
 				};
-				return <FeedbackItem feedback={feedbackObj} key={feedbackObj.id}/>;
+				return <FeedbackItemComponent feedback={feedbackObj} key={feedbackObj.id}/>;
 			});
 		});
 		return (

@@ -81,7 +81,7 @@ class TopbarComponent extends React.Component <TopBarI, object> {
 								<ul	className="dropdown dropdown-nest profile-dropdown">
 									<li>
 										<i className="fa fa-sign-out"></i>
-										<a href="/logout">
+										<a href="/admin/logout">
 											<h4>
 												Logout
 											</h4>

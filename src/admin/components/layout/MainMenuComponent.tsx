@@ -32,12 +32,12 @@ const MainMenuComponent : React.StatelessComponent <any> = () =>
 							<span>Users</span>
 					</Link>
 					<Link
-							to="/comments"
+							to="/feedbacks"
 							className="tooltip-tip tooltipster-disable"
-							title="All comments"
+							title="All feedbacks"
 						>
 							<i className="fa fa-list-ul" />
-							<span>Comments</span>
+							<span>Feedbacks</span>
 					</Link>
 				</li>
 			</ul>;
