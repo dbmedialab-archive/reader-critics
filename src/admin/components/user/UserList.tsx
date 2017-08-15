@@ -75,8 +75,11 @@ class UserList extends React.Component <any, any> {
 						<div className="column small-12 users-group-holder">
 							<div className="userlist-table-heading">
 								<div className="row expanded user-row table-header">
-									<div className="column small-5 medium-5">
+									<div className="column small-3 medium-3">
 										<b>Name</b>
+									</div>
+									<div className="column small-2 medium-2">
+										<b>Role</b>
 									</div>
 									<div className="column small-5 medium-4">
 										<b>Email</b>
@@ -96,7 +99,6 @@ class UserList extends React.Component <any, any> {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	console.log(state);
 	return {
 		users: state.user.users,
 		login: {

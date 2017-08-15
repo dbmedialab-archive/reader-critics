@@ -63,6 +63,7 @@ function deauthenticateUser(action: Action, state) {
 function receiveUsers(action: Action, state) {
 	const users = action.payload;
 	if (!users.length) {
+		console.log('receiveUsers initstate');
 		return state;
 	}
 	return state.merge({users: action.payload});
