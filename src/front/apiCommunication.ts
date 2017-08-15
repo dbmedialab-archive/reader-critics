@@ -40,6 +40,9 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
 });
+export const sendFeedbackUser = ((data : any) : Promise <any> => {
+	return postData('/api/feedback/', data).then(checkStatus);
+});
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
 	return postData('/api/suggest/', data).then(checkStatus);

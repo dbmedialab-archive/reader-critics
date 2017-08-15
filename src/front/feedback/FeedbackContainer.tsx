@@ -22,7 +22,9 @@ import 'front/scss/fb.scss';
 import Article from 'base/Article';
 import FeedbackItem from 'base/FeedbackItem';
 
+import FinishButton from 'front/feedback/FinishButton';
 import ArticleElement from 'front/component/ArticleElement';
+import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
 import {
 	fetchArticle,
@@ -39,7 +41,7 @@ export interface FeedbackContainerState {
 }
 
 export default class FeedbackContainer
-extends React.Component <any, FeedbackContainerState> {
+extends React.Component <any, any> {
 
 	private articleElements : ArticleElement[] = [];
 
@@ -47,13 +49,13 @@ extends React.Component <any, FeedbackContainerState> {
 		super();
 		this.state = {
 			article: null,
+			sent: false,
 		};
 	}
 
 	componentWillMount() {
 		const self = this;
 		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
-			console.log(article);
 			// FIXME ganz mieser Hack:
 			window['app'].article.version = article.version;
 			console.log('set version to:', window['app'].article.version);
@@ -62,19 +64,6 @@ extends React.Component <any, FeedbackContainerState> {
 			});
 		});
 	}
-
-	public render() {
-		// Initial state has no article data, render empty
-		if (this.state.article === null) {
-			return null;
-		}
-
-		// Iterate article elements and render sub components
-		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
-		</section>;
-	}
-
 	private createArticleElement(item, index : number) {
 		const elemKey = `element-${item.order.item}`;
 		return <ArticleElement
@@ -111,9 +100,25 @@ extends React.Component <any, FeedbackContainerState> {
 			},
 		})
 		.then((response) => {
-			alert('Feedback successfully sent');
-			console.log(response);
+			//alert('Feedback successfully sent');
+			this.setState({sent : true});
 		});
+	}
+
+	public render() {
+		if (this.state.sent) {
+			return <PostFeedbackContainer />;
+		}
+		// Initial state has no article data, render empty
+		if (this.state.article === null) {
+			return null;
+		}
+
+		// Iterate article elements and render sub components
+		return <section id="content">
+			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
+			<FinishButton SendForm={() => this.sendFeedback()} />
+		</section>;
 	}
 
 	private readonly demoUsers : Object[] = [

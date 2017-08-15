@@ -17,20 +17,39 @@
 //
 
 import * as React from 'react';
+import {sendFeedbackUser} from 'front/apiCommunication';
 
-import Footer from 'front/common/Footer';
-import Header from 'front/common/Header';
+export default class PostFeedbackContainer extends React.Component <any, any> {
 
-import FeedbackContainer from './FeedbackContainer';
+	constructor() {
+		super();
+			this.state = {
+				user : {
+					name: '',
+					email: '',
+			},
+		};
+	}
 
-const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
-
-	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<Footer />
-	</div>;
-};
-
-export default FeedbackPageLayout;
+	public sendFeedbackUser() {
+		sendFeedbackUser(this.state)
+		.then((response) => {
+			console.log(response);
+		});
+	}
+	private inputChanged(e) {
+		const fieldName = e.target.name;
+		const stateObj = {};
+		stateObj[fieldName] = e.target.value;
+		this.setState(stateObj);
+	}
+	public render() {
+		return (
+			<div>
+			<input value={this.state.name} name="name" onChange={this.inputChanged}/>
+			<input value={this.state.email} name="email" onChange={this.inputChanged}/>
+			Fb was sent
+			</div>
+		);
+	}
+}
