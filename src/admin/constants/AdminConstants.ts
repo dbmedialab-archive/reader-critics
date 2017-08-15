@@ -22,6 +22,8 @@ const AdminConstants = keykey([
 	'MODAL_STATE_CHANGED',
 	'MODAL_INIT',
 	'RESET_FORM_INPUT',
+	'TOPBAR_SUBMENU_STATE_CHANGED',
+	'TOPBAR_ACCOUNTMENU_STATE_CHANGED',
 
 	//Modal windows names
 	'TEST_MODAL_WINDOW',
@@ -34,6 +36,9 @@ const AdminConstants = keykey([
 	'AUTHENTICATE_USER',
 	'DEAUTHENTICATE_USER',
 	'UPDATE_CURRENT_USER',
+
+	//Comments
+	'FEEDBACK_LIST_RECEIVED',
 	'USER_MODAL_NAME',
 ]);
 

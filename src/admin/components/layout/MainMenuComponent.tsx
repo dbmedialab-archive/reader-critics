@@ -28,8 +28,16 @@ const MainMenuComponent : React.StatelessComponent <any> = () =>
 							className="tooltip-tip tooltipster-disable"
 							title="All users"
 						>
-							<i className="fa fa-list-ul" />
+							<i className="fa fa-users" />
 							<span>Users</span>
+					</Link>
+					<Link
+							to="/feedbacks"
+							className="tooltip-tip tooltipster-disable"
+							title="All feedbacks"
+						>
+							<i className="fa fa-list-ul" />
+							<span>Feedbacks</span>
 					</Link>
 				</li>
 			</ul>;
