@@ -26,10 +26,13 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
+import validateAndSave from './common/validateAndSave';
+
 import {
 	checkPassword,
 	findOrInsert,
 	get,
+	getByEmail,
 	save,
 } from './UserDAO';
 
@@ -39,7 +42,9 @@ const service : UserService
 			checkPassword,
 			findOrInsert,
 			get,
+			getByEmail,
 			save,
+			validateAndSave,
 		}
 	);
 

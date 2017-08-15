@@ -16,13 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-import UserRole from './UserRole';
+import {
+	Request,
+	Response,
+} from 'express';
 
-interface User extends PersistedModel, Person {
-	role : UserRole;
-	password? : String;
+import {
+	errorResponse,
+	okResponse,
+} from 'app/routes/api/apiResponse';
+
+import { feedbackService } from 'app/services';
+
+/**
+ * Provides with whole list of existing feedbacks
+ * Not filtering, no page or limit query params are taken into account
+ */
+export function list (requ: Request, resp: Response) {
+	const notFound = 'Resourse not found';
+	feedbackService.getRange().then((fbacks) => {
+		if (fbacks.length > 0) {
+			okResponse(resp, fbacks);
+		} else {
+			errorResponse(resp, undefined, notFound, { status: 404 });
+		}
+
+	}).catch((err) => {
+		errorResponse(resp, undefined, err.stack, { status: 500 });
+	});
 }
-
-export default User;

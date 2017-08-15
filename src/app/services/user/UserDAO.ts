@@ -56,8 +56,18 @@ export function get(name : String, email? : String) : Promise <User> {
 	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
 }
 
+export function getByEmail(email : String) : Promise <User> {
+	emptyCheck(email);
+	const query : any = { email: email };
+
+	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+}
+
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
+	if (user.password !== undefined) {
+		
+	}
 	return wrapSave<User>(new UserModel(user).save());
 }
 

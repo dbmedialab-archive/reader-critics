@@ -19,7 +19,11 @@
 import { Response } from 'express';
 
 import * as app from 'app/util/applib';
-import { NotFoundError } from 'app/util/errors';
+
+import {
+	NotFoundError,
+	SchemaValidationError,
+} from 'app/util/errors';
 
 const log = app.createLog('api');
 
@@ -54,6 +58,34 @@ export function okResponse(
 	resp.status(statusCode).end(stringify(response));
 }
 
+/**
+ * Sends success API response
+ * API means JSON
+ */
+export function okApiResponse(
+	resp : Response,
+	data? : any,
+	options? : ResponseOptions
+) : void {
+	const response : any = {
+		success: true,
+	};
+
+	response.data = data || {};
+
+	let statusCode = 200;
+
+	if (options !== undefined) {
+		Object.assign(response, options);
+
+		if (options.status) {
+			statusCode = options.status;
+		}
+	}
+
+	resp.status(statusCode).json(response);
+}
+
 // Send a "failure" response
 
 export function errorResponse(
@@ -71,6 +103,9 @@ export function errorResponse(
 
 	if (error instanceof NotFoundError) {
 		response.status = 404;
+	}
+	else if (error instanceof SchemaValidationError) {
+		response.status = 400;
 	}
 	else {
 		response.status = 500;

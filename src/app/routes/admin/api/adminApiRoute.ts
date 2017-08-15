@@ -30,6 +30,9 @@ import {
 	apiTestHandler
 } from 'app/routes/admin/api/handlers';
 
+import * as  userHandler from 'app/routes/admin/api/usersHandler';
+import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
+
 import { errorResponse } from 'app/routes/api/apiResponse';
 
 import isAuthenticatedApi from 'app/middleware/policies/isAuthenticatedApi';
@@ -55,6 +58,8 @@ adminApiRoute.post('/login', apiLoginHandler);
  * All api request that have NOT to to pass without authentication have to be placed here
  */
 adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
+adminApiRoute.post('/users', userHandler.create);
+adminApiRoute.get('/fb', feedbacksHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

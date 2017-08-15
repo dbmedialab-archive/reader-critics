@@ -35,13 +35,16 @@ const ArticleSchema : Schema = new Schema({
 	},
 
 	authors: [objectReference(ModelNames.User)],
-	website: objectReference(ModelNames.Website, { select: false }),
+	website: objectReference(ModelNames.Website),
 
 	items: [Schema.Types.Mixed],
 }, {
 	toObject: {
 		retainKeyOrder: true,
 		transform: (doc : Document, converted : any) => {
+			// console.log('------------------------------------------------------------');
+			// console.log('ArticleSchema transform:', converted);
+			// console.log('\n');
 			converted.authors.forEach(author => {
 				delete author.date;
 				delete author.role;

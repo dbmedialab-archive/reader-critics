@@ -24,7 +24,12 @@ import {
 import {
 	errorResponse,
 	okResponse,
+	okApiResponse,
 } from 'app/routes/api/apiResponse';
+
+import { userService } from 'app/services';
+
+import emptyCheck from 'app/util/emptyCheck';
 
 export default function(requ : Request, resp : Response) : void {
 	try {
@@ -33,4 +38,17 @@ export default function(requ : Request, resp : Response) : void {
 	catch (error) {
 		errorResponse(resp, error);
 	}
+}
+
+export function create (requ: Request, resp: Response) : void {
+	emptyCheck(requ.body);
+	userService.validateAndSave(requ.body)
+	.then((user) => {
+		okApiResponse(resp, user);
+	})
+	.catch((error) => {
+		errorResponse(resp, error);
+	});
+	
+	
 }
