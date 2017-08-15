@@ -112,7 +112,7 @@
 		"@types/body-parser": "1.16.4",
 		"@types/callsite": "1.0.30",
 		"@types/chai": "4.0.3",
-		"@types/classnames": "2.2.0",
+		"@types/classnames": "2.2.1",
 		"@types/core-js": "0.9.42",
 		"@types/debug": "0.0.30",
 		"@types/dot": "1.1.2",
