@@ -44,7 +44,9 @@ class LoginModalComponent extends React.Component <any, any> {
 		this.getCurrentInput = this.getCurrentInput.bind(this);
 		this.updateInputValue = this.updateInputValue.bind(this);
 		this.loginUser = this.loginUser.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.hasLoginError = this.hasLoginError.bind(this);
+		this.hasPasswordError = this.hasPasswordError.bind(this);
+		this.isFormValid = this.isFormValid.bind(this);
 		this.updateErrorState = this.updateErrorState.bind(this);
 	}
 
@@ -100,8 +102,8 @@ class LoginModalComponent extends React.Component <any, any> {
 	}
 
 	loginUser(event): void {
-		if (this.isFormValid()) {
-			UIActions.showMainPreloader();
+		event.preventDefault();
+		UIActions.showMainPreloader();
 			const {login: {value: login}, password: {value: password}} = this.props;
 			sendAuthRequest({login, password}).then((res: any): void => {
 				if (res.error || (!res.success && res.message)) {
@@ -113,14 +115,10 @@ class LoginModalComponent extends React.Component <any, any> {
 				}
 				UIActions.hideMainPreloader();
 			});
-		}
-	}
-
-	private handleSubmit(e: any): void {
-		e.preventDefault();
 	}
 
 	render(): JSX.Element {
+		const isDisabled = this.isFormValid();
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="loginUser" closeHandler={() => {}}>
 				<div className="modal-window">
@@ -129,7 +127,7 @@ class LoginModalComponent extends React.Component <any, any> {
 							<p className="lead">Authorization</p>
 						</div>
 					</div>
-					<form onSubmit={this.handleSubmit}>
+					<form onSubmit={this.loginUser}>
 						<div className="row">
 							<div className="medium-12 columns">
 								<fieldset className="text">
@@ -164,7 +162,7 @@ class LoginModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row button-holder">
 							<div className="medium-12 columns">
-								<a onClick={this.loginUser} className="button success" href="#">Log IN</a>
+								<button disabled={!isDisabled} type="submit" className="button success">Log In</button>
 							</div>
 							<InputError
 								errorText={this.state.serverError.value}

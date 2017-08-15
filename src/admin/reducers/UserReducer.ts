@@ -34,7 +34,14 @@ const initialState = Immutable.from<UsersInit>({
 	name: '',
 	email: '',
 	role: UserRole.Normal,
-	users: [],
+	users: [
+		{
+			'id': '5964e04c6a2f9c5fae26625c',
+			'email': 'valo44n1x@gmail.com',
+			'role': 'admin',
+			'name': 'Valeriy',
+		},
+	],
 });
 
 function updateUser(action: Action, state) {
@@ -54,6 +61,10 @@ function deauthenticateUser(action: Action, state) {
 }
 
 function receiveUsers(action: Action, state) {
+	const users = action.payload;
+	if (!users.length) {
+		return state;
+	}
 	return state.merge({users: action.payload});
 }
 
@@ -66,7 +77,8 @@ function deleteUser(action, state) {
 }
 
 function addUser(action: Action, state) {
-	const user = action.payload;
+	const user = action.payload.data;
+	console.log(user);
 	let users = state.users;
 	if (user) {
 		const mutableArray = Immutable.asMutable(users);
@@ -106,6 +118,8 @@ function UserReducer(state: User = initialState, action: UserActionsCreator.TAct
 			return editUser(action, state);
 		case UserConstants.SAVE_USER:
 			return saveUser(action, state);
+		case UserConstants.ADD_USER:
+			return addUser(action, state);
 		default:
 			return state;
 	}

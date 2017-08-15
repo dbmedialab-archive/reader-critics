@@ -23,7 +23,7 @@ import UserRole from 'base/UserRole';
 
 import * as UsersAction  from 'admin/actions/UserActions';
 import * as UIActions from 'admin/actions/UIActions';
-
+import { InputError } from 'front/form/InputError';
 import { capitalizeFirstLetter } from 'admin/services/Utils';
 
 export interface OptionsI {
@@ -38,20 +38,22 @@ class AddUserModalComponent extends React.Component <any, any> {
 		this.closeReset = this.closeReset.bind(this);
 		this.getCurrentInput = this.getCurrentInput.bind(this);
 		this.updateInputValue = this.updateInputValue.bind(this);
-		this.updateSelectValue = this.updateSelectValue.bind(this);
 		this.onBlur = this.onBlur.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.saveUser = this.saveUser.bind(this);
 		this.getUserRoles = this.getUserRoles.bind(this);
+		this.hasNameError = this.hasNameError.bind(this);
+		this.hasEmailError = this.hasEmailError.bind(this);
+		this.hasPasswordError = this.hasPasswordError.bind(this);
 		this.makeSelectDom = this.makeSelectDom.bind(this);
-		this.isValid = this.isValid.bind(this);
+		this.isFormValid = this.isFormValid.bind(this);
 	}
 
-	componentWillMount(){
+	componentWillMount() {
 		UIActions.initModalWindows(this.props.windowName);
 	}
 
-	getCurrentInput(propName){
+	getCurrentInput(propName) {
 		const options : OptionsI = {};
 		options.input = {};
 		options.input[propName] = this.props[propName];
@@ -60,14 +62,14 @@ class AddUserModalComponent extends React.Component <any, any> {
 		return options;
 	}
 
-	makeSelectDom(optionsArr){
+	makeSelectDom(optionsArr) {
 		return optionsArr.map((optionItem) =>
 			<option
 				key={optionItem} value={optionItem}>{ capitalizeFirstLetter(optionItem) }
 			</option>);
 	}
 
-	getUserRoles(){
+	getUserRoles() {
 		const roles = [
 			UserRole.SystemAdmin,
 			UserRole.SiteAdmin,
@@ -77,41 +79,49 @@ class AddUserModalComponent extends React.Component <any, any> {
 		return this.makeSelectDom(roles);
 	}
 
-	isValid(){
-		/*let data = {
-			email: this.props.email.value,
-			name: this.props.name.value,
-			role: this.props.role.value,
-			password: this.props.password.value,
-		};
-		if (this.props.userId){
-			delete data.password;
+	hasNameError(): string | boolean {
+		if (this.props.name.value.length < 4) {
+			return 'Name has to be more than 3 symbols';
 		}
-		return isValidProps(data);*/
+		return false;
 	}
 
-	updateInputValue(event) {
+	hasEmailError(): string | boolean {
+		if (this.props.email.value.length < 4) {
+			return 'Please enter valid email address';
+		}
+		return false;
+	}
+
+	hasPasswordError(): string | boolean {
+		if (this.props.password.value.length < 4) {
+			return 'Password has to be more than 3 symbols';
+		}
+		return false;
+	}
+
+	isFormValid(): boolean {
+		return (!this.hasNameError() && !this.hasEmailError() && !this.hasPasswordError());
+	}
+
+	updateInputValue(event): void {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].value = event.target.value;
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
-	updateSelectValue(event){
-		const options = this.getCurrentInput(event.target.name);
-		options.input[event.target.name].value = +event.target.value;
-		UIActions.modalWindowsChangeState(this.props.windowName, options);
-	}
-	closePopup() : void {
+
+	closePopup(): void {
 		if (this.props.userId){
 			UIActions.closeReset(this.props.windowName);
 		} else {
 			UIActions.modalWindowsChangeState(this.props.windowName, {isOpen: false});
 		}
 	}
-	onFocus(event){
+	onFocus(event) {
 		const name = event.target.name;
 		this.props[name].touched = true;
 	}
-	onBlur(event){
+	onBlur(event) {
 		const options = this.getCurrentInput(event.target.name);
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
@@ -124,18 +134,16 @@ class AddUserModalComponent extends React.Component <any, any> {
 			name: this.props.name.value,
 			role: this.props.role.value,
 		};
-		console.log(data);
 		UsersAction.saveUser(data);
 	}
 
-	closeReset() : void {
+	closeReset(): void {
 		UIActions.closeReset(this.props.windowName);
 	}
 
-	render() : JSX.Element {
+	render(): JSX.Element {
 		const roles = this.getUserRoles();
-		const isDisabled = false;
-		/*const isDisabled = this.isValid();*/
+		const isDisabled = this.isFormValid();
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newUser" closeHandler={this.closePopup}>
 				<div className="modal-window">
@@ -164,6 +172,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 										onBlur={this.onBlur}
 										onChange={this.updateInputValue}
 									/>
+									<InputError
+										errorText={this.hasNameError()}
+										touchedField={this.props.name.touched}
+									/>
 								</fieldset>
 							</div>
 							<div className="medium-6 columns">
@@ -177,6 +189,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 										onFocus={this.onFocus}
 										onBlur={this.onBlur}
 										onChange={this.updateInputValue}
+									/>
+									<InputError
+										errorText={this.hasNameError()}
+										touchedField={this.props.email.touched}
 									/>
 								</fieldset>
 							</div>
@@ -194,6 +210,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 										onBlur={this.onBlur}
 										onChange={this.updateInputValue}
 									/>
+									<InputError
+										errorText={this.hasNameError()}
+										touchedField={this.props.password.touched}
+									/>
 								</fieldset>
 							</div>
 							<div className="medium-6 columns">
@@ -210,7 +230,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 						<div className="row button-holder">
 							<div className="medium-12 columns">
 								<button type="button"
-												disabled={isDisabled}
+												disabled={!isDisabled}
 												onClick={this.saveUser}
 												className="button">Save
 								</button>
@@ -241,7 +261,8 @@ const mapStateToProps = (state, ownProps) => {
 			|| false,
 		},
 		role: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value']) || '',
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value'])
+			|| UserRole.Normal,
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'touched'])
 			|| false,
 		},

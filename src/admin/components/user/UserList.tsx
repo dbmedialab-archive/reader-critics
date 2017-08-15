@@ -32,14 +32,6 @@ class UserList extends React.Component <any, any> {
 				value: '',
 				touched: false,
 			},
-			users: [
-				{
-					'id': '5964e04c6a2f9c5fae26625c',
-					'email': 'valo44n1x@gmail.com',
-					'role': 'admin',
-					'name': 'Valeriy',
-				},
-			],
 		};
 		this.updateErrorState = this.updateErrorState.bind(this);
 		this.onCreate = this.onCreate.bind(this);
@@ -64,7 +56,7 @@ class UserList extends React.Component <any, any> {
 	}
 	public render() : JSX.Element {
 		//TODO edit to props instead of state when backend will works
-		const content = this.state.users.map((user) =>
+		const content = this.props.users.map((user) =>
 			<UserRow
 				id={user.id}
 				key={user.id}
@@ -80,23 +72,20 @@ class UserList extends React.Component <any, any> {
 				</section>
 				<section className="userTable">
 					<div className="row expanded">
-						<div className="column small-12 users_group_holder">
-							<div className="userlist_table_heading">
-								<div className="row user_row table_header">
-									<div className="column small-4 medium-4">
+						<div className="column small-12 users-group-holder">
+							<div className="userlist-table-heading">
+								<div className="row expanded user-row table-header">
+									<div className="column small-5 medium-5">
 										<b>Name</b>
 									</div>
-									<div className="column small-4 medium-3">
+									<div className="column small-5 medium-4">
 										<b>Email</b>
 									</div>
-									<div className="column small-3 medium-3">
+									<div className="column small-2 medium-3">
 										<b>Edit</b>
 									</div>
-									<div className="column small-1 medium-2">
-										<b>Delete</b>
-									</div>
 								</div>
-								{ content }
+								{content}
 							</div>
 						</div>
 					</div>
@@ -107,6 +96,7 @@ class UserList extends React.Component <any, any> {
 }
 
 const mapStateToProps = (state, ownProps) => {
+	console.log(state);
 	return {
 		users: state.user.users,
 		login: {

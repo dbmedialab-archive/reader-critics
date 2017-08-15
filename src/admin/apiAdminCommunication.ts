@@ -65,7 +65,7 @@ export const saveUser = ((data: any): Promise<any> => {
  * @type {() => Promise<any>}
  */
 export const getUsers = ((): Promise<any> =>
-	sendRequest(`/admin/api/users/`, 'GET'));
+	sendRequest(`/admin/api/users`, 'GET'));
 
 /**
  * Delete User

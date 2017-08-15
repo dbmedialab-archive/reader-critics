@@ -28,8 +28,8 @@ import AddUserModalComponent from 'admin/components/modal/AddUserModalComponent'
 import AdminConstants from 'admin/constants/AdminConstants';
 
 const User : React.StatelessComponent <any> =
-	() => <Layout>
-		<UserList />
+	() => <Layout pageTitle="Users">
+		<UserList  />
 		<AddUserModalComponent windowName={AdminConstants.USER_MODAL_NAME} />
 	</Layout>;
 

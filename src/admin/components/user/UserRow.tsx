@@ -44,15 +44,13 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 		});
 	}
 
-	public render() : JSX.Element {
+	public render (): JSX.Element {
 		return (
-			<div className="row user_row">
-				<div className="column small-4 medium-4"><p>{this.props.name}</p></div>
-				<div className="column small-4 medium-3"><p>{this.props.email}</p></div>
+			<div className="row expanded user-row">
+				<div className="column small-5 medium-5"><p>{this.props.name}</p></div>
+				<div className="column small-5 medium-4"><p>{this.props.email}</p></div>
 				<div className="column small-2 medium-3">
 					<button onClick={this.onEdit} className="button" type="button success">Edit</button>
-				</div>
-				<div className="column small-2 medium-2">
 					<button onClick={this.onDestroy} className="button alert" type="button">Delete</button>
 				</div>
 			</div>
