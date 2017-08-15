@@ -80,7 +80,7 @@ class FeedbackItemComponent extends React.Component <any, any> {
 					</div>
 				</div>
 				:null}
-				<div className="row buttons-section">
+				<div className="row expanded buttons-section">
 					<div className="small-12">
 						<div className="button success small float-right">Changed</div>
 					</div>
