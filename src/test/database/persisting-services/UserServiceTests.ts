@@ -71,10 +71,15 @@ export default function(this: ISuiteCallbackContext) {
 	it('get()', () => {
 		return Promise.all([
 			userService.get('Indiana Horst'),
+			userService.get('Christoph Schmitz'),
 			userService.get('Stamatis Skeates', 'stamatis@ote.gr'),
 			userService.get('Ernst Eisenbichler', 'ee@aller.com'),
 		]).then((results : User[]) => {
-			results.forEach(u => assertUserObject(u));
+			assert.lengthOf(results, 4);
+			results.forEach(u => {
+				console.dir(u);
+				assertUserObject(u);
+			});
 		});
 	});
 
