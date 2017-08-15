@@ -20,7 +20,10 @@ import * as colors from 'ansicolors';
 import * as stripUrlAuth from 'strip-url-auth';
 import * as Mongoose from 'mongoose';
 
+import { Document, Model } from 'mongoose';
+
 import config from 'app/config';
+import models from 'app/db/models';
 
 import * as app from 'app/util/applib';
 
@@ -43,6 +46,13 @@ export default function () : Promise <void> {
 	return Mongoose.connect(mongoURL, options)
 	.then(() => {
 		log('Connection ready');
+		return Promise.mapSeries(Object.values(models), <T extends Document> (model : Model<T>) => {
+			//ensureIndexes
+		})
+		.then(results => {
+			log('Indexing finished');
+			// return
+		});
 	})
 	.catch(error => {
 		log('Failed to connected to database:', error.message);
