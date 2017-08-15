@@ -16,11 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as bodyParser from 'body-parser';
+
 import {
 	Request,
 	Response,
 	Router,
 } from 'express';
+
+import { isEmpty } from 'lodash';
 
 import ArticleURL from 'base/ArticleURL';
 import PageTemplate from 'base/PageTemplate';
@@ -31,41 +35,60 @@ import {
 	websiteService,
 } from 'app/services';
 
-import { NotFoundError } from 'app/util/errors';
+import {
+	InvalidRequestError,
+	NotFoundError,
+} from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-// TODOs:
-// - URL parsen und Hostnamen extrahieren (parser-package? warsch "url", Node API)
-// - Hostnamen mit Datenbank abgleichen und Record des Kunden holen
-// - Styling und Template laden
-// - Templatecache für bereits geladene/kompilierte Frontends
-
 // Prepare and export Express router
 
 const feedbackRoute : Router = Router();
 
-// The asterisk in the route means that anything after the / slash will be picked up by Express and
-// exposed to the handler in Request.params[0]
-// We use this to grab the article URL which is to be processed and that can be appended to this
-// route without any further encoding. Most browsers are capable of that, also optional decoding
-// will happen when an encoded URL is detected.
-feedbackRoute.get('/*', mainHandler);
+feedbackRoute.use(bodyParser.urlencoded({
+	extended: true,
+}));
 
-// TODO add "post" endpoint that can make use of additional query parameters, "version" most of all
+feedbackRoute.get('/', getHandler);
+feedbackRoute.post('/', postHandler);
 
 export default feedbackRoute;
 
-// Main handler, checks the URL parameter and diverts to the respective handlers
+// Main handlers, check the URL and version parameters
 
-function mainHandler(requ : Request, resp : Response, next : Function) : void {
-	ArticleURL.from(requ.params[0]).then(articleURL => {
-		log('Feedback to "%s"', articleURL);
-		return feedbackHandler(requ, resp, articleURL);
+function getHandler(requ : Request, resp : Response, next : Function) : void {
+	let version : string;
+
+	checkVersionParameter(requ.query.version)
+	.then((v : string) => {
+		version = v;
+		return ArticleURL.from(requ.query.articleURL);
 	})
+	.then(articleURL => feedbackHandler(requ, resp, articleURL, version))
 	.catch((error : Error) => next(error));
+}
+
+function postHandler(requ : Request, resp : Response, next : Function) : void {
+	let version : string;
+
+	checkVersionParameter(requ.body.version)
+	.then((v : string) => {
+		version = v;
+		return ArticleURL.from(requ.body.articleURL);
+	})
+	.then(articleURL => feedbackHandler(requ, resp, articleURL, version))
+	.catch((error : Error) => next(error));
+}
+
+// Common parameter check
+
+function checkVersionParameter(rawVersion : string) : Promise <string> {
+	return isEmpty(rawVersion)
+		? Promise.reject(new InvalidRequestError('"version" parameter is missing or empty.'))
+		: Promise.resolve(rawVersion.trim());
 }
 
 // Serve feedback page
@@ -73,24 +96,29 @@ function mainHandler(requ : Request, resp : Response, next : Function) : void {
 function feedbackHandler(
 	requ : Request,
 	resp : Response,
-	articleURL : ArticleURL
+	articleURL : ArticleURL,
+	version : string
 ) : Promise <void> {
+	log('Feedback to "%s" version "%s"', articleURL, version);
+
+	// Identify the website to make sure we are actually responsible for this
+	// content and also load the page template
 	return websiteService.identify(articleURL).then((w : Website) => {
 		if (w === null) {
 			return Promise.reject(new NotFoundError('Could not identify website'));
 		}
 		return templateService.getFeedbackPageTemplate(w);
 	})
+	// Use the page template, inject parameters and serve to the client
 	.then((template : PageTemplate) => {
 		resp.set('Content-Type', 'text/html')
 		.send(template.setParams({
 			article: {
 				url: articleURL.href,
-				version: '2017.05.11-something',
+				version,
 			},
-			signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+		//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}).render())
-		.status(200)
-		.end();
+		.status(200).end();
 	});
 }

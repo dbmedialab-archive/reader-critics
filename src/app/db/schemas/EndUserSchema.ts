@@ -18,7 +18,7 @@
 
 import { Schema } from 'mongoose';
 
-import { isEmpty } from 'app/services/user/dao/genericGetUser';
+import { isParamEmpty } from 'app/services/enduser/EndUserDAO';
 
 const EndUserSchema : Schema = new Schema({
 	name: {
@@ -34,7 +34,7 @@ const EndUserSchema : Schema = new Schema({
 });
 
 EndUserSchema.pre('validate', function (next : Function) {
-	if (isEmpty(this.get('name')) && isEmpty(this.get('email'))) {
+	if (isParamEmpty(this.get('name')) && isParamEmpty(this.get('email'))) {
 		next(Error('At least one of "name" and "email" is required'));
 	}
 	else {

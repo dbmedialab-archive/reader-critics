@@ -16,24 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import {
+	Request,
+	Response,
+} from 'express';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+import {
+	errorResponse,
+	okResponse,
+} from 'app/routes/api/apiResponse';
 
-	// Byline
-	authors : User[];
+import { feedbackService } from 'app/services';
 
-	website? : Website;
+/**
+ * Provides with whole list of existing feedbacks
+ * Not filtering, no page or limit query params are taken into account
+ */
+export function list (requ: Request, resp: Response) {
+	const notFound = 'Resourse not found';
+	feedbackService.getRange().then((fbacks) => {
+		if (fbacks.length > 0) {
+			okResponse(resp, fbacks);
+		} else {
+			errorResponse(resp, undefined, notFound, { status: 404 });
+		}
 
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
+	}).catch((err) => {
+		errorResponse(resp, undefined, err.stack, { status: 500 });
+	});
 }
-
-export default Article;

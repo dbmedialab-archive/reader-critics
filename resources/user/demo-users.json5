@@ -2,6 +2,12 @@
 // salting rounds to not unnecessarily slow down the tests!
 [
 	{
+		name: 'admin',
+		password: '$2a$04$F4.ZVJ9tfDfBjs9LPNwiHO.2DT/KgRCL9rg0UNLhsuhA2kn0mYu76',
+		role: 'sysadmin',
+		email: 'admin@leserkritikk.no'
+	},
+	{
 		name: 'Axel Egon Unterbichler',
 		email: 'axel.egon@mopo.no',
 		role: 'editor',
@@ -36,10 +42,7 @@
 		role: 'sysadmin',
 	},
 	{
-		name: 'Schmitz\' Katze',
-		role: 'normal',
-	},
-	{
+		name: 'Einprosit Dergemütlichkeit',
 		email: 'prost.mahlzeit@lulu.org',
 		role: 'normal',
 	},
@@ -47,5 +50,10 @@
 		name: 'Brahmaputra Pradesh Meghna',
 		email: 'bpm@dagbladet.no',
 		role: 'siteadmin',
-	}
+	},
+	{
+		name: 'Stamatis Skeates',
+		email: 'stamatis@ote.gr',
+		role: 'normal',
+	},
 ]

@@ -19,16 +19,26 @@
 import { Schema } from 'mongoose';
 
 import { objectReference } from 'app/db/common';
+import { ModelNames } from 'app/db/names';
 
 import FeedbackStatus from 'base/FeedbackStatus';
 
 const FeedbackSchema : Schema = new Schema({
-	_article: objectReference('Article'),
-	_user: objectReference('User'),
+	// Direct references to related objects
+	article: objectReference(ModelNames.Article),
+	enduser: objectReference(ModelNames.EndUser),
 
-	email: String,
-	comment: String,
+	// Additional references to enable complex queries.
+	// "website" and "authors" references are copied over from the ref. article
+	website: objectReference(ModelNames.Website, {
+		select: false,
+	}),
+	articleAuthors: {
+		type: [objectReference(ModelNames.User)],
+		select: false,
+	},
 
+	// Processing status
 	status: {
 		type: String,
 		required: true,
@@ -36,8 +46,10 @@ const FeedbackSchema : Schema = new Schema({
 		default: FeedbackStatus.New,
 	},
 
+	// The actual feedback data
 	items: [Schema.Types.Mixed],
 
+	// Additional date field that holds the latest status update
 	date: {
 		statusChange: Date,
 	},

@@ -21,6 +21,7 @@ import { Schema } from 'mongoose';
 import ArticleURL from 'base/ArticleURL';
 
 import { objectReference } from 'app/db/common';
+import { ModelNames } from 'app/db/names';
 
 const ArticleSchema : Schema = new Schema({
 	url: {
@@ -33,10 +34,24 @@ const ArticleSchema : Schema = new Schema({
 		required: true,
 	},
 
-	_website: objectReference('Website'),
+	authors: [objectReference(ModelNames.User)],
+	website: objectReference(ModelNames.Website),
 
-	authors: [Schema.Types.Mixed],
 	items: [Schema.Types.Mixed],
+}, {
+	toObject: {
+		retainKeyOrder: true,
+		transform: (doc : Document, converted : any) => {
+			// console.log('------------------------------------------------------------');
+			// console.log('ArticleSchema transform:', converted);
+			// console.log('\n');
+			converted.authors.forEach(author => {
+				delete author.date;
+				delete author.role;
+			});
+			return converted;
+		},
+	},
 });
 
 ArticleSchema.index({
