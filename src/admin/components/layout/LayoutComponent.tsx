@@ -18,19 +18,30 @@
 
 import * as React from 'react';
 import * as PreloaderIcon from 'react-preloader-icon';
-
 import Helmet from 'react-helmet';
-
 import { connect } from 'react-redux';
 import { ICON_TYPE } from 'react-preloader-icon';
 
+import * as UIActions from 'admin/actions/UIActions';
 import SidebarComponent from 'admin/components/layout/SidebarComponent';
 import TopbarComponent from 'admin/components/layout/TopbarComponent';
 
 class LayoutComponent extends React.Component <any, any> {
+	constructor(props) {
+		super(props);
+		this.bodyClicked = this.bodyClicked.bind(this);
+	}
+	bodyClicked() {
+			if (this.props.isSubmenuOpen) {
+				UIActions.topbarSubmenuChangeState(false);
+			}
+			if (this.props.isAccountMenuOpen) {
+				UIActions.topbarAccountMenuChangeState(false);
+			}
+	}
 	render() : JSX.Element {
 		return(
-			<div className="off-canvas-wrap">
+			<div className="off-canvas-wrap" onClick={this.bodyClicked}>
 				<div className="inner-wrap">
 					<div style={{height: '100%'}}>
 
@@ -73,9 +84,8 @@ const mapStateToProps = (state, ownProps) => {
 			isVisible: state.UI.getIn(['mainPreloader', 'isVisible']),
 			color: state.UI.getIn(['mainPreloader', 'color']),
 		},
-		pageTitle: 'Users',
-		isSubmenuOpen: false,
-		isAccountMenuOpen: false,
+		isSubmenuOpen: state.UI.getIn(['topbar', 'submenu','isOpen']),
+		isAccountMenuOpen: state.UI.getIn(['topbar', 'accountMenu','isOpen']),
 		currentUser: {
 			role: state.user.getIn(['role']) || null,
 			name: state.user.getIn(['name']) || '',
