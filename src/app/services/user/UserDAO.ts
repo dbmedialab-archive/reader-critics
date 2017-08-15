@@ -67,7 +67,7 @@ export function getByEmail(email : String) : Promise <User> {
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
-	
+
 	if (user.password !== undefined) {
 		return bcrypt.hash(user.password, config.get('auth.bcrypt.rounds')).then((hash) => {
 			user.password = hash;
@@ -76,7 +76,6 @@ export function save(user : User) : Promise <User> {
 	} else {
 		return wrapSave<User>(new UserModel(user).save());
 	}
-	
 }
 
 export function findOrInsert(user : Person) : Promise <User> {

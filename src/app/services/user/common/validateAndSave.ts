@@ -17,8 +17,8 @@
 //
 
 import {
-	isObject,
 	isEmpty,
+	isObject,
 } from 'lodash';
 
 import {
@@ -55,9 +55,8 @@ export default function(data : any) : Promise <any> {
  */
 function checkUniqueEmail(userMail : string) : Promise <boolean> {
 	return userService.getByEmail(userMail)
-	.then(user => user == null);	
+	.then(user => user === null);
 }
-
 
 /**
  * Schema Validation
@@ -71,15 +70,15 @@ function validateSchema(data : any) {
 	if (isEmpty(data.email)) {
 		throw new SchemaValidationError('Email field is required');
 	}
-	
+
 	if (isEmpty(data.name)) {
 		throw new SchemaValidationError('Name field is required');
 	}
-	
+
 	if (isEmpty(data.role)) {
 		throw new SchemaValidationError('Role field is required');
 	}
-	
+
 	if (isEmpty(data.password)) {
 		throw new SchemaValidationError('Password field is required');
 	}

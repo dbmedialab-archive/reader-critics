@@ -23,8 +23,8 @@ import {
 
 import {
 	errorResponse,
-	okResponse,
 	okApiResponse,
+	okResponse,
 } from 'app/routes/api/apiResponse';
 
 import { userService } from 'app/services';
@@ -49,6 +49,4 @@ export function create (requ: Request, resp: Response) : void {
 	.catch((error) => {
 		errorResponse(resp, error);
 	});
-	
-	
 }

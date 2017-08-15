@@ -10,7 +10,7 @@ interface UserService extends BasicPersistingService <User> {
 	save(user : User) : Promise <User>;
 
 	findOrInsert(user : Person) : Promise <User>;
-	
+
 	/**
 	 * TODO: reference to the same method from FeedbackService
 	 */
