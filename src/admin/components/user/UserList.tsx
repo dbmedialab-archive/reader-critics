@@ -22,7 +22,7 @@ import UserRow from 'admin/components/user/UserRow';
 
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
-import * as UserActions from 'admin/actions/UserActions';
+import * as UsersActions from 'admin/actions/UsersActions';
 
 class UserList extends React.Component <any, any> {
 	constructor(props) {
@@ -38,7 +38,7 @@ class UserList extends React.Component <any, any> {
 	}
 
 	componentDidMount() {
-		UserActions.getUsers();
+		UsersActions.getUsers();
 	}
 
 	public onCreate(e: any): void {
@@ -55,11 +55,10 @@ class UserList extends React.Component <any, any> {
 		});
 	}
 	public render() : JSX.Element {
-		//TODO edit to props instead of state when backend will works
 		const content = this.props.users.map((user) =>
 			<UserRow
-				id={user.id}
-				key={user.id}
+				ID={user.ID}
+				key={user.ID}
 				email={user.email}
 				role={user.role}
 				name={user.name}
@@ -100,7 +99,7 @@ class UserList extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		users: state.user.users,
+		users: state.users.users,
 		login: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value']) || '',
 			touched:

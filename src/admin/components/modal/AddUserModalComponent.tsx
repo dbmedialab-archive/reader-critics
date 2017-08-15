@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 import ReactModal from './ReactModalComponent';
 import UserRole from 'base/UserRole';
 
-import * as UsersAction  from 'admin/actions/UserActions';
+import * as UsersAction  from 'admin/actions/UsersActions';
 import * as UIActions from 'admin/actions/UIActions';
 import { InputError } from 'front/form/InputError';
 import { capitalizeFirstLetter } from 'admin/services/Utils';
@@ -94,6 +94,9 @@ class AddUserModalComponent extends React.Component <any, any> {
 	}
 
 	hasPasswordError(): string | boolean {
+		if (this.props.userId) {
+			return false;
+		}
 		if (this.props.password.value.length < 4) {
 			return 'Password has to be more than 3 symbols';
 		}

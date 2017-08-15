@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { showError } from 'front/uiHelpers';
+
 /**
  * Sends an authentication request
  * @type {(data:any)=>Promise<any>}
@@ -24,6 +24,7 @@ export function sendRequest(url: string, method: string = 'GET', data?: any): Pr
 	})
 	.then(authCheck)
 	.then(status)
+	.then(json)
 	.catch(function (error) {
 		console.log('request failed', error);
 		return {error: error.message};
@@ -75,25 +76,15 @@ export const deleteUser = ((userId: any): Promise<any> =>
 
 /**
  * Check for errors from backend
- * @param resp
+ * @param response
  * @returns {any}
  */
-function status(resp : Response) : Promise <any> {
-	const bail = (message) => {
-		showError(message);
-		return Promise.reject(Promise.reject(new Error(message)));
-	};
-
-	return resp.json().then((payload) => {
-		if (resp.status < 200 || resp.status >= 300 || !payload.success) {
-			return bail(payload.message || payload.error || resp.statusText);
-		}
-
-		if (!payload.data) {
-			return bail('No "data" property in response payload');
-		}
-
-		return payload.data;
+function status(response) {
+	if (response.status >= 200 && response.status < 300) {
+		return response;
+	}
+	return response.json().then(data => {
+		throw new Error(data.message || response.statusText);
 	});
 }
 

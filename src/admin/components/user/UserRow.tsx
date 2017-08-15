@@ -3,7 +3,7 @@ import { UserProps } from 'admin/types/User';
 import AdminConstants from 'admin/constants/AdminConstants';
 
 import * as UIActions from 'admin/actions/UIActions';
-import * as UsersAction  from 'admin/actions/UserActions';
+import * as UsersAction  from 'admin/actions/UsersActions';
 
 export interface UserRowState {
 	editing? : boolean;
@@ -20,11 +20,11 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 	public onEdit(e: any) :void {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
-			const user = this.props;
+		const user = this.props;
 		const userRes = {
 			input: {},
 			isOpen: true,
-			userId: this.props.id || null,
+			userId: this.props.ID || null,
 		};
 		userRes.input['name'] = { value: user.name };
 		userRes.input['email'] = { value: user.email };
@@ -40,7 +40,7 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 		UIActions.showDialog({
 			noBtnName: 'Cancel',
 			dialogTitle: 'Do you want delete this user?',
-			yesHandler: () => UsersAction.deleteUser(this.props.id),
+			yesHandler: () => UsersAction.deleteUser(this.props.ID),
 		});
 	}
 

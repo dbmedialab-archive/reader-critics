@@ -16,24 +16,48 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import MainStore from 'admin/stores/MainStore';
+import AdminConstants from 'admin/constants/AdminConstants';
+import * as UserConstants from 'admin/constants/UserConstants';
+import { Action } from 'redux-actions';
+
 import User from 'base/User';
-
-import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
-
-export function authenticate(user: User) {
-	MainStore.dispatch(
-		UserActionsCreator.authenticateUser(user)
-	);
-}
-export function deauthenticate() {
-	MainStore.dispatch(
-		UserActionsCreator.deauthenticateUser()
-	);
+export interface IAction {
+	type: any;
+	payload?: any;
 }
 
-export function update(user: User) {
-	MainStore.dispatch(
-		UserActionsCreator.updateUser(user)
-	);
+export type TAction = IAction;
+
+export function saveUser(payload): Action {
+	return {
+		type: UserConstants.SAVE_USER,
+		payload,
+	};
+}
+
+export function addUser(payload): Action {
+	return {
+		type: UserConstants.ADD_USER,
+		payload,
+	};
+}
+
+export function getUsers(payload): Action {
+	return {
+		type: UserConstants.USERS_RECEIVED,
+		payload,
+	};
+}
+export function deleteUser(payload): Action {
+	return {
+		type: UserConstants.DELETE_USER,
+		payload,
+	};
+}
+
+export function editUser(payload): Action {
+	return {
+		type: UserConstants.EDIT_USER,
+		payload,
+	};
 }
