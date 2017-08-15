@@ -64,24 +64,17 @@ export default function(data : any) : Promise <any> {
 	.then(() => feedbackService.save(article, user, data.feedback.items));*/
 }
 
-// Fetch article object
-
-function getArticle(articleData : any) : Promise <Article> {
-	const url = articleData.url;
-	const version = articleData.version;
-
-	return ArticleURL.from(url)
-	.then(articleURL => articleService.get(articleURL, version, true))
-	.then((article : Article) => (article === null
-		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
-		: article
-	));
-}
-
 // Fetch user object from database or create a new one
 
 function filterUniqueEmail(userMail : string) : boolean {
-	const exists = userService.getByEmail('Christoph Schmitz');
+	const exists = userService.get('Christoph Schmitz');
+//	const exists2 = UserModel.find({name: 'Christoph Schmitz'}).exec(function(err, resp){
+//		console.log('>>>>>>>>>>>exists2');
+//		console.log(resp);
+//	});
+	console.log('>>>>>>>>>>>exists');
+	console.log(exists);
+	
 	if (exists) {
 		return true;
 	}
@@ -114,6 +107,4 @@ function validateSchema(data : any) {
 	}
 	
 	let res = filterUniqueEmail(data.email);
-	console.log('resssss');
-	console.log(res);
 }
