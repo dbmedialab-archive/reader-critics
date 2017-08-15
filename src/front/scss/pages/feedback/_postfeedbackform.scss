@@ -1,0 +1,49 @@
+.feedbackform {
+	fieldset {
+		input[type='text'] {
+			margin-bottom: 0;
+		}
+
+		.icon {
+			&::before {
+				@include material-icon;
+				margin-right: .3rem;
+				display: inline-block;
+				border-radius: 2rem;
+				border-width: 1px;
+				border-style: solid;
+				position: relative;
+				top: .15rem;
+				padding: .5rem;
+			}
+		}
+
+		.button {
+			text-transform: uppercase;
+			font-size: .8rem;
+			background: none;
+			border: 0;
+			cursor: pointer;
+			padding: .5rem;
+		}
+
+		&.info-icon {
+			text-align: center;
+
+			.top {
+				font-size: 50px;
+
+				&.icon {
+					&.question, &.ok {
+						color: $color-success;
+					}
+
+					&.question::before {
+						content: 'done';
+						border-color: $color-success;
+					}
+				}
+			}
+		}
+	}
+}

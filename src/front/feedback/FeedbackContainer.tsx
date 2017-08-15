@@ -38,10 +38,11 @@ import {
 
 export interface FeedbackContainerState {
 	article: Article;
+	sent: boolean;
 }
 
 export default class FeedbackContainer
-extends React.Component <any, any> {
+extends React.Component <any, FeedbackContainerState> {
 
 	private articleElements : ArticleElement[] = [];
 
@@ -106,8 +107,18 @@ extends React.Component <any, any> {
 	}
 
 	public render() {
-		if (this.state.sent) {
-			return <PostFeedbackContainer />;
+		if (!this.state.sent) {
+			return (
+				<div className="confirmation">
+					<div className="container">
+						<div className="row section frontpage">
+							<div className="content u-full-width">
+								<PostFeedbackContainer />
+							</div>
+						</div>
+					</div>
+				</div>
+			);
 		}
 		// Initial state has no article data, render empty
 		if (this.state.article === null) {

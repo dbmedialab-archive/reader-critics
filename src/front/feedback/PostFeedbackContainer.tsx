@@ -18,8 +18,11 @@
 
 import * as React from 'react';
 import {sendFeedbackUser} from 'front/apiCommunication';
-
-export default class PostFeedbackContainer extends React.Component <any, any> {
+import EndUser from 'base/EndUser';
+export interface FeedbackUserState {
+	user: EndUser;
+}
+export default class PostFeedbackContainer extends React.Component <any, FeedbackUserState> {
 
 	constructor() {
 		super();
@@ -30,7 +33,9 @@ export default class PostFeedbackContainer extends React.Component <any, any> {
 			},
 		};
 	}
-
+	public handleSubmit() {
+		console.log('submit');
+	}
 	public sendFeedbackUser() {
 		sendFeedbackUser(this.state)
 		.then((response) => {
@@ -45,11 +50,38 @@ export default class PostFeedbackContainer extends React.Component <any, any> {
 	}
 	public render() {
 		return (
-			<div>
-			<input value={this.state.name} name="name" onChange={this.inputChanged}/>
-			<input value={this.state.email} name="email" onChange={this.inputChanged}/>
-			Fb was sent
-			</div>
+			<form
+				name="postFeedbackBox"
+				className="twelve columns feedbackform"
+				onSubmit={this.handleSubmit}
+			>
+				<fieldset className="info-icon">
+					<span className="top icon question"></span>
+				</fieldset>
+				<fieldset>
+					<p className="field-title">TUSEN TAKK!</p>
+					<p className="message">
+						Takk for at du hjelper oss rette opp feil og  mangler
+						i våre artikler. Det blir satt stor pris på.
+					</p>
+				</fieldset>
+				<fieldset className="text">
+					<p className="field-title">NAVN</p>
+					<input
+						type="text"
+						name="name"
+						onChange={this.inputChanged}
+					/>
+				</fieldset>
+				<fieldset className="text">
+					<p className="field-title">FÅ TILBAKEMELDING PÅ EPOST</p>
+					<input
+						type="text"
+						name="email"
+						onChange={this.inputChanged}
+					/>
+				</fieldset>
+			</form>
 		);
 	}
 }
