@@ -18,33 +18,20 @@
 
 import {
 	isObject,
-	isString,
 	isEmpty,
 } from 'lodash';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
-import EndUser from 'base/EndUser';
-import User from 'base/User';
-
 import {
-	articleService,
-	enduserService,
-	feedbackService,
 	userService,
 } from 'app/services';
 
 import {
-	UserModel
-} from 'app/db/models';
-
-import {
-	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate and store to database
-
+/**
+ * Validating input data and saving users
+ */
 export default function(data : any) : Promise <any> {
 	try {
 		validateSchema(data);
@@ -52,7 +39,6 @@ export default function(data : any) : Promise <any> {
 	catch (error) {
 		return Promise.reject(error);
 	}
-
 
 	return checkUniqueEmail(data.email)
 	.then((unique : boolean) => {
@@ -72,8 +58,10 @@ function checkUniqueEmail(userMail : string) : Promise <boolean> {
 	.then(user => user == null);	
 }
 
-// Schema Validation
 
+/**
+ * Schema Validation
+ */
 function validateSchema(data : any) {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
