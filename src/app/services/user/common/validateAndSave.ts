@@ -48,38 +48,28 @@ import {
 export default function(data : any) : Promise <any> {
 	try {
 		validateSchema(data);
-		return Promise.resolve(data);
 	}
 	catch (error) {
 		return Promise.reject(error);
 	}
 
-	/*let article : Article;
-	let user : EndUser;
 
-	return Promise.all([
-		getArticle(data.article).then((a : Article) => article = a),
-		getEndUser(data.user).then((u : EndUser) => user = u),
-	])
-	.then(() => feedbackService.save(article, user, data.feedback.items));*/
+	return checkUniqueEmail(data.email)
+	.then((unique : boolean) => {
+		if (unique) {
+			return userService.save(data);
+		} else {
+			throw new SchemaValidationError('Email already exists in database');
+		}
+	});
 }
 
-// Fetch user object from database or create a new one
-
-function filterUniqueEmail(userMail : string) : boolean {
-	const exists = userService.get('Christoph Schmitz');
-//	const exists2 = UserModel.find({name: 'Christoph Schmitz'}).exec(function(err, resp){
-//		console.log('>>>>>>>>>>>exists2');
-//		console.log(resp);
-//	});
-	console.log('>>>>>>>>>>>exists');
-	console.log(exists);
-	
-	if (exists) {
-		return true;
-	}
-	
-	return false;
+/**
+ * Check if email is unique in database
+ */
+function checkUniqueEmail(userMail : string) : Promise <boolean> {
+	return userService.getByEmail(userMail)
+	.then(user => user == null);	
 }
 
 // Schema Validation
@@ -105,6 +95,4 @@ function validateSchema(data : any) {
 	if (isEmpty(data.password)) {
 		throw new SchemaValidationError('Password field is required');
 	}
-	
-	let res = filterUniqueEmail(data.email);
 }

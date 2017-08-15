@@ -65,6 +65,9 @@ export function getByEmail(email : String) : Promise <User> {
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
+	if (user.password !== undefined) {
+		
+	}
 	return wrapSave<User>(new UserModel(user).save());
 }
 
