@@ -21,6 +21,12 @@ import Users from 'base/Users';
 import * as Immutable from 'seamless-immutable'	;
 import * as  UsersActionsCreator  from 'admin/actions/UsersActionsCreator';
 import * as UserConstants from '../constants/UserConstants';
+import * as mergers from 'seamless-immutable-mergers';
+
+const mergeConfig = {
+	merger: mergers.updatingByIdArrayMerger,
+	mergerObjectIdentifier: 'ID',
+};
 
 interface UsersInit extends Users {
 	users: Users[];
@@ -42,40 +48,40 @@ function receiveUsers(action, state) {
 	if (!users.length) {
 		return state;
 	}
-	return state.merge({users: action.payload});
+	return state.merge({users: action.payload}, {deep: true});
 }
 
 function deleteUser(action, state) {
-	let users = [];
+	const users = state.getIn(['users']);
 	const userId = action.payload;
-	const mutableArray = Immutable.asMutable(state.users);
-	users = Immutable(mutableArray.filter(user => user.id !== userId));
-	return { ...state, users };
+	const newUsers = Immutable.flatMap(users, (value) => {
+		if (value.ID === userId) {
+			return [];
+		} else {
+			return value;
+		}
+	});
+	return Immutable.set(state, 'users', newUsers);
 }
 
 function addUser(action, state) {
-	const user = action.payload.data;
-	let users = state.users;
+	const user = action.payload;
+	let users = state.getIn(['users']);
 	if (user) {
-		const mutableArray = Immutable.asMutable(users);
+		const mutableArray = Immutable.asMutable(users, {deep: true});
 		mutableArray.push(user);
 		users = Immutable(mutableArray);
 	}
-	return { ...state, users };
+	return Immutable({ ...state, users });
 }
 
 function saveUser(action, state) {
 	const user = action.payload;
-	return {...state, user};
+	return Immutable({...state, user});
 }
 
 function editUser(action, state) {
-	const userId = action.payload.id;
-	const userIndex = state.users.findIndex(user => user.id === userId);
-	const mutableUsers = Immutable.asMutable(state.users);
-	mutableUsers[userIndex] = action.payload;
-	const users = Immutable(mutableUsers);
-	return {...state, users};
+	return state.merge({users: [action.payload]}, mergeConfig);
 }
 
 function UsersReducer(state: Users = initialState, action: UsersActionsCreator.TAction): Users {

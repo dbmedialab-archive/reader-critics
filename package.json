@@ -99,6 +99,7 @@
 		"sass-loader": "6.0.6",
 		"schema-inspector": "^1.6.8",
 		"seamless-immutable": "^7.1.2",
+		"seamless-immutable-mergers": "^7.0.0",
 		"semver": "5.4.1",
 		"serve-favicons": "2.1.5",
 		"strip-url-auth": "1.0.1",
