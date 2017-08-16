@@ -103,7 +103,7 @@
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.18.2",
 		"typed-immutable-record": "0.0.6",
-		"webpack": "3.5.4",
+		"webpack": "3.5.5",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
