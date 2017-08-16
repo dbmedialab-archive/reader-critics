@@ -16,61 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Schema } from 'mongoose';
-
 import UserRole from 'base/UserRole';
 
-const UserSchema : Schema = new Schema({
-	name: {
-		type: String,
-		required: true,
-	},
-	email: {
-		type: String,
-		required: true,
-	},
-	role: {
-		type: String,
-		required: true,
-		enum: Object.values(UserRole),
-		default: UserRole.Journalist,
-	},
-	password: {
-		type: String,
-		required: false,
-		default: null,
-		select: false,
-	},
-}, {
-	toObject: {
-		retainKeyOrder: true,
-		transform: (doc : Document, converted : any) => {
-			// Make sure the password hash is thrown away
-			delete converted.password;
-			return converted;
-		},
-	},
-});
-
-UserSchema.index({
-	'name': 1,
-}, {
-	name: 'unique_name',
-	unique: true,
-});
-
-UserSchema.index({
-	'email': 1,
-}, {
-	name: 'unique_email',
-	unique: true,
-});
-
-UserSchema.index({
-	'role': 1,
-}, {
-	name: 'user_roles',
-	sparse: true,
-});
-
-export default UserSchema;
+export default function isSiteAdmin(req, res, next: () => void): void {
+	if (req.user.role === UserRole.SiteAdmin) {
+		return next();
+	}
+	res.json({error: `Only for ${UserRole.SiteAdmin}s`}).end();
+}

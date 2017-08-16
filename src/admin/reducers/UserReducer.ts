@@ -25,7 +25,7 @@ import AdminConstants from 'admin/constants/AdminConstants';
 const initialState = Immutable.from<User>({
 	name: '',
 	email: '',
-	role: UserRole.Normal,
+	role: UserRole.Journalist,
 });
 
 function updateUser(action, state) {
@@ -40,7 +40,7 @@ function deauthenticateUser(action, state) {
 	return state.merge({
 		name: '',
 		email: '',
-		role: UserRole.Normal,
+		role: UserRole.Journalist,
 	});
 }
 

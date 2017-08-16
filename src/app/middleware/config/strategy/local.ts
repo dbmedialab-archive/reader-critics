@@ -32,8 +32,8 @@ const options : IStrategyOptions = {
 	// session: true,
 };
 
-function verify(username : string, password : string, done : RetrieveCallback) {
-	userService.get(username).then((user : User) => {
+function verify(email : string, password : string, done : RetrieveCallback) {
+	userService.get(email).then((user : User) => {
 		if (user) {
 			return userService.checkPassword(user, password).then((isMatch) => {
 				done(isMatch ? null : 'Invalid credentials', user);
