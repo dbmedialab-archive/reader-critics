@@ -31,6 +31,7 @@ import validateAndSave from './common/validateAndSave';
 import {
 	getByArticle,
 	getByArticleAuthor,
+	getByID,
 	getRange,
 	save,
 } from './FeedbackDAO';
@@ -40,6 +41,7 @@ const service : FeedbackService
 		FeedbackModel, {
 			getByArticle,
 			getByArticleAuthor,
+			getByID,
 			getRange,
 			save,
 			validateAndSave,

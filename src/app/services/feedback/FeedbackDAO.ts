@@ -29,10 +29,12 @@ import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
+import { ObjectID } from 'app/db';
 import { FeedbackModel } from 'app/db/models';
 
 import {
 	wrapFind,
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
@@ -87,6 +89,32 @@ export function getByArticleAuthor (
 		FeedbackModel.find(query)
 		.sort(sort).skip(skip).limit(limit)
 	));
+}
+
+// getByID
+
+export function getByID(
+	objectID : string,
+	populated : boolean = true
+) : Promise <Feedback>
+{
+	emptyCheck(objectID);
+
+	let result = FeedbackModel.findOne({
+		_id: new ObjectID(objectID),
+	});
+
+	if (populated) {
+		result = result.populate({  // TODO use common populate; type compatibility?
+			path: 'article',
+			populate: {
+				path: 'authors',
+			},
+		})
+		.populate('enduser');
+	}
+
+	return wrapFindOne(result);
 }
 
 // getRange, using internal populate
