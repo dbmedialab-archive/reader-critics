@@ -21,6 +21,12 @@ import {
 	Job,
 } from 'kue';
 
+import {
+	feedbackService,
+	websiteService,
+} from 'app/services';
+
+import Feedback from 'base/Feedback';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
@@ -29,6 +35,18 @@ const log = app.createLog('api');
 
 export function onNewFeedback(job : Job, done : DoneCallback) {
 	log('New feedback in queue!', job.data);
-	SendGridMailer(JSON.stringify(job.data, null, 2));
-	done();
+
+	if (!job.data.ID) {
+		return Promise.reject(new Error('No feedback "ID" prop in job data'));
+	}
+
+	feedbackService.getByID(job.data.ID, true)
+	.then((feedback : Feedback) => {
+		log('complete feedback object:');
+		log(feedback);
+
+//	SendGridMailer(JSON.stringify(job.data, null, 2));
+
+	})
+	.then(() => done());
 }
