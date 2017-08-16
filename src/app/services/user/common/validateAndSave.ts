@@ -17,34 +17,21 @@
 //
 
 import {
-	isObject,
-	isString,
 	isEmpty,
+	isObject,
 } from 'lodash';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
-import EndUser from 'base/EndUser';
-import User from 'base/User';
-
 import {
-	articleService,
-	enduserService,
-	feedbackService,
 	userService,
 } from 'app/services';
 
 import {
-	UserModel
-} from 'app/db/models';
-
-import {
-	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate and store to database
-
+/**
+ * Validating input data and saving users
+ */
 export default function(data : any) : Promise <any> {
 	try {
 		validateSchema(data);
@@ -52,7 +39,6 @@ export default function(data : any) : Promise <any> {
 	catch (error) {
 		return Promise.reject(error);
 	}
-
 
 	return checkUniqueEmail(data.email)
 	.then((unique : boolean) => {
@@ -69,11 +55,12 @@ export default function(data : any) : Promise <any> {
  */
 function checkUniqueEmail(userMail : string) : Promise <boolean> {
 	return userService.getByEmail(userMail)
-	.then(user => user == null);	
+	.then(user => user === null);
 }
 
-// Schema Validation
-
+/**
+ * Schema Validation
+ */
 function validateSchema(data : any) {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
@@ -83,15 +70,15 @@ function validateSchema(data : any) {
 	if (isEmpty(data.email)) {
 		throw new SchemaValidationError('Email field is required');
 	}
-	
+
 	if (isEmpty(data.name)) {
 		throw new SchemaValidationError('Name field is required');
 	}
-	
+
 	if (isEmpty(data.role)) {
 		throw new SchemaValidationError('Role field is required');
 	}
-	
+
 	if (isEmpty(data.password)) {
 		throw new SchemaValidationError('Password field is required');
 	}

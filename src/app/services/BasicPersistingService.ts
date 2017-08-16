@@ -31,4 +31,6 @@ export function clear() : Promise <void> {
 
 export const defaultLimit : number = 25;
 export const defaultSkip : number = 0;
+export const defaultSortField : string = 'date.created';
+export const defaultSortOrder : number = -1;
 export const defaultSort : Object = { 'date.created': -1 };
