@@ -169,7 +169,6 @@ class AddUserModalComponent extends React.Component <any, any> {
 									<input
 										type="text"
 										name="name"
-										id="name"
 										onFocus={this.onFocus}
 										value={this.props.name.value}
 										onBlur={this.onBlur}
@@ -187,14 +186,13 @@ class AddUserModalComponent extends React.Component <any, any> {
 									<input
 										type="email"
 										name="email"
-										id="email"
 										value={this.props.email.value}
 										onFocus={this.onFocus}
 										onBlur={this.onBlur}
 										onChange={this.updateInputValue}
 									/>
 									<InputError
-										errorText={this.hasNameError()}
+										errorText={this.hasEmailError()}
 										touchedField={this.props.email.touched}
 									/>
 								</fieldset>
@@ -207,14 +205,13 @@ class AddUserModalComponent extends React.Component <any, any> {
 									<input
 										type="password"
 										name="password"
-										id="email"
 										value={this.props.password.value}
 										onFocus={this.onFocus}
 										onBlur={this.onBlur}
 										onChange={this.updateInputValue}
 									/>
 									<InputError
-										errorText={this.hasNameError()}
+										errorText={this.hasPasswordError()}
 										touchedField={this.props.password.touched}
 									/>
 								</fieldset>
