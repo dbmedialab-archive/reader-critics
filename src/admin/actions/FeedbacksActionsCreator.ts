@@ -16,20 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import Users from 'admin/components/user/Users';
-import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
-import Login from 'admin/components/login/Login';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-		<Route path="/feedbacks" component={Feedbacks}/>
+export type TAction = IAction;
 
-	</Switch>;
-export default Routes;
+export function setFeedbackList(payload): IAction {
+	return {
+		type: AdminConstants.FEEDBACK_LIST_RECEIVED,
+		payload,
+	};
+}

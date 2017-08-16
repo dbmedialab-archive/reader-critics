@@ -24,7 +24,7 @@ export const sendUsersRequest = ((): Promise<any> => {
  * @param data                  Request data
  * @returns {Promise<any>}
  */
-function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
+export function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
 	return fetch(url, {
 		method,
 		headers: { 'Content-Type': 'application/json' },
