@@ -131,3 +131,17 @@ export function errorResponse(
 function stringify (value : any) : string {
 	return app.isProduction ? JSON.stringify(value) : JSON.stringify(value, null, 2) + '\n';
 }
+
+/*
+ * Responds with collection of entities
+ * if empty - will respond with 404
+ * JSON format
+ */
+export function bulkResponse (resp, collection) {
+	const notFound = 'Resourse not found';
+	if (collection.length > 0) {
+		okApiResponse(resp, collection);
+	} else {
+		errorResponse(resp, undefined, notFound, { status: 404 });
+	}
+}

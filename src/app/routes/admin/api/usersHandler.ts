@@ -23,13 +23,16 @@ import {
 
 import {
 	errorResponse,
-	okApiResponse,
 	okResponse,
+	okApiResponse,
+	bulkResponse,
 } from 'app/routes/api/apiResponse';
 
 import { userService } from 'app/services';
 
 import emptyCheck from 'app/util/emptyCheck';
+
+import pagination from 'app/util/pagination';
 
 export default function(requ : Request, resp : Response) : void {
 	try {
@@ -48,5 +51,12 @@ export function create (requ: Request, resp: Response) : void {
 	})
 	.catch((error) => {
 		errorResponse(resp, error);
-	});
+	});	
+}
+
+export function list (requ: Request, resp: Response) : void {
+	const params = pagination(requ);
+	userService.getRange(params.skip, params.limit, params.sort)
+	.then(users => bulkResponse(resp, users))
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
