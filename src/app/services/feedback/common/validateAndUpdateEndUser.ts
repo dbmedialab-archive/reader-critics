@@ -49,7 +49,7 @@ export default function(id, data : any) : Promise <Feedback> {
 	return Promise.all([
 		getEndUser(data.user).then((u : EndUser) => enduser = u),
 	])
-	.then(() => feedbackService.update(id, enduser));
+	.then(() => feedbackService.updateEndUser(id, enduser));
 }
 
 // Fetch user object from database or create a new one

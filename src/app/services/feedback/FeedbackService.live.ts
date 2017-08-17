@@ -27,14 +27,14 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import validateAndSave from './common/validateAndSave';
-import updateEndUser from './common/updateEndUser';
+import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
 
 import {
 	getByArticle,
 	getByArticleAuthor,
 	getRange,
 	save,
-	update,
+	updateEndUser,
 } from './FeedbackDAO';
 
 const service : FeedbackService
@@ -45,8 +45,8 @@ const service : FeedbackService
 			getRange,
 			save,
 			validateAndSave,
-			update,
 			updateEndUser,
+			validateAndUpdateEndUser,
 		}
 	);
 

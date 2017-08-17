@@ -159,7 +159,7 @@ const makeDocument = (
 
 // update
 
-export function update (
+export function updateEndUser (
 	id : ObjectID,
 	enduser : EndUser
 ) : Promise <Feedback>

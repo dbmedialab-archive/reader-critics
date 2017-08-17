@@ -61,7 +61,7 @@ export default function(this: ISuiteCallbackContext) {
 			return app.loadJSON(path.join(feedbackUpdateDir, filename))
 				.then((a: any) => {
 					assert.isNotNull(a);
-					return feedbackService.updateEndUser(feedbackIDs[index], a);
+					return feedbackService.validateAndUpdateEndUser(feedbackIDs[index], a);
 				});
 		});
 	}));
