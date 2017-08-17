@@ -44,7 +44,7 @@ import {
 } from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
-import {ObjectID} from 'bson';
+import {ObjectID} from 'app/db';
 
 // getByArticle
 
