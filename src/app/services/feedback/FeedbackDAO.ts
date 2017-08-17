@@ -161,26 +161,19 @@ const makeDocument = (
 
 export function update (
 	id : ObjectID,
-	enduser? : EndUser,
-	items? : FeedbackItem[]
+	enduser : EndUser
 ) : Promise <Feedback>
 {
 	const updateData:{
-		enduser?: any,
-		items?: FeedbackItem[]
-	} = {};
+		enduser: any,
+	} = {
+		enduser: null,
+	};
 
-	if (enduser) {
-		updateData.enduser = enduser.ID;
-	}
-
-	if (items) {
-		updateData.items = items;
-	}
+	updateData.enduser = enduser.ID;
 
 	return FeedbackModel.findById(id).then((feedback) => {
 		feedback.enduser = updateData.enduser;
-		feedback.items = updateData.items;
 		return wrapSave(feedback.save());
 	});
 }

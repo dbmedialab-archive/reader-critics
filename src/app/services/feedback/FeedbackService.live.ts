@@ -27,7 +27,7 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import validateAndSave from './common/validateAndSave';
-import validateAndUpdate from './common/validateAndUpdate';
+import updateEndUser from './common/updateEndUser';
 
 import {
 	getByArticle,
@@ -46,7 +46,7 @@ const service : FeedbackService
 			save,
 			validateAndSave,
 			update,
-			validateAndUpdate,
+			updateEndUser,
 		}
 	);
 

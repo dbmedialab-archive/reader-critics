@@ -120,18 +120,16 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 *
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
-	validateAndUpdate(
+	updateEndUser(
 		id: ObjectID,
 		data : {
-			user?: EndUser,
-			items?: FeedbackItem[],
+			user: EndUser,
 		}
 		) : Promise <Feedback>;
 
 	update(
 		id : ObjectID,
-		enduser? : EndUser,
-		items? : FeedbackItem[]
+		enduser : EndUser
 	) : Promise <Feedback>;
 }
 

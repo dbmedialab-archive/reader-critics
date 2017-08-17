@@ -56,12 +56,12 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	}));
 
-	it('validateAndUpdate()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
+	it('updateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
 		return Promise.mapSeries(files, (filename : string, index: number) => {
 			return app.loadJSON(path.join(feedbackUpdateDir, filename))
 				.then((a: any) => {
 					assert.isNotNull(a);
-					return feedbackService.validateAndUpdate(feedbackIDs[index], a);
+					return feedbackService.updateEndUser(feedbackIDs[index], a);
 				});
 		});
 	}));

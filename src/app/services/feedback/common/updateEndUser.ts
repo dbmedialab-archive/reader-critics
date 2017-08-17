@@ -49,7 +49,7 @@ export default function(id, data : any) : Promise <Feedback> {
 	return Promise.all([
 		getEndUser(data.user).then((u : EndUser) => enduser = u),
 	])
-	.then(() => feedbackService.update(id, enduser, data.items));
+	.then(() => feedbackService.update(id, enduser));
 }
 
 // Fetch user object from database or create a new one
@@ -77,14 +77,7 @@ function validateSchema(data : any) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
 
-	if ('user' in data && (!isObject(data.user) || isArray(data.user))) {
+	if (!('user' in data) && (!isObject(data.user) || isArray(data.user))) {
 		throw new SchemaValidationError('Feedback data is missing or incorrect: "user"');
-	}
-	if ('items' in data && (!isArray(data.items))) {
-		throw new SchemaValidationError('Feedback data is missing or incorrect: "items"');
-	}
-
-	if (!('user' in data) && !('items' in data)) {
-		throw new SchemaValidationError('Feedback data is missing: send "items" and/or "user" objects');
 	}
 }
