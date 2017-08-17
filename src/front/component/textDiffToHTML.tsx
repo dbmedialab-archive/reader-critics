@@ -18,17 +18,17 @@
 
 import * as React from 'react';
 
-import {diffString, DiffStringResultObject} from 'app/util/diffString';
+import {diffString, DiffBit} from 'base/diff/diffString';
 
 export default function (oldText: string, newText: string): any {
 	if (oldText === newText) {
 		return <span key="0">{newText}</span>;
 	}
 
-	const diff: DiffStringResultObject[] = diffString(oldText, newText);
+	const diff: DiffBit[] = diffString(oldText, newText);
 	const html: any[] = [];
 
-	diff.forEach((result: DiffStringResultObject, index: number) => {
+	diff.forEach((result: DiffBit, index: number) => {
 		if (html.length > 0 && canHaveWhiteSpace(result)) {
 			html.push(' ');  // Whitespace to separate tags (and the words they contain)
 		}
@@ -40,7 +40,7 @@ export default function (oldText: string, newText: string): any {
 
 // Generate <ins> and <del> tags for additions and removals
 
-function formatResult(result: DiffStringResultObject, index: number) {
+function formatResult(result: DiffBit, index: number) {
 	if (result.added === true) {
 		return <ins key={index}>{result.value.trim()}</ins>;
 	}
@@ -66,7 +66,7 @@ const punctuationASCII: number[] = [
 	0x3F,  // ?
 ];
 
-function canHaveWhiteSpace(result: DiffStringResultObject): boolean {
+function canHaveWhiteSpace(result: DiffBit): boolean {
 	if (result.added === true && result.removed === true) {
 		return true;  // Always separate 'diff' tags
 	}
