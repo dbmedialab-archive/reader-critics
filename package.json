@@ -155,7 +155,7 @@
 		"nightwatch": "0.9.16",
 		"sass-lint": "1.10.2",
 		"selenium-server-standalone-jar": "3.5.0",
-		"source-map-support": "0.4.15",
+		"source-map-support": "0.4.16",
 		"supports-color": "^4.2.1",
 		"ts-node": "3.3.0",
 		"tsconfig-paths": "2.2.0",
