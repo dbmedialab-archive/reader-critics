@@ -23,13 +23,13 @@ import { assert } from 'chai';
 
 import {
 	diffString,
-	DiffStringResultObject,
-} from 'app/util/diffString';
+	DiffBit,
+} from 'base/diff/diffString';
 
 const text1A = 'Bavaria ipsum dolor eana is ma Wuascht, a bissal wos gehd ollaweil und sei Diandldrahn de Sonn nois.';
 const text1B = 'Bavaria ipsum dolor eana is ma Worschd, a bisserl was geht allerweil und sei Diandldrahn de nackata.';
 
-const expectedDiff1 : DiffStringResultObject[] = [
+const expectedDiff1 : DiffBit[] = [
 	{ count: 12, value: 'Bavaria ipsum dolor eana is ma ' },
 	{ added: false, count: 2, removed: true, value: 'Wuascht, ' },
 	{ added: true, count: 2, removed: false, value: 'Worschd, ' },
@@ -44,7 +44,7 @@ const expectedDiff1 : DiffStringResultObject[] = [
 const text2A = 'It relates to a £2bn loan advanced to Qatar after the fundraisings were negotiated';
 const text2B = 'It relates to a $200 invoice sent from Sweden after the fundraisings were negotiated';
 
-const expectedDiff2 : DiffStringResultObject[] = [
+const expectedDiff2 : DiffBit[] = [
 	{ count: 8, value: 'It relates to a ' },
 	{ count: 10, added: false, removed: true, value: '£2bn loan advanced to Qatar ' },
 	{ count: 10, added: true, removed: false, value: '$200 invoice sent from Sweden ' },

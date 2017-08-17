@@ -45,7 +45,7 @@ interface DiffResultObject {
 }
 
 // Object to show every single part of string after diff check
-export interface DiffStringResultObject {
+export interface DiffBit {
 	count: number;			// Amount of items in string part
 	added?: boolean;		// Is string added
 	removed?: boolean;		// Is string removed
@@ -114,13 +114,13 @@ export default function diffStringDefault(
 	o : string,
 	n : string,
 	isHTML : boolean = false
-) : Array<DiffStringResultObject> | string
+) : Array<DiffBit> | string
 {
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
-		const replaceItem: DiffStringResultObject = Object.assign({}, lastItem, {
+		const lastItem: DiffBit = result[lastIndex];
+		const replaceItem: DiffBit = Object.assign({}, lastItem, {
 			count: lastItem.count + 2,
 			value: lastItem.value + value,
 		});
@@ -131,8 +131,8 @@ export default function diffStringDefault(
 	// Adding a new string part with added/deleted flags
 	function addOptItem(value: string, isAdding: boolean) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
-		const optItem: DiffStringResultObject = {
+		const lastItem: DiffBit = result[lastIndex];
+		const optItem: DiffBit = {
 			count: 2,
 			added: isAdding,
 			removed: !isAdding,
@@ -151,7 +151,7 @@ export default function diffStringDefault(
 	// Adding a new string part for item that has not been changed
 	function addItem(value: string) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
+		const lastItem: DiffBit = result[lastIndex];
 		if (lastItem && !lastItem.added && !lastItem.removed) {
 			updatePrevious(value);
 		} else {
@@ -159,7 +159,7 @@ export default function diffStringDefault(
 		}
 	}
 
-	const result: DiffStringResultObject[] = [];
+	const result: DiffBit[] = [];
 	// If building an html text using the '/n' as an end of string
 	const lastSymbol: string = isHTML ? '\n' : '';
 	let str: string = '';
@@ -224,12 +224,12 @@ export default function diffStringDefault(
 /*
  Building an object or a string with result of diff operation
  */
-export function diffString(o: string, n: string): Array<DiffStringResultObject> {
+export function diffString(o: string, n: string): Array<DiffBit> {
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
-		const replaceItem: DiffStringResultObject = Object.assign({}, lastItem, {
+		const lastItem: DiffBit = result[lastIndex];
+		const replaceItem: DiffBit = Object.assign({}, lastItem, {
 			count: lastItem.count + 2,
 			value: lastItem.value + value,
 		});
@@ -240,8 +240,8 @@ export function diffString(o: string, n: string): Array<DiffStringResultObject> 
 	// Adding a new string part with added/deleted flags
 	function addOptItem(value: string, isAdding: boolean) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
-		const optItem: DiffStringResultObject = {
+		const lastItem: DiffBit = result[lastIndex];
+		const optItem: DiffBit = {
 			count: 2,
 			added: isAdding,
 			removed: !isAdding,
@@ -260,7 +260,7 @@ export function diffString(o: string, n: string): Array<DiffStringResultObject> 
 	// Adding a new string part for item that has not been changed
 	function addItem(value: string) {
 		const lastIndex: number = result.length - 1;
-		const lastItem: DiffStringResultObject = result[lastIndex];
+		const lastItem: DiffBit = result[lastIndex];
 		if (lastItem && !lastItem.added && !lastItem.removed) {
 			updatePrevious(value);
 		} else {
@@ -268,7 +268,7 @@ export function diffString(o: string, n: string): Array<DiffStringResultObject> 
 		}
 	}
 
-	const result: DiffStringResultObject[] = [];
+	const result: DiffBit[] = [];
 	const lastSymbol: string = '';
 
 	o = o.replace(/\s+$/, '');
