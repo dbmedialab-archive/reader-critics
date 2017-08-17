@@ -66,8 +66,10 @@ class UserList extends React.Component <any, any> {
 	);
 		return (
 			<main>
-				<section>
-					<button type="button" onClick={this.onCreate} className="button">Create User</button>
+				<section className="row expanded">
+					<div className="column small-12">
+						<button type="button" onClick={this.onCreate} className="button">Create User</button>
+					</div>
 				</section>
 				<section className="userTable">
 					<div className="row expanded">

@@ -44,10 +44,6 @@ const initialState = Immutable.from<UsersInit>({
 });
 
 function receiveUsers(action, state) {
-	const users = action.payload;
-	if (!users.length) {
-		return state;
-	}
 	return state.merge({users: action.payload}, {deep: true});
 }
 

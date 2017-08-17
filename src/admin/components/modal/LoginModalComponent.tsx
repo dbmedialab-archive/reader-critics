@@ -109,7 +109,7 @@ class LoginModalComponent extends React.Component <any, any> {
 				if (res.error || (!res.success && res.message)) {
 					this.updateErrorState(res.error || res.message, true);
 				} else {
-					UserActions.authenticate(res.data);
+					UserActions.authenticate(res);
 					UIActions.hideLoginDialog();
 					this.props.getBack();
 				}

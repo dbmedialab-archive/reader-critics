@@ -51,8 +51,10 @@ export default class UserRow extends React.Component <UserProps, UserRowState> {
 				<div className="column small-2 medium-2"><p>{this.props.role}</p></div>
 				<div className="column small-5 medium-4"><p>{this.props.email}</p></div>
 				<div className="column small-2 medium-3">
-					<button onClick={this.onEdit} className="button" type="button success">Edit</button>
-					<button onClick={this.onDestroy} className="button alert" type="button">Delete</button>
+					<div className="button-group">
+						<button onClick={this.onEdit} className="button" type="button success">Edit</button>
+						<button onClick={this.onDestroy} className="button alert" type="button">Delete</button>
+					</div>
 				</div>
 			</div>
 		);
