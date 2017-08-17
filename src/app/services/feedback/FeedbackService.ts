@@ -24,7 +24,7 @@ import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
-import {ObjectID} from 'bson';
+import {ObjectID} from 'app/db';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions

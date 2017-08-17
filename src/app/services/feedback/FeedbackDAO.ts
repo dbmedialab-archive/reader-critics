@@ -173,7 +173,10 @@ export function updateEndUser (
 	updateData.enduser = enduser.ID;
 
 	return FeedbackModel.findById(id).then((feedback) => {
-		feedback.enduser = updateData.enduser;
-		return wrapSave(feedback.save());
+		if (feedback) {
+			feedback.enduser = updateData.enduser;
+			return wrapSave(feedback.save());
+		}
+		throw new Error(`No such feedback ${id}`);
 	});
 }

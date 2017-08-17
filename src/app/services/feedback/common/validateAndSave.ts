@@ -18,7 +18,6 @@
 
 import {
 	isObject,
-	isString,
 } from 'lodash';
 
 import Article from 'base/Article';
@@ -57,7 +56,7 @@ export default function(data : any) : Promise <Feedback> {
 			// console.log('\n');
 			article = a;
 		}),
-		getEndUser(data.user).then((u : EndUser) => enduser = u),
+		getEndUser().then((u : EndUser) => enduser = u),
 	])
 	.then(() => feedbackService.save(article, enduser, data.feedback.items));
 }
@@ -78,15 +77,9 @@ function getArticle(articleData : any) : Promise <Article> {
 
 // Fetch user object from database or create a new one
 
-function getEndUser(userData : any) : Promise <EndUser> {
-	const name = isString(userData.name) ? userData.name : null;
-	const email = isString(userData.email) ? userData.email : null;
-
-	return enduserService.get(name, email)
-	.then((u : EndUser) => u !== null ? u : enduserService.save({
-		name,
-		email,
-	}));
+function getEndUser() : Promise <EndUser> {
+	return enduserService.get(null, null)
+	.then((u : EndUser) => u);
 }
 
 // Schema Validation
@@ -101,8 +94,5 @@ function validateSchema(data : any) {
 	}
 	if (!isObject(data.feedback)) {
 		throw new SchemaValidationError('Feedback data is missing "feedback" object');
-	}
-	if (!isObject(data.user)) {
-		throw new SchemaValidationError('Feedback data is missing "user" object');
 	}
 }

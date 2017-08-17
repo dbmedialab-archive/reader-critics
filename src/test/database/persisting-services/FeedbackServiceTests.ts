@@ -32,6 +32,7 @@ import {
 } from 'app/services';
 
 import * as app from 'app/util/applib';
+import {ObjectID} from 'bson';
 
 const feedbackDir = path.join('resources', 'feedback', 'create');
 const feedbackUpdateDir = path.join('resources', 'feedback', 'update');
@@ -56,12 +57,22 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	}));
 
-	it('updateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
+	it('validateAndUpdateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
 		return Promise.mapSeries(files, (filename : string, index: number) => {
 			return app.loadJSON(path.join(feedbackUpdateDir, filename))
 				.then((a: any) => {
 					assert.isNotNull(a);
 					return feedbackService.validateAndUpdateEndUser(feedbackIDs[index], a);
+				});
+		});
+	}));
+
+	it('validateAndUpdateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
+		return Promise.mapSeries(files, (filename : string, index: number) => {
+			return app.loadJSON(path.join(feedbackUpdateDir, filename))
+				.then((a: any) => {
+					assert.isNotNull(a);
+					return feedbackService.validateAndUpdateEndUser(new ObjectID('00004b690000ca3600007992'), a);
 				});
 		});
 	}));
