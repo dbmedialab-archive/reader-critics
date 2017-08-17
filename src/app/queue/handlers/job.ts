@@ -18,7 +18,7 @@
 
 import {
 	DoneCallback,
-	Job,
+	//Job,
 } from 'kue';
 
 import Article from 'base/Article';

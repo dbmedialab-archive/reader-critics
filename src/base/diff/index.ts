@@ -17,16 +17,64 @@
 //
 
 // The following two lines might be a bit confusing, but TypeScript really wants it that way:
-import { DiffBit } from './diffString';
+import { diffString, DiffBit } from './diffString';
 export { DiffBit } from './diffString';
 
-export type DiffFormatterFunction = (result: DiffBit, index: number) => any;
+export type DiffFormatterFunction = (
+	result : DiffBit,
+	index? : number
+) => any;
+
+export type DiffConcatterFunction = (
+	formattedElem : any
+) => void;
 
 export function diff (
 	oldText : string,
 	newText : string,
-	formatter : DiffFormatterFunction
-) : any
+	formatter : DiffFormatterFunction,
+	concatter : DiffConcatterFunction
+) : void
 {
+	if (oldText === newText) {
+		concatter(oldText);
+		return;
+	}
 
+	const diff: DiffBit[] = diffString(oldText, newText);
+	const html: any[] = [];
+
+	diff.forEach((result: DiffBit, index: number) => {
+		if (html.length > 0 && canHaveWhiteSpace(result)) {
+			concatter(' ');  // Whitespace to separate tags (and the words they contain)
+		}
+		concatter(formatter(result, index));
+	});
+}
+
+// Insert whitespace between tags, when needed (and appropriate)
+
+const punctuationASCII: number[] = [
+	0x21,  // !
+	0x22,  // "
+	0x27,  // '
+	0x28,  // (
+	0x29,  // )
+	0x2C,  // ,
+	0x2E,  // .
+	0x3A,  // :
+	0x3B,  // ;
+	0x3F,  // ?
+];
+
+function canHaveWhiteSpace(result: DiffBit): boolean {
+	if (result.added === true && result.removed === true) {
+		return true;  // Always separate 'diff' tags
+	}
+
+	if (punctuationASCII.indexOf(result.value.charCodeAt(0)) > 0) {
+		return false;  // Do not insert whitespace before punctuation
+	}
+
+	return true;
 }

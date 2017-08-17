@@ -40,7 +40,7 @@ export default function() {
 
 	Promise.resolve()
 		.then(initDatabase)
-//		.then(initJobWorkerQueue)
+		.then(initJobWorkerQueue)
 
 /* !!! */ .then(() => {
 			log('MOCK new feedback event');
