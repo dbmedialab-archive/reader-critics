@@ -56,7 +56,8 @@ export default function(data : any) : Promise <Feedback> {
 			// console.log('\n');
 			article = a;
 		}),
-		getEndUser().then((u : EndUser) => enduser = u),
+		// Get Anonymous user from DB
+		enduserService.get(null, null).then((u : EndUser) => enduser = u),
 	])
 	.then(() => feedbackService.save(article, enduser, data.feedback.items));
 }
@@ -73,13 +74,6 @@ function getArticle(articleData : any) : Promise <Article> {
 		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
 		: article
 	));
-}
-
-// Fetch user object from database or create a new one
-
-function getEndUser() : Promise <EndUser> {
-	return enduserService.get(null, null)
-	.then((u : EndUser) => u);
 }
 
 // Schema Validation
