@@ -5,6 +5,7 @@ import BasicPersistingService from '../BasicPersistingService';
 
 interface UserService extends BasicPersistingService <User> {
 	checkPassword(user : User, password : string) : Promise <boolean>;
+	doDelete(id: String);
 	get(username : String, email? : String|null) : Promise <User>;
 	getByEmail(email : String) : Promise <User>;
 	save(user : User) : Promise <User>;

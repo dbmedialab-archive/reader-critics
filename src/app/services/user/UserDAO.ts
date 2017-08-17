@@ -35,6 +35,8 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
+import { NotFoundError } from 'app/util/errors';
+
 export function checkPassword(user : User, password : string) : Promise <boolean> {
 	return UserModel.findOne({
 		name: user.name,
@@ -90,4 +92,12 @@ export function findOrInsert(user : Person) : Promise <User> {
 		new: true,
 		setDefaultsOnInsert: true,
 	}));
+}
+
+export function doDelete(id: String) : Promise <any> {
+	return UserModel.findOneAndRemove({'_id': id})
+	.then(res => (res === null)
+				? Promise.reject(new NotFoundError('User not found'))
+				: Promise.resolve(res)
+	);
 }

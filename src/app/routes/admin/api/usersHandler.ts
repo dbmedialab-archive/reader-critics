@@ -60,3 +60,9 @@ export function list (requ: Request, resp: Response) : void {
 	.then(users => bulkResponse(resp, users))
 	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
+
+export function doDelete (requ: Request, resp: Response) : void {
+	userService.doDelete(requ.params.id)
+	.then(res => okApiResponse(resp, res))
+	.catch(err => errorResponse(resp, err));
+}
