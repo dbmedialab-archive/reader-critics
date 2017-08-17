@@ -164,6 +164,8 @@ export function updateEndUser (
 	enduser : EndUser
 ) : Promise <Feedback>
 {
+	emptyCheck(enduser);
+
 	const updateData:{
 		enduser: any,
 	} = {
@@ -173,10 +175,10 @@ export function updateEndUser (
 	updateData.enduser = enduser.ID;
 
 	return FeedbackModel.findById(id).then((feedback) => {
-		if (feedback) {
-			feedback.enduser = updateData.enduser;
-			return wrapSave(feedback.save());
+		if (!feedback) {
+			throw new Error(`No such feedback ${id}`);
 		}
-		throw new Error(`No such feedback ${id}`);
+		feedback.enduser = updateData.enduser;
+		return wrapSave(feedback.save());
 	});
 }

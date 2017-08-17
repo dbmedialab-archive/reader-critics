@@ -67,16 +67,6 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	}));
 
-	it('validateAndUpdateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
-		return Promise.mapSeries(files, (filename : string, index: number) => {
-			return app.loadJSON(path.join(feedbackUpdateDir, filename))
-				.then((a: any) => {
-					assert.isNotNull(a);
-					return feedbackService.validateAndUpdateEndUser(new ObjectID('00004b690000ca3600007992'), a);
-				});
-		});
-	}));
-
 	it('count()', () => feedbackService.count().then(count => {
 		assert.strictEqual(
 			count, feedbackCount,

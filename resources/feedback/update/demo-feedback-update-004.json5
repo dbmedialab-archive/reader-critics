@@ -1,30 +1,6 @@
 {
-	"user": {
-		"name": "Richard Bach",
-		"email": "stillalive@reallyyes.io"
+	user: {
+		name: 'Richard Bach',
+		email: 'stillalive@reallyyes.io',
 	},
-	"feedback": {
-		"items": [
-			{
-				"links": [],
-				"comment": "Og neste gangen vil de regulere hvordan folk skal bruke toaletter. Tuller de?",
-				"text": "(Dagbladet): EU-kommisjonen har i disse dager et nytt forslag på trappene. Forslaget går ut på å regulere hvordan pommes de terres frites skal stekes.",
-				"order": {
-					"type": 1,
-					"item": 3
-				},
-				"type": "paragraph"
-			},
-			{
-				"links": [],
-				"comment": "Og neste gangen vil de regulere hvordan",
-				"text": "(Dagbladet): EU-kommisjonen har i disse. Forslaget går ut på å regulere hvordan pommes de terres frites skal stekes.",
-				"order": {
-					"type": 1,
-					"item": 4
-				},
-				"type": "paragraph"
-			}
-		]
-	}
 }

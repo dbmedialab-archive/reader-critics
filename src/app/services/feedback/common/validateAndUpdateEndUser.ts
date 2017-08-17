@@ -34,7 +34,7 @@ import {
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate and store to database
+// Validate data and update feedback in database with user contacts
 
 export default function(id, data : any) : Promise <Feedback> {
 	try {
