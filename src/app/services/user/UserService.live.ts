@@ -30,6 +30,7 @@ import validateAndSave from './common/validateAndSave';
 
 import {
 	checkPassword,
+	doDelete,
 	findOrInsert,
 	get,
 	getByEmail,
@@ -40,6 +41,7 @@ const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
 		UserModel, {
 			checkPassword,
+			doDelete,
 			findOrInsert,
 			get,
 			getByEmail,

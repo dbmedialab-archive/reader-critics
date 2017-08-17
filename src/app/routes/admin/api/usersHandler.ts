@@ -60,3 +60,15 @@ export function list (requ: Request, resp: Response) : void {
 	.then(users => bulkResponse(resp, users))
 	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
+
+export function doDelete (requ: Request, resp: Response) : void {
+	userService.doDelete(requ.params.id)
+	.then((res) => {
+		if (res === null) {
+			errorResponse(resp, undefined, "Resource not found", { status: 404 });
+		} else {
+			okApiResponse(resp, res);
+		}
+	})
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+}

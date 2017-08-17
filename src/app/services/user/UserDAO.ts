@@ -91,3 +91,14 @@ export function findOrInsert(user : Person) : Promise <User> {
 		setDefaultsOnInsert: true,
 	}));
 }
+
+export function doDelete(id: String) : Promise <any> {
+	return UserModel.findOneAndRemove({'_id': id})
+	.then((res) => {
+		return res;
+	})
+	.catch((err) => {
+		return err;
+	});
+
+}
