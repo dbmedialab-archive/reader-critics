@@ -33,6 +33,7 @@ import { FeedbackModel } from 'app/db/models';
 
 import {
 	wrapFind,
+	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
@@ -87,6 +88,23 @@ export function getByArticleAuthor (
 		FeedbackModel.find(query)
 		.sort(sort).skip(skip).limit(limit)
 	));
+}
+
+// getByID
+
+export function getByID (
+	feedbackID : string
+) : Promise <Feedback>
+{
+	emptyCheck(feedbackID);
+	return wrapFindOne(FeedbackModel.findOne({ _id: feedbackID })
+	.populate({
+		path: 'article',
+		populate: {
+			path: 'authors',
+		},
+	})
+	.populate('enduser'));
 }
 
 // getRange, using internal populate

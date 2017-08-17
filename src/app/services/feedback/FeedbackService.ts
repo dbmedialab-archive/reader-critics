@@ -60,6 +60,10 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 		sort? : Object
 	) : Promise <Feedback[]>;
 
+	getByID(
+		feedbackID : string
+	) : Promise <Feedback>;
+
 	/**
 	 * Save the new feedback object and create references to all involved objects.
 	 * The references to the Website and User objects are copied over from the
