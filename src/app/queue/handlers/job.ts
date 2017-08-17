@@ -21,11 +21,47 @@ import {
 	Job,
 } from 'kue';
 
+import Article from 'base/Article';
+import ArticleItem from 'base/ArticleItem';
+import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+
+import {
+	feedbackService,
+} from 'app/services';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog('api');
 
-export function onNewFeedback(job : Job, done : DoneCallback) {
-	log('New feedback in queue!', job.data);
-	done();
+export function onNewFeedback(job : any /*Job*/, done : DoneCallback) : Promise <void> {
+	if (!job.data.ID) {
+		log('Feedback "ID" not found in job data');
+		return Promise.resolve();
+	}
+
+	const ID : string = job.data.ID;
+	log(`Received new feedback event for ID ${ID}`);
+	log(job.data);
+
+	return feedbackService.getByID(ID)
+	.then((feedback : Feedback) => {
+		console.log(JSON.stringify(feedback, undefined, 4));
+
+		feedback.items.forEach((i : FeedbackItem) => {
+			console.log('fb item:', app.inspect(i));
+			const a = getRelatedArticleItem(feedback.article, i);
+			// TODO check undefined return value
+			console.log('ar item:', app.inspect(a));
+		});
+	})
+	.then(() => done());
+}
+
+function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
+	return article.items.find((aItem : ArticleItem) => {
+		return aItem.order.item === fItem.order.item
+			&& aItem.order.type === fItem.order.type
+			&& aItem.type === fItem.type;
+	});
 }

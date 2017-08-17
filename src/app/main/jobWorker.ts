@@ -23,6 +23,7 @@ import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
 import { initJobWorkerQueue } from 'app/queue';
+/* !!! */import { onNewFeedback } from 'app/queue/handlers/job';
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -39,6 +40,18 @@ export default function() {
 
 	Promise.resolve()
 		.then(initDatabase)
-		.then(initJobWorkerQueue)
+//		.then(initJobWorkerQueue)
+
+/* !!! */ .then(() => {
+			log('MOCK new feedback event');
+
+			return onNewFeedback({
+				data: {
+					ID: '598db17c0776526564328009',
+				},
+			}, () => {
+				log('done() callback');
+			});
+/* !!! */ })
 		.catch(startupErrorHandler);
 }
