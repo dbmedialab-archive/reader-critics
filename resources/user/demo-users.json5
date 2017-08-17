@@ -2,58 +2,58 @@
 // salting rounds to not unnecessarily slow down the tests!
 [
 	{
-		name: 'admin',
-		password: '$2a$04$F4.ZVJ9tfDfBjs9LPNwiHO.2DT/KgRCL9rg0UNLhsuhA2kn0mYu76',
-		role: 'sysadmin',
-		email: 'admin@leserkritikk.no'
+		"name": "admin",
+		"password": "$2a$04$F4.ZVJ9tfDfBjs9LPNwiHO.2DT/KgRCL9rg0UNLhsuhA2kn0mYu76",
+		"role": "sysadmin",
+		"email": "admin@leserkritikk.no"
 	},
 	{
-		name: 'Axel Egon Unterbichler',
-		email: 'axel.egon@mopo.no',
-		role: 'editor',
+		"name": "Axel Egon Unterbichler",
+		"email": "axel.egon@mopo.no",
+		"role": "editor"
 	},
 	{
-		name: 'Hubertus Hasenzahn',
-		email: 'hubert@mopo.no',
-		role: 'editor',
+		"name": "Hubertus Hasenzahn",
+		"email": "hubert@mopo.no",
+		"role": "editor"
 	},
 	{
-		name: 'Indiana Horst',
-		email: 'horst@indiana.net',
-		role: 'normal',
+		"name": "Indiana Horst",
+		"email": "horst@indiana.net",
+		"role": "journalist"
 	},
 	{
-		name: 'Ernst Eisenbichler',
-		email: 'ee@aller.com',
-		role: 'normal',
+		"name": "Ernst Eisenbichler",
+		"email": "ee@aller.com",
+		"role": "journalist",
 		// "test123"
-		password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
+		"password": "$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26"
 	},
 	{
-		name: 'Philipp Gröschler',
-		email: 'philipp@sol.no',
-		role: 'sysadmin',
+		"name": "Philipp Gröschler",
+		"email": "philipp@sol.no",
+		"role": "sysadmin",
 		// "holyguacamole"
-		password: '$2a$04$PHXSTABybBgrKN/cxyZ8Reaxm2JA0xLb6vQeufvXJ6eYhiucGV8iW',
+		"password": "$2a$04$PHXSTABybBgrKN/cxyZ8Reaxm2JA0xLb6vQeufvXJ6eYhiucGV8iW"
 	},
 	{
-		name: 'Christoph Schmitz',
-		email: 'christoph.schmitz@dagbladet.no',
-		role: 'sysadmin',
+		"name": "Christoph Schmitz",
+		"email": "christoph.schmitz@dagbladet.no",
+		"role": "sysadmin"
 	},
 	{
-		name: 'Einprosit Dergemütlichkeit',
-		email: 'prost.mahlzeit@lulu.org',
-		role: 'normal',
+		"name": "Einprosit Dergemütlichkeit",
+		"email": "prost.mahlzeit@lulu.org",
+		"role": "journalist"
 	},
 	{
-		name: 'Brahmaputra Pradesh Meghna',
-		email: 'bpm@dagbladet.no',
-		role: 'siteadmin',
+		"name": "Brahmaputra Pradesh Meghna",
+		"email": "bpm@dagbladet.no",
+		"role": "siteadmin"
 	},
 	{
-		name: 'Stamatis Skeates',
-		email: 'stamatis@ote.gr',
-		role: 'normal',
-	},
+		"name": "Stamatis Skeates",
+		"email": "stamatis@ote.gr",
+		"role": "journalist"
+	}
 ]

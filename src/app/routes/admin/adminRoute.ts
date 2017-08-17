@@ -35,7 +35,6 @@ import { sessionConf } from 'app/middleware/config/sessionConfig';
 
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
-import isRoot from 'app/middleware/policies/roles/isRoot';
 import adminPageHandler from './ui/adminPageHandler';
 
 import * as app from 'app/util/applib';
@@ -60,7 +59,7 @@ adminRoute.use(cookieParser(secret));
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
-adminRoute.get(['/', '/users', '/feedbacks'], isAuthenticated, isRoot, adminPageHandler);
+adminRoute.get(['/', '/users', '/feedbacks'], isAuthenticated, adminPageHandler);
 
 adminRoute.get('/*', notFoundHandler);
 

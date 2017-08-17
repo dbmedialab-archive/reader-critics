@@ -29,7 +29,7 @@ import {
 } from './apiResponse';
 
 export default function (requ : Request, resp : Response) : void {
-	feedbackService.validateAndSave(requ.body)
+	feedbackService.validateAndUpdate(requ.params.id, requ.body)
 	.then((doc) => okResponse(resp, {ID: doc.ID}))
 	.catch(error => errorResponse(resp, error));
 }

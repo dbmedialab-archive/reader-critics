@@ -1,0 +1,25 @@
+{
+	"article": {
+		"url": "http://www.mopo.no/1",
+		"version": "final-draft"
+	},
+	"user": {
+		"name": "Schmitz\' Katze"
+	},
+	"feedback": {
+		"items": [
+			{
+				"links": [
+					"http://morgenposten.no/utenriks/trump-pa-reise/725364"
+				],
+				"comment": "Var det ikke bare fem dager?",
+				"text": "På tur i fem dager",
+				"order": {
+					"type": 1,
+					"item": 5
+				},
+				"type": "subhead"
+			}
+		]
+	}
+}

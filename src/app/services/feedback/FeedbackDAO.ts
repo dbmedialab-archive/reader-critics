@@ -20,6 +20,7 @@ import {
 	Document,
 	DocumentQuery,
 } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 import Article from 'base/Article';
 import EndUser from 'base/EndUser';
@@ -32,7 +33,7 @@ import Website from 'base/Website';
 import { FeedbackModel } from 'app/db/models';
 
 import {
-	wrapFind,
+	wrapFind, wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
 
@@ -43,6 +44,7 @@ import {
 } from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
+import {ObjectID} from 'bson';
 
 // getByArticle
 
@@ -154,3 +156,31 @@ const makeDocument = (
 		statusChange: new Date(),
 	},
 });
+
+// update
+
+export function update (
+	id : ObjectID,
+	enduser? : EndUser,
+	items? : FeedbackItem[]
+) : Promise <Feedback>
+{
+	const updateData:{
+		enduser?: any,
+		items?: FeedbackItem[]
+	} = {};
+
+	if (enduser) {
+		updateData.enduser = enduser.ID;
+	}
+
+	if (items) {
+		updateData.items = items;
+	}
+
+	return FeedbackModel.findById(id).then((feedback) => {
+		feedback.enduser = updateData.enduser;
+		feedback.items = updateData.items;
+		return wrapSave(feedback.save());
+	});
+}

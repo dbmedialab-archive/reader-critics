@@ -24,6 +24,7 @@ import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+import {ObjectID} from 'bson';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions
@@ -98,6 +99,40 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
 	validateAndSave(data : any) : Promise <Feedback>;
+
+	/**
+	 * Takes a raw input object and validates its structure before saving the
+	 * contained feedback with all references. This function uses update() as soon
+	 * as all involved objects have been fetched for referencing, of course under
+	 * the condition that the initial validation does not throw an error.
+	 *
+	 * This function is intended for usage on the API, so that the data does not
+	 * have to be validated there. Just receive the data from the
+	 *
+	 * After validating, the function internally retrieves or (if not existing)
+	 * creates the EndUser object that contains the feedback giver's data.
+	 *
+	 * When this object (EndUser) is ready, it is given to update()together with
+	 * the feedback items, which are also parsed from the raw input object.
+	 *
+	 * TODO: real JSON schema validation, linking the schema file here in the
+	 * documentation for reference. See RC-110.
+	 *
+	 * @throws SchemaValidationError If the input data does not pass validation
+	 */
+	validateAndUpdate(
+		id: ObjectID,
+		data : {
+			user?: EndUser,
+			items?: FeedbackItem[],
+		}
+		) : Promise <Feedback>;
+
+	update(
+		id : ObjectID,
+		enduser? : EndUser,
+		items? : FeedbackItem[]
+	) : Promise <Feedback>;
 }
 
 export default FeedbackService;
