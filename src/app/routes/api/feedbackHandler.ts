@@ -28,8 +28,14 @@ import {
 	okResponse,
 } from './apiResponse';
 
-export default function (requ : Request, resp : Response) : void {
+export function feedbackPostHandler(requ : Request, resp : Response) : void {
 	feedbackService.validateAndSave(requ.body)
 	.then((doc) => okResponse(resp, {ID: doc.ID}))
 	.catch(error => errorResponse(resp, error));
+}
+
+export function feedbackUpdateHandler(requ : Request, resp : Response) : void {
+	feedbackService.validateAndUpdate(requ.params.id, requ.body)
+		.then((doc) => okResponse(resp, {ID: doc.ID}))
+		.catch(error => errorResponse(resp, error));
 }

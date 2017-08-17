@@ -25,11 +25,10 @@ import {
 import * as bodyParser from 'body-parser';
 
 import articleHandler from './api/articleHandler';
-import feedbackPostHandler from './api/feedbackPostHandler';
 import suggestionHandler from './api/suggestionHandler';
 
 import { errorResponse } from './api/apiResponse';
-import feedbackUpdateHandler from 'app/routes/api/feedbackUpdateHandler';
+import { feedbackPostHandler, feedbackUpdateHandler} from 'app/routes/api/feedbackHandler';
 
 // Prepare and export Express router
 
