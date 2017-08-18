@@ -34,7 +34,7 @@ import * as app from 'app/util/applib';
 const log = app.createLog('api');
 
 export function onNewFeedback(job : Job, done : DoneCallback) {
-	log('New feedback in queue!', job.data);
+	log('New feedback event received', job.data);
 
 	if (!job.data.ID) {
 		return Promise.reject(new Error('No feedback "ID" prop in job data'));
@@ -42,11 +42,15 @@ export function onNewFeedback(job : Job, done : DoneCallback) {
 
 	feedbackService.getByID(job.data.ID, true)
 	.then((feedback : Feedback) => {
+		if (feedback === null) {
+			log(`Could not find feedback ID ${job.data.ID}, giving up`);
+			return;
+		}
+
 		log('complete feedback object:');
 		log(feedback);
 
-//	SendGridMailer(JSON.stringify(job.data, null, 2));
-
+		SendGridMailer(JSON.stringify(feedback, null, 2));
 	})
 	.then(() => done());
 }
