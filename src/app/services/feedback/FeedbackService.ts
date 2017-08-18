@@ -60,10 +60,6 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 		sort? : Object
 	) : Promise <Feedback[]>;
 
-	getByID(
-		feedbackID : string
-	) : Promise <Feedback>;
-
 	/**
 	 * Get a single feedback object, identified by its database object
 	 */
