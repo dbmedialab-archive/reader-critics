@@ -156,7 +156,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				<Transition timeout={200} in={this.state.mailIcon.show || this.state.doneIcon.show}>
 					{(status) => (
 						<fieldset className={`info-icon rotate hideit-after rotate-${status}`}>
-								{this.state.doneIcon.show?
+								{this.state.doneIcon.show ?
 									<span className="top icon done"></span>
 									:<span className="top icon question"></span>
 								}
