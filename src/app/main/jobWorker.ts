@@ -23,7 +23,18 @@ import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
 import { initJobWorkerQueue } from 'app/queue';
-/* !!! */import { onNewFeedback } from 'app/queue/handlers/job';
+
+/* !!! >>>>> */
+import Article from 'base/Article';
+import Feedback from 'base/Feedback';
+
+import onNewFeedback from 'app/queue/handlers/onNewFeedback';
+
+import {
+	articleService,
+	feedbackService,
+} from 'app/services';
+/* <<<<< !!! */
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -42,16 +53,36 @@ export default function() {
 		.then(initDatabase)
 		.then(initJobWorkerQueue)
 
-/* !!! */ .then(() => {
+/* !!! >>>>> */
+		.then(() => {
 			log('MOCK new feedback event');
 
-			return onNewFeedback({
-				data: {
-					ID: '598db17c0776526564328009',
-				},
+			// Get an article from the test crowd
+			return articleService.get('http://www.mopo.no/2', '201707251349')
+			// Get first feedback for this article => test contents
+			.then((article : Article) => {
+				if (article === null) {
+					return Promise.reject('Test article not found');
+				}
+				return feedbackService.getByArticle(article, 0, 1, {
+					'date.created': 1,
+				});
+			})
+			// Check result and get feedback from array
+			.then((results : Feedback[]) => {
+				if (results.length !== 1) {
+					return Promise.reject('Test feedback not found');
+				}
+				return Promise.resolve(results[0]);
+			})
+			// Send fake event to job processor
+			.then((feedback : Feedback) => onNewFeedback({
+				data: feedback,
 			}, () => {
 				log('done() callback');
-			});
-/* !!! */ })
+			}));
+		})
+/* <<<<< !!! */
+
 		.catch(startupErrorHandler);
 }
