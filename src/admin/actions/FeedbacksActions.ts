@@ -16,20 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import Feedback from 'base/Feedback';
+import MainStore from 'admin/stores/MainStore';
+import Api from 'admin/services/Api';
+import * as FeedbacksActions from './FeedbacksActions';
+import * as FeedbacksActionsCreator from 'admin/actions/FeedbacksActionsCreator';
 
-import Users from 'admin/components/user/Users';
-import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
-import Login from 'admin/components/login/Login';
+export function setFeedbackList(feedbacks: Array<Feedback>) {
+	MainStore.dispatch(
+		FeedbacksActionsCreator.setFeedbackList(feedbacks)
+	);
+}
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-		<Route path="/feedbacks" component={Feedbacks}/>
-
-	</Switch>;
-export default Routes;
+export function getFeedbackList() {
+	Api.getFeedbacksList()
+	.then((resp)=>{
+		FeedbacksActions.setFeedbackList(resp.data);
+	});
+}

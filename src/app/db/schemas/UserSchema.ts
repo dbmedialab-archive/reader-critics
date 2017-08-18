@@ -33,7 +33,7 @@ const UserSchema : Schema = new Schema({
 		type: String,
 		required: true,
 		enum: Object.values(UserRole),
-		default: UserRole.Normal,
+		default: UserRole.Journalist,
 	},
 	password: {
 		type: String,

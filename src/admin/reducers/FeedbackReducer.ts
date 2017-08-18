@@ -16,45 +16,28 @@
 // FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 // details.  You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
-import User from 'base/User';
-import UserRole from 'base/UserRole';
+import FeedbackItem from 'base/FeedbackItem';
 import * as Immutable from 'seamless-immutable';
-import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
+import * as  FeedbacksActionsCreator  from 'admin/actions/FeedbacksActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 
-const initialState = Immutable.from<User>({
-	name: '',
-	email: '',
-	role: UserRole.Journalist,
-});
+const initialState = Immutable.from<FeedbackItem>([]);
 
-function updateUser(action, state) {
-	return state.merge({
-		name: action.payload.name,
-		email: action.payload.email,
-		role: action.payload.role,
-	});
+function setFeedbacks(action, state) {
+	return Immutable.from<FeedbackItem>(action.payload);
 }
 
-function deauthenticateUser(action, state) {
-	return state.merge({
-		name: '',
-		email: '',
-		role: UserRole.Journalist,
-	});
-}
+function FeedbackReducer(
+	state: Array<FeedbackItem> = initialState,
+	action: FeedbacksActionsCreator.TAction
+	): Array<FeedbackItem> {
 
-function UserReducer(state: User = initialState, action: UserActionsCreator.TAction): User {
 	switch (action.type) {
-		case AdminConstants.AUTHENTICATE_USER:
-			return updateUser(action, state);
-		case AdminConstants.DEAUTHENTICATE_USER:
-			return deauthenticateUser(action, state);
-		case AdminConstants.UPDATE_CURRENT_USER:
-			return updateUser(action, state);
+		case AdminConstants.FEEDBACK_LIST_RECEIVED:
+			return setFeedbacks(action, state);
 		default:
 			return state;
 	}
 }
 
-export default UserReducer;
+export default FeedbackReducer;

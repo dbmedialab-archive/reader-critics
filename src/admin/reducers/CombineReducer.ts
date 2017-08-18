@@ -17,13 +17,15 @@
 //
 
 import { combineReducers } from 'redux';
+import {routerReducer} from 'react-router-redux';
 
 import UIReducer from 'admin/reducers/UIReducer';
-import {routerReducer} from 'react-router-redux';
+import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
 
 export const CombineReducer:any = combineReducers({
 	UI: UIReducer,
-	router: routerReducer,
+	feedback: FeedbackReducer,
 	user: UserReducer,
+	router: routerReducer,
 });

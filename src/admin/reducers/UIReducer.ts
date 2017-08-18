@@ -79,6 +79,13 @@ function modalStateChanged(action, state) {
 	}
 }
 
+function topbarSubmenuChangeState(action, state) {
+	return state.merge({'topbar': {'submenu': action.payload}}, {deep: true});
+}
+function topbarAccountMenuChangeState(action, state) {
+	return state.merge({'topbar': {'accountMenu': action.payload}}, {deep: true});
+}
+
 function mainPreloaderStateChanged(action, state) {
 	interface PreloaderOptios {
 		isVisible?: boolean;
@@ -112,6 +119,10 @@ function UIReducer(state: UIType = initialState, action: UIActionsCreator.TActio
 			return resetFormInput(action, state);
 		case AdminConstants.MAIN_PRELOADER_CHANGE_STATE:
 			return mainPreloaderStateChanged(action, state);
+		case AdminConstants.TOPBAR_SUBMENU_STATE_CHANGED:
+			return topbarSubmenuChangeState(action, state);
+		case AdminConstants.TOPBAR_ACCOUNTMENU_STATE_CHANGED:
+			return topbarAccountMenuChangeState(action, state);
 		default:
 			return state;
 	}

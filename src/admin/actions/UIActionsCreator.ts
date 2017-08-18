@@ -35,3 +35,31 @@ export function modalWindowsChangeState(payload): IAction {
 		payload,
 	};
 }
+
+export function toggleMainPreloader(payload): IAction {
+	return {
+		type: AdminConstants.MAIN_PRELOADER_CHANGE_STATE,
+		payload,
+	};
+}
+
+export function closeReset(payload): IAction {
+	return {
+		type: AdminConstants.RESET_FORM_INPUT,
+		payload,
+	};
+}
+
+export function topbarSubmenuChangeState(payload): IAction {
+	return {
+		type: AdminConstants.TOPBAR_SUBMENU_STATE_CHANGED,
+		payload,
+	};
+}
+
+export function topbarAccountMenuChangeState(payload): IAction {
+	return {
+		type: AdminConstants.TOPBAR_ACCOUNTMENU_STATE_CHANGED,
+		payload,
+	};
+}

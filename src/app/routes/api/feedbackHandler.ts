@@ -16,20 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import {
+	Request,
+	Response,
+} from 'express';
 
-import Users from 'admin/components/user/Users';
-import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
-import Login from 'admin/components/login/Login';
+import { feedbackService } from 'app/services';
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-		<Route path="/feedbacks" component={Feedbacks}/>
+import {
+	errorResponse,
+	okResponse,
+} from './apiResponse';
 
-	</Switch>;
-export default Routes;
+export function feedbackPostHandler(requ : Request, resp : Response) : void {
+	feedbackService.validateAndSave(requ.body)
+	.then((doc) => okResponse(resp, {ID: doc.ID}))
+	.catch(error => errorResponse(resp, error));
+}
+
+export function feedbackUpdateEndUserHandler(requ : Request, resp : Response) : void {
+	feedbackService.validateAndUpdateEndUser(requ.params.id, requ.body)
+		.then((doc) => okResponse(resp, {ID: doc.ID}))
+		.catch(error => errorResponse(resp, error));
+}
