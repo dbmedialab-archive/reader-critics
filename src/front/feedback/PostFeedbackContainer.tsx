@@ -15,26 +15,85 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+// tslint:disable:max-line-length
 
 import * as React from 'react';
+import Transition from 'react-transition-group/Transition';
+
 import {sendFeedbackUser} from 'front/apiCommunication';
 import EndUser from 'base/EndUser';
 export interface FeedbackUserState {
 	user: EndUser;
+	sent: boolean;
+	nameField: {
+		show: boolean,
+	},
+	emailField: {
+		show: boolean,
+	},
+	sendBtn: {
+		show: boolean,
+	},
+	backBtn: {
+		show: boolean,
+	},
+	mailIcon: {
+		show: boolean,
+	},
+	doneIcon: {
+		show: boolean,
+	},
+	finalText: {
+		show: boolean,
+	},
 }
+
 export default class PostFeedbackContainer extends React.Component <any, FeedbackUserState> {
 
 	constructor() {
 		super();
-			this.state = {
-				user : {
+		this.state = {
+			user : {
 					name: '',
 					email: '',
 			},
+			sent: false,
+			nameField: {
+				show: true,
+			},
+			emailField: {
+				show: true,
+			},
+			sendBtn: {
+				show: true,
+			},
+			backBtn: {
+				show: false,
+			},
+			mailIcon: {
+				show: true,
+			},
+			doneIcon: {
+				show: false,
+			},
+			finalText: {
+				show: false,
+			},
 		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+		this.hideComponent = this.hideComponent.bind(this);
+		this.showComponent = this.showComponent.bind(this);
+
 	}
-	public handleSubmit() {
-		console.log('submit');
+	public handleSubmit(e) {
+		e.preventDefault();
+		this.hideComponent('nameField');
+		this.hideComponent('mailIcon');
+		this.showComponent('doneIcon', 200);
+		this.hideComponent('emailField',50);
+		this.hideComponent('sendBtn', 100);
+		this.showComponent('backBtn', 400);
+		this.showComponent('finalText', 400);
 	}
 	public sendFeedbackUser() {
 		sendFeedbackUser(this.state)
@@ -42,6 +101,35 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 			console.log(response);
 		});
 	}
+
+	private hideComponent(param, timeout = 0) {
+		const stateObj = {};
+		stateObj[param] = {
+			show: false,
+		};
+		if (timeout) {
+			setTimeout(()=>{
+				this.setState(stateObj);
+			},timeout);
+		} else {
+			this.setState(stateObj);
+		}
+	}
+
+	private showComponent(param, timeout = 0) {
+		const stateObj = {};
+		stateObj[param] = {
+			show: true,
+		};
+		if (timeout) {
+			setTimeout(()=>{
+				this.setState(stateObj);
+			},timeout);
+		} else {
+			this.setState(stateObj);
+		}
+	}
+
 	private inputChanged(e) {
 		const fieldName = e.target.name;
 		const stateObj = {};
@@ -55,9 +143,16 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				className="twelve columns feedbackform"
 				onSubmit={this.handleSubmit}
 			>
-				<fieldset className="info-icon">
-					<span className="top icon question"></span>
-				</fieldset>
+				<Transition timeout={200} in={this.state.mailIcon.show || this.state.doneIcon.show}>
+					{(status) => (
+						<fieldset className={`info-icon rotate hideit-after rotate-${status}`}>
+								{this.state.doneIcon.show?
+									<span className="top icon done"></span>
+									:<span className="top icon question"></span>
+								}
+						</fieldset>
+					)}
+				</Transition>
 				<fieldset>
 					<p className="field-title">TUSEN TAKK!</p>
 					<p className="message">
@@ -65,22 +160,57 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 						i våre artikler. Det blir satt stor pris på.
 					</p>
 				</fieldset>
-				<fieldset className="text">
-					<p className="field-title">NAVN</p>
-					<input
-						type="text"
-						name="name"
-						onChange={this.inputChanged}
-					/>
-				</fieldset>
-				<fieldset className="text">
-					<p className="field-title">FÅ TILBAKEMELDING PÅ EPOST</p>
-					<input
-						type="text"
-						name="email"
-						onChange={this.inputChanged}
-					/>
-				</fieldset>
+				<Transition timeout={300} in={this.state.finalText.show}>
+					{(status) => (
+						<div>
+							<fieldset className={`final-text fade fade-${status}`}>
+								<p className="field-title">
+									Feedback was finally transmitted!
+								</p>
+							</fieldset>
+						</div>
+					)}
+				</Transition>
+				<Transition timeout={300} in={this.state.nameField.show}>
+					{(status) => (
+						<fieldset className={`slide-left slide-left-${status}`}>
+							<p className="field-title">NAVN</p>
+							<input
+								type="text"
+								name="name"
+								onChange={this.inputChanged}
+							/>
+					</fieldset>
+					)}
+				</Transition>
+				<Transition timeout={250} in={this.state.emailField.show}>
+					{(status) => (
+						<fieldset className={`slide-left slide-left-${status}`}>
+							<p className="field-title">FÅ TILBAKEMELDING PÅ EPOST</p>
+							<input
+								type="text"
+								name="email"
+								onChange={this.inputChanged}
+							/>
+						</fieldset>
+					)}
+				</Transition>
+				<Transition timeout={300} in={this.state.sendBtn.show || this.state.backBtn.show}>
+					{(status) => (
+						<fieldset className={`control-icon hideit-after slide-left slide-left-${status}`}>
+							{this.state.backBtn.show?
+								<a href={this.props.articleUrl}>
+									<span className="icon back"></span>
+									<span className="btn-text">TILBAKE TIL ARTIKKELEN</span>
+								</a>
+								:<a href="#" onClick={this.handleSubmit}>
+									<span className="icon mail"></span>
+									<span className="btn-text">HOLD MEG OPPDATERT</span>
+								</a>
+							}
+						</fieldset>
+					)}
+				</Transition>
 			</form>
 		);
 	}

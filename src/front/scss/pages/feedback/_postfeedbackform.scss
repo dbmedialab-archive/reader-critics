@@ -1,46 +1,170 @@
-.feedbackform {
-	fieldset {
-		input[type='text'] {
-			margin-bottom: 0;
-		}
+.frontpage {
 
-		.icon {
-			&::before {
-				@include material-icon;
-				margin-right: .3rem;
-				display: inline-block;
-				border-radius: 2rem;
-				border-width: 1px;
-				border-style: solid;
-				position: relative;
-				top: .15rem;
+	.feedbackform {
+		fieldset {
+			input[type='text'] {
+				margin-bottom: 0;
+			};
+
+			&.slide-left {
+				opacity: 1;
+				transition: .3s;
+
+				&.slide-left-exiting {
+					opacity: 0;
+					transform: translateX(-300px);
+				}
+
+				&.slide-left-exited {
+					opacity: 0;
+
+					&.hideit-after {
+						display: none;
+					}
+				}
+
+				&.slide-left-entering {
+					opacity: 0;
+					transform: translateX(300px);
+				}
+
+				&.slide-left-entered {
+					opacity: 1;
+					transform: translateX(0);
+				}
+
+			}
+
+			&.rotate {
+				transition: .2s linear;
+				-ms-transform: rotate3D(0, 1, 0, 0deg);
+				-webkit-transform: rotate3D(0, 1, 0, 0deg);
+				transform: rotate3D(0, 1, 0, 0deg);
+
+				&.rotate-exiting {
+					-ms-transform: rotate3D(0, 1, 0, 90deg);
+					-webkit-transform: rotate3D(0, 1, 0, 90deg);
+					transform: rotate3D(0, 1, 0, 90deg);
+				}
+				/*
+				&.rotate-entering {
+					-ms-transform: rotate3D(0, 1, 0, -90deg);
+					-webkit-transform: rotate3D(0, 1, 0, -90deg);
+					transform: rotate3D(0, 1, 0, -90deg);
+				}
+
+				&.rotate-entered {
+					-ms-transform: rotate3D(0, 1, 0, 0deg);
+					-webkit-transform: rotate3D(0, 1, 0, 0deg);
+					transform: rotate3D(0, 1, 0, 0deg);
+				}*/
+			}
+
+			&.fade {
+				transition: .3s;
+				opacity: 0;
+
+				&.fade-entering {
+					opacity: 0;
+				}
+
+				&.fade-entered {
+					opacity: 1;
+				}
+			}
+
+			.icon {
+				&::before {
+					@include material-icon;
+					margin-right: .3rem;
+					display: inline-block;
+					border-radius: 999rem;
+					border-width: 1px;
+					border-style: solid;
+					position: relative;
+					top: .15rem;
+					padding: .5rem;
+				}
+
+				&.question::before {
+					content: 'mail_outline';
+					border-color: $color-neutral;
+					color: $color-neutral;
+				}
+
+				&.done::before {
+					content: 'done';
+					border-color: $color-success;
+					color: $color-success;
+				}
+
+				&.mail::before {
+					content: 'mail_outline';
+					border-color: $color-success;
+				}
+
+				&.back::before {
+					content: 'navigate_before';
+					border-color: $color-success;
+				}
+			}
+
+			.button {
+				text-transform: uppercase;
+				font-size: .8rem;
+				background: none;
+				border: 0;
+				cursor: pointer;
 				padding: .5rem;
 			}
-		}
 
-		.button {
-			text-transform: uppercase;
-			font-size: .8rem;
-			background: none;
-			border: 0;
-			cursor: pointer;
-			padding: .5rem;
-		}
+			&.info-icon {
+				text-align: center;
 
-		&.info-icon {
-			text-align: center;
+				.top {
+					&.icon {
+						&.question, &.ok {
+							color: $color-success;
+						}
 
-			.top {
-				font-size: 50px;
+						&::before {
+							font-size: 50px;
+							border-width: 2px;
+						}
 
-				&.icon {
-					&.question, &.ok {
-						color: $color-success;
+					}
+				}
+			}
+
+			&.final-text {
+				position: absolute;
+				z-index: 101;
+				left: 0;
+				right: 0;
+				text-align: center;
+
+			};
+
+			&.control-icon {
+				text-align: center;
+
+				a {
+					text-decoration: none;
+				}
+
+				span {
+					&.icon {
+						&::before {
+							color: rgb(89, 126, 151);
+							font-size: 12px;
+						}
 					}
 
-					&.question::before {
-						content: 'done';
-						border-color: $color-success;
+					&.btn-text {
+						text-transform: uppercase;
+						color: rgb(89, 126, 151);
+						font-family: Roboto, 'Helvetica Neue', Arial;
+						font-size: 14px;
 					}
 				}
 			}

@@ -113,7 +113,7 @@ extends React.Component <any, FeedbackContainerState> {
 					<div className="container">
 						<div className="row section frontpage">
 							<div className="content u-full-width">
-								<PostFeedbackContainer />
+								<PostFeedbackContainer articleUrl={this.state.article?this.state.article.url:null}/>
 							</div>
 						</div>
 					</div>
