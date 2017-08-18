@@ -11,7 +11,7 @@
 			{
 				links: [],
 				comment: 'Ich glaub wenns so fria scho Freibier gibt, kommt da garnix bei raus. Echt jetzt, Junge!',
-				text: '',
+				text: '(Morgenposten): Erat nomoi Freibia, Freibia! Jo mei is des schee aber wart mer lieber no bis zum Abnd. Meidromml deserunt is ma Wuascht reprehenderit measi oamoi!',
 				order: {
 					type: 1,
 					item: 2
@@ -19,8 +19,10 @@
 				type: 'paragraph'
 			},
 			{
-				links: [],
-				comment: 'Wo is des?',
+				links: [
+					'https://de.wikipedia.org/wiki/Leonhardifahrt',
+				],
+				comment: 'Wo is des? Is des des Dings da unten, bei Tölz?',
 				text: '',
 				order: {
 					type: 1,
