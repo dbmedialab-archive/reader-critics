@@ -60,6 +60,7 @@ adminApiRoute.post('/login', apiLoginHandler);
 adminApiRoute.get('/users', isAuthenticatedApi, userHandler.list);
 adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
 adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
+adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 

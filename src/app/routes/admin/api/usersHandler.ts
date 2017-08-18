@@ -46,12 +46,8 @@ export default function(requ : Request, resp : Response) : void {
 export function create (requ: Request, resp: Response) : void {
 	emptyCheck(requ.body);
 	userService.validateAndSave(requ.body)
-	.then((user) => {
-		okApiResponse(resp, user);
-	})
-	.catch((error) => {
-		errorResponse(resp, error);
-	});	
+	.then(user => okApiResponse(resp, user))
+	.catch(error => errorResponse(resp, error));	
 }
 
 export function list (requ: Request, resp: Response) : void {
@@ -63,6 +59,12 @@ export function list (requ: Request, resp: Response) : void {
 
 export function doDelete (requ: Request, resp: Response) : void {
 	userService.doDelete(requ.params.id)
+	.then(res => okApiResponse(resp, res))
+	.catch(err => errorResponse(resp, err));
+}
+
+export function update (requ: Request, resp: Response) : void {
+	userService.validateAndUpdate(requ.params.id, requ.body)
 	.then(res => okApiResponse(resp, res))
 	.catch(err => errorResponse(resp, err));
 }
