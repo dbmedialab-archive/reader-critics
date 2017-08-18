@@ -22,6 +22,9 @@ import {
 } from 'express';
 
 import { feedbackService } from 'app/services';
+import { sendMessage } from 'app/queue';
+
+import MessageType from 'app/queue/MessageType';
 
 import {
 	errorResponse,
@@ -30,6 +33,7 @@ import {
 
 export default function (requ : Request, resp : Response) : void {
 	feedbackService.validateAndSave(requ.body)
+	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
 	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
 }

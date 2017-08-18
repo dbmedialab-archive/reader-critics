@@ -29,6 +29,7 @@ import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
+import { ObjectID } from 'app/db';
 import { FeedbackModel } from 'app/db/models';
 
 import {
@@ -92,19 +93,28 @@ export function getByArticleAuthor (
 
 // getByID
 
-export function getByID (
-	feedbackID : string
+export function getByID(
+	objectID : string,
+	populated : boolean = true
 ) : Promise <Feedback>
 {
-	emptyCheck(feedbackID);
-	return wrapFindOne(FeedbackModel.findOne({ _id: feedbackID })
-	.populate({
-		path: 'article',
-		populate: {
-			path: 'authors',
-		},
-	})
-	.populate('enduser'));
+	emptyCheck(objectID);
+
+	let result = FeedbackModel.findOne({
+		_id: new ObjectID(objectID),
+	});
+
+	if (populated) {
+		result = result.populate({  // TODO use common populate; type compatibility?
+			path: 'article',
+			populate: {
+				path: 'authors',
+			},
+		})
+		.populate('enduser');
+	}
+
+	return wrapFindOne(result);
 }
 
 // getRange, using internal populate

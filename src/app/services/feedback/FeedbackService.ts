@@ -65,6 +65,11 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	) : Promise <Feedback>;
 
 	/**
+	 * Get a single feedback object, identified by its database object
+	 */
+	getByID(objectID : string, populated? : boolean) : Promise <Feedback>;
+
+	/**
 	 * Save the new feedback object and create references to all involved objects.
 	 * The references to the Website and User objects are copied over from the
 	 * provided Article object. This is needed for complex querying with filters.

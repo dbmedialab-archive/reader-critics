@@ -18,7 +18,7 @@
 
 import {
 	DoneCallback,
-	//Job,
+	Job,
 } from 'kue';
 
 import Article from 'base/Article';
@@ -28,7 +28,10 @@ import FeedbackItem from 'base/FeedbackItem';
 
 import {
 	feedbackService,
+	websiteService,
 } from 'app/services';
+
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
