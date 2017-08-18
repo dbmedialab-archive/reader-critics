@@ -32,7 +32,7 @@ import {
 /**
  * Validating input data and saving users
  */
-export default function(data : any) : Promise <any> {
+export function validateAndSave(data : any) : Promise <any> {
 	try {
 		validateSchema(data);
 	}
@@ -47,6 +47,42 @@ export default function(data : any) : Promise <any> {
 		} else {
 			throw new SchemaValidationError('Email already exists in database');
 		}
+	});
+}
+
+/*
+ * Validates amd updates user.
+ * This doesn't allow to change user password.
+ * Updating password will be separate procedure
+ */
+export function validateAndUpdate (id: String, data: any) : Promise <any> {
+	try {
+		validateSchemaUpdate(data);
+	}
+	catch (error) {
+		return Promise.reject(error);
+	}
+	return userService.getByID(id)
+	.then(user => {
+		if (!isEmpty(data.password)) {
+			delete data.password;
+		}
+
+		if (data.email === user.email) {
+			return userService.update(id, data);
+		} else {
+			return checkUniqueEmail(data.email)
+			.then((unique : boolean) => {
+				if (unique) {
+					return userService.update(id, data);
+				} else {
+					throw new SchemaValidationError('Email already exists in database');
+				}
+			});
+		}
+	})
+	.catch(err => {
+		return Promise.reject(err);
 	});
 }
 
@@ -81,5 +117,26 @@ function validateSchema(data : any) {
 
 	if (isEmpty(data.password)) {
 		throw new SchemaValidationError('Password field is required');
+	}
+}
+
+/*
+ * Validating fileds when updating user entity
+ */
+function validateSchemaUpdate(data : any) {
+	if (!isObject(data)) {
+		throw new SchemaValidationError('Invalid user data');
+	}
+
+	if (isEmpty(data.email)) {
+		throw new SchemaValidationError('Email field is required');
+	}
+
+	if (isEmpty(data.name)) {
+		throw new SchemaValidationError('Name field is required');
+	}
+
+	if (isEmpty(data.role)) {
+		throw new SchemaValidationError('Role field is required');
 	}
 }

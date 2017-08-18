@@ -26,10 +26,10 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
-import { 
+import {
 	validateAndSave,
 	validateAndUpdate
-} from './common/validateAndUpdate';
+} from './common/crud';
 
 import {
 	checkPassword,

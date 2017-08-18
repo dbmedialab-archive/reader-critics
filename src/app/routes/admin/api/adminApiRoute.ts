@@ -26,8 +26,7 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
 import {
-	apiLoginHandler,
-	apiTestHandler
+	apiLoginHandler
 } from 'app/routes/admin/api/handlers';
 
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
