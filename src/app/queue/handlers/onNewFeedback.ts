@@ -35,9 +35,9 @@ import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog('api');
+const log = app.createLog();
 
-export function onNewFeedback(job : any /*Job*/, done : DoneCallback) : Promise <void> {
+export default function(job : any /*Job*/, done : DoneCallback) : Promise <void> {
 	if (!job.data.ID) {
 		log('Feedback "ID" not found in job data');
 		return Promise.resolve();
@@ -52,10 +52,10 @@ export function onNewFeedback(job : any /*Job*/, done : DoneCallback) : Promise 
 		console.log(JSON.stringify(feedback, undefined, 4));
 
 		feedback.items.forEach((i : FeedbackItem) => {
-			console.log('fb item:', app.inspect(i));
 			const a = getRelatedArticleItem(feedback.article, i);
 			// TODO check undefined return value
 			console.log('ar item:', app.inspect(a));
+			console.log('fb item:', app.inspect(i));
 		});
 	})
 	.then(() => done());
