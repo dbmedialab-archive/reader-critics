@@ -62,7 +62,6 @@ function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <a
 // PUT data
 
 function putData(uri : string, data : any) : Promise <any> {
-	console.log(data);
 	return sendData('PUT', uri, data);
 }
 

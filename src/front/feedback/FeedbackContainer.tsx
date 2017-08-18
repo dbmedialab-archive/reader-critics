@@ -61,7 +61,6 @@ extends React.Component <any, FeedbackContainerState> {
 		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
 			// FIXME ganz mieser Hack:
 			window['app'].article.version = article.version;
-			console.log('set version to:', window['app'].article.version);
 			self.setState({
 				article,
 			});
@@ -106,13 +105,11 @@ extends React.Component <any, FeedbackContainerState> {
 			},
 		})
 		.then((response) => {
-			console.log('resp=', response);
 			this.setState({sent : true, feedbackId : response.ID});
 		});
 	}
 
 	public render() {
-		console.log(this.state.article);
 		if (this.state.sent) {
 			return (
 				<div className="confirmation">
