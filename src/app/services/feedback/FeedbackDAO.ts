@@ -20,7 +20,6 @@ import {
 	Document,
 	DocumentQuery,
 } from 'mongoose';
-import * as mongoose from 'mongoose';
 
 import Article from 'base/Article';
 import EndUser from 'base/EndUser';
@@ -33,7 +32,7 @@ import Website from 'base/Website';
 import { FeedbackModel } from 'app/db/models';
 
 import {
-	wrapFind, wrapFindOne,
+	wrapFind,
 	wrapSave,
 } from 'app/db/common';
 

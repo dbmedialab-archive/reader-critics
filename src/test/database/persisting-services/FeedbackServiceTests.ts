@@ -32,7 +32,6 @@ import {
 } from 'app/services';
 
 import * as app from 'app/util/applib';
-import {ObjectID} from 'bson';
 
 const feedbackDir = path.join('resources', 'feedback', 'create');
 const feedbackUpdateDir = path.join('resources', 'feedback', 'update');
