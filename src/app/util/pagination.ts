@@ -33,7 +33,7 @@ const defaultPage = 1;
  */
 export default function(requ: Request) {
 	let skip: number;
-	const page: number = requ.query.page && requ.query.page > 0 ? requ.query.page : defaultPage;
+	const page: number = requ.query.page && requ.query.page > 0 ? parseInt(requ.query.page) : defaultPage;
 	const limit: number = requ.query.limit || defaultLimit;
 
 	if (page === 1) {
