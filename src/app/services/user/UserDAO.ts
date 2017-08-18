@@ -42,7 +42,7 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 		name: user.name,
 		email: user.email,
 	})
-	.select('+password').exec().then((u : UserDocument) => {
+	.then((u : UserDocument) => {
 		const hash = u.get('password');
 		return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
 	});
@@ -60,11 +60,26 @@ export function get(name : String, email? : String) : Promise <User> {
 	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
 }
 
+/*
+ * Fetching user by email. password is excluded.
+ */
 export function getByEmail(email : String) : Promise <User> {
 	emptyCheck(email);
 	const query : any = { email: email };
 
 	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+}
+
+/*
+ * Fetching user by ID parameter. Password excluded.
+ */
+export function getByID(id : String) : Promise <User> {
+	return UserModel.findOne({'_id': id})
+	.select('-password').exec()
+	.then(res => (res === null)
+				? Promise.reject(new NotFoundError('User not found'))
+				: Promise.resolve(res)
+	);
 }
 
 export function save(user : User) : Promise <User> {
@@ -94,8 +109,22 @@ export function findOrInsert(user : Person) : Promise <User> {
 	}));
 }
 
+/*
+ * Deletes user entry by ID. Null - if not found, user object if found is returned.
+ */
 export function doDelete(id: String) : Promise <any> {
-	return UserModel.findOneAndRemove({'_id': id})
+	return UserModel.findOneAndRemove({ '_id': id })
+	.then(res => (res === null)
+				? Promise.reject(new NotFoundError('User not found'))
+				: Promise.resolve(res)
+	);
+}
+
+/*
+ * Do updates user entry. Null - if not found, updated user if found is returned.
+ */
+export function update(id: String, data: Object) : Promise <any> {
+	return UserModel.findOneAndUpdate({ '_id': id }, data, { new: true })
 	.then(res => (res === null)
 				? Promise.reject(new NotFoundError('User not found'))
 				: Promise.resolve(res)

@@ -26,7 +26,10 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
-import validateAndSave from './common/validateAndSave';
+import {
+	validateAndSave,
+	validateAndUpdate
+} from './common/crud';
 
 import {
 	checkPassword,
@@ -34,7 +37,9 @@ import {
 	findOrInsert,
 	get,
 	getByEmail,
+	getByID,
 	save,
+	update,
 } from './UserDAO';
 
 const service : UserService
@@ -45,8 +50,11 @@ const service : UserService
 			findOrInsert,
 			get,
 			getByEmail,
+			getByID,
 			save,
+			update,
 			validateAndSave,
+			validateAndUpdate,
 		}
 	);
 

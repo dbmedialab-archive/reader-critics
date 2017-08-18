@@ -22,8 +22,8 @@ import {
 } from 'express';
 
 import {
-	errorResponse,
 	bulkResponse,
+	errorResponse,
 } from 'app/routes/api/apiResponse';
 
 import { feedbackService } from 'app/services';

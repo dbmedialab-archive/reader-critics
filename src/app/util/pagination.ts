@@ -21,8 +21,8 @@ import {
 
 import {
 	defaultLimit,
-	defaultSortOrder,
 	defaultSortField,
+	defaultSortOrder,
 } from '../services/BasicPersistingService';
 
 const defaultPage = 1;
@@ -32,19 +32,29 @@ const defaultPage = 1;
  *	If nothing came from request default will be used
  */
 export default function(requ: Request) {
-	var skip: number;
-	var page: number = requ.query.page && requ.query.page > 0 ? requ.query.page : defaultPage;
-	var limit: number = requ.query.limit || defaultLimit;
-	var sortField: string = requ.query.sort || null;
-	var sortOrder: string = requ.query.sortOrder || null;
-	var sort : Object = {};
-	
-	if (page == 1) {
+	let skip: number;
+	const page: number = requ.query.page && requ.query.page > 0
+							? parseInt(requ.query.page)
+							: defaultPage;
+	const limit: number = requ.query.limit || defaultLimit;
+
+	if (page === 1) {
 		skip = 0;
 	} else {
 		skip = limit * (page - 1);
 	}
-	
+
+	const sort  = getSort(requ);
+
+	return { skip, limit, sort };
+}
+
+function getSort(requ: Request) {
+	const sortField: string = requ.query.sort || null;
+	const sortOrder: string = requ.query.sortOrder || null;
+
+	const sort : Object = {};
+
 	if (sortField && sortOrder) {
 		sort[sortField] = sortOrder;
 	} else if (sortField && !sortOrder) {
@@ -54,6 +64,6 @@ export default function(requ: Request) {
 	} else {
 		sort[defaultSortField] = defaultSortOrder;
 	}
-	
-	return { skip, limit, sort };
+
+	return sort;
 }

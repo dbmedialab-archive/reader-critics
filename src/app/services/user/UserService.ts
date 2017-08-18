@@ -8,14 +8,17 @@ interface UserService extends BasicPersistingService <User> {
 	doDelete(id: String);
 	get(username : String, email? : String|null) : Promise <User>;
 	getByEmail(email : String) : Promise <User>;
+	getByID(id : String) : Promise <User>;
 	save(user : User) : Promise <User>;
 
 	findOrInsert(user : Person) : Promise <User>;
+	update(id: String, user : Person) : Promise <User>;
 
 	/**
 	 * TODO: reference to the same method from FeedbackService
 	 */
 	validateAndSave(data : any) : Promise <User>;
+	validateAndUpdate(id: String, data : Object) : Promise <User>;
 }
 
 export default UserService;
