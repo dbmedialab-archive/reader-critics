@@ -38,6 +38,7 @@ import {
 
 export interface FeedbackContainerState {
 	article: Article;
+	feedbackId: string;
 	sent: boolean;
 }
 
@@ -50,6 +51,7 @@ extends React.Component <any, FeedbackContainerState> {
 		super();
 		this.state = {
 			article: null,
+			feedbackId: null,
 			sent: false,
 		};
 	}
@@ -88,7 +90,10 @@ extends React.Component <any, FeedbackContainerState> {
 			return;
 		}
 
-		const user = this.demoUsers[Math.floor(Math.random() * this.demoUsers.length)];
+		const user = {
+			name: null,
+			email: null,
+		};
 
 		sendFeedback({
 			article: {
@@ -101,19 +106,23 @@ extends React.Component <any, FeedbackContainerState> {
 			},
 		})
 		.then((response) => {
-			//alert('Feedback successfully sent');
-			this.setState({sent : true});
+			console.log('resp=', response);
+			this.setState({sent : true, feedbackId : response.ID});
 		});
 	}
 
 	public render() {
-		if (!this.state.sent) {
+		console.log(this.state.article);
+		if (this.state.sent) {
 			return (
 				<div className="confirmation">
 					<div className="container">
 						<div className="row section frontpage">
 							<div className="content u-full-width">
-								<PostFeedbackContainer articleUrl={this.state.article?this.state.article.url:null}/>
+								<PostFeedbackContainer
+									feedbackId = {this.state.feedbackId}
+									articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
+								/>
 							</div>
 						</div>
 					</div>
@@ -131,38 +140,4 @@ extends React.Component <any, FeedbackContainerState> {
 			<FinishButton SendForm={() => this.sendFeedback()} />
 		</section>;
 	}
-
-	private readonly demoUsers : Object[] = [
-		{
-			name: 'Indiana Horst',
-			email: 'horst@indiana.net',
-		}, {
-			name: 'Schmitz\' Katze',
-		}, {
-			name: 'Ragnhild Esben Hummel',
-		}, {
-			name: 'Finn Hans Nilsen',
-		}, {
-			name: 'Oddmund Thomas Rasmussen',
-		}, {
-			name: 'Ruth Lovise Amundsen',
-		}, {
-			name: 'Kjellfrid Ola Wolff',
-		}, {
-			email: 'prost.mahlzeit@lulu.org',
-		}, {
-			email: 'Christen.Mikael@storstrand.no',
-		}, {
-			email: 'elin@gro.org',
-		}, {
-			email: 'stein.ha@alexandersen.net',
-		}, {
-			email: 'ma_re@skjeggestad.org',
-		}, {
-			email: 'kresten.steensen@koeb.dk',
-		}, {
-			email: 'ejvind@jacobsen.name',
-		},
-	];
-
 }

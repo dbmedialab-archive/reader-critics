@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
-// tslint:disable:max-line-length
+// tslint:disable max-file-line-count
 
 import * as React from 'react';
 import Transition from 'react-transition-group/Transition';
@@ -24,7 +24,6 @@ import {sendFeedbackUser} from 'front/apiCommunication';
 import EndUser from 'base/EndUser';
 export interface FeedbackUserState {
 	user: EndUser;
-	sent: boolean;
 	nameField: {
 		show: boolean,
 	},
@@ -57,7 +56,6 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 					name: '',
 					email: '',
 			},
-			sent: false,
 			nameField: {
 				show: true,
 			},
@@ -80,13 +78,14 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				show: false,
 			},
 		};
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this._handleSubmit = this._handleSubmit.bind(this);
+		this._inputChanged = this._inputChanged.bind(this);
 		this.hideComponent = this.hideComponent.bind(this);
 		this.showComponent = this.showComponent.bind(this);
-
+		this.afterSendingAnimation = this.afterSendingAnimation.bind(this);
 	}
-	public handleSubmit(e) {
-		e.preventDefault();
+
+	private afterSendingAnimation() {
 		this.hideComponent('nameField');
 		this.hideComponent('mailIcon');
 		this.showComponent('doneIcon', 200);
@@ -94,12 +93,6 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent('sendBtn', 100);
 		this.showComponent('backBtn', 400);
 		this.showComponent('finalText', 400);
-	}
-	public sendFeedbackUser() {
-		sendFeedbackUser(this.state)
-		.then((response) => {
-			console.log(response);
-		});
 	}
 
 	private hideComponent(param, timeout = 0) {
@@ -130,18 +123,35 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		}
 	}
 
-	private inputChanged(e) {
-		const fieldName = e.target.name;
-		const stateObj = {};
-		stateObj[fieldName] = e.target.value;
-		this.setState(stateObj);
+	private _handleSubmit(e) {
+		e.preventDefault();
+		if (this.state.user.name === '' && this.state.user.email === '') {
+			this.afterSendingAnimation();
+			return;
+		}
+
+		if (!this.props.feedbackId) {
+			return;
+		}
+
+		sendFeedbackUser(this.props.feedbackId, {user: this.state.user})
+		.then((response) => {
+			this.afterSendingAnimation();
+		});
 	}
+
+	private _inputChanged(e) {
+		const fieldName = e.target.name;
+		const userObj = this.state.user;
+		userObj[fieldName] = e.target.value;
+		this.setState({user:userObj});
+	}
+
 	public render() {
 		return (
 			<form
 				name="postFeedbackBox"
 				className="twelve columns feedbackform"
-				onSubmit={this.handleSubmit}
 			>
 				<Transition timeout={200} in={this.state.mailIcon.show || this.state.doneIcon.show}>
 					{(status) => (
@@ -178,7 +188,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 							<input
 								type="text"
 								name="name"
-								onChange={this.inputChanged}
+								onChange={this._inputChanged}
 							/>
 					</fieldset>
 					)}
@@ -190,7 +200,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 							<input
 								type="text"
 								name="email"
-								onChange={this.inputChanged}
+								onChange={this._inputChanged}
 							/>
 						</fieldset>
 					)}
@@ -198,15 +208,19 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				<Transition timeout={300} in={this.state.sendBtn.show || this.state.backBtn.show}>
 					{(status) => (
 						<fieldset className={`control-icon hideit-after slide-left slide-left-${status}`}>
-							{this.state.backBtn.show?
-								<a href={this.props.articleUrl}>
-									<span className="icon back"></span>
-									<span className="btn-text">TILBAKE TIL ARTIKKELEN</span>
-								</a>
-								:<a href="#" onClick={this.handleSubmit}>
-									<span className="icon mail"></span>
-									<span className="btn-text">HOLD MEG OPPDATERT</span>
-								</a>
+							{!this.state.backBtn.show?
+									<a href="#" onClick={this._handleSubmit}>
+										<span className="icon mail"></span>
+										<span className="btn-text">HOLD MEG OPPDATERT</span>
+									</a>
+								:<div>
+									{this.props.articleUrl?
+											<a href={this.props.articleUrl}>
+												<span className="icon back"></span>
+												<span className="btn-text">TILBAKE TIL ARTIKKELEN</span>
+											</a>
+									:null}
+								</div>
 							}
 						</fieldset>
 					)}
