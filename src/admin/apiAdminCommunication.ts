@@ -71,7 +71,7 @@ export const getUsers = ((): Promise<any> =>
  * @type {(userId: any) => Promise<any>}
  */
 export const deleteUser = ((userId: any): Promise<any> =>
-	sendRequest(`/admin/api/users/${userId}`, 'DELETE', userId));
+	sendRequest(`/admin/api/users/${userId}`, 'DELETE'));
 
 /**
  * Check for errors from backend
@@ -97,11 +97,3 @@ function status(resp : Response) : Promise <any> {
 	});
 }
 
-/**
- * Gets the JSON data from request
- * @param response
- * @returns {any}
- */
-function json(response) {
-	return response.json();
-}

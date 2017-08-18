@@ -19,6 +19,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import UserRow from 'admin/components/user/UserRow';
+import { Transition, TransitionGroup } from 'react-transition-group';
 
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
@@ -55,15 +56,20 @@ class UserList extends React.Component <any, any> {
 		});
 	}
 	public render() : JSX.Element {
+
 		const content = this.props.users.map((user) =>
-			<UserRow
-				ID={user.ID}
-				key={user.ID}
-				email={user.email}
-				role={user.role}
-				name={user.name}
-			/>
-	);
+			<Transition key={user.ID} timeout={300}>
+				{(state) => (
+					<UserRow
+						ID={user.ID}
+						email={user.email}
+						role={user.role}
+						name={user.name}
+						state={state}
+					/>
+				)}
+			</Transition>
+		);
 		return (
 			<main>
 				<section className="row expanded">
@@ -89,7 +95,9 @@ class UserList extends React.Component <any, any> {
 										<b>Edit</b>
 									</div>
 								</div>
-								{content}
+								<TransitionGroup>
+									{content}
+								</TransitionGroup>
 							</div>
 						</div>
 					</div>

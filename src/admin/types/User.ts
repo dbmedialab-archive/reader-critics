@@ -1,5 +1,5 @@
 export interface UserProps {
-	key: any;
+	key?: any;
 	createdAt?: Date;
 	updatedAt?: Date;
 	ID: string | number;
@@ -7,4 +7,5 @@ export interface UserProps {
 	email: string;
 	name: string;
 	role?: string;
+	state?:any;
 }

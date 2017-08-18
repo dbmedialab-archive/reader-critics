@@ -18,7 +18,7 @@
 
 import MainStore from 'admin/stores/MainStore';
 
-import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
+import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as apiAdminCommunication from 'admin/apiAdminCommunication';
@@ -46,7 +46,7 @@ export function getUsers() {
 	apiAdminCommunication.getUsers()
 		.then((response) => {
 			if (typeof response !== 'undefined'){
-				MainStore.dispatch(UserActionsCreator.getUsers(response));
+				MainStore.dispatch(UsersActionsCreator.getUsers(response));
 				UIActions.hideMainPreloader();
 			}
 		})
@@ -54,7 +54,7 @@ export function getUsers() {
 }
 
 export function editUser(user) {
-	MainStore.dispatch(UserActionsCreator.editUser(user));
+	MainStore.dispatch(UsersActionsCreator.editUser(user));
 }
 
 /**
@@ -63,16 +63,16 @@ export function editUser(user) {
  */
 export function deleteUser(user) {
 	UIActions.showMainPreloader();
-	UserActionsCreator.deleteUser(user);
+	UsersActionsCreator.deleteUser(user);
 	apiAdminCommunication.deleteUser(user).then(
 		MainStore.dispatch(
-			UserActionsCreator.deleteUser(user)
+			UsersActionsCreator.deleteUser(user)
 		))
 		.then((error) => UIActions.hideMainPreloader());
 }
 
 export function addUser(user) {
 	MainStore.dispatch(
-		UserActionsCreator.addUser(user)
+		UsersActionsCreator.addUser(user)
 	);
 }

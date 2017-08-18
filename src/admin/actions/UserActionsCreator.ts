@@ -45,37 +45,3 @@ export function updateUser(payload: User): Action {
 		payload,
 	};
 }
-
-export function saveUser(payload): Action {
-	return {
-		type: UserConstants.SAVE_USER,
-		payload,
-	};
-}
-
-export function addUser(payload): Action {
-	return {
-		type: UserConstants.ADD_USER,
-		payload,
-	};
-}
-
-export function getUsers(payload): Action {
-	return {
-		type: UserConstants.USERS_RECEIVED,
-		payload,
-	};
-}
-export function deleteUser(payload): Action {
-	return {
-		type: UserConstants.DELETE_USER,
-		payload,
-	};
-}
-
-export function editUser(payload): Action {
-	return {
-		type: UserConstants.EDIT_USER,
-		payload,
-	};
-}

@@ -28,13 +28,6 @@ export interface IAction {
 
 export type TAction = IAction;
 
-export function saveUser(payload): Action {
-	return {
-		type: UserConstants.SAVE_USER,
-		payload,
-	};
-}
-
 export function addUser(payload): Action {
 	return {
 		type: UserConstants.ADD_USER,
