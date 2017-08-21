@@ -63,7 +63,6 @@ export function editUser(user) {
  */
 export function deleteUser(user) {
 	UIActions.showMainPreloader();
-	UsersActionsCreator.deleteUser(user);
 	apiAdminCommunication.deleteUser(user).then(
 		MainStore.dispatch(
 			UsersActionsCreator.deleteUser(user)

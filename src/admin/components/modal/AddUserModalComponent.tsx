@@ -41,7 +41,6 @@ class AddUserModalComponent extends React.Component <any, any> {
 		this.onBlur = this.onBlur.bind(this);
 		this.onFocus = this.onFocus.bind(this);
 		this.saveUser = this.saveUser.bind(this);
-		this.getUserRoles = this.getUserRoles.bind(this);
 		this.hasNameError = this.hasNameError.bind(this);
 		this.hasEmailError = this.hasEmailError.bind(this);
 		this.hasPasswordError = this.hasPasswordError.bind(this);
@@ -62,21 +61,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 		return options;
 	}
 
-	makeSelectDom(optionsArr) {
-		return optionsArr.map((optionItem) =>
-			<option
-				key={optionItem} value={optionItem}>{ capitalizeFirstLetter(optionItem) }
-			</option>);
-	}
+	makeSelectDom() {
+		return Object.keys(UserRole).map((e, index) =>
+			<option key={UserRole[e]} value={UserRole[e]}>{ capitalizeFirstLetter(UserRole[e]) }</option>);
 
-	getUserRoles() {
-		const roles = [
-			UserRole.SystemAdmin,
-			UserRole.SiteAdmin,
-			UserRole.Editor,
-			UserRole.Normal,
-		];
-		return this.makeSelectDom(roles);
 	}
 
 	hasNameError(): string | boolean {
@@ -130,13 +118,14 @@ class AddUserModalComponent extends React.Component <any, any> {
 	}
 	saveUser(event): void {
 		event.preventDefault();
-		const data = {
-			email: this.props.email.value,
-			password: this.props.password.value,
-			id: this.props.userId || null,
-			name: this.props.name.value,
-			role: this.props.role.value,
-		};
+		const {
+			email: {value: email},
+			password: {value: password},
+			userId: id,
+			name: {value: name},
+			role: {value: role},
+		} = this.props;
+		const data = {email, password, id, name, role};
 		UsersAction.saveUser(data);
 	}
 
@@ -145,7 +134,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 	}
 
 	render(): JSX.Element {
-		const roles = this.getUserRoles();
+		const roles = this.makeSelectDom();
 		const isDisabled = this.isFormValid();
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newUser" closeHandler={this.closePopup}>
