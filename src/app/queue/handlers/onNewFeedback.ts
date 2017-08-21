@@ -18,7 +18,7 @@
 
 import {
 	DoneCallback,
-	Job,
+	/*!!!*/ Job,
 } from 'kue';
 
 import Article from 'base/Article';
@@ -26,12 +26,13 @@ import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 
+import diffToPlainHTML from 'base/diff/diffToPlainHTML';
+
 import {
 	feedbackService,
-	websiteService,
 } from 'app/services';
 
-import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
+/*!!!*/ import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
@@ -51,11 +52,16 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 	.then((feedback : Feedback) => {
 		console.log(JSON.stringify(feedback, undefined, 4));
 
-		feedback.items.forEach((i : FeedbackItem) => {
-			const a = getRelatedArticleItem(feedback.article, i);
+		feedback.items.forEach((fbItem : FeedbackItem) => {
+			const arItem = getRelatedArticleItem(feedback.article, fbItem);
 			// TODO check undefined return value
-			console.log('ar item:', app.inspect(a));
-			console.log('fb item:', app.inspect(i));
+			console.log('ar item:', app.inspect(arItem));
+			console.log('fb item:', app.inspect(fbItem));
+
+			if (fbItem.text.length > 0) {
+				const dtxt = diffToPlainHTML(arItem.text, fbItem.text);
+				log(dtxt);
+			}
 		});
 	})
 	.then(() => done());

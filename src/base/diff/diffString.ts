@@ -52,14 +52,14 @@ export interface DiffBit {
 	value: string;			// String part
 }
 
-/*
-	Pre-parsing strings to find and mark parts which are same and with differences
+/**
+ * Preparse strings to find and mark parts which are same and which differ
  */
-function diff(o: string[], n: string[]): DiffResultObject {
-	const ns: DiffParsingObject = {};			// Info for new string
-	const os: DiffParsingObject = {};			// Info for old string
-	const nn: any[] = Object.assign([], n);		// Object to change while parsing new string
-	const no: any[] = Object.assign([], o);		// Object to change while parsing old string
+function diffPreParse(o : string[], n : string[]) : DiffResultObject {
+	const ns: DiffParsingObject = {};  // Info for new string
+	const os: DiffParsingObject = {};  // Info for old string
+	const nn: any[] = Object.assign([], n);  // Object to change while parsing new string
+	const no: any[] = Object.assign([], o);  // Object to change while parsing old string
 
 	// Pick info about every simple part of new string and it's positions
 	for (let i = 0; i < nn.length; i++) {
@@ -110,6 +110,7 @@ function diff(o: string[], n: string[]): DiffResultObject {
 /*
 	Building an object or a string with result of diff operation
  */
+/*
 export default function diffStringDefault(
 	o : string,
 	n : string,
@@ -220,9 +221,10 @@ export default function diffStringDefault(
 	}
 	return (isHTML ? str : result);
 }
+*/
 
 /*
- Building an object or a string with result of diff operation
+ * Create an array of DiffBits from object or a string with result of diff operation
  */
 export function diffString(o: string, n: string): Array<DiffBit> {
 	// Updates the previous string part adding to it value and count of current item
@@ -275,7 +277,7 @@ export function diffString(o: string, n: string): Array<DiffBit> {
 	n = n.replace(/\s+$/, '');
 
 	// Pre-Parsing the strings
-	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+	const out: DiffResultObject = diffPreParse(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
 
 	// Setting an array of space characters to add
 	let oSpace: string[] = o.match(/\s+/g);
@@ -325,6 +327,7 @@ export function diffString(o: string, n: string): Array<DiffBit> {
 /*
  Building an object or a string with result of diff operation
  */
+/*
 export function diffStringHtml(o: string, n: string): string {
 	const lastSymbol: string = '\n';	// If building an html text using the '/n' as an end of string
 	let str: string = '';
@@ -381,3 +384,4 @@ export function diffStringHtml(o: string, n: string): string {
 	}
 	return str;
 }
+*/

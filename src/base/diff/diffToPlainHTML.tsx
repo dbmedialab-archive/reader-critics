@@ -16,16 +16,38 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItemType from 'base/ArticleItemType';
+import { isString } from 'lodash';
 
-interface ArticleItem {
-	text? : string;
-	type : ArticleItemType;
+import {
+	diff,
+	DiffBit,
+	DiffConcatterFunction,
+	DiffFormatterFunction,
+} from './diff';
 
-	order: {
-		item: number,
-		type: number,
+export default function (oldText : string, newText : string) : string {
+	let plain : string = '';
+
+	const formatter : DiffFormatterFunction = (txtbit) => {
+		if (isString(txtbit)) {
+			return `<span>${txtbit.trim()}</span>`;
+		}
+
+		if (txtbit.added === true) {
+			return `<ins>${txtbit.value.trim()}</ins>`;
+		}
+		if (txtbit.removed === true) {
+			return `<del>${txtbit.value.trim()}</del>`;
+		}
+
+		return `<span>${txtbit.value.trim()}</span>`;
 	};
-}
 
-export default ArticleItem;
+	const concatter : DiffConcatterFunction = (formattedElem : any) => {
+		plain = plain.concat(formattedElem, ' ');
+	};
+
+	diff(oldText, newText, formatter, concatter);
+
+	return plain;
+}
