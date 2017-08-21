@@ -19,7 +19,7 @@
 import User from 'base/User';
 import Users from 'base/Users';
 import UserRole from 'base/UserRole';
-import * as Immutable from 'seamless-immutable'	;
+import * as Immutable from 'seamless-immutable';
 import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 

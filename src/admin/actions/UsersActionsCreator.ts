@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as UserConstants from 'admin/constants/UserConstants';
+import UserConstants from 'admin/constants/UserConstants';
 
 export interface IAction {
 	type: any;

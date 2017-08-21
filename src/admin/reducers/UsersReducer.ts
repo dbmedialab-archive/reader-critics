@@ -17,9 +17,9 @@
 //
 
 import Users from 'base/Users';
-import * as Immutable from 'seamless-immutable'	;
-import * as  UsersActionsCreator  from 'admin/actions/UsersActionsCreator';
-import * as UserConstants from '../constants/UserConstants';
+import * as Immutable from 'seamless-immutable';
+import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
+import UserConstants from 'admin/constants/UserConstants';
 import * as mergers from 'seamless-immutable-mergers';
 
 const mergeConfig = {
