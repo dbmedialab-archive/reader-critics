@@ -16,11 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import AdminConstants from 'admin/constants/AdminConstants';
 import * as UserConstants from 'admin/constants/UserConstants';
-import { Action } from 'redux-actions';
 
-import User from 'base/User';
 export interface IAction {
 	type: any;
 	payload?: any;
@@ -28,27 +25,27 @@ export interface IAction {
 
 export type TAction = IAction;
 
-export function addUser(payload): Action {
+export function addUser(payload): IAction {
 	return {
 		type: UserConstants.ADD_USER,
 		payload,
 	};
 }
 
-export function getUsers(payload): Action {
+export function getUsers(payload): IAction {
 	return {
 		type: UserConstants.USERS_RECEIVED,
 		payload,
 	};
 }
-export function deleteUser(payload): Action {
+export function deleteUser(payload): IAction {
 	return {
 		type: UserConstants.DELETE_USER,
 		payload,
 	};
 }
 
-export function editUser(payload): Action {
+export function editUser(payload): IAction {
 	return {
 		type: UserConstants.EDIT_USER,
 		payload,

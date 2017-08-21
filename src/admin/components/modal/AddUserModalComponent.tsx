@@ -43,14 +43,13 @@ class AddUserModalComponent extends React.Component <any, any> {
 		this.hasNameError = this.hasNameError.bind(this);
 		this.hasEmailError = this.hasEmailError.bind(this);
 		this.hasPasswordError = this.hasPasswordError.bind(this);
-		this.makeSelectDom = this.makeSelectDom.bind(this);
+		this.makeRolesOptions = this.makeRolesOptions.bind(this);
 		this.isFormValid = this.isFormValid.bind(this);
 	}
 
 	componentWillMount() {
 		UIActions.initModalWindows(this.props.windowName);
 	}
-
 	getCurrentInput(propName) {
 		const options : OptionsI = {};
 		options.input = {};
@@ -59,8 +58,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 
 		return options;
 	}
-
-	makeSelectDom() {
+	makeRolesOptions() {
 		return Object.keys(UserRole).map((e, index) =>
 			<option key={UserRole[e]} value={UserRole[e]}>{ capitalizeFirstLetter(UserRole[e]) }</option>);
 
@@ -72,14 +70,12 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 		return false;
 	}
-
 	hasEmailError(): string | boolean {
 		if (this.props.email.value.length < 4) {
 			return 'Please enter valid email address';
 		}
 		return false;
 	}
-
 	hasPasswordError(): string | boolean {
 		if (this.props.userId) {
 			return false;
@@ -89,17 +85,14 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 		return false;
 	}
-
 	isFormValid(): boolean {
 		return (!this.hasNameError() && !this.hasEmailError() && !this.hasPasswordError());
 	}
-
 	updateInputValue(event): void {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].value = event.target.value;
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
-
 	closePopup(): void {
 		if (this.props.userId){
 			UIActions.closeReset(this.props.windowName);
@@ -108,8 +101,9 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 	}
 	onFocus(event) {
-		const name = event.target.name;
-		this.props[name].touched = true;
+		const options = this.getCurrentInput(event.target.name);
+		options.input[event.target.name].touched = true;
+		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
 	onBlur(event) {
 		const options = this.getCurrentInput(event.target.name);
@@ -127,13 +121,11 @@ class AddUserModalComponent extends React.Component <any, any> {
 		const data = {email, password, id, name, role};
 		UsersAction.saveUser(data);
 	}
-
 	closeReset(): void {
 		UIActions.closeReset(this.props.windowName);
 	}
-
 	render(): JSX.Element {
-		const roles = this.makeSelectDom();
+		const roles = this.makeRolesOptions();
 		const isDisabled = this.isFormValid();
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="newUser" closeHandler={this.closePopup}>

@@ -17,8 +17,6 @@
 //
 
 import AdminConstants from 'admin/constants/AdminConstants';
-import * as UserConstants from 'admin/constants/UserConstants';
-import { Action } from 'redux-actions';
 
 import User from 'base/User';
 export interface IAction {
@@ -27,19 +25,19 @@ export interface IAction {
 }
 
 export type TAction = IAction;
-export function authenticateUser(payload: User): Action {
+export function authenticateUser(payload: User): IAction {
 	return {
 		type: AdminConstants.AUTHENTICATE_USER,
 		payload,
 	};
 }
-export function deauthenticateUser(): Action {
+export function deauthenticateUser(): IAction {
 	return {
 		type: AdminConstants.DEAUTHENTICATE_USER,
 		payload: {},
 	};
 }
-export function updateUser(payload: User): Action {
+export function updateUser(payload: User): IAction {
 	return {
 		type: AdminConstants.UPDATE_CURRENT_USER,
 		payload,

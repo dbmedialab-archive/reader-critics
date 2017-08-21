@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import { showError } from 'front/uiHelpers';
+
 /**
  * Sends an authentication request
  * @type {(data:any)=>Promise<any>}
