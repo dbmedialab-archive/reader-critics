@@ -111,16 +111,6 @@ class UserList extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		users: state.users.getIn(['users']) || [],
-		login: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value']) || '',
-			touched:
-			state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'touched']) || false,
-		},
-		password: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value']) || '',
-			touched:
-			state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched']) || false,
-		},
 	};
 };
 
