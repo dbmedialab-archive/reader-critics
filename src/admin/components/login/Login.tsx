@@ -42,7 +42,6 @@ class Login extends React.Component <any, any> {
 				windowName={AdminConstants.LOGIN_DIALOG_MODAL_WINDOW}
 				getBack={this.getBack}
 			/>
-			<div id="err-section"/>
 		</Layout>);
 	}
 }
