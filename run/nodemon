@@ -4,7 +4,7 @@ clear
 
 export DEBUG="*,-body-parser:*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
 export NODE_ENV=${NODE_ENV:-"development"}
-export WEB_CONCURRENCY=2
+export WEB_CONCURRENCY=${WEB_CONCURRENCY:-2}
 
 export AUTH_JWT_SECRET="0000000011111111222222223333333344444444555555556666666677777777"
 export AUTH_SESSION_SECRET="8888888899999999aaaaaaaabbbbbbbbccccccccddddddddeeeeeeeeffffffff"
