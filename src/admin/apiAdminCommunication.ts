@@ -22,12 +22,13 @@ export function sendRequest(url: string, method: string = 'GET', data?: any): Pr
 		body: data ? JSON.stringify(data) : null,
 		credentials: 'include',
 	})
-	.then(authCheck)
-	.then(status)
-	.catch(function (error) {
-		console.log('request failed', error);
-		return {error: error.message};
-	});
+		.then(authCheck)
+		.then(status)
+		.then(json)
+		.catch(function (error) {
+			console.log('request failed', error);
+			return {error: error.message};
+		});
 }
 
 /**
@@ -78,22 +79,35 @@ export const deleteUser = ((userId: any): Promise<any> =>
  * @param resp
  * @returns {any}
  */
-function status(resp : Response) : Promise <any> {
-	const bail = (message) => {
-		showError(message);
-		return Promise.reject(Promise.reject(new Error(message)));
-	};
+/**
+ * Check for errors from backend
+ * @param response
+ * @returns {any}
+ */
+function status(response) {
+	if (response.status >= 200 && response.status < 300) {
+		return response;
+	}
+	return response.json().then(data => {
+		throw new Error(data.message || response.statusText);
+	});
+}
 
-	return resp.json().then((payload) => {
-		if (resp.status < 200 || resp.status >= 300 || !payload.success) {
-			return bail(payload.message || payload.error || resp.statusText);
+/**
+ * Gets the JSON data from request
+ * @param response
+ * @returns {any}
+ */
+function json(response) {
+	return response.json().then((payload) => {
+		if (response.status < 200 || response.status >= 300 || !payload.success) {
+			return payload.message || payload.error || response.statusText;
 		}
 
 		if (!payload.data) {
-			return bail('No "data" property in response payload');
+			return 'No "data" property in response payload';
 		}
 
 		return payload.data;
 	});
 }
-
