@@ -52,34 +52,6 @@ function authCheck(response: Response): any {
 }
 
 /**
- * Save or update user
- * @type {(data: any) => Promise<any>}
- */
-export const saveUser = ((data: any): Promise<any> => {
-	const userId = data.id || '';
-	const method = userId.length ? 'PUT' : 'POST';
-	return sendRequest(`/admin/api/users/${userId}`, method, data);
-});
-/**
- * Get users
- * @type {() => Promise<any>}
- */
-export const getUsers = ((): Promise<any> =>
-	sendRequest(`/admin/api/users`, 'GET'));
-
-/**
- * Delete User
- * @type {(userId: any) => Promise<any>}
- */
-export const deleteUser = ((userId: any): Promise<any> =>
-	sendRequest(`/admin/api/users/${userId}`, 'DELETE'));
-
-/**
- * Check for errors from backend
- * @param resp
- * @returns {any}
- */
-/**
  * Check for errors from backend
  * @param response
  * @returns {any}
