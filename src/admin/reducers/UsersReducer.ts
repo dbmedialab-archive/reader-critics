@@ -33,14 +33,7 @@ interface UsersInit extends Users {
 }
 
 const initialState = Immutable.from<UsersInit>({
-	users: [
-		{
-			'ID': '5964e04c6a2f9c5fae26625c',
-			'email': 'valo44n1x@gmail.com',
-			'role': 'admin',
-			'name': 'Valeriy',
-		},
-	],
+	users: [],
 });
 
 function receiveUsers(action, state) {

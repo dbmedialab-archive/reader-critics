@@ -42,10 +42,10 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 		name: user.name,
 		email: user.email,
 	})
-	.then((u : UserDocument) => {
-		const hash = u.get('password');
-		return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
-	});
+		.select('+password').exec().then((u : UserDocument) => {
+			const hash = u.get('password');
+			return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
+		});
 }
 
 export function get(name : String, email? : String) : Promise <User> {

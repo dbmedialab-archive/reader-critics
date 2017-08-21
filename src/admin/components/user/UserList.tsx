@@ -61,6 +61,7 @@ class UserList extends React.Component <any, any> {
 			<Transition key={user.ID} timeout={300}>
 				{(state) => (
 					<UserRow
+						key={user.ID}
 						ID={user.ID}
 						email={user.email}
 						role={user.role}
