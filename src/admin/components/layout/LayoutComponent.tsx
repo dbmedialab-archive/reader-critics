@@ -76,7 +76,7 @@ class LayoutComponent extends React.Component <any, any> {
 						</div>
 					</div>
 				</div>
-				<PromptModalComponent windowName={AdminConstants.PROMPT_MODAL_NAME} />
+				<PromptModalComponent windowName={AdminConstants.PROMPT_MODAL_WINDOW} />
 				<DialogModalComponent windowName={AdminConstants.DIALOG_MODAL_WINDOW} />
 			</div>
 		);
