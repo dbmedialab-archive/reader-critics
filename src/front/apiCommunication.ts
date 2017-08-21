@@ -19,6 +19,7 @@
 import 'whatwg-fetch';
 
 import { showError } from 'front/uiHelpers';
+import EndUser from 'base/EndUser';
 
 const rxUnencoded = /:\/\//;
 
@@ -40,21 +41,34 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
 });
+export const sendFeedbackUser = ((id: string, data : {user: EndUser}) : Promise <any> => {
+	return putData(`/api/feedback/${id}/enduser`, data).then(checkStatus);
+});
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
 	return postData('/api/suggest/', data).then(checkStatus);
 });
 
-// POST data
-
-function postData(uri : string, data : any) : Promise <any> {
+function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
 	return fetch(uri, {
-		method: 'POST',
+		method: method,
 		headers: {
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(data),
 	});
+}
+
+// PUT data
+
+function putData(uri : string, data : any) : Promise <any> {
+	return sendData('PUT', uri, data);
+}
+
+// POST data
+
+function postData(uri : string, data : any) : Promise <any> {
+	return sendData('POST', uri, data);
 }
 
 // Check response for success and display error popup if necessary

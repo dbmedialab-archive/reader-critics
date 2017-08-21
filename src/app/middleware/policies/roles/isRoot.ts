@@ -16,38 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import UserRole from 'base/UserRole';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
-
-import createPersistingService from '../createPersistingService';
-
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
-
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
-	);
-
-module.exports = service;
+export default function isRoot(req, res, next: () => void): void {
+	if (req.user.role === UserRole.SystemAdmin) {
+		return next();
+	}
+	res.json({error: `Only for ${UserRole.SystemAdmin}s`}).end();
+}
