@@ -66,7 +66,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 			<option key={UserRole[e]} value={UserRole[e]}>{ capitalizeFirstLetter(UserRole[e]) }</option>);
 
 	}
-
+	//TODO replace all validation in the future
 	hasNameError(): string | boolean {
 		if (this.props.name.value.length < 4) {
 			return 'Name has to be more than 3 symbols';
