@@ -124,7 +124,7 @@ export function doDelete(id: String) : Promise <any> {
  * Do updates user entry. Null - if not found, updated user if found is returned.
  */
 export function update(id: String, data: Object) : Promise <any> {
-	return UserModel.findOneAndUpdate({ '_id': id }, data, { new: true })
+	return wrapFindOne(UserModel.findOneAndUpdate({ '_id': id }, data, { new: true }))
 	.then(res => (res === null)
 				? Promise.reject(new NotFoundError('User not found'))
 				: Promise.resolve(res)

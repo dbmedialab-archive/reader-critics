@@ -78,6 +78,9 @@ class LayoutComponent extends React.Component <any, any> {
 				</div>
 				<PromptModalComponent windowName={AdminConstants.PROMPT_MODAL_NAME} />
 				<DialogModalComponent windowName={AdminConstants.DIALOG_MODAL_WINDOW} />
+				<footer>
+					<div id="err-section"></div>
+				</footer>
 			</div>
 		);
 	}
