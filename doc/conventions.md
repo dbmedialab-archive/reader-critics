@@ -24,6 +24,8 @@ There is a lint script in `run/lint` which will run different code checkers that
 
 When working on a new feature, open a pull request early to let others know something is going on. Also, these can be referenced better in other pull requests that rely on the currently implemented feature, or other external systems like Jira. When implementing something from this ticket system, put a link to the related ticket into the description text. Jira will automatically pick up the reference and link to the pull request from the ticket view itself.
 
+Same hints like for branch naming apply here. Don't just take the decoded branch name but rather give the pull request and concise, short name. Of course this can (and should) relate to the branch name, but be even more "human readable". Imagine scrolling through a list of possibly hundreds of closed PRs to find _that one thing_ you implemented two months ago. You'd want to find distinctive names there, certainly not "Fix API" in five different variants.
+
 Pull requests ideally should be short, contain only a handful of commits and affect only a few files. Sometimes it is necessary to include a lot of changes, but it shouldn't be the general case. If a new feature touches different parts of the system, try to implement them separately in different branches and pull requests.
 
 Open requests lying around for more than a few days bear the risk of getting out of sync with the main branch. So remember to pull the main branch continuously, not only before finishing your work.
