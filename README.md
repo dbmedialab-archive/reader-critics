@@ -10,7 +10,7 @@
 &nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 
-### Table of Contents
+## Table of Contents
 
 * [Project Setup](doc/project-setup.md) ‒ Instructions how to get from the checkout to a running system
 * [Conventions](doc/conventions.md) ‒ Project guidelines for developers
@@ -19,7 +19,7 @@
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
 * [Crazy Ideas](doc/think-about-these-crazy-ideas.md) ‒ We won't do that right now, but we really want to
 
-### License
+## License
 
 **Copyright © 2017 DB Medialab / Aller Media AS** (Oslo, Norway)
 
