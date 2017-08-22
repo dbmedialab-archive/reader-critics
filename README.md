@@ -14,8 +14,8 @@
 
 * [Project Setup](doc/project-setup.md) ‒ Instructions how to get from the checkout to a running system
 * [Conventions](doc/conventions.md) ‒ Project guidelines for developers
+* [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
 * [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
-* [Data Scheme](doc/data-scheme.md) ‒ Entities and relations used for persisting to the database
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
 * [Crazy Ideas](doc/think-about-these-crazy-ideas.md) ‒ We won't do that right now, but we really want to
 
