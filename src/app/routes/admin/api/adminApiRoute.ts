@@ -31,6 +31,7 @@ import {
 } from 'app/routes/admin/api/handlers';
 
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
+import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
 
@@ -57,7 +58,9 @@ adminApiRoute.post('/login', apiLoginHandler);
  * All api request that have NOT to to pass without authentication have to be placed here
  */
 adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
-adminApiRoute.get('/fb', feedbacksHandler.list);
+adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
+adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
+adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

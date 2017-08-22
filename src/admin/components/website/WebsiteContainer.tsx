@@ -16,18 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { combineReducers } from 'redux';
-import {routerReducer} from 'react-router-redux';
+import * as React from 'react';
 
-import UIReducer from 'admin/reducers/UIReducer';
-import FeedbackReducer from 'admin/reducers/FeedbackReducer';
-import UserReducer from 'admin/reducers/UserReducer';
-import WebsiteReducer from 'admin/reducers/WebsiteReducer';
+import Layout from 'admin/components/layout/LayoutComponent';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import WebsiteComponent from 'admin/components/website/WebsiteComponent';
 
-export const CombineReducer:any = combineReducers({
-	UI: UIReducer,
-	feedback: FeedbackReducer,
-	user: UserReducer,
-	router: routerReducer,
-	website: WebsiteReducer,
-});
+class WebsiteContainer extends React.Component <any, any> {
+	constructor(props) {
+		super(props);
+	}
+	componentDidMount(){
+		WebsiteActions.getWebsiteList();	//TODO move to separate component WebsitesList
+		WebsiteActions.getSelectedWebsite(this.props.match.params.name);
+	}
+	render(){
+		return (
+			<Layout pageTitle="Website">
+				<WebsiteComponent/>
+			</Layout>
+	);
+	}
+}
+
+export default WebsiteContainer;

@@ -14,20 +14,22 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import { combineReducers } from 'redux';
-import {routerReducer} from 'react-router-redux';
+import * as React from 'react';
 
-import UIReducer from 'admin/reducers/UIReducer';
-import FeedbackReducer from 'admin/reducers/FeedbackReducer';
-import UserReducer from 'admin/reducers/UserReducer';
-import WebsiteReducer from 'admin/reducers/WebsiteReducer';
+export interface InputErrorProps {
+	/** The Error Text */
+	errorText: string | boolean;
+	/** Is touched field */
+	touchedField: boolean | undefined;
+}
 
-export const CombineReducer:any = combineReducers({
-	UI: UIReducer,
-	feedback: FeedbackReducer,
-	user: UserReducer,
-	router: routerReducer,
-	website: WebsiteReducer,
-});
+export const InputError: React.StatelessComponent <InputErrorProps> =
+	(props : InputErrorProps) => {
+		if (!props.errorText || !props.touchedField) {
+			return null;
+		}
+		return (
+			<small className="callout secondary alert error">{props.errorText}</small>
+		);
+	};

@@ -1,0 +1,48 @@
+.website-edition-form {
+	font-size: 20px;
+
+	label {
+		text-transform: uppercase;
+		color: #597e97;
+		font-size: 1.6rem;
+		border-bottom: 1px solid #dddddd;
+		margin-bottom: 1rem;
+
+		.button {
+			margin: .1rem .4rem;
+			float: right;
+		}
+	}
+
+	input[type='text'], select {
+		border: 1px solid #597e97;
+		border-radius: 5px;
+		padding: .5rem;
+		font-family: 'Roboto', sans-serif;
+		font-size: .9rem;
+		margin-bottom: 1rem;
+	}
+
+	fieldset {
+		margin-bottom: 1rem;
+	}
+
+	.name-section {
+		margin-bottom: 1rem;
+	}
+
+	.fa {
+		&:before {
+			color: #FF0000;
+			margin-right: .8rem;
+		}
+	}
+
+	.website-host-list, .website-editor-list {
+		margin-bottom: 5px;
+		padding: 5px;
+		font-size: 1.4rem;
+		list-style: none;
+
+	}
+}

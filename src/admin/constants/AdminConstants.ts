@@ -38,6 +38,10 @@ const AdminConstants = keykey([
 
 	//Comments
 	'FEEDBACK_LIST_RECEIVED',
+
+	//Websites
+	'WEBSITE_LIST_RECEIVED',
+	'WEBSITE_SELECTED',
 ]);
 
 export default AdminConstants;

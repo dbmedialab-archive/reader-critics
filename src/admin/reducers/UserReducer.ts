@@ -23,12 +23,34 @@ import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 
 const initialState = Immutable.from<User>({
-	name: '',
-	email: '',
-	role: UserRole.Normal,
+	name: localStorage.getItem('rcUsername') || '',
+	email: localStorage.getItem('rcUserEmail') || '',
+	role: getRoleFromEnum(),
 });
 
+function getRoleFromEnum() {
+	let role: UserRole;
+	switch (localStorage.getItem('rcUserRole')) {
+		case UserRole.Editor:
+			role = UserRole.Editor;
+			break;
+		case UserRole.SiteAdmin:
+			role = UserRole.SiteAdmin;
+			break;
+		case UserRole.SystemAdmin:
+			role = UserRole.SystemAdmin;
+			break;
+		default:
+			role = UserRole.Normal;
+			break;
+	}
+	return role;
+}
+
 function updateUser(action, state) {
+	localStorage.setItem('rcUsername', action.payload.name);
+	localStorage.setItem('rcUserEmail', action.payload.email);
+	localStorage.setItem('rcUserRole', action.payload.role);
 	return state.merge({
 		name: action.payload.name,
 		email: action.payload.email,
@@ -37,6 +59,9 @@ function updateUser(action, state) {
 }
 
 function deauthenticateUser(action, state) {
+	localStorage.removeItem('rcUsername');
+	localStorage.removeItem('rcUserEmail');
+	localStorage.removeItem('rcUserRole');
 	return state.merge({
 		name: '',
 		email: '',

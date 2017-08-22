@@ -16,18 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { combineReducers } from 'redux';
-import {routerReducer} from 'react-router-redux';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import UIReducer from 'admin/reducers/UIReducer';
-import FeedbackReducer from 'admin/reducers/FeedbackReducer';
-import UserReducer from 'admin/reducers/UserReducer';
-import WebsiteReducer from 'admin/reducers/WebsiteReducer';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-export const CombineReducer:any = combineReducers({
-	UI: UIReducer,
-	feedback: FeedbackReducer,
-	user: UserReducer,
-	router: routerReducer,
-	website: WebsiteReducer,
-});
+export type TAction = IAction;
+
+export function setWebsiteList(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_LIST_RECEIVED,
+		payload,
+	};
+}
+
+export function setSelectedWebsite(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_SELECTED,
+		payload,
+	};
+}
