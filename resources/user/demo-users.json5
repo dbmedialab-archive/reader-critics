@@ -20,12 +20,12 @@
 	{
 		name: 'Indiana Horst',
 		email: 'horst@indiana.net',
-		role: 'normal',
+		role: 'journalist',
 	},
 	{
 		name: 'Ernst Eisenbichler',
 		email: 'ee@aller.com',
-		role: 'normal',
+		role: 'journalist',
 		// "test123"
 		password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
 	},
@@ -44,7 +44,7 @@
 	{
 		name: 'Einprosit Dergemütlichkeit',
 		email: 'prost.mahlzeit@lulu.org',
-		role: 'normal',
+		role: 'journalist',
 	},
 	{
 		name: 'Brahmaputra Pradesh Meghna',
@@ -54,6 +54,6 @@
 	{
 		name: 'Stamatis Skeates',
 		email: 'stamatis@ote.gr',
-		role: 'normal',
+		role: 'journalist',
 	},
 ]

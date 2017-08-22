@@ -27,7 +27,7 @@ js-lint-build-test:
     code: run/build
   - script:
     name: set db envs
-    code: | 
+    code: |
       export MONGODB_URL="mongodb://$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/readercritics"
       export REDIS_URL_MESSAGE_QUEUE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/1"
       export REDIS_URL_SESSION_CACHE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/2"
@@ -55,11 +55,12 @@ js-lint-build-test:
         run \
         tmp \
         resources \
+        templates \
         package.json \
         $WERCKER_OUTPUT_DIR
 
 push-image:
-  box: 
+  box:
     id: node:8-alpine
     cmd: /bin/sh
   steps:

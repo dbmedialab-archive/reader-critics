@@ -43,6 +43,7 @@ import {
 } from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
+import {ObjectID} from 'app/db';
 
 // getByArticle
 
@@ -154,3 +155,29 @@ const makeDocument = (
 		statusChange: new Date(),
 	},
 });
+
+// update
+
+export function updateEndUser (
+	id : ObjectID,
+	enduser : EndUser
+) : Promise <Feedback>
+{
+	emptyCheck(enduser);
+
+	const updateData:{
+		enduser: any,
+	} = {
+		enduser: null,
+	};
+
+	updateData.enduser = enduser.ID;
+
+	return FeedbackModel.findById(id).then((feedback) => {
+		if (!feedback) {
+			throw new Error(`No such feedback ${id}`);
+		}
+		feedback.enduser = updateData.enduser;
+		return wrapSave(feedback.save());
+	});
+}

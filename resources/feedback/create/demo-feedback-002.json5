@@ -14,9 +14,9 @@
 				text: '',
 				order: {
 					type: 1,
-					item: 2
+					item: 2,
 				},
-				type: 'paragraph'
+				type: 'paragraph',
 			},
 			{
 				links: [],
@@ -24,10 +24,10 @@
 				text: '',
 				order: {
 					type: 1,
-					item: 4
+					item: 4,
 				},
-				type: 'subhead'
-			}
+				type: 'subhead',
+			},
 		],
-	}
+	},
 }
