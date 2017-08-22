@@ -1,8 +1,14 @@
 # Conventions
 
-These are our project guidelines:
+These are our project guidelines, in alphabetical order:
 
-## Adding dependencies
+## Branches
+
+We follow and use naming conventions of [Git Flow](http://nvie.com/posts/a-successful-git-branching-model/) for branches. So normally when beginning a normal task, chose `feature/` as a prefix for the name. If you work on a bugfix, use the `fix/` prefix.
+
+Chose a descriptive yet short name for the branch, use the `-` dash for concatenating words, no underscores or other characters. This is for keeping branch names consistent. If you work on something from our internal ticket system, omit the ticket number from the branch name to keep it short. Rather open a new pull request after initially pushing the branch and put a link to the ticket into its description.
+
+## Dependencies
 
 A friendly daemon called [Greenkeeper](https://greenkeeper.io/) is taking care of dependency upgrades. For it to work correctly, and more importantly, for a stable project, it is essential that **all dependencies added to `package.json` must have fixed versions**. It is not unusual that setting up a new workspace or building the project on a CI has failed because of the use of version ranges. To avoid this, use fixed versions _on everything_ so that everybody and every system is working with the exact same packages.
 
