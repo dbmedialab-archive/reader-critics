@@ -1,33 +1,100 @@
-import {
-	AxiosPromise,
-	default as axios,
-} from 'axios';
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
 
-import * as Promise from 'bluebird';
+import Article from 'base/Article';
+import ArticleAuthor from 'base/ArticleAuthor';
+import ArticleItem from 'base/ArticleItem';
+import ArticleURL from 'base/ArticleURL';
+import Parser from 'base/Parser';
 
-import Article from '../models/Article';
-import Parser from './Parser';
+import BaseElements from './BaseElements';
 
-export default class BaseParser implements Parser {
+import * as app from 'app/util/applib';
 
-	readonly url: string;
-	readonly elementTags = ['p','h1','h2','h3','h4','h5','ul','img','ol', 'a'];
-	protected requestSent: boolean;
-	protected article: Article;
+const log = app.createLog();
 
-	constructor (url: string) {
-		this.url = url;
-		this.requestSent = false;
+interface ParserWorkflowPayload {
+	version : any;
+	authors : any;
+	titles : any;
+	featured : any;
+	content : any;
+}
+
+abstract class BaseParser extends BaseElements implements Parser {
+
+	constructor(
+		protected readonly rawArticle : string,
+		protected readonly articleURL : ArticleURL
+	) {
+		super();
 	}
 
-	getArticle(): Promise <Article> {
-		return Promise.resolve(this.article);
+	parse() : Promise <Article> {
+		log('parse');
+		return this.initialize().then(() => {
+			log('begin parseArticle');
+			return this.parseArticle();
+		});
 	}
 
-	// Requests the url
-	protected request() : AxiosPromise {
-		this.requestSent = true;
-		return axios.get(this.url);
+	/**
+	 * Parser initialization. Override this with your own code if you need
+	 * some asynchronous bootstrap functions to run before the parser will
+	 * be ready. Don't forget to return a Promise! (void return value)
+	 */
+	protected initialize() : Promise <any> {
+		return Promise.resolve();
 	}
+
+	/**
+	 * Parser workflow. Taken out of parse() for readability.
+	 */
+	private parseArticle() : Promise <Article> {
+		const workflow : ParserWorkflowPayload = {
+			version: this.parseVersion(),
+			authors: this.parseByline(),
+			titles: this.parseTitles(),
+			featured: this.parseFeaturedImage(),
+			content: this.parseContent(),
+		};
+
+		return Promise.resolve(Promise.props(workflow))
+		.then((a : ParserWorkflowPayload) : Article => ({
+			url: this.articleURL,
+			version: a.version,
+			authors: a.authors,
+			items: [
+				...a.titles,
+				...a.featured,
+				...a.content,
+			],
+		}));
+	}
+
+	// Prototypes
+
+	protected abstract parseVersion() : Promise <string>;
+	protected abstract parseByline() : Promise <ArticleAuthor[]>;
+	protected abstract parseTitles() : Promise <ArticleItem[]>;
+	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
+	protected abstract parseContent() : Promise <ArticleItem[]>;
 
 }
+
+export default BaseParser;

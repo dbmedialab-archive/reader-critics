@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<title>Fake Widget - Leserkritikk</title>
+
+	<style>
+		body, form {
+			font-family: 'Noto Sans', 'Bitstream Vera Sans', 'Verdana', 'Arial';
+			font-size: 1.2em;
+		}
+
+		add {
+			color: rgba(89, 126, 151, 1);
+		}
+		del {
+			color: rgba(185, 79, 112, 1);
+		}
+		h1, h3 {
+			color: rgba(76, 76, 76, 1);
+		}
+
+		div#fakeWidget {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		div#fakeWidget, input[type="text"] {
+			width: 800px;
+		}
+
+		div#buttons, div#presetLinks {
+			margin-top: 25px;
+		}
+
+		div#buttons button, select {
+			font-size: 12pt;
+			height: 2.5rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
+			float: left;
+			margin-right: 10px;
+		}
+
+		div#buttons button {
+			font-weight: bold;
+		}
+
+		div#presetLinks > a {
+			font-family: 'Noto Mono', 'Monospace', 'Courier New';
+			font-size: 0.7em;
+			color: rgba(89, 126, 151, 1);
+			text-decoration: none;
+		}
+		div#presetLinks > a:hover {
+			color: rgba(255, 170, 0, 1);
+		}
+
+		input[type="text"] {
+			padding: 5px;
+			font-family: 'Noto Mono', 'Monospace', 'Courier New';
+			font-size: 1.0em;
+		}
+
+		form > p {
+			margin-bottom: 2px;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		function submitHandler(e) {
+			if (e && e.preventDefault) {
+				e.preventDefault();
+			}
+			const frm = document.forms.widget;
+			frm.method = document.getElementById('submitMethod').value;
+			frm.action = '/fb/';
+			frm.submit();
+		}
+	</script>
+
+	<div id="fakeWidget">
+		<h1><add>LESER</add><del>KRITIKK</del> &bull; FAKE WIDGET</h1>
+		<h3>... for loading article feedback with a version parameter</h3>
+
+		<form id="widget" target="_blank">
+			<p>Article URL:</p>
+			<input type="text" name="articleURL"/>
+			<p>Article Version:</p>
+			<input type="text" name="version"/>
+
+			<div id="buttons">
+				<select id="submitMethod">
+					<option>get</option>
+					<option>post</option>
+				</select>
+				<button type="button" onClick="submitHandler()">Go ahead</button>
+				<br style="clear: both;"/>
+			</div>
+
+			<div id="presetLinks">
+				<h3>Some test links (if NODE_ENV="test")</h3>
+				<a target="_blank" href="/fb/?articleURL=http%3A%2F%2Fwww.mopo.no%2F2&version=201707251349">
+					http://www.mopo.no/2 &bull; <i>version</i> 201707251349
+				</a>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

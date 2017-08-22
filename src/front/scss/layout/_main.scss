@@ -1,0 +1,59 @@
+// ZEROPING CONTENT
+html, body, * {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.container {
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+
+// ANIMATIONS
+@keyframes appear {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+@keyframes disappear {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+// AAAAND AWAY WE GO!
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+}
+
+ins {
+	color: $color-success;
+	text-decoration: none;
+}
+
+del {
+	color: $color-warning;
+}
+
+a {
+	background-color: transparent;
+	color: #1EAEDB;
+}
+
+a:active,
+a:hover {
+	outline: 0;
+}

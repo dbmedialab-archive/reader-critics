@@ -1,0 +1,100 @@
+.modal-window {
+	background: #fff;
+	border-radius: $modal-windows-radius;
+	border: 0;
+	outline: none;
+	padding: 40px 20px 20px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, .2);
+	width: 800px;
+
+	.close-btn {
+		position: absolute;
+		right: 20px;
+		top: 30px;
+		z-index: 104;
+
+		i {
+			padding-right: .9375rem;
+			cursor: pointer;
+			font-size: 22px;
+		}
+
+	}
+
+	.hint-title {
+		font-size: 2rem;
+		padding: 0 .9375rem .9375rem;
+	}
+
+	.hint-img {
+		width: 100%;
+		height: 100%;
+	}
+
+	form {
+		label {
+			color: #777;
+			line-height: 1.5;
+		}
+
+		input {
+			background: #fff;
+			box-shadow: none;
+
+			&.upload {
+				display: none;
+			}
+
+		}
+
+	}
+
+	> .row > img {
+		padding-left: .9375rem;
+		padding-right: .9375rem;
+	}
+
+	.button-holder {
+		margin-top: 20px;
+
+		.button {
+			border-radius: $button-radius;
+			text-transform: uppercase;
+			font-size: 1rem;
+
+			&.secondary {
+				&,
+				&:focus,
+				&:active,
+				&:visited {
+					background-color: $color-main-bg;
+				}
+
+				&:hover {
+					background-color: $color-main-bg-darken;
+				}
+
+				;
+			}
+
+			&.cancel-button {
+				margin-left: 30px;
+				float: right;
+			}
+		}
+	}
+}
+
+@media #{$medium-only} {
+	.modal-window {
+		width: 500px;
+	}
+
+}
+
+@media #{$small-only} {
+	.modal-window {
+		width: 350px;
+	}
+
+}

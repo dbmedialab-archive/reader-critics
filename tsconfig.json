@@ -3,23 +3,34 @@
 		"./src/**/*"
 	],
 	"exclude": [
+		"./assets",
+		"./doc",
+		"./kubefiles",
 		"./node_modules",
-		"./src-arch"
+		"./out",
+		"./resources",
+		"./run",
+		"./tmp"
 	],
 	"compilerOptions": {
-		"outDir": "out",
+		"outDir": "./out",
 
 		"baseUrl": "./src",
 		"paths": {
 			"admin/*": [ "admin/*"],
 			"app/*": [ "app/*" ],
 			"base/*": [ "base/*" ],
-			"front/*": [ "front/*" ]
+			"front/*": [ "front/*" ],
+			"test/*": [ "test/*" ]
 		},
 
 		"allowJs": false,
 		"declaration": true,
 		"experimentalDecorators": true,
+		"lib": [
+			"dom",
+			"es2017"
+		],
 		"jsx": "react",
 		"module": "commonjs",
 		"moduleResolution": "node",

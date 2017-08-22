@@ -1,0 +1,49 @@
+{
+	url: "http://www.mopo.no/1",
+	version: "final-draft",
+	authors: [
+		{
+			name: "Axel Egon Unterbichler",
+			email: "axel.egon@mopo.no",
+		},
+	],
+	items: [
+		{
+			order: { item: 1, type: 1 },
+			text: "Her blir Donald Trump sowas von historisk",
+			type: "title"
+		}, 	{
+			order: { item: 2, type: 1 },
+			text: "(Morgenposten): I dag landet Donald Trump i Israel. Kort tid etter ble han historisk da han, som den f\u00f8rste sittende amerikanske presidenten, bes\u00f8kte Vestmuren, bedre kjent som klagemuren, i Jerusalem.",
+			type: "paragraph"
+		}, 	{
+			order: { item: 3, type: 2 },
+			text: "Ikledd en kipa r\u00f8rte han ved det som regnes \u00e5 v\u00e6re j\u00f8denes helligste sted. If\u00f8lge CNN var b\u00e5de Jared Kushner, seniorr\u00e5dgiver og Trumps svigers\u00f8nn, og rabbiner Shmuel Rabinovich med til muren.",
+			type: "paragraph"
+		}, 	{
+			order: { item: 4, type: 3 },
+			text: "Bare et lite omr\u00e5de av muren er tillatt for kvinner. Her oppholdt Melania Trump seg, mens presidenten gikk en strekning til fots som kun er tillatt for menn.",
+			type: "paragraph"
+		}, 	{
+			order: { item: 5, type: 1 },
+			text: "P\u00e5 tur i \u00e5tte dager",
+			type: "subhead"
+		}, 	{
+			order: { item: 6, type: 4 },
+			text: "- Vi elsker Israel, og vi respekterer Israel, sa den amerikanske presidenten like etter at Air Force One hadde landet p\u00e5 Ben Gurion-flyplassen utenfor Tel Aviv.",
+			type: "paragraph"
+		}, 	{
+			order: { item: 7, type: 5 },
+			text: "USAs president er i disse dager p\u00e5 sin aller f\u00f8rste utenlandstur. I helga bes\u00f8kte han Saudi-Arabia, der han \u00f8nsket \u00abknytte sterkere b\u00e5nd til den islamske verden i kampen mot terrorisme\u00bb.",
+			type: "paragraph"
+		}, 	{
+			order: { item: 8, type: 2 },
+			text: "Kritiserte Iran",
+			type: "subhead"
+		}, 	{
+			order: { item: 9, type: 6 },
+			text: "B\u00e5de ytringsfrihet, terrorfinansiering og organisasjonsfrihet ble tatt opp av utenriksminister Rex Tillerson i Saudi-Arabias hovedstad Riyadh l\u00f8rdag, men stikket gikk til Iran, og ikke vertslandet.",
+			type: "paragraph"
+		}
+	]
+}

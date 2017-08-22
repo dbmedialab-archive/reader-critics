@@ -1,3 +1,21 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as callsite from 'callsite';
 import * as cluster from 'cluster';
 import * as debug from 'debug';
@@ -11,6 +29,7 @@ const regexFileSuffix = /\.[a-z]+?$/;
 const regexDeleteIndex = /\/index$/;
 const regexForwardSlashes = /\//g;
 const regexEnvSuffix = /\.(:?live|mock)$/;
+const regexEnvFolder = /\/(:?live|mock)\//;
 
 /**
  * Dynamically create a log channel based on the caller location.
@@ -36,10 +55,16 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 	// "createLog" is invoked. Then replace several things in the file path
 	// to create a log channel name in "debug" syntax.
 	const originName = callstack[1].getFileName()
-		.replace(regexFileSuffix, '')  // strip file suffix
-		.replace(regexDeleteIndex, '')  // strip "index"
-		.replace(regexForwardSlashes, ':')  // replace slashes with colons
-		.replace(regexEnvSuffix, '');  // string environment suffixes from service modules etc.
+		// strip file suffix
+		.replace(regexFileSuffix, '')
+		// strip "index"
+		.replace(regexDeleteIndex, '')
+		// string environment suffixes from...
+		.replace(regexEnvFolder, ':')
+		// ...service modules etc.
+		.replace(regexEnvSuffix, '')
+		// replace slashes with colons
+		.replace(regexForwardSlashes, ':');
 
 	// Replace "app" directory name with the application name
 	const pos = originName.lastIndexOf(':app:');

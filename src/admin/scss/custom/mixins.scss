@@ -1,0 +1,32 @@
+@mixin transition($property, $duration, $effect) {
+	-webkit-transition: $property $duration $effect;
+	-moz-transition: $property $duration $effect;
+	-o-transition: $property $duration $effect;
+	transition: $property $duration $effect;
+}
+
+@mixin middle-position {
+	width: 100%;
+	margin: 0 auto;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	right: auto;
+	bottom: auto;
+	margin-right: -50%;
+	-ms-transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	overflow: hidden;
+	display: inline-block;
+}
+
+@mixin no-line-break($ending) {
+	overflow: hidden;
+	white-space: nowrap;
+	@if $ending {
+		text-overflow: ellipsis;
+	}
+}
