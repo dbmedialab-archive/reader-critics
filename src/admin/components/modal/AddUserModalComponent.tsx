@@ -50,6 +50,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 	componentWillMount() {
 		UIActions.initModalWindows(this.props.windowName);
 	}
+
 	getCurrentInput(propName) {
 		const options : OptionsI = {};
 		options.input = {};
@@ -58,11 +59,13 @@ class AddUserModalComponent extends React.Component <any, any> {
 
 		return options;
 	}
+
 	makeRolesOptions() {
 		return Object.keys(UserRole).map((e, index) =>
 			<option key={UserRole[e]} value={UserRole[e]}>{ capitalizeFirstLetter(UserRole[e]) }</option>);
 
 	}
+
 	//TODO replace all validation in the future
 	hasNameError(): string | boolean {
 		if (this.props.name.value.length < 4) {
@@ -70,12 +73,14 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 		return false;
 	}
+
 	hasEmailError(): string | boolean {
 		if (this.props.email.value.length < 4) {
 			return 'Please enter valid email address';
 		}
 		return false;
 	}
+
 	hasPasswordError(): string | boolean {
 		if (this.props.userId) {
 			return false;
@@ -85,14 +90,17 @@ class AddUserModalComponent extends React.Component <any, any> {
 		}
 		return false;
 	}
+
 	isFormValid(): boolean {
 		return (!this.hasNameError() && !this.hasEmailError() && !this.hasPasswordError());
 	}
+
 	updateInputValue(event): void {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].value = event.target.value;
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
+
 	closePopup(): void {
 		if (this.props.userId){
 			UIActions.closeReset(this.props.windowName);
@@ -100,15 +108,18 @@ class AddUserModalComponent extends React.Component <any, any> {
 			UIActions.modalWindowsChangeState(this.props.windowName, {isOpen: false});
 		}
 	}
+
 	onFocus(event) {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].touched = true;
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
+
 	onBlur(event) {
 		const options = this.getCurrentInput(event.target.name);
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
+
 	saveUser(event): void {
 		event.preventDefault();
 		const {
@@ -121,9 +132,11 @@ class AddUserModalComponent extends React.Component <any, any> {
 		const data = {email, password, id, name, role};
 		UsersAction.saveUser(data);
 	}
+
 	closeReset(): void {
 		UIActions.closeReset(this.props.windowName);
 	}
+
 	render(): JSX.Element {
 		const roles = this.makeRolesOptions();
 		const isDisabled = this.isFormValid();
