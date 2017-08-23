@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Users from 'base/Users';
+import User from 'base/User';
 import * as Immutable from 'seamless-immutable';
 import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 import UserConstants from 'admin/constants/UserConstants';
@@ -27,8 +27,8 @@ const mergeConfig = {
 	mergerObjectIdentifier: 'ID',
 };
 
-interface UsersInit extends Users {
-	users: Users[];
+interface UsersInit {
+	users: User[];
 }
 
 const initialState = Immutable.from<UsersInit>({
@@ -72,7 +72,7 @@ function editUser(action, state) {
 	return state.merge({users: [action.payload]}, mergeConfig);
 }
 
-function UsersReducer(state: Users = initialState, action: UsersActionsCreator.TAction): Users {
+function UsersReducer(state: User[] = initialState, action: UsersActionsCreator.TAction): User[] {
 	switch (action.type) {
 		case UserConstants.USERS_RECEIVED:
 			return receiveUsers(action, state);
