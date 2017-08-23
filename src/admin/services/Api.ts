@@ -24,5 +24,15 @@ const Api = {
 	getSelectedWebsite: function(name) {
 		return sendRequest(`/admin/api/websites/${name}`, 'GET');
 	},
+
+	/**
+	 * Send website data to update
+	 * @type {()=>Promise<any>}
+	 */
+	updateWebsite: function(data) {
+		const {name} = data;
+		delete data.name;
+		return sendRequest(`/admin/api/websites/${name}`, 'PUT', data);
+	},
 };
 export default Api;

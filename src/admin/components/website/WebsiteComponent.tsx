@@ -19,31 +19,18 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import UserRole from 'base/UserRole';
-import {InputError} from 'admin/components/form/InputError';
-
-export const isHostName =
-	(s: string): boolean => {
-		const pattern = new RegExp(
-			`^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*
-			([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$`, 'i');
-		return pattern.test(s);
-	}; //TODO replace it to separate place
+import WebsiteHosts from 'admin/components/website/WebsiteHosts';
+import WebsiteEditors from 'admin/components/website/WebsiteEditors';
 
 class WebsiteComponent extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 
 		this.state = {
-			isEditingChiefs: false,
-			isEditingHosts: false,
 			isEditingParser: false,
 			isEditingSCSS: false,
 			isEditingFeedbackTemplate: false,
 			input: {
-				host: {
-					touched: false,
-					value: '',
-				},
 				scssVariables: {
 					touched: false,
 					value: '',
@@ -53,107 +40,26 @@ class WebsiteComponent extends React.Component <any, any> {
 
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onEditClick = this.onEditClick.bind(this);
-		this.onEditChiefs = this.onEditChiefs.bind(this);
-		this.onEditHosts = this.onEditHosts.bind(this);
 		this.onEditParser = this.onEditParser.bind(this);
-		this.onHostDelete = this.onHostDelete.bind(this);
-		this.onChiefDelete = this.onChiefDelete.bind(this);
-		this.onHostAdd = this.onHostAdd.bind(this);
-		this.onEditHosts = this.onEditHost.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
+	handleSubmit(data) {
+		return this.props.onSubmit(data);
+	}
 	onSubmit (e) {
 		e.preventDefault();
-		return this; //TODO make api request
 	}
 
-	checkDuplicateLink (link) {
-		let result: string = '';
-		if (this.state.isEditingHost && isHostName(link)) {
-			this.props.hosts.forEach((existLink) => {
-				if (existLink.toLowerCase() === link.toLowerCase()) {
-					result = 'Duplicates are not allowed';
-				}
-			});
-			return result;
-		} else {
-			return 'URL is not valid';
-		}
-	}
-
-	onEditClick(param) {
+	onEditClick (param) {
 		return this.setState({['isEditing' + param]: !this.state['isEditing' + param]});
 	}
 
-	onEditChiefs() {
-		return this.onEditClick('Chiefs');
-	}
-
-	onEditHosts() {
-		return this.onEditClick('Hosts');
-	}
-
-	onEditParser() {
-		return this.props.userRole === UserRole.SystemAdmin ?
-				this.onEditClick('Parser') : false;
-	}
-
-	onHostDelete() {
-		console.log('delete');
-		return;
-	}
-
-	onChiefDelete() {
-		console.log('delete');
-		return;
-	}
-
-	onHostAdd() {
-		const {touched, value} = this.props.input.host;
-		if (touched && value && !this.checkDuplicateLink(value)) {
-			console.log('can be submited');
-		}
-	}
-
-	onEditHost(value) {
-		this.setState({
-			input: {
-				host: {
-					value,
-					touched: true,
-				},
-			},
-		});
+	onEditParser () {
+		return this.props.userRole === UserRole.SystemAdmin ? this.onEditClick('Parser') : false;
 	}
 
 	render () {
-		const hosts = this.props.hosts.map((host, index) => {
-			return (<li key={index + 'host'} className="website-host-list">
-				{host}
-				{this.state.isEditingHosts ? <i className="fa fa-times" onClick={this.onHostDelete}/> : null}
-				</li>);
-		});
-		const chiefs = this.props.chiefEditors.map((chief, index) => {
-			return (<li key={index + 'editor'} className="website-editor-list">
-					{chief.name}
-					{this.state.isEditingChiefs ?
-						<i className="fa fa-times"  onClick={this.onChiefDelete}/> : null}
-					</li>);
-		});
-		const users = this.props.users.filter(
-				(user) => {
-					let pass = true;
-					this.props.chiefEditors.forEach((editor) => {
-						if (editor.email === user.email) {
-							pass = false;
-						}
-					});
-					return pass;
-				})
-			.map(
-				(user) => (
-					<option value={user.id}>{user.name}</option>
-				));
 		return (
 			<div className="website-item">
 				<div className="row expanded time-section">
@@ -168,59 +74,19 @@ class WebsiteComponent extends React.Component <any, any> {
 				</div>
 
 				<form onSubmit={this.onSubmit} className="website-edition-form">
-					<fieldset className="chief-editors">
-						<label htmlFor="chief-editor">
-							Chief Editors:
-							<a onClick={this.onEditChiefs} className="button default" href="#">
-								{this.state.isEditingChiefs ? 'Hide' : 'Edit'}
-							</a>
-						</label>
-						<ul>
-							{chiefs}
-						</ul>
-						{this.state.isEditingChiefs ?
-						(<select
-							id="chief-editor" className="chief-editor small-12 large-4"
-							onSelect={this.onSubmit} onBlur={this.onSubmit} >
-							{users}
-						</select>) : null
-						}
-					</fieldset>
-					<fieldset className="hosts">
-						<label htmlFor="hosts-link">
-							Hosts:
-							<a onClick={this.onEditHosts} className="button default" href="#">
-								{this.state.isEditingHosts ? 'Hide' : 'Edit'}
-							</a>
-						</label>
-						<ul>
-							{hosts}
-						</ul>
-						{this.state.isEditingHosts ?
-						(<input
-							id="hosts-link" type="text" className="small-12 large-4"
-							value={this.state.input.host.value} onChange={this.onEditHost}
-							onSubmit={this.onHostAdd} onBlur={this.onHostAdd}
-						/>
-						) : null
-						}
-						<InputError
-							errorText={this.checkDuplicateLink(this.state.input.host.value)}
-							touchedField={this.state.input.host.touched}
-						/>
-					</fieldset>
+					<WebsiteHosts onSubmit={this.handleSubmit}/>
+					<WebsiteEditors onSubmit={this.handleSubmit}/>
 					<fieldset className="website-parser">
 						<label htmlFor="parser-class">
 							Parser:
-							{this.props.userRole === UserRole.SystemAdmin ?
-								(<a onClick={this.onEditParser} className="button default" href="#">
+							{this.props.userRole === UserRole.SystemAdmin ? (
+								<a onClick={this.onEditParser} className="button default" href="#">
 									{this.state.isEditingParser ? 'Hide' : 'Edit'}
 								</a>) : null
 							}
 						</label>
 						{
-							this.state.isEditingParser ?
-							(<input
+							this.state.isEditingParser ? (<input
 								id="parser-class" type="text" className="small-12 large-4"
 								defaultValue={this.props.parserClass}
 							/>) : (
@@ -251,12 +117,9 @@ const mapStateToProps = (state, ownProps) => {
 		name: state.website.getIn(['selected', 'name']) || '',
 		date: state.website.getIn(['selected', 'date', 'created']) || '',
 		ID: state.website.getIn(['selected', 'ID']) || '',
-		chiefEditors: state.website.getIn(['selected', 'chiefEditors']) || [],
-		hosts: state.website.getIn(['selected', 'hosts']) || [],
 		parserClass: state.website.getIn(['selected', 'parserClass']) || '',
 		scssVariables: state.website.getIn(['selected', 'layout', 'scssVariables']) || '',
 		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage']) || '',
-		users: state.users || [],
 		userRole: state.user.getIn(['role']),
 	};
 };

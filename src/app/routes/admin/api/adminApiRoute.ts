@@ -61,6 +61,7 @@ adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
 adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
+adminApiRoute.put('/websites/:name', isAuthenticatedApi, websitesHandler.update);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

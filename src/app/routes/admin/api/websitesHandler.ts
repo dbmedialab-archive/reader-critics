@@ -27,6 +27,7 @@ import {
 } from 'app/routes/api/apiResponse';
 
 import { websiteService } from 'app/services';
+import UserRole from 'base/UserRole';
 
 /**
  * Provides with whole list of existing websites
@@ -50,8 +51,12 @@ export function list (requ: Request, resp: Response) {
  * Provides the website entity by name
  */
 export function show (requ: Request, resp: Response) {
-	const notFound = 'Resourse not found';
+	let notFound = 'Resourse not found';
 	const { name } = requ.params;
+	if (!name) {
+		notFound = 'Website name must be set';
+		return errorResponse(resp, undefined, notFound, { status: 404 });
+	}
 	websiteService.get(name).then((wsite) => {
 		if (wsite) {
 			okResponse(resp, wsite);
@@ -62,4 +67,21 @@ export function show (requ: Request, resp: Response) {
 	}).catch((err) => {
 		errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
+}
+
+/**
+ * Updates the website entity by name
+ */
+export function update (requ: Request, resp: Response) {
+	let notFound = 'Resourse not found';
+	const { name } = requ.params;
+	const {...body} = requ.body;
+	if (!name) {
+		notFound = 'Website name must be set';
+		return errorResponse(resp, undefined, notFound, { status: 404 });
+	}
+	websiteService
+		.validateAndUpdate(name, body)
+		.then((wsite) => okResponse(resp, wsite))
+		.catch(error => errorResponse(resp, error));
 }

@@ -34,7 +34,8 @@
 	.fa {
 		&:before {
 			color: #FF0000;
-			margin-right: .8rem;
+			margin-left: .8rem;
+			cursor: pointer;
 		}
 	}
 
@@ -43,6 +44,5 @@
 		padding: 5px;
 		font-size: 1.4rem;
 		list-style: none;
-
 	}
 }

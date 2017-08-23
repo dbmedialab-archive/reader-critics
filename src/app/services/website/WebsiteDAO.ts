@@ -53,3 +53,21 @@ export function save(website : Website) : Promise <Website> {
 	emptyCheck(website);
 	return wrapSave(new WebsiteModel(website).save());
 }
+
+export function update(name : string, data:any) : Promise <Website> {
+	emptyCheck(name, data);
+	const {hosts, chiefEditors} = data;
+	return WebsiteModel.findOne({ name })
+		.then(wsite => {
+			if (!wsite) {
+				throw new Error(`No such website ${name}`);
+			}
+			if (hosts) {
+				wsite.hosts = hosts;
+			}
+			if (chiefEditors) {
+				wsite.chiefEditors = chiefEditors;
+			}
+			return wrapSave(wsite.save());
+		});
+}

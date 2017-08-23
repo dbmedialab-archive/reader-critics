@@ -47,3 +47,11 @@ export function getSelectedWebsite(name) {
 			WebsiteActions.setSelectedWebsite(resp.data);
 		});
 }
+
+export function updateWebsite(data) {
+	Api.updateWebsite(data)
+		.then(resp => {
+			WebsiteActions.setSelectedWebsite(resp.data);
+			WebsiteActions.getWebsiteList();
+		});
+}
