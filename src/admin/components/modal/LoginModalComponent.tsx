@@ -3,19 +3,18 @@
 // Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
 // https://github.com/dbmedialab/reader-critics/
 //
-// This program is free software: you can redistribute it and/or modify it
-// under
-// the terms of the GNU General Public License as published by the Free
-// Software
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
 // Foundation, either version 3 of the License, or (at your option) any later
 // version.
 //
 // This program is distributed in the hope that it will be useful, but WITHOUT
-// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-// FITNESS
-// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
-// details.  You should have received a copy of the GNU General Public License
-// along with this program. If not, see <http://www.gnu.org/licenses/>.
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
 
 import * as React from 'react';
 import {connect} from 'react-redux';
@@ -44,7 +43,10 @@ class LoginModalComponent extends React.Component <any, any> {
 		this.getCurrentInput = this.getCurrentInput.bind(this);
 		this.updateInputValue = this.updateInputValue.bind(this);
 		this.loginUser = this.loginUser.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
+		this.hasLoginError = this.hasLoginError.bind(this);
+		this.hasPasswordError = this.hasPasswordError.bind(this);
+		this.isFormValid = this.isFormValid.bind(this);
+		this.updateErrorState = this.updateErrorState.bind(this);
 	}
 
 	componentWillMount() {
@@ -99,27 +101,23 @@ class LoginModalComponent extends React.Component <any, any> {
 	}
 
 	loginUser(event): void {
-		if (this.isFormValid()) {
-			UIActions.showMainPreloader();
+		event.preventDefault();
+		UIActions.showMainPreloader();
 			const {login: {value: login}, password: {value: password}} = this.props;
 			sendAuthRequest({login, password}).then((res: any): void => {
 				if (res.error || (!res.success && res.message)) {
 					this.updateErrorState(res.error || res.message, true);
 				} else {
-					UserActions.authenticate(res.data);
+					UserActions.authenticate(res);
 					UIActions.hideLoginDialog();
 					this.props.getBack();
 				}
 				UIActions.hideMainPreloader();
 			});
-		}
-	}
-
-	private handleSubmit(e: any): void {
-		e.preventDefault();
 	}
 
 	render(): JSX.Element {
+		const isDisabled = this.isFormValid();
 		return (
 			<ReactModal isOpen={this.props.isOpen} name="loginUser" closeHandler={() => {}}>
 				<div className="modal-window">
@@ -128,7 +126,7 @@ class LoginModalComponent extends React.Component <any, any> {
 							<p className="lead">Authorization</p>
 						</div>
 					</div>
-					<form onSubmit={this.handleSubmit}>
+					<form onSubmit={this.loginUser}>
 						<div className="row">
 							<div className="medium-12 columns">
 								<fieldset className="text">
@@ -163,7 +161,7 @@ class LoginModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row button-holder">
 							<div className="medium-12 columns">
-								<a onClick={this.loginUser} className="button success" href="#">Log IN</a>
+								<button disabled={!isDisabled} type="submit" className="button success">Log In</button>
 							</div>
 							<InputError
 								errorText={this.state.serverError.value}

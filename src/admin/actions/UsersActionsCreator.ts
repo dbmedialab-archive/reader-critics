@@ -16,13 +16,38 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-import UserRole from './UserRole';
+import UserConstants from 'admin/constants/UserConstants';
 
-interface User extends PersistedModel, Person {
-	role : UserRole;
-	password? : String;
+export interface IAction {
+	type: any;
+	payload?: any;
 }
 
-export default User;
+export type TAction = IAction;
+
+export function addUser(payload): IAction {
+	return {
+		type: UserConstants.ADD_USER,
+		payload,
+	};
+}
+
+export function getUsers(payload): IAction {
+	return {
+		type: UserConstants.USERS_RECEIVED,
+		payload,
+	};
+}
+export function deleteUser(payload): IAction {
+	return {
+		type: UserConstants.DELETE_USER,
+		payload,
+	};
+}
+
+export function editUser(payload): IAction {
+	return {
+		type: UserConstants.EDIT_USER,
+		payload,
+	};
+}

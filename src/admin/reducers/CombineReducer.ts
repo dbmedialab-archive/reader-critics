@@ -23,11 +23,13 @@ import UIReducer from 'admin/reducers/UIReducer';
 import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
 import WebsiteReducer from 'admin/reducers/WebsiteReducer';
+import UsersReducer from 'admin/reducers/UsersReducer';
 
 export const CombineReducer:any = combineReducers({
 	UI: UIReducer,
 	feedback: FeedbackReducer,
 	user: UserReducer,
+	users: UsersReducer,
 	router: routerReducer,
 	website: WebsiteReducer,
 });

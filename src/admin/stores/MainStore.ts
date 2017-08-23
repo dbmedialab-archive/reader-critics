@@ -21,7 +21,7 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 
 //import Routes from "../../server/routers/Routes"
-//import AppConstants from 'admin/constants/AppConstants'
+//import AdminConstants from 'admin/constants/AdminConstants'
 import {CombineReducer} from 'admin/reducers/CombineReducer';
 //import ExecutionEnvironment from 'exenv';
 

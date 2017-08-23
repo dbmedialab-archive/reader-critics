@@ -38,6 +38,7 @@ const AdminConstants = keykey([
 
 	//Comments
 	'FEEDBACK_LIST_RECEIVED',
+	'USER_MODAL_NAME',
 
 	//Websites
 	'WEBSITE_LIST_RECEIVED',

@@ -1,0 +1,41 @@
+.users-group-holder {
+	.userlist-table-heading, .userlist-table-row {
+		background: #CCCBCB;
+		padding: 0 .9375rem;
+	}
+
+	.userlist-table-heading {
+		font-weight: bold;
+		font-style: italic;
+		text-transform: uppercase;
+	}
+}
+
+.user-row {
+	background: #fff;
+	padding-bottom: 3px;
+	font-size: .9rem;
+	color: #777;
+
+	&.table-header {
+		font-size: 1rem;
+		color: #111;
+	}
+
+	> div {
+		padding: 10px;
+	}
+
+	.column, .columns {
+		background: #eee;
+	}
+}
+
+.remove-enter-row {
+	transition: opacity 0.25s ease-in-out;
+	opacity: 0;
+
+	&.entering, &.entered {
+		opacity: 1;
+	}
+}

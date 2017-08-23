@@ -22,26 +22,21 @@ import {
 } from 'express';
 
 import {
+	bulkResponse,
 	errorResponse,
-	okResponse,
 } from 'app/routes/api/apiResponse';
 
 import { feedbackService } from 'app/services';
+
+import pagination from 'app/util/pagination';
 
 /**
  * Provides with whole list of existing feedbacks
  * Not filtering, no page or limit query params are taken into account
  */
 export function list (requ: Request, resp: Response) {
-	const notFound = 'Resourse not found';
-	feedbackService.getRange().then((fbacks) => {
-		if (fbacks.length > 0) {
-			okResponse(resp, fbacks);
-		} else {
-			errorResponse(resp, undefined, notFound, { status: 404 });
-		}
-
-	}).catch((err) => {
-		errorResponse(resp, undefined, err.stack, { status: 500 });
-	});
+	const params = pagination(requ);
+	feedbackService.getRange(params.skip, params.limit, params.sort)
+	.then(feedbacks => bulkResponse(resp, feedbacks))
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
