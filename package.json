@@ -129,7 +129,7 @@
 		"@types/passport-jwt": "2.0.22",
 		"@types/passport-local": "1.0.30",
 		"@types/react": "15.6.0",
-		"@types/react-dom": "15.5.3",
+		"@types/react-dom": "15.5.4",
 		"@types/react-redux": "5.0.4",
 		"@types/react-router": "4.0.15",
 		"@types/react-router-dom": "4.0.5",
