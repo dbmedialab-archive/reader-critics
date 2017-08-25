@@ -32,7 +32,7 @@
 }
 
 .remove-enter-row {
-	transition: opacity 0.25s ease-in-out;
+	transition: opacity .25s ease-in-out;
 	opacity: 0;
 
 	&.entering, &.entered {
