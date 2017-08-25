@@ -3,7 +3,7 @@
 [
 	{
 		name: 'admin',
-		password: '$2a$04$F4.ZVJ9tfDfBjs9LPNwiHO.2DT/KgRCL9rg0UNLhsuhA2kn0mYu76',
+		password: 'test',
 		role: 'sysadmin',
 		email: 'admin@leserkritikk.no'
 	},
@@ -20,21 +20,21 @@
 	{
 		name: 'Indiana Horst',
 		email: 'horst@indiana.net',
-		role: 'normal',
+		role: 'journalist',
 	},
 	{
 		name: 'Ernst Eisenbichler',
 		email: 'ee@aller.com',
-		role: 'normal',
+		role: 'journalist',
 		// "test123"
-		password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
+		password: 'test123',
 	},
 	{
 		name: 'Philipp Gröschler',
 		email: 'philipp@sol.no',
 		role: 'sysadmin',
 		// "holyguacamole"
-		password: '$2a$04$PHXSTABybBgrKN/cxyZ8Reaxm2JA0xLb6vQeufvXJ6eYhiucGV8iW',
+		password: 'holyguacamole',
 	},
 	{
 		name: 'Christoph Schmitz',
@@ -44,7 +44,7 @@
 	{
 		name: 'Einprosit Dergemütlichkeit',
 		email: 'prost.mahlzeit@lulu.org',
-		role: 'normal',
+		role: 'journalist',
 	},
 	{
 		name: 'Brahmaputra Pradesh Meghna',
@@ -54,6 +54,6 @@
 	{
 		name: 'Stamatis Skeates',
 		email: 'stamatis@ote.gr',
-		role: 'normal',
+		role: 'journalist',
 	},
 ]

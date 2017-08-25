@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+
+/*tslint:disable max-file-line-count*/
 import * as React from 'react';
 import { connect } from 'react-redux';
 import ReactModal from './ReactModalComponent';
@@ -255,7 +257,7 @@ const mapStateToProps = (state, ownProps) => {
 		},
 		role: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value'])
-			|| UserRole.Normal,
+			|| UserRole.Journalist,
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'touched'])
 			|| false,
 		},

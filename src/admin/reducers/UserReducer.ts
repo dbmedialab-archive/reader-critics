@@ -65,7 +65,7 @@ function deauthenticateUser(action, state) {
 	return state.merge({
 		name: '',
 		email: '',
-		role: UserRole.Normal,
+		role: UserRole.Journalist,
 	});
 }
 
