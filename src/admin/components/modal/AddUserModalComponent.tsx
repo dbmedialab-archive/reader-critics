@@ -257,7 +257,7 @@ const mapStateToProps = (state, ownProps) => {
 		},
 		role: {
 			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value'])
-			|| UserRole.Normal,
+			|| UserRole.Journalist,
 			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'touched'])
 			|| false,
 		},

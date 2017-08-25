@@ -17,7 +17,6 @@
 //
 
 import * as bcrypt from 'bcrypt';
-
 import Person from 'base/zz/Person';
 import User from 'base/User';
 
