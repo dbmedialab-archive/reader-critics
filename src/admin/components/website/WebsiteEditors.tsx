@@ -25,34 +25,38 @@ class WebsiteEditors extends React.Component <any, any> {
 
 		this.state = {
 			editMode: false,
-			userIndex: -1,
 		};
 
 		this.onToggleEdit = this.onToggleEdit.bind(this);
 		this.onDelete = this.onDelete.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
+		// this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.checkHost = this.checkHost.bind(this);
+		this.getUsers = this.getUsers.bind(this);
 	}
 
 	onToggleEdit () {
 		return this.setState({editMode: !this.state.editMode});
 	}
 
-	onDelete () {
-		console.log('delete');
-		return;
+	onDelete (index) {
+		const chiefEditors = this.props.chiefEditors.asMutable();
+		chiefEditors.splice(index, 1);
+		return this.props.onSubmit({chiefEditors});
 	}
 
 	onChange (e) {
-		return this.setState({userIndex: [e.target.value]});
-	}
-
-	onSubmit () {
-		if (~this.state.userIndex) {
-			const newUser = this.props.users[this.state.userIndex];
+		const userID = e.target.value;
+		if (userID) {
+			let newUser = null;
+			this.props.users.forEach((user) => {
+				if (user.ID === userID) {
+					newUser = user.without(['ID', 'date']);
+				}
+			});
 			const chiefEditors = this.props.chiefEditors.asMutable();
-			chiefEditors.concat(newUser);
+			chiefEditors.push(newUser);
+			e.target.value = '';
 			return this.props.onSubmit({chiefEditors});
 		}
 	}
@@ -63,7 +67,8 @@ class WebsiteEditors extends React.Component <any, any> {
 	 */
 	private checkHost (email) {
 		let isValid: boolean = false;
-		const uHost = email.slice(0, email.indexOf('@'));
+		const uHost = email.slice(email.indexOf('@') + 1);
+		//for some reasons we allow 'www.' starting host names
 		const domainRegExp = new RegExp(/^www\..*$/, 'i');
 		this.props.hosts.forEach((host) => {
 			const hostName = domainRegExp.test(host) ? host.slice(4) : host;
@@ -74,34 +79,35 @@ class WebsiteEditors extends React.Component <any, any> {
 		return isValid;
 	}
 
+	private getUsers () {
+		return this.props.users.asMutable()
+			.filter((user) => {
+			// Can add only users with allowed host names
+			if (!this.checkHost(user.email)) {
+				return false;
+			}
+			// We don't need duplicates
+			for (const editor of this.props.chiefEditors) {
+				if (editor.email === user.email) {
+					return false;
+				}
+			}
+			return true;
+		}).map((user) => (
+			<option key={user.ID} value={user.ID}>{user.name}</option>
+		));
+	}
+
 	render () {
 		const chiefs = this.props.chiefEditors.map((chief, index) => {
 			return (<li key={index + 'editor'} className="website-editor-list">
 				{chief.name}
-				{this.state.editMode ? <i className="fa fa-times" onClick={this.onDelete}/> : null}
+				{this.state.editMode ?
+				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/> : null}
 			</li>);
 		});
-		const users = this.props.users
-				.map((user, index) => {
-					// Setting indexes of current users array to
-					// find user on Add and pass to data
-					user.index = index;
-					return user;
-				}).filter((user) => {
-					// Can add only users with allowed host names
-					if (!this.checkHost(user.email)) {
-						return false;
-					}
-					// We don't need duplicates
-					this.props.chiefEditors.forEach((editor) => {
-						if (editor.email === user.email) {
-							return false;
-						}
-					});
-					return true;
-				}).map((user) => (
-					<option value={user.index}>{user.name}</option>
-				));
+		const users = this.getUsers();
+
 		return (
 			<fieldset className="chief-editors">
 				<label htmlFor="chief-editor">
@@ -115,10 +121,10 @@ class WebsiteEditors extends React.Component <any, any> {
 				</ul>
 				{this.state.editMode ? (<select
 					id="chief-editor" className="chief-editor small-12 large-4"
-					onChange={this.onChange} onBlur={this.onSubmit}
-					value={this.state.userIndex}
+					onChange={this.onChange}
+					value=""
 				>
-					<option value="-1"/>
+					<option value=""/>
 					{users}
 				</select>) : null
 				}
@@ -129,10 +135,9 @@ class WebsiteEditors extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		users: state.users || [],
+		users: state.users.getIn(['users']) || [],
 		chiefEditors: state.website.getIn(['selected', 'chiefEditors']) || [],
 		hosts: state.website.getIn(['selected', 'hosts']) || [],
-		website: state.website.getIn(['selected']) || {},
 	};
 };
 

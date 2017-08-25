@@ -21,37 +21,43 @@ import MainStore from 'admin/stores/MainStore';
 import Api from 'admin/services/Api';
 import * as WebsiteActions from './WebsiteActions';
 import * as WebsiteActionsCreator from 'admin/actions/WebsiteActionsCreator';
+import * as UIActions from 'admin/actions/UIActions';
 
 export function setWebsiteList(websites: Array<Website>) {
+	UIActions.hideMainPreloader();
 	MainStore.dispatch(
 		WebsiteActionsCreator.setWebsiteList(websites)
 	);
 }
 
 export function getWebsiteList() {
+	UIActions.showMainPreloader();
 	Api.getWebsiteList()
 		.then((resp)=>{
-			WebsiteActions.setWebsiteList(resp.data);
+			WebsiteActions.setWebsiteList(resp);
 		});
 }
 
 export function setSelectedWebsite(website: Website) {
+	UIActions.hideMainPreloader();
 	MainStore.dispatch(
 		WebsiteActionsCreator.setSelectedWebsite(website)
 	);
 }
 
 export function getSelectedWebsite(name) {
+	UIActions.showMainPreloader();
 	Api.getSelectedWebsite(name)
 		.then((resp) => {
-			WebsiteActions.setSelectedWebsite(resp.data);
+			WebsiteActions.setSelectedWebsite(resp);
 		});
 }
 
 export function updateWebsite(data) {
+	UIActions.showMainPreloader();
 	Api.updateWebsite(data)
 		.then(resp => {
-			WebsiteActions.setSelectedWebsite(resp.data);
+			WebsiteActions.setSelectedWebsite(resp);
 			WebsiteActions.getWebsiteList();
 		});
 }

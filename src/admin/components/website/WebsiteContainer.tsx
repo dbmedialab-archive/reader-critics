@@ -20,6 +20,7 @@ import * as React from 'react';
 
 import Layout from 'admin/components/layout/LayoutComponent';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import * as UsersActions from 'admin/actions/UsersActions';
 import WebsiteComponent from 'admin/components/website/WebsiteComponent';
 import {connect} from 'react-redux';
 
@@ -33,6 +34,7 @@ class WebsiteContainer extends React.Component <any, any> {
 	componentDidMount(){
 		WebsiteActions.getWebsiteList();	//TODO move to separate component WebsitesList
 		WebsiteActions.getSelectedWebsite(this.props.match.params.name);
+		UsersActions.getUsers();
 	}
 
 	handleData(data) {
