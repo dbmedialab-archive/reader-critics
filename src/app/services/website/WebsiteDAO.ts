@@ -56,7 +56,7 @@ export function save(website : Website) : Promise <Website> {
 
 export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
-	const {hosts, chiefEditors} = data;
+	const {hosts, chiefEditors, parserClass} = data;
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
@@ -67,6 +67,9 @@ export function update(name : string, data:any) : Promise <Website> {
 			}
 			if (chiefEditors) {
 				wsite.chiefEditors = chiefEditors;
+			}
+			if (parserClass) {
+				wsite.parserClass = parserClass;
 			}
 			return wrapSave(wsite.save());
 		});

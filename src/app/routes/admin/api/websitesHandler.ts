@@ -27,7 +27,8 @@ import {
 } from 'app/routes/api/apiResponse';
 
 import { websiteService } from 'app/services';
-import UserRole from 'base/UserRole';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Provides with whole list of existing websites
@@ -57,13 +58,16 @@ export function show (requ: Request, resp: Response) {
 		notFound = 'Website name must be set';
 		return errorResponse(resp, undefined, notFound, { status: 404 });
 	}
-	websiteService.get(name).then((wsite) => {
-		if (wsite) {
-			okResponse(resp, wsite);
+	Promise.all([
+		websiteService.get(name),
+		getParserClasses(),
+	]).then(data => {
+		const [website, parsers = []] = data;
+		if (website) {
+			okResponse(resp, {website, options: {parsers}});
 		} else {
 			errorResponse(resp, undefined, notFound, { status: 404 });
 		}
-
 	}).catch((err) => {
 		errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
@@ -84,4 +88,24 @@ export function update (requ: Request, resp: Response) {
 		.validateAndUpdate(name, body)
 		.then((wsite) => okResponse(resp, wsite))
 		.catch(error => errorResponse(resp, error));
+}
+
+function getParserClasses() {
+	const dirPath = path.resolve(__dirname, '../../../parser/impl/');
+	return new Promise((resolve, reject) => {
+		return fs.readdir(dirPath, (err, files) => {
+			const fileNames = [];
+			if (err) {
+				return reject(err);
+			}
+			//We need only parser name got from file names. No extension and duplicates allowed
+			files.forEach((file) => {
+				const fileName = file.slice(0, file.indexOf('.'));
+				if (!~fileNames.indexOf(fileName)) {
+					fileNames.push(fileName);
+				}
+			});
+			return resolve(fileNames);
+		});
+	});
 }

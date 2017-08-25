@@ -45,11 +45,19 @@ export function setSelectedWebsite(website: Website) {
 	);
 }
 
+export function setWebsiteOptions(options: any) {
+	UIActions.hideMainPreloader();
+	MainStore.dispatch(
+		WebsiteActionsCreator.setWebsiteOptions(options)
+	);
+}
+
 export function getSelectedWebsite(name) {
 	UIActions.showMainPreloader();
 	Api.getSelectedWebsite(name)
 		.then((resp) => {
-			WebsiteActions.setSelectedWebsite(resp);
+			WebsiteActions.setSelectedWebsite(resp.website);
+			WebsiteActions.setWebsiteOptions(resp.options);
 		});
 }
 

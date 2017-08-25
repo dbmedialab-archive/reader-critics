@@ -83,8 +83,8 @@ class LoginModalComponent extends React.Component <any, any> {
 	}
 
 	hasLoginError(): string | boolean {
-		if (this.props.login.value !== 'admin') {
-			return 'Only admin can get access';
+		if (this.props.login.value.length < 4) {
+			return 'Login has to be more than 3 symbols';
 		}
 		return false;
 	}

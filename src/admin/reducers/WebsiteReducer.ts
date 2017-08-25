@@ -24,11 +24,13 @@ import AdminConstants from 'admin/constants/AdminConstants';
 export interface IWebsiteState {
 	websites: Array<Website>;
 	selected: Website | null;
+	options: any | null;
 }
 
-const initialState = Immutable({
+const initialState: IWebsiteState = Immutable({
 	websites: [],
 	selected: null,
+	options: {},
 });
 
 function setWebsites(action, state) {
@@ -43,6 +45,12 @@ function setSelected(action, state) {
 	});
 }
 
+function setOptions(action, state) {
+	return state.merge({
+		options: action.payload,
+	});
+}
+
 function WebsiteReducer(
 	state: IWebsiteState = initialState,
 	action: WebsiteActionsCreator.TAction
@@ -53,6 +61,8 @@ function WebsiteReducer(
 			return setWebsites(action, state);
 		case AdminConstants.WEBSITE_SELECTED:
 			return setSelected(action, state);
+		case AdminConstants.WEBSITE_OPTIONS_RECEIVED:
+			return setOptions(action, state);
 		default:
 			return state;
 	}

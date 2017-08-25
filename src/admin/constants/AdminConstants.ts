@@ -43,6 +43,7 @@ const AdminConstants = keykey([
 	//Websites
 	'WEBSITE_LIST_RECEIVED',
 	'WEBSITE_SELECTED',
+	'WEBSITE_OPTIONS_RECEIVED',
 ]);
 
 export default AdminConstants;

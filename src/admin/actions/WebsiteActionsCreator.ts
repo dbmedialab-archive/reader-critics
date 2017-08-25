@@ -38,3 +38,10 @@ export function setSelectedWebsite(payload): IAction {
 		payload,
 	};
 }
+
+export function setWebsiteOptions(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_OPTIONS_RECEIVED,
+		payload,
+	};
+}

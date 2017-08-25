@@ -43,19 +43,6 @@ export default function(name: string, data : any) : Promise <Website> {
 	.then(() => websiteService.update(name, data));
 }
 
-// Fetch user object from database or create a new one
-
-// function getUsers(userData : any) : Promise <User> {
-// 	const name = isString(userData.name) ? userData.name : null;
-// 	const email = isString(userData.email) ? userData.email : null;
-//
-// 	return userService.get(name, email)
-// 	.then((u : User) => u !== null ? u : enduserService.save({
-// 		name,
-// 		email,
-// 	}));
-// }
-
 // Schema Validation
 
 function validateSchema(data : any) {

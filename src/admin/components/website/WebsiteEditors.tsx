@@ -29,7 +29,6 @@ class WebsiteEditors extends React.Component <any, any> {
 
 		this.onToggleEdit = this.onToggleEdit.bind(this);
 		this.onDelete = this.onDelete.bind(this);
-		// this.onSubmit = this.onSubmit.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.checkHost = this.checkHost.bind(this);
 		this.getUsers = this.getUsers.bind(this);

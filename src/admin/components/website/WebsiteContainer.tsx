@@ -38,7 +38,7 @@ class WebsiteContainer extends React.Component <any, any> {
 	}
 
 	handleData(data) {
-		const {name} = this.props.website;
+		const name = this.props.name;
 		const dataToSend = Object.assign({name}, data);
 		this.onSubmit(dataToSend);
 	}
@@ -56,7 +56,7 @@ class WebsiteContainer extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		website: state.website.getIn(['selected']) || {},
+		name: state.website.getIn(['selected', 'name']) || '',
 	};
 };
 

@@ -21,13 +21,13 @@ import {connect} from 'react-redux';
 import UserRole from 'base/UserRole';
 import WebsiteHosts from 'admin/components/website/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/WebsiteEditors';
+import WebsiteParserClass from 'admin/components/website/WebsiteParserClass';
 
 class WebsiteComponent extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 
 		this.state = {
-			isEditingParser: false,
 			isEditingSCSS: false,
 			isEditingFeedbackTemplate: false,
 			input: {
@@ -39,8 +39,6 @@ class WebsiteComponent extends React.Component <any, any> {
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
-		this.onEditClick = this.onEditClick.bind(this);
-		this.onEditParser = this.onEditParser.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
@@ -49,14 +47,6 @@ class WebsiteComponent extends React.Component <any, any> {
 	}
 	onSubmit (e) {
 		e.preventDefault();
-	}
-
-	onEditClick (param) {
-		return this.setState({['isEditing' + param]: !this.state['isEditing' + param]});
-	}
-
-	onEditParser () {
-		return this.props.userRole === UserRole.SystemAdmin ? this.onEditClick('Parser') : false;
 	}
 
 	render () {
@@ -76,28 +66,7 @@ class WebsiteComponent extends React.Component <any, any> {
 				<form onSubmit={this.onSubmit} className="website-edition-form">
 					<WebsiteHosts onSubmit={this.handleSubmit}/>
 					<WebsiteEditors onSubmit={this.handleSubmit}/>
-					<fieldset className="website-parser">
-						<label htmlFor="parser-class">
-							Parser:
-							{this.props.userRole === UserRole.SystemAdmin ? (
-								<a onClick={this.onEditParser} className="button default" href="#">
-									{this.state.isEditingParser ? 'Hide' : 'Edit'}
-								</a>) : null
-							}
-						</label>
-						{
-							this.state.isEditingParser ? (<input
-								id="parser-class" type="text" className="small-12 large-4"
-								defaultValue={this.props.parserClass}
-							/>) : (
-								<div className="small-12">
-									<div className="website-parser-class">
-										{this.props.parserClass || 'Not set'}
-									</div>
-								</div>
-							)
-						}
-					</fieldset>
+					<WebsiteParserClass onSubmit={this.handleSubmit}/>
 					<fieldset className="website-scss">
 						<label htmlFor="scss-variables">SCSS variables:</label>
 						<span>Coming soon</span>
@@ -117,10 +86,8 @@ const mapStateToProps = (state, ownProps) => {
 		name: state.website.getIn(['selected', 'name']) || '',
 		date: state.website.getIn(['selected', 'date', 'created']) || '',
 		ID: state.website.getIn(['selected', 'ID']) || '',
-		parserClass: state.website.getIn(['selected', 'parserClass']) || '',
 		scssVariables: state.website.getIn(['selected', 'layout', 'scssVariables']) || '',
 		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage']) || '',
-		userRole: state.user.getIn(['role']),
 	};
 };
 
