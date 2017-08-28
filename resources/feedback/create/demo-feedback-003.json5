@@ -4,7 +4,7 @@
 		version: 'final-draft',
 	},
 	user: {
-		name: 'Schmitz\' Katze'
+		name: 'Schmitz\' Katze',
 	},
 	feedback: {
 		items: [
@@ -18,8 +18,8 @@
 					type: 1,
 					item: 5,
 				},
-				type: 'subhead'
+				type: 'subhead',
 			},
 		],
-	}
+	},
 }

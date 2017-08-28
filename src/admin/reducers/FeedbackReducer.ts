@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+
 import FeedbackItem from 'base/FeedbackItem';
 import * as Immutable from 'seamless-immutable';
 import * as  FeedbacksActionsCreator  from 'admin/actions/FeedbacksActionsCreator';

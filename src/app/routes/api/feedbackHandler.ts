@@ -16,38 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import {
+	Request,
+	Response,
+} from 'express';
+
+import { feedbackService } from 'app/services';
 
 import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
+	errorResponse,
+	okResponse,
+} from './apiResponse';
 
-import createPersistingService from '../createPersistingService';
+export function feedbackPostHandler(requ : Request, resp : Response) : void {
+	feedbackService.validateAndSave(requ.body)
+	.then((doc) => okResponse(resp, {ID: doc.ID}))
+	.catch(error => errorResponse(resp, error));
+}
 
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
-
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
-	);
-
-module.exports = service;
+export function feedbackUpdateEndUserHandler(requ : Request, resp : Response) : void {
+	feedbackService.validateAndUpdateEndUser(requ.params.id, requ.body)
+		.then((doc) => okResponse(resp, {ID: doc.ID}))
+		.catch(error => errorResponse(resp, error));
+}

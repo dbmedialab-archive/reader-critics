@@ -17,28 +17,26 @@
 //
 
 import {
+	isArray,
 	isObject,
+	isString,
 } from 'lodash';
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 
 import {
-	articleService,
 	enduserService,
 	feedbackService,
 } from 'app/services';
 
 import {
-	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate and store to database
+// Validate data and update feedback in database with user contacts
 
-export default function(data : any) : Promise <Feedback> {
+export default function(id, data : any) : Promise <Feedback> {
 	try {
 		validateSchema(data);
 	}
@@ -46,34 +44,29 @@ export default function(data : any) : Promise <Feedback> {
 		return Promise.reject(error);
 	}
 
-	let article : Article;
 	let enduser : EndUser;
 
 	return Promise.all([
-		getArticle(data.article).then((a : Article) => {
-			// console.log('------------------------------------------------------------');
-			// console.log('validateAndSave got article:', a);
-			// console.log('\n');
-			article = a;
-		}),
-		// Get Anonymous user from DB
-		enduserService.get(null, null).then((u : EndUser) => enduser = u),
+		getEndUser(data.user).then((u : EndUser) => enduser = u),
 	])
-	.then(() => feedbackService.save(article, enduser, data.feedback.items));
+	.then(() => feedbackService.updateEndUser(id, enduser));
 }
 
-// Fetch article object
+// Fetch user object from database or create a new one
 
-function getArticle(articleData : any) : Promise <Article> {
-	const url = articleData.url;
-	const version = articleData.version;
+function getEndUser(userData : any) : Promise <EndUser> {
+	if (userData) {
+		const name = isString(userData.name) ? userData.name : null;
+		const email = isString(userData.email) ? userData.email : null;
 
-	return ArticleURL.from(url)
-	.then(articleURL => articleService.get(articleURL, version, true))
-	.then((article : Article) => (article === null
-		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
-		: article
-	));
+		return enduserService.get(name, email)
+			.then((u: EndUser) => u !== null ? u : enduserService.save({
+				name,
+				email,
+			}));
+	} else {
+		return Promise.resolve(null);
+	}
 }
 
 // Schema Validation
@@ -83,10 +76,8 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-	if (!isObject(data.article)) {
-		throw new SchemaValidationError('Feedback data is missing "article" object');
-	}
-	if (!isObject(data.feedback)) {
-		throw new SchemaValidationError('Feedback data is missing "feedback" object');
+
+	if (!('user' in data) && (!isObject(data.user) || isArray(data.user))) {
+		throw new SchemaValidationError('Feedback data is missing or incorrect: "user"');
 	}
 }
