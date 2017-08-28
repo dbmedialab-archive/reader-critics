@@ -18,10 +18,10 @@
 
 import * as React from 'react';
 import {connect} from 'react-redux';
-import UserRole from 'base/UserRole';
 import WebsiteHosts from 'admin/components/website/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/WebsiteEditors';
 import WebsiteParserClass from 'admin/components/website/WebsiteParserClass';
+import WebsiteLayoutSection from 'admin/components/website/WebsiteLayoutSection';
 
 class WebsiteComponent extends React.Component <any, any> {
 	constructor (props) {
@@ -67,14 +67,7 @@ class WebsiteComponent extends React.Component <any, any> {
 					<WebsiteHosts onSubmit={this.handleSubmit}/>
 					<WebsiteEditors onSubmit={this.handleSubmit}/>
 					<WebsiteParserClass onSubmit={this.handleSubmit}/>
-					<fieldset className="website-scss">
-						<label htmlFor="scss-variables">SCSS variables:</label>
-						<span>Coming soon</span>
-					</fieldset>
-					<fieldset className="website-templates">
-						<label htmlFor="feedback-page">Feedback Page Template:</label>
-						<span>Coming soon</span>
-					</fieldset>
+					<WebsiteLayoutSection onSubmit={this.handleSubmit}/>
 				</form>
 			</div>
 		);

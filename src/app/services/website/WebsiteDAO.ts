@@ -56,7 +56,7 @@ export function save(website : Website) : Promise <Website> {
 
 export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
-	const {hosts, chiefEditors, parserClass} = data;
+	const {hosts, chiefEditors, parserClass, layout} = data;
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
@@ -70,6 +70,11 @@ export function update(name : string, data:any) : Promise <Website> {
 			}
 			if (parserClass) {
 				wsite.parserClass = parserClass;
+			}
+			if (layout && 'templates' in layout) {
+				if ('feedbackPage' in layout.templates) {
+					wsite.layout.templates.feedbackPage = layout.templates.feedbackPage;
+				}
 			}
 			return wrapSave(wsite.save());
 		});

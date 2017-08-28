@@ -41,7 +41,7 @@ function getRoleFromEnum() {
 			role = UserRole.SystemAdmin;
 			break;
 		default:
-			role = UserRole.Normal;
+			role = UserRole.Journalist;
 			break;
 	}
 	return role;

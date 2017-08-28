@@ -16,35 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as keykey from 'keykey';
-const AdminConstants = keykey([
-	'MAIN_PRELOADER_CHANGE_STATE',
-	'MODAL_STATE_CHANGED',
-	'MODAL_INIT',
-	'RESET_FORM_INPUT',
-	'TOPBAR_SUBMENU_STATE_CHANGED',
-	'TOPBAR_ACCOUNTMENU_STATE_CHANGED',
+import * as React from 'react';
+import WebsiteFeedbackPageTemplate from 'admin/components/website/WebsiteFeedbackPageTemplate';
 
-	//Modal windows names
-	'TEST_MODAL_WINDOW',
-	'PROMPT_MODAL_WINDOW',
-	'DIALOG_MODAL_WINDOW',
-	'LOGIN_DIALOG_MODAL_WINDOW',
+export default class WebsiteTemplatesSection extends React.Component <any, any> {
+	constructor (props) {
+		super(props);
+	}
 
-	//User actions
-	'AUTHENTICATE_USER',
-	'DEAUTHENTICATE_USER',
-	'UPDATE_CURRENT_USER',
-
-	//Comments
-	'FEEDBACK_LIST_RECEIVED',
-	'USER_MODAL_NAME',
-
-	//Websites
-	'WEBSITE_LIST_RECEIVED',
-	'WEBSITE_SELECTED',
-	'WEBSITE_OPTIONS_RECEIVED',
-	'WEBSITE_TEMPLATE_FEEDBACK_MODAL_NAME',
-]);
-
-export default AdminConstants;
+	render () {
+		return (
+			<div>
+				<WebsiteFeedbackPageTemplate onSubmit={this.props.onSubmit}/>
+			</div>
+		);
+	}
+}

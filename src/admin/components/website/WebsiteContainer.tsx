@@ -23,6 +23,8 @@ import * as WebsiteActions from 'admin/actions/WebsiteActions';
 import * as UsersActions from 'admin/actions/UsersActions';
 import WebsiteComponent from 'admin/components/website/WebsiteComponent';
 import {connect} from 'react-redux';
+import AdminConstants from 'admin/constants/AdminConstants';
+import EditTemplateModalComponent from 'admin/components/modal/EditTemplateModalComponent';
 
 class WebsiteContainer extends React.Component <any, any> {
 	constructor(props) {
@@ -49,6 +51,7 @@ class WebsiteContainer extends React.Component <any, any> {
 		return (
 			<Layout pageTitle="Website">
 				<WebsiteComponent onSubmit={this.handleData}/>
+				<EditTemplateModalComponent windowName={AdminConstants.WEBSITE_TEMPLATE_FEEDBACK_MODAL_NAME} />
 			</Layout>
 	);
 	}
