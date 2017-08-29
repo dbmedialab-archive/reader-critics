@@ -84,14 +84,7 @@ export function getByID(id : String) : Promise <User> {
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
 
-	if (user.password !== undefined) {
-		return bcrypt.hash(user.password, config.get('auth.bcrypt.rounds')).then((hash) => {
-			user.password = hash;
-			return wrapSave<User>(new UserModel(user).save());
-		});
-	} else {
-		return wrapSave<User>(new UserModel(user).save());
-	}
+	return wrapSave<User>(new UserModel(user).save());
 }
 
 export function findOrInsert(user : Person) : Promise <User> {
