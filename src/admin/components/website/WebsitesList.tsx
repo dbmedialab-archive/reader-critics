@@ -19,13 +19,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import WebsitesRow from 'admin/components/website/WebsitesRow';
 import { Transition, TransitionGroup } from 'react-transition-group';
+import {Link} from 'react-router-dom';
 
 class WebsitesList extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
 
 		this.updateErrorState = this.updateErrorState.bind(this);
-		this.onCreate = this.onCreate.bind(this);
 	}
 
 	updateErrorState(message: string = '', touched: boolean = false): void {
@@ -36,9 +36,7 @@ class WebsitesList extends React.Component <any, any> {
 			},
 		});
 	}
-	onCreate() {
-		return false;
-	}
+
 	public render() : JSX.Element {
 
 		const content = this.props.websites.map((website) =>
@@ -60,7 +58,7 @@ class WebsitesList extends React.Component <any, any> {
 			<main>
 				<section className="row expanded">
 					<div className="column small-12">
-						<button type="button" onClick={this.onCreate} className="button">Create Website</button>
+						<Link className="button" to="/websites/0">Create Website</Link>
 					</div>
 				</section>
 				<section className="websiteTable">

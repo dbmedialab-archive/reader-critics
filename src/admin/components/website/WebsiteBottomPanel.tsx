@@ -31,10 +31,15 @@ class WebsiteBottomPanel extends React.Component <any, any> {
 	}
 
 	render () {
+		const disabled = !this.props.name;
 		return (!this.props.ID ?
 			<div className="row expanded  website-bottom-panel">
 				<div className="small-12">
-					<button type="submit" className="button success large" onClick={this.onSubmit}>Save</button>
+					<button
+						type="submit" className="button success large"
+						onClick={this.onSubmit}
+						disabled={disabled}
+					>Save</button>
 				</div>
 			</div> : null
 		);
@@ -44,6 +49,7 @@ class WebsiteBottomPanel extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		ID: state.website.getIn(['selected', 'ID']) || null,
+		name: state.website.getIn(['selected', 'name']) || '',
 	};
 };
 
