@@ -183,7 +183,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 			this.AddLinkItem();
 		}
 
-		this.props.onSave(this.state);
+		this.props.onSave(this.state.current);
 	}
 
 	// @param {event} e optional
