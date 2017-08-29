@@ -25,6 +25,7 @@ import WebsiteComponent from 'admin/components/website/WebsiteComponent';
 import {connect} from 'react-redux';
 import AdminConstants from 'admin/constants/AdminConstants';
 import EditTemplateModalComponent from 'admin/components/modal/EditTemplateModalComponent';
+import WebsiteBottomPanel from 'admin/components/website/WebsiteBottomPanel';
 
 class WebsiteContainer extends React.Component <any, any> {
 	constructor(props) {
@@ -32,26 +33,37 @@ class WebsiteContainer extends React.Component <any, any> {
 
 		this.onSubmit = this.onSubmit.bind(this);
 		this.handleData = this.handleData.bind(this);
+		this.onCreate = this.onCreate.bind(this);
 	}
-	componentDidMount(){
-		WebsiteActions.getWebsiteList();	//TODO move to separate component WebsitesList
+	componentWillMount(){
 		WebsiteActions.getSelectedWebsite(this.props.match.params.name);
 		UsersActions.getUsers();
 	}
+	componentWillUnmount() {
+		WebsiteActions.setSelectedWebsite(null);
+	}
 
 	handleData(data) {
-		const name = this.props.name;
-		const dataToSend = Object.assign({name}, data);
-		this.onSubmit(dataToSend);
+		const {name, ID} = this.props;
+		if (ID) {
+			const dataToSend = Object.assign({name}, data);
+			this.onSubmit(dataToSend);
+		} else {
+			return WebsiteActions.updateSelectedWebsite(data);
+		}
 	}
 	onSubmit(data) {
 		return WebsiteActions.updateWebsite(data);
+	}
+	onCreate() {
+		return WebsiteActions.createWebsite(this.props.website);
 	}
 	render(){
 		return (
 			<Layout pageTitle="Website">
 				<WebsiteComponent onSubmit={this.handleData}/>
 				<EditTemplateModalComponent windowName={AdminConstants.WEBSITE_TEMPLATE_FEEDBACK_MODAL_NAME} />
+				<WebsiteBottomPanel onSubmit={this.onCreate}/>
 			</Layout>
 	);
 	}
@@ -60,6 +72,8 @@ class WebsiteContainer extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		name: state.website.getIn(['selected', 'name']) || '',
+		ID: state.website.getIn(['selected', 'ID']) || null,
+		website: state.website.getIn(['selected']) || {},
 	};
 };
 

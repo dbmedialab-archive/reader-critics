@@ -31,6 +31,7 @@ class WebsiteParserClass extends React.Component <any, any> {
 		this.onToggleEdit = this.onToggleEdit.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.checkRole = this.checkRole.bind(this);
+		this.isEditing = this.isEditing.bind(this);
 	}
 
 	onToggleEdit () {
@@ -47,6 +48,9 @@ class WebsiteParserClass extends React.Component <any, any> {
 		}
 	}
 
+	isEditing() {
+		return this.state.editMode || !this.props.ID;
+	}
 	render () {
 		const options = this.props.options.map((parser, index) => (
 			<option value={parser} key={index + 1}>{parser}</option>
@@ -55,14 +59,14 @@ class WebsiteParserClass extends React.Component <any, any> {
 			<fieldset className="website-parser">
 				<label htmlFor="parser-class">
 					Parser:
-					{this.checkRole() ? (
+					{this.checkRole() && this.props.ID ? (
 						<a onClick={this.onToggleEdit} className="button default" href="#">
 							{this.state.editMode ? 'Hide' : 'Edit'}
 						</a>) : null
 					}
 				</label>
 				{
-					this.state.editMode ? (
+					this.isEditing() ? (
 						<select
 							id="parser-class" className="small-12 large-4"
 							value={this.props.parserClass}
@@ -90,6 +94,7 @@ const mapStateToProps = (state, ownProps) => {
 		parserClass: state.website.getIn(['selected', 'parserClass']) || '',
 		userRole: state.user.getIn(['role']),
 		options: state.website.getIn(['options', 'parsers']) || [],
+		ID: state.website.getIn(['selected', 'ID']) || null,
 	};
 };
 

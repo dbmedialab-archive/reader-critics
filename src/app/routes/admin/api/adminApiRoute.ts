@@ -63,6 +63,7 @@ adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
 adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
 adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
+adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
 adminApiRoute.put('/websites/:name', isAuthenticatedApi, websitesHandler.update);
 adminApiRoute.get('/*', defaultHandler);

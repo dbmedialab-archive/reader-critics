@@ -23,10 +23,10 @@ import {connect} from 'react-redux';
 export const isHostName =
 	(s: string): boolean => {
 		const pattern = new RegExp(
-			'^([w]{3,3}\.)?[a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\.[a-zA-Z]{2,5})?\.[a-zA-Z]{2,}$',
+			'^([w]{3,3}\\.)?[a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\\.[a-zA-Z]{2,5})?\\.[a-zA-Z]{2,}$',
 			'i');
 		return pattern.test(s);
-	}; //TODO replace it to separate place
+	};
 
 class WebsiteHosts extends React.Component <any, any> {
 	constructor (props) {
@@ -44,17 +44,34 @@ class WebsiteHosts extends React.Component <any, any> {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onEdit = this.onEdit.bind(this);
+		this.isEditing = this.isEditing.bind(this);
+		this.checkExistingHosts = this.checkExistingHosts.bind(this);
 	}
 
+	// Function checks if the new host already exists in hosts array
+	checkExistingHosts(existingHosts, addingHost) {
+		let result = false;
+		existingHosts.forEach((existLink) => {
+			if (existLink.toLowerCase() === addingHost.toLowerCase()) {
+				result = true;
+			}
+		});
+		return result;
+	}
+
+	//Checks the adding link for duplicates
 	checkDuplicateLink () {
 		let result: string = '';
 		const {value: link} = this.state;
 		if (this.state.editMode) {
 			if (link && isHostName(link)) {
-				this.props.hosts.forEach((existLink) => {
-					if (existLink.toLowerCase() === link.toLowerCase()) {
-						result = 'Duplicates are not allowed';
-					}
+				//check for duplicates in current site
+				result = this.checkExistingHosts(this.props.hosts, link) ?
+				'Duplicates are not allowed': result;
+				//check for duplicates in all sites
+				this.props.websites.forEach(wsite => {
+					result = this.checkExistingHosts(wsite.hosts, link) ?
+							'Duplicates with other sites are not allowed': result;
 				});
 			} else {
 				result = 'URL is not valid';
@@ -102,11 +119,15 @@ class WebsiteHosts extends React.Component <any, any> {
 		});
 	}
 
+	isEditing() {
+		return this.state.editMode || !this.props.ID;
+	}
+
 	render () {
 		const hosts = this.props.hosts.map((host, index) => {
-			return (<li key={index + 'host'} className="website-host-list">
+			return (<li key={index + '-host'} className="website-host-list">
 				{host}
-				{this.state.editMode ?
+				{this.isEditing() ?
 					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/> : null}
 			</li>);
 		});
@@ -114,14 +135,21 @@ class WebsiteHosts extends React.Component <any, any> {
 			<fieldset className="hosts">
 				<label htmlFor="hosts-link">
 					Hosts:
+					{this.props.ID ?
 					<a onClick={this.onToggleEdit} className="button default" href="#">
 						{this.state.editMode ? 'Hide' : 'Edit'}
 					</a>
+					: null}
 				</label>
 				<ul>
-					{hosts}
+					{hosts.length ?	hosts:
+						(this.isEditing() ? null:
+							(<li key={'0-host'} className="website-host-list">
+								Hosts not set yet
+							</li>)
+					)}
 				</ul>
-				{this.state.editMode ? (<input
+				{this.isEditing() ? (<input
 						id="hosts-link" type="text" className="small-12 large-4"
 						value={this.state.value}
 						onChange={this.onEdit}
@@ -129,7 +157,7 @@ class WebsiteHosts extends React.Component <any, any> {
 					/>
 				) : null
 				}
-				{this.state.editMode ? <InputError
+				{this.isEditing() ? <InputError
 					errorText={this.checkDuplicateLink()}
 					touchedField={this.state.touched}
 				/> : null
@@ -142,6 +170,8 @@ class WebsiteHosts extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		hosts: state.website.getIn(['selected', 'hosts']) || [],
+		ID: state.website.getIn(['selected', 'ID']) || null,
+		websites: state.website.getIn(['websites']) || [],
 	};
 };
 

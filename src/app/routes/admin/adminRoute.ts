@@ -60,7 +60,7 @@ adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
 adminRoute.get(['/', '/users', '/feedbacks'], isAuthenticated, adminPageHandler);
-adminRoute.get(['/websites/:name'], isAuthenticated, adminPageHandler);
+adminRoute.get(['/websites', '/websites/:name'], isAuthenticated, adminPageHandler);
 
 adminRoute.get('/*', notFoundHandler);
 

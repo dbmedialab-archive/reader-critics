@@ -32,6 +32,7 @@ class WebsiteEditors extends React.Component <any, any> {
 		this.onChange = this.onChange.bind(this);
 		this.checkHost = this.checkHost.bind(this);
 		this.getUsers = this.getUsers.bind(this);
+		this.isEditing = this.isEditing.bind(this);
 	}
 
 	onToggleEdit () {
@@ -53,7 +54,8 @@ class WebsiteEditors extends React.Component <any, any> {
 					newUser = user.without(['ID', 'date']);
 				}
 			});
-			const chiefEditors = this.props.chiefEditors.asMutable();
+			const chiefEditors = (typeof this.props.chiefEditors.asMutable !== 'undefined') ?
+									this.props.chiefEditors.asMutable() : this.props.chiefEditors;
 			chiefEditors.push(newUser);
 			e.target.value = '';
 			return this.props.onSubmit({chiefEditors});
@@ -97,11 +99,15 @@ class WebsiteEditors extends React.Component <any, any> {
 		));
 	}
 
+	isEditing() {
+		return this.state.editMode || !this.props.ID;
+	}
+
 	render () {
 		const chiefs = this.props.chiefEditors.map((chief, index) => {
 			return (<li key={index + 'editor'} className="website-editor-list">
 				{chief.name}
-				{this.state.editMode ?
+				{this.isEditing() ?
 				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/> : null}
 			</li>);
 		});
@@ -111,14 +117,21 @@ class WebsiteEditors extends React.Component <any, any> {
 			<fieldset className="chief-editors">
 				<label htmlFor="chief-editor">
 					Chief Editors:
+					{this.props.ID ?
 					<a onClick={this.onToggleEdit} className="button default" href="#">
 						{this.state.editMode ? 'Hide' : 'Edit'}
 					</a>
+					: null}
 				</label>
 				<ul>
-					{chiefs}
+					{chiefs.length ? chiefs:
+						(this.isEditing() ? null:
+							(<li key={'0-editor'} className="website-editor-list">
+								Chiefs not set yet
+							</li>)
+					)}
 				</ul>
-				{this.state.editMode ? (<select
+				{this.isEditing() ? (<select
 					id="chief-editor" className="chief-editor small-12 large-4"
 					onChange={this.onChange}
 					value=""
@@ -137,6 +150,7 @@ const mapStateToProps = (state, ownProps) => {
 		users: state.users.getIn(['users']) || [],
 		chiefEditors: state.website.getIn(['selected', 'chiefEditors']) || [],
 		hosts: state.website.getIn(['selected', 'hosts']) || [],
+		ID: state.website.getIn(['selected', 'ID']) || null,
 	};
 };
 

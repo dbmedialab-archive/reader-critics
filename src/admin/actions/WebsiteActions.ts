@@ -34,7 +34,8 @@ export function getWebsiteList() {
 	UIActions.showMainPreloader();
 	Api.getWebsiteList()
 		.then((resp)=>{
-			WebsiteActions.setWebsiteList(resp);
+			WebsiteActions.setWebsiteList(resp.websites);
+			WebsiteActions.setWebsiteOptions(resp.options);
 		});
 }
 
@@ -52,7 +53,7 @@ export function setWebsiteOptions(options: any) {
 	);
 }
 
-export function getSelectedWebsite(name) {
+export function getSelectedWebsite(name: string) {
 	UIActions.showMainPreloader();
 	Api.getSelectedWebsite(name)
 		.then((resp) => {
@@ -61,11 +62,34 @@ export function getSelectedWebsite(name) {
 		});
 }
 
-export function updateWebsite(data) {
+export function updateWebsite(data: any) {
 	UIActions.showMainPreloader();
 	Api.updateWebsite(data)
 		.then(resp => {
 			WebsiteActions.setSelectedWebsite(resp);
 			WebsiteActions.getWebsiteList();
 		});
+}
+
+export function createWebsite(data: any) {
+	UIActions.showMainPreloader();
+	const toSend = data.asMutable();
+	if (!('hosts' in toSend)) {
+		toSend.hosts = [];
+	}
+	if (!('chiefEditors' in toSend)) {
+		toSend.chiefEditors = [];
+	}
+	Api.createWebsite(toSend)
+		.then(resp => {
+			WebsiteActions.setSelectedWebsite(resp);
+			WebsiteActions.getWebsiteList();
+		});
+}
+
+// Used for update data while new website creation
+export function updateSelectedWebsite(data: any) {
+	MainStore.dispatch(
+		WebsiteActionsCreator.updateSelectedWebsite(data)
+	);
 }

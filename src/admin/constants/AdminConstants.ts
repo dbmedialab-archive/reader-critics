@@ -45,6 +45,7 @@ const AdminConstants = keykey([
 	'WEBSITE_SELECTED',
 	'WEBSITE_OPTIONS_RECEIVED',
 	'WEBSITE_TEMPLATE_FEEDBACK_MODAL_NAME',
+	'WEBSITE_SELECTED_UPDATED',
 ]);
 
 export default AdminConstants;

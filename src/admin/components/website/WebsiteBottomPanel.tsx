@@ -17,23 +17,38 @@
 //
 
 import * as React from 'react';
-import { Route, Switch } from 'react-router';
+import {connect} from 'react-redux';
 
-import Users from 'admin/components/user/Users';
-import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
-import Login from 'admin/components/login/Login';
-import WebsiteContainer from 'admin/components/website/WebsiteContainer';
-import WebsitesContainer from 'admin/components/website/WebsitesContainer';
+class WebsiteBottomPanel extends React.Component <any, any> {
+	constructor (props) {
+		super(props);
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-		<Route path="/feedbacks" component={Feedbacks}/>
-		<Route exact path="/websites" component={WebsitesContainer}/>
-		<Route path="/websites/:name" component={WebsiteContainer}/>
+		this.onSubmit = this.onSubmit.bind(this);
+	}
 
-	</Switch>;
-export default Routes;
+	onSubmit () {
+		return this.props.onSubmit();
+	}
+
+	render () {
+		return (!this.props.ID ?
+			<div className="row expanded  website-bottom-panel">
+				<div className="small-12">
+					<button type="submit" className="button success large" onClick={this.onSubmit}>Save</button>
+				</div>
+			</div> : null
+		);
+	}
+}
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		ID: state.website.getIn(['selected', 'ID']) || null,
+	};
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteBottomPanel);

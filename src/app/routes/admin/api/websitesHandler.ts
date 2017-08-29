@@ -36,9 +36,13 @@ import * as path from 'path';
  */
 export function list (requ: Request, resp: Response) {
 	const notFound = 'Resourse not found';
-	websiteService.getRange().then((wsites) => {
-		if (wsites.length > 0) {
-			okResponse(resp, wsites);
+	Promise.all([
+		websiteService.getRange(),
+		getParserClasses(),
+	]).then(data => {
+		const [websites, parsers = []] = data;
+		if (websites.length > 0) {
+			okResponse(resp, {websites, options: {parsers}});
 		} else {
 			errorResponse(resp, undefined, notFound, { status: 404 });
 		}
@@ -108,4 +112,16 @@ function getParserClasses() {
 			return resolve(fileNames);
 		});
 	});
+}
+
+/**
+ * Updates the website entity by name
+ */
+export function create (requ: Request, resp: Response) {
+	const {...body} = requ.body;
+
+	websiteService
+		.save(body)
+		.then((wsite) => okResponse(resp, wsite))
+		.catch(error => errorResponse(resp, error));
 }

@@ -50,3 +50,58 @@
 		list-style: none;
 	}
 }
+
+.websites-group-holder {
+	.websitelist-table-heading, .websitelist-table-row {
+		background: #CCCBCB;
+		padding: 0 .9375rem;
+	}
+
+	.websitelist-table-heading {
+		font-weight: bold;
+		font-style: italic;
+		text-transform: uppercase;
+	}
+}
+
+.website-row {
+	background: #fff;
+	padding-bottom: 3px;
+	font-size: .9rem;
+	color: #777;
+
+	&.table-header {
+		font-size: 1rem;
+		color: #111;
+	}
+
+	> div {
+		padding: 10px;
+	}
+
+	.column, .columns {
+		background: #eee;
+	}
+}
+
+.website-bottom-panel {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	z-index: 1;
+	width: 20%;
+	background-color: #f3f3f3;
+	border-radius: 12px 0 0 0;
+	display: flex;
+	justify-content: flex-start;
+	padding: 10px 0;
+	box-shadow: 0 1px 4px 4px rgba(0,0,0,.2);
+
+	>div {
+		margin: .6rem;
+
+		>button {
+			margin: 0;
+		}
+	}
+}

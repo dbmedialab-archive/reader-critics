@@ -17,23 +17,23 @@
 //
 
 import * as React from 'react';
-import { Route, Switch } from 'react-router';
 
-import Users from 'admin/components/user/Users';
-import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
-import Login from 'admin/components/login/Login';
-import WebsiteContainer from 'admin/components/website/WebsiteContainer';
-import WebsitesContainer from 'admin/components/website/WebsitesContainer';
+import Layout from 'admin/components/layout/LayoutComponent';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import WebsitesList from 'admin/components/website/WebsitesList';
 
-const Routes : React.StatelessComponent <any> =	() =>
-	<Switch>
-		<Route exact path="/" component={Users}/>
-		<Route path="/login" component={Login}/>
-		<Route path="/logout" component={Login}/>
-		<Route path="/users" component={Users}/>
-		<Route path="/feedbacks" component={Feedbacks}/>
-		<Route exact path="/websites" component={WebsitesContainer}/>
-		<Route path="/websites/:name" component={WebsiteContainer}/>
-
-	</Switch>;
-export default Routes;
+export default class WebsitesContainer extends React.Component <any, any> {
+	constructor(props) {
+		super(props);
+	}
+	componentDidMount(){
+		WebsiteActions.getWebsiteList();
+	}
+	render(){
+		return (
+			<Layout pageTitle="Website">
+				<WebsitesList />
+			</Layout>
+	);
+	}
+}

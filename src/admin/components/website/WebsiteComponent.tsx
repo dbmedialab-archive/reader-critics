@@ -22,48 +22,31 @@ import WebsiteHosts from 'admin/components/website/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/WebsiteEditors';
 import WebsiteParserClass from 'admin/components/website/WebsiteParserClass';
 import WebsiteLayoutSection from 'admin/components/website/WebsiteLayoutSection';
+import WebsiteName from 'admin/components/website/WebsiteName';
 
 class WebsiteComponent extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 
-		this.state = {
-			isEditingSCSS: false,
-			isEditingFeedbackTemplate: false,
-			input: {
-				scssVariables: {
-					touched: false,
-					value: '',
-				},
-			},
-		};
-
-		this.onSubmit = this.onSubmit.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleSubmit(data) {
 		return this.props.onSubmit(data);
 	}
-	onSubmit (e) {
-		e.preventDefault();
-	}
 
 	render () {
 		return (
 			<div className="website-item">
+				{this.props.ID ?
 				<div className="row expanded time-section">
 					<div className="small-12  time-item">
 						<i className="fa fa-clock-o"/> Since: {new Date(this.props.date).toDateString()}
 					</div>
-				</div>
-				<div className="row expanded name-section">
-					<div className="small-12">
-						<h2>{this.props.name}</h2>
-					</div>
-				</div>
+				</div> : null}
 
-				<form onSubmit={this.onSubmit} className="website-edition-form">
+				<form onSubmit={(e) => e.preventDefault()} className="website-edition-form">
+					<WebsiteName onSubmit={this.handleSubmit}/>
 					<WebsiteHosts onSubmit={this.handleSubmit}/>
 					<WebsiteEditors onSubmit={this.handleSubmit}/>
 					<WebsiteParserClass onSubmit={this.handleSubmit}/>
@@ -76,11 +59,8 @@ class WebsiteComponent extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		name: state.website.getIn(['selected', 'name']) || '',
 		date: state.website.getIn(['selected', 'date', 'created']) || '',
 		ID: state.website.getIn(['selected', 'ID']) || '',
-		scssVariables: state.website.getIn(['selected', 'layout', 'scssVariables']) || '',
-		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage']) || '',
 	};
 };
 

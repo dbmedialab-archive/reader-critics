@@ -62,6 +62,14 @@ const Api = {
 	},
 
 	/**
+	 * Send website data to create a new one
+	 * @type {()=>Promise<any>}
+	 */
+	createWebsite: function(data) {
+		return sendRequest(`/admin/api/websites`, 'POST', data);
+	},
+
+	/**
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */

@@ -45,3 +45,11 @@ export function setWebsiteOptions(payload): IAction {
 		payload,
 	};
 }
+
+// Used for update data while new website creation
+export function updateSelectedWebsite(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_SELECTED_UPDATED,
+		payload,
+	};
+}

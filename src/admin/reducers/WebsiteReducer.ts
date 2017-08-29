@@ -40,9 +40,15 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
+	return state.replace({
+		selected: action.payload,
+	}, {deep: true});
+}
+
+function updateSelected(action, state) {
 	return state.merge({
 		selected: action.payload,
-	});
+	}, {deep: true});
 }
 
 function setOptions(action, state) {
@@ -63,6 +69,8 @@ function WebsiteReducer(
 			return setSelected(action, state);
 		case AdminConstants.WEBSITE_OPTIONS_RECEIVED:
 			return setOptions(action, state);
+		case AdminConstants.WEBSITE_SELECTED_UPDATED:
+			return updateSelected(action, state);
 		default:
 			return state;
 	}
