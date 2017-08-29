@@ -14,10 +14,10 @@
 				text: '(Dagbladet): EU-kommisjonen har i disse dager et nytt forslag på trappene. Forslaget går ut på å regulere hvordan pommes de terres frites skal stekes.',
 				order: {
 					type: 1,
-					item: 3
+					item: 3,
 				},
-				type: 'paragraph'
-			}
+				type: 'paragraph',
+			},
 		],
-	}
+	},
 }

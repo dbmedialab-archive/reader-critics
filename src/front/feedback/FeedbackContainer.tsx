@@ -22,7 +22,9 @@ import 'front/scss/fb.scss';
 import Article from 'base/Article';
 import FeedbackItem from 'base/FeedbackItem';
 
+import FinishButton from 'front/feedback/FinishButton';
 import ArticleElement from 'front/component/ArticleElement';
+import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
 import {
 	fetchArticle,
@@ -36,6 +38,8 @@ import {
 
 export interface FeedbackContainerState {
 	article: Article;
+	feedbackId: string;
+	sent: boolean;
 }
 
 export default class FeedbackContainer
@@ -47,34 +51,21 @@ extends React.Component <any, FeedbackContainerState> {
 		super();
 		this.state = {
 			article: null,
+			feedbackId: null,
+			sent: false,
 		};
 	}
 
 	componentWillMount() {
 		const self = this;
 		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
-			console.log(article);
 			// FIXME ganz mieser Hack:
 			window['app'].article.version = article.version;
-			console.log('set version to:', window['app'].article.version);
 			self.setState({
 				article,
 			});
 		});
 	}
-
-	public render() {
-		// Initial state has no article data, render empty
-		if (this.state.article === null) {
-			return null;
-		}
-
-		// Iterate article elements and render sub components
-		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
-		</section>;
-	}
-
 	private createArticleElement(item, index : number) {
 		const elemKey = `element-${item.order.item}`;
 		return <ArticleElement
@@ -98,7 +89,10 @@ extends React.Component <any, FeedbackContainerState> {
 			return;
 		}
 
-		const user = this.demoUsers[Math.floor(Math.random() * this.demoUsers.length)];
+		const user = {
+			name: null,
+			email: null,
+		};
 
 		sendFeedback({
 			article: {
@@ -111,42 +105,36 @@ extends React.Component <any, FeedbackContainerState> {
 			},
 		})
 		.then((response) => {
-			alert('Feedback successfully sent');
-			console.log(response);
+			this.setState({sent : true, feedbackId : response.ID});
 		});
 	}
 
-	private readonly demoUsers : Object[] = [
-		{
-			name: 'Indiana Horst',
-			email: 'horst@indiana.net',
-		}, {
-			name: 'Schmitz\' Katze',
-		}, {
-			name: 'Ragnhild Esben Hummel',
-		}, {
-			name: 'Finn Hans Nilsen',
-		}, {
-			name: 'Oddmund Thomas Rasmussen',
-		}, {
-			name: 'Ruth Lovise Amundsen',
-		}, {
-			name: 'Kjellfrid Ola Wolff',
-		}, {
-			email: 'prost.mahlzeit@lulu.org',
-		}, {
-			email: 'Christen.Mikael@storstrand.no',
-		}, {
-			email: 'elin@gro.org',
-		}, {
-			email: 'stein.ha@alexandersen.net',
-		}, {
-			email: 'ma_re@skjeggestad.org',
-		}, {
-			email: 'kresten.steensen@koeb.dk',
-		}, {
-			email: 'ejvind@jacobsen.name',
-		},
-	];
+	public render() {
+		if (this.state.sent) {
+			return (
+				<div className="confirmation">
+					<div className="container">
+						<div className="row section frontpage">
+							<div className="content u-full-width">
+								<PostFeedbackContainer
+									feedbackId = {this.state.feedbackId}
+									articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			);
+		}
+		// Initial state has no article data, render empty
+		if (this.state.article === null) {
+			return null;
+		}
 
+		// Iterate article elements and render sub components
+		return <section id="content">
+			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
+			<FinishButton SendForm={() => this.sendFeedback()} />
+		</section>;
+	}
 }
