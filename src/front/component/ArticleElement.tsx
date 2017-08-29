@@ -100,7 +100,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 				</header>
 				{ this.createEditForm() }
 				<footer>
-					{ this.createResetButton() }
+					{this.state.edited?this.createResetButton():null}
 					{ this.createEditButton() }
 				</footer>
 		</article>;
