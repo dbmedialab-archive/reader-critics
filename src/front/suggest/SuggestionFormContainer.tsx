@@ -178,7 +178,6 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				<fieldset className="actions">
 					<button type="submit" disabled={!isDisabled} className="button button-primary">Lagre</button>
 				</fieldset>
-
 			</form>
 		);
 	}

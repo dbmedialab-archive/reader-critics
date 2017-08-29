@@ -28,6 +28,7 @@ import createPersistingService from '../createPersistingService';
 
 import {
 	checkPassword,
+	doDelete,
 	findOrInsert,
 	get,
 	save,
@@ -37,6 +38,7 @@ const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
 		UserModel, {
 			checkPassword,
+			doDelete,
 			findOrInsert,
 			get,
 			save,

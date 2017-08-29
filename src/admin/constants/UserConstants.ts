@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+import * as keykey from 'keykey';
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-import UserRole from './UserRole';
+const UserConstants = keykey([
+	'CREATE_USER',
+	'ADD_USER',
+	'EDIT_USER',
+	'SAVE_USER',
+	'DELETE_USER',
+	'USERS_RECEIVED',
+]);
 
-interface User extends PersistedModel, Person {
-	role : UserRole;
-	password? : String;
-}
-
-export default User;
+export default UserConstants;

@@ -15,14 +15,11 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
-
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-import UserRole from './UserRole';
-
-interface User extends PersistedModel, Person {
-	role : UserRole;
-	password? : String;
+/**
+ * Capitalize first letter in string
+ * @param str
+ * @returns {string}
+ */
+export function capitalizeFirstLetter(str: string): string {
+	return str.charAt(0).toUpperCase() + str.slice(1);
 }
-
-export default User;

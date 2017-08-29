@@ -26,10 +26,10 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
 import {
-	apiLoginHandler,
-	apiTestHandler
+	apiLoginHandler
 } from 'app/routes/admin/api/handlers';
 
+import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
@@ -56,8 +56,11 @@ adminApiRoute.post('/login', apiLoginHandler);
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
-adminApiRoute.get('/users', isAuthenticatedApi, apiTestHandler);
-adminApiRoute.get('/fb', feedbacksHandler.list);
+adminApiRoute.get('/users', isAuthenticatedApi, userHandler.list);
+adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
+adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
+adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
+adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;
