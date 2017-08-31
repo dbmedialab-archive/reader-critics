@@ -34,7 +34,6 @@ import {
 import * as app from 'app/util/applib';
 
 const feedbackDir = path.join('resources', 'feedback', 'create');
-const feedbackUpdateDir = path.join('resources', 'feedback', 'update');
 const feedbackIDs = [];
 
 export default function(this: ISuiteCallbackContext) {
@@ -53,16 +52,6 @@ export default function(this: ISuiteCallbackContext) {
 					feedbackIDs.push(doc.ID);
 				});
 			});
-		});
-	}));
-
-	it('validateAndUpdateEndUser()', () => app.scanDir(feedbackUpdateDir).then((files : string[]) => {
-		return Promise.mapSeries(files, (filename : string, index: number) => {
-			return app.loadJSON(path.join(feedbackUpdateDir, filename))
-				.then((a: any) => {
-					assert.isNotNull(a);
-					return feedbackService.validateAndUpdateEndUser(feedbackIDs[index], a);
-				});
 		});
 	}));
 
