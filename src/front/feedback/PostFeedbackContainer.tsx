@@ -98,15 +98,6 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.sendFeedback = this.sendFeedback.bind(this);
 		this.onUnload = this.onUnload.bind(this);
 	}
-	onUnload(event) {
-		event.preventDefault();
-		if (!this.state.isSend) {
-			this.sendFeedback();
-			const dialogText = 'Thank you for your feedback';
-			(event || window.event).returnValue = dialogText; //Gecko + IE
-			return dialogText;
-		}
-	}
 
 	componentDidMount() {
 		window.addEventListener('beforeunload', this.onUnload, false);
@@ -124,6 +115,18 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent('sendBtn', 100);
 		this.showComponent('backBtn', 400);
 		this.showComponent('finalText', 400);
+	}
+
+	onUnload(event) {
+		console.log(this.state.isSend);
+		if (!this.state.isSend) {
+			event.preventDefault();
+			this.sendFeedback();
+			const dialogText = 'Thank you for your feedback';
+			(event || window.event).returnValue = dialogText; //Gecko + IE
+			return dialogText;
+		}
+		return false;
 	}
 
 	private hideComponent(param, timeout = 0) {
@@ -180,8 +183,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 			},
 		})
 		.then((response) => {
-			this.setState({isSend:true});
-			this.afterSendingAnimation();
+			this.setState({isSend:true}, this.afterSendingAnimation);
 		});
 	}
 
