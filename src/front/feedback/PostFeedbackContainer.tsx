@@ -104,7 +104,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 			this.sendFeedback();
 			const dialogText = 'Thank you for your feedback';
 			(event || window.event).returnValue = dialogText; //Gecko + IE
-  		return dialogText;
+			return dialogText;
 		}
 	}
 
