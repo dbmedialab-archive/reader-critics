@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isString } from 'lodash';
+import { isString, pick, pickBy } from 'lodash';
 import { URL } from 'url';
 
 import ArticleURL from 'base/ArticleURL';
@@ -56,29 +56,24 @@ export function save(website : Website) : Promise <Website> {
 
 export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
-	const {name: newName, hosts, chiefEditors, parserClass, layout} = data;
+	const {layout} = data;
+	// Get only data we expect to update
+	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	// Remove empty
+	updateData = pickBy(updateData);
+
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
 				throw new Error(`No such website ${name}`);
 			}
-			if (newName) {
-				wsite.name = newName;
-			}
-			if (hosts) {
-				wsite.hosts = hosts;
-			}
-			if (chiefEditors) {
-				wsite.chiefEditors = chiefEditors;
-			}
-			if (parserClass) {
-				wsite.parserClass = parserClass;
-			}
+			const resWrite = Object.assign(wsite, updateData);
+
 			if (layout && 'templates' in layout) {
 				if ('feedbackPage' in layout.templates) {
-					wsite.layout.templates.feedbackPage = layout.templates.feedbackPage;
+					resWrite.layout.templates.feedbackPage = layout.templates.feedbackPage;
 				}
 			}
-			return wrapSave(wsite.save());
+			return wrapSave(resWrite.save());
 		});
 }

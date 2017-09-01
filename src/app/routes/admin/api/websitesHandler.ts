@@ -27,8 +27,7 @@ import {
 } from 'app/routes/api/apiResponse';
 
 import {parserService, websiteService} from 'app/services';
-import * as fs from 'fs';
-import * as path from 'path';
+import pagination from 'app/util/pagination';
 
 /**
  * Provides with whole list of existing websites
@@ -36,8 +35,9 @@ import * as path from 'path';
  */
 export function list (requ: Request, resp: Response) {
 	const notFound = 'Resourse not found';
+	const params = pagination(requ);
 	Promise.all([
-		websiteService.getRange(),
+		websiteService.getRange(params.skip, params.limit, params.sort),
 		parserService.getParsersRange(),
 	]).then(data => {
 		const [websites, parsers = []] = data;
@@ -83,7 +83,7 @@ export function show (requ: Request, resp: Response) {
 export function update (requ: Request, resp: Response) {
 	let notFound = 'Resourse not found';
 	const { name } = requ.params;
-	const {...body} = requ.body;
+	const body = requ.body;
 	if (!name) {
 		notFound = 'Website name must be set';
 		return errorResponse(resp, undefined, notFound, { status: 404 });
@@ -98,7 +98,7 @@ export function update (requ: Request, resp: Response) {
  * Updates the website entity by name
  */
 export function create (requ: Request, resp: Response) {
-	const {...body} = requ.body;
+	const body = requ.body;
 
 	websiteService
 		.save(body)
