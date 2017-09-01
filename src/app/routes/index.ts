@@ -26,7 +26,6 @@ import * as passport from 'passport';
 
 import {
 	deserializeUser,
-	jwtStrategy,
 	localStrategy,
 	serializeUser,
 } from 'app/middleware/config/passportConfig';
@@ -62,7 +61,6 @@ export default function(expressApp : Application) {
 	expressApp.use(session(sessionConf));
 
 	// Passport init
-	passport.use(jwtStrategy);
 	passport.use(localStrategy);
 	passport.serializeUser(serializeUser);
 	passport.deserializeUser(deserializeUser);

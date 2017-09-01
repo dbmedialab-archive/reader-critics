@@ -25,10 +25,6 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
-import {
-	apiLoginHandler
-} from 'app/routes/admin/api/handlers';
-
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 
@@ -46,13 +42,6 @@ adminApiRoute.use(bodyParser.json({
 
 adminApiRoute.use(cookieParser());
 
-/**
- * All api request that have to pass without authentication have to be placed here
- */
-adminApiRoute.post('/login', apiLoginHandler);
-
-// Protecting routes with jwt
-// adminApiRoute.use('/*', passport.authenticate('jwt', {session: false}));
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
