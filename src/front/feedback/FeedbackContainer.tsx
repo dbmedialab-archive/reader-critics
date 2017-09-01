@@ -26,10 +26,7 @@ import FinishButton from 'front/feedback/FinishButton';
 import ArticleElement from 'front/component/ArticleElement';
 import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
-import {
-	fetchArticle,
-	sendFeedback,
-} from 'front/apiCommunication';
+import { fetchArticle } from 'front/apiCommunication';
 
 import {
 	getArticleURL,
@@ -38,8 +35,8 @@ import {
 
 export interface FeedbackContainerState {
 	article: Article;
-	feedbackId: string;
-	sent: boolean;
+	articleItems: Array<FeedbackItem>;
+	isFeedbackReady: boolean;
 }
 
 export default class FeedbackContainer
@@ -51,9 +48,11 @@ extends React.Component <any, FeedbackContainerState> {
 		super();
 		this.state = {
 			article: null,
-			feedbackId: null,
-			sent: false,
+			isFeedbackReady: false,
+			articleItems: [],
 		};
+		this.nextFeedbackStep = this.nextFeedbackStep.bind(this);
+		this.createArticleElement = this.createArticleElement.bind(this);
 	}
 
 	componentWillMount() {
@@ -73,13 +72,11 @@ extends React.Component <any, FeedbackContainerState> {
 			ref={(i : any) => { this.articleElements.push(i); }}
 			elemOrder={item.order.item}
 			typeOrder={item.order.type}
-
 			type={item.type}
 			originalText={item.text}
 		/>;
 	}
-
-	public sendFeedback() {
+	private nextFeedbackStep() {
 		const items : FeedbackItem[] = this.articleElements
 			.map((element : ArticleElement) => element.getCurrentData())
 			.filter((item : FeedbackItem) => item !== null);
@@ -88,37 +85,18 @@ extends React.Component <any, FeedbackContainerState> {
 			alert('The feedback is still empty, nothing was sent');
 			return;
 		}
-
-		const user = {
-			name: null,
-			email: null,
-		};
-
-		sendFeedback({
-			article: {
-				url: getArticleURL(),
-				version: getArticleVersion(),
-			},
-			user,
-			feedback: {
-				items,
-			},
-		})
-		.then((response) => {
-			this.setState({sent : true, feedbackId : response.ID});
-		});
+		this.setState({isFeedbackReady : true, articleItems: items});
 	}
-
 	public render() {
-		if (this.state.sent) {
+		if (this.state.isFeedbackReady) {
 			return (
 				<div className="confirmation">
 					<div className="container">
 						<div className="row section frontpage">
 							<div className="content u-full-width">
 								<PostFeedbackContainer
-									feedbackId = {this.state.feedbackId}
 									articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
+									articleItems={this.state.articleItems}
 								/>
 							</div>
 						</div>
@@ -133,8 +111,8 @@ extends React.Component <any, FeedbackContainerState> {
 
 		// Iterate article elements and render sub components
 		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
-			<FinishButton SendForm={() => this.sendFeedback()} />
+			{ this.state.article.items.map(this.createArticleElement) }
+			<FinishButton SendForm={() => this.nextFeedbackStep()} />
 		</section>;
 	}
 }
