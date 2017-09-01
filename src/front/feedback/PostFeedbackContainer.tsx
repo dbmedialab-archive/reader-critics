@@ -114,7 +114,6 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 	}
 
 	onUnload(event) {
-		console.log(this.state.isSend);
 		if (!this.state.isSend) {
 			event.preventDefault();
 			this.sendFeedback();
