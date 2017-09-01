@@ -19,7 +19,6 @@
 
 import * as React from 'react';
 import Transition from 'react-transition-group/Transition';
-import FeedbackItem from 'base/FeedbackItem';
 
 import {
 	getArticleURL,
@@ -27,10 +26,7 @@ import {
 } from 'front/uiGlobals';
 
 import { sendFeedback } from 'front/apiCommunication';
-
 import EndUser from 'base/EndUser';
-
-import ArticleElement from 'front/component/ArticleElement';
 
 export interface FeedbackUserState {
 	isSend: boolean;

@@ -19,7 +19,6 @@
 import 'whatwg-fetch';
 
 import { showError } from 'front/uiHelpers';
-import EndUser from 'base/EndUser';
 
 const rxUnencoded = /:\/\//;
 
@@ -54,12 +53,6 @@ function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <a
 		},
 		body: JSON.stringify(data),
 	});
-}
-
-// PUT data
-
-function putData(uri : string, data : any) : Promise <any> {
-	return sendData('PUT', uri, data);
 }
 
 // POST data
