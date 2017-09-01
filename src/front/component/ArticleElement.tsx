@@ -96,7 +96,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			edited: this.state.edited,
 		});
 		const {item} = this.props.item.order;
-		return <article id={`article-el-${this.props.item.order.item}`} className={css}>
+		return <article id={`article-el-${item}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>
