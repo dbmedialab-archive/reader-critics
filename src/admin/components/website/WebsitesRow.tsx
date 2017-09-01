@@ -18,17 +18,31 @@
 import * as React from 'react';
 import {Link} from 'react-router-dom';
 import { WebsiteProps } from 'admin/types/Website';
+import AdminConstants from 'admin/constants/AdminConstants';
+import * as UIActions from 'admin/actions/UIActions';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
 
-export default class WebsitesRow extends React.Component <WebsiteProps, any> {
+export default class WebsitesRow extends React.Component <any, any> {
 	constructor(props: WebsiteProps) {
 		super(props);
 
 		this.onEdit = this.onEdit.bind(this);
+		this.updateModalWindowData = this.updateModalWindowData.bind(this);
+	}
+
+	updateModalWindowData() {
+		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
+		const {state, ...website} = this.props;
+		const websiteRes = {
+			isOpen: true,
+		};
+		WebsiteActions.setSelectedWebsite(website);
+		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
 
 	public onEdit(e: any) :void {
 		e.preventDefault();
-		return;
+		return this.updateModalWindowData();
 	}
 
 	public render (): JSX.Element {
@@ -38,14 +52,19 @@ export default class WebsitesRow extends React.Component <WebsiteProps, any> {
 		});
 		return (
 			<div className={style}>
-				<div className="column small-3 medium-3">
+				<div className="column small-2 medium-2">
 					<Link to={`/websites/${this.props.name}`}>
 						<p>{this.props.name}</p>
 					</Link>
 				</div>
-				<div className="column small-5 medium-4"><p>{this.props.hosts.join(', ')}</p></div>
+				<div className="column small-4 medium-3"><p>{this.props.hosts.join(', ')}</p></div>
 				<div className="column small-2 medium-3"><p>{chiefEditors.join(', ')}</p></div>
-				<div className="column small-2 medium-2"><p>{this.props.parser}</p></div>
+				<div className="column small-2 medium-2"><p>{this.props.parserClass}</p></div>
+				<div className="column small-2 medium-2">
+					<div className="button-group">
+						<button onClick={this.onEdit} className="button success" type="button">Edit</button>
+					</div>
+				</div>
 			</div>
 		);
 	}

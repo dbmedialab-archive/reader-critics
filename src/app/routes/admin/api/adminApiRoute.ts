@@ -25,10 +25,6 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
-import {
-	apiLoginHandler
-} from 'app/routes/admin/api/handlers';
-
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
@@ -46,14 +42,6 @@ adminApiRoute.use(bodyParser.json({
 }));
 
 adminApiRoute.use(cookieParser());
-
-/**
- * All api request that have to pass without authentication have to be placed here
- */
-adminApiRoute.post('/login', apiLoginHandler);
-
-// Protecting routes with jwt
-// adminApiRoute.use('/*', passport.authenticate('jwt', {session: false}));
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
@@ -65,7 +53,7 @@ adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
 adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
 adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
-adminApiRoute.put('/websites/:name', isAuthenticatedApi, websitesHandler.update);
+adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

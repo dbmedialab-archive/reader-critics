@@ -19,37 +19,30 @@
 import * as React from 'react';
 import {InputError} from 'admin/components/form/InputError';
 import {connect} from 'react-redux';
-
-export const isHostName =
-	(s: string): boolean => {
-		const pattern = new RegExp(
-			'^([w]{3,3}\\.)?[a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\\.[a-zA-Z]{2,5})?\\.[a-zA-Z]{2,}$',
-			'i');
-		return pattern.test(s);
-	};
+import Validation from 'admin/services/Validation';
 
 class WebsiteHosts extends React.Component <any, any> {
+	private validator: Validation;
+
 	constructor (props) {
 		super(props);
-
 		this.state = {
-			editMode: false,
 			value: '',
 			touched: false,
 		};
 
-		this.checkDuplicateLink = this.checkDuplicateLink.bind(this);
-		this.onToggleEdit = this.onToggleEdit.bind(this);
+		this.validator = new Validation();
+
 		this.onDelete = this.onDelete.bind(this);
+		this.checkExistingHosts = this.checkExistingHosts.bind(this);
+		this.checkDuplicateLink = this.checkDuplicateLink.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onEdit = this.onEdit.bind(this);
-		this.isEditing = this.isEditing.bind(this);
-		this.checkExistingHosts = this.checkExistingHosts.bind(this);
 	}
 
 	// Function checks if the new host already exists in hosts array
-	checkExistingHosts(existingHosts, addingHost) {
+	checkExistingHosts (existingHosts, addingHost) {
 		let result = false;
 		existingHosts.forEach((existLink) => {
 			if (existLink.toLowerCase() === addingHost.toLowerCase()) {
@@ -61,47 +54,59 @@ class WebsiteHosts extends React.Component <any, any> {
 
 	//Checks the adding link for duplicates
 	checkDuplicateLink () {
-		let result: string = '';
 		const {value: link} = this.state;
-		if (this.state.editMode) {
-			if (link && isHostName(link)) {
-				//check for duplicates in current site
-				result = this.checkExistingHosts(this.props.hosts, link) ?
-				'Duplicates are not allowed': result;
-				//check for duplicates in all sites
-				this.props.websites.forEach(wsite => {
-					result = this.checkExistingHosts(wsite.hosts, link) ?
-							'Duplicates with other sites are not allowed': result;
-				});
-			} else {
-				result = 'URL is not valid';
-			}
-		}
-		return result;
-	}
+		const {hosts, websites, ID} = this.props;
 
-	onToggleEdit () {
-		return this.setState({
-			editMode: !this.state.editMode,
-			value: '',
-			touched: false,
-		});
+		let allHosts = websites.asMutable();
+		allHosts = allHosts
+			// We need all sites except current
+			.filter(website => {
+				return website.ID !== ID;
+			})
+
+			// need only list of hosts of all websites
+			.reduce((res, website) => {
+				return res.concat(website.hosts);
+			}, [])
+
+			// We CAN have hosts with 'www'. But we have to check
+			// only for duplicate domains. 'www' have to not be there
+			// for this check
+			.map(host => !host.indexOf('www.') ? host.slice(4) : host);
+
+		// Link we also check without 'www'
+		allHosts.push(!link.indexOf('www.') ? link.slice(4) : link);
+
+		const isHost = this.validator.validate('host', link, {required: true});
+
+		if (isHost.isError) {
+			return isHost.message;
+		} else {
+			const isUniqueHere = this.validator.validate('uniqueness', hosts);
+			const isUniqueGlobally = this.validator.validate('uniqueness', allHosts);
+			if (isUniqueHere.isError) {
+				return isUniqueHere.message;
+			}
+			if (isUniqueGlobally.isError) {
+				return isUniqueGlobally.message;
+			}
+			return false;
+		}
 	}
 
 	onDelete (index) {
 		if (index >= 0) {
 			const hosts = this.props.hosts.asMutable();
 			hosts.splice(index, 1);
-			return this.props.onSubmit({hosts});
+			return this.props.onChange({hosts});
 		}
 	}
 
 	onSubmit () {
 		const {touched, value} = this.state;
 		if (touched && value && !this.checkDuplicateLink()) {
-			this.props.onSubmit({
-				hosts: this.props.hosts.concat(value),
-			});
+			const hosts = this.props.hosts.concat(value);
+			this.props.onChange({hosts});
 			return this.setState({value: '', touched: false});
 		}
 	}
@@ -119,59 +124,41 @@ class WebsiteHosts extends React.Component <any, any> {
 		});
 	}
 
-	isEditing() {
-		return this.state.editMode || !this.props.ID;
-	}
-
 	render () {
 		const hosts = this.props.hosts.map((host, index) => {
-			return (<li key={index + '-host'} className="website-host-list">
+			return (<li key={index + '-host'} className="website-hosts-list-item">
 				{host}
-				{this.isEditing() ?
-					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/> : null}
+				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
 			</li>);
 		});
 		return (
-			<fieldset className="hosts">
-				<label htmlFor="hosts-link">
-					Hosts:
-					{this.props.ID ?
-					<a onClick={this.onToggleEdit} className="button default" href="#">
-						{this.state.editMode ? 'Hide' : 'Edit'}
-					</a>
-					: null}
-				</label>
-				<ul>
-					{hosts.length ?	hosts:
-						(this.isEditing() ? null:
-							(<li key={'0-host'} className="website-host-list">
-								Hosts not set yet
-							</li>)
-					)}
-				</ul>
-				{this.isEditing() ? (<input
-						id="hosts-link" type="text" className="small-12 large-4"
+			<div className="medium-12 columns">
+				<fieldset className="text">
+					<label htmlFor="hosts-link">Hosts</label>
+					<input
+						id="hosts-link" type="text" className="small-12 medium-12"
 						value={this.state.value}
 						onChange={this.onEdit}
 						onKeyPress={this.onKeyPress} onBlur={this.onSubmit}
 					/>
-				) : null
-				}
-				{this.isEditing() ? <InputError
-					errorText={this.checkDuplicateLink()}
-					touchedField={this.state.touched}
-				/> : null
-				}
-			</fieldset>
+					<InputError
+						errorText={this.checkDuplicateLink()}
+						touchedField={this.state.touched}
+					/>
+					<ul className="website-hosts-list">
+						{hosts}
+					</ul>
+				</fieldset>
+			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		hosts: state.website.getIn(['selected', 'hosts']) || [],
-		ID: state.website.getIn(['selected', 'ID']) || null,
-		websites: state.website.getIn(['websites']) || [],
+		hosts: state.website.getIn(['selected', 'hosts']),
+		websites: state.website.getIn(['websites'], []),
+		ID: state.website.getIn(['selected', 'ID'], null),
 	};
 };
 

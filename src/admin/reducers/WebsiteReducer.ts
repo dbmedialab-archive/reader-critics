@@ -27,9 +27,22 @@ export interface IWebsiteState {
 	options: any | null;
 }
 
+const initialSelectedWebsite: Website = Immutable({
+	name: '',
+	parserClass: '',
+	chiefEditors: [],
+	hosts: [],
+	layout: {
+		scssVariables: null,
+		templates: {
+			feedbackPage: '',
+		},
+	},
+});
+
 const initialState: IWebsiteState = Immutable({
 	websites: [],
-	selected: null,
+	selected: initialSelectedWebsite,
 	options: {},
 });
 
@@ -40,8 +53,8 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	return state.replace({
-		selected: action.payload,
+	return state.merge({
+		selected: action.payload ? action.payload : initialSelectedWebsite,
 	}, {deep: true});
 }
 

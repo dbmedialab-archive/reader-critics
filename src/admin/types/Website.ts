@@ -5,7 +5,15 @@ export interface WebsiteProps {
 	ID: string | number;
 	name: string;
 	chiefEditors: User[],
-	parser: string;
+	parserClass: string;
 	hosts: string[];
+	layout: WebsiteLayoutProps;
 	state?: any;
+}
+
+export interface WebsiteLayoutProps {
+	templates? : {
+		feedbackPage? : string;
+	},
+	scssVariables? : Object;
 }

@@ -21,6 +21,8 @@ import * as React from 'react';
 import Layout from 'admin/components/layout/LayoutComponent';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
 import WebsitesList from 'admin/components/website/WebsitesList';
+import WebsiteModalComponent from 'admin/components/modal/WebsiteModalComponent';
+import AdminConstants from 'admin/constants/AdminConstants';
 
 export default class WebsitesContainer extends React.Component <any, any> {
 	constructor(props) {
@@ -33,6 +35,7 @@ export default class WebsitesContainer extends React.Component <any, any> {
 		return (
 			<Layout pageTitle="Website">
 				<WebsitesList />
+				<WebsiteModalComponent windowName={AdminConstants.WEBSITE_MODAL_NAME}/>
 			</Layout>
 	);
 	}

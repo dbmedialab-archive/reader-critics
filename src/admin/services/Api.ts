@@ -57,9 +57,9 @@ const Api = {
 	 * @type {()=>Promise<any>}
 	 */
 	updateWebsite: function(data) {
-		const {name} = data;
-		delete data.name;
-		return sendRequest(`/admin/api/websites/${name}`, 'PUT', data);
+		const {currentName} = data;
+		delete data.currentName;
+		return sendRequest(`/admin/api/websites/${currentName}`, 'PATCH', data);
 	},
 
 	/**

@@ -26,7 +26,7 @@ import {
 	okResponse,
 } from 'app/routes/api/apiResponse';
 
-import { websiteService } from 'app/services';
+import {parserService, websiteService} from 'app/services';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -38,7 +38,7 @@ export function list (requ: Request, resp: Response) {
 	const notFound = 'Resourse not found';
 	Promise.all([
 		websiteService.getRange(),
-		getParserClasses(),
+		parserService.getParsersRange(),
 	]).then(data => {
 		const [websites, parsers = []] = data;
 		if (websites.length > 0) {
@@ -64,7 +64,7 @@ export function show (requ: Request, resp: Response) {
 	}
 	Promise.all([
 		websiteService.get(name),
-		getParserClasses(),
+		parserService.getParsersRange(),
 	]).then(data => {
 		const [website, parsers = []] = data;
 		if (website) {
@@ -92,26 +92,6 @@ export function update (requ: Request, resp: Response) {
 		.validateAndUpdate(name, body)
 		.then((wsite) => okResponse(resp, wsite))
 		.catch(error => errorResponse(resp, error));
-}
-
-function getParserClasses() {
-	const dirPath = path.resolve(__dirname, '../../../parser/impl/');
-	return new Promise((resolve, reject) => {
-		return fs.readdir(dirPath, (err, files) => {
-			const fileNames = [];
-			if (err) {
-				return reject(err);
-			}
-			//We need only parser name got from file names. No extension and duplicates allowed
-			files.forEach((file) => {
-				const fileName = file.slice(0, file.indexOf('.'));
-				if (!~fileNames.indexOf(fileName)) {
-					fileNames.push(fileName);
-				}
-			});
-			return resolve(fileNames);
-		});
-	});
 }
 
 /**

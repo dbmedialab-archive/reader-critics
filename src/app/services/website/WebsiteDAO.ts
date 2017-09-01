@@ -56,11 +56,14 @@ export function save(website : Website) : Promise <Website> {
 
 export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
-	const {hosts, chiefEditors, parserClass, layout} = data;
+	const {name: newName, hosts, chiefEditors, parserClass, layout} = data;
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
 				throw new Error(`No such website ${name}`);
+			}
+			if (newName) {
+				wsite.name = newName;
 			}
 			if (hosts) {
 				wsite.hosts = hosts;

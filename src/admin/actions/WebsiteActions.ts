@@ -53,15 +53,6 @@ export function setWebsiteOptions(options: any) {
 	);
 }
 
-export function getSelectedWebsite(name: string) {
-	UIActions.showMainPreloader();
-	Api.getSelectedWebsite(name)
-		.then((resp) => {
-			WebsiteActions.setSelectedWebsite(resp.website);
-			WebsiteActions.setWebsiteOptions(resp.options);
-		});
-}
-
 export function updateWebsite(data: any) {
 	UIActions.showMainPreloader();
 	Api.updateWebsite(data)
@@ -88,7 +79,7 @@ export function createWebsite(data: any) {
 }
 
 // Used for update data while new website creation
-export function updateSelectedWebsite(data: any) {
+export function updateNewWebsiteTemplate(data: any) {
 	MainStore.dispatch(
 		WebsiteActionsCreator.updateSelectedWebsite(data)
 	);

@@ -19,37 +19,44 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 
-class WebsiteBottomPanel extends React.Component <any, any> {
+class WebsiteParserClass extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
-
-		this.onSubmit = this.onSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
 	}
 
-	onSubmit () {
-		return this.props.onSubmit();
+	onChange(e) {
+		return this.props.onChange({parserClass: e.target.value});
 	}
 
 	render () {
-		const disabled = !this.props.name;
-		return (!this.props.ID ?
-			<div className="row expanded  website-bottom-panel">
-				<div className="small-12">
-					<button
-						type="submit" className="button success large"
-						onClick={this.onSubmit}
-						disabled={disabled}
-					>Save</button>
-				</div>
-			</div> : null
+		const options = this.props.options.map((parser, index) => (
+			<option value={parser} key={index + 1}>{parser}</option>
+		));
+		return (
+			<div className="medium-6 columns">
+				<fieldset className="text">
+					<label htmlFor="parser">Parser</label>
+					<select
+						id="parser-class" className="small-12 large-12"
+						value={this.props.parserClass}
+						onChange={this.onChange}
+						name="parserClass"
+					>
+						{!this.props.parserClass ?
+							<option value="" disabled /> : null}
+						{options}
+					</select>
+				</fieldset>
+			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		ID: state.website.getIn(['selected', 'ID']) || null,
-		name: state.website.getIn(['selected', 'name']) || '',
+		options: state.website.getIn(['options', 'parsers'], []),
+		parserClass: state.website.getIn(['selected', 'parserClass']),
 	};
 };
 
@@ -57,4 +64,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebsiteBottomPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteParserClass);

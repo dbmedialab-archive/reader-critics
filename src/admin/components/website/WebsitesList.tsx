@@ -20,12 +20,16 @@ import { connect } from 'react-redux';
 import WebsitesRow from 'admin/components/website/WebsitesRow';
 import { Transition, TransitionGroup } from 'react-transition-group';
 import {Link} from 'react-router-dom';
+import AdminConstants from 'admin/constants/AdminConstants';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import * as UIActions from 'admin/actions/UIActions';
 
 class WebsitesList extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
 
 		this.updateErrorState = this.updateErrorState.bind(this);
+		this.updateModalWindowData = this.updateModalWindowData.bind(this);
 	}
 
 	updateErrorState(message: string = '', touched: boolean = false): void {
@@ -37,18 +41,23 @@ class WebsitesList extends React.Component <any, any> {
 		});
 	}
 
+	updateModalWindowData() {
+		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
+		const websiteRes = {
+			isOpen: true,
+		};
+		WebsiteActions.setSelectedWebsite(null);
+		UIActions.modalWindowsChangeState(windowName, websiteRes);
+	}
+
 	public render() : JSX.Element {
 
 		const content = this.props.websites.map((website) =>
 			<Transition key={website.ID} timeout={300}>
 				{(state) => (
 					<WebsitesRow
+						{...website}
 						key={website.ID}
-						ID={website.ID}
-						name={website.name}
-						chiefEditors={website.chiefEditors}
-						hosts={website.hosts}
-						parser={website.parserClass}
 						state={state}
 					/>
 				)}
@@ -58,7 +67,9 @@ class WebsitesList extends React.Component <any, any> {
 			<main>
 				<section className="row expanded">
 					<div className="column small-12">
-						<Link className="button" to="/websites/0">Create Website</Link>
+						<button className="button" onClick={this.updateModalWindowData}>
+							Create website
+						</button>
 					</div>
 				</section>
 				<section className="websiteTable">
@@ -66,10 +77,10 @@ class WebsitesList extends React.Component <any, any> {
 						<div className="column small-12 websites-group-holder">
 							<div className="websitelist-table-heading">
 								<div className="row expanded website-row table-header">
-									<div className="column small-3 medium-3">
+									<div className="column small-2 medium-2">
 										<b>Name</b>
 									</div>
-									<div className="column small-5 medium-4">
+									<div className="column small-4 medium-3">
 										<b>Hosts</b>
 									</div>
 									<div className="column small-2 medium-3">
@@ -77,6 +88,9 @@ class WebsitesList extends React.Component <any, any> {
 									</div>
 									<div className="column small-2 medium-2">
 										<b>Parser</b>
+									</div>
+									<div className="column small-2 medium-2">
+										<b>Edit</b>
 									</div>
 								</div>
 								<TransitionGroup>
