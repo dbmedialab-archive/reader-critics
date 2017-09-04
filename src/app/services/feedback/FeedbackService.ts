@@ -135,6 +135,15 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 		id : ObjectID,
 		enduser : EndUser
 	) : Promise <Feedback>;
+
+	/**
+	 * Gets range of distincted articles with feedbacks for them inside
+	 */
+	getArticleRange(
+		skip : number,
+		limit : number,
+		sort : Object
+	) : any
 }
 
 export default FeedbackService;

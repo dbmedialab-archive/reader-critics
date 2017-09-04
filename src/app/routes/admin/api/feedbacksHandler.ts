@@ -36,7 +36,15 @@ import pagination from 'app/util/pagination';
  */
 export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
-	feedbackService.getRange(params.skip, params.limit, params.sort)
-	.then(feedbacks => bulkResponse(resp, feedbacks))
-	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+	const filter = requ.query.filter || null;
+	switch (filter) {
+		case 'article':
+			return feedbackService.getArticleRange(params.skip, params.limit, params.sort)
+						.then(feedbacks => bulkResponse(resp, feedbacks))
+						.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+		default:
+			return feedbackService.getRange(params.skip, params.limit, params.sort)
+						.then(feedbacks => bulkResponse(resp, feedbacks))
+						.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+	}
 }
