@@ -37,15 +37,30 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
+	let downloadURL = url;
 
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
 
-	const fetchPromise = articleService.download(url)
+	// temporary solution
+	if (website.parserClass == 'LabradorParser') {
+		downloadURL = getLarbradorUrl(url);
+	}
+	const fetchPromise = articleService.download(downloadURL)
 		.then((data : string) => {
 			rawArticle = data;
 		});
 
 	return Promise.all([parserPromise, fetchPromise])
 	.then(() => parserFactory.newInstance(rawArticle, url).parse());
+}
+
+function getLarbradorUrl(url: ArticleURL) {
+	const placeholder = '{id}';
+	const labUrl = `https://labrador.dagbladet.no/api/v1/article/${placeholder}.json?content=full`;
+	let parts = url.href.split('/');
+	//@TODO -  this hack should be deleted as well, with proper downloadURL solution
+	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+	
+	return new ArticleURL(labUrl.replace(placeholder, parts[parts.length - 1]));
 }
