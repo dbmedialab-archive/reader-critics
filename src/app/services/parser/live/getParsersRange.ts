@@ -21,7 +21,7 @@ import * as fs from 'fs';
 
 // get Parsers range exist in app
 
-export default function getParserClasses(): Promise <string[]> {
+export default function (): Promise <string[]> {
 	const dirPath = path.resolve(__dirname, '../../../parser/impl');
 	const nameReg = new RegExp(/(.+?)(?:(\.d\.ts$|\.d\.js$|\.js$|\.js\.map$|$))/, 'i');
 	return new Promise((resolve, reject) => {

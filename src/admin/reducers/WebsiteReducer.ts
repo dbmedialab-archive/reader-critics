@@ -28,6 +28,7 @@ export interface IWebsiteState {
 }
 
 const initialSelectedWebsite: Website = Immutable({
+	ID: null,
 	name: '',
 	parserClass: '',
 	chiefEditors: [],
@@ -70,6 +71,21 @@ function setOptions(action, state) {
 	});
 }
 
+function updateWebsitesList(action, state) {
+	const existingID = state.websites.findIndex(website => {
+		return website.ID === action.payload.ID;
+	});
+	if (~existingID) {
+		return state.merge({
+			websites: state.websites.setIn([existingID], action.payload),
+		});
+	} else {
+		return state.merge({
+			websites: state.websites.concat(action.payload),
+		});
+	}
+}
+
 function WebsiteReducer(
 	state: IWebsiteState = initialState,
 	action: WebsiteActionsCreator.TAction
@@ -84,6 +100,10 @@ function WebsiteReducer(
 			return setOptions(action, state);
 		case AdminConstants.WEBSITE_SELECTED_UPDATED:
 			return updateSelected(action, state);
+		case AdminConstants.WEBSITE_CREATED:
+			return updateWebsitesList(action, state);
+		case AdminConstants.WEBSITE_UPDATED:
+			return updateWebsitesList(action, state);
 		default:
 			return state;
 	}

@@ -53,3 +53,17 @@ export function updateSelectedWebsite(payload): IAction {
 		payload,
 	};
 }
+
+export function addCreatedWebsite(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_CREATED,
+		payload,
+	};
+}
+
+export function updateWebsiteList(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_UPDATED,
+		payload,
+	};
+}

@@ -97,7 +97,7 @@ function checkUniqueEmail (userMail: string): Promise<boolean> {
 }
 
 /**
- * Schema Validation
+ * Schema Validator
  */
 function validateSchema (data: any) {
 	// TODO see RC-110 for schema validation

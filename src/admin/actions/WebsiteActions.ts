@@ -58,23 +58,16 @@ export function updateWebsite(data: any) {
 	Api.updateWebsite(data)
 		.then(resp => {
 			WebsiteActions.setSelectedWebsite(resp);
-			WebsiteActions.getWebsiteList();
+			WebsiteActions.updateWebsiteList(resp);
 		});
 }
 
 export function createWebsite(data: any) {
 	UIActions.showMainPreloader();
-	const toSend = data.asMutable();
-	if (!('hosts' in toSend)) {
-		toSend.hosts = [];
-	}
-	if (!('chiefEditors' in toSend)) {
-		toSend.chiefEditors = [];
-	}
-	Api.createWebsite(toSend)
+	Api.createWebsite(data)
 		.then(resp => {
-			WebsiteActions.setSelectedWebsite(resp);
-			WebsiteActions.getWebsiteList();
+			WebsiteActions.addCreatedWebsite(resp);
+			WebsiteActions.setSelectedWebsite(null);
 		});
 }
 
@@ -82,5 +75,18 @@ export function createWebsite(data: any) {
 export function updateNewWebsiteTemplate(data: any) {
 	MainStore.dispatch(
 		WebsiteActionsCreator.updateSelectedWebsite(data)
+	);
+}
+
+// used for update data list when new website created
+export function addCreatedWebsite(website: Website) {
+	MainStore.dispatch(
+		WebsiteActionsCreator.addCreatedWebsite(website)
+	);
+}
+
+export function updateWebsiteList(website: Website) {
+	MainStore.dispatch(
+		WebsiteActionsCreator.updateWebsiteList(website)
 	);
 }

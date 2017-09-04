@@ -21,13 +21,11 @@ import {
 } from 'lodash';
 
 import {
-	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
 
 import Website from 'base/Website';
-import {userService, websiteService} from 'app/services';
-import User from 'base/User';
+import {websiteService} from 'app/services';
 
 // Validate and store to database
 
@@ -43,7 +41,7 @@ export default function(name: string, data : any) : Promise <Website> {
 	.then(() => websiteService.update(name, data));
 }
 
-// Schema Validation
+// Schema Validator
 
 function validateSchema(data : any) {
 	// TODO see RC-110 for schema validation

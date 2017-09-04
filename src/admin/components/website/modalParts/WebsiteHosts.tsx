@@ -19,10 +19,10 @@
 import * as React from 'react';
 import {InputError} from 'admin/components/form/InputError';
 import {connect} from 'react-redux';
-import Validation from 'admin/services/Validation';
+import Validator from 'admin/services/Validation';
 
 class WebsiteHosts extends React.Component <any, any> {
-	private validator: Validation;
+	private validator: Validator;
 
 	constructor (props) {
 		super(props);
@@ -31,7 +31,7 @@ class WebsiteHosts extends React.Component <any, any> {
 			touched: false,
 		};
 
-		this.validator = new Validation();
+		this.validator = new Validator();
 
 		this.onDelete = this.onDelete.bind(this);
 		this.checkExistingHosts = this.checkExistingHosts.bind(this);

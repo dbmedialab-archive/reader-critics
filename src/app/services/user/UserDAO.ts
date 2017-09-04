@@ -25,8 +25,6 @@ import {
 	UserModel
 } from 'app/db/models';
 
-import config from 'app/config';
-
 import {
 	wrapFindOne,
 	wrapSave,

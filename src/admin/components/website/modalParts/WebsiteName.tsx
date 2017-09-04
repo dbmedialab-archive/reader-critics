@@ -19,10 +19,10 @@
 import * as React from 'react';
 import {InputError} from 'admin/components/form/InputError';
 import {connect} from 'react-redux';
-import Validation from 'admin/services/Validation';
+import Validator from 'admin/services/Validation';
 
 class WebsiteName extends React.Component <any, any> {
-	private validator : Validation;
+	private validator : Validator;
 
 	constructor (props) {
 		super(props);
@@ -30,7 +30,7 @@ class WebsiteName extends React.Component <any, any> {
 			value: this.props.name,
 			touched: false,
 		};
-		this.validator = new Validation();
+		this.validator = new Validator();
 		this.onChange = this.onChange.bind(this);
 		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);

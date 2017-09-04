@@ -5,7 +5,7 @@
 		text-transform: uppercase;
 		color: #777;
 		font-size: 1.2rem;
-		border-bottom: 1px solid #dddddd;
+		border-bottom: 1px solid #ddd;
 		margin-bottom: 1rem;
 
 		.button {
@@ -36,8 +36,8 @@
 	}
 
 	.fa {
-		&:before {
-			color: #FF0000;
+		&::before {
+			color: #F00;
 			margin-left: .8rem;
 			cursor: pointer;
 		}
@@ -76,7 +76,7 @@
 	font-weight: 600;
 
 	.fa {
-		&:before {
+		&::before {
 			color: #fff;
 			margin-left: .9rem;
 			cursor: pointer;
@@ -110,15 +110,15 @@
 		max-height: 0;
 		overflow-y: hidden;
 		margin-top: 10px;
-		-webkit-transition: max-height 0.3s ease-in-out;
-		-moz-transition: max-height 0.3s ease-in-out;
-		-o-transition: max-height 0.3s ease-in-out;
-		transition: max-height 0.3s ease-in-out;
+		-webkit-transition: max-height .3s ease-in-out;
+		-moz-transition: max-height .3s ease-in-out;
+		-o-transition: max-height .3s ease-in-out;
+		transition: max-height .3s ease-in-out;
 
 
 		.additional-content-section {
 			border: 1px solid #cacaca;
-			padding: 0.9375rem 0.9375rem;
+			padding: .9375rem;
 		}
 	}
 
@@ -180,11 +180,11 @@
 	z-index: 1;
 	width: 20%;
 	background-color: #f3f3f3;
-	border-radius: 12px 0 0 0;
+	border-radius: 12px 0 0;
 	display: flex;
 	justify-content: flex-start;
 	padding: 10px 0;
-	box-shadow: 0 1px 4px 4px rgba(0,0,0,.2);
+	box-shadow: 0 1px 4px 4px rgba(0, 0, 0, .2);
 
 	>div {
 		margin: .6rem;
