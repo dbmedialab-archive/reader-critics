@@ -56,11 +56,11 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 }
 
 function getLarbradorUrl(url: ArticleURL) {
-	const placeholder = '{id}';
-	const labUrl = `https://labrador.dagbladet.no/api/v1/article/${placeholder}.json?content=full`;
 	let parts = url.href.split('/');
+	const articleID = parts[parts.length - 1];
+	const labUrl = `https://labrador.dagbladet.no/api/v1/article/${articleID}.json?content=full`;
 	//@TODO -  this hack should be deleted as well, with proper downloadURL solution
 	process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 	
-	return new ArticleURL(labUrl.replace(placeholder, parts[parts.length - 1]));
+	return new ArticleURL(labUrl);
 }
