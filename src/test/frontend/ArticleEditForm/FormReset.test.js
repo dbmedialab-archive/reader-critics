@@ -31,9 +31,11 @@ const timeToWait = 5000;
 
 // CSS selectors for the various probed elements
 
-const elArticle = 'article#article-el-2';
+const elArticle = 'article#article-el-4';
 
-const elContent = `${elArticle} p`;
+const elContent = `${elArticle} header div p span`;
+const elContentDel = `${elArticle} header div p del`;
+const elContentIns = `${elArticle} header div p ins`;
 const elFeedbackForm = `${elArticle} form`;
 const elTextArea = `${elFeedbackForm} fieldset.text textarea`;
 const elCommentArea = `${elFeedbackForm} fieldset.comment textarea`;
@@ -41,17 +43,18 @@ const elCommentArea = `${elFeedbackForm} fieldset.comment textarea`;
 const elEditBtn = `${elArticle} footer .button.edit`;
 const elResetBtn = `${elArticle} footer .button.reset`;
 
-const elFormSaveBtn = `${elFeedbackForm} .button.save`;
-const elFormCancelBtn = `${elFeedbackForm} .button.cancel`;
+const elFormSaveBtn = `${elFeedbackForm} fieldset a.button.save`;
+const elFormCancelBtn = `${elFeedbackForm} fieldset a.button.cancel`;
 
 // Some text snippets for display and input fields
 
-const expectedText = 'I dag landet Donald Trump i Israel.';
-const changedText = 'Bavaria I dag lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
+const expectedText = 'Det er alt som trengs.';
+const changedText = 'Det er alt lorem ipsum dolor.';
 const userComment = 'Here be some comment';
-const diffyText = '(Dagbladet): Bavaria I dag landet Donald Trump i Israel. Kort tid etter ble han '
-	+ 'historisk da han, som den første sittende amerikanske presidenten, besøkte Vestmuren, bedre '
-	+ 'kjent som klagemuren, i Jerusalem. lorem ipsum dolor Kreiz Birnbaum fix Hollastaudn';
+
+const changedDiffyText = 'Det er alt';
+const changedDiffyTextDeleted = 'som trengs.';
+const changedDiffyTextInserted = 'lorem ipsum dolor.';
 
 describe('ArticleEditForm Reset Tests', () => {
 	let thePage;
@@ -77,7 +80,7 @@ describe('ArticleEditForm Reset Tests', () => {
 	// up the code.
 
 	before((browser, done) => {
-		thePage = openPage(browser, '/fb/http://test/xyz/1')
+		thePage = openPage(browser, '/fb?articleURL=https://www.dagbladet.no&version=1')
 
 		// Wait for elements to render
 		.waitForElementVisible('body', timeToWait)
@@ -171,6 +174,7 @@ describe('ArticleEditForm Reset Tests', () => {
 
 		// Focus comment field and type some text into it
 		thePage.click(elCommentArea)
+		.clearValue(elCommentArea)
 		.setValue(elCommentArea, userComment)
 
 		// Change the content of the text field
@@ -200,7 +204,9 @@ describe('ArticleEditForm Reset Tests', () => {
 		// Check for the diff. The weird word order comes from the diff package,
 		// which currently performs a word-wise diff. This might be changed into
 		// a sentence-diff, or at least something that respects consecutive words.
-		.assert.containsText(elContent, diffyText);
+		.assert.containsText(elContent, changedDiffyText)
+		.assert.containsText(elContentDel, changedDiffyTextDeleted)
+		.assert.containsText(elContentIns, changedDiffyTextInserted);
 	});
 
 	// Check if the data in form is the same we entered before on next open
