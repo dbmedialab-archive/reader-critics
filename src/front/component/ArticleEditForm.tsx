@@ -136,10 +136,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	// Helper class to update the components state when inputing values in text areas.
 	private UpdateState(field : string, ref : any) {
 		const {current, previous} = this.state;
-		console.log(current.text, previous.text);
 		current[field] = ref.value;
-		console.log(current.text, previous.text);
-
 		const newState = {
 			current,
 			previous,
@@ -205,8 +202,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 		const current : EditFormPayload = this.state.current;
 		current.links.push(this.linkInput.value);
-		console.log(current.links);
-		console.log(this.state.previous.links);
 		this.setState({
 			current,
 		}, () => {
