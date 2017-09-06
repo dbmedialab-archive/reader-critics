@@ -39,6 +39,11 @@ const AdminConstants = keykey([
 	//Comments
 	'FEEDBACK_LIST_RECEIVED',
 	'USER_MODAL_NAME',
+
+	//Articles
+	'ARTICLE_LIST_RECEIVED',
+	'ARTICLE_RECEIVED',
+	'ARTICLE_FEEDBACKS_RECEIVED',
 ]);
 
 export default AdminConstants;

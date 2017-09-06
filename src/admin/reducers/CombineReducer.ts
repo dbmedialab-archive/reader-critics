@@ -19,12 +19,16 @@
 import { combineReducers } from 'redux';
 import {routerReducer} from 'react-router-redux';
 
+import ArticlesReducer from 'admin/reducers/ArticlesReducer';
+import ArticleReducer from 'admin/reducers/ArticleReducer';
 import UIReducer from 'admin/reducers/UIReducer';
 import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
 import UsersReducer from 'admin/reducers/UsersReducer';
 
 export const CombineReducer:any = combineReducers({
+	articles: ArticlesReducer,
+	article: ArticleReducer,
 	UI: UIReducer,
 	feedback: FeedbackReducer,
 	user: UserReducer,

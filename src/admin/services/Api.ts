@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {sendRequest} from 'admin/apiAdminCommunication';
+import {sendRequest, setPagination} from 'admin/apiAdminCommunication';
 const Api = {
 	/**
  * Get all feedbacks
@@ -50,5 +50,26 @@ const Api = {
 
 	deleteUser:(userId: any): Promise<any> =>
 		sendRequest(`/admin/api/users/${userId}`, 'DELETE'),
+
+	/**
+	 * Get all articles with feedbacks count
+	 * @type {()=>Promise<any>}
+	 */
+	getArticleList: () =>
+		sendRequest(`/admin/api/articles/`, 'GET'),
+
+	/**
+	 * Get article by ID
+	 */
+	getArticle: (id) =>
+		sendRequest(`/admin/api/articles/${id}`, 'GET'),
+
+	/**
+	 * Get feedbacks belong to article by ID
+	 */
+	getArticleFeedbacks: (id, page?, limit?, sort?, sortOrder?) => {
+		const pagination = setPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles/${id}/feedbacks${pagination}`, 'GET');
+	},
 };
 export default Api;

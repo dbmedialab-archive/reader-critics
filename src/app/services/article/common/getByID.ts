@@ -14,40 +14,24 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import {ObjectID} from 'bson';
+import Article from 'base/Article';
+import {ArticleModel} from 'app/db/models';
+import emptyCheck from 'app/util/emptyCheck';
+import {wrapFindOne} from 'app/db/common';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
+export default function (
+	ID : ObjectID,
+	populated : boolean = true
+) : Promise <Article> {
+	emptyCheck(ID);
 
-import createPersistingService from '../createPersistingService';
+	let result = ArticleModel.findById(ID);
 
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
+	if (populated) {
+		result = result.populate('authors').populate('website');
+	}
 
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
-	);
-
-module.exports = service;
+	return wrapFindOne(result);
+}

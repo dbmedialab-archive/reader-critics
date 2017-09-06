@@ -16,38 +16,28 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import ArticleItem from 'base/ArticleItem';
+import * as Immutable from 'seamless-immutable';
+import * as  ArticlesActionsCreator  from 'admin/actions/ArticlesActionsCreator';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
+const initialState = Immutable.from<ArticleItem>([]);
 
-import createPersistingService from '../createPersistingService';
+function setArticles(action, state) {
+	return Immutable.from<ArticleItem>(action.payload);
+}
 
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
+function ArticlesReducer(
+	state: Array<ArticleItem> = initialState,
+	action: ArticlesActionsCreator.TAction
+	): Array<ArticleItem> {
 
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
+	switch (action.type) {
+		case AdminConstants.ARTICLE_LIST_RECEIVED:
+			return setArticles(action, state);
+		default:
+			return state;
+	}
+}
 
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
-	);
-
-module.exports = service;
+export default ArticlesReducer;

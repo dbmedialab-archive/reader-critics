@@ -21,6 +21,8 @@ import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+import {ArticleDocument} from 'app/db/models';
+import {ObjectID} from 'bson';
 
 /**
  * The Article Service persists Article objects to the database and keeps
@@ -90,6 +92,17 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
 	upsert(website : Website, article : Article) : Promise <Article>
+
+	getRangeWithFBCount(skip: number,
+			limit: number,
+			sort: Object): Promise <ArticleDocument[]>
+
+	/**
+	 * Get an Article by it's ID
+	 *
+	 * @throws EmptyError if ID not set
+	 */
+	getByID(ID : ObjectID) : Promise <Article>
 }
 
 export default ArticleService;

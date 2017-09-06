@@ -36,7 +36,6 @@ import {
 	save,
 	updateEndUser,
 } from './FeedbackDAO';
-import getArticleRange from './common/getArticleRange';
 
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
@@ -48,7 +47,6 @@ const service : FeedbackService
 			validateAndSave,
 			updateEndUser,
 			validateAndUpdateEndUser,
-			getArticleRange,
 		}
 	);
 

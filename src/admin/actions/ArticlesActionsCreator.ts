@@ -16,38 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-import createPersistingService from '../createPersistingService';
+export type TAction = IAction;
 
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
-
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
-	);
-
-module.exports = service;
+export function setArticleList(payload): IAction {
+	return {
+		type: AdminConstants.ARTICLE_LIST_RECEIVED,
+		payload,
+	};
+}

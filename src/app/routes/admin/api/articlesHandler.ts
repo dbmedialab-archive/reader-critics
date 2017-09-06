@@ -23,19 +23,38 @@ import {
 
 import {
 	bulkResponse,
-	errorResponse,
+	errorResponse, okResponse,
 } from 'app/routes/api/apiResponse';
 
-import { feedbackService } from 'app/services';
+import {articleService, feedbackService} from 'app/services';
 
 import pagination from 'app/util/pagination';
 
 /**
- * Provides with whole list of existing feedbacks
+ * Provides with whole list of existing articles
  */
 export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
-	return feedbackService.getRange(params.skip, params.limit, params.sort)
-				.then(feedbacks => bulkResponse(resp, feedbacks))
+	return articleService.getRangeWithFBCount(params.skip, params.limit, params.sort)
+				.then(articles => bulkResponse(resp, articles))
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+}
+
+/**
+ * Get article by id
+ */
+export function show (requ: Request, resp: Response) {
+	const ID = requ.params.id;
+	return articleService.getByID(ID)
+				.then(article => okResponse(resp, article))
+				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+}
+
+export function getArticleFeedbacks(requ: Request, resp: Response) {
+	const ID = requ.params.id;
+	const params = pagination(requ);
+	return articleService.getByID(ID)
+		.then(article => feedbackService.getByArticle(article, params.skip, params.limit, params.sort))
+		.then(feedbacks => bulkResponse(resp, feedbacks))
+		.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }

@@ -16,38 +16,21 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import Article from 'base/Article';
+import MainStore from 'admin/stores/MainStore';
+import Api from 'admin/services/Api';
+import * as ArticlesActions from './ArticlesActions';
+import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
-
-import createPersistingService from '../createPersistingService';
-
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
-
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-			validateAndUpdateEndUser,
-		}
+export function setArticleList(articles: Array<Article>) {
+	MainStore.dispatch(
+		ArticlesActionsCreator.setArticleList(articles)
 	);
+}
 
-module.exports = service;
+export function getArticleList() {
+	Api.getArticleList()
+	.then((resp)=>{
+		ArticlesActions.setArticleList(resp);
+	});
+}
