@@ -54,16 +54,17 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	constructor(props : ArticleEditFormProp) {
 		super(props);
-
-		const initial : EditFormPayload = {
-			text: props.originalText,
-			comment: '',
-			links: [],
-		};
-
 		this.state = {
-			current: initial,
-			previous: initial,
+			current : {
+				text: props.originalText,
+				comment: '',
+				links: [],
+			},
+			previous : {
+				text: props.originalText,
+				comment: '',
+				links: [],
+			},
 		};
 	}
 
@@ -72,18 +73,21 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	}
 
 	public reset(originalText : string) {
-		const clean : EditFormPayload = {
-			text: originalText,
-			comment: '',
-			links: [],
-		};
-
 		this.textArea.value = originalText;
 		this.commentArea.value = '';
+		this.linkInput.value = '';
 
 		this.setState({
-			current: clean,
-			previous: clean,
+			current: {
+				text: originalText,
+				comment: '',
+				links: [],
+			},
+			previous: {
+				text: originalText,
+				comment: '',
+				links: [],
+			},
 		});
 	}
 
@@ -131,8 +135,15 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	// Helper class to update the components state when inputing values in text areas.
 	private UpdateState(field : string, ref : any) {
-		const newState = this.state;
-		newState.current[field] = ref.value;
+		const {current, previous} = this.state;
+		console.log(current.text, previous.text);
+		current[field] = ref.value;
+		console.log(current.text, previous.text);
+
+		const newState = {
+			current,
+			previous,
+		};
 		this.setState(newState);
 	}
 
@@ -142,33 +153,25 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		return `edit-field-${this.props.id}-${type}`;
 	}
 
-	// @param {number} index
-	// Removes the supplied index from the states link-list.
-	// Component renders news state and gives each item a new index.
-	private RemoveLinkItem(index : number) {
-		const link = this.state.current.links;
-		const current : EditFormPayload = this.state.current;
-
-		// TODO do this with Array.splice() instead
-		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
-
-		this.setState({
-			current,
-		});
-	}
-
 	// @param {event} e
 	// Resets the components state to that of its initial props.
 	// Clears inputfeilds and calls the onCancle funciton for the
 	// parent component so it can collaps the edit feild.
 	private onCancel(e : any) {
 		e.stopPropagation();
+		const {current, previous} = this.state;
 
-		this.textArea.value = this.state.previous.text;
-		this.commentArea.value = this.state.previous.comment;
+		current.text = previous.text;
+		current.comment = previous.comment;
+		//for correct current and previous links working
+		current.links = [...previous.links];
+
+		this.textArea.value = previous.text;
+		this.commentArea.value = previous.comment;
+		this.linkInput.value = '';
 
 		this.setState({
-			current: this.state.previous,
+			current: current,
 		}, () => this.props.onCancel(this.state));
 	}
 
@@ -182,7 +185,10 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		if (this.linkInput.value) {
 			this.AddLinkItem();
 		}
-
+		const {current, previous} = this.state;
+		previous.text = current.text;
+		previous.comment = current.comment;
+		previous.links = current.links;
 		this.props.onSave(this.state.current);
 	}
 
@@ -199,11 +205,27 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 		const current : EditFormPayload = this.state.current;
 		current.links.push(this.linkInput.value);
-
+		console.log(current.links);
+		console.log(this.state.previous.links);
 		this.setState({
 			current,
 		}, () => {
 			this.linkInput.value = '';
+		});
+	}
+
+	// @param {number} index
+	// Removes the supplied index from the states link-list.
+	// Component renders news state and gives each item a new index.
+	private RemoveLinkItem(index : number) {
+		const link = this.state.current.links;
+		const current : EditFormPayload = this.state.current;
+
+		// TODO do this with Array.splice() instead
+		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
+
+		this.setState({
+			current,
 		});
 	}
 
