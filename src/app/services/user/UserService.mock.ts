@@ -33,6 +33,7 @@ import {
 	get,
 	save,
 } from './UserDAO';
+import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
 
 const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
@@ -42,6 +43,7 @@ const service : UserService
 			findOrInsert,
 			get,
 			save,
+			setPasswordHash,
 		}
 	);
 

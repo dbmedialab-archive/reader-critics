@@ -16,49 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as bcrypt from 'bcrypt';
+
+import config from 'app/config';
 import User from 'base/User';
-import UserService from './UserService';
+import emptyCheck from 'app/util/emptyCheck';
 
-import {
-	UserDocument,
-	UserModel
-} from 'app/db/models';
-
-import createPersistingService from '../createPersistingService';
-
-import {
-	validateAndSave,
-	validateAndUpdate
-} from './common/crud';
-
-import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
-
-import {
-	checkPassword,
-	doDelete,
-	findOrInsert,
-	get,
-	getByEmail,
-	getByID,
-	save,
-	update,
-} from './UserDAO';
-
-const service : UserService
-	= createPersistingService <UserDocument, UserService,	User> (
-		UserModel, {
-			checkPassword,
-			doDelete,
-			findOrInsert,
-			get,
-			getByEmail,
-			getByID,
-			save,
-			update,
-			validateAndSave,
-			validateAndUpdate,
-			setPasswordHash,
-		}
-	);
-
-module.exports = service;
+export function setPasswordHash (user: User, password: string) : Promise<User> {
+	emptyCheck(user, password);
+	return bcrypt
+		.hash(password, config.get('auth.bcrypt.rounds'))
+		.then(hash => <User> Object.assign(user,{ password: hash }));
+}
