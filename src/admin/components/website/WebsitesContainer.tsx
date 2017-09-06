@@ -16,41 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as jwt from 'jsonwebtoken';
+import * as React from 'react';
 
-import {
-	Request,
-	Response,
-} from 'express';
+import Layout from 'admin/components/layout/LayoutComponent';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import WebsitesList from 'admin/components/website/WebsitesList';
+import WebsiteModalComponent from 'admin/components/modal/WebsiteModalComponent';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import {
-	errorResponse,
-	okResponse,
-} from '../../api/apiResponse';
-
-import { EmptyError } from 'app/util/errors';
-import { User } from 'base';
-
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
-export function apiTestHandler(requ : Request, resp : Response) : void {
-	try {
-		log('Requesting users at', '');
-
-		okResponse(resp);
+export default class WebsitesContainer extends React.Component <any, any> {
+	constructor(props) {
+		super(props);
 	}
-	catch (error) {
-		const options = {
-			status: 400,  // "Bad Request" in any case
-		};
-
-		if (error instanceof EmptyError) {
-			errorResponse(resp, error, 'Mandatory URL parameter is missing or empty', options);
-		}
-		else {
-			errorResponse(resp, error, 'URL parameter invalid', options);
-		}
+	componentDidMount(){
+		WebsiteActions.getWebsiteList();
+	}
+	render(){
+		return (
+			<Layout pageTitle="Website">
+				<WebsitesList />
+				<WebsiteModalComponent windowName={AdminConstants.WEBSITE_MODAL_NAME}/>
+			</Layout>
+	);
 	}
 }

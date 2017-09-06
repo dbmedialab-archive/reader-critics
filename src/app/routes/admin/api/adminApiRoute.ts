@@ -27,6 +27,7 @@ import * as bodyParser from 'body-parser';
 
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
+import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
 
@@ -41,7 +42,6 @@ adminApiRoute.use(bodyParser.json({
 }));
 
 adminApiRoute.use(cookieParser());
-
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
@@ -50,6 +50,10 @@ adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
 adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
 adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
+adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
+adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
+adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
+adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

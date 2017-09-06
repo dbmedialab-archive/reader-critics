@@ -76,7 +76,7 @@ function getArticle(articleData : any) : Promise <Article> {
 	));
 }
 
-// Schema Validation
+// Schema Validator
 
 function validateSchema(data : any) {
 	// TODO see RC-110 for schema validation

@@ -22,6 +22,7 @@ import {routerReducer} from 'react-router-redux';
 import UIReducer from 'admin/reducers/UIReducer';
 import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
+import WebsiteReducer from 'admin/reducers/WebsiteReducer';
 import UsersReducer from 'admin/reducers/UsersReducer';
 
 export const CombineReducer:any = combineReducers({
@@ -30,4 +31,5 @@ export const CombineReducer:any = combineReducers({
 	user: UserReducer,
 	users: UsersReducer,
 	router: routerReducer,
+	website: WebsiteReducer,
 });
