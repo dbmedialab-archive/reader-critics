@@ -70,7 +70,7 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	// up the code.
 
 	before((browser, done) => {
-		thePage = openPage(browser, '/fb/http://test/xyz/1')
+		thePage = openPage(browser, '/fb?articleURL=https://www.dagbladet.no&version=1')
 
 		// Wait for elements to render
 		.waitForElementVisible('body', timeToWait)
