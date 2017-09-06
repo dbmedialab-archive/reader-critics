@@ -44,6 +44,10 @@ function setFeedbacks(action, state) {
 	});
 }
 
+function clear(action, payload) {
+	return initialState;
+}
+
 function ArticleReducer(
 	state: IArticleState = initialState,
 	action: ArticleActionsCreator.TAction
@@ -54,6 +58,8 @@ function ArticleReducer(
 			return setArticle(action, state);
 		case AdminConstants.ARTICLE_FEEDBACKS_RECEIVED:
 			return setFeedbacks(action, state);
+		case AdminConstants.ARTICLE_CLEAR:
+			return clear(action, state);
 		default:
 			return state;
 	}

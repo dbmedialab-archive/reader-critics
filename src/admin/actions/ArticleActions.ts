@@ -44,3 +44,9 @@ export function getArticleFeedbacks(id, page?, limit?, sort?, sortOrder?) {
 	Api.getArticleFeedbacks(id, page, limit, sort, sortOrder)
 		.then(resp => ArticleActions.setArticleFeedbacks(resp));
 }
+
+export function clear() {
+	MainStore.dispatch(
+		ArticleActionsCreator.clear()
+	);
+}

@@ -44,6 +44,7 @@ const AdminConstants = keykey([
 	'ARTICLE_LIST_RECEIVED',
 	'ARTICLE_RECEIVED',
 	'ARTICLE_FEEDBACKS_RECEIVED',
+	'ARTICLE_CLEAR',
 ]);
 
 export default AdminConstants;

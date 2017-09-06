@@ -28,17 +28,26 @@ import FeedbackItem from 'base/FeedbackItem';
 class ArticleContainer extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
+
+		this.getFeedbacks = this.getFeedbacks.bind(this);
 	}
 
 	componentWillMount () {
-		console.log(this.props);
 		const {id} = this.props.match.params;
 		ArticleActions.getArticle(id);
 		ArticleActions.getArticleFeedbacks(id);
 	}
 
-	render () {
-		const feedbacks = this.props.feedbacks.map(feedback => {
+	componentWillUnmount () {
+		ArticleActions.clear();
+	}
+
+	getFeedbacks () {
+		const {article, feedbacks} = this.props;
+		if (!('items' in article) || !feedbacks.length) {
+			return null;
+		}
+		return this.props.feedbacks.map(feedback => {
 			return feedback.items.map((feedbackItem: FeedbackItem)=>{
 				const feedbackObj = {
 					date: feedback.date,
@@ -46,9 +55,18 @@ class ArticleContainer extends React.Component <any, any> {
 				};
 				return <ArticleFeedbackItemComponent
 					feedback={feedbackObj}
-					key={feedback.article.ID+'_'+feedbackItem.order.item}/>;
+					key={feedback.article.ID+'_'+feedbackItem.order.item}
+					articleItem={this.props.article.items.find(
+						item =>
+							(item.order.type === feedbackObj.order.type) &&
+							(item.order.item === feedbackObj.order.item))}
+				/>;
 			});
 		});
+	}
+
+	render () {
+		const feedbacks = this.getFeedbacks();
 		return (
 			<Layout pageTitle="Article">
 				<div className="article-view">

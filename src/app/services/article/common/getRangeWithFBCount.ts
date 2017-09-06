@@ -17,7 +17,6 @@
 
 import {defaultLimit, defaultSkip, defaultSort} from 'app/services/BasicPersistingService';
 import {ArticleDocument, ArticleModel} from 'app/db/models';
-import {Document} from 'mongoose';
 
 // getRange with count of feedbacks using internal populate
 export default function(skip: number = defaultSkip,
@@ -55,7 +54,7 @@ export default function(skip: number = defaultSkip,
 
 // Internal populate
 
-function populateArticle<D extends Document> (
+function populateArticle (
 	query: ArticleDocument[]
 	): Promise <ArticleDocument[]> {
 

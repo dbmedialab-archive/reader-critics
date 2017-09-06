@@ -17,10 +17,14 @@
 //
 
 import * as React from 'react';
+import textDiffToHtml from 'front/component/textDiffToHTML';
 
-class ArticleFeedbackComponent extends React.Component <any, any> {
+class ArticleFeedbackItemComponent extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
+
+		this.renderFeedbackLinks = this.renderFeedbackLinks.bind(this);
+		this.textDiff = this.textDiff.bind(this);
 	}
 
 	renderFeedbackLinks(feedbackLinks){
@@ -32,6 +36,17 @@ class ArticleFeedbackComponent extends React.Component <any, any> {
 				</a>);
 
 		});
+	}
+
+	textDiff() {
+		const {feedback, articleItem} = this.props;
+		if (feedback && articleItem) {
+			const {text: originalText = ''} = articleItem;
+			const {text: newText = ''} = feedback;
+			return originalText === newText ? originalText : textDiffToHtml(originalText, newText);
+		} else {
+			return '';
+		}
 	}
 
 	render(){
@@ -50,7 +65,7 @@ class ArticleFeedbackComponent extends React.Component <any, any> {
 				</div>
 				<div className="row expanded feedback-section">
 					<div className="small-12 feedback-text">
-						{feedback.text}
+						{this.textDiff()}
 					</div>
 				</div>
 				{feedback.comment?
@@ -79,4 +94,4 @@ class ArticleFeedbackComponent extends React.Component <any, any> {
 	);
 	}
 }
-export default ArticleFeedbackComponent;
+export default ArticleFeedbackItemComponent;

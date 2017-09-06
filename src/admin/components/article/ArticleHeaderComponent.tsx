@@ -51,13 +51,13 @@ class ArticleHeaderComponent extends React.Component <any, any> {
 						</div>
 					</div>
 					<div className="row expanded article-url-section">
-						<div className={('website' in article && article.website) ? 'small-10' : 'small-12'}>
+						<div className={('website' in article && article.website) ? 'small-8' : 'small-12'}>
 							<a className="article-url-link" href={article.url} target="_blank">
 								{article.url}
 							</a>
 						</div>
 						{('website' in article && article.website) ?
-							<div className="small-2 article-website-name">
+							<div className="small-4 article-website-name">
 								<span className="title">Website: </span>
 								{article.website.name}
 							</div>

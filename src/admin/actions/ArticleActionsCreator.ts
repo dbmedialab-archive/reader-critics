@@ -38,3 +38,10 @@ export function setArticleFeedbacks(payload): IAction {
 		payload,
 	};
 }
+
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.ARTICLE_CLEAR,
+		payload,
+	};
+}

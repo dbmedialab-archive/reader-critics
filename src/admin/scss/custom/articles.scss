@@ -146,6 +146,14 @@
 
 				.feedback-text {
 					font-size: 1.6rem;
+
+					ins {
+						color: #228b22;
+					}
+
+					del {
+						color: #f00;
+					}
 				}
 			}
 
