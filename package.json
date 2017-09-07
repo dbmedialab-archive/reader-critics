@@ -107,7 +107,7 @@
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
-		"@types/bluebird": "3.5.8",
+		"@types/bluebird": "3.5.9",
 		"@types/bluebird-global": "3.5.3",
 		"@types/body-parser": "1.16.5",
 		"@types/callsite": "1.0.30",
