@@ -127,7 +127,7 @@
 		"@types/node": "8.0.24",
 		"@types/passport": "0.3.4",
 		"@types/passport-jwt": "2.0.22",
-		"@types/passport-local": "1.0.30",
+		"@types/passport-local": "1.0.31",
 		"@types/react": "15.6.0",
 		"@types/react-dom": "15.5.4",
 		"@types/react-redux": "5.0.4",
