@@ -103,24 +103,27 @@ function json(response) {
 }
 
 export function setPagination(page?, limit?, sort?, sortOrder?) {
-	let pagination = '';
+	let result: string = '';
+	const pagination: string[] = [];
+
 	if (sort || page || limit) {
-		pagination = '?';
 		if (page) {
-			pagination += `page=${page}&`;
+			pagination.push(`page=${page}`);
 		}
 		if (limit) {
-			pagination += `limit=${limit}&`;
+			pagination.push(`limit=${limit}`);
 		}
 		if (sort) {
-			pagination += `sort=${sort}&`;
-		}
-		if (sortOrder) {
-			pagination += `sortOrder=${sortOrder}&`;
-		}
-		if (pagination[pagination.length -1] === '&') {
-			pagination = pagination.slice(0, pagination.length -1);
+			pagination.push(`sort=${sort}`);
+
+			if (sortOrder) {
+				pagination.push(`sortOrder=${sortOrder}`);
+			}
 		}
 	}
-	return pagination;
+
+	if (pagination.length) {
+		result = '?' + pagination.join('&');
+	}
+	return result;
 }
