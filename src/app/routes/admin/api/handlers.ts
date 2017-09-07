@@ -14,19 +14,3 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
-
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
-
-import BasicPersistingService from '../BasicPersistingService';
-
-interface WebsiteService extends BasicPersistingService <Website> {
-	get(name : string) : Promise <Website>;
-	identify(url : ArticleURL|string) : Promise <Website>;
-	save(website : Website) : Promise <void>;
-	update(name: string, data: any) : Promise <Website>;
-	validateAndUpdate(name: string, data: any) : Promise <Website>;
-}
-
-export default WebsiteService;

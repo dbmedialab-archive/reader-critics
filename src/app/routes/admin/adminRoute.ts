@@ -65,6 +65,7 @@ adminRoute.get([
 	'/feedbacks',
 	'/articles',
 	'/articles/:id',
+	'/websites',
 ], isAuthenticated, adminPageHandler);
 
 adminRoute.get('/*', notFoundHandler);

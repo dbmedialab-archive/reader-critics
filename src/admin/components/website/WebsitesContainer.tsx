@@ -16,17 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import * as React from 'react';
 
-import BasicPersistingService from '../BasicPersistingService';
+import Layout from 'admin/components/layout/LayoutComponent';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import WebsitesList from 'admin/components/website/WebsitesList';
+import WebsiteModalComponent from 'admin/components/modal/WebsiteModalComponent';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-interface WebsiteService extends BasicPersistingService <Website> {
-	get(name : string) : Promise <Website>;
-	identify(url : ArticleURL|string) : Promise <Website>;
-	save(website : Website) : Promise <void>;
-	update(name: string, data: any) : Promise <Website>;
-	validateAndUpdate(name: string, data: any) : Promise <Website>;
+export default class WebsitesContainer extends React.Component <any, any> {
+	constructor(props) {
+		super(props);
+	}
+	componentDidMount(){
+		WebsiteActions.getWebsiteList();
+	}
+	render(){
+		return (
+			<Layout pageTitle="Website">
+				<WebsitesList />
+				<WebsiteModalComponent windowName={AdminConstants.WEBSITE_MODAL_NAME}/>
+			</Layout>
+	);
+	}
 }
-
-export default WebsiteService;

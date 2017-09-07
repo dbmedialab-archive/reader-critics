@@ -24,6 +24,7 @@ import ArticleReducer from 'admin/reducers/ArticleReducer';
 import UIReducer from 'admin/reducers/UIReducer';
 import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
+import WebsiteReducer from 'admin/reducers/WebsiteReducer';
 import UsersReducer from 'admin/reducers/UsersReducer';
 import PaginationReducer from 'admin/reducers/PaginationReducer';
 
@@ -36,4 +37,5 @@ export const CombineReducer:any = combineReducers({
 	users: UsersReducer,
 	pagination: PaginationReducer,
 	router: routerReducer,
+	website: WebsiteReducer,
 });

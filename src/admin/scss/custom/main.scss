@@ -47,6 +47,7 @@ body {
 					right: 10px;
 					bottom: 10px;
 					top: 85px;
+					overflow-y: auto;
 
 					.helpme {
 						@include transition(opacity, .3s, ease-out);

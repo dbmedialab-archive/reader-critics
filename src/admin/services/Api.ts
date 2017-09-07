@@ -36,6 +36,40 @@ const Api = {
 	},
 
 	/**
+	 * Get all websites
+	 * @type {()=>Promise<any>}
+	 */
+	getWebsiteList: function() {
+		return sendRequest(`/admin/api/websites/`, 'GET');
+	},
+
+	/**
+	 * Get website data by name
+	 * @type {()=>Promise<any>}
+	 */
+	getSelectedWebsite: function(name) {
+		return sendRequest(`/admin/api/websites/${name}`, 'GET');
+	},
+
+	/**
+	 * Send website data to update
+	 * @type {()=>Promise<any>}
+	 */
+	updateWebsite: function(data) {
+		const {currentName} = data;
+		delete data.currentName;
+		return sendRequest(`/admin/api/websites/${currentName}`, 'PATCH', data);
+	},
+
+	/**
+	 * Send website data to create a new one
+	 * @type {()=>Promise<any>}
+	 */
+	createWebsite: function(data) {
+		return sendRequest(`/admin/api/websites`, 'POST', data);
+	},
+
+	/**
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */

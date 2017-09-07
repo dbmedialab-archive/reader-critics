@@ -19,6 +19,7 @@ interface UserService extends BasicPersistingService <User> {
 	 */
 	validateAndSave(data : any) : Promise <User>;
 	validateAndUpdate(id: String, data : Object) : Promise <User>;
+	setPasswordHash(user : User, password: string) : Promise <User>;
 }
 
 export default UserService;

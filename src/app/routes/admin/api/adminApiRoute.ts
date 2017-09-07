@@ -28,6 +28,7 @@ import * as bodyParser from 'body-parser';
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 import * as articlesHandler from 'app/routes/admin/api/articlesHandler';
+import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
 
@@ -42,7 +43,6 @@ adminApiRoute.use(bodyParser.json({
 }));
 
 adminApiRoute.use(cookieParser());
-
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
@@ -55,6 +55,10 @@ adminApiRoute.get('/articles', isAuthenticatedApi, articlesHandler.list);
 adminApiRoute.get('/articles/:id', isAuthenticatedApi, articlesHandler.show);
 adminApiRoute.get(
 	'/articles/:id/feedbacks', isAuthenticatedApi, articlesHandler.getArticleFeedbacks);
+adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
+adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
+adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
+adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

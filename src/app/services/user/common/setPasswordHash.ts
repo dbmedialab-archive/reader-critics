@@ -16,17 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import * as bcrypt from 'bcrypt';
 
-import BasicPersistingService from '../BasicPersistingService';
+import config from 'app/config';
+import User from 'base/User';
+import emptyCheck from 'app/util/emptyCheck';
 
-interface WebsiteService extends BasicPersistingService <Website> {
-	get(name : string) : Promise <Website>;
-	identify(url : ArticleURL|string) : Promise <Website>;
-	save(website : Website) : Promise <void>;
-	update(name: string, data: any) : Promise <Website>;
-	validateAndUpdate(name: string, data: any) : Promise <Website>;
+export function setPasswordHash (user: User, password: string) : Promise<User> {
+	emptyCheck(user, password);
+	return bcrypt
+		.hash(password, config.get('auth.bcrypt.rounds'))
+		.then(hash => <User> Object.assign(user,{ password: hash }));
 }
-
-export default WebsiteService;

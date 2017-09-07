@@ -22,9 +22,17 @@ export interface ICustomValidations {
 }
 
 const customValidations = {
-	isEmail: (schema: String, v:any) => {
+	isEmail: function(schema: String, v:any) {
 		if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i.test(v)) {
 			this.report(`${schema} must me an email`);
+		}
+	},
+	isHost: function(schema: String, v:any) {
+		const pattern = new RegExp(
+			'^([w]{3,3}\\.)?[a-zA-Z0-9-]{1,61}[a-zA-Z0-9](\\.[a-zA-Z]{2,5})?\\.[a-zA-Z]{2,}$',
+			'i');
+		if (!pattern.test(v)) {
+			this.report(`${schema} must be a valid host`);
 		}
 	},
 };

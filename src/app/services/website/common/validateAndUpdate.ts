@@ -17,26 +17,19 @@
 //
 
 import {
-	isArray,
 	isObject,
-	isString,
 } from 'lodash';
-
-import EndUser from 'base/EndUser';
-import Feedback from 'base/Feedback';
-
-import {
-	enduserService,
-	feedbackService,
-} from 'app/services';
 
 import {
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate data and update feedback in database with user contacts
+import Website from 'base/Website';
+import {websiteService} from 'app/services';
 
-export default function(id, data : any) : Promise <Feedback> {
+// Validate and store to database
+
+export default function(name: string, data : any) : Promise <Website> {
 	try {
 		validateSchema(data);
 	}
@@ -44,29 +37,8 @@ export default function(id, data : any) : Promise <Feedback> {
 		return Promise.reject(error);
 	}
 
-	let enduser : EndUser;
-
-	return Promise.all([
-		getEndUser(data.user).then((u : EndUser) => enduser = u),
-	])
-	.then(() => feedbackService.updateEndUser(id, enduser));
-}
-
-// Fetch user object from database or create a new one
-
-function getEndUser(userData : any) : Promise <EndUser> {
-	if (userData) {
-		const name = isString(userData.name) ? userData.name : null;
-		const email = isString(userData.email) ? userData.email : null;
-
-		return enduserService.get(name, email)
-			.then((u: EndUser) => u !== null ? u : enduserService.save({
-				name,
-				email,
-			}));
-	} else {
-		return Promise.resolve(null);
-	}
+	return Promise.all([])
+	.then(() => websiteService.update(name, data));
 }
 
 // Schema Validator
@@ -76,8 +48,10 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-
-	if (!('user' in data) && (!isObject(data.user) || isArray(data.user))) {
-		throw new SchemaValidationError('Feedback data is missing or incorrect: "user"');
+	if ('hosts' in data && !data.hosts && !Array.isArray(data.hosts)) {
+		throw new SchemaValidationError('Invalid website data: hosts must be an array');
+	}
+	if ('chiefEditors' in data && !data.chiefEditors && !Array.isArray(data.chiefEditors)) {
+		throw new SchemaValidationError('Invalid website data: chiefEditors must be an array');
 	}
 }

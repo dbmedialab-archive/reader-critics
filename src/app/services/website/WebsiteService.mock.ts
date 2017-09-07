@@ -30,7 +30,9 @@ import {
 	get,
 	identify,
 	save,
+	update,
 } from './WebsiteDAO';
+import validateAndUpdate from './common/validateAndUpdate';
 
 const service : WebsiteService
 	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
@@ -38,6 +40,8 @@ const service : WebsiteService
 			get,
 			identify,
 			save,
+			update,
+			validateAndUpdate,
 		}
 	);
 
