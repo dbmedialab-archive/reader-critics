@@ -30,6 +30,7 @@ import download from './live/download';
 import fetch from './common/fetch';
 import getRangeWithFBCount from 'app/services/article/common/getRangeWithFBCount';
 import getByID from 'app/services/article/common/getByID';
+import getAmount from 'app/services/article/common/getAmount';
 
 import {
 	get,
@@ -47,6 +48,7 @@ const service : ArticleService
 			upsert,
 			getRangeWithFBCount,
 			getByID,
+			getAmount,
 		}
 	);
 

@@ -10,6 +10,7 @@
 	padding: 10px;
 
 	.article {
+		cursor: pointer;
 		margin-bottom: 50px;
 		border: 1px solid rgba(0, 0, 0, .1);
 		border-radius: 3px;
@@ -64,15 +65,12 @@
 	top: 10px;
 	overflow-y: auto;
 	overflow-x: hidden;
-	padding: 10px;
 
 	.article-container {
+
 		.article {
-			margin-bottom: 50px;
-			padding: .935rem;
-			border-color: rgba(0, 0, 0, .1);
-			border-width: 0 0 1px;
-			border-style: solid;
+			margin-bottom: 30px;
+			padding: 1.6rem;
 
 			.time-section {
 				.time-item {
@@ -116,6 +114,8 @@
 	}
 
 	.article-feedbacks-container {
+		padding: 0 2.5rem;
+
 		.article-feedback-item {
 			margin-bottom: 50px;
 			border: 1px solid rgba(0, 0, 0, .1);

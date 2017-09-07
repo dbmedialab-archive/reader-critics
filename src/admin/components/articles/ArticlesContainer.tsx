@@ -22,20 +22,43 @@ import {connect} from 'react-redux';
 import Layout from 'admin/components/layout/LayoutComponent';
 import ArticleComponent from 'admin/components/articles/ArticleComponent';
 import * as ArticlesActions from 'admin/actions/ArticlesActions';
+import * as PaginationActions from 'admin/actions/PaginationActions';
 import Article from 'base/Article';
+import PaginationPanel from 'admin/components/layout/Pagination';
+import {getPaginationParams} from 'admin/services/Utils';
 
 class ArticlesContainer extends React.Component <any, any> {
+	private containerRef;
+
 	constructor (props) {
 		super(props);
 		this.showFeedbacks = this.showFeedbacks.bind(this);
+		this.updateArticlesList = this.updateArticlesList.bind(this);
 	}
 
-	componentDidMount () {
-		ArticlesActions.getArticleList();
+	componentWillMount () {
+		return this.updateArticlesList();
 	}
 
 	componentWillUnmount () {
-		ArticlesActions.setArticleList([]);
+		ArticlesActions.clear();
+		PaginationActions.clear();
+	}
+
+	componentDidUpdate (nextProps) {
+		const {search: newSearch} = nextProps.location;
+		const {search} = this.props.location;
+		if (search !== newSearch) {
+			this.containerRef.scrollTop = 0;
+			return this.updateArticlesList();
+		}
+	}
+
+	updateArticlesList() {
+		const {search} = this.props.location;
+		const pagination = getPaginationParams(search);
+		const {page, limit, sort, sortOrder} = pagination;
+		ArticlesActions.getArticleList(page, limit, sort, sortOrder);
 	}
 
 	showFeedbacks(ID) {
@@ -51,10 +74,18 @@ class ArticlesContainer extends React.Component <any, any> {
 				onClick={this.showFeedbacks}
 			/>;
 		});
+		const {search} = this.props.location;
+		const pagination = getPaginationParams(search);
+		const {page} = pagination;
 		return (
 			<Layout pageTitle="Articles">
-				<div className="articles-list">
+				<div className="articles-list" ref={(ref) => this.containerRef = ref}>
 					{articles}
+					<PaginationPanel
+						current={page}
+						total={this.props.pageCount}
+						link={`/articles`}
+					/>
 				</div>
 			</Layout>
 		);
@@ -64,6 +95,7 @@ class ArticlesContainer extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		articles: state.articles,
+		pageCount: state.pagination.getIn(['pageCount'], 1),
 	};
 };
 

@@ -21,6 +21,8 @@ import MainStore from 'admin/stores/MainStore';
 import Api from 'admin/services/Api';
 import * as ArticleActions from './ArticleActions';
 import * as ArticleActionsCreator from 'admin/actions/ArticleActionsCreator';
+import * as UIActions from 'admin/actions/UIActions';
+import * as PaginationActions from 'admin/actions/PaginationActions';
 import Feedback from 'base/Feedback';
 
 export function setArticle(article: Article) {
@@ -30,19 +32,25 @@ export function setArticle(article: Article) {
 }
 
 export function getArticle(id) {
+	UIActions.showMainPreloader();
 	Api.getArticle(id)
 		.then(resp => ArticleActions.setArticle(resp));
 }
 
 export function setArticleFeedbacks(feedbacks: Array<Feedback>) {
+	UIActions.hideMainPreloader();
 	MainStore.dispatch(
 		ArticleActionsCreator.setArticleFeedbacks(feedbacks)
 	);
 }
 
 export function getArticleFeedbacks(id, page?, limit?, sort?, sortOrder?) {
+	UIActions.showMainPreloader();
 	Api.getArticleFeedbacks(id, page, limit, sort, sortOrder)
-		.then(resp => ArticleActions.setArticleFeedbacks(resp));
+		.then(resp => {
+			ArticleActions.setArticleFeedbacks(resp.feedbacks);
+			PaginationActions.setPageCount(resp.pages);
+		});
 }
 
 export function clear() {

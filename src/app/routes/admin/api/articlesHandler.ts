@@ -22,8 +22,7 @@ import {
 } from 'express';
 
 import {
-	bulkResponse,
-	errorResponse, okResponse,
+	errorResponse, okApiResponse,
 } from 'app/routes/api/apiResponse';
 
 import {articleService, feedbackService} from 'app/services';
@@ -35,8 +34,16 @@ import pagination from 'app/util/pagination';
  */
 export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
-	return articleService.getRangeWithFBCount(params.skip, params.limit, params.sort)
-				.then(articles => bulkResponse(resp, articles))
+	const {skip, limit, sort} = params;
+	return Promise.all([
+					articleService.getRangeWithFBCount(skip, limit, sort),
+					articleService.getAmount(),
+				])
+				.then(data => {
+					const [articles, amount] = data;
+					const pages = Math.ceil(amount / limit);
+					return okApiResponse(resp, {articles, pages});
+				})
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
 
@@ -46,15 +53,25 @@ export function list (requ: Request, resp: Response) {
 export function show (requ: Request, resp: Response) {
 	const ID = requ.params.id;
 	return articleService.getByID(ID)
-				.then(article => okResponse(resp, article))
+				.then(article => okApiResponse(resp, article))
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
 
 export function getArticleFeedbacks(requ: Request, resp: Response) {
 	const ID = requ.params.id;
 	const params = pagination(requ);
+	const {skip, limit, sort} = params;
 	return articleService.getByID(ID)
-		.then(article => feedbackService.getByArticle(article, params.skip, params.limit, params.sort))
-		.then(feedbacks => bulkResponse(resp, feedbacks))
+		.then(article => {
+			return Promise.all([
+				feedbackService.getByArticle(article, skip, limit, sort),
+				feedbackService.getAmountByArticle(article),
+			]);
+		})
+		.then(data => {
+			const [feedbacks, amount] = data;
+			const pages = Math.ceil(amount / limit);
+			return okApiResponse(resp, {feedbacks, pages});
+		})
 		.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }

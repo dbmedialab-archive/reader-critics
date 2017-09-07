@@ -14,31 +14,9 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import Article from 'base/Article';
-import MainStore from 'admin/stores/MainStore';
-import Api from 'admin/services/Api';
-import * as ArticlesActions from './ArticlesActions';
-import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
-import * as PaginationActions from './PaginationActions';
+import {ArticleModel} from 'app/db/models';
 
-export function setArticleList(articles: Array<Article>) {
-	MainStore.dispatch(
-		ArticlesActionsCreator.setArticleList(articles)
-	);
-}
-
-export function getArticleList(page?, limit?, sort?, sortOrder?) {
-	Api.getArticleList(page, limit, sort, sortOrder)
-	.then((resp)=>{
-		ArticlesActions.setArticleList(resp.articles);
-		PaginationActions.setPageCount(resp.pages);
-	});
-}
-
-export function clear() {
-	MainStore.dispatch(
-		ArticlesActionsCreator.clear()
-	);
+export default function () : Promise <number> {
+	return ArticleModel.count({}).then(amount => amount);
 }

@@ -16,34 +16,41 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from 'base/ArticleItem';
 import * as Immutable from 'seamless-immutable';
-import * as  ArticlesActionsCreator  from 'admin/actions/ArticlesActionsCreator';
+import * as  PaginationActionsCreator  from 'admin/actions/PaginationActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 
-const initialState = Immutable.from<ArticleItem>([]);
-
-function setArticles(action, state) {
-	return Immutable.from<ArticleItem>(action.payload);
+export interface IPaginationState {
+	pageCount: number;
 }
 
-function clear(action, state) {
+const initialState: IPaginationState = Immutable({
+	pageCount: 1,
+});
+
+function setPageCount(action, state) {
+	return state.merge({
+		pageCount: action.payload || 1,
+	});
+}
+
+function clear(action, payload) {
 	return initialState;
 }
 
-function ArticlesReducer(
-	state: Array<ArticleItem> = initialState,
-	action: ArticlesActionsCreator.TAction
-	): Array<ArticleItem> {
+function PaginationReducer(
+	state: IPaginationState = initialState,
+	action: PaginationActionsCreator.TAction
+	): IPaginationState {
 
 	switch (action.type) {
-		case AdminConstants.ARTICLE_LIST_RECEIVED:
-			return setArticles(action, state);
-		case AdminConstants.ARTICLE_LIST_CLEAR:
+		case AdminConstants.PAGINATION_CLEAR:
 			return clear(action, state);
+		case AdminConstants.PAGINATION_RECEIVED:
+			return setPageCount(action, state);
 		default:
 			return state;
 	}
 }
 
-export default ArticlesReducer;
+export default PaginationReducer;

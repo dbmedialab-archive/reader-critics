@@ -17,28 +17,17 @@
 //
 
 import Article from 'base/Article';
-import MainStore from 'admin/stores/MainStore';
-import Api from 'admin/services/Api';
-import * as ArticlesActions from './ArticlesActions';
-import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
-import * as PaginationActions from './PaginationActions';
 
-export function setArticleList(articles: Array<Article>) {
-	MainStore.dispatch(
-		ArticlesActionsCreator.setArticleList(articles)
-	);
-}
+import { FeedbackModel } from 'app/db/models';
 
-export function getArticleList(page?, limit?, sort?, sortOrder?) {
-	Api.getArticleList(page, limit, sort, sortOrder)
-	.then((resp)=>{
-		ArticlesActions.setArticleList(resp.articles);
-		PaginationActions.setPageCount(resp.pages);
-	});
-}
+import emptyCheck from 'app/util/emptyCheck';
 
-export function clear() {
-	MainStore.dispatch(
-		ArticlesActionsCreator.clear()
-	);
+// Get amount  of feedbacks belong to article
+
+export default function (
+	article : Article
+) : Promise <number>
+{
+	emptyCheck(article);
+	return FeedbackModel.count({article: article.ID}).then(count => count);
 }

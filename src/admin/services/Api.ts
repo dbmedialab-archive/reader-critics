@@ -55,8 +55,10 @@ const Api = {
 	 * Get all articles with feedbacks count
 	 * @type {()=>Promise<any>}
 	 */
-	getArticleList: () =>
-		sendRequest(`/admin/api/articles/`, 'GET'),
+	getArticleList: (page?, limit?, sort?, sortOrder?) => {
+		const pagination = setPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles${pagination}`, 'GET');
+	},
 
 	/**
 	 * Get article by ID

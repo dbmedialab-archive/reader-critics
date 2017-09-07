@@ -16,29 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import MainStore from 'admin/stores/MainStore';
-import Api from 'admin/services/Api';
-import * as ArticlesActions from './ArticlesActions';
-import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
-import * as PaginationActions from './PaginationActions';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-export function setArticleList(articles: Array<Article>) {
-	MainStore.dispatch(
-		ArticlesActionsCreator.setArticleList(articles)
-	);
+export interface IAction {
+		type: any;
+		payload?: any;
 }
 
-export function getArticleList(page?, limit?, sort?, sortOrder?) {
-	Api.getArticleList(page, limit, sort, sortOrder)
-	.then((resp)=>{
-		ArticlesActions.setArticleList(resp.articles);
-		PaginationActions.setPageCount(resp.pages);
-	});
+export type TAction = IAction;
+
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.PAGINATION_CLEAR,
+		payload,
+	};
 }
 
-export function clear() {
-	MainStore.dispatch(
-		ArticlesActionsCreator.clear()
-	);
+export function setPageCount(payload): IAction {
+	return {
+		type: AdminConstants.PAGINATION_RECEIVED,
+		payload,
+	};
 }

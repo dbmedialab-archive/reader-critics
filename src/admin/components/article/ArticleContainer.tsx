@@ -21,25 +21,48 @@ import {connect} from 'react-redux';
 
 import Layout from 'admin/components/layout/LayoutComponent';
 import * as ArticleActions from 'admin/actions/ArticleActions';
+import * as PaginationActions from 'admin/actions/PaginationActions';
 import ArticleHeaderComponent from 'admin/components/article/ArticleHeaderComponent';
 import ArticleFeedbackItemComponent from 'admin/components/article/ArticleFeedbackItemComponent';
 import FeedbackItem from 'base/FeedbackItem';
+import PaginationPanel from 'admin/components/layout/Pagination';
+import {getPaginationParams} from 'admin/services/Utils';
 
 class ArticleContainer extends React.Component <any, any> {
+	private containerRef;
 	constructor (props) {
 		super(props);
 
 		this.getFeedbacks = this.getFeedbacks.bind(this);
+		this.updateFeedbacksList = this.updateFeedbacksList.bind(this);
 	}
 
 	componentWillMount () {
 		const {id} = this.props.match.params;
 		ArticleActions.getArticle(id);
-		ArticleActions.getArticleFeedbacks(id);
+		this.updateFeedbacksList();
 	}
 
 	componentWillUnmount () {
 		ArticleActions.clear();
+		PaginationActions.clear();
+	}
+
+	componentDidUpdate (nextProps) {
+		const {search: newSearch} = nextProps.location;
+		const {search} = this.props.location;
+		if (search !== newSearch) {
+			this.containerRef.scrollTop = 0;
+			return this.updateFeedbacksList();
+		}
+	}
+
+	updateFeedbacksList() {
+		const {id} = this.props.match.params;
+		const {search} = this.props.location;
+		const pagination = getPaginationParams(search);
+		const {page, limit, sort, sortOrder} = pagination;
+		ArticleActions.getArticleFeedbacks(id, page, limit, sort, sortOrder);
 	}
 
 	getFeedbacks () {
@@ -67,15 +90,24 @@ class ArticleContainer extends React.Component <any, any> {
 
 	render () {
 		const feedbacks = this.getFeedbacks();
+		// const pagination = this.getPaginationParams();
+		const {search} = this.props.location;
+		const pagination = getPaginationParams(search);
+		const {page} = pagination;
 		return (
 			<Layout pageTitle="Article">
-				<div className="article-view">
+				<div className="article-view" ref={(ref) => this.containerRef = ref}>
 					<div className="article-container">
 						<ArticleHeaderComponent article={this.props.article}/>
 					</div>
 					<div className="article-feedbacks-container">
 						{feedbacks}
 					</div>
+					<PaginationPanel
+						current={page}
+						total={this.props.pageCount}
+						link={`/articles/${this.props.match.params.id}`}
+					/>
 				</div>
 			</Layout>
 		);
@@ -86,6 +118,7 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		article: state.article.getIn(['article'], {}),
 		feedbacks: state.article.getIn(['feedbacks'], []),
+		pageCount: state.pagination.getIn(['pageCount'], 1),
 	};
 };
 

@@ -31,3 +31,10 @@ export function setArticleList(payload): IAction {
 		payload,
 	};
 }
+
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.ARTICLE_LIST_CLEAR,
+		payload,
+	};
+}

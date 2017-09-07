@@ -103,6 +103,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * @throws EmptyError if ID not set
 	 */
 	getByID(ID : ObjectID) : Promise <Article>
+
+	/**
+	 * Get amount of Articles
+	 */
+	getAmount() : Promise <number>
 }
 
 export default ArticleService;
