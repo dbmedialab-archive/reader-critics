@@ -101,29 +101,3 @@ function json(response) {
 		return payload.data;
 	});
 }
-
-export function getFormattedPagination(page?, limit?, sort?, sortOrder?) {
-	let result: string = '';
-	const pagination: string[] = [];
-
-	if (sort || page || limit) {
-		if (page) {
-			pagination.push(`page=${page}`);
-		}
-		if (limit) {
-			pagination.push(`limit=${limit}`);
-		}
-		if (sort) {
-			pagination.push(`sort=${sort}`);
-
-			if (sortOrder) {
-				pagination.push(`sortOrder=${sortOrder}`);
-			}
-		}
-	}
-
-	if (pagination.length) {
-		result = '?' + pagination.join('&');
-	}
-	return result;
-}
