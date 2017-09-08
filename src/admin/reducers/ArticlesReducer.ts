@@ -16,15 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from 'base/ArticleItem';
+import Article from 'base/Article';
 import * as Immutable from 'seamless-immutable';
 import * as  ArticlesActionsCreator  from 'admin/actions/ArticlesActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 
-const initialState = Immutable.from<ArticleItem>([]);
+const initialState = Immutable.from<Article>([]);
 
 function setArticles(action, state) {
-	return Immutable.from<ArticleItem>(action.payload);
+	return Immutable.from<Article>(action.payload);
 }
 
 function clear(action, state) {
@@ -32,9 +32,9 @@ function clear(action, state) {
 }
 
 function ArticlesReducer(
-	state: Array<ArticleItem> = initialState,
+	state: Array<Article> = initialState,
 	action: ArticlesActionsCreator.TAction
-	): Array<ArticleItem> {
+	): Array<Article> {
 
 	switch (action.type) {
 		case AdminConstants.ARTICLE_LIST_RECEIVED:
