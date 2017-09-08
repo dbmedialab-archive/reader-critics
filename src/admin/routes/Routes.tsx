@@ -23,6 +23,7 @@ import Users from 'admin/components/user/Users';
 import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
 import Login from 'admin/components/login/Login';
 import WebsitesContainer from 'admin/components/website/WebsitesContainer';
+import Suggestions from 'admin/components/suggestions/SuggestionsContainer';
 
 const Routes : React.StatelessComponent <any> =	() =>
 	<Switch>
@@ -32,5 +33,6 @@ const Routes : React.StatelessComponent <any> =	() =>
 		<Route path="/users" component={Users}/>
 		<Route path="/feedbacks" component={Feedbacks}/>
 		<Route exact path="/websites" component={WebsitesContainer}/>
+		<Route exact path="/suggestions" component={Suggestions}/>
 	</Switch>;
 export default Routes;

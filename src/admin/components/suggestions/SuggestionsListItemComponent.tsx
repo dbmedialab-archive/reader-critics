@@ -18,70 +18,95 @@
 
 import * as React from 'react';
 
-class FeedbackItemComponent extends React.Component <any, any> {
+class SuggestionsListItemComponent extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
-	}
-	renderFeedbackLinks(feedbackLinks){
-		return feedbackLinks.map((feedbackLink, index)=>{
-				return (
-					<a href={feedbackLink} key={index} className="link-item">
-						<i className="fa fa-external-link"></i>
-						{feedbackLink}
-					</a>);
+		this.getTimeString = this.getTimeString.bind(this);
+		this.toggleVisibility = this.toggleVisibility.bind(this);
 
-		});
+		this.state = {
+			visible: false,
+		};
 	}
+
+	getTimeString(dateStr: string) : string {
+		const dateTimeObj = new Date(dateStr);
+		if (isNaN(dateTimeObj.getTime())) {
+			return 'incorrect date';
+		} else {
+			return `${dateTimeObj.toLocaleDateString()} ${dateTimeObj.toLocaleTimeString()}`;
+		}
+	}
+
+	toggleVisibility() {
+		return this.setState({visible: !this.state.visible});
+	}
+
 	render(){
-		const {feedback} = this.props;
-		const feedbackDateTimeObj = new Date(feedback.date.created);
-		const	feedbackDateTime = feedbackDateTimeObj.toLocaleDateString() + ' '
-					+ feedbackDateTimeObj.toLocaleTimeString();
-		const feedbackLinks = this.renderFeedbackLinks(feedback.links);
+		const {
+			comment,
+			email,
+			date: {
+				created,
+			},
+			remote: {
+				ipAddress,
+				userAgent,
+			},
+		} = this.props.suggestion;
+		const suggestionDateTime = this.getTimeString(created);
 		return (
-			<div className="feedback-item">
-				<div className="row expanded time-section">
-					<div className="small-12  time-item">
+			<div className="suggestions-list-item">
+				<div className="row expanded info-section">
+					<div className="small-4  time-item">
 						<i className="fa fa-clock-o"></i>
-						{feedbackDateTime}
+						{suggestionDateTime}
 					</div>
+					{email ?
+					<div className="small-8  user-email">
+						<i className="fa fa-envelope-open-o"></i>
+						{email}
+					</div> : null}
 				</div>
-				<div className="row expanded article-url-section">
-					<div className="small-12">
-						<a className="article-url-link" href={feedback.article.url} target="_blank">
-							{feedback.article.url}
-						</a>
-					</div>
-				</div>
-				<div className="row expanded feedback-section">
-					<div className="small-12 feedback-text">
-						{feedback.text}
-					</div>
-				</div>
-				{feedback.comment?
 				<div className="row expanded comment-section">
 					<div className="small-12">
-						<div className="item-label">User comment</div>
-					</div>
-					<div className="small-12 comment-item">
-						{feedback.comment}
+						{comment}
 					</div>
 				</div>
-				:null}
-				{feedbackLinks.length?
-				<div className="row expanded links-section">
+				<div className={`row expanded additional-info-section${this.state.visible ? ' opened' : ''}`}>
 					<div className="small-12">
-						<div className="item-label">Links</div>
+						<div className="additional-btn" onClick={this.toggleVisibility}>
+							Additional User Info
+						</div>
 					</div>
-					<div className="small-12">
-						<div className="links-container">
-							{feedbackLinks}
+					<div className="small-12 additional-content">
+						<div className="additional-content-section">
+							<div className="row">
+								<div className="small-12 columns">
+									<div className="user-ip-address">
+										<p>
+											<span className="title">IP-Address: </span>
+											{ipAddress}
+										</p>
+									</div>
+								</div>
+							</div>
+							<div className="row">
+								<div className="small-12 columns">
+									<div className="user-browser-user-agent">
+										<p>
+											<span className="title">User Agent: </span>
+											{userAgent}
+										</p>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-				:null}
 			</div>
-	);
+		);
 	}
 }
-export default FeedbackItemComponent;
+
+export default SuggestionsListItemComponent;

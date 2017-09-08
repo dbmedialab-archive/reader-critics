@@ -32,7 +32,7 @@ function clear(action, state) {
 	return initialState;
 }
 
-function WebsiteReducer(
+function SuggestionsReducer(
 	state: Array<Suggestion> = initialState,
 	action: SuggestionsActionsCreator.TAction
 	): Array<Suggestion> {
@@ -47,4 +47,4 @@ function WebsiteReducer(
 	}
 }
 
-export default WebsiteReducer;
+export default SuggestionsReducer;

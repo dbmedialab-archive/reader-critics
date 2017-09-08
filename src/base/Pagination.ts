@@ -16,27 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Pagination from 'base/Pagination';
-
-/**
- * Capitalize first letter in string
- * @param str
- * @returns {string}
- */
-export function capitalizeFirstLetter(str: string): string {
-	return str.charAt(0).toUpperCase() + str.slice(1);
+interface Pagination {
+	page?: number;
+	limit?: number;
+	sort?: string;
+	sortOrder?: number;
 }
 
-/**
- * Returns pagination params from location
- */
-export function getPaginationParams (search: string): Pagination {
-	const query = new URLSearchParams(search);
-
-	return {
-		page: parseInt(query.get('page')) || 1,
-		limit: parseInt(query.get('limit')),
-		sort: query.get('sort'),
-		sortOrder: parseInt(query.get('sortOrder')),
-	};
-}
+export default Pagination;
