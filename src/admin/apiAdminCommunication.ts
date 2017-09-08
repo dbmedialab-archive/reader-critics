@@ -102,7 +102,7 @@ function json(response) {
 	});
 }
 
-export function setPagination(page?, limit?, sort?, sortOrder?) {
+export function getFormattedPagination(page?, limit?, sort?, sortOrder?) {
 	let result: string = '';
 	const pagination: string[] = [];
 

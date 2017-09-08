@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {sendRequest, setPagination} from 'admin/apiAdminCommunication';
+import {getFormattedPagination, sendRequest} from 'admin/apiAdminCommunication';
 
 const Api = {
 	/**
@@ -91,7 +91,7 @@ const Api = {
 	 * @type {()=>Promise<any>}
 	 */
 	getSuggestionsList: function(page?, limit?, sort?, sortOrder?) {
-		const pagination = setPagination(page, limit, sort, sortOrder);
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
 		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
 	},
 };
