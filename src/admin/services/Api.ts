@@ -16,7 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {getFormattedPagination, sendRequest} from 'admin/apiAdminCommunication';
+import {sendRequest} from 'admin/apiAdminCommunication';
+import {getFormattedPagination} from 'admin/services/Utils';
+
 const Api = {
 	/**
  * Get all feedbacks
