@@ -16,13 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Suggestion from 'base/Suggestion';
-import BasicPersistingService from '../BasicPersistingService';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-interface SuggestionService extends BasicPersistingService <Suggestion> {
-	getSince(since : Date) : Promise <Suggestion[]>;
-	save(suggestion : Suggestion) : Promise <void>;
-	getAmount() : Promise <number>;
+export interface IAction {
+	type: any;
+	payload?: any;
 }
 
-export default SuggestionService;
+export type TAction = IAction;
+
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.PAGINATION_CLEAR,
+		payload,
+	};
+}
+
+export function setPageCount(payload): IAction {
+	return {
+		type: AdminConstants.PAGINATION_RECEIVED,
+		payload,
+	};
+}

@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {sendRequest} from 'admin/apiAdminCommunication';
+import {sendRequest, setPagination} from 'admin/apiAdminCommunication';
 
 const Api = {
 	/**
@@ -85,5 +85,14 @@ const Api = {
 
 	deleteUser:(userId: any): Promise<any> =>
 		sendRequest(`/admin/api/users/${userId}`, 'DELETE'),
+
+	/**
+	 * Get suggestions
+	 * @type {()=>Promise<any>}
+	 */
+	getSuggestionsList: function(page?, limit?, sort?, sortOrder?) {
+		const pagination = setPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
+	},
 };
 export default Api;

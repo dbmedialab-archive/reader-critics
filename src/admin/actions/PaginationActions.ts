@@ -16,13 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Suggestion from 'base/Suggestion';
-import BasicPersistingService from '../BasicPersistingService';
+import MainStore from 'admin/stores/MainStore';
+import * as PaginationActionsCreator from 'admin/actions/PaginationActionsCreator';
 
-interface SuggestionService extends BasicPersistingService <Suggestion> {
-	getSince(since : Date) : Promise <Suggestion[]>;
-	save(suggestion : Suggestion) : Promise <void>;
-	getAmount() : Promise <number>;
+export function clear() {
+	MainStore.dispatch(
+		PaginationActionsCreator.clear()
+	);
 }
 
-export default SuggestionService;
+export function setPageCount(num: number) {
+	MainStore.dispatch(
+		PaginationActionsCreator.setPageCount(num)
+	);
+}

@@ -14,15 +14,13 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import Suggestion from 'base/Suggestion';
-import BasicPersistingService from '../BasicPersistingService';
+import {SuggestionModel} from 'app/db/models';
 
-interface SuggestionService extends BasicPersistingService <Suggestion> {
-	getSince(since : Date) : Promise <Suggestion[]>;
-	save(suggestion : Suggestion) : Promise <void>;
-	getAmount() : Promise <number>;
+/**
+ * Returns a single Website object if the exact name is found in the database.
+ * "name" is the primary key on the websites collection.
+ */
+export default function () : Promise <number> {
+	return SuggestionModel.count({}).then(amount => amount);
 }
-
-export default SuggestionService;
