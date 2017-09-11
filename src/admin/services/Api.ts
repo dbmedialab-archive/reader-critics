@@ -17,6 +17,7 @@
 //
 
 import {sendRequest} from 'admin/apiAdminCommunication';
+import {getFormattedPagination} from 'admin/services/Utils';
 
 const Api = {
 	/**
@@ -85,5 +86,28 @@ const Api = {
 
 	deleteUser:(userId: any): Promise<any> =>
 		sendRequest(`/admin/api/users/${userId}`, 'DELETE'),
+
+	/**
+	 * Get all articles with feedbacks count
+	 * @type {()=>Promise<any>}
+	 */
+	getArticleList: (page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles${pagination}`, 'GET');
+	},
+
+	/**
+	 * Get article by ID
+	 */
+	getArticle: (id) =>
+		sendRequest(`/admin/api/articles/${id}`, 'GET'),
+
+	/**
+	 * Get feedbacks belong to article by ID
+	 */
+	getArticleFeedbacks: (id, page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles/${id}/feedbacks${pagination}`, 'GET');
+	},
 };
 export default Api;

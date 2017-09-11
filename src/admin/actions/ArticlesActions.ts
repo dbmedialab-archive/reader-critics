@@ -16,27 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import Article from 'base/Article';
+import MainStore from 'admin/stores/MainStore';
+import Api from 'admin/services/Api';
+import * as ArticlesActions from './ArticlesActions';
+import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
+import * as PaginationActions from './PaginationActions';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
-
-	// Byline
-	authors : User[];
-
-	website? : Website;
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+export function setArticleList(articles: Array<Article>) {
+	MainStore.dispatch(
+		ArticlesActionsCreator.setArticleList(articles)
+	);
 }
 
-export default Article;
+export function getArticleList(page?, limit?, sort?, sortOrder?) {
+	Api.getArticleList(page, limit, sort, sortOrder)
+	.then((resp)=>{
+		ArticlesActions.setArticleList(resp.articles);
+		PaginationActions.setPageCount(resp.pages);
+	});
+}
+
+export function clear() {
+	MainStore.dispatch(
+		ArticlesActionsCreator.clear()
+	);
+}

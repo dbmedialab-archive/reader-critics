@@ -16,27 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+export interface IAction {
+		type: any;
+		payload?: any;
+}
 
-	// Byline
-	authors : User[];
+export type TAction = IAction;
 
-	website? : Website;
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.PAGINATION_CLEAR,
+		payload,
 	};
 }
 
-export default Article;
+export function setPageCount(payload): IAction {
+	return {
+		type: AdminConstants.PAGINATION_RECEIVED,
+		payload,
+	};
+}

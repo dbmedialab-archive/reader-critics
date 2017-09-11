@@ -19,17 +19,23 @@
 import { combineReducers } from 'redux';
 import {routerReducer} from 'react-router-redux';
 
+import ArticlesReducer from 'admin/reducers/ArticlesReducer';
+import ArticleReducer from 'admin/reducers/ArticleReducer';
 import UIReducer from 'admin/reducers/UIReducer';
 import FeedbackReducer from 'admin/reducers/FeedbackReducer';
 import UserReducer from 'admin/reducers/UserReducer';
 import WebsiteReducer from 'admin/reducers/WebsiteReducer';
 import UsersReducer from 'admin/reducers/UsersReducer';
+import PaginationReducer from 'admin/reducers/PaginationReducer';
 
 export const CombineReducer:any = combineReducers({
+	articles: ArticlesReducer,
+	article: ArticleReducer,
 	UI: UIReducer,
 	feedback: FeedbackReducer,
 	user: UserReducer,
 	users: UsersReducer,
+	pagination: PaginationReducer,
 	router: routerReducer,
 	website: WebsiteReducer,
 });

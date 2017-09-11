@@ -16,7 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 import * as React from 'react';
-import {Link} from 'react-router-dom';
 import { WebsiteProps } from 'admin/types/Website';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
@@ -53,9 +52,7 @@ export default class WebsitesRow extends React.Component <any, any> {
 		return (
 			<div className={style}>
 				<div className="column small-2 medium-2">
-					<Link to={`/websites/${this.props.name}`}>
-						<p>{this.props.name}</p>
-					</Link>
+					<p>{this.props.name}</p>
 				</div>
 				<div className="column small-4 medium-3"><p>{this.props.hosts.join(', ')}</p></div>
 				<div className="column small-2 medium-3"><p>{chiefEditors.join(', ')}</p></div>

@@ -16,27 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
-
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
-
-	// Byline
-	authors : User[];
-
-	website? : Website;
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+interface Pagination {
+	page?: number;
+	limit?: number;
+	sort?: string;
+	sortOrder?: number;
 }
 
-export default Article;
+export default Pagination;
