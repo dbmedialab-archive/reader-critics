@@ -16,27 +16,34 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import Article from 'base/Article';
+import * as Immutable from 'seamless-immutable';
+import * as  ArticlesActionsCreator  from 'admin/actions/ArticlesActionsCreator';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+const initialState = Immutable.from<Article>([]);
 
-	// Byline
-	authors : User[];
-
-	website? : Website;
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+function setArticles(action, state) {
+	return Immutable.from<Article>(action.payload);
 }
 
-export default Article;
+function clear(action, state) {
+	return initialState;
+}
+
+function ArticlesReducer(
+	state: Array<Article> = initialState,
+	action: ArticlesActionsCreator.TAction
+	): Array<Article> {
+
+	switch (action.type) {
+		case AdminConstants.ARTICLE_LIST_RECEIVED:
+			return setArticles(action, state);
+		case AdminConstants.ARTICLE_LIST_CLEAR:
+			return clear(action, state);
+		default:
+			return state;
+	}
+}
+
+export default ArticlesReducer;

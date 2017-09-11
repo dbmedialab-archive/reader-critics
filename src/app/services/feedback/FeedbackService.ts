@@ -135,6 +135,15 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 		id : ObjectID,
 		enduser : EndUser
 	) : Promise <Feedback>;
+
+	/**
+	 * Returns amount of feedbacks exist for current article
+	 *
+	 *  @throws EmptyError If article parameter is missing.
+	 */
+	getAmountByArticle(
+		article: Article
+	) : Promise<number>;
 }
 
 export default FeedbackService;

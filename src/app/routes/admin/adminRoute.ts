@@ -63,6 +63,8 @@ adminRoute.get([
 	'/',
 	'/users',
 	'/feedbacks',
+	'/articles',
+	'/articles/:id',
 	'/websites',
 	'/suggestions',
 ], isAuthenticated, adminPageHandler);

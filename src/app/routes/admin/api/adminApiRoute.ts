@@ -27,6 +27,7 @@ import * as bodyParser from 'body-parser';
 
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
+import * as articlesHandler from 'app/routes/admin/api/articlesHandler';
 import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
 import * as suggestionsHandler from 'app/routes/admin/api/suggestionsHandler';
 
@@ -51,6 +52,10 @@ adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
 adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
 adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
+adminApiRoute.get('/articles', isAuthenticatedApi, articlesHandler.list);
+adminApiRoute.get('/articles/:id', isAuthenticatedApi, articlesHandler.show);
+adminApiRoute.get(
+	'/articles/:id/feedbacks', isAuthenticatedApi, articlesHandler.getArticleFeedbacks);
 adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
 adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);

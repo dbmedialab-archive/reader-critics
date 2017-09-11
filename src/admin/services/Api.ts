@@ -95,5 +95,28 @@ const Api = {
 		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
 		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
 	},
+
+	/**
+	 * Get all articles with feedbacks count
+	 * @type {()=>Promise<any>}
+	 */
+	getArticleList: (page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles${pagination}`, 'GET');
+	},
+
+	/**
+	 * Get article by ID
+	 */
+	getArticle: (id) =>
+		sendRequest(`/admin/api/articles/${id}`, 'GET'),
+
+	/**
+	 * Get feedbacks belong to article by ID
+	 */
+	getArticleFeedbacks: (id, page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles/${id}/feedbacks${pagination}`, 'GET');
+	},
 };
 export default Api;

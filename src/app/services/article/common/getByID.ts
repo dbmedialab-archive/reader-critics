@@ -14,29 +14,24 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import {ObjectID} from 'bson';
+import Article from 'base/Article';
+import {ArticleModel} from 'app/db/models';
+import emptyCheck from 'app/util/emptyCheck';
+import {wrapFindOne} from 'app/db/common';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+export default function (
+	ID : ObjectID,
+	populated : boolean = true
+) : Promise <Article> {
+	emptyCheck(ID);
 
-	// Byline
-	authors : User[];
+	let result = ArticleModel.findById(ID);
 
-	website? : Website;
+	if (populated) {
+		result = result.populate('authors').populate('website');
+	}
 
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+	return wrapFindOne(result);
 }
-
-export default Article;

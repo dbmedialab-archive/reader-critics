@@ -14,29 +14,9 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import {ArticleModel} from 'app/db/models';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
-
-	// Byline
-	authors : User[];
-
-	website? : Website;
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+export default function () : Promise <number> {
+	return ArticleModel.count({}).then(amount => amount);
 }
-
-export default Article;

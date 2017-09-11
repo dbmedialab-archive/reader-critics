@@ -16,27 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import Article from 'base/Article';
 
-interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+import { FeedbackModel } from 'app/db/models';
 
-	// Byline
-	authors : User[];
+import emptyCheck from 'app/util/emptyCheck';
 
-	website? : Website;
+// Get amount  of feedbacks belong to article
 
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
-	date? : {
-		created?: Date;
-	};
+export default function (
+	article : Article
+) : Promise <number>
+{
+	emptyCheck(article);
+	return FeedbackModel.count({article: article.ID}).then(count => count);
 }
-
-export default Article;
