@@ -47,7 +47,7 @@
 		"axios": "0.16.2",
 		"bcrypt": "1.0.2",
 		"bluebird": "3.5.0",
-		"body-parser": "1.17.2",
+		"body-parser": "1.18.1",
 		"callsite": "1.0.0",
 		"cheerio": "1.0.0-rc.2",
 		"classnames": "2.2.5",
