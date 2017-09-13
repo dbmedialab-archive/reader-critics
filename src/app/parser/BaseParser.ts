@@ -39,7 +39,7 @@ interface ParserWorkflowPayload {
 abstract class BaseParser extends BaseElements implements Parser {
 
 	constructor(
-		protected readonly rawArticle : string,
+		protected readonly rawArticle : any,
 		protected readonly articleURL : ArticleURL
 	) {
 		super();
@@ -75,7 +75,8 @@ abstract class BaseParser extends BaseElements implements Parser {
 		};
 
 		return Promise.resolve(Promise.props(workflow))
-		.then((a : ParserWorkflowPayload) : Article => ({
+		.then((a : ParserWorkflowPayload) : Article => {
+			return ({
 			url: this.articleURL,
 			version: a.version,
 			authors: a.authors,
@@ -84,7 +85,7 @@ abstract class BaseParser extends BaseElements implements Parser {
 				...a.featured,
 				...a.content,
 			],
-		}));
+		});});
 	}
 
 	// Prototypes

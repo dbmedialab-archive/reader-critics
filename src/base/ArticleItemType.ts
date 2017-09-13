@@ -28,6 +28,7 @@ enum ArticleItemType {
 	Paragraph = 'paragraph',
 	Figure = 'figure',
 	Link = 'link',
+	Video = 'video',
 
 }
 
