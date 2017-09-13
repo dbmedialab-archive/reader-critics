@@ -29,6 +29,7 @@ import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 import * as articlesHandler from 'app/routes/admin/api/articlesHandler';
 import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
+import * as suggestionsHandler from 'app/routes/admin/api/suggestionsHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
 
@@ -59,6 +60,7 @@ adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
 adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
 adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
+adminApiRoute.get('/suggestions', isAuthenticatedApi, suggestionsHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

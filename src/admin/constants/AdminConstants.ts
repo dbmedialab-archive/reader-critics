@@ -60,6 +60,14 @@ const AdminConstants = keykey([
 	'WEBSITE_MODAL_NAME',
 	'WEBSITE_CREATED',
 	'WEBSITE_UPDATED',
+
+	//Pagination
+	'PAGINATION_RECEIVED',
+	'PAGINATION_CLEAR',
+
+	// Suggestions
+	'SUGGESTIONS_LIST_RECEIVED',
+	'SUGGESTIONS_CLEAR',
 ]);
 
 export default AdminConstants;

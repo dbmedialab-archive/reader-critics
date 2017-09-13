@@ -19,8 +19,8 @@
 import AdminConstants from 'admin/constants/AdminConstants';
 
 export interface IAction {
-		type: any;
-		payload?: any;
+	type: any;
+	payload?: any;
 }
 
 export type TAction = IAction;

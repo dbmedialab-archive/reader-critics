@@ -88,6 +88,15 @@ const Api = {
 		sendRequest(`/admin/api/users/${userId}`, 'DELETE'),
 
 	/**
+	 * Get suggestions
+	 * @type {()=>Promise<any>}
+	 */
+	getSuggestionsList: function(page?, limit?, sort?, sortOrder?) {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
+	},
+
+	/**
 	 * Get all articles with feedbacks count
 	 * @type {()=>Promise<any>}
 	 */

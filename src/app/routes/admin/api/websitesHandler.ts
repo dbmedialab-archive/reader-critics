@@ -31,7 +31,6 @@ import pagination from 'app/util/pagination';
 
 /**
  * Provides with whole list of existing websites
- * Not filtering, no page or limit query params are taken into account
  */
 export function list (requ: Request, resp: Response) {
 	const notFound = 'Resourse not found';

@@ -41,7 +41,7 @@ function clear(action, payload) {
 function PaginationReducer(
 	state: IPaginationState = initialState,
 	action: PaginationActionsCreator.TAction
-	): IPaginationState {
+): IPaginationState {
 
 	switch (action.type) {
 		case AdminConstants.PAGINATION_CLEAR:
