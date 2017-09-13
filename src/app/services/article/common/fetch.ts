@@ -43,7 +43,7 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 		.then((fact : ParserFactory) => parserFactory = fact);
 
 	// temporary solution
-	if (website.parserClass == 'LabradorParser') {
+	if (website.parserClass === 'LabradorParser') {
 		downloadURL = getLarbradorUrl(url);
 	}
 
@@ -59,7 +59,7 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 function getLarbradorUrl(url: ArticleURL) {
 	const placeholder = '{id}';
 	const labUrl = `http://api.dagbladet.no/article/?query=id:${placeholder}&showStructures=true&allImages=true&htmlText=true&allBoxes=true`;
-	let parts = url.href.split('/');
-	
+	const parts = url.href.split('/');
+
 	return new ArticleURL(labUrl.replace(placeholder, parts[parts.length - 1]));
 }

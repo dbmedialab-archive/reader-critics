@@ -72,7 +72,7 @@ export function getContent (rawArticle) : ProvidedContent {
 		video: (rawArticle.contentBoxes && rawArticle.contentBoxes.youtube)
 		? getVideos(rawArticle.contentBoxes.youtube)
 		: null,
-	}
+	};
 
 	return content;
 }
@@ -102,7 +102,7 @@ function compileAuthor (rawData) : ArticleAuthor {
 		firstname: '',
 		email: '',
 	};
-	let raw = Object.assign(defaultFields, pick(rawData, authorFields));
+	const raw = Object.assign(defaultFields, pick(rawData, authorFields));
 
 	return {
 		email: raw.email,
@@ -143,7 +143,7 @@ function getImages (rawArticle) : ImageInterface[] {
 				href: `https://dbstatic.no/?imageId=${img.instanceOfId}&height=${defaultHeight}`,
 				altText: img.imageCaption,
 				name: img.name,
-				type: (img.instanceOfId == featuredID) ? ArticleItemType.FeaturedImage : ArticleItemType.Figure,
+				type: (parseInt(img.instanceOfId) === parseInt(featuredID)) ? ArticleItemType.FeaturedImage : ArticleItemType.Figure,
 			};
 		}
 
