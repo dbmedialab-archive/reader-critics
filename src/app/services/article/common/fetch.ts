@@ -57,9 +57,9 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 }
 
 function getLarbradorUrl(url: ArticleURL) {
-	const placeholder = '{id}';
-	const labUrl = `http://api.dagbladet.no/article/?query=id:${placeholder}&showStructures=true&allImages=true&htmlText=true&allBoxes=true`;
 	const parts = url.href.split('/');
+	const articleID = parts[parts.length - 1];
+	const labUrl = `http://api.dagbladet.no/article/?query=id:${articleID}&showStructures=true&allImages=true&htmlText=true&allBoxes=true`;
 
-	return new ArticleURL(labUrl.replace(placeholder, parts[parts.length - 1]));
+	return new ArticleURL(labUrl);
 }
