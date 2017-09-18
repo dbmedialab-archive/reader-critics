@@ -142,24 +142,23 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 
 	private getContentElement() {
 		switch (this.props.item.type) {
-			case ArticleItemType.MainTitle.toString():
+			case ArticleItemType.MainTitle:
 				return this.MainTitleElement();
-			case 'title':
+			case ArticleItemType.SubTitle:
 				return this.SubTitleElement();
 
-			case 'lead':
+			case ArticleItemType.LeadIn:
 				return this.LeadInElement();
-			case 'featured':
-				return this.FeaturedImageElement();
-
-			case 'subhead':
+			case ArticleItemType.SubHeading:
 				return this.SubHeadingElement();
-			case 'paragraph':
+			case ArticleItemType.Paragraph:
 				return this.ParagraphElement();
 
-			case 'figure':
+			case ArticleItemType.FeaturedImage:
+				return this.FeaturedImageElement();
+			case ArticleItemType.Figure:
 				return this.FigureElement();
-			case ArticleItemType.Link.toString():
+			case ArticleItemType.Link:
 				return this.LinkElement();
 		}
 	}
@@ -187,7 +186,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 
 	private FeaturedImageElement() {
 		return <div>
-			<label>Featured Image</label>
+			<label>Featured something Image</label>
 			{this.props.item.href?
 				<p><img src={this.props.item.href} width="100%"/></p>
 			:null}
