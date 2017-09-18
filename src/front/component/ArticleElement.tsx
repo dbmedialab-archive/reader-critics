@@ -212,7 +212,6 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	private FigureElement() {
-		console.log(this.props.item, this.state);
 		const {type} = this.props.item.order;
 		return <div>
 			<label>Bilde #{type}</label>
