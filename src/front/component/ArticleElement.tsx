@@ -109,9 +109,9 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	private createEditForm() : JSX.Element {
-		const {type} = this.props.item.order;
+		const typeOrder = this.props.item.order.type;
 		return <ArticleEditForm
-			id={type}
+			id={typeOrder}
 			ref={(i : any) => { this.references.editForm = i; }}
 			originalText={this.state.text}
 			onCancel={this.CancelInput.bind(this)}
@@ -186,34 +186,32 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 
 	private FeaturedImageElement() {
 		return <div>
-			<label>Featured something Image</label>
-			{this.props.item.href?
-				<p><img src={this.props.item.href} width="100%"/></p>
-			:null}
+			<label>Featured Image</label>
+			{ this.props.item.href && <p><img src={this.props.item.href} width="100%"/></p> }
 			<p>{this.TextDiff(this.props.item.altText, this.state.text)}</p>
 		</div>;
 	}
 
 	private SubHeadingElement() {
-		const {type} = this.props.item.order;
+		const typeOrder = this.props.item.order.type;
 		return <div>
-			<label>Mellomtittel #{type}</label>
+			<label>Mellomtittel #{typeOrder}</label>
 			<h3>{this.TextDiff(this.props.item.originalText, this.state.text)}</h3>
 		</div>;
 	}
 
 	private ParagraphElement() {
-		const {type} = this.props.item.order;
+		const typeOrder = this.props.item.order.type;
 		return <div>
-			<label>Avsnitt #{type}</label>
+			<label>Avsnitt #{typeOrder}</label>
 			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
 
 	private FigureElement() {
-		const {type} = this.props.item.order;
+		const typeOrder = this.props.item.order.type;
 		return <div>
-			<label>Bilde #{type}</label>
+			<label>Bilde #{typeOrder}</label>
 			{this.props.item.href?
 				<p><img src={this.props.item.href} width="100%"/></p>
 			:null}
@@ -222,9 +220,9 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	private LinkElement() {
-		const {type} = this.props.item.order;
+		const typeOrder = this.props.item.order.type;
 		return <div>
-			<label>Link #{type}</label>
+			<label>Link #{typeOrder}</label>
 			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
