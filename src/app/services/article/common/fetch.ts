@@ -38,6 +38,14 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
 
+	// TODO convert download url if custom parser needs to download from
+	// a different location
+	// Example LabradorParser, retrieve article ID from URL and create
+	// URL for the JSON API:
+	// ${labradorHost}/api/v1/article/${articleID}.json?content=full
+	// So something like:
+	// https://labrador.dagbladet.no/api/v1/article/12345678.json?content=full
+
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
 
