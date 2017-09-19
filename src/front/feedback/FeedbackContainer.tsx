@@ -22,8 +22,10 @@ import 'front/scss/fb.scss';
 import Article from 'base/Article';
 import FeedbackItem from 'base/FeedbackItem';
 
+import createArticleElement from 'front/component/createArticleElement';
+import { ArticleElement } from 'front/component/ArticleElement';
+
 import FinishButton from 'front/feedback/FinishButton';
-import ArticleElement from 'front/component/ArticleElement';
 import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
 import {
@@ -66,18 +68,6 @@ extends React.Component <any, FeedbackContainerState> {
 			});
 		});
 	}
-	private createArticleElement(item, index : number) {
-		const elemKey = `element-${item.order.item}`;
-		return <ArticleElement
-			key={elemKey}
-			ref={(i : any) => { this.articleElements.push(i); }}
-			elemOrder={item.order.item}
-			typeOrder={item.order.type}
-
-			type={item.type}
-			originalText={item.text}
-		/>;
-	}
 
 	public sendFeedback() {
 		const items : FeedbackItem[] = this.articleElements
@@ -110,31 +100,41 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 
 	public render() {
-		if (this.state.sent) {
-			return (
-				<div className="confirmation">
-					<div className="container">
-						<div className="row section frontpage">
-							<div className="content u-full-width">
-								<PostFeedbackContainer
-									feedbackId = {this.state.feedbackId}
-									articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
-			);
-		}
+		return this.state.sent ? this.renderConfirmationPage() : this.renderFeedbackForm();
+	}
+
+	private renderFeedbackForm() {
 		// Initial state has no article data, render empty
 		if (this.state.article === null) {
 			return null;
 		}
 
+		const refFn = (i : any) => { this.articleElements.push(i); };
+
 		// Iterate article elements and render sub components
-		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement.bind(this)) }
-			<FinishButton SendForm={() => this.sendFeedback()} />
-		</section>;
+		return (
+			<section id="content">
+				{ this.state.article.items.map(item => createArticleElement(item, refFn)) }
+				<FinishButton SendForm={() => this.sendFeedback()} />
+			</section>
+		);
 	}
+
+	private renderConfirmationPage() {
+		return (
+			<div className="confirmation">
+				<div className="container">
+					<div className="row section frontpage">
+						<div className="content u-full-width">
+							<PostFeedbackContainer
+								feedbackId = {this.state.feedbackId}
+								articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 }
