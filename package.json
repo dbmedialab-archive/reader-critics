@@ -131,7 +131,7 @@
 		"@types/passport-local": "1.0.31",
 		"@types/react": "15.6.0",
 		"@types/react-dom": "15.5.4",
-		"@types/react-redux": "5.0.4",
+		"@types/react-redux": "5.0.9",
 		"@types/react-router": "4.0.15",
 		"@types/react-router-dom": "4.0.5",
 		"@types/redux-promise-middleware": "0.0.7",
