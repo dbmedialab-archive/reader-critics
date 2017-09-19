@@ -49,7 +49,7 @@ export interface ArticleElementState {
 	text: string;
 }
 
-export default class ArticleElement
+export abstract class ArticleElement
 extends React.Component <ArticleElementProp, ArticleElementState>
 {
 
@@ -140,99 +140,11 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		>Rediger</a>;
 	}
 
-	private getContentElement() {
-		switch (this.props.item.type) {
-			case ArticleItemType.MainTitle:
-				return this.MainTitleElement();
-			case ArticleItemType.SubTitle:
-				return this.SubTitleElement();
-
-			case ArticleItemType.LeadIn:
-				return this.LeadInElement();
-			case ArticleItemType.SubHeading:
-				return this.SubHeadingElement();
-			case ArticleItemType.Paragraph:
-				return this.ParagraphElement();
-
-			case ArticleItemType.FeaturedImage:
-				return this.FeaturedImageElement();
-			case ArticleItemType.Figure:
-				return this.FigureElement();
-			case ArticleItemType.Link:
-				return this.LinkElement();
-		}
-	}
-
-	private MainTitleElement() {
-		return <div>
-			<label>Tittel</label>
-			<h1>{this.TextDiff(this.props.item.originalText, this.state.text)}</h1>
-		</div>;
-	}
-
-	private SubTitleElement() {
-		return <div>
-			<label>Tittel</label>
-			<h2>{this.TextDiff(this.props.item.originalText, this.state.text)}</h2>
-		</div>;
-	}
-
-	private LeadInElement() {
-		return <div>
-			<label>Innledning</label>
-			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
-		</div>;
-	}
-
-	private FeaturedImageElement() {
-		return <div>
-			<label>Featured something Image</label>
-			{this.props.item.href?
-				<p><img src={this.props.item.href} width="100%"/></p>
-			:null}
-			<p>{this.TextDiff(this.props.item.altText, this.state.text)}</p>
-		</div>;
-	}
-
-	private SubHeadingElement() {
-		const {type} = this.props.item.order;
-		return <div>
-			<label>Mellomtittel #{type}</label>
-			<h3>{this.TextDiff(this.props.item.originalText, this.state.text)}</h3>
-		</div>;
-	}
-
-	private ParagraphElement() {
-		const {type} = this.props.item.order;
-		return <div>
-			<label>Avsnitt #{type}</label>
-			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
-		</div>;
-	}
-
-	private FigureElement() {
-		const {type} = this.props.item.order;
-		return <div>
-			<label>Bilde #{type}</label>
-			{this.props.item.href?
-				<p><img src={this.props.item.href} width="100%"/></p>
-			:null}
-			<p>{this.TextDiff(this.props.item.altText, this.state.text)}</p>
-		</div>;
-	}
-
-	private LinkElement() {
-		const {type} = this.props.item.order;
-		return <div>
-			<label>Link #{type}</label>
-			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
-		</div>;
-	}
+	protected abstract getContentElement() : JSX.Element;
 
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
-	private TextDiff(text1 : string = '', text2 : string) : any {
-
+	protected textDiff(text1 : string = '', text2 : string) : any {
 		return text2 === undefined
 			? text1
 			: textDiffToHTML(text1, text2);
