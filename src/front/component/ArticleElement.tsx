@@ -31,10 +31,16 @@ import {
 import textDiffToHTML from './textDiffToHTML';
 
 export interface ArticleElementProp {
-	elemOrder : number;
-	typeOrder : number;
-	type : ArticleItemType;
-	originalText : string;
+	item: {
+		order : {
+			item : number;
+			type : number;
+		}
+		type : ArticleItemType;
+		originalText : string;
+		href?: string;
+		altText? : string;
+	}
 }
 
 export interface ArticleElementState {
@@ -58,14 +64,14 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		this.state = {
 			edited: false,
 			editing: false,
-			text: props.originalText,
+			text: props.item.originalText || props.item.altText,
 		};
 	}
 
 	public getCurrentData() : FeedbackItem {
 		const formData : EditFormPayload = this.references.editForm.getCurrentData();
 
-		if (formData.text === this.props.originalText
+		if (formData.text === this.props.item.originalText
 			&& !formData.comment
 			&& formData.links.length <= 0
 		) {
@@ -73,88 +79,86 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			return null;
 		}
 
-		if (formData.text === this.props.originalText) {
+		if (formData.text === this.props.item.originalText) {
 			// If the text wasn't changed, delete it before submitting
 			formData.text = '';
 		}
 
 		return Object.assign({
-			type: this.props.type,
-
-			order: {
-				item: this.props.elemOrder,
-				type: this.props.typeOrder,
-			},
+			type: this.props.item.type,
+			order: this.props.item.order,
 		}, formData);
 	}
 
 	public render() : JSX.Element {
-		const css = classnames('card', this.props.type, {
+		const css = classnames('card', this.props.item.type, {
 			editing: this.state.editing,
 			edited: this.state.edited,
 		});
-
-		return <article id={`article-el-${this.props.elemOrder}`} className={css}>
+		const {item} = this.props.item.order;
+		return <article id={`article-el-${item}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>
 				{ this.createEditForm() }
 				<footer>
-					{ this.createResetButton() }
+					{ this.state.edited && this.createResetButton() }
 					{ this.createEditButton() }
 				</footer>
 		</article>;
 	}
 
 	private createEditForm() : JSX.Element {
+		const {type} = this.props.item.order;
 		return <ArticleEditForm
-			id={this.props.typeOrder}
+			id={type}
 			ref={(i : any) => { this.references.editForm = i; }}
 			originalText={this.state.text}
 			onCancel={this.CancelInput.bind(this)}
 			onSave={this.SaveData.bind(this)}
-			type={this.props.type}
+			type={this.props.item.type}
 		/>;
 	}
 
 	private createResetButton() : JSX.Element {
+		const {item} = this.props.item.order;
 		const css = classnames('button', 'reset');
 		return <a
-			id={`btn-reset-${this.props.elemOrder}`}
+			id={`btn-reset-${item}`}
 			className={css}
 			onClick={ this.restoreOriginalContent.bind(this) }
 		>Slett</a>;
 	}
 
 	private createEditButton() : JSX.Element {
+		const {item} = this.props.item.order;
 		const css = classnames('button', 'edit');
 		return <a
-			id={`btn-edit-${this.props.elemOrder}`}
+			id={`btn-edit-${item}`}
 			className={css}
 			onClick={ this.EnableEditing.bind(this) }
 		>Rediger</a>;
 	}
 
 	private getContentElement() {
-		switch (this.props.type) {
-			case ArticleItemType.MainTitle.toString():
+		switch (this.props.item.type) {
+			case ArticleItemType.MainTitle:
 				return this.MainTitleElement();
-			case 'title':
+			case ArticleItemType.SubTitle:
 				return this.SubTitleElement();
 
-			case 'lead':
+			case ArticleItemType.LeadIn:
 				return this.LeadInElement();
-			case 'featured':
-				return this.FeaturedImageElement();
-
-			case 'subhead':
+			case ArticleItemType.SubHeading:
 				return this.SubHeadingElement();
-			case 'paragraph':
+			case ArticleItemType.Paragraph:
 				return this.ParagraphElement();
 
-			case 'figure':
+			case ArticleItemType.FeaturedImage:
+				return this.FeaturedImageElement();
+			case ArticleItemType.Figure:
 				return this.FigureElement();
-			case ArticleItemType.Link.toString():
+			case ArticleItemType.Link:
 				return this.LinkElement();
 		}
 	}
@@ -162,65 +166,76 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	private MainTitleElement() {
 		return <div>
 			<label>Tittel</label>
-			<h1>{this.TextDiff()}</h1>
+			<h1>{this.TextDiff(this.props.item.originalText, this.state.text)}</h1>
 		</div>;
 	}
 
 	private SubTitleElement() {
 		return <div>
 			<label>Tittel</label>
-			<h2>{this.TextDiff()}</h2>
+			<h2>{this.TextDiff(this.props.item.originalText, this.state.text)}</h2>
 		</div>;
 	}
 
 	private LeadInElement() {
 		return <div>
 			<label>Innledning</label>
-			<p>{this.TextDiff()}</p>
+			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
 
 	private FeaturedImageElement() {
 		return <div>
-			<label>Featured Image</label>
-			<p>{this.state.text}</p>
+			<label>Featured something Image</label>
+			{this.props.item.href?
+				<p><img src={this.props.item.href} width="100%"/></p>
+			:null}
+			<p>{this.TextDiff(this.props.item.altText, this.state.text)}</p>
 		</div>;
 	}
 
 	private SubHeadingElement() {
+		const {type} = this.props.item.order;
 		return <div>
-			<label>Mellomtittel #{this.props.typeOrder}</label>
-			<h3>{this.TextDiff()}</h3>
+			<label>Mellomtittel #{type}</label>
+			<h3>{this.TextDiff(this.props.item.originalText, this.state.text)}</h3>
 		</div>;
 	}
 
 	private ParagraphElement() {
+		const {type} = this.props.item.order;
 		return <div>
-			<label>Avsnitt #{this.props.typeOrder}</label>
-			<p>{this.TextDiff()}</p>
+			<label>Avsnitt #{type}</label>
+			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
 
 	private FigureElement() {
+		const {type} = this.props.item.order;
 		return <div>
-			<label>Bilde #{this.props.typeOrder}</label>
-			<p>{this.state.text}</p>
+			<label>Bilde #{type}</label>
+			{this.props.item.href?
+				<p><img src={this.props.item.href} width="100%"/></p>
+			:null}
+			<p>{this.TextDiff(this.props.item.altText, this.state.text)}</p>
 		</div>;
 	}
 
 	private LinkElement() {
+		const {type} = this.props.item.order;
 		return <div>
-			<label>Link #{this.props.typeOrder}</label>
-			<p>{this.TextDiff()}</p>
+			<label>Link #{type}</label>
+			<p>{this.TextDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
 
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
-	private TextDiff() : any {
-		return this.state.text === undefined
-			? this.props.originalText
-			: textDiffToHTML(this.props.originalText, this.state.text);
+	private TextDiff(text1 : string = '', text2 : string) : any {
+
+		return text2 === undefined
+			? text1
+			: textDiffToHTML(text1, text2);
 	}
 
 	// Changes the state for the component so correct css-classes are applied
@@ -246,10 +261,10 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	private restoreOriginalContent(e : any) {
 		this.setState({
 			edited: false,
-			text: this.props.originalText,
+			text: this.props.item.originalText,
 		});
 
-		this.references.editForm.reset(this.props.originalText);
+		this.references.editForm.reset(this.props.item.originalText);
 	}
 
 	// Callback for childs onCancel funciton.
