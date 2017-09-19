@@ -18,6 +18,7 @@
 
 // tslint:disable cyclomatic-complexity
 // tslint:disable max-file-line-count
+
 /*
  * Javascript Diff Algorithm
  *  By John Resig (http://ejohn.org/)
@@ -29,6 +30,7 @@
  * More Info:
  *  http://ejohn.org/projects/javascript-diff-algorithm/
  */
+
 interface DiffParsingItem {
 	rows: number[];			// Contains indexes of item's positions
 }
@@ -111,8 +113,8 @@ function diff(o: string[], n: string[]): DiffResultObject {
 	Building an object or a string with result of diff operation
  */
 export default function diffStringDefault(
-	o : string,
-	n : string,
+	orgStr : string,
+	newStr : string,
 	isHTML : boolean = false
 ) : Array<DiffStringResultObject> | string
 {
@@ -164,8 +166,8 @@ export default function diffStringDefault(
 	const lastSymbol: string = isHTML ? '\n' : '';
 	let str: string = '';
 
-	o = o.replace(/\s+$/, '');
-	n = n.replace(/\s+$/, '');
+	const o = orgStr.replace(/\s+$/, '');
+	const n = newStr.replace(/\s+$/, '');
 
 	// Pre-Parsing the strings
 	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
@@ -224,7 +226,9 @@ export default function diffStringDefault(
 /*
  Building an object or a string with result of diff operation
  */
-export function diffString(o: string, n: string): Array<DiffStringResultObject> {
+export function diffString(
+	orgStr : string,
+	newStr : string): Array<DiffStringResultObject> {
 	// Updates the previous string part adding to it value and count of current item
 	function updatePrevious(value: string) {
 		const lastIndex: number = result.length - 1;
@@ -271,11 +275,11 @@ export function diffString(o: string, n: string): Array<DiffStringResultObject> 
 	const result: DiffStringResultObject[] = [];
 	const lastSymbol: string = '';
 
-	o = o.replace(/\s+$/, '');
-	n = n.replace(/\s+$/, '');
+	const o = orgStr.replace(/\s+$/, '');
+	const n = newStr.replace(/\s+$/, '');
 
 	// Pre-Parsing the strings
-	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+	const out : DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
 
 	// Setting an array of space characters to add
 	let oSpace: string[] = o.match(/\s+/g);
@@ -325,15 +329,15 @@ export function diffString(o: string, n: string): Array<DiffStringResultObject> 
 /*
  Building an object or a string with result of diff operation
  */
-export function diffStringHtml(o: string, n: string): string {
+export function diffStringHtml(orgStr : string, newStr : string) : string {
 	const lastSymbol: string = '\n';	// If building an html text using the '/n' as an end of string
 	let str: string = '';
 
-	o = o.replace(/\s+$/, '');
-	n = n.replace(/\s+$/, '');
+	const o = orgStr.replace(/\s+$/, '');
+	const n = newStr.replace(/\s+$/, '');
 
 	// Pre-Parsing the strings
-	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+	const out : DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
 
 	// Setting an array of space characters to add
 	let oSpace: string[] = o.match(/\s+/g);
