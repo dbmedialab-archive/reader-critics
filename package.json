@@ -179,6 +179,7 @@
 			"eslint-plugin-import",
 			"eslint-plugin-jsx-a11y",
 			"eslint-plugin-react",
+			"foundation-sites",
 			"geckodriver",
 			"npm-run-all",
 			"source-map-support",
