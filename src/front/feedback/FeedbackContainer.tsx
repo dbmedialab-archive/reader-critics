@@ -68,14 +68,12 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 	private createArticleElement(item, index : number) {
 		const elemKey = `element-${item.order.item}`;
+		const {text, ...articleItem} = item;
+		articleItem.originalText = text;
 		return <ArticleElement
 			key={elemKey}
 			ref={(i : any) => { this.articleElements.push(i); }}
-			elemOrder={item.order.item}
-			typeOrder={item.order.type}
-
-			type={item.type}
-			originalText={item.text}
+			item={articleItem}
 		/>;
 	}
 
