@@ -159,7 +159,7 @@
 		"source-map-support": "^0.4.16",
 		"supports-color": "^4.2.1",
 		"ts-node": "3.3.0",
-		"tsconfig-paths": "2.2.0",
+		"tsconfig-paths": "2.3.0",
 		"tslint": "5.7.0",
 		"typescript": "2.5.2",
 		"webpack-bundle-analyzer": "^2.8.3"
