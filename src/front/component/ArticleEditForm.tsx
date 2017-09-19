@@ -19,8 +19,9 @@
 // tslint:disable max-file-line-count
 import * as React from 'react';
 
-import DynamicList from 'front/component/DynamicList';
+import ArticleItemType from 'base/ArticleItemType';
 
+import DynamicList from 'front/component/DynamicList';
 export interface EditFormPayload {
 	text : string;
 	comment : string;
@@ -37,7 +38,7 @@ export interface ArticleEditFormProp {
 	/** The text of the element, be it title, paragraph, lead etc. */
 	originalText: string;
 	/** The type of the content, e.g. title, subtitle, paraghrap etc */
-	type: string;
+	type: ArticleItemType;
 }
 
 export interface ArticleEditFormState {
