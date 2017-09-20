@@ -18,6 +18,7 @@
 
 import {
 	isObject,
+	isString,
 } from 'lodash';
 
 import Article from 'base/Article';
@@ -45,10 +46,8 @@ export default function(data : any) : Promise <Feedback> {
 	catch (error) {
 		return Promise.reject(error);
 	}
-
 	let article : Article;
 	let enduser : EndUser;
-
 	return Promise.all([
 		getArticle(data.article).then((a : Article) => {
 			// console.log('------------------------------------------------------------');
@@ -56,24 +55,30 @@ export default function(data : any) : Promise <Feedback> {
 			// console.log('\n');
 			article = a;
 		}),
-		// Get Anonymous user from DB
-		enduserService.get(null, null).then((u : EndUser) => enduser = u),
+		getEndUser(data.user).then((u : EndUser) => enduser = u),
 	])
 	.then(() => feedbackService.save(article, enduser, data.feedback.items));
 }
-
 // Fetch article object
-
 function getArticle(articleData : any) : Promise <Article> {
 	const url = articleData.url;
 	const version = articleData.version;
-
 	return ArticleURL.from(url)
 	.then(articleURL => articleService.get(articleURL, version, true))
 	.then((article : Article) => (article === null
 		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
 		: article
 	));
+}
+// Fetch user object from database or create a new one
+function getEndUser(userData : any) : Promise <EndUser> {
+	const name = isString(userData.name) ? userData.name : null;
+	const email = isString(userData.email) ? userData.email : null;
+	return enduserService.get(name, email)
+	.then((u : EndUser) => u !== null ? u : enduserService.save({
+		name,
+		email,
+	}));
 }
 
 // Schema Validation
@@ -88,5 +93,8 @@ function validateSchema(data : any) {
 	}
 	if (!isObject(data.feedback)) {
 		throw new SchemaValidationError('Feedback data is missing "feedback" object');
+	}
+	if (!isObject(data.user)) {
+		throw new SchemaValidationError('Feedback data is missing "user" object');
 	}
 }
