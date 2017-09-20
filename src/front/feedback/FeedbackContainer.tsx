@@ -22,8 +22,10 @@ import 'front/scss/fb.scss';
 import Article from 'base/Article';
 import FeedbackItem from 'base/FeedbackItem';
 
+import createArticleElement from 'front/component/createArticleElement';
+import { ArticleElement } from 'front/component/ArticleElement';
+
 import FinishButton from 'front/feedback/FinishButton';
-import ArticleElement from 'front/component/ArticleElement';
 import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
 import { fetchArticle } from 'front/apiCommunication';
@@ -51,8 +53,6 @@ extends React.Component <any, FeedbackContainerState> {
 			isFeedbackReady: false,
 			articleItems: [],
 		};
-		this.nextFeedbackStep = this.nextFeedbackStep.bind(this);
-		this.createArticleElement = this.createArticleElement.bind(this);
 	}
 
 	componentWillMount() {
@@ -65,53 +65,62 @@ extends React.Component <any, FeedbackContainerState> {
 			});
 		});
 	}
-	private createArticleElement(item, index : number) {
-		const elemKey = `element-${item.order.item}`;
-		const {text, ...articleItem} = item;
-		articleItem.originalText = text;
-		return <ArticleElement
-			key={elemKey}
-			ref={(i : any) => { this.articleElements.push(i); }}
-			item={articleItem}
-		/>;
-	}
+
 	private nextFeedbackStep() {
 		const items : FeedbackItem[] = this.articleElements
 			.map((element : ArticleElement) => element.getCurrentData())
-			.filter((item : FeedbackItem) => item !== null);
+			.filter((item : FeedbackItem) => item !== null);  // TODO fix with "isEdited" or similar
 
 		if (items.length <= 0) {
 			alert('The feedback is still empty, nothing was sent');
 			return;
 		}
-		this.setState({isFeedbackReady : true, articleItems: items});
+
+		this.setState({
+			isFeedbackReady: true,
+			articleItems: items,
+		});
 	}
+
 	public render() {
-		if (this.state.isFeedbackReady) {
-			return (
-				<div className="confirmation">
-					<div className="container">
-						<div className="row section frontpage">
-							<div className="content u-full-width">
-								<PostFeedbackContainer
-									articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
-									articleItems={this.state.articleItems}
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
-			);
-		}
+		return this.state.isFeedbackReady
+			? this.renderConfirmationPage()
+			: this.renderFeedbackForm();
+	}
+
+	private renderFeedbackForm() {
 		// Initial state has no article data, render empty
 		if (this.state.article === null) {
 			return null;
 		}
 
+		const refFn = (i : any) => { this.articleElements.push(i); };
+		const sendFn = () => this.nextFeedbackStep.call(this);
+
 		// Iterate article elements and render sub components
-		return <section id="content">
-			{ this.state.article.items.map(this.createArticleElement) }
-			<FinishButton SendForm={() => this.nextFeedbackStep()} />
-		</section>;
+		return (
+			<section id="content">
+				{ this.state.article.items.map(item => createArticleElement(item, refFn)) }
+				<FinishButton SendForm={sendFn} />
+			</section>
+		);
 	}
+
+	private renderConfirmationPage() {
+		return (
+			<div className="confirmation">
+				<div className="container">
+					<div className="row section frontpage">
+						<div className="content u-full-width">
+							<PostFeedbackContainer
+								articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
+								articleItems={this.state.articleItems}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
+
 }
