@@ -3,6 +3,7 @@
 	font-style: normal;
 	font-weight: 400;
 	text-transform: none;
+	font-feature-settings: 'liga';
 }
 @mixin appear {
 	animation: appear $speed-appear;

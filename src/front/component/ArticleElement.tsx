@@ -16,7 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable max-file-line-count
 import * as classnames from 'classnames';
 import * as React from 'react';
 
