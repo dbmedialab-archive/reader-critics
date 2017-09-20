@@ -33,9 +33,3 @@ export function feedbackPostHandler(requ : Request, resp : Response) : void {
 	.then((doc) => okResponse(resp, {ID: doc.ID}))
 	.catch(error => errorResponse(resp, error));
 }
-
-export function feedbackUpdateEndUserHandler(requ : Request, resp : Response) : void {
-	feedbackService.validateAndUpdateEndUser(requ.params.id, requ.body)
-		.then((doc) => okResponse(resp, {ID: doc.ID}))
-		.catch(error => errorResponse(resp, error));
-}
