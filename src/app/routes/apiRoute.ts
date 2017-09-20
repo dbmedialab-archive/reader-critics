@@ -28,7 +28,7 @@ import articleHandler from './api/articleHandler';
 import suggestionHandler from './api/suggestionHandler';
 
 import { errorResponse } from './api/apiResponse';
-import { feedbackPostHandler, feedbackUpdateEndUserHandler} from 'app/routes/api/feedbackHandler';
+import { feedbackPostHandler} from 'app/routes/api/feedbackHandler';
 
 // Prepare and export Express router
 
@@ -45,7 +45,6 @@ apiRoute.use(bodyParser.json({
 apiRoute.get('/article', articleHandler);
 
 apiRoute.post('/feedback', feedbackPostHandler);
-apiRoute.put('/feedback/:id/enduser', feedbackUpdateEndUserHandler);
 apiRoute.post('/suggest', suggestionHandler);
 
 apiRoute.get('/*', defaultHandler);
