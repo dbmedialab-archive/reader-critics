@@ -16,36 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Feedback from 'base/Feedback';
-import FeedbackService from './FeedbackService';
+import * as React from 'react';
 
-import {
-	FeedbackDocument,
-	FeedbackModel
-} from 'app/db/models';
+import { ArticleElement } from '../ArticleElement';
 
-import createPersistingService from '../createPersistingService';
+export default class LeadInElement extends ArticleElement {
 
-import validateAndSave from './common/validateAndSave';
+	protected getContentElement() : JSX.Element {
+		return <div>
+			<label>Innledning</label>
+			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
+		</div>;
+	}
 
-import {
-	getByArticle,
-	getByArticleAuthor,
-	getRange,
-	save,
-	updateEndUser,
-} from './FeedbackDAO';
-
-const service : FeedbackService
-	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
-		FeedbackModel, {
-			getByArticle,
-			getByArticleAuthor,
-			getRange,
-			save,
-			validateAndSave,
-			updateEndUser,
-		}
-	);
-
-module.exports = service;
+}
