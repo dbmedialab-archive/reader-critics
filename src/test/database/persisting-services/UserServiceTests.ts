@@ -19,15 +19,15 @@
 import * as path from 'path';
 import * as Promise from 'bluebird';
 
-import {assert} from 'chai';
-import {ISuiteCallbackContext} from 'mocha';
+import { assert } from 'chai';
+import { ISuiteCallbackContext } from 'mocha';
 
 import User from 'base/User';
 import UserRole from 'base/UserRole';
 
-import {defaultLimit} from 'app/services/BasicPersistingService';
-import {userService} from 'app/services';
-import {EmptyError} from 'app/util/errors';
+import { defaultLimit } from 'app/services/BasicPersistingService';
+import { userService } from 'app/services';
+import { EmptyError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
@@ -51,18 +51,18 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('clear()', () => userService.clear());
 
-	it('save()', () =>  app.loadJSON(demoUsers)
-				.then(data => {
-					assert.isArray(data);
-					userCount = data.length;
-					return Promise.mapSeries(data, userService.save);
-				})
-				.then((results: User[]) => {
-					assert.isArray(results);
-					assert.lengthOf(results, userCount, 'Number of saved objects does not match');
+	it('save()', () => app.loadJSON(demoUsers)
+		.then(data => {
+			assert.isArray(data);
+			userCount = data.length;
+			return Promise.mapSeries(data, userService.save);
+		})
+		.then((results: User[]) => {
+			assert.isArray(results);
+			assert.lengthOf(results, userCount, 'Number of saved objects does not match');
 
-					results.forEach(u => assertUserObject(u));
-				})
+			results.forEach(u => assertUserObject(u));
+		})
 	);
 
 	it('count()', () => userService.count().then(count => {
@@ -87,11 +87,11 @@ export default function(this: ISuiteCallbackContext) {
 	it('checkPassword()', () => {
 		return Promise.all([
 			userService.get('Indiana Horst')
-					.then(u => userService.checkPassword(u, 'nix')),
+				.then(u => userService.checkPassword(u, 'nix')),
 			userService.get('Ernst Eisenbichler')
-					.then(u => userService.checkPassword(u, 'test123')),
+				.then(u => userService.checkPassword(u, 'test123')),
 			userService.get('Philipp Gröschler', 'philipp@sol.no')
-					.then(u => userService.checkPassword(u, 'freshguacamole')),
+				.then(u => userService.checkPassword(u, 'freshguacamole')),
 		]).then((results: boolean[]) => {
 			assert.isFalse(results[0], 'Indiana Horst password is wrong');
 			assert.isTrue(results[1], 'Ernst Eisenbichler password is wrong');
@@ -143,20 +143,17 @@ const assertUserObject = (u: User, noPassword = true, name?: string) => {
 		assert.notProperty(u, 'password');
 	}
 
-	if (u.name === null) {
+	assert.isString(u.name);
+	assert.isNotEmpty(u.name);
+	
+	if (name) {
+		assert.strictEqual(u.name, name);
+	}
+
+	if (u.email) {
 		assert.isString(u.email);
-	}
-	if (u.email === null) {
-		assert.isString(u.name);
-	}
-	if (u.name === null && u.email === null) {
-		assert.fail('One of "name" or "email" has to be set');
 	}
 
 	assert.isString(u.role);
 	assert.include(Object.values(UserRole), u.role);
-
-	if (name) {
-		assert.strictEqual(u.name, name);
-	}
 };
