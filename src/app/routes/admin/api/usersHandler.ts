@@ -24,29 +24,28 @@ import {
 import {
 	bulkResponse,
 	errorResponse,
-	okApiResponse,
+	okResponse,
 } from 'app/routes/api/apiResponse';
 
 import { userService } from 'app/services';
 
 import emptyCheck from 'app/util/emptyCheck';
-
 import pagination from 'app/util/pagination';
 
 /*
- * Creating new user
+ * Create new user
  */
-export function create (requ: Request, resp: Response) : void {
+export function create(requ : Request, resp : Response) : void {
 	emptyCheck(requ.body);
 	userService.validateAndSave(requ.body)
-	.then(user => okApiResponse(resp, user))
+	.then(user => okResponse(resp, user))
 	.catch(error => errorResponse(resp, error));
 }
 
 /*
- * Showing list of users. pagination included
+ * Show list of users. pagination included
  */
-export function list (requ: Request, resp: Response) : void {
+export function list(requ : Request, resp : Response) : void {
 	const params = pagination(requ);
 	userService.getRange(params.skip, params.limit, params.sort)
 	.then(users => bulkResponse(resp, users))
@@ -54,20 +53,20 @@ export function list (requ: Request, resp: Response) : void {
 }
 
 /*
- * Deletes user by ID parameter
+ * Delete user by ID parameter
  */
-export function doDelete (requ: Request, resp: Response) : void {
+export function doDelete(requ : Request, resp : Response) : void {
 	userService.doDelete(requ.params.id)
-	.then(res => okApiResponse(resp, res))
+	.then(result => okResponse(resp, result))
 	.catch(err => errorResponse(resp, err));
 }
 
 /*
- * Updating user by ID
+ * Update user by ID
  * Doesn't affect user password
  */
-export function update (requ: Request, resp: Response) : void {
+export function update(requ : Request, resp : Response) : void {
 	userService.validateAndUpdate(requ.params.id, requ.body)
-	.then(res => okApiResponse(resp, res))
+	.then(result => okResponse(resp, result))
 	.catch(err => errorResponse(resp, err));
 }
