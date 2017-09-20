@@ -20,9 +20,16 @@
 import * as React from 'react';
 import Transition from 'react-transition-group/Transition';
 
-import {sendFeedbackUser} from 'front/apiCommunication';
+import {
+	getArticleURL,
+	getArticleVersion,
+} from 'front/uiGlobals';
+
+import { sendFeedback } from 'front/apiCommunication';
 import EndUser from 'base/EndUser';
+
 export interface FeedbackUserState {
+	isSend: boolean;
 	user: EndUser;
 	nameField: {
 		show: boolean,
@@ -52,9 +59,10 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 	constructor() {
 		super();
 		this.state = {
+			isSend: false,
 			user : {
-					name: '',
-					email: '',
+					name: null,
+					email: null,
 			},
 			nameField: {
 				show: true,
@@ -83,6 +91,16 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent = this.hideComponent.bind(this);
 		this.showComponent = this.showComponent.bind(this);
 		this.afterSendingAnimation = this.afterSendingAnimation.bind(this);
+		this.sendFeedback = this.sendFeedback.bind(this);
+		this.onUnload = this.onUnload.bind(this);
+	}
+
+	componentDidMount() {
+		window.addEventListener('beforeunload', this.onUnload, false);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('beforeunload', this.onUnload);
 	}
 
 	private afterSendingAnimation() {
@@ -93,6 +111,17 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent('sendBtn', 100);
 		this.showComponent('backBtn', 400);
 		this.showComponent('finalText', 400);
+	}
+
+	onUnload(event) {
+		if (!this.state.isSend) {
+			event.preventDefault();
+			this.sendFeedback();
+			const dialogText = 'Thank you for your feedback';
+			(event || window.event).returnValue = dialogText; //Gecko + IE
+			return dialogText;
+		}
+		return false;
 	}
 
 	private hideComponent(param, timeout = 0) {
@@ -125,19 +154,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 
 	private _handleSubmit(e) {
 		e.preventDefault();
-		if (this.state.user.name === '' && this.state.user.email === '') {
-			this.afterSendingAnimation();
-			return;
-		}
-
-		if (!this.props.feedbackId) {
-			return;
-		}
-
-		sendFeedbackUser(this.props.feedbackId, {user: this.state.user})
-		.then((response) => {
-			this.afterSendingAnimation();
-		});
+		this.sendFeedback();
 	}
 
 	private _inputChanged(e) {
@@ -145,6 +162,24 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		const userObj = this.state.user;
 		userObj[fieldName] = e.target.value;
 		this.setState({user:userObj});
+	}
+
+	public sendFeedback() {
+		const {user} = this.state;
+
+		return sendFeedback({
+			article: {
+				url: getArticleURL(),
+				version: getArticleVersion(),
+			},
+			user,
+			feedback: {
+				items: this.props.articleItems,
+			},
+		})
+		.then((response) => {
+			this.setState({isSend:true}, this.afterSendingAnimation);
+		});
 	}
 
 	public render() {
