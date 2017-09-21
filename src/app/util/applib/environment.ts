@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import config from 'app/config';
+
 // Application environment
 
 /** The current environment that this app is running in */
@@ -34,3 +36,5 @@ export const env : string = findEnvironment();
 export const isProduction : boolean = process.env.NODE_ENV === 'production';
 export const isDevelop : boolean = process.env.NODE_ENV === 'development';
 export const isTest : boolean = process.env.NODE_ENV === 'test';
+
+export const locale : string = config.get('localization.systemLocale');

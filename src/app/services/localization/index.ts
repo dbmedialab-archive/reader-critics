@@ -40,7 +40,7 @@ export function initLocalizationStrings() : Promise <void> {
 
 export function getFrontendStrings(website : Website) : Promise <Object> {
 	const allStrings = Object.assign({}, strings.common, strings.frontend);
-	return Promise.resolve(flatten(applyLocale(allStrings, website.locale, 'en')));
+	return Promise.resolve(flatten(applyLocale(allStrings, website.locale, app.locale)));
 }
 
 function applyLocale(input : any, locale : string, fallback : string) : any {
