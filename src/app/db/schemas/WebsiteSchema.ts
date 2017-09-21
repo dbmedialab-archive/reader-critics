@@ -18,6 +18,8 @@
 
 import { Schema } from 'mongoose';
 
+import config from 'app/config';
+
 const WebsiteSchema : Schema = new Schema({
 	name: {
 		type: String,
@@ -26,6 +28,12 @@ const WebsiteSchema : Schema = new Schema({
 	hosts: {
 		type: [String],
 		required: true,
+	},
+
+	locale: {
+		type: String,
+		required: false,
+		default: config.get('localization.systemLocale'),
 	},
 
 	chiefEditors: [Schema.Types.Mixed],
