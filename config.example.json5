@@ -13,6 +13,9 @@
 			},
 		},
 	},
+	localization: {
+		defaultLocale: 'en',
+	},
 	auth: {
 		jwt: {
 			secret: fill,
