@@ -37,4 +37,5 @@ export const isProduction : boolean = process.env.NODE_ENV === 'production';
 export const isDevelop : boolean = process.env.NODE_ENV === 'development';
 export const isTest : boolean = process.env.NODE_ENV === 'test';
 
-export const locale : string = config.get('localization.systemLocale');
+//export const locale : string = config.get('localization.systemLocale');
+export const locale : string = 'en';

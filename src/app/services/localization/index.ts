@@ -19,10 +19,12 @@
 import { flatten } from 'flat';
 
 import Website from 'base/Website';
-
+import config from 'app/config';
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+
+export const systemLocale : string = config.get('localization.systemLocale');
 
 interface Strings {
 	common? : string;
@@ -40,20 +42,20 @@ export function initLocalizationStrings() : Promise <void> {
 
 export function getFrontendStrings(website : Website) : Promise <Object> {
 	const allStrings = Object.assign({}, strings.common, strings.frontend);
-	return Promise.resolve(flatten(applyLocale(allStrings, website.locale, app.locale)));
+	return Promise.resolve(flatten(applyLocale(allStrings, website.locale)));
 }
 
-function applyLocale(input : any, locale : string, fallback : string) : any {
+function applyLocale(input : any, locale : string) : any {
 	const a = {};
 
 	Object.keys(input).forEach(key => {
 		const o = input[key];
 
 		if (isAllStrings(o)) {
-			a[key] = o[locale] || o[fallback];
+			a[key] = o[locale] || o[systemLocale];
 		}
 		else {
-			a[key] = applyLocale(o, locale, fallback);
+			a[key] = applyLocale(o, locale);
 		}
 	});
 

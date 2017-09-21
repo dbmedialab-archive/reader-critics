@@ -17,8 +17,7 @@
 //
 
 import { Schema } from 'mongoose';
-
-import * as app from 'app/util/applib';
+import { systemLocale } from 'app/services/localization';
 
 const WebsiteSchema : Schema = new Schema({
 	name: {
@@ -33,7 +32,7 @@ const WebsiteSchema : Schema = new Schema({
 	locale: {
 		type: String,
 		required: false,
-		default: app.locale,
+		default: systemLocale,
 	},
 
 	chiefEditors: [Schema.Types.Mixed],
