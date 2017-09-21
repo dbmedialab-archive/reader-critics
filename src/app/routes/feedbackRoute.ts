@@ -31,6 +31,7 @@ import PageTemplate from 'base/PageTemplate';
 import Website from 'base/Website';
 
 import {
+	localizationService,
 	templateService,
 	websiteService,
 } from 'app/services';
@@ -103,19 +104,23 @@ function feedbackHandler(
 
 	// Identify the website to make sure we are actually responsible for this
 	// content and also load the page template
+	let website : Website;
 
-	return websiteService.identify(articleURL).then((website : Website) => {
-		if (website === null) {
+	return websiteService.identify(articleURL).then((w : Website) => {
+		if (w === null) {
 			return Promise.reject(new NotFoundError('Could not identify website'));
 		}
+
+		website = w;
 
 		// Now that we have a website object, load template and localization in parallel:
 		return Promise.all([
 			templateService.getFeedbackPageTemplate(website),
+			localizationService.getFrontendStrings(website),
 		]);
 	})
 	// Use the page template, inject parameters and serve to the client
-	.spread((template : PageTemplate, ...rest) => {
+	.spread((template : PageTemplate, locaStrings : any) => {
 		resp.set('Content-Type', 'text/html')
 		.send(template.setParams({
 			article: {
@@ -123,10 +128,8 @@ function feedbackHandler(
 				version,
 			},
 			localization: {
-				locale: 'nb',
-				messages: {
-					'label.article-el.maintitle': 'Tittel something',
-				},
+				locale: website.locale,
+				messages: locaStrings,
 			},
 		//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}).render())
