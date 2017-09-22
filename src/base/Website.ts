@@ -21,6 +21,7 @@ import PersistedModel from 'base/zz/PersistedModel';
 interface Website extends PersistedModel {
 	name : string;
 	parserClass? : string;
+	locale? : string;
 
 	hosts : string[];
 	chiefEditors : string[];

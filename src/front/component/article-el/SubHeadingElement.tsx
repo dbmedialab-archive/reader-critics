@@ -16,20 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
+import * as React from 'react';
 
-import { feedbackService } from 'app/services';
+import { ArticleElement } from '../ArticleElement';
 
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
+export default class SubHeadingElement extends ArticleElement {
 
-export default function (requ : Request, resp : Response) : void {
-	feedbackService.validateAndSave(requ.body)
-	.then(() => okResponse(resp))
-	.catch(error => errorResponse(resp, error));
+	protected getContentElement() : JSX.Element {
+		const order : number = this.props.item.order.type;
+		return <div>
+			<label>Mellomtittel #{order}</label>
+			<h3>{ this.textDiff(this.props.item.originalText, this.state.text) }</h3>
+		</div>;
+	}
+
 }

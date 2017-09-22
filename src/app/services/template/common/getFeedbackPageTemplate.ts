@@ -45,6 +45,7 @@ export default function(website : Website) : Promise <PageTemplate> {
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
+				`/static/locale/${website.locale}.js`,
 				'/static/front.bundle.js'
 			);
 	});
