@@ -146,11 +146,6 @@ export function save (
 ) : Promise <Feedback>
 {
 	emptyCheck(article, enduser, items);
-
-	// console.log('------------------------------------------------------------');
-	// console.log('article object in feedback.save:', article);
-	// console.log('\n');
-
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }
