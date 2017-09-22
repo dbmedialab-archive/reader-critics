@@ -127,7 +127,7 @@
 		"@types/mocha": "2.2.43",
 		"@types/mongodb": "2.2.11",
 		"@types/mongoose": "4.7.21",
-		"@types/node": "8.0.29",
+		"@types/node": "8.0.30",
 		"@types/passport": "0.3.4",
 		"@types/passport-jwt": "2.0.24",
 		"@types/passport-local": "1.0.31",
