@@ -16,22 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PersistedModel from 'base/zz/PersistedModel';
+import Website from 'base/Website';
 
-interface Website extends PersistedModel {
-	name : string;
-	parserClass? : string;
-	locale? : string;
-
-	hosts : string[];
-	chiefEditors : string[];
-
-	layout : {
-		templates : {
-			feedbackPage? : string;
-		},
-		scssVariables? : Object;
-	};
+interface LocalizationService {
+	getFrontendStrings(website : Website) : Promise <Object>;
 }
 
-export default Website;
+export default LocalizationService;

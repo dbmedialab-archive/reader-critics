@@ -1,0 +1,24 @@
+{
+	common: {
+	},
+	frontend: {
+		button: {
+		},
+		label: {
+			'article-el': {
+				maintitle: {
+					en: 'Title',
+					nb: 'Tittel',
+				},
+				paragraph: {
+					en: 'Paragraph',
+					nb: 'Avsnitt',
+				},
+			},
+		},
+		message: {
+		},
+		text: {
+		},
+	},
+}
