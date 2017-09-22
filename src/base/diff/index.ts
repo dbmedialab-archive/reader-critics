@@ -41,10 +41,10 @@ export function diff (
 		return;
 	}
 
-	const diff: DiffBit[] = diffString(oldText, newText);
+	const bits: DiffBit[] = diffString(oldText, newText);
 	const html: any[] = [];
 
-	diff.forEach((result: DiffBit, index: number) => {
+	bits.forEach((result: DiffBit, index: number) => {
 		if (html.length > 0 && canHaveWhiteSpace(result)) {
 			concatter(' ');  // Whitespace to separate tags (and the words they contain)
 		}
