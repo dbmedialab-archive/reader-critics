@@ -11,8 +11,8 @@
 					nb: 'Tittel',
 				},
 				paragraph: {
-					en: 'Paragraph',
-					nb: 'Avsnitt',
+					en: 'Paragraph #{order}',
+					nb: 'Avsnitt #{order}',
 				},
 			},
 		},
