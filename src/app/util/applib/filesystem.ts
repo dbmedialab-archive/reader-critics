@@ -64,3 +64,10 @@ export function scanDir(folderName : string) : Promise <string[]> {
 		});
 	});
 }
+
+export function watchFile(relativePath : string, callback : any) : Promise <fs.FSWatcher> {
+	const fullPath : string = path.join(rootPath, relativePath);
+	return new Promise((resolve) => {
+		return resolve(fs.watch(fullPath, {}, callback));
+	});
+}

@@ -17,12 +17,15 @@
 //
 
 import { flatten } from 'flat';
+import { throttle } from 'lodash';
 
 import Website from 'base/Website';
 import config from 'app/config';
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+
+const languageFile = 'resources/localization.json5';
 
 export const systemLocale : string = config.get('localization.systemLocale');
 
@@ -34,10 +37,36 @@ interface Strings {
 let strings : Strings;
 
 export function initLocalizationStrings() : Promise <void> {
-	return app.loadJSON('resources/localization.json5').then(data => {
+	return installWatcher().then(loadLanguageFile);
+}
+
+function installWatcher() : Promise <void> {
+	if (app.isProduction) {
+		return Promise.resolve();
+	}
+
+	const throttledHandler = throttle(watchHandler, 2000, {
+		leading: true,
+		trailing: false,
+	});
+
+	return app.watchFile(languageFile, throttledHandler).then(watcher => {
+		log(`Watching ${languageFile} for changes`);
+	});
+}
+function loadLanguageFile() : Promise <void> {
+	return app.loadJSON(languageFile).then(data => {
 		strings = Object.freeze(data);
 		log('Localization strings loaded');
 	});
+}
+
+function watchHandler(eventType, filename) {
+	if (eventType !== 'change') {
+		return;
+	}
+
+	loadLanguageFile();
 }
 
 export function getFrontendStrings(website : Website) : Promise <Object> {
