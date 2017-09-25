@@ -1,5 +1,33 @@
 {
 	common: {
+		app: {
+			title: {
+				en: 'Reader Critics',
+				nb: 'Leserkritikk',
+			},
+		},
+	},
+	app: {
+		err: {
+			'invalid-param': {
+				en: 'Parameters are missing or have invalid format',
+			},
+			'invalid-requ': {
+				en: 'Invalid Request',
+			},
+			'no-website-identify': {
+				en: 'Could not identify website',
+			},
+			'no-url-param': {
+				en: 'Mandatory URL parameter is missing or empty',
+			},
+			'no-version-param': {
+				en: 'Mandatory version parameter is missing or empty.'
+			},
+			'not-found': {
+				en: 'Not Found',
+			}
+		},
 	},
 	frontend: {
 		button: {
