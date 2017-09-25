@@ -20,6 +20,7 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { FormattedMessage } from 'react-intl';
 
 const styles = {
 	modalWrapper: {
@@ -104,7 +105,7 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 		ReactDOM.unmountComponentAtNode(document.getElementById('err-section'));
 	}
 	render(){
-		const errMsg = this.props.msg || 'An error occured, please try again later';
+		const errMsg = this.props.msg || <FormattedMessage id="common.errors.tryLater"/>;
 		return(
 			<div className="modal-overlay" style={styles.modalOverlay}>
 				<div className="modal-wrapper" style={styles.modalWrapper}>
@@ -120,7 +121,7 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 								type="submit"
 								className="button button-primary"
 								onClick={this.okBtnClick}>
-									Lagre
+								<FormattedMessage id="button.save"/>
 							</button>
 						</div>
 					</div>
