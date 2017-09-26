@@ -55,6 +55,7 @@ function suggestionHandler(requ : Request, resp : Response) {
 						locale: systemLocale,
 						messages: localStrings,
 					},
+					title: 'Lesercritics',	//TODO fix it when localization ready
 					//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 				}).render())
 				.status(200).end();
