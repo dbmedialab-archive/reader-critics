@@ -136,7 +136,6 @@
 		"@types/react-router": "4.0.15",
 		"@types/react-router-dom": "4.0.5",
 		"@types/redux-promise-middleware": "0.0.7",
-		"@types/seamless-immutable": "7.1.1",
 		"@types/webpack": "^3.0.0",
 		"awesome-typescript-loader": "3.2.3",
 		"babel-core": "6.26.0",
