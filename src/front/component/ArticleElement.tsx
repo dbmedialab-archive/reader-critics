@@ -21,6 +21,7 @@ import * as React from 'react';
 
 import ArticleItemType from 'base/ArticleItemType';
 import FeedbackItem from 'base/FeedbackItem';
+import { FormattedMessage } from 'react-intl';
 
 import {
 	default as ArticleEditForm,
@@ -136,7 +137,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			id={`btn-edit-${item}`}
 			className={css}
 			onClick={ this.EnableEditing.bind(this) }
-		>Rediger</a>;
+		><FormattedMessage id="button.edit"/></a>;
 	}
 
 	protected abstract getContentElement() : JSX.Element;

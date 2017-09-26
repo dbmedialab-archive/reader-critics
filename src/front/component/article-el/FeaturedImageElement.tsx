@@ -19,15 +19,15 @@
 import * as React from 'react';
 
 import { ArticleElement } from '../ArticleElement';
+import { FormattedMessage } from 'react-intl';
 
 export default class FeaturedImageElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label>Featured Image</label>
+			<label><FormattedMessage id="label.article-el.featImage"/></label>
 			{ this.props.item.href && <p><img src={this.props.item.href} width="100%"/></p> }
 			<p>{ this.textDiff(this.props.item.altText, this.state.text) }</p>
 		</div>;
 	}
-
 }
