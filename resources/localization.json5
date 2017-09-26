@@ -2,8 +2,8 @@
 	common: {
 		errors: {
 			tryLater: {
-				en: 'An error occured, please try again later',
-				nb: 'En feil oppstod. Vennligst prøv igjen senere'
+				en: 'An error occured, please try again later.',
+				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
 			}
 		},
 	},
@@ -90,12 +90,12 @@
 		},
 		fb: {
 			errors: {
-				emptyErr: "The feedback is still empty, nothing was sent"
+				emptyErr: "The feedback form is still empty, nothing was sent"
 			},
 			sendForm: {
 				message: {
-					en: 'Click here when you complete the form.',
-					nb: 'Klikk her når du er ferdig med skjemaet.'
+					en: 'Click here when you are done',
+					nb: 'Klikk her når du er ferdig med skjemaet'
 				},
 				alertMessage: {
 					en: 'Send feedback.',
@@ -105,8 +105,8 @@
 			post: {
 				transmitted: {
 					en: 'Feedback was finally transmitted!',
-					nb: 'Tilbakemeldingen ble endelig overført!'
-				}
+					nb: 'Tilbakemeldingen har akkurat blitt overført!'
+				},
 			},
 			label: {
 				name: {
@@ -114,23 +114,23 @@
 					nb: 'Navn'
 				},
 				getRecommend: {
-					en: 'Receive notifications via e-mail',
-					nb: 'FÅ TILBAKEMELDING PÅ EPOST'
+					en: 'Get notifications via e-mail',
+					nb: 'Få tilbakemelding på e-post'
 				},
 				keepInfo: {
-					en: 'KEEP ME INFORMED',
-					nb: 'HOLD MEG OPPDATERT'
+					en: 'Keep me updated',
+					nb: 'Hold meg oppdatert'
 				},
 				backToArticle: {
-					en: 'BACK TO THE ARTICLE',
-					nb: 'TILBAKE TIL ARTIKKELEN'
+					en: 'Back to the article',
+					nb: 'Tilbake til artikkelen'
 				},
-			}
+			},
 		},
 		text: {},
 		footer: {
 			risEller: {
-				en: 'Criticism or praise?',
+				en: 'Fame or blame?',
 				nb: 'Ris eller ros?'
 			},
 			giveUsF: {
@@ -138,9 +138,9 @@
 				nb: 'Gi oss din tilbakemelding på verktøyet'
 			},
 			chiefEditor: {
-				en: 'Chief editor',
+				en: 'Editor-in-chief',
 				nb: 'Ansvarlig redaktør'
-			}
-		}
+			},
+		},
 	},
 }
