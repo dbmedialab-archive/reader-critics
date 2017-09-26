@@ -22,20 +22,15 @@ import {
 	Router,
 } from 'express';
 
-import { readFileSync } from 'fs';
-
-import * as doT from 'dot';
-import * as path from 'path';
-
 import config from 'app/config';
-
-import * as app from 'app/util/applib';
 
 import {
 	localizationService,
 	templateService,
-	websiteService,
 } from 'app/services';
+
+import PageTemplate from 'base/PageTemplate';
+import {systemLocale} from 'app/services/localization';
 
 const suggestionRoute : Router = Router();
 
@@ -43,39 +38,25 @@ suggestionRoute.get('/', suggestionHandler);
 
 export default suggestionRoute;
 
-// Template stuff
-const templateName = 'tmp/templates/suggestion.html';
-
-const styles = [
-	'/static/front.css',
-];
-
-const scripts = [
-	'/static/react/react.js',
-	'/static/react/react-dom.js',
-	`/static/locale/${localizationService.systemLocale}.js`,
-	`//www.google.com/recaptcha/api.js?hl=${localizationService.systemLocale}`,
-];
-
-const mainTemplate = createTemplate();
-
 function suggestionHandler(requ : Request, resp : Response) {
-	resp.set('Content-Type', 'text/html')
-	.send(mainTemplate({
-		recaptcha: JSON.stringify({
-			publicKey: config.get('recaptcha.key.public'),
-		}),
-		styles,
-		scripts,
-	}))
-	.status(200).end();
-}
-
-function createTemplate() {
-	// Currently loads the template from a static file.
-	// The template will later be determined dynamically based on website url / domain.
-	const templatePath : string = path.join(app.rootPath, templateName);
-	const templateRaw : string = readFileSync(templatePath).toString();
-
-	return doT.template(templateRaw);
+	return Promise
+		.all([
+			templateService.getSuggestionPageTemplate(),
+			localizationService.getFrontendStrings(),
+		])
+		// Use the page template, inject parameters and serve to the client
+		.spread((template : PageTemplate, localStrings : any) => {
+			resp.set('Content-Type', 'text/html')
+				.send(template.setParams({
+					recaptcha: JSON.stringify({
+						publicKey: config.get('recaptcha.key.public'),
+					}),
+					localization: {
+						locale: systemLocale,
+						messages: localStrings,
+					},
+					//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
+				}).render())
+				.status(200).end();
+		});
 }
