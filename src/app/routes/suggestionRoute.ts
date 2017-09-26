@@ -31,6 +31,12 @@ import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
+import {
+	localizationService,
+	templateService,
+	websiteService,
+} from 'app/services';
+
 const suggestionRoute : Router = Router();
 
 suggestionRoute.get('/', suggestionHandler);
@@ -47,8 +53,8 @@ const styles = [
 const scripts = [
 	'/static/react/react.js',
 	'/static/react/react-dom.js',
-	'/static/front.bundle.js',
-	'//www.google.com/recaptcha/api.js?hl=no', // TODO Change language for recaptcha
+	`/static/locale/${localizationService.systemLocale}.js`,
+	`//www.google.com/recaptcha/api.js?hl=${localizationService.systemLocale}`,
 ];
 
 const mainTemplate = createTemplate();
