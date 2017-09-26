@@ -24,10 +24,14 @@ import {
 import ArticleURL from 'base/ArticleURL';
 
 import * as app from 'app/util/applib';
+
 import emptyCheck from 'app/util/emptyCheck';
+
+import { localizationService } from 'app/services';
 import { NotFoundError } from 'app/util/errors';
 
 const log = app.createLog();
+const __ = localizationService.translate;
 
 export default function(url : ArticleURL) : Promise <string> {
 	emptyCheck(url);
@@ -38,7 +42,7 @@ export default function(url : ArticleURL) : Promise <string> {
 	.catch(error => {
 		if (error.response) {
 			if (error.response.status === 404) {
-				return Promise.reject(new NotFoundError('Article does not exist'));
+				return Promise.reject(new NotFoundError(__('no-article')));
 			}
 			return Promise.reject(new Error(`Article website returned a ${error.response.status} code`));
 		}

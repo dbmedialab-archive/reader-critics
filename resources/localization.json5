@@ -21,14 +21,17 @@
 			'invalid-requ': {
 				en: 'Invalid Request',
 			},
-			'no-website-identify': {
-				en: 'Could not identify website',
+			'no-article': {
+				en: 'Article does not exist',
 			},
 			'no-url-param': {
 				en: 'Mandatory URL parameter is missing or empty',
 			},
 			'no-version-param': {
 				en: 'Mandatory version parameter is missing or empty.'
+			},
+			'no-website-identify': {
+				en: 'Could not identify website',
 			},
 			'not-found': {
 				en: 'Not Found',
