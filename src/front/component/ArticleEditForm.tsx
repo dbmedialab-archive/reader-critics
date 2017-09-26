@@ -22,10 +22,12 @@ import * as React from 'react';
 import ArticleItemType from 'base/ArticleItemType';
 
 import DynamicList from 'front/component/DynamicList';
+import { FormattedMessage } from 'react-intl';
+
 export interface EditFormPayload {
 	text : string;
 	comment : string;
-	links : Array <string>;
+	links : string[];
 }
 
 export interface ArticleEditFormProp {
@@ -91,7 +93,9 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	public render() {
 		return <form>
 			<fieldset className="text">
-				<label htmlFor={this.FieldId('content')}>rediger {this.Translate(this.props.type)}</label>
+				<label htmlFor={this.FieldId('content')}>
+					<FormattedMessage id="button.edit"/> {this.Translate(this.props.type)}
+				</label>
 				<textarea
 					onKeyUp={() => this.UpdateState('text', this.textArea)}
 					ref={r => this.textArea = r}
@@ -101,17 +105,18 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 				/>
 			</fieldset>
 			<fieldset className="comment">
-				<label htmlFor={this.FieldId('comment')}>Legg til kommentar</label>
+				<label htmlFor={this.FieldId('comment')}>
+					<FormattedMessage id="label.article-el.editComment"/>
+				</label>
 				<textarea
 					onKeyUp={()=>this.UpdateState( 'comment', this.commentArea )}
 					ref={r => this.commentArea = r}
-					// defaultValue={this.state.comment}
 					rows={3}
 					id={this.FieldId('comment')}
 				/>
 			</fieldset>
 			<fieldset className="link">
-				<label htmlFor={this.FieldId('link')}>Legg til lenker</label>
+				<label htmlFor={this.FieldId('link')}><FormattedMessage id="label.article-el.addLinks"/></label>
 				<DynamicList
 					items={this.state.current.links}
 					onRemove={this.RemoveLinkItem.bind(this)}
@@ -124,8 +129,12 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 				/>
 			</fieldset>
 			<fieldset className="actions">
-				<a title="Avbryt" onClick={(e)=>this.onCancel(e)} className="button cancel">Avbryt</a>
-				<a title="Lagre" onClick={(e)=>this.onSave(e)} className="button save">Lagre</a>
+				<a onClick={(e)=>this.onCancel(e)} className="button cancel">
+					<FormattedMessage id="button.cancel"/>
+				</a>
+				<a onClick={(e)=>this.onSave(e)} className="button save">
+					<FormattedMessage id="button.save"/>
+				</a>
 			</fieldset>
 		</form>;
 	}
@@ -209,11 +218,11 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	}
 
 	// Helper to translate component type to native language.
-	private Translate(type : string) {
+	private Translate(type: string): JSX.Element {
 		const lookup = {
-			lead: 'innledning',
-			title: 'tittel',
-			paragraph: 'avsnitt',
+			lead: <FormattedMessage id="label.article-el.introduction"/>,
+			title: <FormattedMessage id="label.article-el.maintitle"/>,
+			paragraph: <FormattedMessage id="label.article-el.paragraphEmpty"/>,
 		};
 
 		return lookup [ type ] ? lookup [ type ] : 'tekst';

@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-
+import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class LinkElement extends ArticleElement {
@@ -26,7 +26,7 @@ export default class LinkElement extends ArticleElement {
 		const order : number = this.props.item.order.type;
 
 		return <div>
-			<label>Link #{order}</label>
+			<label><FormattedMessage id="label.article-el.link" values={{order}}/></label>
 			<p>{this.textDiff(this.props.item.originalText, this.state.text)}</p>
 		</div>;
 	}
