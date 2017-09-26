@@ -18,11 +18,12 @@
 
 import * as React from 'react';
 import * as classnames from 'classnames';
+import { FormattedMessage } from 'react-intl';
 
 export interface FinishButtonProps {
 	SendForm? : Function;
 	HideMessage? : Function,
-	message? : string;
+	message? : JSX.Element;
 	appear? : boolean,
 	close? : boolean;
 }
@@ -34,14 +35,14 @@ const FinishButton : React.StatelessComponent <FinishButtonProps> = (props) => {
 
 	return <div className={css}>
 		{ props.message ? <span onClick={() => props.HideMessage}>{props.message}</span> : null }
-		<a onClick={() => { props.SendForm(); }}>Send skjema</a>
+		<a onClick={() => { props.SendForm(); }}><FormattedMessage id="button.sendForm"/></a>
 	</div>;
 };
 
 FinishButton.defaultProps = {
-	SendForm: () => alert('Send feedback!'),
+	SendForm: () => alert(<FormattedMessage id="fb.sendForm.alertMessage"/>),
 	HideMessage: () => null,
-	message: 'Klikk her når du er ferdig med skjemaet.',
+	message: <FormattedMessage id="fb.sendForm.message"/>,
 	appear: false,
 	close: false,
 };

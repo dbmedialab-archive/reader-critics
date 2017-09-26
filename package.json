@@ -110,7 +110,7 @@
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
-		"@types/bluebird": "3.5.11",
+		"@types/bluebird": "3.5.12",
 		"@types/bluebird-global": "3.5.3",
 		"@types/body-parser": "1.16.5",
 		"@types/callsite": "1.0.30",
@@ -131,7 +131,7 @@
 		"@types/passport": "0.3.4",
 		"@types/passport-jwt": "2.0.24",
 		"@types/passport-local": "1.0.31",
-		"@types/react": "15.6.0",
+		"@types/react": "16.0.7",
 		"@types/react-dom": "15.5.4",
 		"@types/react-redux": "5.0.9",
 		"@types/react-router": "4.0.15",

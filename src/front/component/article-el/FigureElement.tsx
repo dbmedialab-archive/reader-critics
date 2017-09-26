@@ -19,13 +19,14 @@
 import * as React from 'react';
 
 import { ArticleElement } from '../ArticleElement';
+import { FormattedMessage } from 'react-intl';
 
 export default class FigureElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		const order : number = this.props.item.order.type;
 		return <div>
-			<label>Bilde #{order}</label>
+			<label><FormattedMessage id="label.article-el.picture" values={{order}}/></label>
 			{ this.props.item.href && <p><img src={this.props.item.href} width="100%"/></p> }
 			<p>{ this.textDiff(this.props.item.altText, this.state.text) }</p>
 		</div>;
