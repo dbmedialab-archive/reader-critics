@@ -100,7 +100,6 @@ function checkUniqueEmail (userMail: string): Promise<boolean> {
  * Schema Validation
  */
 function validateSchema (data: any) {
-	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid user data');
 	}
