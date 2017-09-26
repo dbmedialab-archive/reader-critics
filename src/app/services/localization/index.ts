@@ -18,7 +18,6 @@
 
 import { flatten } from 'flat';
 import {
-	isObject,
 	isString,
 	throttle,
 } from 'lodash';
