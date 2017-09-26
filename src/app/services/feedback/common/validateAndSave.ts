@@ -84,7 +84,6 @@ function getEndUser(userData : any) : Promise <EndUser> {
 // Schema Validation
 
 function validateSchema(data : any) {
-	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}

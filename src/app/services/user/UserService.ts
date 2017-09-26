@@ -14,9 +14,6 @@ interface UserService extends BasicPersistingService <User> {
 	findOrInsert(user : Person) : Promise <User>;
 	update(id: String, user : Person) : Promise <User>;
 
-	/**
-	 * TODO: reference to the same method from FeedbackService
-	 */
 	validateAndSave(data : any) : Promise <User>;
 	validateAndUpdate(id: String, data : Object) : Promise <User>;
 }
