@@ -48,9 +48,9 @@ function suggestionHandler(requ : Request, resp : Response) {
 		.spread((template : PageTemplate, localStrings : any) => {
 			resp.set('Content-Type', 'text/html')
 				.send(template.setParams({
-					recaptcha: JSON.stringify({
+					recaptcha: {
 						publicKey: config.get('recaptcha.key.public'),
-					}),
+					},
 					localization: {
 						locale: systemLocale,
 						messages: localStrings,
