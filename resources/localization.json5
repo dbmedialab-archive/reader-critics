@@ -129,9 +129,9 @@
 		},
 		suggest: {
 			label: {
-				commentTy: {
-					en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-					nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
+				commentErr: {
+					en: "Tell us what you think about giving feedback this way",
+					nb: "Fortell oss hva du synes om å gi tilbakemeldinger på denne måten"
 				},
 				comment: {
 					en: "Comment",

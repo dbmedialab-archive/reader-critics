@@ -74,7 +74,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private hasCommentError() {
 		if (!this.state.comment) {
-			return <FormattedMessage id="suggest.label.commentTy"/>;
+			return <FormattedMessage id="suggest.label.commentErr"/>;
 		}
 
 		const validation = this.validator.validate('suggestionComment',
@@ -122,7 +122,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
-		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
+		const publicKey = window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : '';
 		return (
 			<form
 				name="suggestBox"
@@ -171,7 +171,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				</fieldset>
 				<fieldset className="actions">
 					<button type="submit" disabled={!isDisabled} className="button button-primary">
-						<FormattedMessage id="frontend.button.save"/>
+						<FormattedMessage id="button.save"/>
 					</button>
 				</fieldset>
 			</form>
