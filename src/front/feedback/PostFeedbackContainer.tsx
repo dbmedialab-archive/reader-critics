@@ -201,13 +201,13 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				</Transition>
 				<fieldset>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
-					<p className="message"><FormattedMessage id="message.thanksMessage"/></p>
+					<p className="message"><FormattedMessage id="message.ty"/></p>
 				</fieldset>
 				<Transition timeout={300} in={this.state.finalText.show}>
 					{(status) => (
 						<div>
 							<fieldset className={`final-text fade fade-${status}`}>
-								<p className="field-title"><FormattedMessage id="fb.postFeedback.transmitted"/></p>
+								<p className="field-title"><FormattedMessage id="fb.post.transmitted"/></p>
 							</fieldset>
 						</div>
 					)}

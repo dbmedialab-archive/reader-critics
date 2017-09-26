@@ -129,10 +129,10 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 				/>
 			</fieldset>
 			<fieldset className="actions">
-				<a title="Avbryt" onClick={(e)=>this.onCancel(e)} className="button cancel">
+				<a onClick={(e)=>this.onCancel(e)} className="button cancel">
 					<FormattedMessage id="button.cancel"/>
 				</a>
-				<a title="Lagre" onClick={(e)=>this.onSave(e)} className="button save">
+				<a onClick={(e)=>this.onSave(e)} className="button save">
 					<FormattedMessage id="button.save"/>
 				</a>
 			</fieldset>

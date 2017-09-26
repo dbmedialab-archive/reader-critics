@@ -26,7 +26,7 @@ const Footer : React.StatelessComponent <any> =
 		<div className="container">
 			<div className="content four columns">
 				<span><FormattedMessage id="footer.risEller"/></span>
-				<a title="Gi oss din tilbakemelding på verktøyet" href="/suggestion-box">
+				<a href="/suggestion-box">
 					<FormattedMessage id="footer.giveUsF"/>
 				</a>
 			</div>

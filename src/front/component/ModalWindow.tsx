@@ -90,7 +90,7 @@ const AlertIcon : React.StatelessComponent <IAlertIcon> = (props : IAlertIcon) =
 };
 
 class ModalWindow extends React.Component <IModalWindowProps, any> {
-	constructor(props){
+	constructor(props: IModalWindowProps){
 		super(props);
 		this.hideModal = this.hideModal.bind(this);
 		this.okBtnClick = this.okBtnClick.bind(this);
@@ -105,7 +105,8 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 		ReactDOM.unmountComponentAtNode(document.getElementById('err-section'));
 	}
 	render(){
-		const errMsg = this.props.msg || <FormattedMessage id="common.errors.tryLater"/>;
+		const errMsg: string | JSX.Element = this.props.msg ||
+			<FormattedMessage id="common.errors.tryLater"/>;
 		return(
 			<div className="modal-overlay" style={styles.modalOverlay}>
 				<div className="modal-wrapper" style={styles.modalWrapper}>
@@ -121,7 +122,7 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 								type="submit"
 								className="button button-primary"
 								onClick={this.okBtnClick}>
-								<FormattedMessage id="button.save"/>
+								<FormattedMessage id="button.ok"/>
 							</button>
 						</div>
 					</div>

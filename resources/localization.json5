@@ -21,6 +21,10 @@
 				en: 'Save',
 				nb: 'Lagre'
 			},
+			ok: {
+				en: 'Ok',
+				nb: 'Ok'
+			},
 			sendForm: {
 				en: 'Send form',
 				nb: 'Send skjema'
@@ -79,7 +83,7 @@
 				en: 'Thank You!',
 				nb: 'Tusen Takk!'
 			},
-			thanksMessage: {
+			postFeedback: {
 				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
 				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på.",
 			}
@@ -98,7 +102,7 @@
 					nb: 'Send tilbakemelding.'
 				}
 			},
-			postFeedback: {
+			post: {
 				transmitted: {
 					en: 'Feedback was finally transmitted!',
 					nb: 'Tilbakemeldingen ble endelig overført!'
