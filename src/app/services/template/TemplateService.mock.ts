@@ -20,10 +20,12 @@ import TemplateService from './TemplateService';
 
 import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
 import getSuggestionPageTemplate from './common/getSuggestionPageTemplate';
+import getAdminPageTemplate from 'app/services/template/common/getAdminPageTemplate';
 
 const service : TemplateService = {
 	getFeedbackPageTemplate,
 	getSuggestionPageTemplate,
+	getAdminPageTemplate,
 };
 
 module.exports = service;

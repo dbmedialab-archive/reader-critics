@@ -16,13 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Website from 'base/Website';
+import * as doT from 'dot';
+import * as path from 'path';
+
 import PageTemplate from 'base/PageTemplate';
 
-interface TemplateService {
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-	getSuggestionPageTemplate(): Promise <PageTemplate>;
-	getAdminPageTemplate(): Promise <PageTemplate>;
-}
+import * as app from 'app/util/applib';
+import {localizationService} from 'app/services';
 
-export default TemplateService;
+const defaultTemplate = path.join('templates', 'page', 'defaultAdmin.html');
+
+export default function() : Promise <PageTemplate> {
+
+	const rawTemplate = () : Promise <string> => {
+		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
+	};
+
+	return rawTemplate().then((raw : string) => {
+		return new PageTemplate (doT.template(raw))
+			.pushStyle('/static/admin.css')
+			.pushScript(
+				'/static/react/react.js',
+				'/static/react/react-dom.js',
+				`/static/locale/${localizationService.systemLocale}.js`,
+				'/static/admin.bundle.js',
+				'https://use.fontawesome.com/b15ebca61e.js'
+			);
+	});
+}

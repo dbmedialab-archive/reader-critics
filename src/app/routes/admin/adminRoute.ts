@@ -27,7 +27,6 @@ import * as cookieParser from 'cookie-parser';
 
 import {
 	loginHandler,
-	loginPageHandler,
 	logoutHandler
 } from './ui/handlers';
 
@@ -35,7 +34,9 @@ import { sessionConf } from 'app/middleware/config/sessionConfig';
 
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
-import adminPageHandler from './ui/adminPageHandler';
+import PageTemplate from 'base/PageTemplate';
+import {localizationService, templateService} from 'app/services';
+import {systemLocale} from 'app/services/localization';
 
 import * as app from 'app/util/applib';
 
@@ -56,9 +57,9 @@ adminRoute.use(bodyParser.urlencoded({
 
 adminRoute.use(cookieParser(secret));
 
-adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
+adminRoute.get('/login', isNotAuthenticated, adminPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
-adminRoute.get('/logout', isAuthenticated, logoutHandler);
+adminRoute.get('/logout', isAuthenticated, logoutHandler, adminPageHandler);
 adminRoute.get(['/', '/users', '/feedbacks'], isAuthenticated, adminPageHandler);
 
 adminRoute.get('/*', notFoundHandler);
@@ -68,4 +69,26 @@ export default adminRoute;
 function notFoundHandler(requ : Request, resp : Response) : void {
 	log('Admin router', requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
+}
+
+function adminPageHandler(requ : Request, resp : Response) {
+	log('admin test page loaded');
+
+	return Promise
+		.all([
+			templateService.getAdminPageTemplate(),
+			localizationService.getFrontendStrings(),
+		])
+		// Use the page template, inject parameters and serve to the client
+		.spread((template : PageTemplate, localStrings : any) => {
+			resp.set('Content-Type', 'text/html')
+				.send(template.setParams({
+					localization: {
+						locale: systemLocale,
+						messages: localStrings,
+					},
+					title: 'Leserkritikkk: Admin panel',	//TODO fix it when localization ready
+				}).render())
+				.status(200).end();
+		});
 }
