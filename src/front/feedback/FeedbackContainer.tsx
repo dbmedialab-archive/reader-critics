@@ -28,6 +28,7 @@ import { ArticleElement } from 'front/component/ArticleElement';
 import FinishButton from 'front/feedback/FinishButton';
 import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
 
+import { FormattedMessage } from 'react-intl';
 import { fetchArticle } from 'front/apiCommunication';
 
 import {
@@ -72,7 +73,7 @@ extends React.Component <any, FeedbackContainerState> {
 			.filter((item : FeedbackItem) => item !== null);  // TODO fix with "isEdited" or similar
 
 		if (items.length <= 0) {
-			alert('The feedback is still empty, nothing was sent');
+			alert(<FormattedMessage id="fb.errors.emptyErr"/>);
 			return;
 		}
 
@@ -122,5 +123,4 @@ extends React.Component <any, FeedbackContainerState> {
 			</div>
 		);
 	}
-
 }
