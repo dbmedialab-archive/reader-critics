@@ -45,8 +45,13 @@ The underlying package uses the [ISO-639-1](https://www.loc.gov/standards/iso639
 locales. For the localization to work, it is necessary that the new locale is supported by _react-intl_, otherwise it will use
 its fallback mechanism and the results might be unexpected, for example when formatting numbers or dates.
 
-Adding new strings to the language file is quite simple: it basically is adding a new key-value like `locale: 'translated string',`
-to each innermost structure that already contains other translated strings.
+Adding new strings to the language file is quite simple: it basically is adding a new key-value like
+```
+...
+locale: 'translated string',
+...
+```
+to each inner structure that already contains other translated strings.
 
 ## Fallbacks
 
