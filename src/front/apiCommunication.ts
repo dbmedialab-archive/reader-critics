@@ -18,9 +18,10 @@
 
 import 'whatwg-fetch';
 
+import { getLocale } from 'front/uiGlobals';
 import { showError } from 'front/uiHelpers';
-import EndUser from 'base/EndUser';
 
+const apiMIME = 'application/json';
 const rxUnencoded = /:\/\//;
 
 // Fetch data
@@ -31,8 +32,7 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 		: url;
 	const encVersion = encodeURIComponent(version);
 
-	return fetch(`/api/article/?url=${encURL}&version=${encVersion}`)
-	.then(checkStatus)
+	return fetchData(`/api/article/?url=${encURL}&version=${encVersion}`)
 	.then(data => data.article);
 });
 
@@ -41,34 +41,39 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
 });
-export const sendFeedbackUser = ((id: string, data : {user: EndUser}) : Promise <any> => {
-	return putData(`/api/feedback/${id}/enduser`, data).then(checkStatus);
-});
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
 	return postData('/api/suggest/', data).then(checkStatus);
 });
 
-function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
-	return fetch(uri, {
-		method: method,
+// GET data
+
+function fetchData(url : string) : Promise <any> {
+	return fetch(url, {
+		method: 'GET',
 		headers: {
-			'Content-Type': 'application/json',
+			'Accept': apiMIME,
+			'Accept-Language': getLocale(),
 		},
-		body: JSON.stringify(data),
-	});
-}
-
-// PUT data
-
-function putData(uri : string, data : any) : Promise <any> {
-	return sendData('PUT', uri, data);
+	})
+	.then(checkStatus);
 }
 
 // POST data
 
 function postData(uri : string, data : any) : Promise <any> {
 	return sendData('POST', uri, data);
+}
+
+function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
+	return fetch(uri, {
+		method: method,
+		headers: {
+			'Accept-Language': getLocale(),
+			'Content-Type': apiMIME,
+		},
+		body: JSON.stringify(data),
+	});
 }
 
 // Check response for success and display error popup if necessary

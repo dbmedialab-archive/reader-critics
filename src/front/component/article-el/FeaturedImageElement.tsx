@@ -17,27 +17,17 @@
 //
 
 import * as React from 'react';
+
+import { ArticleElement } from '../ArticleElement';
 import { FormattedMessage } from 'react-intl';
 
-const year = new Date().getFullYear();
+export default class FeaturedImageElement extends ArticleElement {
 
-const Footer : React.StatelessComponent <any> =
-	() => <footer className="main-footer">
-		<div className="container">
-			<div className="content four columns">
-				<span><FormattedMessage id="footer.risEller"/></span>
-				<a href="/suggestion-box">
-					<FormattedMessage id="footer.giveUsF"/>
-				</a>
-			</div>
-			<div className="content four columns">
-				<span><FormattedMessage id="footer.chiefEditor"/> <a href="#">John Arne Markussen</a></span>
-				<div itemType="http://schema.org/Organization">
-					© {year} <span itemProp="name">DB Medialab</span>
-				</div>
-			</div>
-		</div>
-		<div id="err-section"/>
-	</footer>;
-
-export default Footer;
+	protected getContentElement() : JSX.Element {
+		return <div>
+			<label><FormattedMessage id="label.article-el.featImage"/></label>
+			{ this.props.item.href && <p><img src={this.props.item.href} width="100%"/></p> }
+			<p>{ this.textDiff(this.props.item.altText, this.state.text) }</p>
+		</div>;
+	}
+}

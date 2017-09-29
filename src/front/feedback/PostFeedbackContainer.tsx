@@ -19,10 +19,18 @@
 
 import * as React from 'react';
 import Transition from 'react-transition-group/Transition';
+import { FormattedMessage } from 'react-intl';
 
-import {sendFeedbackUser} from 'front/apiCommunication';
+import {
+	getArticleURL,
+	getArticleVersion,
+} from 'front/uiGlobals';
+
+import { sendFeedback } from 'front/apiCommunication';
 import EndUser from 'base/EndUser';
+
 export interface FeedbackUserState {
+	isSend: boolean;
 	user: EndUser;
 	nameField: {
 		show: boolean,
@@ -52,9 +60,10 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 	constructor() {
 		super();
 		this.state = {
+			isSend: false,
 			user : {
-					name: '',
-					email: '',
+					name: null,
+					email: null,
 			},
 			nameField: {
 				show: true,
@@ -83,6 +92,16 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent = this.hideComponent.bind(this);
 		this.showComponent = this.showComponent.bind(this);
 		this.afterSendingAnimation = this.afterSendingAnimation.bind(this);
+		this.sendFeedback = this.sendFeedback.bind(this);
+		this.onUnload = this.onUnload.bind(this);
+	}
+
+	componentDidMount() {
+		window.addEventListener('beforeunload', this.onUnload, false);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('beforeunload', this.onUnload);
 	}
 
 	private afterSendingAnimation() {
@@ -93,6 +112,17 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent('sendBtn', 100);
 		this.showComponent('backBtn', 400);
 		this.showComponent('finalText', 400);
+	}
+
+	onUnload(event) {
+		if (!this.state.isSend) {
+			event.preventDefault();
+			this.sendFeedback();
+			const dialogText = 'Thank you for your feedback';
+			(event || window.event).returnValue = dialogText; //Gecko + IE
+			return dialogText;
+		}
+		return false;
 	}
 
 	private hideComponent(param, timeout = 0) {
@@ -125,19 +155,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 
 	private _handleSubmit(e) {
 		e.preventDefault();
-		if (this.state.user.name === '' && this.state.user.email === '') {
-			this.afterSendingAnimation();
-			return;
-		}
-
-		if (!this.props.feedbackId) {
-			return;
-		}
-
-		sendFeedbackUser(this.props.feedbackId, {user: this.state.user})
-		.then((response) => {
-			this.afterSendingAnimation();
-		});
+		this.sendFeedback();
 	}
 
 	private _inputChanged(e) {
@@ -145,6 +163,24 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		const userObj = this.state.user;
 		userObj[fieldName] = e.target.value;
 		this.setState({user:userObj});
+	}
+
+	public sendFeedback() {
+		const {user} = this.state;
+
+		return sendFeedback({
+			article: {
+				url: getArticleURL(),
+				version: getArticleVersion(),
+			},
+			user,
+			feedback: {
+				items: this.props.articleItems,
+			},
+		})
+		.then((response) => {
+			this.setState({isSend:true}, this.afterSendingAnimation);
+		});
 	}
 
 	public render() {
@@ -157,26 +193,21 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 					{(status) => (
 						<fieldset className={`info-icon rotate hideit-after rotate-${status}`}>
 								{this.state.doneIcon.show ?
-									<span className="top icon done"></span>
-									:<span className="top icon question"></span>
+									<span className="top icon done"/>
+									:<span className="top icon question"/>
 								}
 						</fieldset>
 					)}
 				</Transition>
 				<fieldset>
-					<p className="field-title">TUSEN TAKK!</p>
-					<p className="message">
-						Takk for at du hjelper oss rette opp feil og  mangler
-						i våre artikler. Det blir satt stor pris på.
-					</p>
+					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
+					<p className="message"><FormattedMessage id="message.ty"/></p>
 				</fieldset>
 				<Transition timeout={300} in={this.state.finalText.show}>
 					{(status) => (
 						<div>
 							<fieldset className={`final-text fade fade-${status}`}>
-								<p className="field-title">
-									Feedback was finally transmitted!
-								</p>
+								<p className="field-title"><FormattedMessage id="fb.post.transmitted"/></p>
 							</fieldset>
 						</div>
 					)}
@@ -184,7 +215,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				<Transition timeout={300} in={this.state.nameField.show}>
 					{(status) => (
 						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title">NAVN</p>
+							<p className="field-title"><FormattedMessage id="fb.label.name"/></p>
 							<input
 								type="text"
 								name="name"
@@ -196,7 +227,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				<Transition timeout={250} in={this.state.emailField.show}>
 					{(status) => (
 						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title">FÅ TILBAKEMELDING PÅ EPOST</p>
+							<p className="field-title"><FormattedMessage id="fb.label.getRecommend"/></p>
 							<input
 								type="text"
 								name="email"
@@ -209,15 +240,15 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 					{(status) => (
 						<fieldset className={`control-icon hideit-after slide-left slide-left-${status}`}>
 							{!this.state.backBtn.show?
-									<a href="#" onClick={this._handleSubmit}>
-										<span className="icon mail"></span>
-										<span className="btn-text">HOLD MEG OPPDATERT</span>
+									<a href="#" role="button" onClick={this._handleSubmit}>
+										<span className="icon mail"/>
+										<span className="btn-text"><FormattedMessage id="fb.label.keepInfo"/></span>
 									</a>
 								:<div>
 									{this.props.articleUrl?
 											<a href={this.props.articleUrl}>
-												<span className="icon back"></span>
-												<span className="btn-text">TILBAKE TIL ARTIKKELEN</span>
+												<span className="icon back"/>
+												<span className="btn-text"><FormattedMessage id="fb.label.backToArticle"/></span>
 											</a>
 									:null}
 								</div>

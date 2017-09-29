@@ -17,27 +17,17 @@
 //
 
 import * as React from 'react';
+
+import { ArticleElement } from '../ArticleElement';
 import { FormattedMessage } from 'react-intl';
 
-const year = new Date().getFullYear();
+export default class LeadInElement extends ArticleElement {
 
-const Footer : React.StatelessComponent <any> =
-	() => <footer className="main-footer">
-		<div className="container">
-			<div className="content four columns">
-				<span><FormattedMessage id="footer.risEller"/></span>
-				<a href="/suggestion-box">
-					<FormattedMessage id="footer.giveUsF"/>
-				</a>
-			</div>
-			<div className="content four columns">
-				<span><FormattedMessage id="footer.chiefEditor"/> <a href="#">John Arne Markussen</a></span>
-				<div itemType="http://schema.org/Organization">
-					© {year} <span itemProp="name">DB Medialab</span>
-				</div>
-			</div>
-		</div>
-		<div id="err-section"/>
-	</footer>;
+	protected getContentElement() : JSX.Element {
+		return <div>
+			<label><FormattedMessage id="label.article-el.introduction"/></label>
+			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
+		</div>;
+	}
 
-export default Footer;
+}

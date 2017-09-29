@@ -81,6 +81,14 @@ const config = convict({
 			ttl: 260,
 		},
 	},
+	localization: {
+		systemLocale: {
+			doc: 'Default system locale that will be used when websites do not override',
+			format: String,
+			default: 'en',
+			env: 'I18N_SYS_LOCALE',
+		},
+	},
 	auth: {
 		bcrypt: {
 			rounds: {
