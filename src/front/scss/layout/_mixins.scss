@@ -1,0 +1,13 @@
+@mixin material-icon {
+	font-family: 'Material Icons';
+	font-style: normal;
+	font-weight: 400;
+	text-transform: none;
+	font-feature-settings: 'liga';
+}
+@mixin appear {
+	animation: appear $speed-appear;
+}
+@mixin disappear {
+	animation: disappear $speed-disappear;
+}

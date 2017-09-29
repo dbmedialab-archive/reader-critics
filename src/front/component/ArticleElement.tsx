@@ -1,5 +1,27 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import * as classnames from 'classnames';
 import * as React from 'react';
+
+import ArticleItemType from 'base/ArticleItemType';
+import FeedbackItem from 'base/FeedbackItem';
+import { FormattedMessage } from 'react-intl';
 
 import {
 	default as ArticleEditForm,
@@ -9,10 +31,16 @@ import {
 import textDiffToHTML from './textDiffToHTML';
 
 export interface ArticleElementProp {
-	elemOrder : number;
-	typeOrder : number;
-	type : string;
-	originalText : string;
+	item: {
+		order : {
+			item : number;
+			type : number;
+		}
+		type : ArticleItemType;
+		originalText : string;
+		href?: string;
+		altText? : string;
+	}
 }
 
 export interface ArticleElementState {
@@ -21,7 +49,9 @@ export interface ArticleElementState {
 	text: string;
 }
 
-export default class ArticleElement extends React.Component <ArticleElementProp, ArticleElementState> {
+export abstract class ArticleElement
+extends React.Component <ArticleElementProp, ArticleElementState>
+{
 
 	private references: {
 		editForm: ArticleEditForm;
@@ -34,113 +64,90 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 		this.state = {
 			edited: false,
 			editing: false,
-			text: props.originalText,
+			text: props.item.originalText || props.item.altText,
 		};
 	}
 
+	public getCurrentData() : FeedbackItem {
+		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+
+		if (formData.text === this.props.item.originalText
+			&& !formData.comment
+			&& formData.links.length <= 0
+		) {
+			// If no input was made, return an empty result. The top handler will discard it later.
+			return null;
+		}
+
+		if (formData.text === this.props.item.originalText) {
+			// If the text wasn't changed, delete it before submitting
+			formData.text = '';
+		}
+
+		return Object.assign({
+			type: this.props.item.type,
+			order: this.props.item.order,
+		}, formData);
+	}
+
 	public render() : JSX.Element {
-		const css = classnames('card', this.props.type, {
+		const css = classnames('card', this.props.item.type, {
 			editing: this.state.editing,
 			edited: this.state.edited,
 		});
-
-		return <article id={`article-el-${this.props.elemOrder}`} className={css}>
+		const {item} = this.props.item.order;
+		return <article id={`article-el-${item}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>
 				{ this.createEditForm() }
 				<footer>
-					{ this.createResetButton() }
+					{ this.state.edited && this.createResetButton() }
 					{ this.createEditButton() }
 				</footer>
 		</article>;
 	}
 
 	private createEditForm() : JSX.Element {
+		const {type} = this.props.item.order;
 		return <ArticleEditForm
-			id={this.props.typeOrder}
+			id={type}
 			ref={(i : any) => { this.references.editForm = i; }}
 			originalText={this.state.text}
-			// link={this.state.link}
-			// comment={this.state.comment}
 			onCancel={this.CancelInput.bind(this)}
 			onSave={this.SaveData.bind(this)}
-			type={this.props.type}
+			type={this.props.item.type}
 		/>;
 	}
 
 	private createResetButton() : JSX.Element {
+		const {item} = this.props.item.order;
 		const css = classnames('button', 'reset');
 		return <a
-			id={`btn-reset-${this.props.elemOrder}`}
+			id={`btn-reset-${item}`}
 			className={css}
 			onClick={ this.restoreOriginalContent.bind(this) }
 		>Slett</a>;
 	}
 
 	private createEditButton() : JSX.Element {
+		const {item} = this.props.item.order;
 		const css = classnames('button', 'edit');
 		return <a
-			id={`btn-edit-${this.props.elemOrder}`}
+			id={`btn-edit-${item}`}
 			className={css}
 			onClick={ this.EnableEditing.bind(this) }
-		>Rediger</a>;
+		><FormattedMessage id="button.edit"/></a>;
 	}
 
-	private getContentElement() {
-		switch (this.props.type) {
-			case 'title':
-				return this.TitleElement();
-			case 'lead':
-				return this.LeadElement();
-			case 'subtitle':
-				return this.SubtitleElement();
-			case 'figure':
-				return this.FigureElement();
-			default:
-				return this.ParagraphElement();
-		}
-	}
-
-	private TitleElement() {
-		return <div>
-				<label>Tittel</label>
-				<h1>{this.TextDiff()}</h1>
-			</div>;
-	}
-
-	private SubtitleElement() {
-		return <div>
-				<label>Mellomtittel #{this.props.typeOrder}</label>
-				<h3>{this.TextDiff()}</h3>
-			</div>;
-	}
-
-	private LeadElement() {
-		return <div>
-				<label>Innledning</label>
-				<p>{this.TextDiff()}</p>
-			</div>;
-	}
-
-	private ParagraphElement() {
-		return <div>
-				<label>Avsnitt #{this.props.typeOrder}</label>
-				<p>{this.TextDiff()}</p>
-			</div>;
-	}
-
-	private FigureElement() {
-		return <div>
-				<label>Bilde #{this.props.typeOrder}</label>
-				<p>{this.state.text}</p>
-			</div>;
-	}
+	protected abstract getContentElement() : JSX.Element;
 
 	// Caclulates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
-	private TextDiff() : any {
-		return textDiffToHTML(this.props.originalText, this.state.text);
+	protected textDiff(text1 : string = '', text2 : string) : any {
+		return text2 === undefined
+			? text1
+			: textDiffToHTML(text1, text2);
 	}
 
 	// Changes the state for the component so correct css-classes are applied
@@ -164,14 +171,12 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
 	private restoreOriginalContent(e : any) {
-		console.log('restoreOriginalContent "%s"', this.props.originalText);
-
 		this.setState({
 			edited: false,
-			text: this.props.originalText,
+			text: this.props.item.originalText,
 		});
 
-		this.references.editForm.reset(this.props.originalText);
+		this.references.editForm.reset(this.props.item.originalText);
 	}
 
 	// Callback for childs onCancel funciton.
@@ -184,7 +189,6 @@ export default class ArticleElement extends React.Component <ArticleElementProp,
 	// This is passed to the child as a prop and used as callback.
 	private SaveData(fromState : EditFormPayload) {
 		this.DisableEditing();
-
 		this.setState({
 			edited: true,
 			text: fromState.text,

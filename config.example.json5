@@ -1,0 +1,33 @@
+{
+	http: {
+		port: optional,
+	},
+	db: {
+		mongodb: {
+			url: fill,
+		},
+		redis: {
+			url: {
+				'message-queue': fill,
+				'session-cache': fill,
+			},
+		},
+	},
+	localization: {
+		systemLocale: fill,
+	},
+	auth: {
+		jwt: {
+			secret: fill,
+		},
+		session: {
+			secret: fill,
+		},
+	},
+	recaptcha: {
+		key: {
+			secret: fill,
+			public: fill,
+		},
+	},
+}
