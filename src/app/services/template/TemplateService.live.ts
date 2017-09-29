@@ -19,9 +19,11 @@
 import TemplateService from './TemplateService';
 
 import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
+import getSuggestionPageTemplate from './common/getSuggestionPageTemplate';
 
 const service : TemplateService = {
 	getFeedbackPageTemplate,
+	getSuggestionPageTemplate,
 };
 
 module.exports = service;
