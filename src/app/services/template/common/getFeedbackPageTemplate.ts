@@ -43,7 +43,7 @@ export default function(website : Website) : Promise <PageTemplate> {
 	};
 
 	return rawTemplate().then((raw : string) => {
-		return new PageTemplate (doT.template(raw))
+		return new PageTemplate (doT.template(raw), website.locale)
 			.pushStyle('/static/fb.css')
 			.pushScript(
 				'/static/react/react.js',
