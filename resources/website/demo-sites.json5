@@ -1,5 +1,34 @@
 [
 	{
+		"name": "abendschau.de",
+		"hosts": [
+			"abendschau.de",
+			"www.abendschau.de",
+		],
+		"locale": "de",
+		"chiefEditors": [
+			{
+				"name": "Gustl Bayrhammer",
+				"email": "gb@br.de"
+			}
+		]
+	},
+	{
+		"name": "ampbladet.no",
+		"hosts": [
+			"ampbladet.no",
+			"www.ampbladet.no",
+		],
+		"locale": "nb",
+		parserClass: 'AMPParser',
+		"chiefEditors": [
+			{
+				"name": "Vakt Sjef",
+				"email": "vakt@ampbladet.no"
+			}
+		]
+	},
+	{
 		"name": "dagbladet.no",
 		"hosts": [
 			"www.dagbladet.no"
@@ -42,18 +71,4 @@
 			}
 		]
 	},
-	{
-		"name": "abendschau.de",
-		"hosts": [
-			"abendschau.de",
-			"www.abendschau.de",
-		],
-		"locale": "de",
-		"chiefEditors": [
-			{
-				"name": "Gustl Bayrhammer",
-				"email": "gb@br.de"
-			}
-		]
-	}
 ]
