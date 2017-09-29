@@ -24,6 +24,9 @@ const log = app.createLog();
 
 export default class AMPParser extends GenericParser {
 
+	// The generic parser is already capable enough to parse 90% of the elements
+	// of an Accelerated Mobile Page. The remaining elements are TBD.
+
 	protected initialize() : Promise <any> {
 		log('initialize');
 		return super.initialize();
