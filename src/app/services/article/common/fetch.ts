@@ -37,6 +37,7 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 
 	let parserFactory : ParserFactory;
 	let rawArticle : string;
+	let downloadURL = url;
 
 	// TODO convert download url if custom parser needs to download from
 	// a different location
@@ -49,11 +50,24 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
 
-	const fetchPromise = articleService.download(url)
+	// temporary solution
+	if (website.parserClass === 'LabradorParser') {
+		downloadURL = getLarbradorUrl(url);
+	}
+
+	const fetchPromise = articleService.download(downloadURL)
 		.then((data : string) => {
 			rawArticle = data;
 		});
 
 	return Promise.all([parserPromise, fetchPromise])
 	.then(() => parserFactory.newInstance(rawArticle, url).parse());
+}
+
+function getLarbradorUrl(url: ArticleURL) {
+	const parts = url.href.split('/');
+	const articleID = parts[parts.length - 1];
+	const labUrl = `http://api.dagbladet.no/article/?query=id:${articleID}&showStructures=true&allImages=true&htmlText=true&allBoxes=true`;
+
+	return new ArticleURL(labUrl);
 }
