@@ -22,7 +22,11 @@ import * as path from 'path';
 import PageTemplate from 'base/PageTemplate';
 
 import * as app from 'app/util/applib';
-import {localizationService} from 'app/services';
+
+import {
+	systemLocale,
+	translate as __
+} from 'app/services/localization';
 
 const defaultTemplate = path.join('templates', 'page', 'defaultSuggestion.html');
 
@@ -38,9 +42,10 @@ export default function() : Promise <PageTemplate> {
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
-				`/static/locale/${localizationService.systemLocale}.js`,
-				`//www.google.com/recaptcha/api.js?hl=${localizationService.systemLocale}`,
+				`/static/locale/${systemLocale}.js`,
+				`//www.google.com/recaptcha/api.js?hl=${systemLocale}`,
 				'/static/front.bundle.js'
-			);
-	});
+			)
+			.setTitle(`${__('app.subtitle.fame-blame')} &ndash; ${__('app.title')}`);
+		});
 }

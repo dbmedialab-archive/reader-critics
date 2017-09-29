@@ -17,7 +17,10 @@
 //
 
 import { flatten } from 'flat';
-import { throttle } from 'lodash';
+import {
+	isString,
+	throttle,
+} from 'lodash';
 
 import Website from 'base/Website';
 import config from 'app/config';
@@ -30,8 +33,9 @@ const languageFile = 'resources/localization.json5';
 export const systemLocale : string = config.get('localization.systemLocale');
 
 interface Strings {
-	common? : string;
-	frontend? : string;
+	app? : object;
+	common? : object;
+	frontend? : object;
 }
 
 let strings : Strings;
@@ -45,9 +49,9 @@ function installWatcher() : Promise <void> {
 		return Promise.resolve();
 	}
 
-	const throttledHandler = throttle(watchHandler, 2000, {
-		leading: true,
-		trailing: false,
+	const throttledHandler = throttle(watchHandler, 1000, {
+		leading: false,
+		trailing: true,
 	});
 
 	return app.watchFile(languageFile, throttledHandler).then(watcher => {
@@ -73,6 +77,22 @@ export function getFrontendStrings(website? : Website) : Promise <Object> {
 	const allStrings = Object.assign({}, strings.common, strings.frontend);
 	const locale = website ? website.locale : systemLocale;
 	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
+}
+
+export function translate(id : string, options? : string|object) : string {
+	let usedLocale = systemLocale;
+
+	// A single string value in "options" means to override the system default locale
+	if (isString(options)) {
+		usedLocale = options;
+	}
+
+	// The "object" alternative is not yet used, but will allow default values, etc.
+
+	const allStrings = Object.assign({}, strings.common, strings.app);
+	const flattened = flatten(applyLocale(allStrings, usedLocale));
+
+	return flattened[id] || id;
 }
 
 function applyLocale(input : any, locale : string) : any {

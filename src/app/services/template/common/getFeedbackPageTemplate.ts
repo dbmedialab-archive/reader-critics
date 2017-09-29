@@ -24,9 +24,12 @@ import { isEmpty } from 'lodash';
 import Website from 'base/Website';
 import PageTemplate from 'base/PageTemplate';
 
+import { localizationService } from 'app/services';
+
 import * as app from 'app/util/applib';
 import emptyCheck from 'app/util/emptyCheck';
 
+const __ = localizationService.translate;
 const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');
 
 export default function(website : Website) : Promise <PageTemplate> {
@@ -40,13 +43,14 @@ export default function(website : Website) : Promise <PageTemplate> {
 	};
 
 	return rawTemplate().then((raw : string) => {
-		return new PageTemplate (doT.template(raw))
+		return new PageTemplate (doT.template(raw), website.locale)
 			.pushStyle('/static/fb.css')
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
 				`/static/locale/${website.locale}.js`,
 				'/static/front.bundle.js'
-			);
+			)
+			.setTitle(__('app.title', website.locale));
 	});
 }

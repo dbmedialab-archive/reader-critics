@@ -22,6 +22,7 @@ interface LocalizationService {
 	readonly systemLocale : string;
 
 	getFrontendStrings(website? : Website) : Promise <Object>;
+	translate(id : string, options? : string|object) : string;
 }
 
 export default LocalizationService;
