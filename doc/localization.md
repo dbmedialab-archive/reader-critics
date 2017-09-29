@@ -5,7 +5,7 @@ It provides helper files for the most common languages.
 
 ## Structure of the language file
 
-All translations are stored in a single file in `resources/localization.json5`.
+All translations are stored in a single file in resources/[localization.json5](/resources/localization.json5).
 
 The file is in JSON5 format and has a hierarchical structure. The first level contains a grouping into different parts of the
 whole application, next to a "common" section which contains strings that are used in more than one part.
