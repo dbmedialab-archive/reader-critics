@@ -1,6 +1,12 @@
 {
 	common: {
 		app: {
+			subtitle: {
+				'fame-blame': {
+					en: 'Fame or blame?',
+					nb: 'Ris eller ros?',
+				},
+			},
 			title: {
 				en: 'Reader Critics',
 				nb: 'Leserkritikk',
@@ -184,12 +190,7 @@
 					hvis de skulle trenge det."
 			},
 		},
-		text: {},
 		footer: {
-			risEller: {
-				en: 'Fame or blame?',
-				nb: 'Ris eller ros?',
-			},
 			giveUsF: {
 				en: 'Give us your feedback on the tool',
 				nb: 'Gi oss din tilbakemelding på verktøyet',
