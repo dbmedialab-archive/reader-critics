@@ -21,15 +21,18 @@ import * as Recaptcha from 'react-recaptcha';
 
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
-
+import { FormattedMessage } from 'react-intl';
 import Validation from 'base/Validation';
+import { getLocale } from 'front/uiGlobals';
+
+const recaptchaLang = getLocale();
 
 let recaptchaInstance;
 
 export interface FormPayload {
 	email: string;
 	comment: string;
-	captcha:string | null;
+	captcha: string | null;
 	touched: {
 		email: boolean,
 		comment: boolean,
@@ -71,7 +74,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private hasCommentError() {
 		if (!this.state.comment) {
-			return 'Fortell oss hva du synes om å gi tilbakemeldinger på denne måten';
+			return <FormattedMessage id="suggest.label.commentErr"/>;
 		}
 
 		const validation = this.validator.validate('suggestionComment',
@@ -119,9 +122,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	public render() : JSX.Element {
 		const isDisabled = this.isFormValid();
-		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
-		// TODO Change language for recaptcha. Recaptcha component, 'hl' prop
-		// const recaptchaLang = window['recaptcha'] ? window['recaptcha'].language : '';
+		const publicKey = window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : '';
 		return (
 			<form
 				name="suggestBox"
@@ -130,19 +131,12 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				action="javascript:alert(grecaptcha.getResponse(widgetId1));"
 			>
 				<fieldset>
-					<p className="thank-message">
-						Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en
-						tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på.
-						Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte,
-						forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit,
-						hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg
-						hvis de skulle trenge det.
-					</p>
+					<p className="thank-message"><FormattedMessage id="suggest.ty"/></p>
 				</fieldset>
 				<fieldset className="text">
 					<label htmlFor="email">Email</label>
 					<input
-						type="text"
+						type="email"
 						name="email"
 						ref={r => this.emailInput = r}
 						id="email"
@@ -151,7 +145,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 					/>
 				</fieldset>
 				<fieldset className="text">
-					<label htmlFor="comment">Comment</label>
+					<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
 					<textarea
 						name="comment"
 						onKeyUp={() => this.UpdateState('comment', this.commentArea)}
@@ -170,15 +164,16 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 						ref={e => recaptchaInstance = e}
 						sitekey={publicKey}
 						render="explicit"
-						hl="no"
+						hl={recaptchaLang}
 						verifyCallback={this.verifyCallback}
 						onloadCallback={this.onloadCallback}
 					/>
 				</fieldset>
 				<fieldset className="actions">
-					<button type="submit" disabled={!isDisabled} className="button button-primary">Lagre</button>
+					<button type="submit" disabled={!isDisabled} className="button button-primary">
+						<FormattedMessage id="button.save"/>
+					</button>
 				</fieldset>
-
 			</form>
 		);
 	}

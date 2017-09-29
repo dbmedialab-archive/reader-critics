@@ -19,7 +19,9 @@
 import Website from 'base/Website';
 
 interface LocalizationService {
-	getFrontendStrings(website : Website) : Promise <Object>;
+	readonly systemLocale : string;
+
+	getFrontendStrings(website? : Website) : Promise <Object>;
 	translate(id : string, options? : string|object) : string;
 }
 

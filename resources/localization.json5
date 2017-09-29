@@ -113,7 +113,7 @@
 			},
 			postFeedback: {
 				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på.",
+				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
 			}
 		},
 		fb: {
@@ -153,6 +153,32 @@
 					en: 'Back to the article',
 					nb: 'Tilbake til artikkelen',
 				},
+			},
+		},
+		suggest: {
+			label: {
+				commentErr: {
+					en: "Tell us what you think about giving feedback this way",
+					nb: "Fortell oss hva du synes om å gi tilbakemeldinger på denne måten"
+				},
+				comment: {
+					en: "Comment",
+					nb: "Kommentar"
+				}
+			},
+			ty: {
+				en: "We would appreciate if you had also taken the time to come with one \
+					feedback about the tool itself and the way to give feedback. \
+					This goes to developers who want to know more about what you liked, what you did not like, \
+					suggestions for improvements etc. We would appreciate that. If that's OK, \
+					Developers also appreciated information so they could come into contact with you \
+					if they would need it.",
+				nb: "Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en \
+					tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på. \
+					Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte, \
+					forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit, \
+					hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg \
+					hvis de skulle trenge det."
 			},
 		},
 		text: {},

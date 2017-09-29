@@ -73,9 +73,10 @@ function watchHandler(eventType, filename) {
 	loadLanguageFile();
 }
 
-export function getFrontendStrings(website : Website) : Promise <Object> {
+export function getFrontendStrings(website? : Website) : Promise <Object> {
 	const allStrings = Object.assign({}, strings.common, strings.frontend);
-	return Promise.resolve(flatten(applyLocale(allStrings, website.locale)));
+	const locale = website ? website.locale : systemLocale;
+	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
 }
 
 export function translate(id : string, options? : string|object) : string {
