@@ -59,7 +59,7 @@
 		"debug": "3.0.1",
 		"dot": "1.1.2",
 		"express": "4.15.3",
-		"express-session": "1.15.5",
+		"express-session": "1.15.6",
 		"extract-text-webpack-plugin": "3.0.0",
 		"find-root": "1.1.0",
 		"flat": "4.0.0",
