@@ -45,6 +45,7 @@ import {
 } from 'app/services/BasicPersistingService';
 
 import emptyCheck from 'app/util/emptyCheck';
+import {ObjectID} from 'app/db';
 
 // getByArticle
 
@@ -155,11 +156,6 @@ export function save (
 ) : Promise <Feedback>
 {
 	emptyCheck(article, enduser, items);
-
-	// console.log('------------------------------------------------------------');
-	// console.log('article object in feedback.save:', article);
-	// console.log('\n');
-
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }
@@ -182,3 +178,29 @@ const makeDocument = (
 		statusChange: new Date(),
 	},
 });
+
+// update
+
+export function updateEndUser (
+	id : ObjectID,
+	enduser : EndUser
+) : Promise <Feedback>
+{
+	emptyCheck(enduser);
+
+	const updateData:{
+		enduser: any,
+	} = {
+		enduser: null,
+	};
+
+	updateData.enduser = enduser.ID;
+
+	return FeedbackModel.findById(id).then((feedback) => {
+		if (!feedback) {
+			throw new Error(`No such feedback ${id}`);
+		}
+		feedback.enduser = updateData.enduser;
+		return wrapSave(feedback.save());
+	});
+}

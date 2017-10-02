@@ -14,9 +14,9 @@
 				text: '(Morgenposten): Erat nomoi Freibia, Freibia! Jo mei is des schee aber wart mer lieber no bis zum Abnd. Meidromml deserunt is ma Wuascht reprehenderit measi oamoi!',
 				order: {
 					type: 1,
-					item: 2
+					item: 2,
 				},
-				type: 'paragraph'
+				type: 'paragraph',
 			},
 			{
 				links: [
@@ -26,10 +26,10 @@
 				text: '',
 				order: {
 					type: 1,
-					item: 4
+					item: 4,
 				},
-				type: 'subhead'
-			}
+				type: 'subhead',
+			},
 		],
-	}
+	},
 }

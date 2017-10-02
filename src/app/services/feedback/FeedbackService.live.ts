@@ -34,6 +34,7 @@ import {
 	getByID,
 	getRange,
 	save,
+	updateEndUser,
 } from './FeedbackDAO';
 
 const service : FeedbackService
@@ -45,6 +46,7 @@ const service : FeedbackService
 			getRange,
 			save,
 			validateAndSave,
+			updateEndUser,
 		}
 	);
 

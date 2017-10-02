@@ -39,6 +39,11 @@ staticRoute.use('/admin/styles', serveStatic(path.join(app.rootPath, 'assets/adm
 staticRoute.use('/react', serveStatic(path.join(app.rootPath, 'node_modules/react/dist/')));
 staticRoute.use('/react', serveStatic(path.join(app.rootPath, 'node_modules/react-dom/dist/')));
 
+staticRoute.use(
+	'/locale',
+	serveStatic(path.join(app.rootPath, 'node_modules', 'react-intl', 'locale-data'))
+);
+
 staticRoute.use('/', serveStatic(path.join(app.rootPath, 'out/bundle')));
 
 export default staticRoute;

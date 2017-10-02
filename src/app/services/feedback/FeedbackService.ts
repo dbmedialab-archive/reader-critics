@@ -24,6 +24,7 @@ import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+import {ObjectID} from 'app/db';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions
@@ -82,7 +83,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Takes a raw input object and validates its structure before saving the
 	 * contained feedback with all references. This function uses save() as soon
-	 * as all involved objects have been fetched for referencing, of cource under
+	 * as all involved objects have been fetched for referencing, of course under
 	 * the condition that the initial validation does not throw an error.
 	 *
 	 * This function is intended for usage on the API, so that the data does not
@@ -91,7 +92,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * After validating, the function internally fetches the article that this
 	 * feedback is based on (identified by its key properties "url" and "version")
 	 * and in a parallel database action, retrieves or (if not existing) creates
-	 * the EndUser object that contains the feedback giver's data.
+	 * the EndUser object of Anonymous user.
 	 *
 	 * When these two objects (Article and EndUser) are ready, both are give to
 	 * save() together with the feedback items, which are also parsed from the raw
@@ -103,6 +104,16 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
 	validateAndSave(data : any) : Promise <Feedback>;
+
+	/**
+	 * Updates the existing feedback object with enduser data.
+	 *
+	 * @throws EmptyError If enduser parameter is missing.
+	 */
+	updateEndUser(
+		id : ObjectID,
+		enduser : EndUser
+	) : Promise <Feedback>;
 }
 
 export default FeedbackService;
