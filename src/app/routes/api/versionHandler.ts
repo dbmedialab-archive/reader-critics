@@ -21,15 +21,24 @@ import {
 	Response,
 } from 'express';
 
-import { feedbackService } from 'app/services';
+import { okResponse } from './apiResponse';
 
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
+import * as app from 'app/util/applib';
 
-export function feedbackPostHandler(requ : Request, resp : Response) : void {
-	feedbackService.validateAndSave(requ.body)
-	.then((doc) => okResponse(resp))
-	.catch(error => errorResponse(resp, error));
+export default function(requ : Request, resp : Response) : void {
+	Promise.all([
+		getPackageInfo().catch(err => {}),
+		getRepositoryInfo().catch(err => {}),
+	])
+	.spread((pkgInfo : any = {}, repInfo : any = {}) => {
+		okResponse(resp, Object.assign({ version: pkgInfo.version }, repInfo));
+	});
+}
+
+function getPackageInfo() : Promise<any> {
+	return app.loadJSON('package.json');
+}
+
+function getRepositoryInfo() : Promise<any> {
+	return app.loadJSON('out/version.json');
 }
