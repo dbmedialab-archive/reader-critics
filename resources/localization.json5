@@ -1,145 +1,203 @@
 {
 	common: {
+		app: {
+			subtitle: {
+				'fame-blame': {
+					en: 'Fame or blame?',
+					nb: 'Ris eller ros?',
+				},
+			},
+			title: {
+				en: 'Reader Critics',
+				nb: 'Leserkritikk',
+			},
+		},
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
 				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
-			}
+			},
+		},
+	},
+	app: {
+		err: {
+			'invalid-param': {
+				en: 'Parameters are missing or have invalid format',
+			},
+			'invalid-requ': {
+				en: 'Invalid Request',
+			},
+			'no-article': {
+				en: 'Article does not exist',
+			},
+			'no-url-param': {
+				en: 'Mandatory URL parameter is missing or empty',
+			},
+			'no-version-param': {
+				en: 'Mandatory version parameter is missing or empty.'
+			},
+			'no-website-identify': {
+				en: 'Could not identify website',
+			},
+			'not-found': {
+				en: 'Not Found',
+			},
 		},
 	},
 	frontend: {
 		button: {
 			edit: {
 				en: 'Edit',
-				nb: 'Rediger'
+				nb: 'Rediger',
 			},
 			cancel: {
 				en: 'Cancel',
-				nb: 'Avbryt'
+				nb: 'Avbryt',
 			},
 			save: {
 				en: 'Save',
-				nb: 'Lagre'
+				nb: 'Lagre',
 			},
 			ok: {
 				en: 'Ok',
-				nb: 'Ok'
+				nb: 'Ok',
 			},
 			sendForm: {
 				en: 'Send form',
-				nb: 'Send skjema'
+				nb: 'Send skjema',
 			},
 		},
 		label: {
 			'article-el': {
 				maintitle: {
 					en: 'Title',
-					nb: 'Tittel'
+					nb: 'Tittel',
 				},
 				paragraph: {
 					en: 'Paragraph #{order}',
-					nb: 'Avsnitt #{order}'
+					nb: 'Avsnitt #{order}',
 				},
 				paragraphEmpty: {
 					en: 'Paragraph',
-					nb: 'Avsnitt'
+					nb: 'Avsnitt',
 				},
 				text: {
 					en: 'Text',
-					nb: 'Tekst'
+					nb: 'Tekst',
 				},
 				editComment: {
 					en: 'Add comment',
-					nb: 'Legg til kommentar'
+					nb: 'Legg til kommentar',
 				},
 				addLinks: {
 					en: 'Add links',
-					nb: 'Legg til lenker'
+					nb: 'Legg til lenker',
 				},
 				featImage: {
 					en: 'Featured Image',
-					nb: 'Utvalgte bilder'
+					nb: 'Utvalgte bilder',
 				},
 				picture: {
 					en: 'Picture #{order}',
-					nb: 'Bilde #{order}'
+					nb: 'Bilde #{order}',
 				},
 				introduction: {
 					en: 'Introduction',
-					nb: 'Innledning'
+					nb: 'Innledning',
 				},
 				link: {
 					en: 'Link #{order}',
-					nb: 'Link #{order}'
+					nb: 'Link #{order}',
 				},
 				subHead: {
 					en: 'Sub Heading #{order}',
-					nb: 'Mellomtittel #{order}'
-				}
+					nb: 'Mellomtittel #{order}',
+				},
 			},
 		},
 		message: {
 			thankYou: {
 				en: 'Thank You!',
-				nb: 'Tusen Takk!'
+				nb: 'Tusen Takk!',
 			},
 			postFeedback: {
 				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på.",
+				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
 			}
 		},
 		fb: {
 			errors: {
-				emptyErr: "The feedback form is still empty, nothing was sent"
+				emptyErr: 'The feedback form is still empty, nothing was sent',
 			},
 			sendForm: {
 				message: {
 					en: 'Click here when you are done',
-					nb: 'Klikk her når du er ferdig med skjemaet'
+					nb: 'Klikk her når du er ferdig med skjemaet',
 				},
 				alertMessage: {
 					en: 'Send feedback.',
-					nb: 'Send tilbakemelding.'
+					nb: 'Send tilbakemelding.',
 				}
 			},
 			post: {
 				transmitted: {
 					en: 'Feedback was finally transmitted!',
-					nb: 'Tilbakemeldingen har akkurat blitt overført!'
+					nb: 'Tilbakemeldingen har akkurat blitt overført!',
 				},
 			},
 			label: {
 				name: {
 					en: 'Name',
-					nb: 'Navn'
+					nb: 'Navn',
 				},
 				getRecommend: {
 					en: 'Get notifications via e-mail',
-					nb: 'Få tilbakemelding på e-post'
+					nb: 'Få tilbakemelding på e-post',
 				},
 				keepInfo: {
 					en: 'Keep me updated',
-					nb: 'Hold meg oppdatert'
+					nb: 'Hold meg oppdatert',
 				},
 				backToArticle: {
 					en: 'Back to the article',
-					nb: 'Tilbake til artikkelen'
+					nb: 'Tilbake til artikkelen',
 				},
 			},
 		},
-		text: {},
-		footer: {
-			risEller: {
-				en: 'Fame or blame?',
-				nb: 'Ris eller ros?'
+		suggest: {
+			label: {
+				commentErr: {
+					en: "Tell us what you think about giving feedback this way",
+					nb: "Fortell oss hva du synes om å gi tilbakemeldinger på denne måten"
+				},
+				comment: {
+					en: "Comment",
+					nb: "Kommentar"
+				}
 			},
+			ty: {
+				en: "We would appreciate if you had also taken the time to come with one \
+					feedback about the tool itself and the way to give feedback. \
+					This goes to developers who want to know more about what you liked, what you did not like, \
+					suggestions for improvements etc. We would appreciate that. If that's OK, \
+					Developers also appreciated information so they could come into contact with you \
+					if they would need it.",
+				nb: "Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en \
+					tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på. \
+					Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte, \
+					forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit, \
+					hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg \
+					hvis de skulle trenge det."
+			},
+		},
+		footer: {
 			giveUsF: {
 				en: 'Give us your feedback on the tool',
-				nb: 'Gi oss din tilbakemelding på verktøyet'
+				nb: 'Gi oss din tilbakemelding på verktøyet',
 			},
 			chiefEditor: {
 				en: 'Editor-in-chief',
-				nb: 'Ansvarlig redaktør'
+				nb: 'Ansvarlig redaktør',
 			},
 		},
 	},

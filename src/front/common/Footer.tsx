@@ -25,7 +25,7 @@ const Footer : React.StatelessComponent <any> =
 	() => <footer className="main-footer">
 		<div className="container">
 			<div className="content four columns">
-				<span><FormattedMessage id="footer.risEller"/></span>
+				<span><FormattedMessage id="app.subtitle.fame-blame"/></span>
 				<a href="/suggestion-box">
 					<FormattedMessage id="footer.giveUsF"/>
 				</a>
