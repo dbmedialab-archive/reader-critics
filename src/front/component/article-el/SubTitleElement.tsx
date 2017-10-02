@@ -17,14 +17,14 @@
 //
 
 import * as React from 'react';
-
+import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class SubTitleElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label>Tittel</label>
+			<label><FormattedMessage id="label.article-el.maintitle"/></label>
 			<h2>{ this.textDiff(this.props.item.originalText, this.state.text) }</h2>
 		</div>;
 	}

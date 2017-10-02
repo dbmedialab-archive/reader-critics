@@ -21,6 +21,7 @@ import PageTemplate from 'base/PageTemplate';
 
 interface TemplateService {
 	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
+	getSuggestionPageTemplate(): Promise <PageTemplate>;
 }
 
 export default TemplateService;
