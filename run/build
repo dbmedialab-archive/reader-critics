@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
+COMMIT=`git rev-parse --short HEAD`
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+
 find out/ -maxdepth 1 -mindepth 1 -type d -exec rm -rf {} \;
 
-echo -e "\033[1;38;5;214mBuilding App ...\033[0m"
+echo -e "Version ${COMMIT} on ${BRANCH}\x0A"
+
+echo -e "\033[1;37mBuilding App ...\033[0m"
 node_modules/.bin/tsc --pretty --diagnostics --project tsconfig.json
 
 echo -e "\x0A\x0A\033[1;38;5;208mBuilding Frontend ...\033[0m"
@@ -10,4 +15,6 @@ node_modules/.bin/webpack --config webpack-front.js
 
 echo -e "\x0A\x0A\033[1;38;5;220mBuilding Admin UI ...\033[0m"
 node_modules/.bin/webpack --config webpack-admin.js
+
+echo '{"commit":"'${COMMIT}'","branch":"'${BRANCH}'"}' > out/version.json
 
