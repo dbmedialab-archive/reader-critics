@@ -30,6 +30,6 @@ import {
 
 export function feedbackPostHandler(requ : Request, resp : Response) : void {
 	feedbackService.validateAndSave(requ.body)
-	.then((doc) => okResponse(resp, {ID: doc.ID}))
+	.then((doc) => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
 }
