@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isString } from 'lodash';
-
 import {
 	diff,
 	DiffConcatFn,
@@ -31,7 +29,7 @@ export default function (oldText : string, newText : string) : string {
 	// Define all callbacks. They are inlined in this function because
 	// they need to have closure over the local "plain" variable.
 	const formatFn : DiffFormatFn = (txtbit) => {
-		if (isString(txtbit)) {
+		if (typeof txtbit === 'string') {
 			return `<span>${txtbit.trim()}</span>`;
 		}
 

@@ -18,8 +18,6 @@
 
 import * as React from 'react';
 
-import { isString } from 'lodash';
-
 import {
 	diff,
 	DiffConcatFn,
@@ -33,7 +31,7 @@ export default function (oldText : string, newText : string) : JSX.Element[] {
 	// Define all callbacks. They are inlined in this function because
 	// they need to have closure over the local "plain" variable.
 	const formatFn : DiffFormatFn = (txtbit, index) => {
-		if (isString(txtbit)) {
+		if (typeof txtbit === 'string') {
 			return <span key={index}>{txtbit.trim()}</span>;
 		}
 
