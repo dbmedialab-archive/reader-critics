@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-
+import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class SubHeadingElement extends ArticleElement {
@@ -25,7 +25,7 @@ export default class SubHeadingElement extends ArticleElement {
 	protected getContentElement() : JSX.Element {
 		const order : number = this.props.item.order.type;
 		return <div>
-			<label>Mellomtittel #{order}</label>
+			<label><FormattedMessage id="label.article-el.subHead" values={{order}}/></label>
 			<h3>{ this.textDiff(this.props.item.originalText, this.state.text) }</h3>
 		</div>;
 	}

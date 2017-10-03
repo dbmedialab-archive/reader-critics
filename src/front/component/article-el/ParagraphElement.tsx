@@ -26,7 +26,7 @@ export default class ParagraphElement extends ArticleElement {
 	protected getContentElement() : JSX.Element {
 		const order : number = this.props.item.order.type;
 		return <div>
-			<label><FormattedMessage id="label.article-el.paragraph"/> #{order}</label>
+			<label><FormattedMessage id="label.article-el.paragraph" values={{order}}/></label>
 			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
 		</div>;
 	}

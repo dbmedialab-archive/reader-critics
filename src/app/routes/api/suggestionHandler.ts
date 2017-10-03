@@ -28,7 +28,7 @@ import { suggestionService } from 'app/services';
 import { errorResponse, okResponse } from './apiResponse';
 import config from 'app/config';
 
-import * as app from 'app/util/applib/logging';
+import * as app from 'app/util/applib';
 const log = app.createLog();
 
 const maxEmailLength = 254;

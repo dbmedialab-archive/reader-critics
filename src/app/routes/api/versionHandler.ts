@@ -16,18 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import {
+	Request,
+	Response,
+} from 'express';
 
-import { ArticleElement } from '../ArticleElement';
-import { FormattedMessage } from 'react-intl';
+import { okResponse } from './apiResponse';
 
-export default class LeadInElement extends ArticleElement {
+import * as app from 'app/util/applib';
 
-	protected getContentElement() : JSX.Element {
-		return <div>
-			<label><FormattedMessage id="label.article-el.introduction"/></label>
-			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
-		</div>;
-	}
+export default function(requ : Request, resp : Response) : void {
+	Promise.all([
+		getPackageInfo().catch(err => {}),
+		getRepositoryInfo().catch(err => {}),
+	])
+	.spread((pkgInfo : any = {}, repInfo : any = {}) => {
+		okResponse(resp, Object.assign({ version: pkgInfo.version }, repInfo));
+	});
+}
 
+function getPackageInfo() : Promise<any> {
+	return app.loadJSON('package.json');
+}
+
+function getRepositoryInfo() : Promise<any> {
+	return app.loadJSON('out/version.json');
 }

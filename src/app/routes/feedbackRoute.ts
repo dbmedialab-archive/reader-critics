@@ -44,6 +44,7 @@ import {
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+const __ = localizationService.translate;
 
 // Prepare and export Express router
 
@@ -88,7 +89,7 @@ function postHandler(requ : Request, resp : Response, next : Function) : void {
 
 function checkVersionParameter(rawVersion : string) : Promise <string> {
 	return isEmpty(rawVersion)
-		? Promise.reject(new InvalidRequestError('"version" parameter is missing or empty.'))
+		? Promise.reject(new InvalidRequestError(__('err.no-version-param')))
 		: Promise.resolve(rawVersion.trim());
 }
 
@@ -108,7 +109,7 @@ function feedbackHandler(
 
 	return websiteService.identify(articleURL).then((w : Website) => {
 		if (w === null) {
-			return Promise.reject(new NotFoundError('Could not identify website'));
+			return Promise.reject(new NotFoundError(__('err.no-website-identify')));
 		}
 
 		website = w;

@@ -16,18 +16,20 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
+import GenericParser from './GenericParser';
 
-import { ArticleElement } from '../ArticleElement';
-import { FormattedMessage } from 'react-intl';
+import * as app from 'app/util/applib';
 
-export default class LeadInElement extends ArticleElement {
+const log = app.createLog();
 
-	protected getContentElement() : JSX.Element {
-		return <div>
-			<label><FormattedMessage id="label.article-el.introduction"/></label>
-			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
-		</div>;
+export default class AMPParser extends GenericParser {
+
+	// The generic parser is already capable enough to parse 90% of the elements
+	// of an Accelerated Mobile Page. The remaining elements are TBD.
+
+	protected initialize() : Promise <any> {
+		log('initialize');
+		return super.initialize();
 	}
 
 }

@@ -14,7 +14,7 @@
 		},
 	},
 	localization: {
-		defaultLocale: 'en',
+		systemLocale: fill,
 	},
 	auth: {
 		jwt: {
