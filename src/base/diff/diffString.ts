@@ -31,37 +31,145 @@
  *  http://ejohn.org/projects/javascript-diff-algorithm/
  */
 
+// Contains indexes of item's positions
 interface DiffParsingItem {
-	rows: number[];			// Contains indexes of item's positions
+	rows : number[];
 }
 
 // Contains info about simple part of string word and every it's position
 interface DiffParsingObject {
-	[name: string]: DiffParsingItem;
+	[name : string] : DiffParsingItem;
 }
 
 // Result of pre-parsing the string
 interface DiffResultObject {
-	o: any[];				// Array of objects from an old string
-	n: any[];				// Array of objects from a new string
+	o : any[];  // Array of objects from an old string
+	n : any[];  // Array of objects from a new string
 }
 
 // Object to show every single part of string after diff check
 export interface DiffBit {
-	count: number;			// Amount of items in string part
-	added?: boolean;		// Is string added
-	removed?: boolean;		// Is string removed
-	value: string;			// String part
+	count : number;  // Amount of items in string part
+	added? : boolean;  // Is string added
+	removed? : boolean;  // Is string removed
+	value : string;  // String part
+}
+
+/*
+ * Create an array of DiffBits from object or a string with result of diff operation
+ */
+export function diffString(orgStr : string, newStr : string) : Array<DiffBit> {
+	// Updates the previous string part adding to it value and count of current item
+	function updatePrevious(value : string) {
+		const lastIndex : number = result.length - 1;
+		const lastItem : DiffBit = result[lastIndex];
+		const replaceItem : DiffBit = Object.assign({}, lastItem, {
+			count: lastItem.count + 2,
+			value: lastItem.value + value,
+		});
+
+		result.splice(lastIndex, 1, replaceItem);
+	}
+
+	// Adding a new string part with added/deleted flags
+	function addOptItem(value: string, isAdding: boolean) {
+		const lastIndex: number = result.length - 1;
+		const lastItem: DiffBit = result[lastIndex];
+		const optItem: DiffBit = {
+			count: 2,
+			added: isAdding,
+			removed: !isAdding,
+			value: value,
+		};
+
+		if (lastItem && (isAdding ?
+				(lastItem.added && !lastItem.removed) :
+				(!lastItem.added && lastItem.removed))) {
+			updatePrevious(value);
+		} else {
+			result.push(optItem);
+		}
+	}
+
+	// Adding a new string part for item that has not been changed
+	function addItem(value: string) {
+		const lastIndex: number = result.length - 1;
+		const lastItem: DiffBit = result[lastIndex];
+		if (lastItem && !lastItem.added && !lastItem.removed) {
+			updatePrevious(value);
+		} else {
+			result.push({count: 2, value: value});
+		}
+	}
+
+	const result : DiffBit[] = [];
+	const lastSymbol : string = '';
+
+	const o = orgStr.replace(/\s+$/, '');
+	const n = newStr.replace(/\s+$/, '');
+
+	// Pre-parse the strings
+	const out : DiffResultObject = diffPreParse(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
+
+	// Set an array of space characters to add
+	let oSpace : string[] = o.match(/\s+/g);
+
+	if (!oSpace) {
+		oSpace = [lastSymbol];
+	}
+	else {
+		oSpace.push(lastSymbol);
+	}
+
+	let nSpace : string[] = n.match(/\s+/g);
+
+	if (!nSpace) {
+		nSpace = [lastSymbol];
+	}
+	else {
+		nSpace.push(lastSymbol);
+	}
+
+	// If no new string then set all as deleted
+	if (out.n.length === 0) {
+		for (let i = 0; i < out.o.length; i++) {
+			addOptItem(out.o[i] + oSpace[i], false);
+		}
+	} else {
+		if (!out.n[0].text) {
+			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
+				addOptItem(out.o[m] + oSpace[m], false);
+			}
+		}
+
+		for (let i = 0; i < out.n.length; i++) {
+			if (!out.n[i].text) {
+				addOptItem(out.n[i] + nSpace[i], true);
+			} else {
+				const preArr = [];  // String parts to pass to the end as deleted
+
+				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
+					preArr.push(out.o[m] + oSpace[m]);
+				}
+				addItem(out.n[i].text + nSpace[i]);
+				preArr.forEach(function (item) {
+					addOptItem(item, false);
+				});
+			}
+		}
+	}
+
+	return result;
 }
 
 /**
  * Preparse strings to find and mark parts which are same and which differ
  */
 function diffPreParse(o : string[], n : string[]) : DiffResultObject {
-	const ns: DiffParsingObject = {};  // Info for new string
-	const os: DiffParsingObject = {};  // Info for old string
-	const nn: any[] = Object.assign([], n);  // Object to change while parsing new string
-	const no: any[] = Object.assign([], o);  // Object to change while parsing old string
+	const ns : DiffParsingObject = {};  // Info for new string
+	const os : DiffParsingObject = {};  // Info for old string
+	const nn : any[] = Object.assign([], n);  // Object to change while parsing new string
+	const no : any[] = Object.assign([], o);  // Object to change while parsing old string
 
 	// Pick info about every simple part of new string and it's positions
 	for (let i = 0; i < nn.length; i++) {
@@ -106,288 +214,8 @@ function diffPreParse(o : string[], n : string[]) : DiffResultObject {
 		}
 	}
 
-	return {o: no, n: nn};
+	return {
+		o: no,
+		n: nn,
+	};
 }
-
-/*
-	Building an object or a string with result of diff operation
- */
-/*
-export default function diffStringDefault(
-	orgStr : string,
-	newStr : string,
-	isHTML : boolean = false
-) : Array<DiffBit> | string
-{
-	// Updates the previous string part adding to it value and count of current item
-	function updatePrevious(value: string) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		const replaceItem: DiffBit = Object.assign({}, lastItem, {
-			count: lastItem.count + 2,
-			value: lastItem.value + value,
-		});
-
-		result.splice(lastIndex, 1, replaceItem);
-	}
-
-	// Adding a new string part with added/deleted flags
-	function addOptItem(value: string, isAdding: boolean) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		const optItem: DiffBit = {
-			count: 2,
-			added: isAdding,
-			removed: !isAdding,
-			value: value,
-		};
-
-		if (lastItem && (isAdding ?
-				(lastItem.added && !lastItem.removed) :
-				(!lastItem.added && lastItem.removed))) {
-			updatePrevious(value);
-		} else {
-			result.push(optItem);
-		}
-	}
-
-	// Adding a new string part for item that has not been changed
-	function addItem(value: string) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		if (lastItem && !lastItem.added && !lastItem.removed) {
-			updatePrevious(value);
-		} else {
-			result.push({count: 2, value: value});
-		}
-	}
-
-	const result: DiffBit[] = [];
-	// If building an html text using the '/n' as an end of string
-	const lastSymbol: string = isHTML ? '\n' : '';
-	let str: string = '';
-
-	const o = orgStr.replace(/\s+$/, '');
-	const n = newStr.replace(/\s+$/, '');
-
-	// Pre-Parsing the strings
-	const out: DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
-
-	// Setting an array of space characters to add
-	let oSpace: string[] = o.match(/\s+/g);
-	if (!oSpace) {
-		oSpace = [lastSymbol];
-	} else {
-		oSpace.push(lastSymbol);
-	}
-	let nSpace: string[] = n.match(/\s+/g);
-	if (!nSpace) {
-		nSpace = [lastSymbol];
-	} else {
-		nSpace.push(lastSymbol);
-	}
-
-	// If not new string set all as deleted
-	if (out.n.length === 0) {
-		for (let i = 0; i < out.o.length; i++) {
-			str += '<del>' + encodeURIComponent(out.o[i]) + oSpace[i] + '</del>';
-			addOptItem(out.o[i] + oSpace[i], false);
-		}
-	} else {
-		if (!out.n[0].text) {
-			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
-				str += '<del>' + encodeURIComponent(out.o[m]) + oSpace[m] + '</del>';
-				addOptItem(out.o[m] + oSpace[m], false);
-			}
-		}
-
-		for (let i = 0; i < out.n.length; i++) {
-			if (!out.n[i].text) {
-				str += '<ins>' + encodeURIComponent(out.n[i]) + nSpace[i] + '</ins>';
-				addOptItem(out.n[i] + nSpace[i], true);
-			} else {
-				let pre = '';
-				const preArr = [];		// String parts to pass to the end as deleted
-
-				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
-					pre += encodeURIComponent(out.o[m]) + oSpace[m];
-					preArr.push(out.o[m] + oSpace[m]);
-				}
-				str += '<span>' + out.n[i].text + nSpace[i] + '</span>' + (pre ? '<del>' + pre + '</del>' : '');
-				addItem(out.n[i].text + nSpace[i]);
-				preArr.forEach(function (item) {
-					addOptItem(item, false);
-				});
-			}
-		}
-	}
-	return (isHTML ? str : result);
-}
-*/
-
-/*
- * Create an array of DiffBits from object or a string with result of diff operation
- */
-export function diffString(
-	orgStr : string,
-	newStr : string
-) : Array<DiffBit>
-{
-	// Updates the previous string part adding to it value and count of current item
-	function updatePrevious(value: string) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		const replaceItem: DiffBit = Object.assign({}, lastItem, {
-			count: lastItem.count + 2,
-			value: lastItem.value + value,
-		});
-
-		result.splice(lastIndex, 1, replaceItem);
-	}
-
-	// Adding a new string part with added/deleted flags
-	function addOptItem(value: string, isAdding: boolean) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		const optItem: DiffBit = {
-			count: 2,
-			added: isAdding,
-			removed: !isAdding,
-			value: value,
-		};
-
-		if (lastItem && (isAdding ?
-				(lastItem.added && !lastItem.removed) :
-				(!lastItem.added && lastItem.removed))) {
-			updatePrevious(value);
-		} else {
-			result.push(optItem);
-		}
-	}
-
-	// Adding a new string part for item that has not been changed
-	function addItem(value: string) {
-		const lastIndex: number = result.length - 1;
-		const lastItem: DiffBit = result[lastIndex];
-		if (lastItem && !lastItem.added && !lastItem.removed) {
-			updatePrevious(value);
-		} else {
-			result.push({count: 2, value: value});
-		}
-	}
-
-	const result: DiffBit[] = [];
-	const lastSymbol: string = '';
-
-	const o = orgStr.replace(/\s+$/, '');
-	const n = newStr.replace(/\s+$/, '');
-
-	// Pre-Parsing the strings
-	const out: DiffResultObject = diffPreParse(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
-
-	// Setting an array of space characters to add
-	let oSpace: string[] = o.match(/\s+/g);
-	if (!oSpace) {
-		oSpace = [lastSymbol];
-	} else {
-		oSpace.push(lastSymbol);
-	}
-	let nSpace: string[] = n.match(/\s+/g);
-	if (!nSpace) {
-		nSpace = [lastSymbol];
-	} else {
-		nSpace.push(lastSymbol);
-	}
-
-	// If not new string set all as deleted
-	if (out.n.length === 0) {
-		for (let i = 0; i < out.o.length; i++) {
-			addOptItem(out.o[i] + oSpace[i], false);
-		}
-	} else {
-		if (!out.n[0].text) {
-			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
-				addOptItem(out.o[m] + oSpace[m], false);
-			}
-		}
-
-		for (let i = 0; i < out.n.length; i++) {
-			if (!out.n[i].text) {
-				addOptItem(out.n[i] + nSpace[i], true);
-			} else {
-				const preArr = [];		// String parts to pass to the end as deleted
-
-				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
-					preArr.push(out.o[m] + oSpace[m]);
-				}
-				addItem(out.n[i].text + nSpace[i]);
-				preArr.forEach(function (item) {
-					addOptItem(item, false);
-				});
-			}
-		}
-	}
-	return result;
-}
-
-/*
- Building an object or a string with result of diff operation
- */
-/*
-export function diffStringHtml(orgStr : string, newStr : string) : string {
-	const lastSymbol: string = '\n';	// If building an html text using the '/n' as an end of string
-	let str: string = '';
-
-	const o = orgStr.replace(/\s+$/, '');
-	const n = newStr.replace(/\s+$/, '');
-
-	// Pre-Parsing the strings
-	const out : DiffResultObject = diff(!o ? [] : o.split(/\s+/), !n ? [] : n.split(/\s+/));
-
-	// Setting an array of space characters to add
-	let oSpace: string[] = o.match(/\s+/g);
-	if (!oSpace) {
-		oSpace = [lastSymbol];
-	} else {
-		oSpace.push(lastSymbol);
-	}
-	let nSpace: string[] = n.match(/\s+/g);
-	if (!nSpace) {
-		nSpace = [lastSymbol];
-	} else {
-		nSpace.push(lastSymbol);
-	}
-
-	// If not new string set all as deleted
-	if (out.n.length === 0) {
-		str += '<del>';
-		for (let i = 0; i < out.o.length; i++) {
-			str += encodeURIComponent(out.o[i]) + oSpace[i];
-		}
-		str += '</del>';
-	} else {
-		if (!out.n[0].text) {
-			str += '<del>';
-			for (let m = 0; m < out.o.length && !out.o[m].text; m++) {
-				str += encodeURIComponent(out.o[m]) + oSpace[m];
-			}
-			str += '</del>';
-		}
-
-		for (let i = 0; i < out.n.length; i++) {
-			if (!out.n[i].text) {
-				str += '<ins>' + encodeURIComponent(out.n[i]) + nSpace[i] + '</ins>';
-			} else {
-				let pre = '';
-
-				for (let m = out.n[i].row + 1; m < out.o.length && !out.o[m].text; m++) {
-					pre += encodeURIComponent(out.o[m]) + oSpace[m];
-				}
-				str += '<span>' + out.n[i].text + nSpace[i] + '</span>';
-				str += (pre ? '<del>' + pre + '</del>' : '');
-			}
-		}
-	}
-	return str;
-}
-*/

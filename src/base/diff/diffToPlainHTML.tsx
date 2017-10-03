@@ -20,15 +20,17 @@ import { isString } from 'lodash';
 
 import {
 	diff,
-	DiffBit,
-	DiffConcatterFunction,
-	DiffFormatterFunction,
+	DiffConcatFn,
+	DiffFormatFn,
+	DiffHasLenFn,
 } from './diff';
 
 export default function (oldText : string, newText : string) : string {
 	let plain : string = '';
 
-	const formatter : DiffFormatterFunction = (txtbit) => {
+	// Define all callbacks. They are inlined in this function because
+	// they need to have closure over the local "plain" variable.
+	const formatFn : DiffFormatFn = (txtbit) => {
 		if (isString(txtbit)) {
 			return `<span>${txtbit.trim()}</span>`;
 		}
@@ -43,11 +45,15 @@ export default function (oldText : string, newText : string) : string {
 		return `<span>${txtbit.value.trim()}</span>`;
 	};
 
-	const concatter : DiffConcatterFunction = (formattedElem : any) => {
-		plain = plain.concat(formattedElem, ' ');
+	const concatFn : DiffConcatFn = (formattedElem : any) => {
+		plain = plain.concat(formattedElem);
 	};
 
-	diff(oldText, newText, formatter, concatter);
+	const hasLenFn : DiffHasLenFn = () => plain.length > 0;
 
+	// Calculate the diff and get the result data
+	diff(oldText, newText, formatFn, concatFn, hasLenFn);
+
+	// Ship it!
 	return plain;
 }
