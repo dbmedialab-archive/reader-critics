@@ -16,16 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PageTemplate from 'app/template/PageTemplate';
-import Website from 'base/Website';
+import { RenderFunction } from 'dot';
+import { systemLocale } from 'app/services/localization';
 
-interface TemplateService {
-	// Website page templates
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-	getSuggestionPageTemplate(): Promise <PageTemplate>;
+export default abstract class AbstractTemplate {
 
-	// E-Mail templates
-	getFeedbackNotifyTemplate() : Promise<any>;
+	protected readonly locale;
+
+	constructor(protected readonly dotRender : RenderFunction, locale? : string) {
+		this.locale = locale || systemLocale;
+	}
+
+	public abstract render() : string;
+
 }
-
-export default TemplateService;

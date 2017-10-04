@@ -16,16 +16,33 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PageTemplate from 'app/template/PageTemplate';
-import Website from 'base/Website';
+import { RenderFunction } from 'dot';
 
-interface TemplateService {
-	// Website page templates
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-	getSuggestionPageTemplate(): Promise <PageTemplate>;
+import {
+	isEmpty,
+	isObject,
+	isString,
+} from 'lodash';
 
-	// E-Mail templates
-	getFeedbackNotifyTemplate() : Promise<any>;
+import { translate as __ } from 'app/services/localization';
+
+import AbstractTemplate from './AbstractTemplate';
+
+export default class MailTemplate extends AbstractTemplate {
+
+	private params : any;
+
+	public setParams(params : Object) : MailTemplate {
+		if (isObject(params) && !isEmpty(params)) {
+			this.params = params;
+		}
+		return this;
+	}
+
+	public render() : string {
+		return this.dotRender(Object.assign({
+			locale: this.locale,
+		}, this.params));
+	}
+
 }
-
-export default TemplateService;
