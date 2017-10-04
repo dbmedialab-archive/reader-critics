@@ -11,8 +11,10 @@ engines:
     enabled: false
     issue_override:
       severity: info
-  sass-lint:
+  scss-lint:
     enabled: true
+    config:
+      config: .sass-lint.yml
   shellcheck:
     enabled: true
 
@@ -28,4 +30,5 @@ exclude_paths:
 - 'kubefiles/**'
 - 'node_modules/**'
 - 'resources/**'
+- 'templates/**'
 - 'tmp/**'
