@@ -53,9 +53,9 @@ export default function() {
 		.then(initDatabase)
 		.then(initJobWorkerQueue)
 
-/* !!! >>>>> */
+/* !!! >>>>> ####################################################### >>>>>*/
 		.then(() => {
-			log('MOCK new feedback event');
+			log('### MOCK new feedback event #######################################################');
 
 			// Get an article from the test crowd
 			return articleService.get('http://www.mopo.no/2', '201707251349')
@@ -80,9 +80,10 @@ export default function() {
 				data: feedback,
 			}, () => {
 				log('done() callback');
+				log('### MOCK feedback event finished ##################################################');
 			}));
 		})
-/* <<<<< !!! */
+/* <<<<< ####################################################### <<<<< !!! */
 
 		.catch(startupErrorHandler);
 }

@@ -18,8 +18,10 @@
 
 import {
 	DoneCallback,
-	/*!!!*/ Job,
+	// !!! Job,
 } from 'kue';
+
+import { spawn } from 'child_process';
 
 import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
@@ -30,9 +32,10 @@ import diffToPlainHTML from 'base/diff/diffToPlainHTML';
 
 import {
 	feedbackService,
+	// templateService,
 } from 'app/services';
 
-/*!!!*/ import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
+// !!! import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
@@ -46,21 +49,24 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 
 	const ID : string = job.data.ID;
 	log(`Received new feedback event for ID ${ID}`);
-	log(job.data);
+	log(app.inspect(job.data));
 
 	return feedbackService.getByID(ID)
 	.then((feedback : Feedback) => {
-		console.log(JSON.stringify(feedback, undefined, 4));
+		// console.log(JSON.stringify(feedback, undefined, 4));
 
 		feedback.items.forEach((fbItem : FeedbackItem) => {
 			const arItem = getRelatedArticleItem(feedback.article, fbItem);
 			// TODO check undefined return value
-			console.log('ar item:', app.inspect(arItem));
-			console.log('fb item:', app.inspect(fbItem));
+			log('ar item:', app.inspect(arItem));
+			log('fb item:', app.inspect(fbItem));
 
 			if (fbItem.text.length > 0) {
 				const dtxt = diffToPlainHTML(arItem.text, fbItem.text);
+				log('#### DIFF TXT ################################################');
 				log(dtxt);
+				log('##############################################################');
+				notifyBrowser();
 			}
 		});
 	})
@@ -72,5 +78,11 @@ function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
 		return aItem.order.item === fItem.order.item
 			&& aItem.order.type === fItem.order.type
 			&& aItem.type === fItem.type;
+	});
+}
+
+function notifyBrowser() {
+	spawn('/usr/bin/qupzilla', [ '-c', 'file:///tmp/mailtest.html' ], {
+		detached: true,
 	});
 }
