@@ -21,13 +21,13 @@ import * as path from 'path';
 
 import { isEmpty } from 'lodash';
 
+import emptyCheck from 'app/util/emptyCheck';
+import PageTemplate from 'app/template/PageTemplate';
 import Website from 'base/Website';
-import PageTemplate from 'base/PageTemplate';
 
 import { localizationService } from 'app/services';
 
 import * as app from 'app/util/applib';
-import emptyCheck from 'app/util/emptyCheck';
 
 const __ = localizationService.translate;
 const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');

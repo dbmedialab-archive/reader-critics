@@ -19,7 +19,7 @@
 import * as doT from 'dot';
 import * as path from 'path';
 
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 
 import * as app from 'app/util/applib';
 
