@@ -23,8 +23,6 @@ import {
 	DiffHasLenFn,
 } from './diff';
 
-import { DiffBit } from './diffString';
-
 export default function (oldText : string, newText : string) : string {
 	let plain : string = '';
 
