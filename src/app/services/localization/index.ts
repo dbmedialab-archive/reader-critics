@@ -17,7 +17,9 @@
 //
 
 import { flatten } from 'flat';
+
 import {
+	isEmpty,
 	isString,
 	throttle,
 } from 'lodash';
@@ -79,7 +81,7 @@ export function getFrontendStrings(website? : Website) : Promise <Object> {
 	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
 }
 
-export function translate(id : string, options? : string|object) : string {
+export function translate(id : string, options? : string|any) : string {
 	let usedLocale = systemLocale;
 
 	// A single string value in "options" means to override the system default locale
@@ -92,7 +94,42 @@ export function translate(id : string, options? : string|object) : string {
 	const allStrings = Object.assign({}, strings.common, strings.app);
 	const flattened = flatten(applyLocale(allStrings, usedLocale));
 
-	return flattened[id] || id;
+	if (!flattened[id]) {
+		return id;
+	}
+
+	const replaceValues = (() => {
+		if ((isEmpty(options) || isString(options)) ? true : isEmpty(options.values)) {
+			return {};
+		}
+
+		return (options.values || {});
+	})();
+
+	const replacer = (match : string) => {
+		const index = match.substring(1, match.length - 1);
+		return replaceValues[index] || '--';
+
+//		log('Match: [%s]', index);
+		// p1 is nondigits, p2 digits, and p3 non-alphanumerics
+//		return '#replaced#';
+	};
+
+	const newString = flattened[id].replace(/({\w+})/g, replacer);
+	log('Replaced: [%s]', newString);
+
+	// var newString = 'abc12345#$*%'.replace(/([^\d]*)(\d*)([^\w]*)/, replacer);
+	// console.log(newString);  // abc - 12345 - #$*%
+
+	// var myString = "This is {name}'s {adjective} {type} in JavaScript! Yes, a {type}!",
+	// replaceArray = ['name', 'adjective', 'type'],
+	// replaceWith = ['John', 'simple', 'string'];
+
+	// for(var i = 0; i < replaceArray.length; i++) {
+	// 	myString = myString.replace(new RegExp('{' + replaceArray[i] + '}', 'gi'), replaceWith[i]);
+	// }
+
+	return newString;
 }
 
 function applyLocale(input : any, locale : string) : any {

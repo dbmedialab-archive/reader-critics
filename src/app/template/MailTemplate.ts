@@ -16,15 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { RenderFunction } from 'dot';
-
 import {
 	isEmpty,
 	isObject,
-	isString,
 } from 'lodash';
-
-import { translate as __ } from 'app/services/localization';
 
 import AbstractTemplate from './AbstractTemplate';
 

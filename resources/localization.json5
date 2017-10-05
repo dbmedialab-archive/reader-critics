@@ -12,10 +12,50 @@
 				nb: 'Leserkritikk',
 			},
 		},
+		'article-el': {
+			featured: {
+				en: 'Featured Image',
+				nb: 'Hovedbilde',
+			},
+			figure: {
+				en: 'Picture #{order}',
+				nb: 'Bilde #{order}',
+			},
+			lead: {
+				en: 'Lead-In',
+				nb: 'Innledning',
+			},
+			link: {
+				en: 'Link #{order}',
+				nb: 'Link #{order}',
+			},
+			paragraph: {
+				en: 'Paragraph #{order}',
+				nb: 'Avsnitt #{order}',
+			},
+			subhead: {
+				en: 'Sub Heading #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			subtitle: {
+				en: 'Sub Title #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			title: {
+				en: 'Title',
+				nb: 'Tittel',
+			},
+		},
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
 				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
+			},
+		},
+		label: {
+			comment: {
+				en: 'Comment',
+				nb: 'Kommentar',
 			},
 		},
 	},

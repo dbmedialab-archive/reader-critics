@@ -23,11 +23,6 @@ import MailTemplate from 'app/template/MailTemplate';
 
 import * as app from 'app/util/applib';
 
-import {
-	systemLocale,
-	translate as __
-} from 'app/services/localization';
-
 const log = app.createLog();
 const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
 

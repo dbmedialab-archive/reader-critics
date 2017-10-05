@@ -1,0 +1,38 @@
+<html lang="{{=it.locale}}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+			div {
+				font-size: 16pt;
+				/*padding: 4px;*/
+			}
+			ins {
+				color: #0080DD;
+			}
+			del {
+				color: #DD3300;
+			}
+			label.item-type {
+				text-transform: uppercase;
+				color: #597e97;
+				font-size: .85em;
+				margin-bottom: .2em;
+			}
+		</style>
+		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
+			<div style="font-size: 20pt; margin-bottom: 0.4cm;">
+				Du har fått tilbakemelding artikkelen: {{=it.articleLink}}
+			</div>
+
+			<div style="font-size: 18pt;">
+				Sendt inn av: {{=it.enduserName}}
+			</div>
+
+			<div class="feedback-box">
+				{{=it.testdiv}}
+			</div>
+		</div>
+	</body>
+</html>

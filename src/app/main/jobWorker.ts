@@ -23,6 +23,7 @@ import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
 import { initJobWorkerQueue } from 'app/queue';
+import { initLocalizationStrings } from 'app/services/localization';
 
 /* !!! >>>>> */
 import Article from 'base/Article';
@@ -50,6 +51,7 @@ export default function() {
 	// Main application startup
 
 	Promise.resolve()
+		.then(initLocalizationStrings)
 		.then(initDatabase)
 		.then(initJobWorkerQueue)
 
