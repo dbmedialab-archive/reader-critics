@@ -43,6 +43,7 @@ const expected = {
 	'chiefEditors': [{
 		'name': 'Quak',
 		'email': 'vakt@mopo.no',
+		'ID': '67890',
 	}],
 	'hosts': [
 		'www.mopo.no',
@@ -56,6 +57,7 @@ const expected = {
 		new Date('2016-01-09T11:25:38Z'),
 	],
 	'subDocument': {
+		'ID': 'abcdef',
 		'quak': 'Here be data',
 		'uint': 10001,
 	},

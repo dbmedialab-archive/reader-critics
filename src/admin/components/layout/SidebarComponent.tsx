@@ -29,8 +29,7 @@ const SidebarComponent: React.StatelessComponent <any> = () =>
 			<div className="tree-wrap">
 
 				<div className="profile">
-					<img className="logo" src="/static/admin/images/logo.png"/>
-					<h3>LESERKRITIKK<span className="app-version">0.0.4</span></h3>
+					<img className="logo" src="/static/images/logo/leserkritikk-logo-color.svg"/>
 				</div>
 				<div className="side-bar">
 					<MainMenuComponent />

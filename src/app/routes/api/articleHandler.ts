@@ -27,6 +27,7 @@ import Website from 'base/Website';
 
 import {
 	articleService,
+	localizationService,
 	websiteService,
 } from 'app/services';
 
@@ -41,6 +42,7 @@ import {
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+const __ = localizationService.translate;
 
 // Main handler, checks for URL parameter and invalid requests
 
@@ -70,7 +72,7 @@ export default function(requ : Request, resp : Response) : void {
 		return websiteService.identify(articleURL).then((w : Website) => {
 			if (w === null) {
 				log('not identified');
-				return Promise.reject(new Error('Could not identify website'));
+				return Promise.reject(new Error(__('err.no-website-identify')));
 			}
 
 			website = w;
@@ -109,7 +111,7 @@ export default function(requ : Request, resp : Response) : void {
 		};
 
 		if (error instanceof EmptyError) {
-			errorResponse(resp, error, 'Mandatory URL parameter is missing or empty', options);
+			errorResponse(resp, error, __('err.no-url-param'), options);
 		}
 		// else if (error instanceof TypeError) {
 		// 	errorResponse(resp, error, 'URL parameter invalid', options);

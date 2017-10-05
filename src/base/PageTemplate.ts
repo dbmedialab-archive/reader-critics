@@ -24,16 +24,25 @@ import {
 	isString,
 } from 'lodash';
 
+import {
+	systemLocale,
+	translate as __
+} from 'app/services/localization';
+
 export default class PageTemplate {
+
+	private readonly locale;
 
 	private scripts : string[] = [];
 	private styles : string[] = [];
 
 	private params : Object = {};
 
-	private title : string = 'Leserkritikk';
+	private title : string = __('app.title');
 
-	constructor(private readonly dotRender : RenderFunction) {}
+	constructor(private readonly dotRender : RenderFunction, locale? : string) {
+		this.locale = locale || systemLocale;
+	}
 
 	public pushScript(...jsFileURIs : string[]) : PageTemplate {
 		jsFileURIs.forEach(uri => {
@@ -70,6 +79,7 @@ export default class PageTemplate {
 	public render() : string {
 		return this.dotRender({
 			params: JSON.stringify(this.params),
+			locale: this.locale,
 			scripts: this.scripts,
 			styles: this.styles,
 			title: this.title,

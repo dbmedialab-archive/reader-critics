@@ -35,20 +35,30 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
-export function get(articleURL : ArticleURL, version : string) : Promise <Article> {
+export function get(
+	articleURL : ArticleURL,
+	version : string,
+	populated : boolean = false
+) : Promise <Article> {
 	emptyCheck(articleURL, version);
 
-	return wrapFindOne(ArticleModel.findOne({
+	let result = ArticleModel.findOne({
 		url: articleURL.href,
 		version,
-	}).populate('authors'));  // Website is not populated to not spill confidential data
+	});
+
+	if (populated) {
+		result = result.populate('authors').populate('website');
+	}
+
+	return wrapFindOne(result);
 }
 
 export function save(website : Website, article : Article) : Promise <Article> {
 	emptyCheck(website, article);
 
 	return makeDocument(website, article)
-	.then(doc => wrapSave(new ArticleModel(doc).save()));
+	.then(doc => wrapSave<Article>(new ArticleModel(doc).save()));
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {

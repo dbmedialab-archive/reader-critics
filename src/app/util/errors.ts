@@ -43,3 +43,10 @@ export class ParserNotFoundError extends NotFoundError {
 		Object.setPrototypeOf(this, ParserNotFoundError.prototype);
 	}
 }
+
+export class SchemaValidationError extends Error {
+	constructor(message : string) {
+		super(message);
+		Object.setPrototypeOf(this, SchemaValidationError.prototype);
+	}
+}

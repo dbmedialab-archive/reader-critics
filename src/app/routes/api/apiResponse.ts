@@ -19,7 +19,11 @@
 import { Response } from 'express';
 
 import * as app from 'app/util/applib';
-import { NotFoundError } from 'app/util/errors';
+
+import {
+	NotFoundError,
+	SchemaValidationError,
+} from 'app/util/errors';
 
 const log = app.createLog('api');
 
@@ -71,6 +75,9 @@ export function errorResponse(
 
 	if (error instanceof NotFoundError) {
 		response.status = 404;
+	}
+	else if (error instanceof SchemaValidationError) {
+		response.status = 400;
 	}
 	else {
 		response.status = 500;

@@ -20,6 +20,7 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router';
 
 import Users from 'admin/components/user/Users';
+import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
 import Login from 'admin/components/login/Login';
 
 const Routes : React.StatelessComponent <any> =	() =>
@@ -28,5 +29,7 @@ const Routes : React.StatelessComponent <any> =	() =>
 		<Route path="/login" component={Login}/>
 		<Route path="/logout" component={Login}/>
 		<Route path="/users" component={Users}/>
+		<Route path="/feedbacks" component={Feedbacks}/>
+
 	</Switch>;
 export default Routes;

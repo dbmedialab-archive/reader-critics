@@ -1,16 +1,15 @@
-box: openjdk:8
+box:
+  id: dbmedialab/nodejs-openjdk
+  cmd: /bin/bash -l
+
+services:
+  - name: redis
+    id: redis:3.2
+  - mongo: mongo
+    id: mongo:3.0
 
 js-lint-build-test:
   steps:
-  - script:
-    name: 'install node'
-    code: |
-      apt-get update && apt-get install build-essential -y
-      curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-      export NVM_DIR="$HOME/.nvm"
-      source /root/.bashrc
-      nvm install v8
-      nvm use node
   - script:
     name: set dependency cache
     code: npm config set cache $WERCKER_CACHE_DIR/wercker/npm
@@ -27,6 +26,13 @@ js-lint-build-test:
     name: build
     code: run/build
   - script:
+    name: set db envs
+    code: |
+      export MONGODB_URL="mongodb://$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/readercritics"
+      export REDIS_URL_MESSAGE_QUEUE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/1"
+      export REDIS_URL_SESSION_CACHE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/2"
+      echo $MONGODB_URL $REDIS_URL_MESSAGE_QUEUE $REDIS_URL_SESSION_CACHE
+  - script:
     name: test libraries
     code: run/test --libs
   - script:
@@ -35,6 +41,9 @@ js-lint-build-test:
   - script:
     name: test backend app
     code: run/test --app
+  - script:
+    name: test db services
+    code: run/test --db
   #- script:
   #  name: test frontend
   #  code: run/test --frontend
@@ -46,11 +55,12 @@ js-lint-build-test:
         run \
         tmp \
         resources \
+        templates \
         package.json \
         $WERCKER_OUTPUT_DIR
 
 push-image:
-  box: 
+  box:
     id: node:8-alpine
     cmd: /bin/sh
   steps:
