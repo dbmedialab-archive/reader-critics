@@ -19,6 +19,7 @@
 * [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
 * [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
+* [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
 * [Crazy Ideas](doc/think-about-these-crazy-ideas.md) ‒ We won't do that right now, but we really want to
 
