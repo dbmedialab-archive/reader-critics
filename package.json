@@ -47,7 +47,7 @@
 		"app-module-path": "2.2.0",
 		"axios": "0.16.2",
 		"bcrypt": "1.0.3",
-		"bluebird": "3.5.0",
+		"bluebird": "3.5.1",
 		"body-parser": "1.18.2",
 		"callsite": "1.0.0",
 		"cheerio": "1.0.0-rc.2",
@@ -87,7 +87,7 @@
 		"react-dom": "15.6.2",
 		"react-helmet": "5.2.0",
 		"react-intl": "2.4.0",
-		"react-modal": "2.3.2",
+		"react-modal": "2.3.3",
 		"react-preloader-icon": "0.1.0",
 		"react-recaptcha": "2.3.5",
 		"react-redux": "5.0.6",
@@ -110,7 +110,7 @@
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
-		"@types/bluebird": "3.5.13",
+		"@types/bluebird": "3.5.14",
 		"@types/bluebird-global": "3.5.3",
 		"@types/body-parser": "1.16.5",
 		"@types/callsite": "1.0.30",
