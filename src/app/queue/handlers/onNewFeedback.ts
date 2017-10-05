@@ -148,8 +148,11 @@ const formatElHeader = (i : ItemFormatPayload) => {
 };
 
 const cssElDiffText = [
-	'border: 1px solid red',
-	'margin-bottom: 0.4cm',
+	// 'border: 1px solid red',
+	'margin-top: 0.5em',
+	'margin-bottom: 0.5em',
+	'padding: 0.5em',
+	'background-color: #c3e7ff',
 ].join('; ');
 
 const formatElDiffText = (i : ItemFormatPayload) => {
