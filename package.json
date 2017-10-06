@@ -87,7 +87,7 @@
 		"react-dom": "15.6.2",
 		"react-helmet": "5.2.0",
 		"react-intl": "2.4.0",
-		"react-modal": "2.3.3",
+		"react-modal": "2.4.1",
 		"react-preloader-icon": "0.1.0",
 		"react-recaptcha": "2.3.5",
 		"react-redux": "5.0.6",
