@@ -31,13 +31,16 @@ import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
 
-import diffToPlainHTML from 'base/diff/diffToPlainHTML';
-
 import {
 	feedbackService,
 	localizationService,
 	templateService,
 } from 'app/services';
+
+import {
+	format,
+	ItemFormatPayload,
+} from 'app/mail/layout/FeedbackNotifyLayout';
 
 // !!! import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
@@ -46,11 +49,6 @@ import * as app from 'app/util/applib';
 const __ = localizationService.translate;
 const log = app.createLog();
 /* !!! */ const testPath = '/tmp/mailtest.html';
-
-type ItemFormatPayload = {
-	aItem : ArticleItem;
-	fItem : FeedbackItem;
-};
 
 export default function(job : any /*Job*/, done : DoneCallback) : Promise <void> {
 	if (!job.data.ID) {
@@ -80,7 +78,7 @@ const cssFeedbackItemBox = [
 	'box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3)',
 	'padding: 0.8em',
 	'margin-bottom: 0.5em',
-].join('; ');
+].join(';');
 
 function processFeedback(feedback : Feedback, template : MailTemplate) : Promise <any> {
 	log('#### DIFF HTML ###############################################');
@@ -95,9 +93,9 @@ function processFeedback(feedback : Feedback, template : MailTemplate) : Promise
 		};
 
 		const formatted = [
-			formatElHeader(i),
-			formatElDiffText(i),
-			formatElComment(i),
+			format.itemHeader(i),
+			format.itemText(i),
+			format.itemComment(i),
 		];
 
 		dtxt += `\n<!-- begin item no. ${fIndex} -->`
@@ -109,9 +107,13 @@ function processFeedback(feedback : Feedback, template : MailTemplate) : Promise
 	dtxt += '\n<!-- end of loop -->\n';
 
 	const html = template.setParams({
-		articleLink: `<a href="${feedback.article.url}">${feedback.article.url}</a>`,
-		enduserName: `${feedback.enduser.name} (${feedback.enduser.email})`,
-		testdiv: dtxt,
+		gotFeedback: __('mail.fb-notify.got-feedback'),
+		whoSent: __('mail.fb-notify.who-sent'),
+
+		articleTitle: format.articleTitle(feedback),
+		enduser: format.enduser(feedback),
+
+		feedbackBox: dtxt,
 	})
 	.render();
 
@@ -135,39 +137,7 @@ function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
 	});
 }
 
-// Formatting
-
-const formatElHeader = (i : ItemFormatPayload) => {
-	return '<label class="item-type">'
-	+ __(`article-el.${i.aItem.type}`, {
-		values: {
-			order: i.aItem.order.type,
-		},
-	})
-	+ ` &nbsp; <i>(${i.aItem.type})</i></label>`;
-};
-
-const cssElDiffText = [
-	// 'border: 1px solid red',
-	'margin-top: 0.5em',
-	'margin-bottom: 0.5em',
-	'padding: 0.5em',
-	'background-color: #c3e7ff',
-].join('; ');
-
-const formatElDiffText = (i : ItemFormatPayload) => {
-	return (i.fItem.text.length <= 0) ? ''
-		: `<div class="el-diff" style="${cssElDiffText}">`
-		+ diffToPlainHTML(i.aItem.text, i.fItem.text)
-		+ '</div>';
-};
-
-const formatElComment = (i : ItemFormatPayload) => {
-	return (i.fItem.comment.length <= 0) ? ''
-		: '<div class="el-comment">' + __('label.comment') + ': <i>'
-		+ i.fItem.comment
-		+ '</i></div>';
-};
+// const formatFeedbackBox = (itemIndex : number, formattedItems : string) =>
 
 // Only for development - TODO remove before merging!
 

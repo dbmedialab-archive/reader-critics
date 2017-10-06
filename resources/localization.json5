@@ -53,13 +53,33 @@
 			},
 		},
 		label: {
+			amend: {
+				en: 'Amendment',
+				nb: 'Endringsforslag',
+			},
 			comment: {
 				en: 'Comment',
 				nb: 'Kommentar',
 			},
+			'orig-text': {
+				en: 'Original text',
+				nb: 'Original tekst',
+			}
 		},
 	},
 	app: {
+		mail: {
+			'fb-notify': {
+				'got-feedback': {
+					en: 'You received a feedback on the article',
+					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'who-sent': {
+					en: 'Send in by',
+					nb: 'Sendt inn av',
+				}
+			},
+		},
 		err: {
 			'invalid-param': {
 				en: 'Parameters are missing or have invalid format',

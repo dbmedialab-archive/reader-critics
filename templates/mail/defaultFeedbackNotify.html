@@ -5,7 +5,7 @@
 	<body>
 		<style>
 			div {
-				font-size: 16pt;
+				font-size: 12pt;
 				/*padding: 4px;*/
 			}
 			ins {
@@ -14,25 +14,15 @@
 			del {
 				color: #DD3300;
 			}
-			label.item-type {
-				text-transform: uppercase;
-				color: #597e97;
-				font-size: .85em;
-				margin-bottom: .2em;
-			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
-			<div style="font-size: 20pt; margin-bottom: 0.4cm;">
-				Du har fått tilbakemelding artikkelen: {{=it.articleLink}}
-			</div>
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.gotFeedback}}</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.articleTitle}}</div>
 
-			<div style="font-size: 18pt;">
-				Sendt inn av: {{=it.enduserName}}
-			</div>
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.whoSent}}</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.enduser}}</div>
 
-			<div class="feedback-box">
-				{{=it.testdiv}}
-			</div>
+			<div class="feedback-box">{{=it.feedbackBox}}</div>
 		</div>
 	</body>
 </html>
