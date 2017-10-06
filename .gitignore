@@ -7,6 +7,7 @@
 /out/bundle/
 /out/front/
 /out/test/
+/out/version.*
 
 # App config files
 kubefiles/secret.*

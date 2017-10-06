@@ -16,18 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as React from 'react';
-import 'front/scss/front.scss';
-// Common components
-import Header from 'front/common/Header';
-import Footer from 'front/common/Footer';
-import SuggestionContainer from 'front/suggest/SuggestionContainer';
+import {
+	Request,
+	Response,
+} from 'express';
 
-const SuggestionLayout : React.StatelessComponent <any> =
-	() => <div>
-		<Header/>
-		<SuggestionContainer/>
-		<Footer/>
-	</div>;
+import { okResponse } from './apiResponse';
 
-export default SuggestionLayout;
+import * as app from 'app/util/applib';
+
+export default function(requ : Request, resp : Response) : void {
+	Promise.all([
+		getPackageInfo().catch(err => {}),
+		getRepositoryInfo().catch(err => {}),
+	])
+	.spread((pkgInfo : any = {}, repInfo : any = {}) => {
+		okResponse(resp, Object.assign({ version: pkgInfo.version }, repInfo));
+	});
+}
+
+function getPackageInfo() : Promise<any> {
+	return app.loadJSON('package.json');
+}
+
+function getRepositoryInfo() : Promise<any> {
+	return app.loadJSON('out/version.json');
+}
