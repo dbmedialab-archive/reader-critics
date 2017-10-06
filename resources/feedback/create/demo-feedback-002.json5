@@ -30,6 +30,16 @@
 				},
 				type: 'subhead',
 			},
+			{
+				links: [],
+				comment: 'Des versteht doch koa Mensch ned horch amal, ko ma des ned aweng gscheider ausdrüggn?',
+				text: 'Luja beim Kuaschwanz singd es. Klampfn und Brotzeit des muas ma hoid kenna, auf’d Schellnsau allerweil!',
+				order: {
+					type: 4,
+					item: 6,
+				},
+				type: 'paragraph',
+			},
 		],
 	},
 }
