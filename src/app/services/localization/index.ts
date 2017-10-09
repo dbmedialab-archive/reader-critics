@@ -111,7 +111,7 @@ export function translate(id : string, options? : string|any) : string {
 		return replaceValues[index] || '--';
 	};
 
-	return flattened[id].replace(/({\w+})/g, replacer);;
+	return flattened[id].replace(/({\w+})/g, replacer);
 }
 
 function applyLocale(input : any, locale : string) : any {

@@ -84,7 +84,7 @@ const cssItemTextGeneric = [
 ];
 
 const cssItemText = concat(cssItemTextGeneric, [
-	'background-color: #ebf7ff',
+	'background-color: #d6e1e8',
 ]).join(';');
 
 const cssItemDiffText = concat(cssItemTextGeneric, [

@@ -16,14 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as fs from 'fs';
-
 import {
 	DoneCallback,
 	// !!! Job,
 } from 'kue';
-
-import { spawn } from 'child_process';
 
 import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
@@ -48,7 +44,6 @@ import * as app from 'app/util/applib';
 
 const __ = localizationService.translate;
 const log = app.createLog();
-/* !!! */ const testPath = '/tmp/mailtest.html';
 
 export default function(job : any /*Job*/, done : DoneCallback) : Promise <void> {
 	if (!job.data.ID) {
@@ -56,16 +51,14 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 		return Promise.resolve();
 	}
 
-	const ID : string = job.data.ID;
-	log(`Received new feedback event for ID ${ID}`);
-	log(app.inspect(job.data));
+	log(`Received new feedback event for ID ${job.data.ID}`);
 
 	return new Promise <void> ((resolve, reject) => {
 		Promise.all([
-			feedbackService.getByID(ID),
+			feedbackService.getByID(job.data.ID),
 			templateService.getFeedbackNotifyTemplate(),
 		])
-		.spread(processFeedback)
+		.spread(layoutNotifyMail)
 		.then(() => {
 			done();
 			resolve();
@@ -80,7 +73,7 @@ const cssFeedbackItemBox = [
 	'margin-bottom: 0.5em',
 ].join(';');
 
-function processFeedback(feedback : Feedback, template : MailTemplate) : Promise <any> {
+function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promise <any> {
 	let dtxt = '';
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
@@ -108,18 +101,15 @@ function processFeedback(feedback : Feedback, template : MailTemplate) : Promise
 		enduser: format.enduser(feedback),
 		sentIn: format.whenSentIn(feedback),
 
+		debugInfo: debugInfo(feedback),
+
 		feedbackBox: dtxt,
 	})
 	.render();
 
-	fs.writeFileSync(testPath, html, {
-		flag: 'w',
-		mode: 0o644,
-	});
+	// notifyBrowser(html);  -- this is only for convenient local testing
 
-	notifyBrowser();
-
-	return Promise.resolve();
+	return Promise.resolve(html);
 }
 
 function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
@@ -130,12 +120,30 @@ function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
 	});
 }
 
-// const formatFeedbackBox = (itemIndex : number, formattedItems : string) =>
+function debugInfo(feedback : Feedback) : string {
+	return [
+		`feedback ID = ${feedback.ID}`,
+		`article ID = ${feedback.article.ID}`,
+		`article version = ${feedback.article.version}`,
+	].join('<br/>');
+}
 
-// Only for development - TODO remove before merging!
+// Only for development
 
-function notifyBrowser() {
+/*
+import { writeFileSync } from 'fs';
+import { spawn } from 'child_process';
+
+function notifyBrowser(html : string) {
+	const testPath = '/tmp/mailtest.html';
+
+	writeFileSync(testPath, html, {
+		flag: 'w',
+		mode: 0o644,
+	});
+
 	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
 		detached: true,
 	});
 }
+*/

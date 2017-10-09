@@ -15,7 +15,7 @@
 				color: #DD3300;
 			}
 			a {
-				color: #0060D0;
+				color: #0070D0;
 				text-decoration: none;
 			}
 			a:hover {
@@ -31,11 +31,18 @@
 
 			<div class="feedback-box">{{=it.feedbackBox}}</div>
 
-			<div id="mail-date" style="font-size: 12pt; margin-top: 0.5cm;">{{=it.sentIn}}</div>
+			<div style="font-size: 12pt; margin-top: 0.5cm;">{{=it.sentIn}}</div>
 
-			<div id="mail-date" style="font-size: 12pt; margin-top: 0.5cm; font-style: italic;">
+			<div style="font-size: 12pt; margin-top: 0.5cm; font-style: italic;">
 				Denne er nye test-versjonen av Leserkritikk.<br/>
 				Har du spørsmål ta kontakt med <a href="mailto:christoph.schmitz@dagbladet.no">Christoph Schmitz</a>.
+			</div>
+
+			<hr style="margin: 2em 0 1em;"/>
+
+			<div style="font-size: 10pt; color: #0055AA;">
+				<p style="margin: 0.4em 0;"><u>Debug information:</u></p>
+				{{=it.debugInfo}}
 			</div>
 		</div>
 	</body>
