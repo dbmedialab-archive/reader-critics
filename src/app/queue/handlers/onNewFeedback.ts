@@ -59,6 +59,10 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 			templateService.getFeedbackNotifyTemplate(),
 		])
 		.spread(layoutNotifyMail)
+		.then((htmlMailContent : string) => {
+			log(htmlMailContent);
+			// Here be the sending of the mail. This is solved in feature/mail-sendgrid
+		})
 		.then(() => {
 			done();
 			resolve();
@@ -78,7 +82,6 @@ function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promis
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
 		const i : ItemFormatPayload = {
-			// TODO check undefined return value
 			aItem: getRelatedArticleItem(feedback.article, fItem),
 			fItem,
 		};
