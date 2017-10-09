@@ -139,14 +139,8 @@ const config = convict({
 		sendgrid: {
 			api_key: {
 				default: '',
-				doc: 'API key for SendGrid mail service, used if no other service is configured',
 				format: String,
-				// format: (value) => {
-
-					// if (!/^[a-fA-F0-9]{64}$/.test(val)) {
-					// 	throw new Error('must be a 64 character hex key')
-					// }
-				// },
+				doc: 'API key for SendGrid mail service, used if no other service is configured',
 				env: 'SENDGRID_API_KEY',
 			},
 		},
