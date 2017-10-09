@@ -56,5 +56,8 @@ spec:
               secretKeyRef:
                 name: reader-critics-secrets
                 key: REDIS_URL_SESSION_CACHE
-        - name: redis-cache
-          image: redis
+          - name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SENDGRID_API_KEY
