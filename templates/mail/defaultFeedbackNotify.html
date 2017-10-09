@@ -9,10 +9,17 @@
 				/*padding: 4px;*/
 			}
 			ins {
-				color: #0080DD;
+				color: #0060DD;
 			}
 			del {
 				color: #DD3300;
+			}
+			a {
+				color: #0060D0;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
 			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
@@ -23,6 +30,13 @@
 			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.enduser}}</div>
 
 			<div class="feedback-box">{{=it.feedbackBox}}</div>
+
+			<div id="mail-date" style="font-size: 12pt; margin-top: 0.5cm;">{{=it.sentIn}}</div>
+
+			<div id="mail-date" style="font-size: 12pt; margin-top: 0.5cm; font-style: italic;">
+				Denne er nye test-versjonen av Leserkritikk.<br/>
+				Har du spørsmål ta kontakt med <a href="mailto:christoph.schmitz@dagbladet.no">Christoph Schmitz</a>.
+			</div>
 		</div>
 	</body>
 </html>

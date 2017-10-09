@@ -81,8 +81,6 @@ const cssFeedbackItemBox = [
 ].join(';');
 
 function processFeedback(feedback : Feedback, template : MailTemplate) : Promise <any> {
-	log('#### DIFF HTML ###############################################');
-
 	let dtxt = '';
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
@@ -96,15 +94,11 @@ function processFeedback(feedback : Feedback, template : MailTemplate) : Promise
 			format.itemHeader(i),
 			format.itemText(i),
 			format.itemComment(i),
+			format.itemLinks(i),
 		];
 
-		dtxt += `\n<!-- begin item no. ${fIndex} -->`
-			+ `<div class="fb-item-box" style="${cssFeedbackItemBox}">`
-			+ '\n' + formatted.join('')
-			+ '\n</div>\n';
+		dtxt += `<div class="fb-item-box" style="${cssFeedbackItemBox}">${formatted.join('')}</div>`;
 	});
-
-	dtxt += '\n<!-- end of loop -->\n';
 
 	const html = template.setParams({
 		gotFeedback: __('mail.fb-notify.got-feedback'),
@@ -112,18 +106,17 @@ function processFeedback(feedback : Feedback, template : MailTemplate) : Promise
 
 		articleTitle: format.articleTitle(feedback),
 		enduser: format.enduser(feedback),
+		sentIn: format.whenSentIn(feedback),
 
 		feedbackBox: dtxt,
 	})
 	.render();
 
-	log(html);
 	fs.writeFileSync(testPath, html, {
 		flag: 'w',
 		mode: 0o644,
 	});
 
-	log('##############################################################');
 	notifyBrowser();
 
 	return Promise.resolve();

@@ -61,10 +61,18 @@
 				en: 'Comment',
 				nb: 'Kommentar',
 			},
+			links: {
+				en: 'Links',
+				nb: 'Lenker',
+			},
 			'orig-text': {
 				en: 'Original text',
 				nb: 'Original tekst',
-			}
+			},
+			'sent-in': {
+				en: 'Sent in:',
+				nb: 'Sendt inn:',
+			},
 		},
 	},
 	app: {

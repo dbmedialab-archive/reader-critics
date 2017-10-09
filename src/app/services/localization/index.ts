@@ -109,27 +109,9 @@ export function translate(id : string, options? : string|any) : string {
 	const replacer = (match : string) => {
 		const index = match.substring(1, match.length - 1);
 		return replaceValues[index] || '--';
-
-//		log('Match: [%s]', index);
-		// p1 is nondigits, p2 digits, and p3 non-alphanumerics
-//		return '#replaced#';
 	};
 
-	const newString = flattened[id].replace(/({\w+})/g, replacer);
-	log('Replaced: [%s]', newString);
-
-	// var newString = 'abc12345#$*%'.replace(/([^\d]*)(\d*)([^\w]*)/, replacer);
-	// console.log(newString);  // abc - 12345 - #$*%
-
-	// var myString = "This is {name}'s {adjective} {type} in JavaScript! Yes, a {type}!",
-	// replaceArray = ['name', 'adjective', 'type'],
-	// replaceWith = ['John', 'simple', 'string'];
-
-	// for(var i = 0; i < replaceArray.length; i++) {
-	// 	myString = myString.replace(new RegExp('{' + replaceArray[i] + '}', 'gi'), replaceWith[i]);
-	// }
-
-	return newString;
+	return flattened[id].replace(/({\w+})/g, replacer);;
 }
 
 function applyLocale(input : any, locale : string) : any {
@@ -139,7 +121,15 @@ function applyLocale(input : any, locale : string) : any {
 		const o = input[key];
 
 		if (isAllStrings(o)) {
-			a[key] = o[locale] || o[systemLocale];
+			if (o[locale] !== undefined) {
+				a[key] = o[locale];
+			}
+			else if (o[systemLocale] !== undefined) {
+				a[key] = o[systemLocale];
+			}
+			else {
+				a[key] = o['en'];
+			}
 		}
 		else {
 			a[key] = applyLocale(o, locale);

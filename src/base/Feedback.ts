@@ -45,6 +45,8 @@ interface Feedback extends PersistedModel {
 
 	/** Additional date field that holds the latest status update */
 	date : {
+		created : Date,
+		modified : Date,
 		statusChange : Date,
 	},
 }
