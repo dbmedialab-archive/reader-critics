@@ -19,38 +19,20 @@
 import * as doT from 'dot';
 import * as path from 'path';
 
-import { isEmpty } from 'lodash';
-
-import Website from 'base/Website';
-import PageTemplate from 'base/PageTemplate';
-
-import { localizationService } from 'app/services';
+import MailTemplate from 'app/template/MailTemplate';
 
 import * as app from 'app/util/applib';
-import emptyCheck from 'app/util/emptyCheck';
 
-const __ = localizationService.translate;
-const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');
+const log = app.createLog();
+const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
 
-export default function(website : Website) : Promise <PageTemplate> {
-	emptyCheck(website);
-
+export default function() : Promise <MailTemplate> {
 	const rawTemplate = () : Promise <string> => {
-		const raw = website.layout.templates.feedbackPage;
-		return isEmpty(raw)
-			? app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
-			: Promise.resolve(raw);
+		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
 	};
 
 	return rawTemplate().then((raw : string) => {
-		return new PageTemplate (doT.template(raw), website.locale)
-			.pushStyle('/static/fb.css')
-			.pushScript(
-				'/static/react/react.js',
-				'/static/react/react-dom.js',
-				`/static/locale/${website.locale}.js`,
-				'/static/front.bundle.js'
-			)
-			.setTitle(__('app.title', website.locale));
+		log('Mail notification template loaded');
+		return new MailTemplate (doT.template(raw));
 	});
 }

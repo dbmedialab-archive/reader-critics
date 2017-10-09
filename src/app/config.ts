@@ -128,6 +128,16 @@ const config = convict({
 			},
 		},
 	},
+	mail: {
+		sendgrid: {
+			api_key: {
+				default: null,
+				dov: 'API key for SendGrid mail service, used if no other service is configured',
+				format: String,
+				env: 'SENDGRID_API_KEY',
+			},
+		},
+	},
 	recaptcha: {
 		key: {
 			secret: {
