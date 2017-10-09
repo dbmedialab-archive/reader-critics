@@ -20,10 +20,10 @@ spec:
             name: http-port
           resources:
             requests:
-              memory: "40Mi"
+              memory: "128Mi"
               cpu: "0.02"
             limits:
-              memory: "200Mi"
+              memory: "1024Mi"
               cpu: "0.1"
           env:
           - name: AUTH_JWT_SECRET
