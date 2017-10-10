@@ -1,7 +1,6 @@
 import { Job } from 'kue';
 
 import Article from 'base/Article';
-import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
 
 import {
