@@ -16,14 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import TemplateService from './TemplateService';
+import { RenderFunction } from 'dot';
+import { systemLocale } from 'app/services/localization';
 
-import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
-import getSuggestionPageTemplate from './common/getSuggestionPageTemplate';
+export default abstract class AbstractTemplate {
 
-const service : TemplateService = {
-	getFeedbackPageTemplate,
-	getSuggestionPageTemplate,
-};
+	protected readonly locale;
 
-module.exports = service;
+	constructor(protected readonly dotRender : RenderFunction, locale? : string) {
+		this.locale = locale || systemLocale;
+	}
+
+	public abstract render() : string;
+
+}

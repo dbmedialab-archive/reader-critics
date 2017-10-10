@@ -36,14 +36,14 @@ import {
 import emptyCheck from 'app/util/emptyCheck';
 
 export function get(
-	articleURL : ArticleURL,
+	articleURL : string|ArticleURL,
 	version : string,
 	populated : boolean = false
 ) : Promise <Article> {
 	emptyCheck(articleURL, version);
 
 	let result = ArticleModel.findOne({
-		url: articleURL.href,
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
 		version,
 	});
 

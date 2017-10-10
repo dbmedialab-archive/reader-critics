@@ -16,31 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as colors from 'ansicolors';
-import * as cluster from 'cluster';
+// These two exported functions are all there is to it, really.
+// All the dirty details of the implementation are hidden in
+// this module and should not be exported further on.
+// (Of course, several other types and functions are exported,
+// but this is for modularization and the unit tests)
 
-import * as app from 'app/util/applib';
-
-import { initDatabase } from 'app/db';
-import { initJobWorkerQueue } from 'app/queue';
-import { initLocalizationStrings } from 'app/services/localization';
-
-import startupErrorHandler from './startupErrorHandler';
-
-let log;
-
-/**
- * Main function of worker process
- */
-export default function() {
-	log = app.createLog('worker');
-	log('Starting %s worker - ID %d', colors.brightYellow('job'), cluster.worker.id);
-
-	// Main application startup
-
-	Promise.resolve()
-		.then(initLocalizationStrings)
-		.then(initDatabase)
-		.then(initJobWorkerQueue)
-		.catch(startupErrorHandler);
-}
+export { default as diffToPlainHTML } from './diffToPlainHTML';
+export { default as diffToReactElem } from './diffToReactElem';

@@ -128,6 +128,35 @@ const config = convict({
 			},
 		},
 	},
+	mail: {
+		sender: {
+			domain: {
+				default: 'readercritics.com',
+				format: String,
+				env: 'MAIL_SENDER_DOMAIN',
+			},
+		},
+		sendgrid: {
+			api_key: {
+				default: '',
+				doc: 'API key for SendGrid mail service, used if no other service is configured',
+				format: String,
+				// format: (value) => {
+
+					// if (!/^[a-fA-F0-9]{64}$/.test(val)) {
+					// 	throw new Error('must be a 64 character hex key')
+					// }
+				// },
+				env: 'SENDGRID_API_KEY',
+			},
+		},
+		testRecipient: {
+			default: '',
+			format: String,
+			doc: 'Set this value to a valid e-mail address to direct all outgoing mail to it. '
+			+ 'Only works in development mode',
+		},
+	},
 	recaptcha: {
 		key: {
 			secret: {
