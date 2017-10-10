@@ -26,11 +26,15 @@ import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
+import Website from 'base/Website';
+
+import { ObjectID } from 'app/db';
 
 import {
 	feedbackService,
 	localizationService,
 	templateService,
+	websiteService,
 } from 'app/services';
 
 import {
@@ -53,17 +57,35 @@ export default function(job : Job, done : DoneCallback) : Promise <void> {
 
 	log(`Received new feedback event for ID ${job.data.ID}`);
 
+	let feedback : Feedback;
+	let template : MailTemplate;
+	let website : Website;
+
 	return new Promise <void> ((resolve, reject) => {
 		Promise.all([
 			feedbackService.getByID(job.data.ID),
 			templateService.getFeedbackNotifyTemplate(),
 		])
-		.spread(layoutNotifyMail)
-		.then((htmlMailContent : string) => {
-			log(htmlMailContent);
-			return SendGridMailer('philipp@sol.no', 'Leserkritikk', htmlMailContent);
-			// Here be the sending of the mail. This is solved in feature/mail-sendgrid
+		.spread((f : Feedback, t : MailTemplate) => {
+			feedback = f;
+			template = t;
+
+			return websiteService.getByID(feedback.article.website);
 		})
+		.then((w : Website) => {
+			website = w;
+			log(app.inspect(website));
+
+			// return layoutNotifyMail ...
+		})
+
+		// 	layoutNotifyMail)
+		// .then((htmlMailContent : string) => {
+		// 	const recipients = getRecipients
+		// 	log(htmlMailContent);
+		// 	return SendGridMailer('philipp@sol.no', 'Leserkritikk', htmlMailContent);
+		// 	// Here be the sending of the mail. This is solved in feature/mail-sendgrid
+		// })
 		.then(() => {
 			done();
 			resolve();
