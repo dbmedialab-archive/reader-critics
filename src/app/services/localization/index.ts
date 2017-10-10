@@ -17,7 +17,9 @@
 //
 
 import { flatten } from 'flat';
+
 import {
+	isEmpty,
 	isString,
 	throttle,
 } from 'lodash';
@@ -79,7 +81,7 @@ export function getFrontendStrings(website? : Website) : Promise <Object> {
 	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
 }
 
-export function translate(id : string, options? : string|object) : string {
+export function translate(id : string, options? : string|any) : string {
 	let usedLocale = systemLocale;
 
 	// A single string value in "options" means to override the system default locale
@@ -92,7 +94,24 @@ export function translate(id : string, options? : string|object) : string {
 	const allStrings = Object.assign({}, strings.common, strings.app);
 	const flattened = flatten(applyLocale(allStrings, usedLocale));
 
-	return flattened[id] || id;
+	if (!flattened[id]) {
+		return id;
+	}
+
+	const replaceValues = (() => {
+		if ((isEmpty(options) || isString(options)) ? true : isEmpty(options.values)) {
+			return {};
+		}
+
+		return (options.values || {});
+	})();
+
+	const replacer = (match : string) => {
+		const index = match.substring(1, match.length - 1);
+		return replaceValues[index] || '--';
+	};
+
+	return flattened[id].replace(/({\w+})/g, replacer);
 }
 
 function applyLocale(input : any, locale : string) : any {
@@ -102,7 +121,15 @@ function applyLocale(input : any, locale : string) : any {
 		const o = input[key];
 
 		if (isAllStrings(o)) {
-			a[key] = o[locale] || o[systemLocale];
+			if (o[locale] !== undefined) {
+				a[key] = o[locale];
+			}
+			else if (o[systemLocale] !== undefined) {
+				a[key] = o[systemLocale];
+			}
+			else {
+				a[key] = o['en'];
+			}
 		}
 		else {
 			a[key] = applyLocale(o, locale);

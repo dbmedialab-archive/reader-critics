@@ -1,3 +1,21 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 {
 	common: {
 		app: {
@@ -12,14 +30,82 @@
 				nb: 'Leserkritikk',
 			},
 		},
+		'article-el': {
+			featured: {
+				en: 'Featured Image',
+				nb: 'Hovedbilde',
+			},
+			figure: {
+				en: 'Picture #{order}',
+				nb: 'Bilde #{order}',
+			},
+			lead: {
+				en: 'Lead-In',
+				nb: 'Innledning',
+			},
+			link: {
+				en: 'Link #{order}',
+				nb: 'Link #{order}',
+			},
+			paragraph: {
+				en: 'Paragraph #{order}',
+				nb: 'Avsnitt #{order}',
+			},
+			subhead: {
+				en: 'Sub Heading #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			subtitle: {
+				en: 'Sub Title #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			title: {
+				en: 'Title',
+				nb: 'Tittel',
+			},
+		},
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
 				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
 			},
 		},
+		label: {
+			amend: {
+				en: 'Amendment',
+				nb: 'Endringsforslag',
+			},
+			comment: {
+				en: 'Comment',
+				nb: 'Kommentar',
+			},
+			links: {
+				en: 'Links',
+				nb: 'Lenker',
+			},
+			'orig-text': {
+				en: 'Original text',
+				nb: 'Original tekst',
+			},
+			'sent-in': {
+				en: 'Sent in:',
+				nb: 'Sendt inn:',
+			},
+		},
 	},
 	app: {
+		mail: {
+			'fb-notify': {
+				'got-feedback': {
+					en: 'You received a feedback on the article',
+					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'who-sent': {
+					en: 'Send in by',
+					nb: 'Sendt inn av',
+				}
+			},
+		},
 		err: {
 			'invalid-param': {
 				en: 'Parameters are missing or have invalid format',

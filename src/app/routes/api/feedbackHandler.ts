@@ -22,14 +22,18 @@ import {
 } from 'express';
 
 import { feedbackService } from 'app/services';
+import { sendMessage } from 'app/queue';
+
+import MessageType from 'app/queue/MessageType';
 
 import {
 	errorResponse,
 	okResponse,
 } from './apiResponse';
 
-export function feedbackPostHandler(requ : Request, resp : Response) : void {
+export default function (requ : Request, resp : Response) : void {
 	feedbackService.validateAndSave(requ.body)
-	.then((doc) => okResponse(resp))
+	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
+	.then(() => okResponse(resp))
 	.catch(error => errorResponse(resp, error));
 }

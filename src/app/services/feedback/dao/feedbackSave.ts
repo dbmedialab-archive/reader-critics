@@ -16,108 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Document,
-	DocumentQuery,
-} from 'mongoose';
-
 import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
-import User from 'base/User';
-import Website from 'base/Website';
 
+import { ObjectID } from 'app/db';
 import { FeedbackModel } from 'app/db/models';
-
-import {
-	wrapFind,
-	wrapSave,
-} from 'app/db/common';
-
-import {
-	defaultLimit,
-	defaultSkip,
-	defaultSort,
-} from 'app/services/BasicPersistingService';
+import { wrapSave } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
-import {ObjectID} from 'app/db';
-
-// getByArticle
-
-export function getByArticle (
-	article : Article,
-	skip : number = defaultSkip,
-	limit : number = defaultLimit,
-	sort : Object = defaultSort
-) : Promise <Feedback[]>
-{
-	emptyCheck(article);
-
-	return wrapFind(populateFeedback(
-		FeedbackModel.find({
-			article: article.ID,
-		})
-		.sort(sort).skip(skip).limit(limit)
-	));
-}
-
-// getByArticleAuthor
-
-export function getByArticleAuthor (
-	author : User,
-	website? : Website,
-	skip : number = defaultSkip,
-	limit : number = defaultLimit,
-	sort : Object = defaultSort
-) : Promise <Feedback[]>
-{
-	emptyCheck(author);
-
-	const query : any = {
-		articleAuthors: author.ID,
-	};
-
-	if (website !== undefined) {
-		query.website = website.ID;
-	}
-
-	return wrapFind(populateFeedback(
-		FeedbackModel.find(query)
-		.sort(sort).skip(skip).limit(limit)
-	));
-}
-
-// getRange, using internal populate
-
-export function getRange (
-	skip : number = defaultSkip,
-	limit : number = defaultLimit,
-	sort : Object = defaultSort
-) : Promise <Feedback[]>
-{
-	return wrapFind(populateFeedback(
-		FeedbackModel.find()
-		.sort(sort).skip(skip).limit(limit)
-	));
-}
-
-// Internal populate
-
-function populateFeedback <D extends Document> (
-	query : DocumentQuery <D[], D>
-) : DocumentQuery <D[], D>
-{
-	return query.populate({
-		path: 'article',
-		populate: {
-			path: 'authors',
-		},
-	})
-	.populate('enduser');
-}
 
 // save
 
@@ -128,11 +37,6 @@ export function save (
 ) : Promise <Feedback>
 {
 	emptyCheck(article, enduser, items);
-
-	// console.log('------------------------------------------------------------');
-	// console.log('article object in feedback.save:', article);
-	// console.log('\n');
-
 	return makeDocument(article, enduser, items)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }

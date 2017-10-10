@@ -27,7 +27,7 @@ import {
 import { isEmpty } from 'lodash';
 
 import ArticleURL from 'base/ArticleURL';
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 import Website from 'base/Website';
 
 import {

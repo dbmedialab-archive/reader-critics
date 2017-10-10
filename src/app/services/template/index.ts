@@ -16,14 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import TemplateService from './TemplateService';
+export { default as getFeedbackNotifyTemplate } from './mail/getFeedbackNotifyTemplate';
 
-import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
-import getSuggestionPageTemplate from './common/getSuggestionPageTemplate';
-
-const service : TemplateService = {
-	getFeedbackPageTemplate,
-	getSuggestionPageTemplate,
-};
-
-module.exports = service;
+export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
+export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';
