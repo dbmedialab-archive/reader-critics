@@ -74,7 +74,7 @@
 		"keymirror": "0.1.1",
 		"kue": "0.11.6",
 		"lodash": "4.17.4",
-		"moment": "2.18.1",
+		"moment": "2.19.0",
 		"mongoose": "4.12.1",
 		"node-fetch": "1.7.3",
 		"node-read": "0.1.7",
