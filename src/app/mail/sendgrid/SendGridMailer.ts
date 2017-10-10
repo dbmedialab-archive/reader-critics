@@ -16,12 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as sendgrid from 'sendgrid';
-import { mail as helper } from 'sendgrid';
-
 import config from 'app/config';
 
 import * as app from 'app/util/applib';
+
+// I have yet to figure out how to properly import the new SendGrid module
+// with ES6 syntax, so far TS has rejected every single attempt. Use require-
+// syntax for now and silence the linter.
+// tslint:disable no-require-imports
+const sendgridMail = require('@sendgrid/mail');
 
 const log = app.createLog();
 const senderDomain = config.get('mail.sender.domain');
@@ -34,20 +37,15 @@ export default function(
 {
 	log(`Preparing e-mail to ${recipient}`);
 
-	const fromEmail = new helper.Email(`no-reply@${senderDomain}`);
-	const toEmail = new helper.Email(recipient);
-	const content = new helper.Content('text/html', htmlContent);
+	sendgridMail.setApiKey(config.get('mail.sendgrid.api_key'));
 
-	const mail = new helper.Mail(fromEmail, subject, toEmail, content);
-
-	const sg = sendgrid(config.get('mail.sendgrid.api_key'));
-	const requ = sg.emptyRequest({
-		method: 'POST',
-		path: '/v3/mail/send',
-		body: mail.toJSON(),
-	});
-
-	return sg.API(requ).then(response => {
+	return sendgridMail.send({
+		to: recipient,
+		from: `no-reply@${senderDomain}`,
+		subject,
+		html: htmlContent,
+	})
+	.then(response => {
 		log('---------------------------------------------------------------------------------------');
 		log(response);
 		log('---------------------------------------------------------------------------------------');
