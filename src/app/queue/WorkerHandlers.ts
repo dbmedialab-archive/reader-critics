@@ -1,4 +1,4 @@
-//WorkerHandlers
+import { Job } from 'kue';  // tslint:disable-line
 
 import onNewFeedback from './handlers/onNewFeedback';
 
