@@ -18,7 +18,7 @@
 
 import {
 	DoneCallback,
-	// !!! Job,
+	Job,
 } from 'kue';
 
 import Article from 'base/Article';
@@ -38,14 +38,14 @@ import {
 	ItemFormatPayload,
 } from 'app/mail/layout/FeedbackNotifyLayout';
 
-// !!! import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
 const __ = localizationService.translate;
 const log = app.createLog();
 
-export default function(job : any /*Job*/, done : DoneCallback) : Promise <void> {
+export default function(job : Job, done : DoneCallback) : Promise <void> {
 	if (!job.data.ID) {
 		log('Feedback "ID" not found in job data');
 		return Promise.resolve();
@@ -61,6 +61,7 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 		.spread(layoutNotifyMail)
 		.then((htmlMailContent : string) => {
 			log(htmlMailContent);
+			return SendGridMailer('philipp@sol.no', 'Leserkritikk', htmlMailContent);
 			// Here be the sending of the mail. This is solved in feature/mail-sendgrid
 		})
 		.then(() => {
@@ -72,7 +73,6 @@ export default function(job : any /*Job*/, done : DoneCallback) : Promise <void>
 }
 
 const cssFeedbackItemBox = [
-	'box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3)',
 	'padding: 0.8em',
 	'margin-bottom: 0.5em',
 ].join(';');
@@ -93,7 +93,9 @@ function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promis
 			format.itemLinks(i),
 		];
 
-		dtxt += `<div class="fb-item-box" style="${cssFeedbackItemBox}">${formatted.join('')}</div>`;
+		const borderCol = (fItem.text.length <= 0) ? format.colorItemText : format.colorItemDiff;
+		const css = `${cssFeedbackItemBox}; border-left: 3px solid ${borderCol};`;
+		dtxt += `<div class="fb-item-box" style="${css}">${formatted.join('')}</div>`;
 	});
 
 	const html = template.setParams({
