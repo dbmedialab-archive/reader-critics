@@ -29,7 +29,8 @@ import {
 	templateService,
 } from 'app/services';
 
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
+
 import { systemLocale } from 'app/services/localization';
 
 const suggestionRoute : Router = Router();
