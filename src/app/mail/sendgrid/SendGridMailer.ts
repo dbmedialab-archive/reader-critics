@@ -40,7 +40,7 @@ export default function(
 	sendgridMail.setApiKey(config.get('mail.sendgrid.api_key'));
 
 	return sendgridMail.send({
-		to: recipient,
+		to: recipient,  // TODO check if this takes an array for multiple recipients
 		from: `no-reply@${senderDomain}`,
 		subject,
 		html: htmlContent,
