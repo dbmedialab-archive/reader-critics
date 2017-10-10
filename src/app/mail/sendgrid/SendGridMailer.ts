@@ -24,14 +24,19 @@ import config from 'app/config';
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+const senderDomain = config.get('mail.sender.domain');
 
-export default function(feedback : string) {
-	log('Preparing e-mail');
-	const fromEmail = new helper.Email('test@leserkritikk.no');
-	const toEmail = new helper.Email('philipp@sol.no');
+export default function(
+	recipient : string,
+	subject : string,
+	htmlContent : string
+) : Promise <any>
+{
+	log(`Preparing e-mail to ${recipient}`);
 
-	const subject = 'Du har fått tilbakemelding på artikkelen:';
-	const content = new helper.Content('text/html', htmlContent.replace('#####', feedback));
+	const fromEmail = new helper.Email(`no-reply@${senderDomain}`);
+	const toEmail = new helper.Email(recipient);
+	const content = new helper.Content('text/html', htmlContent);
 
 	const mail = new helper.Mail(fromEmail, subject, toEmail, content);
 
@@ -42,59 +47,10 @@ export default function(feedback : string) {
 		body: mail.toJSON(),
 	});
 
-	sg.API(requ)
-	.then(response => {
+	return sg.API(requ).then(response => {
 		log('---------------------------------------------------------------------------------------');
 		log(response);
-		// log(response.statusCode);
-		// log(response.body);
-		// log(response.headers);
 		log('---------------------------------------------------------------------------------------');
 	})
 	.catch(error => console.log(error));
 }
-
-/*
-var helper = require('sendgrid').mail;
-var fromEmail = new helper.Email('test@example.com');
-var toEmail = new helper.Email('test@example.com');
-var subject = 'Sending with SendGrid is Fun';
-var content = new helper.Content('text/plain', 'and easy to do anywhere, even with Node.js');
-var mail = new helper.Mail(fromEmail, subject, toEmail, content);
-
-var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-var request = sg.emptyRequest({
-  method: 'POST',
-  path: '/v3/mail/send',
-  body: mail.toJSON()
-});
-
-sg.API(request, function (error, response) {
-  if (error) {
-    console.log('Error response received');
-  }
-  console.log(response.statusCode);
-  console.log(response.body);
-  console.log(response.headers);
-});
-*/
-
-const htmlContent = '<!DOCTYPE html>\
-<html lang="no">\
-<head>\
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\
-		<meta charset="utf-8">\
-		<style>\
-			html, body {\
-				color: #333333;\
-				background-color: #eeeeee;\
-				font-family: \'Roboto\', \'Noto Sans\', \'Arial\', sans-serif;\
-			}\
-			h1 { color: rgba(185, 79, 112, 1); }\
-		</style>\
-</head>\
-<body>\
-<h1>Du har fått tilbakemelding på artikkelen</h1>\
-<pre>#####</pre>\
-</body>\
-</html>';
