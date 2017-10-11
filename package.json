@@ -184,6 +184,7 @@
 			"foundation-sites",
 			"geckodriver",
 			"npm-run-all",
+			"react-modal",
 			"source-map-support",
 			"supports-color",
 			"webpack-bundle-analyzer"
