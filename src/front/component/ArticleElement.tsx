@@ -19,16 +19,17 @@
 import * as classnames from 'classnames';
 import * as React from 'react';
 
+import { FormattedMessage } from 'react-intl';
+
 import ArticleItemType from 'base/ArticleItemType';
 import FeedbackItem from 'base/FeedbackItem';
-import { FormattedMessage } from 'react-intl';
 
 import {
 	default as ArticleEditForm,
 	EditFormPayload,
 } from 'front/component/ArticleEditForm';
 
-import textDiffToHTML from './textDiffToHTML';
+import { diffToReactElem } from 'base/diff';
 
 export interface ArticleElementProp {
 	item: {
@@ -147,7 +148,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	protected textDiff(text1 : string = '', text2 : string) : any {
 		return text2 === undefined
 			? text1
-			: textDiffToHTML(text1, text2);
+			: diffToReactElem(text1, text2);
 	}
 
 	// Changes the state for the component so correct css-classes are applied

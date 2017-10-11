@@ -69,7 +69,7 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 *
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
-	get(url : ArticleURL, version : string, populated? : boolean) : Promise <Article>;
+	get(url : string|ArticleURL, version : string, populated? : boolean) : Promise <Article>;
 
 	/**
 	 * Save a new Article object to the database and reference it with its origin
