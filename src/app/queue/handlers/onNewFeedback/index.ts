@@ -31,6 +31,7 @@ import {
 	websiteService,
 } from 'app/services';
 
+import getRecipients from './getRecipients';
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
@@ -46,34 +47,46 @@ export default function(job : Job, done : DoneCallback) : Promise <void> {
 
 	log(`Received new feedback event for ID ${job.data.ID}`);
 
+	// There's loads of objects that need to be loaded:
 	let feedback : Feedback;
 	let template : MailTemplate;
 	let website : Website;
 
 	return new Promise <void> ((resolve, reject) => {
+		// First, get the feedback object and the e-mail template.
+		// Those two are independent, so we can query them in parallel:
 		Promise.all([
 			feedbackService.getByID(job.data.ID),
 			templateService.getFeedbackNotifyTemplate(),
 		])
+		// Now that we have the article inside the feedback object, we can
+		// ask for the "Website" that all this belongs to:
 		.spread((f : Feedback, t : MailTemplate) => {
-			feedback = f;
+			feedback = f;  // But first, store these objects for later
 			template = t;
 
 			return websiteService.getByID(feedback.article.website);
 		})
+		// Now we have all the necessary objects, let's go ahead and make an e-mail
+		// out of them
 		.then((w : Website) => {
 			website = w;
-			log('Loaded article website:', app.inspect(website));
 
-			return layoutNotifyMail(feedback, template);
+			// Again in parallel: layout the e-mail content and create a list of
+			// recipients mail addresses that will receive this. Currently, the
+			// function that creates the recipient list is not asynchronous but it
+			// returns a Promise anyway. If no recipients can be found, it uses a
+			// reject for flow control.
+			return Promise.all([
+				layoutNotifyMail(feedback, template),
+				getRecipients(website, feedback),
+			]);
 		})
-
-		.then((htmlMailContent : string) => {
-		// 	const recipients = getRecipients
+		.spread((htmlMailContent : string, recipients : Array <string>) => {
 			log(htmlMailContent);
-			if (false || 0) {
-				return SendGridMailer('philipp@sol.no', 'Leserkritikk', htmlMailContent);
-			}
+			log(recipients);
+
+			return SendGridMailer(recipients, 'Leserkritikk', htmlMailContent);
 		})
 		.then(() => {
 			done();

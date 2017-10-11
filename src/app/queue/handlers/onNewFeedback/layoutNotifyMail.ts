@@ -27,6 +27,8 @@ import {
 	ItemFormatPayload,
 } from 'app/mail/layout/FeedbackNotifyLayout';
 
+import notifyBrowser from './notifyBrowser';
+
 import { translate as __ } from 'app/services/localization';
 
 const cssFeedbackItemBox = [
@@ -69,7 +71,7 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 	})
 	.render();
 
-	// notifyBrowser(html);  -- this is only for convenient local testing
+	notifyBrowser(html);  // -- this is only for convenient local testing
 
 	return Promise.resolve(html);
 }

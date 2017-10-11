@@ -144,11 +144,10 @@ const config = convict({
 				env: 'SENDGRID_API_KEY',
 			},
 		},
-		testRecipient: {
+		bccRecipient: {
 			default: '',
 			format: String,
-			doc: 'Set this value to a valid e-mail address to direct all outgoing mail to it. '
-			+ 'Only works in development mode',
+			doc: 'Set this value to a valid e-mail address to BCC all outgoing mail to it.',
 		},
 	},
 	recaptcha: {

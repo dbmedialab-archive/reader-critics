@@ -20,6 +20,8 @@ import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
+import { ConfigError } from 'app/util/errors';
+
 // I have yet to figure out how to properly import the new SendGrid module
 // with ES6 syntax, so far TS has rejected every single attempt. Use require-
 // syntax for now and silence the linter.
@@ -27,24 +29,41 @@ import * as app from 'app/util/applib';
 const sendgridMail = require('@sendgrid/mail');
 
 const log = app.createLog();
-const senderDomain = config.get('mail.sender.domain');
+
+const apiKey : string = config.get('mail.sendgrid.api_key');
+const senderDomain : string = config.get('mail.sender.domain');
+const bccRecipient : string = config.get('mail.bccRecipient');
 
 export default function(
-	recipient : string,
+	recipients : Array <string>,
 	subject : string,
 	htmlContent : string
 ) : Promise <any>
 {
-	log(`Preparing e-mail to ${recipient}`);
+	if (apiKey.length <= 0) {
+		return Promise.reject(new ConfigError('SendGrid API key is not configured'));
+	}
 
-	sendgridMail.setApiKey(config.get('mail.sendgrid.api_key'));
+	if (app.isTest) {
+		log(`Not sending in test mode`);
+		return Promise.resolve();
+	}
 
-	return sendgridMail.send({
-		to: recipient,  // TODO check if this takes an array for multiple recipients
+	log(`Sending e-mail to ${recipients.join(', ')}`);
+	sendgridMail.setApiKey();
+
+	const options : any = {
+		to: recipients,
 		from: `no-reply@${senderDomain}`,
 		subject,
 		html: htmlContent,
-	})
+	};
+
+	if (bccRecipient.length > 0) {
+		options.bcc = bccRecipient;
+	}
+
+	return sendgridMail.send(options)
 	.then(response => {
 		log('---------------------------------------------------------------------------------------');
 		log(response);
