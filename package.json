@@ -69,7 +69,7 @@
 		"immutable": "4.0.0-rc.4",
 		"ioredis": "3.1.4",
 		"json5": "0.5.1",
-		"jsonwebtoken": "8.0.1",
+		"jsonwebtoken": "8.1.0",
 		"keykey": "2.1.1",
 		"keymirror": "0.1.1",
 		"kue": "0.11.6",
