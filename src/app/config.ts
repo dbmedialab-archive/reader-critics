@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable:max-line-length
+
 import * as path from 'path';
 import * as convict from 'convict';
 
@@ -147,7 +149,12 @@ const config = convict({
 		bccRecipient: {
 			default: '',
 			format: String,
-			doc: 'Set this value to a valid e-mail address to BCC all outgoing mail to it.',
+			doc: 'Set this to a valid e-mail address to BCC all outgoing mail to it.',
+		},
+		testOverride: {
+			default: '',
+			format: String,
+			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
 		},
 	},
 	recaptcha: {
@@ -170,7 +177,7 @@ try {
 	config.loadFile(path.join(rootPath, 'config.json5'));
 }
 catch (err) {
-	log('Can\'t find file /config.json5. Environment settings will be apply');
+	log('Can\'t find file /config.json5. Environment settings will apply.');
 }
 
 try {

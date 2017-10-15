@@ -50,7 +50,7 @@ export default function(
 	}
 
 	log(`Sending e-mail to ${recipients.join(', ')}`);
-	sendgridMail.setApiKey();
+	sendgridMail.setApiKey(apiKey);
 
 	const options : any = {
 		to: recipients,

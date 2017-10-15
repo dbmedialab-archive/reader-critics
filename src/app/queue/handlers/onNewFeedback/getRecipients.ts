@@ -24,9 +24,21 @@ import Website from 'base/Website';
 
 import { EmptyError } from 'app/util/errors';
 
+import config from 'app/config';
+import * as app from 'app/util/applib';
+
 const msgNoRcpt = 'Could not determine recipients for feedback notification e-mail';
 
+// If this e-mail address is set in the configuration, every outgoing e-mail
+// will be sent there instead of the article authors or editors. This is mainly
+// for testing purposes and is therefore disabled in production mode.
+const override : string = config.get('mail.testOverride');
+
 export default function (website : Website, feedback : Feedback) : Promise <Array <string>> {
+	if (override && !app.isProduction) {
+		return Promise.resolve([ override ]);
+	}
+
 	let recipients : Array <string> = filterForMailAddr(feedback.article.authors);
 
 	if (recipients.length <= 0) {
