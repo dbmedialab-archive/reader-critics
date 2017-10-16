@@ -150,11 +150,13 @@ const config = convict({
 			default: '',
 			format: String,
 			doc: 'Set this to a valid e-mail address to BCC all outgoing mail to it.',
+			env: 'MAIL_BCC_RECIPIENT',
 		},
 		testOverride: {
 			default: '',
 			format: String,
 			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
+			env: 'MAIL_TEST_OVERRIDE',
 		},
 	},
 	slack: {
