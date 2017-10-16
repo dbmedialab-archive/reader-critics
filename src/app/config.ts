@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable:max-line-length max-file-line-count
+
 import * as path from 'path';
 import * as convict from 'convict';
 
@@ -139,22 +141,39 @@ const config = convict({
 		sendgrid: {
 			api_key: {
 				default: '',
-				doc: 'API key for SendGrid mail service, used if no other service is configured',
 				format: String,
-				// format: (value) => {
-
-					// if (!/^[a-fA-F0-9]{64}$/.test(val)) {
-					// 	throw new Error('must be a 64 character hex key')
-					// }
-				// },
+				doc: 'API key for SendGrid mail service, used if no other service is configured',
 				env: 'SENDGRID_API_KEY',
 			},
 		},
-		testRecipient: {
+		bccRecipient: {
 			default: '',
 			format: String,
-			doc: 'Set this value to a valid e-mail address to direct all outgoing mail to it. '
-			+ 'Only works in development mode',
+			doc: 'Set this to a valid e-mail address to BCC all outgoing mail to it.',
+			env: 'MAIL_BCC_RECIPIENT',
+		},
+		testOverride: {
+			default: '',
+			format: String,
+			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
+			env: 'MAIL_TEST_OVERRIDE',
+		},
+	},
+	slack: {
+		channel: {
+			default: '',
+			format: String,
+			doc: 'Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver.',
+		},
+		botname: {
+			default: 'Reader Critics',
+			format: String,
+			doc: 'Bot name for the Slack integration.',
+		},
+		webhook: {
+			default: '',
+			format: String,
+			doc: 'If set to a Slack webhook URL, warnings and errors will be posted to this integration',
 		},
 	},
 	recaptcha: {
@@ -177,7 +196,7 @@ try {
 	config.loadFile(path.join(rootPath, 'config.json5'));
 }
 catch (err) {
-	log('Can\'t find file /config.json5. Environment settings will be apply');
+	log('Can\'t find file /config.json5. Environment settings will apply.');
 }
 
 try {

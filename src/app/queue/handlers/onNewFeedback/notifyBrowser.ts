@@ -16,23 +16,20 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import PersistedModel from 'base/zz/PersistedModel';
-import Person from 'base/zz/Person';
+// THIS FILE IS FOR TESTING PURPOSES ONLY
 
-interface Website extends PersistedModel {
-	name : string;
-	parserClass? : string;
-	locale? : string;
+import { writeFileSync } from 'fs';
+import { spawn } from 'child_process';
 
-	hosts : string[];
-	chiefEditors : Person[];
+const testPath = '/tmp/mailtest.html';
 
-	layout : {
-		templates : {
-			feedbackPage? : string;
-		},
-		scssVariables? : Object;
-	};
+export default function (html : string) {
+	writeFileSync(testPath, html, {
+		flag: 'w',
+		mode: 0o644,
+	});
+
+	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
+		detached: true,
+	});
 }
-
-export default Website;

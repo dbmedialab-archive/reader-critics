@@ -42,5 +42,6 @@ export default function() {
 		.then(initLocalizationStrings)
 		.then(initDatabase)
 		.then(initJobWorkerQueue)
+	//	.then(mockFeedbackEvent)
 		.catch(startupErrorHandler);
 }
