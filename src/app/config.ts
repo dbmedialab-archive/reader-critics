@@ -157,6 +157,23 @@ const config = convict({
 			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
 		},
 	},
+	slack: {
+		channel: {
+			default: '',
+			format: String,
+			doc: 'Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver.',
+		},
+		botname: {
+			default: 'Reader Critics',
+			format: String,
+			doc: 'Bot name for the Slack integration.',
+		},
+		webhook: {
+			default: '',
+			format: String,
+			doc: 'If set to a Slack webhook URL, warnings and errors will be posted to this integration',
+		},
+	},
 	recaptcha: {
 		key: {
 			secret: {

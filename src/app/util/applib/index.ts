@@ -22,3 +22,4 @@ export * from './filesystem';
 export * from './inspect';
 export * from './logging';
 export * from './tools';
+export * from './yell';

@@ -70,7 +70,7 @@ export function initWebWorkerQueue() : Promise <void> {
 
 export function sendMessage(type : MessageType, payload : any, options? : any) : Promise <void> {
 	log(`sending "${type}" message`);
-	queue.create(type, payload).priority('normal').attempts(5).save();
+	queue.create(type, payload).priority('normal').attempts(1).save();
 
 	return Promise.resolve();
 }

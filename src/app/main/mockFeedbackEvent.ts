@@ -8,7 +8,9 @@ import {
 	feedbackService,
 } from 'app/services';
 
-import onNewFeedback from 'app/queue/handlers/onNewFeedback';
+import { sendMessage } from 'app/queue';
+import MessageType from 'app/queue/MessageType';
+//import onNewFeedback from 'app/queue/handlers/onNewFeedback';
 
 import * as app from 'app/util/applib';
 
@@ -36,10 +38,8 @@ export function mockFeedbackEvent() : Promise <any> {
 		return Promise.resolve(results[0]);
 	})
 	// Send fake event to job processor
-	.then((feedback : Feedback) => onNewFeedback(<Job> {
-		data: feedback,
-	}, () => {
-		log('done() callback');
-		log('### MOCK feedback event finished ##################################################');
-	}));
+	.then((feedback : Feedback) => {
+		log('Sending queue message');
+		return sendMessage(MessageType.NewFeedback, feedback);
+	});
 }

@@ -39,59 +39,58 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-export default function(job : Job, done : DoneCallback) : Promise <void> {
+export default function(job : Job, done : DoneCallback) : void {
 	if (!job.data.ID) {
 		log('Feedback "ID" not found in job data');
-		return Promise.resolve();
+		return done();
 	}
 
-	log(`Received new feedback event for ID ${job.data.ID}`);
+	const feedbackID = job.data.ID;
+	log(`Received new feedback event for ID ${feedbackID}`);
 
 	// There's loads of objects that need to be loaded:
 	let feedback : Feedback;
 	let template : MailTemplate;
 	let website : Website;
 
-	return new Promise <void> ((resolve, reject) => {
-		// First, get the feedback object and the e-mail template.
-		// Those two are independent, so we can query them in parallel:
-		Promise.all([
-			feedbackService.getByID(job.data.ID),
-			templateService.getFeedbackNotifyTemplate(),
-		])
-		// Now that we have the article inside the feedback object, we can
-		// ask for the "Website" that all this belongs to:
-		.spread((f : Feedback, t : MailTemplate) => {
-			feedback = f;  // But first, store these objects for later
-			template = t;
+	// First, get the feedback object and the e-mail template.
+	// Those two are independent, so we can query them in parallel:
+	Promise.all([
+		feedbackService.getByID(feedbackID),
+		templateService.getFeedbackNotifyTemplate(),
+	])
+	// Now that we have the article inside the feedback object, we can
+	// ask for the "Website" that all this belongs to:
+	.spread((f : Feedback, t : MailTemplate) => {
+		feedback = f;  // But first, store these objects for later
+		template = t;
 
-			return websiteService.getByID(feedback.article.website);
-		})
-		// Now we have all the necessary objects, let's go ahead and make an e-mail
-		// out of them
-		.then((w : Website) => {
-			website = w;
+		return websiteService.getByID(feedback.article.website);
+	})
+	// Now we have all the necessary objects, let's go ahead and make an e-mail
+	// out of them
+	.then((w : Website) => {
+		website = w;
 
-			// Again in parallel: layout the e-mail content and create a list of
-			// recipients mail addresses that will receive this. Currently, the
-			// function that creates the recipient list is not asynchronous but it
-			// returns a Promise anyway. If no recipients can be found, it uses a
-			// reject for flow control.
-			return Promise.all([
-				layoutNotifyMail(feedback, template),
-				getRecipients(website, feedback),
-			]);
-		})
-		.spread((htmlMailContent : string, recipients : Array <string>) => {
-			log(htmlMailContent);
-			log(recipients);
-
-			return SendGridMailer(recipients, 'Leserkritikk', htmlMailContent);
-		})
-		.then(() => {
-			done();
-			resolve();
-		})
-		.catch(reject);
+		// Again in parallel: layout the e-mail content and create a list of
+		// recipients mail addresses that will receive this. Currently, the
+		// function that creates the recipient list is not asynchronous but it
+		// returns a Promise anyway. If no recipients can be found, it uses a
+		// reject for flow control.
+		return Promise.all([
+			layoutNotifyMail(feedback, template),
+			getRecipients(website, feedback),
+		]);
+	})
+	.spread((htmlMailContent : string, recipients : Array <string>) => {
+		return SendGridMailer(recipients, 'Leserkritikk', htmlMailContent);
+	})
+	// Funny enough, just doing .then(done) will trigger the infamous
+	// "a promise was created in blah ... but was not returned from it"
+	// warning.
+	.then(() => done)
+	.catch(error => {
+		app.yell(error);
+		return done(error);
 	});
 }

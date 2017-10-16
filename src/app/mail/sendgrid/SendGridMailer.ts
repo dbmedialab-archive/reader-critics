@@ -63,11 +63,5 @@ export default function(
 		options.bcc = bccRecipient;
 	}
 
-	return sendgridMail.send(options)
-	.then(response => {
-		log('---------------------------------------------------------------------------------------');
-		log(response);
-		log('---------------------------------------------------------------------------------------');
-	})
-	.catch(error => console.log(error));
+	return sendgridMail.send(options);
 }
