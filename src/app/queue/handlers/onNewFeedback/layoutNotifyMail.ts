@@ -16,11 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	DoneCallback,
-	// !!! Job,
-} from 'kue';
-
 import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
@@ -28,56 +23,18 @@ import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
 
 import {
-	feedbackService,
-	localizationService,
-	templateService,
-} from 'app/services';
-
-import {
 	format,
 	ItemFormatPayload,
 } from 'app/mail/layout/FeedbackNotifyLayout';
 
-// !!! import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
-
-import * as app from 'app/util/applib';
-
-const __ = localizationService.translate;
-const log = app.createLog();
-
-export default function(job : any /*Job*/, done : DoneCallback) : Promise <void> {
-	if (!job.data.ID) {
-		log('Feedback "ID" not found in job data');
-		return Promise.resolve();
-	}
-
-	log(`Received new feedback event for ID ${job.data.ID}`);
-
-	return new Promise <void> ((resolve, reject) => {
-		Promise.all([
-			feedbackService.getByID(job.data.ID),
-			templateService.getFeedbackNotifyTemplate(),
-		])
-		.spread(layoutNotifyMail)
-		.then((htmlMailContent : string) => {
-			log(htmlMailContent);
-			// Here be the sending of the mail. This is solved in feature/mail-sendgrid
-		})
-		.then(() => {
-			done();
-			resolve();
-		})
-		.catch(reject);
-	});
-}
+import { translate as __ } from 'app/services/localization';
 
 const cssFeedbackItemBox = [
-	'box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3)',
 	'padding: 0.8em',
 	'margin-bottom: 0.5em',
 ].join(';');
 
-function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promise <any> {
+export default function (feedback : Feedback, template : MailTemplate) : Promise <any> {
 	let dtxt = '';
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
@@ -93,7 +50,9 @@ function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promis
 			format.itemLinks(i),
 		];
 
-		dtxt += `<div class="fb-item-box" style="${cssFeedbackItemBox}">${formatted.join('')}</div>`;
+		const borderCol = (fItem.text.length <= 0) ? format.colorItemText : format.colorItemDiff;
+		const css = `${cssFeedbackItemBox}; border-left: 3px solid ${borderCol};`;
+		dtxt += `<div class="fb-item-box" style="${css}">${formatted.join('')}</div>`;
 	});
 
 	const html = template.setParams({
@@ -110,7 +69,7 @@ function layoutNotifyMail(feedback : Feedback, template : MailTemplate) : Promis
 	})
 	.render();
 
-	// notifyBrowser(html);  -- this is only for convenient local testing
+	// notifyBrowser(html);  // -- this is only for convenient local testing
 
 	return Promise.resolve(html);
 }
@@ -130,23 +89,3 @@ function debugInfo(feedback : Feedback) : string {
 		`article version = ${feedback.article.version}`,
 	].join('<br/>');
 }
-
-// Only for development
-
-/*
-import { writeFileSync } from 'fs';
-import { spawn } from 'child_process';
-
-function notifyBrowser(html : string) {
-	const testPath = '/tmp/mailtest.html';
-
-	writeFileSync(testPath, html, {
-		flag: 'w',
-		mode: 0o644,
-	});
-
-	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
-		detached: true,
-	});
-}
-*/

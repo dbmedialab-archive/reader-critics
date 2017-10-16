@@ -83,12 +83,16 @@ const cssItemTextGeneric = [
 	'padding: 0.5em',
 ];
 
+export const colorItemText = '#d6e1e8';
+
 const cssItemText = concat(cssItemTextGeneric, [
-	'background-color: #d6e1e8',
+	`background-color: ${colorItemText}`,
 ]).join(';');
 
+export const colorItemDiff = '#c3e7ff';
+
 const cssItemDiffText = concat(cssItemTextGeneric, [
-	'background-color: #c3e7ff',
+	`background-color: ${colorItemDiff}`,
 ]).join(';');
 
 const itemText = (i : ItemFormatPayload) => {
@@ -121,6 +125,8 @@ const itemLinks = (i : ItemFormatPayload) => {
 
 export const format = {
 	articleTitle,
+	colorItemText,
+	colorItemDiff,
 	enduser,
 	itemComment,
 	itemLinks,

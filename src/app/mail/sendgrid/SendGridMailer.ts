@@ -16,85 +16,52 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as sendgrid from 'sendgrid';
-import { mail as helper } from 'sendgrid';
-
 import config from 'app/config';
 
 import * as app from 'app/util/applib';
 
+import { ConfigError } from 'app/util/errors';
+
+// I have yet to figure out how to properly import the new SendGrid module
+// with ES6 syntax, so far TS has rejected every single attempt. Use require-
+// syntax for now and silence the linter.
+// tslint:disable no-require-imports
+const sendgridMail = require('@sendgrid/mail');
+
 const log = app.createLog();
 
-export default function(feedback : string) {
-	log('Preparing e-mail');
-	const fromEmail = new helper.Email('test@leserkritikk.no');
-	const toEmail = new helper.Email('philipp@sol.no');
+const apiKey : string = config.get('mail.sendgrid.api_key');
+const senderDomain : string = config.get('mail.sender.domain');
+const bccRecipient : string = config.get('mail.bccRecipient');
 
-	const subject = 'Du har fått tilbakemelding på artikkelen:';
-	const content = new helper.Content('text/html', htmlContent.replace('#####', feedback));
+export default function(
+	recipients : Array <string>,
+	subject : string,
+	htmlContent : string
+) : Promise <any>
+{
+	if (apiKey.length <= 0) {
+		return Promise.reject(new ConfigError('SendGrid API key is not configured'));
+	}
 
-	const mail = new helper.Mail(fromEmail, subject, toEmail, content);
+	if (app.isTest) {
+		log(`Not sending in test mode`);
+		return Promise.resolve();
+	}
 
-	const sg = sendgrid(config.get('mail.sendgrid.api_key'));
-	const requ = sg.emptyRequest({
-		method: 'POST',
-		path: '/v3/mail/send',
-		body: mail.toJSON(),
-	});
+	log(`Sending e-mail to ${recipients.join(', ')}`);
+	sendgridMail.setApiKey(apiKey);
 
-	sg.API(requ)
-	.then(response => {
-		log('---------------------------------------------------------------------------------------');
-		log(response);
-		// log(response.statusCode);
-		// log(response.body);
-		// log(response.headers);
-		log('---------------------------------------------------------------------------------------');
-	})
-	.catch(error => console.log(error));
+	const options : any = {
+		to: recipients,
+		from: `no-reply@${senderDomain}`,
+		subject,
+		html: htmlContent,
+	};
+
+	if (bccRecipient.length > 0) {
+		options.bcc = bccRecipient;
+	}
+
+	return sendgridMail.send(options);
 }
-
-/*
-var helper = require('sendgrid').mail;
-var fromEmail = new helper.Email('test@example.com');
-var toEmail = new helper.Email('test@example.com');
-var subject = 'Sending with SendGrid is Fun';
-var content = new helper.Content('text/plain', 'and easy to do anywhere, even with Node.js');
-var mail = new helper.Mail(fromEmail, subject, toEmail, content);
-
-var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-var request = sg.emptyRequest({
-  method: 'POST',
-  path: '/v3/mail/send',
-  body: mail.toJSON()
-});
-
-sg.API(request, function (error, response) {
-  if (error) {
-    console.log('Error response received');
-  }
-  console.log(response.statusCode);
-  console.log(response.body);
-  console.log(response.headers);
-});
-*/
-
-const htmlContent = '<!DOCTYPE html>\
-<html lang="no">\
-<head>\
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\
-		<meta charset="utf-8">\
-		<style>\
-			html, body {\
-				color: #333333;\
-				background-color: #eeeeee;\
-				font-family: \'Roboto\', \'Noto Sans\', \'Arial\', sans-serif;\
-			}\
-			h1 { color: rgba(185, 79, 112, 1); }\
-		</style>\
-</head>\
-<body>\
-<h1>Du har fått tilbakemelding på artikkelen</h1>\
-<pre>#####</pre>\
-</body>\
-</html>';
