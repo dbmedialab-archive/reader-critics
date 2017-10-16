@@ -41,7 +41,7 @@ export function get(name : string) : Promise <Website> {
 	return wrapFindOne(WebsiteModel.findOne({ name }));
 }
 
-export function getByID(id : any) : Promise <Website> {
+export function getByID(id : ObjectID|string) : Promise <Website> {
 	emptyCheck(id);
 	return wrapFindOne(WebsiteModel.findOne({ _id: id }));
 }

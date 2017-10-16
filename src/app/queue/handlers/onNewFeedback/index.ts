@@ -65,7 +65,8 @@ export default function(job : Job, done : DoneCallback) : void {
 		feedback = f;  // But first, store these objects for later
 		template = t;
 
-		return websiteService.getByID(feedback.article.website);
+		const websiteID : any = feedback.article.website;
+		return websiteService.getByID(websiteID as string);
 	})
 	// Now we have all the necessary objects, let's go ahead and make an e-mail
 	// out of them

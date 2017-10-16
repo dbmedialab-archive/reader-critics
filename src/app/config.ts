@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable:max-line-length
+// tslint:disable:max-line-length max-file-line-count
 
 import * as path from 'path';
 import * as convict from 'convict';

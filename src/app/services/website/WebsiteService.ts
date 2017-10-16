@@ -25,7 +25,7 @@ import { ObjectID } from 'app/db';
 
 interface WebsiteService extends BasicPersistingService <Website> {
 	get(name : string) : Promise <Website>;
-	getByID(id : any) : Promise <Website>;
+	getByID(id : ObjectID|string) : Promise <Website>;
 	identify(url : ArticleURL|string) : Promise <Website>;
 	save(website : Website) : Promise <void>;
 }

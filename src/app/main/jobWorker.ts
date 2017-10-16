@@ -25,8 +25,6 @@ import { initDatabase } from 'app/db';
 import { initJobWorkerQueue } from 'app/queue';
 import { initLocalizationStrings } from 'app/services/localization';
 
-import { mockFeedbackEvent } from './mockFeedbackEvent';
-
 import startupErrorHandler from './startupErrorHandler';
 
 let log;
@@ -44,6 +42,6 @@ export default function() {
 		.then(initLocalizationStrings)
 		.then(initDatabase)
 		.then(initJobWorkerQueue)
-		.then(mockFeedbackEvent)
+	//	.then(mockFeedbackEvent)
 		.catch(startupErrorHandler);
 }
