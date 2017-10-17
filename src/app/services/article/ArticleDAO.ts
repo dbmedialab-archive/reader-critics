@@ -35,7 +35,6 @@ import {
 } from 'app/services';
 
 import emptyCheck from 'app/util/emptyCheck';
-import * as app from 'app/util/applib';
 
 export function exists(
 	articleURL : string|ArticleURL,
