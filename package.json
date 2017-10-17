@@ -156,7 +156,7 @@
 		"eslint-plugin-import": "^2.7.0",
 		"mocha": "3.5.3",
 		"nightwatch": "0.9.16",
-		"sass-lint": "1.10.2",
+		"sass-lint": "1.12.1",
 		"selenium-server-standalone-jar": "3.6.0",
 		"source-map-support": "^0.4.16",
 		"supports-color": "^4.2.1",
