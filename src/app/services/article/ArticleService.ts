@@ -54,6 +54,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	download(url : ArticleURL) : Promise <string>;
 
 	/**
+	 * Check if the article with the specified version exists in the database.
+	 */
+	exists(url : string|ArticleURL, version : string) : Promise <boolean>;
+
+	/**
 	 * Fetch uses #download() first to get the raw article data from the remote
 	 * source and at the same time, requests a new parser instance from the
 	 * ParserService. The parser implementation is controlled by the Website

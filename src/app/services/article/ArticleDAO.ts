@@ -25,6 +25,7 @@ import User from 'base/User';
 import { ArticleModel } from 'app/db/models';
 
 import {
+	wrapExists,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
@@ -34,6 +35,20 @@ import {
 } from 'app/services';
 
 import emptyCheck from 'app/util/emptyCheck';
+import * as app from 'app/util/applib';
+
+export function exists(
+	articleURL : string|ArticleURL,
+	version : string
+) : Promise <boolean>
+{
+	emptyCheck(articleURL, version);
+
+	return wrapExists(ArticleModel.find({
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
+		version,
+	}));
+}
 
 export function get(
 	articleURL : string|ArticleURL,
