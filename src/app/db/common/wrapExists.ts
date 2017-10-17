@@ -16,36 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleService from './ArticleService';
-
 import {
-	ArticleDocument,
-	ArticleModel
-} from 'app/db/models';
+	Document,
+	DocumentQuery,
+} from 'mongoose';
 
-import createPersistingService from '../createPersistingService';
-
-import download from './live/download';
-import fetch from './common/fetch';
-
-import {
-	exists,
-	get,
-	save,
-	upsert,
-} from './ArticleDAO';
-
-const service : ArticleService
-	= createPersistingService <ArticleDocument, ArticleService, Article> (
-		ArticleModel, {
-			download,
-			exists,
-			fetch,
-			get,
-			save,
-			upsert,
-		}
-	);
-
-module.exports = service;
+export function wrapExists <D extends Document> (
+	result : DocumentQuery <D[], D>
+) : Promise <boolean>
+{
+	return result.limit(1).then(results => results.length === 1);
+}
