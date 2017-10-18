@@ -18,10 +18,6 @@
 
 import * as cluster from 'cluster';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog('redis');
-
 export enum ClusterSignal {
 	WorkerReady = 'worker-ready',
 	WorkerDeadOnArrival = 'worker-doa',
