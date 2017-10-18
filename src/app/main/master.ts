@@ -30,6 +30,11 @@ import {
 	typeWebWorker,
 } from '../main';
 
+import {
+	ClusterMessage,
+	ClusterSignal,
+} from './clusterSignals';
+
 import * as app from 'app/util/applib';
 const log = app.createLog('master');
 
@@ -76,11 +81,12 @@ function startWorkers() : Promise <any> {
 			WORKER_TYPE: workerType,
 		});
 
-		log('Starting up worker %d', worker.id);
+		log('Starting worker %d', worker.id);
 
-		startupPromises.push(new Promise((resolve) => {
+		startupPromises.push(new Promise((startupResolve, startupReject) => {
 			workerMap[worker.id] = {
-				startupResolve: resolve,
+				startupResolve,
+				startupReject,
 				workerType,
 			};
 		}));
@@ -96,10 +102,17 @@ cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => 
 	delete workerMap[worker.id];
 });
 
-cluster.on('listening', (worker : cluster.Worker, address : any) => {
-	log('Worker %d is ready', worker.id);
-	workerMap[worker.id].startupResolve();
-	workerMap[worker.id].startupResolve = undefined;  // Garbage collect this!
+cluster.on('message', (worker : cluster.Worker, message : ClusterMessage, handle?) => {
+	log('Worker %d sent a message: %s', worker.id, app.inspect(message));
+
+	switch (message.type) {
+		case ClusterSignal.WorkerReady:
+			workerMap[worker.id].startupResolve();
+			break;
+		case ClusterSignal.WorkerDeadOnArrival:
+			workerMap[worker.id].startupReject();
+			break;
+	}
 });
 
 // Check current NodeJS version against declaration in package.json
@@ -129,12 +142,13 @@ function startupErrorHandler(error : Error) {
 // Signal Test Environment
 
 function notifyTestMaster() : Promise <void> {
-	log('All workers ready');
 	// If this is the test environment, there will be a master script waiting
 	// for the app to start and become ready for API requests. Send a custom
 	// "ready, proceed" signal to this process:
 	if (app.isTest && process.env.MASTER_PID) {
 		const masterPID = parseInt(process.env.MASTER_PID);
+		log(`Notify test master script at PID ${masterPID}`);
+
 		if (masterPID > 0) {
 			process.kill(masterPID, 'SIGUSR2');
 		}

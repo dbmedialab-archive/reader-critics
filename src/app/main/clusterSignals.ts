@@ -16,26 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { signal } from './clusterSignals';
+import * as cluster from 'cluster';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog('error');
+const log = app.createLog('redis');
 
-// Error handling during startup
-
-export default function (error : Error) {
-	const typesThatDoNotPrintATrace = [
-		'MongoError',
-	];
-
-	if (typesThatDoNotPrintATrace.includes(error.name)) {
-		log('%s: %s', error.name, error.message);
-	}
-	else {
-		log(error.stack || error.toString());
-	}
-
-	signal.workerDOA();
-	process.exit(-128);
+export enum ClusterSignal {
+	WorkerReady = 'worker-ready',
+	WorkerDeadOnArrival = 'worker-doa',
 }
+
+export interface ClusterMessage {
+	pid : number,
+	type : ClusterSignal,
+}
+
+function send(sign : ClusterSignal) {
+	process.send({
+		pid: parseInt(cluster.worker.id),
+		type: sign.toString(),
+	} as ClusterMessage);
+}
+
+export const signal = Object.freeze({
+	workerDOA:
+		() => send(ClusterSignal.WorkerDeadOnArrival),
+	workerReady:
+		() => send(ClusterSignal.WorkerReady),
+});
