@@ -16,12 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
+import 'mocha';
+import * as util from 'util';
 
-import config from 'app/config';
+// import { assert } from 'chai';
+import { apiGet } from '../ApiTestUtil';
 
-export const log = app.createLog('nightwatch');
+const existingArticle = 'http://ampbladet.no/68737640';
 
-export function openPage(client, urlPath : string = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
-}
+describe('/api/article', () => {
+
+	it('get existing article', () => {
+		return apiGet(`article?url=${existingArticle}`)
+		.then((response) => {
+			console.log(util.inspect(response.data, {
+					breakLength: 128,
+					colors: true,
+					depth: null,
+					showHidden: true,
+			}));
+		});
+	});
+
+});

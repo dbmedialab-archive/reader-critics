@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable
+
 import { openPage } from '../util';
 
 const timeToWait = 5000;

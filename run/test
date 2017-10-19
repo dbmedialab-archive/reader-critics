@@ -6,10 +6,11 @@ printUsage()
 {
 	echo "${0} [options]"
 	echo
+	echo "  --api          Only test API endpoints (launches app in background, requires MongoDB)"
 	echo "  --app          Only test the backend app"
 	echo "  --db           Only test database code (requires MongoDB)"
 	echo "  --libs         Only execute Javascript library tests"
-	echo "  --base         Only test base modules"
+	echo "  --base         Only test base modules (launches app in background)"
 	echo "  --frontend     Only execute frontend E2E tests"
 	echo
 	echo "  --kill-all     Clean up leftover processes after E2E tests (like Chromedriver, Chrome, etc.)"
@@ -30,6 +31,10 @@ while [ $# -gt 0 ]; do	# Until you run out of parameters
 			;;
 		--help)
 			printUsage
+			;;
+		--api)
+			DONT_TEST_ALL=true
+			TEST_API=true
 			;;
 		--app)
 			DONT_TEST_ALL=true
@@ -75,7 +80,7 @@ echo
 # App Configuration
 
 export NODE_ENV="test"
-export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-mocha:*,-mquery,-retry-as-promised,-send"}
+export DEBUG=${DEBUG:-"*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-mocha:*,-mquery,-retry-as-promised,-send"}
 export WEB_CONCURRENCY=${WEB_CONCURRENCY:-3}
 
 export AUTH_JWT_SECRET="0000000011111111222222223333333344444444555555556666666677777777"
@@ -136,7 +141,64 @@ runNightwatch()
 	fi
 }
 
+### Launching the app in the background
+
+let APPLOG
+let NODE_PID
+
+launchAppInBackground()
+{
+	export MASTER_PID=$$
+	export PORT=${PORT:-"4000"}
+
+	APPLOG="app-${1}.log"
+
+	# Launch API service in the background
+	echo "Starting app in the background"
+	script /dev/null \
+		--quiet --command "node --icu-data-dir=node_modules/full-icu out/start.js" \
+		< /dev/null > ${APPLOG} 2>&1 &
+
+	# Grab PID of background process
+	NODE_PID=$!
+	echo -n "App launching on PID ${NODE_PID}. Waiting for startup ..."
+
+	# Install trap that catches the "ready" signal when the API has finished its initialization
+	NODE_READY=false
+	trap "NODE_READY=true" SIGUSR2
+
+	# Wait for the APP process to become ready
+	count=0
+	until ( ${NODE_READY} )
+	do
+		((count++))
+		if [ ${count} -gt 50 ]  # waits for a maximum of 10 seconds
+		then
+			echo
+			echo "App didn't become ready in time. Check test output!"
+			kill ${NODE_PID}
+			exit 69  # BSD value for "service unavailable". Seriously.
+		fi
+		sleep 0.2
+		echo -n "."
+	done
+	echo
+}
+
+stopAppInBackground()
+{
+	echo "Terminating background process ${NODE_PID}"
+	kill ${NODE_PID}
+	echo -e "Check \033[38;1m${APPLOG}\033[0m for app output"
+}
+
 ### Test parts
+
+testAPI()
+{
+	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_API ]) ; then return ; fi
+	echo Here be API tests
+}
 
 testBackendApp()
 {
@@ -167,54 +229,24 @@ testFrontend()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_FRONTEND ]) ; then return ; fi
 
-	export MASTER_PID=$$
-	export PORT=${PORT:-"4000"}
-
-	APPLOG="app.log"
-
-	# Launch API service in the background
-	echo "Starting app in the background"
-	script /dev/null \
-		--quiet --command "node out/start.js" \
-		< /dev/null > ${APPLOG} 2>&1 &
-
-	# Grab PID of background process
-	NODE_PID=$!
-	echo "App launching on PID ${NODE_PID}. Waiting for startup ..."
-
-	# Install trap that catches the "ready" signal when the API has finished its initialization
-	NODE_READY=false
-	trap "NODE_READY=true" SIGUSR2
-
-	# Wait for the APU process to become ready
-	count=0
-	until ( ${NODE_READY} )
-	do
-		((count++))
-		if [ ${count} -gt 50 ]  # waits for a maximum of 10 seconds
-		then
-			echo "App didn't become ready in time. Check test output!"
-			exit 69  # BSD value for "service unavailable"
-		fi
-		sleep 0.2
-	done
-
+	launchAppInBackground "frontend"
 	runNightwatch "nightwatch-frontend.js" "Frontend"
-
-	echo "Terminating background process ${NODE_PID}"
-	kill ${NODE_PID}
-
-	echo -e "Check \033[38;1m${APPLOG}\033[0m for app output"
+	stopAppInBackground
 }
 
 ### Execute all test suites
 
 runAllTests()
 {
+	# The order of these tests is important, so don't change it!
+	# If running certain tests manually, make sure prerequisites are all met.
+	# For example, the API and frontend tests expect the test data in the
+	# database to be present for successful querying.
 	testLibraries
 	testBaseSource
 	testBackendApp
 	testDatabase
+	testAPI
 	testFrontend
 }
 

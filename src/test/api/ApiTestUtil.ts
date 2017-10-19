@@ -16,12 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
+import { default as axios, AxiosResponse } from 'axios';
 
-import config from 'app/config';
-
-export const log = app.createLog('nightwatch');
-
-export function openPage(client, urlPath : string = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
+export function apiGet(partialURI : string) : Promise <AxiosResponse> {
+	return axios.get(`http://localhost:4000/api/${partialURI}`);
 }
