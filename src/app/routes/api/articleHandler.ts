@@ -49,9 +49,9 @@ const __ = localizationService.translate;
 export default function(requ : Request, resp : Response) : void {
 	let articleURL : ArticleURL;
 	let website : Website;
-	let wasFetched = false;
+	let article : Article;
 
-	const version : string = requ.query.version || null;
+	let version : string = requ.query.version || null;
 
 	// 1 - Article URL and Website identification
 	ArticleURL.from(requ.query.url).then((url : ArticleURL) => {
@@ -81,28 +81,25 @@ export default function(requ : Request, resp : Response) : void {
 		return null;
 	})
 
-	// 3 - Fetch stage (no database hit or no version parameter in request)
-	.then((article : Article) => {
-		if (article !== null) {
-			return article;
-		}
-
-		wasFetched = true;
-		return articleService.fetch(website, articleURL);
+	// 3 - Fetch stage (if no database hit or no version parameter in request)
+	.then((a : Article) => {
+		return (a !== null) ? a : articleService.fetch(website, articleURL);
 	})
 
 	// 4 - Deliver the API response
-	.then((article : Article) => {
+	.then((a : Article) => {
+		article = a;
+		version = article.version;
 		okResponse(resp, { article });
-		return article;
 	})
 
 	// 5 - Save article to the database after serving the request
 	// If the article has just been fetched, store it in the database now. This
 	// step is done after delivering the response to the client to save the RTT
 	// to the database in the response time.
-	.then((article : Article) => {
-		if (wasFetched && !articleService.exists(articleURL, version)) {
+	.then(() => articleService.exists(articleURL, version))
+	.then((exists : boolean) => {
+		if (!exists) {
 			return articleService.upsert(website, article)
 			.catch(error => log(error));
 		}
