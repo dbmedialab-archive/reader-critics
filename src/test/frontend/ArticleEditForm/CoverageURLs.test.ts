@@ -16,9 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const {
-	openPage,
-} = require('../test-tools-frontend');
+import { openPage } from '../util';
 
 const timeToWait = 5000;
 
@@ -47,8 +45,44 @@ const linkText0 = 'http://www.wikipedia.org/0';
 const linkText1 = 'http://www.wikipedia.org/1';
 const linkText2 = 'http://www.wikipedia.org/2';
 
+// Before & After
+/*
+let thePage : any;
+
+const before = (browser, done) => {
+	console.log('before');
+
+	thePage = openPage(browser, '/fb/http://test/xyz/1')
+	// Wait for elements to render
+		.waitForElementVisible('body', timeToWait)
+		.waitForElementVisible('div#app section#content', timeToWait)
+		.waitForElementVisible('section#content > article.title', timeToWait)
+
+		.perform(() => done());
+};
+
+const after = (browser, done) => {
+	console.log('after');
+	browser.end().perform(() => done());
+};
+*/
+// Test functions
+
+const openArticleEditForm = (browser) => {
+	browser.url('http://localhost:4000/')
+		.waitForElementVisible('body', timeToWait);
+};
+
+// Export tests to Nightwatch
+
+export = Object.freeze({
+	// before,
+	// after,
+	openArticleEditForm,
+});
+
+/*
 describe('ArticleEditForm URLs coverage tests', () => {
-	let thePage;
 
 	// Set up the test page and extract some of the text values for
 	// later use. The test case was split up into before() and it(..)
@@ -69,16 +103,7 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	// .perform() functions for these "late evaluations", but that blows
 	// up the code.
 
-	before((browser, done) => {
-		thePage = openPage(browser, '/fb/http://test/xyz/1')
-
-		// Wait for elements to render
-			.waitForElementVisible('body', timeToWait)
-			.waitForElementVisible('div#app section#content', timeToWait)
-			.waitForElementVisible('section#content > article.title', timeToWait)
-
-			.perform(() => done());
-	});
+	before();
 
 	after((browser, done) => browser.end().perform(() => done()));
 
@@ -282,4 +307,6 @@ describe('ArticleEditForm URLs coverage tests', () => {
 		thePage.click(elFormCancelBtn)
 			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
+
 });
+*/
