@@ -16,21 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const findRoot = require('find-root');
-const path = require('path');
+import * as findRoot from 'find-root';
+import * as path from 'path';
 
 const rootPath = path.join(findRoot(path.dirname(__dirname)), 'out');
 
 // eslint-disable-next-line import/no-dynamic-require
-const config = require(`${rootPath}/app/config.js`).default;
+// const config = require(`${rootPath}/app/config.js`).default;
 
-const log = require('debug')('nightwatch');
+// const log = require('debug')('nightwatch');
 
-function openPage(client, urlPath = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
+export function openPage(client, urlPath : string = '/') {
+//	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
+	return client.url(`http://localhost:4000${urlPath}`);
 }
-
-module.exports = {
-	log,
-	openPage,
-};
