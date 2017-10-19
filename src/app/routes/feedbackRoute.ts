@@ -24,8 +24,6 @@ import {
 	Router,
 } from 'express';
 
-import { isEmpty } from 'lodash';
-
 import ArticleURL from 'base/ArticleURL';
 import PageTemplate from 'app/template/PageTemplate';
 import Website from 'base/Website';
