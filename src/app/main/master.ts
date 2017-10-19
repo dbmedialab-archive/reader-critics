@@ -102,9 +102,7 @@ cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => 
 	delete workerMap[worker.id];
 });
 
-cluster.on('message', (worker : cluster.Worker, message : ClusterMessage, handle?) => {
-	log('Worker %d sent a message: %s', worker.id, app.inspect(message));
-
+cluster.on('message', (worker : cluster.Worker, message : ClusterMessage) => {
 	switch (message.type) {
 		case ClusterSignal.WorkerReady:
 			workerMap[worker.id].startupResolve();
