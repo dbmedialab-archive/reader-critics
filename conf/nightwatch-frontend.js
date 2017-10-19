@@ -1,44 +1,42 @@
+/* eslint-disable */
+
+const path = require('path');
+
+const rootPath = require('find-root')();
+
 const chromedriver = require('chromedriver');
 const geckodriver = require('geckodriver');
 const seleniumJAR = require('selenium-server-standalone-jar');
 
+console.log('Application root:', rootPath);
 console.log('Selenium version:', seleniumJAR.version);
 console.log('Chrome driver version:', chromedriver.version);
 console.log('Gecko driver version:', geckodriver.version);
 
-// require('source-map-support/register');  -- not quite there yet
-// require('ts-node/register');
-// require('tsconfig-paths/register');
+require('tsconfig-paths/register');
 
-const conf = {
-	'src_folders': ['src/test/frontend'],
-	'output_folder': false,
+module.exports = {
+	src_folders: [ path.join(rootPath, 'out/test/frontend') ],
 
-	'selenium': {
-		'server_path': seleniumJAR.path,
-		'start_process': true,
-		'port': 4444,
-		'cli_args': {
+	live_output: true,
+
+	selenium: {
+		server_path: seleniumJAR.path,
+		start_process: true,
+		port: 4444,
+		cli_args: {
 			'webdriver.chrome.driver': chromedriver.path,
-			'webdriver.gecko.driver': geckodriver.path,
-		},
-	},
-
-	'test_runner': {
-		'type': 'mocha',
-		'options': {
-			'ui': 'bdd',
-			'reporter': 'list'
+	//		'webdriver.gecko.driver': geckodriver.path,
 		},
 	},
 
 	'test_settings': {
 		'default': {
-			'filter': '**/*.test.js',
+			'filter': '**/*.test.*',
 			'launch_url': 'http://localhost',
 			'selenium_port': 4444,
 			'selenium_host': 'localhost',
-			'silent': true,
+			'silent': false,
 			'screenshots' : {
 				'enabled' : false,
 			},
@@ -53,5 +51,3 @@ const conf = {
 		},
 	},
 };
-
-module.exports = conf;
