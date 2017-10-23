@@ -46,7 +46,7 @@ import {
 	notFoundHandler,
 } from './errorHandlers';
 
-import { sessionConf } from 'app/middleware/config/sessionConfig';
+import { getSessionConfig } from 'app/middleware/config/sessionConfig';
 
 import * as app from 'app/util/applib';
 
@@ -54,12 +54,12 @@ const log = app.createLog();
 
 // Main
 
-export default function(expressApp : Application) {
+export default function (expressApp : Application) {
 	if (!app.isProduction) {
 		expressApp.use(logRequest);
 	}
 
-	expressApp.use(session(sessionConf));
+	expressApp.use(session(getSessionConfig()));
 
 	// Passport init
 	passport.use(jwtStrategy);
@@ -77,7 +77,7 @@ export default function(expressApp : Application) {
 
 // Express routes
 
-function setRoutes(expressApp : express.Application) {
+function setRoutes (expressApp : express.Application) {
 	log('Setting Express routes');
 
 	expressApp.use(faviconRoute);
@@ -98,7 +98,7 @@ function setRoutes(expressApp : express.Application) {
 
 // Express application options
 
-function setOptions(expressApp : express.Application) {
+function setOptions (expressApp : express.Application) {
 	log('Setting Express options');
 
 	expressApp.set('view', undefined);
@@ -109,13 +109,13 @@ function setOptions(expressApp : express.Application) {
 
 // Express error handlers
 
-function setErrorHandlers(expressApp : express.Application) {
+function setErrorHandlers (expressApp : express.Application) {
 	expressApp.use(catchAllErrorHandler);
 }
 
 // Log all express requests
 
-function logRequest(requ : Request, resp: Response, next : Function) {
+function logRequest (requ : Request, resp: Response, next : Function) {
 	const url = parse(requ.url);
 
 	if (url.query === null) {

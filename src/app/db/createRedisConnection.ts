@@ -17,7 +17,7 @@
 //
 
 import * as colors from 'ansicolors';
-import * as Redis from 'ioredis';
+import * as IORedis from 'ioredis';
 import * as stripUrlAuth from 'strip-url-auth';
 
 import config from 'app/config';
@@ -29,19 +29,19 @@ const log = app.createLog('redis');
 export const dbMessageQueue = 'message-queue';
 export const dbSessionCache = 'session-cache';
 
-export default function(which : string) : Redis.Redis {
+export default function(which : string) : {} {
 	if (![dbMessageQueue, dbSessionCache].includes(which)) {
 		throw new Error(`Unknown Redis database "${which}"`);
 	}
 
 	const url = config.get(`db.redis.url.${which}`);
-	const redis : Redis.Redis = new Redis(url);
+	const redis : IORedis.Redis = new IORedis(url);
 
 	redis.on('connect', () => {
-		log('Connecting to', colors.brightWhite(stripUrlAuth(stripUrlAuth(url))));
+		log('Connecting to %s at %s', which, colors.brightWhite(stripUrlAuth(stripUrlAuth(url))));
 	});
 	redis.on('reconnecting', () => {
-		log('Redis $%s" is reconnecting', colors.brightWhite(stripUrlAuth(stripUrlAuth(url))));
+		log('Reconnecting ', which);
 	});
 
 	return redis;
