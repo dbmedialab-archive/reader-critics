@@ -68,7 +68,7 @@
 		"full-icu": "1.2.0",
 		"has-color": "0.1.7",
 		"immutable": "4.0.0-rc.4",
-		"ioredis": "3.1.4",
+		"ioredis": "3.2.0",
 		"json5": "0.5.1",
 		"jsonwebtoken": "8.1.0",
 		"keykey": "2.1.1",
