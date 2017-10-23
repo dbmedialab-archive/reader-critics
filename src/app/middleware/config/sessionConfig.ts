@@ -25,7 +25,7 @@ export const secret : string = config.get('auth.session.secret');
 export const maxAge : number = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
 
 export const getSessionConfig = () => ({
-	client: createRedisConnection (dbSessionCache),
+	client: createRedisConnection (dbSessionCache) as {},
 	secret,
 	resave: false,
 	saveUninitialized: false,

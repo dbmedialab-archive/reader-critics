@@ -29,7 +29,7 @@ const log = app.createLog('redis');
 export const dbMessageQueue = 'message-queue';
 export const dbSessionCache = 'session-cache';
 
-export default function(which : string) : {} {
+export default function(which : string) : IORedis.Redis {
 	if (![dbMessageQueue, dbSessionCache].includes(which)) {
 		throw new Error(`Unknown Redis database "${which}"`);
 	}
