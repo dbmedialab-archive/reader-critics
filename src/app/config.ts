@@ -68,19 +68,16 @@ const config = convict({
 				[dbMessageQueue]: {
 					doc: 'Redis URL for the database that holds the message queue',
 					format: String,
-					default: 'redis://localhost:6379/1',
+					default: null,
 					env: 'REDIS_URL_MESSAGE_QUEUE',
 				},
 				[dbSessionCache]: {
 					doc: 'Redis URL for the database that holds the session cache',
 					format: String,
-					default: 'redis://localhost:6379/2',
+					default: null,
 					env: 'REDIS_URL_SESSION_CACHE',
 				},
 			},
-			host: 'localhost',
-			port: 6379,
-			ttl: 260,
 		},
 	},
 	localization: {
