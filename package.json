@@ -46,7 +46,7 @@
 		"@sendgrid/mail": "6.1.4",
 		"ansicolors": "0.3.2",
 		"app-module-path": "2.2.0",
-		"axios": "0.16.2",
+		"axios": "0.17.0",
 		"bcrypt": "1.0.3",
 		"bluebird": "3.5.1",
 		"body-parser": "1.18.2",
@@ -162,7 +162,7 @@
 		"supports-color": "^4.2.1",
 		"ts-node": "3.3.0",
 		"tsconfig-paths": "2.3.0",
-		"tslint": "5.7.0",
+		"tslint": "5.8.0",
 		"typescript": "2.5.3",
 		"webpack-bundle-analyzer": "^2.8.3"
 	},
