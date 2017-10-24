@@ -2,10 +2,8 @@
 
 clear
 
-export DEBUG="*,-ioredis:redis"
-# ,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
+export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
 export NODE_ENV=${NODE_ENV:-"development"}
-export NODE_DEBUG="*"
 
-node --trace-warnings --trace-events-enabled out/start.js
+node out/start.js
 
