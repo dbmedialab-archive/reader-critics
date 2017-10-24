@@ -44,6 +44,7 @@ class LoginModalComponent extends React.Component <any, any> {
 		this.updateInputValue = this.updateInputValue.bind(this);
 		this.loginUser = this.loginUser.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.setAllTouched = this.setAllTouched.bind(this);
 	}
 
 	componentWillMount() {
@@ -80,15 +81,15 @@ class LoginModalComponent extends React.Component <any, any> {
 	}
 
 	hasLoginError(): string | boolean {
-		if (this.props.login.value !== 'admin') {
-			return 'Only admin can get access';
+		if (!this.props.login.value) {
+			return 'Login field have to be filled';
 		}
 		return false;
 	}
 
 	hasPasswordError(): string | boolean {
-		if (this.props.password.value.length < 4) {
-			return 'Password has to be more than 3 symbols';
+		if (!this.props.password.value) {
+			return 'Password field have to be filled';
 		}
 		return false;
 	}
@@ -97,7 +98,7 @@ class LoginModalComponent extends React.Component <any, any> {
 		return (!this.hasPasswordError() && !this.hasLoginError());
 	}
 
-	loginUser(event): void {
+	loginUser(): void {
 		if (this.isFormValid()) {
 			UIActions.showMainPreloader();
 			const {login: {value: login}, password: {value: password}} = this.props;
@@ -114,8 +115,22 @@ class LoginModalComponent extends React.Component <any, any> {
 		}
 	}
 
+	setAllTouched(): void {
+		const {password: {touched: password}, login: {touched: login}} = this.props;
+		if (!login || !password) {
+			const options: OptionsI = {};
+			options.input = {
+				login: {touched: true},
+				password: {touched: true},
+			};
+			UIActions.modalWindowsChangeState(this.props.windowName, options);
+		}
+	}
+
 	private handleSubmit(e: any): void {
 		e.preventDefault();
+		this.setAllTouched();
+		return this.loginUser();
 	}
 
 	render(): JSX.Element {
@@ -127,49 +142,31 @@ class LoginModalComponent extends React.Component <any, any> {
 							<p className="lead">Authorization</p>
 						</div>
 					</div>
-					<form onSubmit={this.handleSubmit}>
-						<div className="row">
-							<div className="medium-12 columns">
-								<fieldset className="text">
-									<label htmlFor="login">Login</label>
-									<input
-										type="text"	name="login" ref={r => this.loginInput = r}
-										id="login" value={this.props.login.value}
-										onChange={this.updateInputValue}
-									/>
-									<InputError
-										errorText={this.hasLoginError()}
-										touchedField={this.props.login.touched}
-									/>
-								</fieldset>
-							</div>
+					<div className="row">
+						<div className="medium-12 columns">
+							<form onSubmit={this.handleSubmit} className="authentication-form">
+								<label htmlFor="login">Login</label>
+								<input type="text" name="login" ref={r => this.loginInput = r}
+									id="login" value={this.props.login.value}
+									onChange={this.updateInputValue} />
+								<InputError	errorText={this.hasLoginError()}
+											touchedField={this.props.login.touched}	/>
+								<label htmlFor="password">Password</label>
+								<input type="password" name="password" ref={r => this.passwordInput = r}
+									id="password" value={this.props.password.value}
+									onChange={this.updateInputValue} />
+								<InputError errorText={this.hasPasswordError()}
+											touchedField={this.props.password.touched} />
+							</form>
 						</div>
-						<div className="row">
-							<div className="medium-12 columns">
-								<fieldset className="text">
-									<label htmlFor="password">Password</label>
-									<input
-										type="password"	name="password"	ref={r => this.passwordInput = r}
-										id="password" value={this.props.password.value}
-										onChange={this.updateInputValue}
-									/>
-									<InputError
-										errorText={this.hasPasswordError()}
-										touchedField={this.props.password.touched}
-									/>
-								</fieldset>
-							</div>
+					</div>
+					<div className="row button-holder">
+						<div className="medium-12 columns">
+							<a onClick={this.handleSubmit} className="button success" href="#">Log IN</a>
 						</div>
-						<div className="row button-holder">
-							<div className="medium-12 columns">
-								<a onClick={this.loginUser} className="button success" href="#">Log IN</a>
-							</div>
-							<InputError
-								errorText={this.state.serverError.value}
-								touchedField={this.state.serverError.touched}
-							/>
-						</div>
-					</form>
+						<InputError	errorText={this.state.serverError.value}
+									touchedField={this.state.serverError.touched} />
+					</div>
 				</div>
 			</ReactModal>
 		);
@@ -179,14 +176,14 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
 		login: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value']) || '',
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value'], ''),
 			touched:
-				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'touched']) || false,
+				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'touched'], false),
 		},
 		password: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value']) || '',
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value'], ''),
 			touched:
-				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched']) || false,
+				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched'], false),
 		},
 	};
 };
