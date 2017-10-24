@@ -7,6 +7,5 @@ export DEBUG="*,-ioredis:redis"
 export NODE_ENV=${NODE_ENV:-"development"}
 export NODE_DEBUG="*"
 
-
-node --trace-warnings --trace-events-enabled --icu-data-dir=node_modules/full-icu out/start.js
+node --trace-warnings --trace-events-enabled out/start.js
 
