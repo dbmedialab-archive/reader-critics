@@ -50,11 +50,13 @@ export function loginPageHandler(requ : Request, resp : Response) : void {
 }
 
 export function loginHandler(requ : Request, resp : Response, next : NextFunction) : void {
+	log('enter loginHandler');
 	const notAuth = (error) => errorResponse(resp, error, 'Not authorized', {
 		status: 401,
 	});
 
 	const callback = (error, user) => {
+		log('passport callback');
 		if (error || user === false) {
 			return notAuth(error || new Error('Invalid credentials'));
 		}
@@ -68,6 +70,7 @@ export function loginHandler(requ : Request, resp : Response, next : NextFunctio
 		});
 	};
 
+	log('passport.authenticate');
 	passport.authenticate('local', callback)(requ, resp, next);
 }
 

@@ -2,8 +2,11 @@
 
 clear
 
-export DEBUG="*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
+export DEBUG="*,-ioredis:redis"
+# ,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
 export NODE_ENV=${NODE_ENV:-"development"}
+export NODE_DEBUG="*"
 
-node --icu-data-dir=node_modules/full-icu out/start.js
+
+node --trace-warnings --trace-events-enabled --icu-data-dir=node_modules/full-icu out/start.js
 
