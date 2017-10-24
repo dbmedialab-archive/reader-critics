@@ -16,16 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as session from 'express-session';
+import * as connectRedis from 'connect-redis';
+
 import { createRedisConnection } from 'app/db';
 import { dbSessionCache } from 'app/db/createRedisConnection';
 
+import * as app from 'app/util/applib';
 import config from 'app/config';
 
 export const secret : string = config.get('auth.session.secret');
-export const maxAge : number = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
+export const maxAge : number = config.get('auth.session.ttl') * 60 * 1000;  // => Milliseconds
+
+const log = app.createLog('session');
+const RedisStore = connectRedis(session);
 
 export const getSessionConfig = () => ({
-	client: createRedisConnection (dbSessionCache) as {},
+	store: new RedisStore({
+		client: createRedisConnection(dbSessionCache),
+		logErrors: log,
+		prefix: 'session',
+	}),
 	secret,
 	resave: false,
 	saveUninitialized: false,
