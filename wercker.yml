@@ -65,7 +65,7 @@ js-lint-build-test:
 
 push-image:
   box:
-    id: node:8-alpine
+    id: node:8
     cmd: /bin/sh
   steps:
   - script:
