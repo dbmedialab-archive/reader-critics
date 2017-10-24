@@ -30,6 +30,7 @@ import download from './live/download';
 import fetch from './common/fetch';
 
 import {
+	exists,
 	get,
 	save,
 	upsert,
@@ -39,6 +40,7 @@ const service : ArticleService
 	= createPersistingService <ArticleDocument, ArticleService, Article> (
 		ArticleModel, {
 			download,
+			exists,
 			fetch,
 			get,
 			save,

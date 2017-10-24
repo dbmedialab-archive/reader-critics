@@ -16,14 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import TemplateService from './TemplateService';
+import {
+	Document,
+	DocumentQuery,
+} from 'mongoose';
 
-import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
-import getSuggestionPageTemplate from './common/getSuggestionPageTemplate';
-
-const service : TemplateService = {
-	getFeedbackPageTemplate,
-	getSuggestionPageTemplate,
-};
-
-module.exports = service;
+export function wrapExists <D extends Document> (
+	result : DocumentQuery <D[], D>
+) : Promise <boolean>
+{
+	return result.limit(1).then(results => results.length === 1);
+}

@@ -81,17 +81,25 @@ export default function(this: ISuiteCallbackContext) {
 		assert.strictEqual(count, articleCount);
 	}));
 
-	it('get()', () => {
-		const a : ArticleURL = new ArticleURL('http://www.mopo.no/2');
-		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
-
+	it('exists', () => {
 		return Promise.all([
-			articleService.get(a, '201707251349'),
-			articleService.get(b, 'nil'),
+			articleService.exists('http://www.mopo.no/2', '201707251349'),
+			articleService.exists('http://something-else.xyz/goes/nowhere', 'nil'),
 		])
-		.then((results : Article[]) => {
-			assertArticleObject(results[0]);
-			assert.isNull(results[1]);
+		.spread((a : boolean, b : boolean) => {
+			assert.isTrue(a);
+			assert.isFalse(b);
+		});
+	});
+
+	it('get()', () => {
+		return Promise.all([
+			articleService.get('http://www.mopo.no/2', '201707251349'),
+			articleService.get('http://something-else.xyz/goes/nowhere', 'nil'),
+		])
+		.spread((a : Article, b : Article) => {
+			assertArticleObject(a);
+			assert.isNull(b);
 		});
 	});
 

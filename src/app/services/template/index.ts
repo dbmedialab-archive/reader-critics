@@ -16,16 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	DoneCallback,
-	Job,
-} from 'kue';
+export { default as getFeedbackNotifyTemplate } from './mail/getFeedbackNotifyTemplate';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog('api');
-
-export function onNewFeedback(job : Job, done : DoneCallback) {
-	log('New feedback in queue!', job.data);
-	done();
-}
+export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
+export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';

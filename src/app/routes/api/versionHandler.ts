@@ -21,13 +21,24 @@ import {
 	Response,
 } from 'express';
 
-/**
- * Render a page that displays information about the mandatory URL parameter being missing.
- */
+import { okResponse } from './apiResponse';
 
-export default function (requ : Request, resp : Response) {
-	// TODO external fn: parse referrer URL to determine style env
-	resp.json({
-		status: 'empty response, no URL',
-	}).status(302).end();
+import * as app from 'app/util/applib';
+
+export default function(requ : Request, resp : Response) : void {
+	Promise.all([
+		getPackageInfo().catch(err => {}),
+		getRepositoryInfo().catch(err => {}),
+	])
+	.spread((pkgInfo : any = {}, repInfo : any = {}) => {
+		okResponse(resp, Object.assign({ version: pkgInfo.version }, repInfo));
+	});
+}
+
+function getPackageInfo() : Promise<any> {
+	return app.loadJSON('package.json');
+}
+
+function getRepositoryInfo() : Promise<any> {
+	return app.loadJSON('out/version.json');
 }

@@ -17,17 +17,27 @@
 //
 
 import {
-	Request,
-	Response,
-} from 'express';
+	isEmpty,
+	isObject,
+} from 'lodash';
 
-/**
- * Render a page that displays a parameter parser error.
- */
+import AbstractTemplate from './AbstractTemplate';
 
-export default function (requ : Request, resp : Response) {
-	// TODO external fn: parse referrer URL to determine style env
-	resp.json({
-		status: 'Wrong URL, show error page',
-	}).status(404).end();
+export default class MailTemplate extends AbstractTemplate {
+
+	private params : any;
+
+	public setParams(params : Object) : MailTemplate {
+		if (isObject(params) && !isEmpty(params)) {
+			this.params = params;
+		}
+		return this;
+	}
+
+	public render() : string {
+		return this.dotRender(Object.assign({
+			locale: this.locale,
+		}, this.params));
+	}
+
 }

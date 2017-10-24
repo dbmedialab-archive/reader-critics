@@ -28,6 +28,9 @@ import {
 	NotFoundError,
 } from 'app/util/errors';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 const __ = localizationService.translate;
 
 export function notFoundHandler(requ : Request, resp : Response) {
@@ -40,10 +43,12 @@ export function catchAllErrorHandler(
 	resp : Response,
 	next : Function
 ) {
+	log(`Catch-all got one ${Object.getPrototypeOf(err)}: ${err.message}`);
+
 	if (err instanceof InvalidRequestError) {
 		send400Response(resp, err.message);
 	}
-	if (err instanceof NotFoundError) {
+	else if (err instanceof NotFoundError) {
 		send404Response(resp, err.message);
 	}
 	else {
