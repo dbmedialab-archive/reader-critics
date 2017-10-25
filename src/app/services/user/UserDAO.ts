@@ -39,10 +39,10 @@ export function checkPassword(user : User, password : string) : Promise <boolean
 		name: user.name,
 		email: user.email,
 	})
-		.select('+password').exec().then((u : UserDocument) => {
-			const hash = u.get('password');
-			return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
-		});
+	.select('+password').exec().then((u : UserDocument) => {
+		const hash = u.get('password');
+		return hash === null ? Promise.resolve(false) : bcrypt.compare(password, hash);
+	});
 }
 
 export function get(name : String, email? : String) : Promise <User> {
@@ -74,8 +74,8 @@ export function getByID(id : String) : Promise <User> {
 	return UserModel.findOne({'_id': id})
 	.select('-password').exec()
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
 
@@ -105,8 +105,8 @@ export function findOrInsert(user : Person) : Promise <User> {
 export function doDelete(id: String) : Promise <any> {
 	return UserModel.findOneAndRemove({ '_id': id })
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
 
@@ -116,7 +116,7 @@ export function doDelete(id: String) : Promise <any> {
 export function update(id: String, data: Object) : Promise <any> {
 	return wrapFindOne(UserModel.findOneAndUpdate({ '_id': id }, data, { new: true }))
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
