@@ -32,7 +32,7 @@ import {
 /**
  * Validating input data and saving users
  */
-export function validateAndSave(data : any) : Promise <any> {
+export function validateAndSave (data: any): Promise<any> {
 	try {
 		validateSchema(data);
 	}
@@ -40,13 +40,15 @@ export function validateAndSave(data : any) : Promise <any> {
 		return Promise.reject(error);
 	}
 
-	return checkUniqueEmail(data.email)
-	.then((unique : boolean) => {
+	return Promise.all([
+		checkUniqueEmail(data.email),
+		userService.setPasswordHash(data, data.password),
+	]).then(res => {
+		const [unique, user] = res;
 		if (unique) {
-			return userService.save(data);
-		} else {
-			throw new SchemaValidationError('Email already exists in database');
+			return userService.save(user);
 		}
+		throw new SchemaValidationError('Email already exists in database');
 	});
 }
 
@@ -55,7 +57,7 @@ export function validateAndSave(data : any) : Promise <any> {
  * This doesn't allow to change user password.
  * Updating password will be separate procedure
  */
-export function validateAndUpdate (id: String, data: any) : Promise <any> {
+export function validateAndUpdate (id: String, data: any): Promise<any> {
 	try {
 		validateSchemaUpdate(data);
 	}
@@ -63,41 +65,41 @@ export function validateAndUpdate (id: String, data: any) : Promise <any> {
 		return Promise.reject(error);
 	}
 	return userService.getByID(id)
-	.then(user => {
-		if (!isEmpty(data.password)) {
-			delete data.password;
-		}
+		.then(user => {
+			if (!isEmpty(data.password)) {
+				delete data.password;
+			}
 
-		if (data.email === user.email) {
-			return userService.update(id, data);
-		} else {
-			return checkUniqueEmail(data.email)
-			.then((unique : boolean) => {
-				if (unique) {
-					return userService.update(id, data);
-				} else {
-					throw new SchemaValidationError('Email already exists in database');
-				}
-			});
-		}
-	})
-	.catch(err => {
-		return Promise.reject(err);
-	});
+			if (data.email === user.email) {
+				return userService.update(id, data);
+			} else {
+				return checkUniqueEmail(data.email)
+					.then((unique: boolean) => {
+						if (unique) {
+							return userService.update(id, data);
+						} else {
+							throw new SchemaValidationError('Email already exists in database');
+						}
+					});
+			}
+		})
+		.catch(err => {
+			return Promise.reject(err);
+		});
 }
 
 /**
  * Check if email is unique in database
  */
-function checkUniqueEmail(userMail : string) : Promise <boolean> {
+function checkUniqueEmail (userMail: string): Promise<boolean> {
 	return userService.getByEmail(userMail)
-	.then(user => user === null);
+					.then(user => user === null);
 }
 
 /**
- * Schema Validation
+ * Schema Validator
  */
-function validateSchema(data : any) {
+function validateSchema (data: any) {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid user data');
@@ -123,7 +125,7 @@ function validateSchema(data : any) {
 /*
  * Validating fileds when updating user entity
  */
-function validateSchemaUpdate(data : any) {
+function validateSchemaUpdate (data: any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid user data');
 	}

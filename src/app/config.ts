@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable:max-line-length max-file-line-count
+
 import * as path from 'path';
 import * as convict from 'convict';
 
@@ -66,19 +68,24 @@ const config = convict({
 				[dbMessageQueue]: {
 					doc: 'Redis URL for the database that holds the message queue',
 					format: String,
-					default: 'redis://localhost:6379/1',
+					default: null,
 					env: 'REDIS_URL_MESSAGE_QUEUE',
 				},
 				[dbSessionCache]: {
 					doc: 'Redis URL for the database that holds the session cache',
 					format: String,
-					default: 'redis://localhost:6379/2',
+					default: null,
 					env: 'REDIS_URL_SESSION_CACHE',
 				},
 			},
-			host: 'localhost',
-			port: 6379,
-			ttl: 260,
+		},
+	},
+	localization: {
+		systemLocale: {
+			doc: 'Default system locale that will be used when websites do not override',
+			format: String,
+			default: 'en',
+			env: 'I18N_SYS_LOCALE',
 		},
 	},
 	auth: {
@@ -120,6 +127,52 @@ const config = convict({
 			},
 		},
 	},
+	mail: {
+		sender: {
+			domain: {
+				default: 'readercritics.com',
+				format: String,
+				env: 'MAIL_SENDER_DOMAIN',
+			},
+		},
+		sendgrid: {
+			api_key: {
+				default: '',
+				format: String,
+				doc: 'API key for SendGrid mail service, used if no other service is configured',
+				env: 'SENDGRID_API_KEY',
+			},
+		},
+		bccRecipient: {
+			default: '',
+			format: String,
+			doc: 'Set this to a valid e-mail address to BCC all outgoing mail to it.',
+			env: 'MAIL_BCC_RECIPIENT',
+		},
+		testOverride: {
+			default: '',
+			format: String,
+			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
+			env: 'MAIL_TEST_OVERRIDE',
+		},
+	},
+	slack: {
+		channel: {
+			default: '',
+			format: String,
+			doc: 'Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver.',
+		},
+		botname: {
+			default: 'Reader Critics',
+			format: String,
+			doc: 'Bot name for the Slack integration.',
+		},
+		webhook: {
+			default: '',
+			format: String,
+			doc: 'If set to a Slack webhook URL, warnings and errors will be posted to this integration',
+		},
+	},
 	recaptcha: {
 		key: {
 			secret: {
@@ -140,7 +193,7 @@ try {
 	config.loadFile(path.join(rootPath, 'config.json5'));
 }
 catch (err) {
-	log('Can\'t find file /config.json5. Environment settings will be apply');
+	log('Can\'t find file /config.json5. Environment settings will apply.');
 }
 
 try {

@@ -24,13 +24,12 @@ import {
 	Router,
 } from 'express';
 
-import { isEmpty } from 'lodash';
-
 import ArticleURL from 'base/ArticleURL';
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 import Website from 'base/Website';
 
 import {
+	localizationService,
 	templateService,
 	websiteService,
 } from 'app/services';
@@ -43,6 +42,12 @@ import {
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+const __ = localizationService.translate;
+
+type FeedbackParams = {
+	url : ArticleURL;
+	version : string|null;
+};
 
 // Prepare and export Express router
 
@@ -52,43 +57,46 @@ feedbackRoute.use(bodyParser.urlencoded({
 	extended: true,
 }));
 
-feedbackRoute.get('/', getHandler);
-feedbackRoute.post('/', postHandler);
+feedbackRoute.get('/*', getHandler);
 
 export default feedbackRoute;
 
-// Main handlers, check the URL and version parameters
+// Main handler
 
 function getHandler(requ : Request, resp : Response, next : Function) : void {
-	let version : string;
-
-	checkVersionParameter(requ.query.version)
-	.then((v : string) => {
-		version = v;
-		return ArticleURL.from(requ.query.articleURL);
+	parseParameters(requ).then((params : FeedbackParams) => {
+		log(app.inspect(params));
+		feedbackHandler(requ, resp, params.url, params.version);
 	})
-	.then(articleURL => feedbackHandler(requ, resp, articleURL, version))
-	.catch((error : Error) => next(error));
+	.catch((error : Error) => next(new InvalidRequestError(__('err.invalid-param'))));
 }
 
-function postHandler(requ : Request, resp : Response, next : Function) : void {
-	let version : string;
+function parseParameters(requ : Request) : Promise <FeedbackParams> {
+	const hasSingleParam = requ.params[0].length > 0;
+	const hasQueryParams = Object.getOwnPropertyNames(requ.query).length > 0;
 
-	checkVersionParameter(requ.body.version)
-	.then((v : string) => {
-		version = v;
-		return ArticleURL.from(requ.body.articleURL);
-	})
-	.then(articleURL => feedbackHandler(requ, resp, articleURL, version))
-	.catch((error : Error) => next(error));
-}
+	if (hasSingleParam && !hasQueryParams) {
+		return ArticleURL
+		.from(requ.params[0].trim())
+		.then((url : ArticleURL) : FeedbackParams => ({
+			url,
+			version: null,
+		}));
+	}
+	else if (!hasSingleParam && hasQueryParams) {
+		if (!requ.query.url) {
+			return Promise.reject(new NotFoundError(__('err.no-url-param')));
+		}
 
-// Common parameter check
+		return ArticleURL
+		.from(requ.query.url.trim())
+		.then((url : ArticleURL) : FeedbackParams => ({
+			url,
+			version: requ.query.version ? requ.query.version.trim() : null,
+		}));
+	}
 
-function checkVersionParameter(rawVersion : string) : Promise <string> {
-	return isEmpty(rawVersion)
-		? Promise.reject(new InvalidRequestError('"version" parameter is missing or empty.'))
-		: Promise.resolve(rawVersion.trim());
+	return Promise.reject(new NotFoundError(__('err.invalid-param')));
 }
 
 // Serve feedback page
@@ -98,24 +106,37 @@ function feedbackHandler(
 	resp : Response,
 	articleURL : ArticleURL,
 	version : string
-) : Promise <void> {
+) {
 	log('Feedback to "%s" version "%s"', articleURL, version);
 
 	// Identify the website to make sure we are actually responsible for this
 	// content and also load the page template
+	let website : Website;
+
 	return websiteService.identify(articleURL).then((w : Website) => {
 		if (w === null) {
-			return Promise.reject(new NotFoundError('Could not identify website'));
+			return Promise.reject(new NotFoundError(__('err.no-website-identify')));
 		}
-		return templateService.getFeedbackPageTemplate(w);
+
+		website = w;
+
+		// Now that we have a website object, load template and localization in parallel:
+		return Promise.all([
+			templateService.getFeedbackPageTemplate(website),
+			localizationService.getFrontendStrings(website),
+		]);
 	})
 	// Use the page template, inject parameters and serve to the client
-	.then((template : PageTemplate) => {
+	.spread((template : PageTemplate, locaStrings : any) => {
 		resp.set('Content-Type', 'text/html')
 		.send(template.setParams({
 			article: {
 				url: articleURL.href,
 				version,
+			},
+			localization: {
+				locale: website.locale,
+				messages: locaStrings,
 			},
 		//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}).render())

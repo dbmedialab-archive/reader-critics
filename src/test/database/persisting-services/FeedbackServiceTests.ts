@@ -33,7 +33,8 @@ import {
 
 import * as app from 'app/util/applib';
 
-const feedbackDir = path.join('resources', 'feedback');
+const feedbackDir = path.join('resources', 'feedback', 'create');
+const feedbackIDs = [];
 
 export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
@@ -47,7 +48,9 @@ export default function(this: ISuiteCallbackContext) {
 			return app.loadJSON(path.join(feedbackDir, filename))
 			.then((a : any) => {
 				assert.isNotNull(a);
-				return feedbackService.validateAndSave(a);
+				return feedbackService.validateAndSave(a).then((doc) => {
+					feedbackIDs.push(doc.ID);
+				});
 			});
 		});
 	}));

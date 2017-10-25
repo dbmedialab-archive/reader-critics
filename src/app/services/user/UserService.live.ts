@@ -31,6 +31,8 @@ import {
 	validateAndUpdate
 } from './common/crud';
 
+import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
+
 import {
 	checkPassword,
 	doDelete,
@@ -55,6 +57,7 @@ const service : UserService
 			update,
 			validateAndSave,
 			validateAndUpdate,
+			setPasswordHash,
 		}
 	);
 

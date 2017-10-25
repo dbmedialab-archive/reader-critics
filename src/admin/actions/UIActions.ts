@@ -18,7 +18,7 @@
 
 import MainStore from 'admin/stores/MainStore';
 import * as UIActionsCreator from 'admin/actions/UIActionsCreator';
-import * as UIActions from './UIActions';
+import * as UIActions from 'admin/actions/UIActions';
 import AdminConstants from 'admin/constants/AdminConstants';
 
 export interface PromptInterface {
@@ -89,17 +89,15 @@ export function hideDialog() {
 
 export function closeReset(windowName){
 	const data = {windowName: windowName};
-	MainStore.dispatch({
-		type: AdminConstants.RESET_FORM_INPUT,
-		payload: data,
-	});
+	MainStore.dispatch(
+		UIActionsCreator.closeReset(data)
+	);
 }
 
 export function toggleMainPreloader(options){
-	MainStore.dispatch({
-		type: AdminConstants.MAIN_PRELOADER_CHANGE_STATE,
-		payload: options,
-	});
+	MainStore.dispatch(
+		UIActionsCreator.toggleMainPreloader(options)
+	);
 }
 
 export function showMainPreloader(props = null){
@@ -129,4 +127,16 @@ export function hideLoginDialog() {
 	};
 
 	UIActions.modalWindowsChangeState(AdminConstants.LOGIN_DIALOG_MODAL_WINDOW, options);
+}
+
+export function topbarSubmenuChangeState(isOpen) {
+	MainStore.dispatch(
+		UIActionsCreator.topbarSubmenuChangeState({isOpen})
+	);
+}
+
+export function topbarAccountMenuChangeState(isOpen){
+	MainStore.dispatch(
+		UIActionsCreator.topbarAccountMenuChangeState({isOpen})
+	);
 }

@@ -17,13 +17,15 @@
 //
 
 import PersistedModel from 'base/zz/PersistedModel';
+import Person from 'base/zz/Person';
 
 interface Website extends PersistedModel {
 	name : string;
 	parserClass? : string;
+	locale? : string;
 
 	hosts : string[];
-	chiefEditors : string[];
+	chiefEditors : Person[];
 
 	layout : {
 		templates : {

@@ -20,16 +20,44 @@ spec:
             name: http-port
           resources:
             requests:
-              memory: "40Mi"
+              memory: "128Mi"
               cpu: "0.02"
             limits:
-              memory: "200Mi"
+              memory: "1024Mi"
               cpu: "0.1"
           env:
+          - name: AUTH_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: AUTH_JWT_SECRET
+          - name: AUTH_SESSION_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: AUTH_SESSION_SECRET
+          - name: MONGODB_URL
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: MONGODB_URL
           - name: NODE_ENV
             valueFrom:
               configMapKeyRef:
                 name: reader-critics-config
                 key: NODE_ENV
-        - name: redis-cache
-          image: redis
+          - name: REDIS_URL_MESSAGE_QUEUE
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: REDIS_URL_MESSAGE_QUEUE
+          - name: REDIS_URL_SESSION_CACHE
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: REDIS_URL_SESSION_CACHE
+          - name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SENDGRID_API_KEY

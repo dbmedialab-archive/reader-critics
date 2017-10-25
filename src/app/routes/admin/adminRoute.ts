@@ -31,7 +31,7 @@ import {
 	logoutHandler
 } from './ui/handlers';
 
-import { sessionConf } from 'app/middleware/config/sessionConfig';
+import { secret } from 'app/middleware/config/sessionConfig';
 
 import isAuthenticated from 'app/middleware/policies/isAuthenticated';
 import isNotAuthenticated from 'app/middleware/policies/isNotAuthenticated';
@@ -42,7 +42,6 @@ import * as app from 'app/util/applib';
 const log = app.createLog();
 
 const adminRoute : Router = Router();
-const secret: string = sessionConf.secret;
 
 adminRoute.use(bodyParser.json({
 	inflate: true,
@@ -59,13 +58,21 @@ adminRoute.use(cookieParser(secret));
 adminRoute.get('/login', isNotAuthenticated, loginPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
 adminRoute.get('/logout', isAuthenticated, logoutHandler);
-adminRoute.get(['/', '/users'], isAuthenticated, adminPageHandler);
+adminRoute.get([
+	'/',
+	'/users',
+	'/feedbacks',
+	'/articles',
+	'/articles/:id',
+	'/websites',
+	'/suggestions',
+], isAuthenticated, adminPageHandler);
 
 adminRoute.get('/*', notFoundHandler);
 
 export default adminRoute;
 
 function notFoundHandler(requ : Request, resp : Response) : void {
-	log('Admin router', requ.params);
+	log(requ.params);
 	resp.status(404).end('Unknown admin endpoint\n');
 }

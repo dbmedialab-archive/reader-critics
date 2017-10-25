@@ -1,0 +1,62 @@
+.container {
+	position: relative;
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 0 20px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.container::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+.section {
+	margin-bottom: 10px;
+	background: #fff;
+	box-shadow: 2px 5px 15px #CCC;
+	font-size: 16px;
+
+	.content {
+		padding: 60px 150px;
+		max-width: 960px;
+		margin: 0 auto;
+
+		.message {
+			font-family: 'Roboto', sans-serif;
+			font-size: 14px;
+			color: #888;
+			margin-bottom: 1.25rem;
+			line-height: 1.6;
+		}
+
+		.contact {
+			color: #fff;
+			text-align: center;
+		}
+
+		.email {
+			color: #c0392b;
+		}
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.section .content {
+		padding: 30px 60px;
+	}
+}
+
+
+@media only screen and (max-width: 480px) {
+	.container {
+		padding: 0;
+	}
+
+	.section .content {
+		padding: 20px;
+	}
+}

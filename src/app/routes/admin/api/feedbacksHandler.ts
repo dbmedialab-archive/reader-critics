@@ -32,11 +32,10 @@ import pagination from 'app/util/pagination';
 
 /**
  * Provides with whole list of existing feedbacks
- * Not filtering, no page or limit query params are taken into account
  */
 export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
-	feedbackService.getRange(params.skip, params.limit, params.sort)
-	.then(feedbacks => bulkResponse(resp, feedbacks))
-	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+	return feedbackService.getRange(params.skip, params.limit, params.sort)
+				.then(feedbacks => bulkResponse(resp, feedbacks))
+				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }

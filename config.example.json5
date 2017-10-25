@@ -13,6 +13,9 @@
 			},
 		},
 	},
+	localization: {
+		systemLocale: fill,
+	},
 	auth: {
 		jwt: {
 			secret: fill,

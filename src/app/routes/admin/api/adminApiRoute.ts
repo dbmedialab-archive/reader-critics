@@ -25,12 +25,11 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
-import {
-	apiLoginHandler
-} from 'app/routes/admin/api/handlers';
-
 import * as  userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
+import * as articlesHandler from 'app/routes/admin/api/articlesHandler';
+import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
+import * as suggestionsHandler from 'app/routes/admin/api/suggestionsHandler';
 
 import { errorResponse } from 'app/routes/api/apiResponse';
 
@@ -45,14 +44,6 @@ adminApiRoute.use(bodyParser.json({
 }));
 
 adminApiRoute.use(cookieParser());
-
-/**
- * All api request that have to pass without authentication have to be placed here
- */
-adminApiRoute.post('/login', apiLoginHandler);
-
-// Protecting routes with jwt
-// adminApiRoute.use('/*', passport.authenticate('jwt', {session: false}));
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
@@ -61,6 +52,15 @@ adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
 adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);
 adminApiRoute.put('/users/:id', isAuthenticatedApi, userHandler.update);
 adminApiRoute.get('/fb', isAuthenticatedApi, feedbacksHandler.list);
+adminApiRoute.get('/articles', isAuthenticatedApi, articlesHandler.list);
+adminApiRoute.get('/articles/:id', isAuthenticatedApi, articlesHandler.show);
+adminApiRoute.get(
+	'/articles/:id/feedbacks', isAuthenticatedApi, articlesHandler.getArticleFeedbacks);
+adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
+adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
+adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
+adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
+adminApiRoute.get('/suggestions', isAuthenticatedApi, suggestionsHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 
 export default adminApiRoute;

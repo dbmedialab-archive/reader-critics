@@ -26,12 +26,16 @@ js-lint-build-test:
     name: build
     code: run/build
   - script:
-    name: set db envs
-    code: | 
+    name: set environment
+    code: |
+      export AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678"
+      export AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd"
       export MONGODB_URL="mongodb://$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/readercritics"
       export REDIS_URL_MESSAGE_QUEUE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/1"
       export REDIS_URL_SESSION_CACHE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/2"
-      echo $MONGODB_URL $REDIS_URL_MESSAGE_QUEUE $REDIS_URL_SESSION_CACHE
+      export SENDGRID_API_KEY="1234abcd"
+      export WEB_CONCURRENCY=1
+      set | sort
   - script:
     name: test libraries
     code: run/test --libs
@@ -55,13 +59,14 @@ js-lint-build-test:
         run \
         tmp \
         resources \
+        templates \
         package.json \
         $WERCKER_OUTPUT_DIR
 
 push-image:
-  box: 
-    id: node:8-alpine
-    cmd: /bin/sh
+  box:
+    id: node:8
+    cmd: /bin/bash
   steps:
   - script:
     name: set dependency cache

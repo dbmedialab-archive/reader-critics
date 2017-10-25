@@ -29,7 +29,9 @@ import routes from 'app/routes';
 import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
+import { initLocalizationStrings } from 'app/services/localization';
 import { initWebWorkerQueue } from 'app/queue';
+import { signal } from './clusterSignals';
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -54,11 +56,13 @@ export default function() {
 	// Main application startup
 
 	Promise.resolve()
+		.then(initLocalizationStrings)
 		.then(initDatabase)
 		.then(initWebWorkerQueue)
 		.then(startHTTP)
 		.then(initExpress)
-		.catch(startupErrorHandler);
+		.catch(startupErrorHandler)
+		.then(signal.workerReady);
 }
 
 /**

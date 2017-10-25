@@ -17,7 +17,6 @@
 //
 
 import * as bcrypt from 'bcrypt';
-
 import Person from 'base/zz/Person';
 import User from 'base/User';
 
@@ -25,8 +24,6 @@ import {
 	UserDocument,
 	UserModel
 } from 'app/db/models';
-
-import config from 'app/config';
 
 import {
 	wrapFindOne,
@@ -77,22 +74,15 @@ export function getByID(id : String) : Promise <User> {
 	return UserModel.findOne({'_id': id})
 	.select('-password').exec()
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
 
-	if (user.password !== undefined) {
-		return bcrypt.hash(user.password, config.get('auth.bcrypt.rounds')).then((hash) => {
-			user.password = hash;
-			return wrapSave<User>(new UserModel(user).save());
-		});
-	} else {
-		return wrapSave<User>(new UserModel(user).save());
-	}
+	return wrapSave<User>(new UserModel(user).save());
 }
 
 export function findOrInsert(user : Person) : Promise <User> {
@@ -115,8 +105,8 @@ export function findOrInsert(user : Person) : Promise <User> {
 export function doDelete(id: String) : Promise <any> {
 	return UserModel.findOneAndRemove({ '_id': id })
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
 
@@ -124,9 +114,9 @@ export function doDelete(id: String) : Promise <any> {
  * Do updates user entry. Null - if not found, updated user if found is returned.
  */
 export function update(id: String, data: Object) : Promise <any> {
-	return UserModel.findOneAndUpdate({ '_id': id }, data, { new: true })
+	return wrapFindOne(UserModel.findOneAndUpdate({ '_id': id }, data, { new: true }))
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
