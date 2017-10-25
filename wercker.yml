@@ -46,6 +46,7 @@ js-lint-build-test:
 
 deploy:
   box:
+    no-response-timeout: 15
     id: eu.gcr.io/dagbladet-projects/kubectl
     username: _json_key
     password: $GCR_DBP_JSON_KEY_FILE
