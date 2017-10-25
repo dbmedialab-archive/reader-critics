@@ -19,24 +19,21 @@
 import * as doT from 'dot';
 import * as path from 'path';
 
-import { isEmpty } from 'lodash';
-
-import Website from 'base/Website';
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 
 import * as app from 'app/util/applib';
-import emptyCheck from 'app/util/emptyCheck';
 
-const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');
+import {
+	systemLocale,
+	translate as __
+} from 'app/services/localization';
 
-export default function(website : Website) : Promise <PageTemplate> {
-	emptyCheck(website);
+const defaultTemplate = path.join('templates', 'page', 'defaultSuggestion.html');
+
+export default function() : Promise <PageTemplate> {
 
 	const rawTemplate = () : Promise <string> => {
-		const raw = website.layout.templates.feedbackPage;
-		return isEmpty(raw)
-			? app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
-			: Promise.resolve(raw);
+		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
 	};
 
 	return rawTemplate().then((raw : string) => {
@@ -45,8 +42,10 @@ export default function(website : Website) : Promise <PageTemplate> {
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
-				`/static/locale/${website.locale}.js`,
+				`/static/locale/${systemLocale}.js`,
+				`//www.google.com/recaptcha/api.js?hl=${systemLocale}`,
 				'/static/front.bundle.js'
-			);
-	});
+			)
+			.setTitle(`${__('app.subtitle.fame-blame')} &ndash; ${__('app.title')}`);
+		});
 }

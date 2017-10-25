@@ -23,9 +23,5 @@
 		"out/app/",
 		"resources/"
 	],
-	"env": {
-		"NODE_ENV": "test",
-		"WEB_CONCURRENCY": 2
-	},
 	"ext": "js json"
 }

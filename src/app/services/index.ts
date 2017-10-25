@@ -49,7 +49,7 @@ export const feedbackService : FeedbackService
 	= require(`./feedback/FeedbackService.${env}`);
 
 export const localizationService : LocalizationService
-	= require(`./localization`);
+	= require('./localization');
 
 export const parserService : ParserService
 	= require(`./parser/ParserService.${env}`);
@@ -58,7 +58,7 @@ export const suggestionService : SuggestionService
 	= require(`./suggestion/SuggestionService.${env}`);
 
 export const templateService : TemplateService
-	= require(`./template/TemplateService.${env}`);
+	= require('./template');
 
 export const userService : UserService
 	= require(`./user/UserService.${env}`);

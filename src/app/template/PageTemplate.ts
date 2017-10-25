@@ -16,24 +16,24 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { RenderFunction } from 'dot';
-
 import {
 	isEmpty,
 	isObject,
 	isString,
 } from 'lodash';
 
-export default class PageTemplate {
+import { translate as __ } from 'app/services/localization';
+
+import AbstractTemplate from './AbstractTemplate';
+
+export default class PageTemplate extends AbstractTemplate {
 
 	private scripts : string[] = [];
 	private styles : string[] = [];
 
 	private params : Object = {};
 
-	private title : string = 'Leserkritikk';
-
-	constructor(private readonly dotRender : RenderFunction) {}
+	private title : string = __('app.title');
 
 	public pushScript(...jsFileURIs : string[]) : PageTemplate {
 		jsFileURIs.forEach(uri => {
@@ -70,6 +70,7 @@ export default class PageTemplate {
 	public render() : string {
 		return this.dotRender({
 			params: JSON.stringify(this.params),
+			locale: this.locale,
 			scripts: this.scripts,
 			styles: this.styles,
 			title: this.title,

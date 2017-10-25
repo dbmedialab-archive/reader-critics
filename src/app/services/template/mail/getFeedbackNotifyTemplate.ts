@@ -16,18 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
+import * as doT from 'dot';
+import * as path from 'path';
 
-/**
- * Render a page that displays a parameter parser error.
- */
+import MailTemplate from 'app/template/MailTemplate';
 
-export default function (requ : Request, resp : Response) {
-	// TODO external fn: parse referrer URL to determine style env
-	resp.json({
-		status: 'Wrong URL, show error page',
-	}).status(404).end();
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
+
+export default function() : Promise <MailTemplate> {
+	const rawTemplate = () : Promise <string> => {
+		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
+	};
+
+	return rawTemplate().then((raw : string) => {
+		log('Mail notification template loaded');
+		return new MailTemplate (doT.template(raw));
+	});
 }

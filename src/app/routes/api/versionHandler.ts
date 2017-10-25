@@ -16,12 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import TemplateService from './TemplateService';
+import {
+	Request,
+	Response,
+} from 'express';
 
-import getFeedbackPageTemplate from './common/getFeedbackPageTemplate';
+import { okResponse } from './apiResponse';
 
-const service : TemplateService = {
-	getFeedbackPageTemplate,
-};
+import * as app from 'app/util/applib';
 
-module.exports = service;
+export default function(requ : Request, resp : Response) : void {
+	Promise.all([
+		getPackageInfo().catch(err => {}),
+		getRepositoryInfo().catch(err => {}),
+	])
+	.spread((pkgInfo : any = {}, repInfo : any = {}) => {
+		okResponse(resp, Object.assign({ version: pkgInfo.version }, repInfo));
+	});
+}
+
+function getPackageInfo() : Promise<any> {
+	return app.loadJSON('package.json');
+}
+
+function getRepositoryInfo() : Promise<any> {
+	return app.loadJSON('out/version.json');
+}

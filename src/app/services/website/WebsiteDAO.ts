@@ -22,6 +22,7 @@ import { URL } from 'url';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
+import { ObjectID } from 'app/db';
 import { WebsiteModel } from 'app/db/models';
 
 import {
@@ -38,6 +39,11 @@ import emptyCheck from 'app/util/emptyCheck';
 export function get(name : string) : Promise <Website> {
 	emptyCheck(name);
 	return wrapFindOne(WebsiteModel.findOne({ name }));
+}
+
+export function getByID(id : ObjectID|string) : Promise <Website> {
+	emptyCheck(id);
+	return wrapFindOne(WebsiteModel.findOne({ _id: id }));
 }
 
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {

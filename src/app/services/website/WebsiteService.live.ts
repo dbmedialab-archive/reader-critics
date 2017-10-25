@@ -28,6 +28,7 @@ import createPersistingService from '../createPersistingService';
 
 import {
 	get,
+	getByID,
 	identify,
 	save,
 	update,
@@ -38,6 +39,7 @@ const service : WebsiteService
 	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
 		WebsiteModel, {
 			get,
+			getByID,
 			identify,
 			save,
 			update,

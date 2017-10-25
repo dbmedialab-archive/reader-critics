@@ -17,15 +17,27 @@
 //
 
 import {
-	DoneCallback,
-	Job,
-} from 'kue';
+	isEmpty,
+	isObject,
+} from 'lodash';
 
-import * as app from 'app/util/applib';
+import AbstractTemplate from './AbstractTemplate';
 
-const log = app.createLog('api');
+export default class MailTemplate extends AbstractTemplate {
 
-export function onNewFeedback(job : Job, done : DoneCallback) {
-	log('New feedback in queue!', job.data);
-	done();
+	private params : any;
+
+	public setParams(params : Object) : MailTemplate {
+		if (isObject(params) && !isEmpty(params)) {
+			this.params = params;
+		}
+		return this;
+	}
+
+	public render() : string {
+		return this.dotRender(Object.assign({
+			locale: this.locale,
+		}, this.params));
+	}
+
 }
