@@ -36,7 +36,7 @@ interface ParserWorkflowPayload {
 	content : any;
 }
 
-abstract class BaseParser extends BaseElements implements Parser {
+abstract class AbstractParser extends BaseElements implements Parser {
 
 	constructor(
 		protected readonly rawArticle : string,
@@ -97,4 +97,4 @@ abstract class BaseParser extends BaseElements implements Parser {
 
 }
 
-export default BaseParser;
+export default AbstractParser;
