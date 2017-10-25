@@ -6,17 +6,17 @@ ADD package.json /tmp/package.json
 
 RUN apt-get -q update && apt-get -q -y install rsync
 
-RUN bash -l -c 'cd /tmp && npm install'
+RUN /bin/bash -l -c "cd /tmp && npm install"
 
-RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
+RUN mkdir -p /opt/app/node_modules && rsync -a /tmp/node_modules/./ /opt/app/node_modules/./
 
 COPY . /opt/app/
 
 WORKDIR /opt/app/
 
-RUN bash -l -c 'run/lint'
+RUN run/lint
 
-RUN bash -l -c 'run/build'
+RUN run/build
 
 
 
