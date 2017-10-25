@@ -2,4 +2,5 @@
 --require ts-node/register
 --require tsconfig-paths/register
 --recursive
+--timeout 5000
 src/test/database/**/*.test.ts

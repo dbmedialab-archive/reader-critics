@@ -83,21 +83,15 @@ class LoginModalComponent extends React.Component <any, any> {
 	}
 
 	hasLoginError(): string | boolean {
-		if (!this.props.login.value) {
-			return 'Login field has to be filled';
-		}
-		return false;
+		return this.props.login.value ? false : 'Login field has to be filled';
 	}
 
 	hasPasswordError(): string | boolean {
-		if (!this.props.password.value) {
-			return 'Password field has to be filled';
-		}
-		return false;
+		return this.props.password.value ? false : 'Password field has to be filled';
 	}
 
 	isFormValid(): boolean {
-		return (!this.hasPasswordError() && !this.hasLoginError());
+		return !(this.hasPasswordError() || this.hasLoginError());
 	}
 
 	loginUser(): void {
@@ -108,7 +102,7 @@ class LoginModalComponent extends React.Component <any, any> {
 				if (res.error || (!res.success && res.message)) {
 					this.updateErrorState(res.error || res.message, true);
 				} else {
-					UserActions.authenticate(res.data);
+					UserActions.authenticate(res);
 					UIActions.hideLoginDialog();
 					this.props.getBack();
 				}
@@ -163,7 +157,13 @@ class LoginModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row button-holder">
 							<div className="medium-12 columns">
-								<input type="submit" onClick={this.handleSubmit} className="button success" value="Log IN"/>
+								<input
+									disabled={!this.isFormValid()}
+									type="submit"
+									onClick={this.handleSubmit}
+									className="button success"
+									value="Log IN"
+								/>
 							</div>
 							<InputError	errorText={this.state.serverError.value}
 										touchedField={this.state.serverError.touched} />
