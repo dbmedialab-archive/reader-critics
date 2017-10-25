@@ -1,10 +1,18 @@
 FROM dbmedialab/nodejs-openjdk as javabox
 
+ENV DEBIAN_FRONTEND noninteractive
+
 ADD package.json /tmp/package.json
+
+RUN apt-get -q update && apt-get -q -y install rsync
+
 RUN bash -l -c 'cd /tmp && npm install'
-RUN mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+
+RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
 
 COPY . /opt/app/
+
+#RUN rm -rf /opt/app/node_modules/* && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
 
 WORKDIR /opt/app/
 

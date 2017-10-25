@@ -15,15 +15,15 @@ js-lint-build-test:
     code: |
       npm config set cache $WERCKER_CACHE_DIR/wercker/npm
       npm install
-  - script:
-    name: lint
-    code: run/lint
-  - script:
-    name: check node
-    code: node --version
-  - script:
-    name: build
-    code: run/build
+      #  - script:
+      #    name: lint
+      #    code: run/lint
+      #  - script:
+      #    name: check node
+      #    code: node --version
+      #  - script:
+      #    name: build
+      #    code: run/build
   - script:
     name: set db envs
     code: |
