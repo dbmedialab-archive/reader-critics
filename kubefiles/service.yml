@@ -1,9 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: reader-critics
+  name: {{env "WERCKER_GIT_REPOSITORY"}}
   labels:
-    app: reader-critics
+    app: {{env "WERCKER_GIT_REPOSITORY"}}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no.
 spec:
   type: LoadBalancer
   ports:
@@ -11,4 +13,4 @@ spec:
     protocol: TCP
     targetPort: http-port
   selector:
-    app: reader-critics
+    app: {{env "WERCKER_GIT_REPOSITORY"}}

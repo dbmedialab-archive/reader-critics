@@ -1,63 +1,59 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: reader-critics
+  name: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
   replicas: 2
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        app: reader-critics
+        app: {{env "WERCKER_GIT_REPOSITORY"}}
     spec:
       containers:
-        - name: reader-critics
-          image: eu.gcr.io/dagbladet-projects/reader-critics
+        - name: {{env "WERCKER_GIT_REPOSITORY"}}
+          image: {{env "IMAGE"}}
           command: ["npm"]
           args: ["start"]
           ports:
           - containerPort: 4000
             name: http-port
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "0.02"
-            limits:
-              memory: "1024Mi"
-              cpu: "0.1"
+            #          resources:
+            #            requests:
+            #              memory: "40Mi"
+            #              cpu: "0.02"
+            #            limits:
+            #              memory: "200Mi"
+            #              cpu: "0.1"
           env:
           - name: AUTH_JWT_SECRET
             valueFrom:
               secretKeyRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: AUTH_JWT_SECRET
           - name: AUTH_SESSION_SECRET
             valueFrom:
               secretKeyRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: AUTH_SESSION_SECRET
           - name: MONGODB_URL
             valueFrom:
               secretKeyRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: MONGODB_URL
           - name: NODE_ENV
             valueFrom:
               configMapKeyRef:
-                name: reader-critics-config
+                name: config
                 key: NODE_ENV
           - name: REDIS_URL_MESSAGE_QUEUE
             valueFrom:
               secretKeyRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: REDIS_URL_MESSAGE_QUEUE
           - name: REDIS_URL_SESSION_CACHE
             valueFrom:
               secretKeyRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: REDIS_URL_SESSION_CACHE
-          - name: SENDGRID_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SENDGRID_API_KEY

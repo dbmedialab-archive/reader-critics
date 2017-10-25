@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  template:
+    metadata:
+      labels:
+        role: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+          - name: redis
+            containerPort: 6379
