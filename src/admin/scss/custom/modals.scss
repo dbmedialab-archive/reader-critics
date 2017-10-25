@@ -83,6 +83,14 @@
 			}
 		}
 	}
+
+	.authentication-form {
+		.callout.alert {
+			position: relative;
+			top: -.8rem;
+			padding: .6rem;
+		}
+	}
 }
 
 @media #{$medium-only} {
