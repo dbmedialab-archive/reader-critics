@@ -17,7 +17,8 @@
 //
 
 import * as React from 'react';
-import textDiffToHtml from 'front/component/textDiffToHTML';
+
+import { diffToReactElem } from 'base/diff';
 
 class ArticleFeedbackItemComponent extends React.Component <any, any> {
 	constructor(props) {
@@ -43,18 +44,18 @@ class ArticleFeedbackItemComponent extends React.Component <any, any> {
 		if (feedback && articleItem) {
 			const {text: originalText = ''} = articleItem;
 			const {text: newText = ''} = feedback;
-			return originalText === newText ? originalText : textDiffToHtml(originalText, newText);
-		} else {
-			return '';
+			return originalText === newText ? originalText : diffToReactElem(originalText, newText);
 		}
+		return '';
 	}
 
-	render(){
+	render() {
 		const {feedback} = this.props;
 		const feedbackDateTimeObj = new Date(feedback.date.created);
 		const feedbackDateTime = feedbackDateTimeObj.toLocaleDateString() + ' '
-					+ feedbackDateTimeObj.toLocaleTimeString();
+			+ feedbackDateTimeObj.toLocaleTimeString();
 		const feedbackLinks = this.renderFeedbackLinks(feedback.links);
+
 		return (
 			<div className="article-feedback-item">
 				<div className="row expanded time-section">
