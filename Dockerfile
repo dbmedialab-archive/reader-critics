@@ -14,10 +14,9 @@ COPY . /opt/app/
 
 WORKDIR /opt/app/
 
-RUN run/lint
+RUN /bin/bash -l -c "run/lint"
 
-RUN run/build
-
+RUN /bin/bash -l -c "run/build"
 
 
 
