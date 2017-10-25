@@ -30,8 +30,10 @@ export interface OptionsI {
 }
 
 class LoginModalComponent extends React.Component <any, any> {
-	private loginInput: any;
-	private passwordInput: any;
+
+	private loginInput: HTMLInputElement;
+	private passwordInput: HTMLInputElement;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -76,20 +78,20 @@ class LoginModalComponent extends React.Component <any, any> {
 	updateInputValue(event) {
 		const options = this.getCurrentInput(event.target.name);
 		options.input[event.target.name].value = event.target.value;
-		this.updateErrorState();            // Drop server error
+		this.updateErrorState();  // Drop server error
 		UIActions.modalWindowsChangeState(this.props.windowName, options);
 	}
 
 	hasLoginError(): string | boolean {
 		if (!this.props.login.value) {
-			return 'Login field have to be filled';
+			return 'Login field has to be filled';
 		}
 		return false;
 	}
 
 	hasPasswordError(): string | boolean {
 		if (!this.props.password.value) {
-			return 'Password field have to be filled';
+			return 'Password field has to be filled';
 		}
 		return false;
 	}
@@ -150,13 +152,13 @@ class LoginModalComponent extends React.Component <any, any> {
 									id="login" value={this.props.login.value}
 									onChange={this.updateInputValue} />
 								<InputError	errorText={this.hasLoginError()}
-											touchedField={this.props.login.touched}	/>
+									touchedField={this.props.login.touched}	/>
 								<label htmlFor="password">Password</label>
 								<input type="password" name="password" ref={r => this.passwordInput = r}
 									id="password" value={this.props.password.value}
 									onChange={this.updateInputValue} />
 								<InputError errorText={this.hasPasswordError()}
-											touchedField={this.props.password.touched} />
+									touchedField={this.props.password.touched} />
 							</form>
 						</div>
 					</div>
@@ -165,31 +167,30 @@ class LoginModalComponent extends React.Component <any, any> {
 							<a onClick={this.handleSubmit} className="button success" href="#">Log IN</a>
 						</div>
 						<InputError	errorText={this.state.serverError.value}
-									touchedField={this.state.serverError.touched} />
+							touchedField={this.state.serverError.touched} />
 					</div>
 				</div>
 			</ReactModal>
 		);
 	}
 }
-const mapStateToProps = (state, ownProps) => {
-	return {
-		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
-		login: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value'], ''),
-			touched:
-				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'touched'], false),
-		},
-		password: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value'], ''),
-			touched:
-				state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched'], false),
-		},
-	};
-};
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
-		onClick: () => {},
-	};
-};
+
+const mapStateToProps = (state, ownProps) => ({
+	isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
+	login: {
+		value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'value'], ''),
+		touched:
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'login', 'touched'], false),
+	},
+	password: {
+		value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value'], ''),
+		touched:
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched'], false),
+	},
+});
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	onClick: () => {},
+});
+
 export default connect(mapStateToProps, mapDispatchToProps)(LoginModalComponent);
