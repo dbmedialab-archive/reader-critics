@@ -22,6 +22,10 @@ import { Route, Switch } from 'react-router';
 import Users from 'admin/components/user/Users';
 import Feedbacks from 'admin/components/feedbacks/FeedbacksContainer';
 import Login from 'admin/components/login/Login';
+import Articles from 'admin/components/articles/ArticlesContainer';
+import Article from 'admin/components/article/ArticleContainer';
+import WebsitesContainer from 'admin/components/website/WebsitesContainer';
+import Suggestions from 'admin/components/suggestions/SuggestionsContainer';
 
 const Routes : React.StatelessComponent <any> =	() =>
 	<Switch>
@@ -30,6 +34,9 @@ const Routes : React.StatelessComponent <any> =	() =>
 		<Route path="/logout" component={Login}/>
 		<Route path="/users" component={Users}/>
 		<Route path="/feedbacks" component={Feedbacks}/>
-
+		<Route exact path="/articles" component={Articles}/>
+		<Route path="/articles/:id" component={Article}/>
+		<Route exact path="/websites" component={WebsitesContainer}/>
+		<Route exact path="/suggestions" component={Suggestions}/>
 	</Switch>;
 export default Routes;

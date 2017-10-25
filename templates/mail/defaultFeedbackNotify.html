@@ -1,0 +1,49 @@
+<html lang="{{=it.locale}}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+			div {
+				font-size: 12pt;
+				/*padding: 4px;*/
+			}
+			ins {
+				color: #0060DD;
+			}
+			del {
+				color: #DD3300;
+			}
+			a {
+				color: #0070D0;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+		</style>
+		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.gotFeedback}}</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.articleTitle}}</div>
+
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.whoSent}}</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.enduser}}</div>
+
+			<div class="feedback-box">{{=it.feedbackBox}}</div>
+
+			<div style="font-size: 12pt; margin-top: 0.5cm;">{{=it.sentIn}}</div>
+
+			<div style="font-size: 12pt; margin-top: 0.5cm; font-style: italic;">
+				Denne er nye test-versjonen av Leserkritikk.<br/>
+				Har du spørsmål ta kontakt med <a href="mailto:christoph.schmitz@dagbladet.no">Christoph Schmitz</a>.
+			</div>
+
+			<hr style="margin: 2em 0 1em;"/>
+
+			<div style="font-size: 10pt; color: #0055AA;">
+				<p style="margin: 0.4em 0;"><u>Debug information:</u></p>
+				{{=it.debugInfo}}
+			</div>
+		</div>
+	</body>
+</html>

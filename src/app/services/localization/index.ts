@@ -17,7 +17,12 @@
 //
 
 import { flatten } from 'flat';
-import { throttle } from 'lodash';
+
+import {
+	isEmpty,
+	isString,
+	throttle,
+} from 'lodash';
 
 import Website from 'base/Website';
 import config from 'app/config';
@@ -30,8 +35,9 @@ const languageFile = 'resources/localization.json5';
 export const systemLocale : string = config.get('localization.systemLocale');
 
 interface Strings {
-	common? : string;
-	frontend? : string;
+	app? : object;
+	common? : object;
+	frontend? : object;
 }
 
 let strings : Strings;
@@ -45,9 +51,9 @@ function installWatcher() : Promise <void> {
 		return Promise.resolve();
 	}
 
-	const throttledHandler = throttle(watchHandler, 2000, {
-		leading: true,
-		trailing: false,
+	const throttledHandler = throttle(watchHandler, 1000, {
+		leading: false,
+		trailing: true,
 	});
 
 	return app.watchFile(languageFile, throttledHandler).then(watcher => {
@@ -75,6 +81,39 @@ export function getFrontendStrings(website? : Website) : Promise <Object> {
 	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
 }
 
+export function translate(id : string, options? : string|any) : string {
+	let usedLocale = systemLocale;
+
+	// A single string value in "options" means to override the system default locale
+	if (isString(options)) {
+		usedLocale = options;
+	}
+
+	// The "object" alternative is not yet used, but will allow default values, etc.
+
+	const allStrings = Object.assign({}, strings.common, strings.app);
+	const flattened = flatten(applyLocale(allStrings, usedLocale));
+
+	if (!flattened[id]) {
+		return id;
+	}
+
+	const replaceValues = (() => {
+		if ((isEmpty(options) || isString(options)) ? true : isEmpty(options.values)) {
+			return {};
+		}
+
+		return (options.values || {});
+	})();
+
+	const replacer = (match : string) => {
+		const index = match.substring(1, match.length - 1);
+		return replaceValues[index] || '--';
+	};
+
+	return flattened[id].replace(/({\w+})/g, replacer);
+}
+
 function applyLocale(input : any, locale : string) : any {
 	const a = {};
 
@@ -82,7 +121,15 @@ function applyLocale(input : any, locale : string) : any {
 		const o = input[key];
 
 		if (isAllStrings(o)) {
-			a[key] = o[locale] || o[systemLocale];
+			if (o[locale] !== undefined) {
+				a[key] = o[locale];
+			}
+			else if (o[systemLocale] !== undefined) {
+				a[key] = o[systemLocale];
+			}
+			else {
+				a[key] = o['en'];
+			}
 		}
 		else {
 			a[key] = applyLocale(o, locale);

@@ -17,6 +17,7 @@
 //
 
 import PersistedModel from 'base/zz/PersistedModel';
+import Person from 'base/zz/Person';
 
 interface Website extends PersistedModel {
 	name : string;
@@ -24,7 +25,7 @@ interface Website extends PersistedModel {
 	locale? : string;
 
 	hosts : string[];
-	chiefEditors : string[];
+	chiefEditors : Person[];
 
 	layout : {
 		templates : {

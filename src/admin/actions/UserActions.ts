@@ -27,12 +27,18 @@ export function authenticate(user: User) {
 	);
 }
 export function deauthenticate() {
+	localStorage.removeItem('rcUsername');
+	localStorage.removeItem('rcUserEmail');
+	localStorage.removeItem('rcUserRole');
 	MainStore.dispatch(
 		UserActionsCreator.deauthenticateUser()
 	);
 }
 
 export function update(user: User) {
+	localStorage.setItem('rcUsername', user.name);
+	localStorage.setItem('rcUserEmail', user.email);
+	localStorage.setItem('rcUserRole', user.role);
 	MainStore.dispatch(
 		UserActionsCreator.updateUser(user)
 	);

@@ -26,21 +26,28 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
+import getAmountByArticle from './common/getAmountByArticle';
 import validateAndSave from './common/validateAndSave';
 
 import {
 	getByArticle,
 	getByArticleAuthor,
+	getByID,
 	getRange,
+} from './dao/feedbackGet';
+
+import {
 	save,
 	updateEndUser,
-} from './FeedbackDAO';
+} from './dao/feedbackSave';
 
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
+			getAmountByArticle,
 			getByArticle,
 			getByArticleAuthor,
+			getByID,
 			getRange,
 			save,
 			validateAndSave,

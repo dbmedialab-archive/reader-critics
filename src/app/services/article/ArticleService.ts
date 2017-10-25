@@ -21,6 +21,8 @@ import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+import {ArticleDocument} from 'app/db/models';
+import {ObjectID} from 'bson';
 
 /**
  * The Article Service persists Article objects to the database and keeps
@@ -54,6 +56,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	download(url : ArticleURL) : Promise <string>;
 
 	/**
+	 * Check if the article with the specified version exists in the database.
+	 */
+	exists(url : string|ArticleURL, version : string) : Promise <boolean>;
+
+	/**
 	 * Fetch uses #download() first to get the raw article data from the remote
 	 * source and at the same time, requests a new parser instance from the
 	 * ParserService. The parser implementation is controlled by the Website
@@ -69,7 +76,7 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 *
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
-	get(url : ArticleURL, version : string, populated? : boolean) : Promise <Article>;
+	get(url : string|ArticleURL, version : string, populated? : boolean) : Promise <Article>;
 
 	/**
 	 * Save a new Article object to the database and reference it with its origin
@@ -90,6 +97,22 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
 	upsert(website : Website, article : Article) : Promise <Article>
+
+	getRangeWithFBCount(skip: number,
+			limit: number,
+			sort: Object): Promise <ArticleDocument[]>
+
+	/**
+	 * Get an Article by it's ID
+	 *
+	 * @throws EmptyError if ID not set
+	 */
+	getByID(ID : ObjectID) : Promise <Article>
+
+	/**
+	 * Get amount of Articles
+	 */
+	getAmount() : Promise <number>
 }
 
 export default ArticleService;

@@ -29,8 +29,9 @@ import {
 	templateService,
 } from 'app/services';
 
-import PageTemplate from 'base/PageTemplate';
-import {systemLocale} from 'app/services/localization';
+import PageTemplate from 'app/template/PageTemplate';
+
+import { systemLocale } from 'app/services/localization';
 
 const suggestionRoute : Router = Router();
 
@@ -55,7 +56,6 @@ function suggestionHandler(requ : Request, resp : Response) {
 						locale: systemLocale,
 						messages: localStrings,
 					},
-					title: 'Lesercritics',	//TODO fix it when localization ready
 				}).render())
 				.status(200).end();
 		});

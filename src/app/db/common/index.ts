@@ -25,6 +25,8 @@ import {
 import { ObjectID } from 'app/db';
 import { isTest } from 'app/util/applib';
 
+export { wrapExists } from './wrapExists';
+
 export {
 	wrapFind,
 	wrapFindOne,
