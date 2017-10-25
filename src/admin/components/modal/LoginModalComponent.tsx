@@ -142,9 +142,9 @@ class LoginModalComponent extends React.Component <any, any> {
 							<p className="lead">Authorization</p>
 						</div>
 					</div>
-					<div className="row">
-						<div className="medium-12 columns">
-							<form onSubmit={this.handleSubmit} className="authentication-form">
+					<form onSubmit={this.handleSubmit} className="authentication-form">
+						<div className="row">
+							<div className="medium-12 columns">
 								<label htmlFor="login">Login</label>
 								<input type="text" name="login" ref={r => this.loginInput = r}
 									id="login" value={this.props.login.value}
@@ -157,16 +157,17 @@ class LoginModalComponent extends React.Component <any, any> {
 									onChange={this.updateInputValue} />
 								<InputError errorText={this.hasPasswordError()}
 											touchedField={this.props.password.touched} />
-							</form>
+							</div>
 						</div>
-					</div>
-					<div className="row button-holder">
-						<div className="medium-12 columns">
-							<a onClick={this.handleSubmit} className="button success" href="#">Log IN</a>
+						<div className="row button-holder">
+							<div className="medium-12 columns">
+								<input type="submit" onClick={this.handleSubmit}
+										className="button success" value="Log IN" />
+							</div>
+							<InputError	errorText={this.state.serverError.value}
+										touchedField={this.state.serverError.touched} />
 						</div>
-						<InputError	errorText={this.state.serverError.value}
-									touchedField={this.state.serverError.touched} />
-					</div>
+					</form>
 				</div>
 			</ReactModal>
 		);
