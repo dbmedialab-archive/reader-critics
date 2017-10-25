@@ -12,8 +12,6 @@ RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/no
 
 COPY . /opt/app/
 
-#RUN rm -rf /opt/app/node_modules/* && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
-
 WORKDIR /opt/app/
 
 RUN bash -l -c 'run/lint'
@@ -31,7 +29,7 @@ RUN apt-get -q update && apt-get install -y ca-certificates
 
 WORKDIR /opt/app
 
-COPY --from=javabox /opt/app/** ./
+COPY --from=javabox /opt/app/ /opt/app/
 
 RUN npm install --production
 
