@@ -7,6 +7,8 @@ ADD package.json /tmp/package.json
 
 RUN cd /tmp && npm install
 
+RUN apt-get -q update && apt-get -y install rsync ca-certificates
+
 RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
 
 COPY . /opt/app/
