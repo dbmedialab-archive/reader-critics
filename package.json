@@ -16,6 +16,7 @@
 		"build": "run/build",
 		"build:dev": "npm run build:app && npm run watch:front",
 		"build:app": "node_modules/.bin/tsc --project tsconfig.json",
+		"clean": "rm -frv out/admin out/app out/base out/bundle out/front out/test out/version.json",
 		"watch:app": "run/watch-app",
 		"build:front": "webpack --config webpack-front.js",
 		"watch:front": "webpack --config webpack-front.js --watch",
