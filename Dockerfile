@@ -19,5 +19,7 @@ RUN /bin/bash -l -c "run/lint"
 
 RUN /bin/bash -l -c "run/build"
 
+RUN rm -rf node_modules
+
 RUN NODE_ENV=production && npm install --production
 
