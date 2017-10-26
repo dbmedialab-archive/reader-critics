@@ -30,5 +30,7 @@ WORKDIR /opt/app
 
 COPY --from=javabox /opt/app/ /opt/app/
 
+RUN if [ -f package.json-lock ]; then rm -f package.json-lock ; fi
+
 RUN npm install --production
 
