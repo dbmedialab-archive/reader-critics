@@ -7,7 +7,7 @@ ADD package.json /tmp/package.json
 
 RUN apt-get -q update && apt-get -q -y install rsync
 
-RUN /bin/bash -l -c "npm install -g yarn"
+RUN /bin/bash -l -c "npm install -g yarn@1.2.1"
 
 RUN /bin/bash -l -c "cd /tmp && yarn"
 
