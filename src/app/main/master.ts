@@ -25,6 +25,8 @@ import { readFileSync } from 'fs';
 
 import printEnvironment from 'print-env';
 
+import config from 'app/config';
+
 import {
 	typeJobWorker,
 	typeWebWorker,
@@ -48,6 +50,7 @@ export default function() {
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
 	printEnvironment(app.createLog('env'));
+	log(app.inspect(config.getProperties()));
 
 	checkEngineVersion()
 		.then(startWorkers)
