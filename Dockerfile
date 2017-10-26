@@ -5,11 +5,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ADD package.json /tmp/package.json
 
-RUN /bin/bash -l -c "cd /tmp && NODE_ENV=development && npm install"
+RUN cd /tmp && npm install
 
-RUN mkdir -p /opt/app/node_modules && cp -dpR /tmp/node_modules/* /opt/app/node_modules/
-
-RUN rm -rf /tmp/node_modules
+RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
 
 COPY . /opt/app/
 
