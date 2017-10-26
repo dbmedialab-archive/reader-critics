@@ -34,6 +34,11 @@ spec:
               configMapKeyRef:
                 name: reader-critics-config
                 key: I18N_SYS_LOCALE
+          - name: MAIL_TEST_OVERRIDE
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: MAIL_TEST_OVERRIDE
           - name: MONGODB_URL
             valueFrom:
               secretKeyRef:
@@ -64,6 +69,16 @@ spec:
               secretKeyRef:
                 name: reader-critics-secrets
                 key: MAIL_BCC_RECIPIENT
+          - name: RECAPTCHA_PUBLIC_KEY
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: RECAPTCHA_PUBLIC_KEY
+          - name: RECAPTCHA_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: RECAPTCHA_SECRET_KEY
           - name: SENDGRID_API_KEY
             valueFrom:
               secretKeyRef:
