@@ -57,3 +57,29 @@ spec:
               secretKeyRef:
                 name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
                 key: REDIS_URL_SESSION_CACHE
+          - name: MAIL_SENDER_DOMAIN
+            valueFrom:
+              secretKeyRef:
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
+                key: MAIL_SENDER_DOMAIN
+          - name: MAIL_BCC_RECIPIENT
+            valueFrom:
+              secretKeyRef:
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
+                key: MAIL_BCC_RECIPIENT
+          - name: SLACK_CHANNEL
+            valueFrom:
+              secretKeyRef:
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
+                key: SLACK_CHANNEL
+          - name: SLACK_BOTNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
+                key: SLACK_BOTNAME
+          - name: SLACK_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
+                key: SLACK_WEBHOOK
+
