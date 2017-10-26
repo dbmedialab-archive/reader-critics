@@ -1,6 +1,5 @@
 box:
-  id: dbmedialab/nodejs-openjdk
-  cmd: /bin/bash -l
+  id: node:8.5.0
 
 services:
   - name: redis
@@ -13,17 +12,8 @@ js-lint-build-test:
   - script:
     name: install dependencies
     code: |
-      npm config set cache $WERCKER_CACHE_DIR/wercker/npm
-      npm install
-      #  - script:
-      #    name: lint
-      #    code: run/lint
-      #  - script:
-      #    name: check node
-      #    code: node --version
-      #  - script:
-      #    name: build
-      #    code: run/build
+      npm -g install yarn@1.2.1
+      yarn
   - script:
     name: set db envs
     code: |
