@@ -12,19 +12,12 @@ spec:
     spec:
       containers:
         - name: reader-critics
-          image: eu.gcr.io/dagbladet-projects/reader-critics
+          image: {{env "IMAGE"}}
           command: ["npm"]
           args: ["start"]
           ports:
           - containerPort: 4000
             name: http-port
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "0.02"
-            limits:
-              memory: "1024Mi"
-              cpu: "0.1"
           env:
           - name: AUTH_JWT_SECRET
             valueFrom:
@@ -56,8 +49,29 @@ spec:
               secretKeyRef:
                 name: reader-critics-secrets
                 key: REDIS_URL_SESSION_CACHE
-          - name: SENDGRID_API_KEY
+          - name: MAIL_SENDER_DOMAIN
             valueFrom:
               secretKeyRef:
                 name: reader-critics-secrets
-                key: SENDGRID_API_KEY
+                key: MAIL_SENDER_DOMAIN
+          - name: MAIL_BCC_RECIPIENT
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: MAIL_BCC_RECIPIENT
+          - name: SLACK_CHANNEL
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SLACK_CHANNEL
+          - name: SLACK_BOTNAME
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SLACK_BOTNAME
+          - name: SLACK_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SLACK_WEBHOOK
+
