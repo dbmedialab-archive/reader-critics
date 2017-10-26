@@ -20,7 +20,7 @@ RUN /bin/bash -l -c "run/build"
 
 
 
-FROM node:8 as nodejs
+FROM node:8.5.0 as nodejs
 
 ENV DEBIAN_FRONTEND noninteractive
 
