@@ -29,6 +29,11 @@ spec:
               secretKeyRef:
                 name: reader-critics-secrets
                 key: AUTH_SESSION_SECRET
+          - name: I18N_SYS_LOCALE
+            valueFrom:
+              configMapKeyRef:
+                name: reader-critics-config
+                key: I18N_SYS_LOCALE
           - name: MONGODB_URL
             valueFrom:
               secretKeyRef:
@@ -59,6 +64,11 @@ spec:
               secretKeyRef:
                 name: reader-critics-secrets
                 key: MAIL_BCC_RECIPIENT
+          - name: SENDGRID_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: reader-critics-secrets
+                key: SENDGRID_API_KEY
           - name: SLACK_CHANNEL
             valueFrom:
               secretKeyRef:
