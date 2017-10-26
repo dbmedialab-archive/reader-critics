@@ -94,7 +94,6 @@ function adminPageHandler(requ : Request, resp : Response) {
 						locale: systemLocale,
 						messages: localStrings,
 					},
-					title: 'Leserkritikkk: Admin panel',	//TODO fix it when localization ready
 				}).render())
 				.status(200).end();
 		});

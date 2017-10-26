@@ -31,5 +31,5 @@ const AppRouter : React.StatelessComponent <any> = () =>
 		<Routes/>
 	</BrowserRouter>;
 
-const rootContainer : HTMLElement = document.getElementById('admin');
+const rootContainer : HTMLElement = document.getElementById('app');
 ReactDOM.render(<Provider store={MainStore}><AppRouter/></Provider>, rootContainer);

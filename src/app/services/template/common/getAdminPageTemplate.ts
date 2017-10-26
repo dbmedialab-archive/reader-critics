@@ -19,10 +19,12 @@
 import * as doT from 'dot';
 import * as path from 'path';
 
-import PageTemplate from 'base/PageTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 
 import * as app from 'app/util/applib';
-import {localizationService} from 'app/services';
+import {
+	systemLocale,
+} from 'app/services/localization';
 
 const defaultTemplate = path.join('templates', 'page', 'defaultAdmin.html');
 
@@ -38,7 +40,7 @@ export default function() : Promise <PageTemplate> {
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
-				`/static/locale/${localizationService.systemLocale}.js`,
+				`/static/locale/${systemLocale}.js`,
 				'/static/admin.bundle.js',
 				'https://use.fontawesome.com/b15ebca61e.js'
 			);
