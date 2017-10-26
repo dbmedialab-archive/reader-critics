@@ -102,6 +102,7 @@ function startWorkers() : Promise <any> {
 
 cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => {
 	log('Worker %d died (%s)', worker.id, signal || code);
+	app.notify(`Worker ${worker.id} died`);
 
 	// Get the type of the recently deceased worker process
 	const workerType = workerMap[worker.id].workerType;
