@@ -29,20 +29,29 @@ const WebsiteSchema : Schema = new Schema({
 		required: true,
 	},
 
+	// Language setting for this website (a ISO 639-1 code)
 	locale: {
 		type: String,
 		required: false,
 		default: systemLocale,
 	},
 
+	// Fallback e-mail addresses and related options
 	chiefEditors: [Schema.Types.Mixed],
+	onlyNotifyEditors: {
+		type: Boolean,
+		required: false,
+		default: false,
+	},
 
+	// Article parser
 	parserClass: {
 		type: String,
 		required: false,
 		default: null,
 	},
 
+	// Website-specific layout
 	layout: {
 		templates: {
 			feedbackPage: {
