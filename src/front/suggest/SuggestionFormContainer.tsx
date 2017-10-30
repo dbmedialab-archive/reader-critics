@@ -108,20 +108,23 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			this.recaptchaReset();
 		});
 	}
+
 	private verifyCallback(response){
 		this.setState({
-			captcha:response,
+			captcha: response,
 		});
 	}
-	private recaptchaReset(){
+
+	private recaptchaReset() {
 		recaptchaInstance.reset();
 	}
-	private onloadCallback(){
+
+	private onloadCallback() {
 		//RE-Captcha was loaded
 	}
 
 	public render() : JSX.Element {
-		const isDisabled = this.isFormValid();
+		const isDisabled = !this.isFormValid();
 		const publicKey = window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : '';
 		return (
 			<form
@@ -170,7 +173,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 					/>
 				</fieldset>
 				<fieldset className="actions">
-					<button type="submit" disabled={!isDisabled} className="button button-primary">
+					<button type="submit" disabled={isDisabled} className="button-primary">
 						<FormattedMessage id="button.save"/>
 					</button>
 				</fieldset>
