@@ -28,18 +28,22 @@ import createPersistingService from '../createPersistingService';
 
 import {
 	checkPassword,
+	doDelete,
 	findOrInsert,
 	get,
 	save,
 } from './UserDAO';
+import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
 
 const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
 		UserModel, {
 			checkPassword,
+			doDelete,
 			findOrInsert,
 			get,
 			save,
+			setPasswordHash,
 		}
 	);
 

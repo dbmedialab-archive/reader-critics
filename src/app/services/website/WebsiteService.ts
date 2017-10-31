@@ -28,6 +28,8 @@ interface WebsiteService extends BasicPersistingService <Website> {
 	getByID(id : ObjectID|string) : Promise <Website>;
 	identify(url : ArticleURL|string) : Promise <Website>;
 	save(website : Website) : Promise <void>;
+	update(name: string, data: any) : Promise <Website>;
+	validateAndUpdate(name: string, data: any) : Promise <Website>;
 }
 
 export default WebsiteService;

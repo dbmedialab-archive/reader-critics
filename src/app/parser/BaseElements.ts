@@ -56,7 +56,7 @@ abstract class BaseElements {
 	protected createFigureEl(href : string, altText : string) : ArticleItem {
 		return this.createEl(ArticleItemType.Figure, {
 			href,
-			altText: altText ? altText.trim() : '',
+			text: altText ? altText.trim() : '',
 		});
 	}
 

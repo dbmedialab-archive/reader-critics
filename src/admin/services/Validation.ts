@@ -42,6 +42,25 @@ const additionalRules: IValidationRules = {
 		exec: customValidations.isEmail,
 		error: 'User mail should be valid email address!', //'Skriv inn gyldig e-postadresse.'
 	},
+
+	websiteName: {
+		type: 'string',
+		minLength: 4,
+		maxLength: 64,
+		error: 'Site name have to be longer than 4 symbols',
+	},
+
+	uniqueness: {
+		type: 'array',
+		uniqueness: true,
+		error: 'Have to be unique',
+	},
+
+	host: {
+		type: 'string',
+		exec: customValidations.isHost,
+		error: 'Invalid host name',
+	},
 };
 
 class Validator extends Validation {

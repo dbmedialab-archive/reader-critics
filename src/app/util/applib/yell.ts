@@ -43,6 +43,22 @@ export function yell (
 	}
 }
 
+export function notify(text : string) : void {
+	const slackPayload : any = {
+		username: config.get('slack.botname'),
+		icon_emoji: ':robot_face:',
+		text,
+	};
+
+	if (config.get('slack.channel')) {
+		slackPayload.channel = config.get('slack.channel');
+	}
+
+	axios.post(config.get('slack.webhook'), slackPayload)
+	.then(() => null)
+	.catch(() => null);
+}
+
 // Slack has a hard limit on messages that will be accepted from one sender.
 // Bots that break this limit will be silenced until they are manually enabled
 // again. So before risking to run into this limit, throttle the sending of
