@@ -8,12 +8,12 @@
 	margin: 0 auto;
 
 	right: 0;
-	@media (min-width: 40em) {
-		right: calc(50% - 25rem);
+	@media (min-width: $content-max-width) {
+		right: calc(50% - (5rem + (#{$content-max-width} / 2)));
 	}
 
 	#message {
-		/*pointer-events: all;*/
+		/*pointer-events: all; - "hide" button disabled for now */
 		background-color: $color-success;
 		color: $color-background;
 		padding: 1rem 0 1rem 1rem;
@@ -23,16 +23,12 @@
 		opacity: 0;
 		box-shadow: $shadow-level-3;
 
-		/*******/
-		/*display: inline-block;*/
-		/*******/
-
 		&.disabled {
 			@include disappear;
 			opacity: 0;
 		}
 
-		/* &::before {
+		/* &::before { - "hide" button disabled for now
 			@include material-icon;
 			margin-right: .3rem;
 			content: 'close';
