@@ -80,13 +80,6 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 2);
 			results.forEach((feedback, index) => {
-				// console.error(colors.brightYellow(
-				// 	`--- queried feedback #${index} -------------------------------------------------------`
-				// ));
-				// console.error(app.inspect(feedback));
-				// console.error(colors.brightYellow(
-				// 	'-------------------------------------------------------------------------------\n'
-				// ));
 				assertFeedbackObject(feedback);
 			});
 		});

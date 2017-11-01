@@ -90,7 +90,7 @@ export function hideDialog() {
 export function closeReset(windowName){
 	const data = {windowName: windowName};
 	MainStore.dispatch(
-		UIActionsCreator.toggleMainPreloader(data)
+		UIActionsCreator.closeReset(data)
 	);
 }
 
