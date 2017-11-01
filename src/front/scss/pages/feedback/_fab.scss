@@ -3,28 +3,36 @@
 	overflow: hidden;
 	position: fixed;
 	bottom: 1.5rem;
-	right: 0;
 	padding: 1rem;
 	text-align: right;
 	margin: 0 auto;
 
+	right: 0;
+	@media (min-width: 40em) {
+		right: calc(50% - 25rem);
+	}
+
 	span#message {
-		pointer-events: all;
+		/*pointer-events: all;*/
 		background-color: $color-success;
 		color: $color-background;
-		padding: .75rem 0 .75rem .5rem;
+		padding: 1rem 0 1rem 1rem;
 		position: relative;
 		top: -.5rem;
 		left: -1rem;
 		opacity: 0;
 		box-shadow: $shadow-level-3;
 
+		/*******/
+		/*display: inline-block;*/
+		/*******/
+
 		&.disabled {
 			@include disappear;
 			opacity: 0;
 		}
 
-		&::before {
+		/* &::before {
 			@include material-icon;
 			margin-right: .3rem;
 			content: 'close';
@@ -32,7 +40,7 @@
 			position: relative;
 			top: .30rem;
 			cursor: pointer;
-		}
+		} */
 
 		&::after {
 			border-style: solid;
@@ -72,7 +80,7 @@
 	&.disabled {
 		a {
 			transition: bottom $speed-appear;
-			bottom: -6rem;
+			bottom: -8rem;
 		}
 	}
 

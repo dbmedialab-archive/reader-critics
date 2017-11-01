@@ -73,27 +73,34 @@ extends React.Component <any, FeedbackContainerState> {
 		console.log('received onChange');
 		this.articleElements.forEach((elem, index) => {
 			if (elem.hasData()) {
-				console.log(`item ${index} has data`);
+				const d = elem.getCurrentData();
+				console.log(`item ${d.type}-${d.order.item}-${d.order.type} has data`);
 				changedItems += 1;
 			}
 		});
-		console.log(changedItems);
+		console.log('changedItems =', changedItems);
 		if (changedItems > 0) {
 			console.log('form has data, enable submit/change button');
-			this.finishBtn.enable(<span>
-				You have {changedItems} edits. Click here when you are ready
-			</span>);
+			this.finishBtn.enable(<FormattedMessage
+				id="fb.message.form-has-input"
+				values={{
+					count: changedItems,
+				}}
+			/>);
+			// <span>
+			// 	You have {changedItems} edits.<br/>Click here when you are ready
+			// </span>
 		}
 		else {
-			console.log('form has data, enable submit button');
+			console.log('form is empty');
 			this.finishBtn.disable(<span>No changes so far</span>);
 		}
 	}
 
 	private nextFeedbackStep() {
 		const items : FeedbackItem[] = this.articleElements
-			.map((element : ArticleElement) => element.getCurrentData())
-			.filter((item : FeedbackItem) => item !== null);  // TODO fix with "isEdited" or similar
+			.filter((element : ArticleElement) => element.hasData())
+			.map((element : ArticleElement) => element.getCurrentData());
 
 		if (items.length <= 0) {
 			alert(<FormattedMessage id="fb.errors.emptyErr"/>);

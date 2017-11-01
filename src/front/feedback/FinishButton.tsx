@@ -62,8 +62,9 @@ export default class FinishButton extends React.Component <FinishButtonProps, an
 			disabled: !this.state.enabled,
 		});
 
+		// onClick={() => this.props.HideMessage}
 		return <div className={css}>
-			<span id="message" onClick={() => this.props.HideMessage}>
+			<span id="message">
 				{this.state.message}
 			</span>
 			<a onClick={() => this.props.SendForm()}>

@@ -208,6 +208,36 @@
 			errors: {
 				emptyErr: 'The feedback form is still empty, nothing was sent',
 			},
+			label: {
+				name: {
+					en: 'Name',
+					nb: 'Navn',
+				},
+				getRecommend: {
+					en: 'e-mail', // 'Get notifications via e-mail',
+					nb: 'e-post', // 'Få tilbakemelding på e-post',
+				},
+				keepInfo: {
+					en: 'Send your feedback now',
+					nb: 'Sende inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+				},
+				backToArticle: {
+					en: 'Back to the article',
+					nb: 'Tilbake til artikkelen',
+				},
+			},
+			message: {
+				'form-has-input': {
+					en: 'You have {count, plural, one {one input} other {# inputs}}. Continue?',
+					nb: 'Du har {count, plural, one {én innlegg} other {# innlegg}}. Gå videre?',
+				}
+			},
+			post: {
+				transmitted: {
+					en: 'Feedback was finally transmitted!',
+					nb: 'Tilbakemeldingen har akkurat blitt overført!',
+				},
+			},
 			sendForm: {
 				message: {
 					en: 'Click here when you are done',
@@ -217,30 +247,6 @@
 					en: 'Send feedback.',
 					nb: 'Send tilbakemelding.',
 				}
-			},
-			post: {
-				transmitted: {
-					en: 'Feedback was finally transmitted!',
-					nb: 'Tilbakemeldingen har akkurat blitt overført!',
-				},
-			},
-			label: {
-				name: {
-					en: 'Name',
-					nb: 'Navn',
-				},
-				getRecommend: {
-					en: 'Get notifications via e-mail',
-					nb: 'Få tilbakemelding på e-post',
-				},
-				keepInfo: {
-					en: 'Keep me updated',
-					nb: 'Hold meg oppdatert',
-				},
-				backToArticle: {
-					en: 'Back to the article',
-					nb: 'Tilbake til artikkelen',
-				},
 			},
 		},
 		suggest: {

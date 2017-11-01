@@ -59,11 +59,7 @@ export abstract class ArticleElement
 extends React.Component <ArticleElementProp, ArticleElementState>
 {
 
-	private references: {
-		editForm: ArticleEditForm;
-	} = {
-		editForm: null,
-	};
+	private editForm: ArticleEditForm;
 
 	constructor(props : ArticleElementProp) {
 		super(props);
@@ -80,7 +76,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			return null;
 		}
 
-		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+		const formData : EditFormPayload = this.editForm.getCurrentData();
 
 		if (formData.text === this.props.item.originalText) {
 			// If the text wasn't changed, delete it before submitting
@@ -94,7 +90,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	public hasData() : boolean {
-		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+		const formData : EditFormPayload = this.editForm.getCurrentData();
 		return (typeof formData.text === 'string' && formData.text !== this.props.item.originalText)
 			|| formData.comment.length > 0
 			|| formData.links.length > 0;
@@ -121,10 +117,10 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	private createEditForm() : JSX.Element {
 		return <ArticleEditForm
 			id={this.props.item.order.type}
-			ref={(i : any) => { this.references.editForm = i; }}
+			ref={(i : any) => { this.editForm = i; }}
 			originalText={this.state.text}
-			onCancel={this.CancelInput.bind(this)}
-			onSave={this.SaveData.bind(this)}
+			onCancel={this.cancelEditing.bind(this)}
+			onSave={this.saveData.bind(this)}
 			type={this.props.item.type}
 		/>;
 	}
@@ -143,7 +139,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		return <a
 			id={`btn-edit-${this.props.item.order}`}
 			className={css}
-			onClick={ this.EnableEditing.bind(this) }
+			onClick={ this.startEditing.bind(this) }
 		><FormattedMessage id="button.edit"/></a>;
 	}
 
@@ -156,7 +152,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	// Changes the state for the component so correct css-classes are applied
-	private EnableEditing() {
+	private startEditing() {
 		if (!this.state.editing) {
 			this.setState({
 				editing: true,
@@ -164,38 +160,33 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		}
 	}
 
-	// Changes the state for the component so correct css-classes are applied
-	private DisableEditing() {
+	// Callback for childs onCancel funciton.
+	private cancelEditing(){
 		if (this.state.editing) {
 			this.setState({
 				editing: false,
-			});
+			}, () => this.props.container.onChange());
 		}
-	}
-
-	// @param {event} e
-	// Stops bubbeling then resets the parrent components state.
-	private restoreOriginalContent(e : any) {
-		this.references.editForm.reset(this.props.item.originalText);
-		this.setState({
-			edited: false,
-			text: this.props.item.originalText,
-		}, () => this.props.container.onChange());
-	}
-
-	// Callback for childs onCancel funciton.
-	private CancelInput(){
-		this.DisableEditing();
 	}
 
 	// @param {state} state
 	// Applies the submitted state (from the child component) to the parents state.
 	// This is passed to the child as a prop and used as callback.
-	private SaveData(fromState : EditFormPayload) {
-		this.DisableEditing();
+	private saveData(fromState : EditFormPayload) {
 		this.setState({
 			edited: true,
+			editing: false,
 			text: fromState.text,
+		}, () => this.props.container.onChange());
+	}
+
+	// @param {event} e
+	// Stops bubbeling then resets the parrent components state.
+	private restoreOriginalContent(e : any) {
+		this.editForm.reset(this.props.item.originalText);
+		this.setState({
+			edited: false,
+			text: this.props.item.originalText,
 		}, () => this.props.container.onChange());
 	}
 

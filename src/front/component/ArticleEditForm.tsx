@@ -57,39 +57,37 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	private commentArea : any;
 	private linkInput : any;
 
-	constructor(props : ArticleEditFormProp) {
-		super(props);
-
-		const initial : EditFormPayload = {
-			text: props.originalText,
+	// To prevent hidden references to nested objects (esp. the "links" array),
+	// define current/initial separately!
+	private static makeCleanState = (text : string) => ({
+		current: {
+			text,
 			comment: '',
 			links: [],
-		};
+		},
+		initial: {
+			text,
+			comment: '',
+			links: [],
+		},
+	})
 
-		this.state = {
-			current: initial,
-			initial,
-		};
+	constructor(props : ArticleEditFormProp) {
+		super(props);
+		this.state = ArticleEditForm.makeCleanState(props.originalText);
+	}
+
+	public reset(originalText : string) {
+		this.setState(ArticleEditForm.makeCleanState(originalText), () => {
+			if (this.textArea && this.commentArea) {
+				this.textArea.value = originalText;
+				this.commentArea.value = '';
+			}
+		});
 	}
 
 	public getCurrentData() : EditFormPayload {
 		return this.state.current;
-	}
-
-	public reset(originalText : string) {
-		const clean : EditFormPayload = {
-			text: originalText,
-			comment: '',
-			links: [],
-		};
-
-		this.textArea.value = originalText;
-		this.commentArea.value = '';
-
-		this.setState({
-			current: clean,
-			initial: clean,
-		});
 	}
 
 	public render() {
@@ -142,13 +140,37 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	private UpdateState(field : string, ref : any) {
 		const newState = this.state;
 		newState.current[field] = ref.value;
-		this.setState(newState);
+		this.setState(newState, () => {
+			console.dir(this.state);
+		});
 	}
 
 	// @param {string} type
 	// Helper class to create unique ID for lables in form.
 	private makeID(type : string) {
 		return `edit-field-${this.props.id}-${type}`;
+	}
+
+	// @param {event} e optional
+	// Adds the content of the linkinput feild to the component link state
+	// resets the input
+	private AddLinkItem(e? : any) {
+		if (e) {
+			e.preventDefault();
+		}
+		if (!this.linkInput.value) {
+			return false;
+		}
+
+		const current : EditFormPayload = this.state.current;
+		current.links.push(this.linkInput.value);
+
+		this.setState({
+			current,
+		}, () => {
+			console.dir(this.state);
+			this.linkInput.value = '';
+		});
 	}
 
 	// @param {number} index
@@ -171,14 +193,19 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	// parent component so it can collaps the edit feild.
 	private onCancel(e : any) {
 		e.stopPropagation();
+		console.log('onCancel -> ', this.props.id);
+		console.dir(this.state);
 
 		this.textArea.value = this.state.initial.text;
 		this.commentArea.value = this.state.initial.comment;
 
-		console.log('onCancel');
 		this.setState({
-			current: this.state.initial,
-		}, () => this.props.onCancel(this.state));
+				current: Object.assign({}, this.state.initial),
+			}, () => {
+			console.log('after setState:');
+			console.dir(this.state);
+			this.props.onCancel(this.state);
+		});
 	}
 
 	// @param {event} e
@@ -193,27 +220,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		}
 
 		this.props.onSave(this.state.current);
-	}
-
-	// @param {event} e optional
-	// Adds the content of the linkinput feild to the component link state
-	// resets the input
-	private AddLinkItem(e? : any) {
-		if (e) {
-			e.preventDefault();
-		}
-		if (!this.linkInput.value) {
-			return;
-		}
-
-		const current : EditFormPayload = this.state.current;
-		current.links.push(this.linkInput.value);
-
-		this.setState({
-			current,
-		}, () => {
-			this.linkInput.value = '';
-		});
 	}
 
 }
