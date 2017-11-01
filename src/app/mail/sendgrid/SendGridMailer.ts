@@ -32,7 +32,7 @@ const log = app.createLog();
 
 const apiKey : string = config.get('mail.sendgrid.api_key');
 const senderDomain : string = config.get('mail.sender.domain');
-const bccRecipient : string = config.get('mail.bccRecipient');
+const bccRecipient : Array <string> = config.get('mail.bccRecipient').split(/,/);
 
 export default function(
 	recipients : Array <string>,
