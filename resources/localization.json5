@@ -219,7 +219,7 @@
 				},
 				keepInfo: {
 					en: 'Send your feedback now',
-					nb: 'Sende inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
 				},
 				backToArticle: {
 					en: 'Back to the article',
