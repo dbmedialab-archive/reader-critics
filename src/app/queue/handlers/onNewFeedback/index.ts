@@ -21,6 +21,8 @@ import {
 	Job,
 } from 'kue';
 
+import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
@@ -81,10 +83,11 @@ export default function(job : Job, done : DoneCallback) : void {
 		return Promise.all([
 			layoutNotifyMail(feedback, template),
 			getRecipients(website, feedback),
+			getMailSubject(feedback),
 		]);
 	})
-	.spread((htmlMailContent : string, recipients : Array <string>) => {
-		return SendGridMailer(recipients, 'Leserkritikk', htmlMailContent);
+	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
+		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
 	// Funny enough, just doing .then(done) will trigger the infamous
 	// "a promise was created in blah ... but was not returned from it"
@@ -94,4 +97,10 @@ export default function(job : Job, done : DoneCallback) : void {
 		app.yell(error);
 		return done(error);
 	});
+}
+
+function getMailSubject(feedback : Feedback) : Promise <string> {
+	return Promise.resolve(feedback.article.items.find(
+		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
+	).text);
 }

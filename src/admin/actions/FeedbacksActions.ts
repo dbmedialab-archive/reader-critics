@@ -31,6 +31,6 @@ export function setFeedbackList(feedbacks: Array<Feedback>) {
 export function getFeedbackList() {
 	Api.getFeedbacksList()
 	.then((resp)=>{
-		FeedbacksActions.setFeedbackList(resp.data);
+		FeedbacksActions.setFeedbackList(resp);
 	});
 }

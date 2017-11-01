@@ -31,7 +31,9 @@ import {
 	getByID,
 	identify,
 	save,
+	update,
 } from './WebsiteDAO';
+import validateAndUpdate from 'app/services/website/common/validateAndUpdate';
 
 const service : WebsiteService
 	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
@@ -40,6 +42,8 @@ const service : WebsiteService
 			getByID,
 			identify,
 			save,
+			update,
+			validateAndUpdate,
 		}
 	);
 

@@ -59,7 +59,7 @@ class DialogModal extends React.Component <any, any> {
 			>
 				<div className="modal-window">
 					<div className="close-btn">
-						<i onClick={this.closePopup} className="fa fa-close"></i>
+						<i onClick={this.closePopup} className="fa fa-close"/>
 					</div>
 					<div className="row">
 						<div className="medium-12 columns">
