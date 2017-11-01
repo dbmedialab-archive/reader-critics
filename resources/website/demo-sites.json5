@@ -31,7 +31,10 @@
 	{
 		"name": "dagbladet.no",
 		"hosts": [
-			"www.dagbladet.no"
+			"db.no",
+			"www.db.no",
+			"dagbladet.no",
+			"www.dagbladet.no",
 		],
 		"locale": "nb",
 		parserClass: 'DagbladetParser',
@@ -67,8 +70,8 @@
 		"chiefEditors": [
 			{
 				"name": "Like A. Boss",
-				"email": "redaksjon@morgenposten.no"
-			}
-		]
+				email: "redaksjon@morgenposten.no",
+			},
+		],
 	},
 ]
