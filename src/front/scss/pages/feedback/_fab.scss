@@ -2,13 +2,13 @@
 	pointer-events: none;
 	overflow: hidden;
 	position: fixed;
-	bottom: 0;
+	bottom: 1.5rem;
 	right: 0;
 	padding: 1rem;
 	text-align: right;
 	margin: 0 auto;
 
-	span {
+	span#message {
 		pointer-events: all;
 		background-color: $color-success;
 		color: $color-background;
@@ -82,7 +82,7 @@
 			bottom: 0;
 		}
 
-		span {
+		span#message {
 			@include appear;
 			opacity: 1;
 

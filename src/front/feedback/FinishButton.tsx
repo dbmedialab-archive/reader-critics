@@ -24,27 +24,51 @@ export interface FinishButtonProps {
 	SendForm? : Function;
 	HideMessage? : Function,
 	message? : JSX.Element;
-	appear? : boolean,
-	close? : boolean;
+	enabled? : boolean,
 }
 
-const FinishButton : React.StatelessComponent <FinishButtonProps> = (props) => {
-	const css = classnames('fab', {
-		enabled: props.appear && !props.close,
-	});
+export default class FinishButton extends React.Component <FinishButtonProps, any> {
+	public static defaultProps: Partial <FinishButtonProps> = {
+		SendForm: () => alert(<FormattedMessage id="fb.sendForm.alertMessage"/>),
+		HideMessage: () => null,
+		message: <FormattedMessage id="fb.sendForm.message"/>,
+	};
 
-	return <div className={css}>
-		{ props.message ? <span onClick={() => props.HideMessage}>{props.message}</span> : null }
-		<a onClick={() => { props.SendForm(); }}><FormattedMessage id="button.sendForm"/></a>
-	</div>;
-};
+	constructor(props : FinishButtonProps) {
+		super(props);
+		this.state = {
+			enabled: false,
+			message: this.props.message,
+		};
+	}
 
-FinishButton.defaultProps = {
-	SendForm: () => alert(<FormattedMessage id="fb.sendForm.alertMessage"/>),
-	HideMessage: () => null,
-	message: <FormattedMessage id="fb.sendForm.message"/>,
-	appear: false,
-	close: false,
-};
+	public disable(message : JSX.Element) {
+		this.setState({
+			enabled: false,
+			message,
+		});
+	}
 
-export default FinishButton;
+	public enable(message : JSX.Element) {
+		this.setState({
+			enabled: true,
+			message,
+		});
+	}
+
+	public render() {
+		const css = classnames('fab', {
+			enabled: this.state.enabled,
+			disabled: !this.state.enabled,
+		});
+
+		return <div className={css}>
+			<span id="message" onClick={() => this.props.HideMessage}>
+				{this.state.message}
+			</span>
+			<a onClick={() => this.props.SendForm()}>
+				<FormattedMessage id="button.sendForm"/>
+			</a>
+		</div>;
+	}
+}

@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable max-file-line-count
+
 import * as classnames from 'classnames';
 import * as React from 'react';
 
@@ -23,6 +25,8 @@ import { FormattedMessage } from 'react-intl';
 
 import ArticleItemType from 'base/ArticleItemType';
 import FeedbackItem from 'base/FeedbackItem';
+
+import FeedbackContainer from 'front/feedback/FeedbackContainer';
 
 import {
 	default as ArticleEditForm,
@@ -41,13 +45,14 @@ export interface ArticleElementProp {
 		originalText : string;
 		href?: string;
 		altText? : string;
-	}
+	},
+	container : FeedbackContainer,
 }
 
 export interface ArticleElementState {
 	edited: boolean;
 	editing: boolean;
-	text: string;
+	text: string,
 }
 
 export abstract class ArticleElement
@@ -61,7 +66,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	};
 
 	constructor(props : ArticleElementProp) {
-		super();
+		super(props);
 		this.state = {
 			edited: false,
 			editing: false,
@@ -70,15 +75,12 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	public getCurrentData() : FeedbackItem {
-		const formData : EditFormPayload = this.references.editForm.getCurrentData();
-
-		if (formData.text === this.props.item.originalText
-			&& !formData.comment
-			&& formData.links.length <= 0
-		) {
+		if (!this.hasData()) {
 			// If no input was made, return an empty result. The top handler will discard it later.
 			return null;
 		}
+
+		const formData : EditFormPayload = this.references.editForm.getCurrentData();
 
 		if (formData.text === this.props.item.originalText) {
 			// If the text wasn't changed, delete it before submitting
@@ -91,13 +93,20 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		}, formData);
 	}
 
+	public hasData() : boolean {
+		const formData : EditFormPayload = this.references.editForm.getCurrentData();
+		return (typeof formData.text === 'string' && formData.text !== this.props.item.originalText)
+			|| formData.comment.length > 0
+			|| formData.links.length > 0;
+	}
+
 	public render() : JSX.Element {
 		const css = classnames('card', this.props.item.type, {
 			editing: this.state.editing,
 			edited: this.state.edited,
 		});
-		const {item} = this.props.item.order;
-		return <article id={`article-el-${item}`} className={css}>
+
+		return <article id={`article-el-${this.props.item.order}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>
@@ -110,9 +119,8 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	private createEditForm() : JSX.Element {
-		const {type} = this.props.item.order;
 		return <ArticleEditForm
-			id={type}
+			id={this.props.item.order.type}
 			ref={(i : any) => { this.references.editForm = i; }}
 			originalText={this.state.text}
 			onCancel={this.CancelInput.bind(this)}
@@ -122,20 +130,18 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	}
 
 	private createResetButton() : JSX.Element {
-		const {item} = this.props.item.order;
 		const css = classnames('button', 'reset');
 		return <a
-			id={`btn-reset-${item}`}
+			id={`btn-reset-${this.props.item.order}`}
 			className={css}
 			onClick={ this.restoreOriginalContent.bind(this) }
 		>Slett</a>;
 	}
 
 	private createEditButton() : JSX.Element {
-		const {item} = this.props.item.order;
 		const css = classnames('button', 'edit');
 		return <a
-			id={`btn-edit-${item}`}
+			id={`btn-edit-${this.props.item.order}`}
 			className={css}
 			onClick={ this.EnableEditing.bind(this) }
 		><FormattedMessage id="button.edit"/></a>;
@@ -143,12 +149,10 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 
 	protected abstract getContentElement() : JSX.Element;
 
-	// Caclulates and highlights the diff of two sentences.
+	// Calculates and highlights the diff of two sentences.
 	// Used to preview changes to the text done by the user.
 	protected textDiff(text1 : string = '', text2 : string) : any {
-		return text2 === undefined
-			? text1
-			: diffToReactElem(text1, text2);
+		return text2 === undefined ? text1 : diffToReactElem(text1, text2);
 	}
 
 	// Changes the state for the component so correct css-classes are applied
@@ -172,12 +176,11 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 	// @param {event} e
 	// Stops bubbeling then resets the parrent components state.
 	private restoreOriginalContent(e : any) {
+		this.references.editForm.reset(this.props.item.originalText);
 		this.setState({
 			edited: false,
 			text: this.props.item.originalText,
-		});
-
-		this.references.editForm.reset(this.props.item.originalText);
+		}, () => this.props.container.onChange());
 	}
 
 	// Callback for childs onCancel funciton.
@@ -193,7 +196,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 		this.setState({
 			edited: true,
 			text: fromState.text,
-		});
+		}, () => this.props.container.onChange());
 	}
 
 }

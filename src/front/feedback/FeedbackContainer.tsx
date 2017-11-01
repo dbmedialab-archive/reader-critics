@@ -46,6 +46,7 @@ export default class FeedbackContainer
 extends React.Component <any, FeedbackContainerState> {
 
 	private articleElements : ArticleElement[] = [];
+	private finishBtn : FinishButton;
 
 	constructor() {
 		super();
@@ -65,6 +66,28 @@ extends React.Component <any, FeedbackContainerState> {
 				article,
 			});
 		});
+	}
+
+	public onChange() {
+		let changedItems = 0;
+		console.log('received onChange');
+		this.articleElements.forEach((elem, index) => {
+			if (elem.hasData()) {
+				console.log(`item ${index} has data`);
+				changedItems += 1;
+			}
+		});
+		console.log(changedItems);
+		if (changedItems > 0) {
+			console.log('form has data, enable submit/change button');
+			this.finishBtn.enable(<span>
+				You have {changedItems} edits. Click here when you are ready
+			</span>);
+		}
+		else {
+			console.log('form has data, enable submit button');
+			this.finishBtn.disable(<span>No changes so far</span>);
+		}
 	}
 
 	private nextFeedbackStep() {
@@ -101,8 +124,8 @@ extends React.Component <any, FeedbackContainerState> {
 		// Iterate article elements and render sub components
 		return (
 			<section id="content">
-				{ this.state.article.items.map(item => createArticleElement(item, refFn)) }
-				<FinishButton SendForm={sendFn} />
+				{ this.state.article.items.map(item => createArticleElement(this, item, refFn)) }
+				<FinishButton SendForm={sendFn} ref={r => this.finishBtn = r}/>
 			</section>
 		);
 	}

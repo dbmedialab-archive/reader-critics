@@ -17,12 +17,14 @@
 //
 
 // tslint:disable max-file-line-count
+
 import * as React from 'react';
+
+import { FormattedMessage } from 'react-intl';
 
 import ArticleItemType from 'base/ArticleItemType';
 
 import DynamicList from 'front/component/DynamicList';
-import { FormattedMessage } from 'react-intl';
 
 export interface EditFormPayload {
 	text : string;
@@ -31,21 +33,21 @@ export interface EditFormPayload {
 }
 
 export interface ArticleEditFormProp {
-	/** The ID of this item. It's used to create references for labels to text areas and inputs */
+	// Numeric ID for creating references on sub components
 	id : number;
-	/** Funciton to trigger so input is reset */
+	/// Handler function to reset all data to its unmodified, original state
 	onCancel : Function;
-	/** Funciton to trigger so component's state is sent to parrent Article component */
+	// Handler function to send the modified state to the parent component
 	onSave : Function;
-	/** The text of the element, be it title, paragraph, lead etc. */
+	/// The original, unmodified text of the element
 	originalText: string;
-	/** The type of the content, e.g. title, subtitle, paraghrap etc */
+	// The type of the content (title, subtitle, paragraph ...)
 	type: ArticleItemType;
 }
 
 export interface ArticleEditFormState {
 	current : EditFormPayload;
-	previous : EditFormPayload;
+	initial : EditFormPayload;
 }
 
 export default class ArticleEditForm
@@ -66,7 +68,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 		this.state = {
 			current: initial,
-			previous: initial,
+			initial,
 		};
 	}
 
@@ -86,44 +88,41 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 		this.setState({
 			current: clean,
-			previous: clean,
+			initial: clean,
 		});
 	}
 
 	public render() {
 		return <form>
 			<fieldset className="text">
-				<label htmlFor={this.FieldId('content')}>
-					<FormattedMessage id="button.edit"/> {this.Translate(this.props.type)}
-				</label>
 				<textarea
 					onKeyUp={() => this.UpdateState('text', this.textArea)}
 					ref={r => this.textArea = r}
 					defaultValue={this.state.current.text}
 					rows={3}
-					id={this.FieldId('content')}
+					id={this.makeID('content')}
 				/>
 			</fieldset>
 			<fieldset className="comment">
-				<label htmlFor={this.FieldId('comment')}>
-					<FormattedMessage id="label.article-el.editComment"/>
+				<label htmlFor={this.makeID('comment')}>
+					<FormattedMessage id="label.add-comment"/>
 				</label>
 				<textarea
 					onKeyUp={()=>this.UpdateState( 'comment', this.commentArea )}
 					ref={r => this.commentArea = r}
 					rows={3}
-					id={this.FieldId('comment')}
+					id={this.makeID('comment')}
 				/>
 			</fieldset>
 			<fieldset className="link">
-				<label htmlFor={this.FieldId('link')}><FormattedMessage id="label.article-el.addLinks"/></label>
+				<label htmlFor={this.makeID('link')}><FormattedMessage id="label.add-links"/></label>
 				<DynamicList
 					items={this.state.current.links}
 					onRemove={this.RemoveLinkItem.bind(this)}
 				/>
 				<input
 					ref={(r) => this.linkInput = r}
-					id={this.FieldId('link')}
+					id={this.makeID('link')}
 					type="text"
 					onKeyDown={(e)=> e.keyCode === 13 ? this.AddLinkItem(e) : null}
 				/>
@@ -148,7 +147,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	// @param {string} type
 	// Helper class to create unique ID for lables in form.
-	private FieldId(type : string) {
+	private makeID(type : string) {
 		return `edit-field-${this.props.id}-${type}`;
 	}
 
@@ -159,7 +158,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		const link = this.state.current.links;
 		const current : EditFormPayload = this.state.current;
 
-		// TODO do this with Array.splice() instead
 		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
 
 		this.setState({
@@ -174,11 +172,12 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	private onCancel(e : any) {
 		e.stopPropagation();
 
-		this.textArea.value = this.state.previous.text;
-		this.commentArea.value = this.state.previous.comment;
+		this.textArea.value = this.state.initial.text;
+		this.commentArea.value = this.state.initial.comment;
 
+		console.log('onCancel');
 		this.setState({
-			current: this.state.previous,
+			current: this.state.initial,
 		}, () => this.props.onCancel(this.state));
 	}
 
@@ -215,17 +214,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		}, () => {
 			this.linkInput.value = '';
 		});
-	}
-
-	// Helper to translate component type to native language.
-	private Translate(type: string): JSX.Element {
-		const lookup = {
-			lead: <FormattedMessage id="label.article-el.introduction"/>,
-			title: <FormattedMessage id="label.article-el.maintitle"/>,
-			paragraph: <FormattedMessage id="label.article-el.paragraphEmpty"/>,
-		};
-
-		return lookup [ type ] ? lookup [ type ] : 'tekst';
 	}
 
 }
