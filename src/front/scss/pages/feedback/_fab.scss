@@ -12,7 +12,7 @@
 		right: calc(50% - 25rem);
 	}
 
-	span#message {
+	#message {
 		/*pointer-events: all;*/
 		background-color: $color-success;
 		color: $color-background;
@@ -90,7 +90,7 @@
 			bottom: 0;
 		}
 
-		span#message {
+		#message {
 			@include appear;
 			opacity: 1;
 
