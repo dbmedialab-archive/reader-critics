@@ -70,29 +70,26 @@ extends React.Component <any, FeedbackContainerState> {
 
 	public onChange() {
 		let changedItems = 0;
-		console.log('received onChange');
+		// console.log('received onChange');
 		this.articleElements.forEach((elem, index) => {
 			if (elem.hasData()) {
-				const d = elem.getCurrentData();
-				console.log(`item ${d.type}-${d.order.item}-${d.order.type} has data`);
+				// const d = elem.getCurrentData();
+				// console.log(`item ${d.type}-${d.order.item}-${d.order.type} has data`);
 				changedItems += 1;
 			}
 		});
-		console.log('changedItems =', changedItems);
+		// console.log('changedItems =', changedItems);
 		if (changedItems > 0) {
-			console.log('form has data, enable submit/change button');
+			// console.log('form has data, enable submit/change button');
 			this.finishBtn.enable(<FormattedMessage
 				id="fb.message.form-has-input"
 				values={{
 					count: changedItems,
 				}}
 			/>);
-			// <span>
-			// 	You have {changedItems} edits.<br/>Click here when you are ready
-			// </span>
 		}
 		else {
-			console.log('form is empty');
+			// console.log('form is empty');
 			this.finishBtn.disable(<span>No changes so far</span>);
 		}
 	}

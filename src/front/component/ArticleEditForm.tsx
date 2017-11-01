@@ -141,7 +141,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		const newState = this.state;
 		newState.current[field] = ref.value;
 		this.setState(newState, () => {
-			console.dir(this.state);
+			// console.dir(this.state);
 		});
 	}
 
@@ -168,7 +168,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		this.setState({
 			current,
 		}, () => {
-			console.dir(this.state);
+			// console.dir(this.state);
 			this.linkInput.value = '';
 		});
 	}
@@ -193,8 +193,8 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	// parent component so it can collaps the edit feild.
 	private onCancel(e : any) {
 		e.stopPropagation();
-		console.log('onCancel -> ', this.props.id);
-		console.dir(this.state);
+		// console.log('onCancel -> ', this.props.id);
+		// console.dir(this.state);
 
 		this.textArea.value = this.state.initial.text;
 		this.commentArea.value = this.state.initial.comment;
@@ -202,8 +202,8 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		this.setState({
 				current: Object.assign({}, this.state.initial),
 			}, () => {
-			console.log('after setState:');
-			console.dir(this.state);
+			// console.log('after setState:');
+			// console.dir(this.state);
 			this.props.onCancel(this.state);
 		});
 	}
