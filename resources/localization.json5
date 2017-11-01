@@ -152,6 +152,18 @@
 		},
 		label: {
 			'article-el': {
+				'feat-image': {
+					en: 'Featured Image',
+					nb: 'Fremhevet bilde',
+				},
+				'lead-in': {
+					en: 'Introduction',
+					nb: 'Innledning',
+				},
+				link: {
+					en: 'Link #{order}',
+					nb: 'Link #{order}',
+				},
 				maintitle: {
 					en: 'Title',
 					nb: 'Tittel',
@@ -160,42 +172,26 @@
 					en: 'Paragraph #{order}',
 					nb: 'Avsnitt #{order}',
 				},
-				paragraphEmpty: {
-					en: 'Paragraph',
-					nb: 'Avsnitt',
-				},
-				text: {
-					en: 'Text',
-					nb: 'Tekst',
-				},
-				editComment: {
-					en: 'Add comment',
-					nb: 'Legg til kommentar',
-				},
-				addLinks: {
-					en: 'Add links',
-					nb: 'Legg til lenker',
-				},
-				featImage: {
-					en: 'Featured Image',
-					nb: 'Utvalgte bilder',
-				},
 				picture: {
 					en: 'Picture #{order}',
 					nb: 'Bilde #{order}',
 				},
-				introduction: {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				subHead: {
+				'sub-head': {
 					en: 'Sub Heading #{order}',
 					nb: 'Mellomtittel #{order}',
 				},
+			},
+			'add-comment': {
+				en: 'Add comment',
+				nb: 'Legg til kommentar',
+			},
+			'add-links': {
+				en: 'Add links',
+				nb: 'Legg til lenker',
+			},
+			'no-img-caption': {
+				en: 'No image caption',
+				nb: 'Ingen bildetekst',
 			},
 		},
 		message: {
