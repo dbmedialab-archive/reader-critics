@@ -116,7 +116,7 @@
 	"devDependencies": {
 		"@types/bluebird": "3.5.18",
 		"@types/bluebird-global": "3.5.3",
-		"@types/body-parser": "1.16.5",
+		"@types/body-parser": "1.16.7",
 		"@types/callsite": "1.0.30",
 		"@types/chai": "4.0.4",
 		"@types/classnames": "2.2.3",
