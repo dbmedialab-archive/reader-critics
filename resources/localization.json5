@@ -229,7 +229,7 @@
 			message: {
 				'form-has-input': {
 					en: 'You have {count, plural, one {one input} other {# inputs}}. Continue?',
-					nb: 'Du har {count, plural, one {én innlegg} other {# innlegg}}. Gå videre?',
+					nb: 'Du har {count, plural, one {ett innlegg} other {# innlegg}}. Gå videre?',
 				}
 			},
 			post: {
