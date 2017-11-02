@@ -140,7 +140,7 @@
 		"@types/react-redux": "5.0.12",
 		"@types/react-router": "4.0.16",
 		"@types/react-router-dom": "4.0.8",
-		"@types/redux-promise-middleware": "0.0.7",
+		"@types/redux-promise-middleware": "0.0.9",
 		"@types/webpack": "^3.0.0",
 		"awesome-typescript-loader": "3.2.3",
 		"babel-core": "6.26.0",
