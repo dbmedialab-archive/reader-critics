@@ -42,8 +42,12 @@ export default function(website : Website) : Promise <PageTemplate> {
 			: Promise.resolve(raw);
 	};
 
+	const templateSettings = Object.assign({}, doT.templateSettings, {
+		strip: app.isProduction,
+	});
+
 	return rawTemplate().then((raw : string) => {
-		return new PageTemplate (doT.template(raw), website.locale)
+		return new PageTemplate (doT.template(raw, templateSettings), website.locale)
 			.pushStyle('/static/fb.css')
 			.pushScript(
 				'/static/react/react.js',
