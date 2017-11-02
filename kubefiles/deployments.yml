@@ -19,6 +19,11 @@ spec:
           - containerPort: 4000
             name: http-port
           env:
+          - name: ANALYTICS_GOOGLE_TRACKING_ID
+            valueFrom:
+              configMapKeyRef:
+                key: ANALYTICS_GOOGLE_TRACKING_ID
+                name: reader-critics-config
           - name: AUTH_JWT_SECRET
             valueFrom:
               secretKeyRef:
@@ -34,11 +39,6 @@ spec:
               configMapKeyRef:
                 name: reader-critics-config
                 key: I18N_SYS_LOCALE
-          - name: MAIL_TEST_OVERRIDE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MAIL_TEST_OVERRIDE
           - name: MONGODB_URL
             valueFrom:
               secretKeyRef:
