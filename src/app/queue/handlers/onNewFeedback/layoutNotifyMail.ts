@@ -27,7 +27,11 @@ import {
 	ItemFormatPayload,
 } from 'app/mail/layout/FeedbackNotifyLayout';
 
+import * as app from 'app/util/applib';
+
 import { translate as __ } from 'app/services/localization';
+
+const log = app.createLog();
 
 const cssFeedbackItemBox = [
 	'padding: 0.8em',
@@ -42,6 +46,13 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 			aItem: getRelatedArticleItem(feedback.article, fItem),
 			fItem,
 		};
+
+		log('Formatting item #%d: %s', fIndex, app.inspect(i));
+
+		if (i.fItem.text === undefined) {
+			log('Found a feedback object without text property, ignoring');
+			return;
+		}
 
 		const formatted = [
 			format.itemHeader(i),
