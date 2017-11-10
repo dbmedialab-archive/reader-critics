@@ -37,6 +37,7 @@ interface Article extends PersistedModel {
 	date? : {
 		created?: Date;
 	};
+	feedbacks? : number;
 }
 
 export default Article;

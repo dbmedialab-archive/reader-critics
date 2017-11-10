@@ -36,7 +36,7 @@ export default function(requ: Request) {
 	const page: number = requ.query.page && requ.query.page > 0
 							? parseInt(requ.query.page)
 							: defaultPage;
-	const limit: number = requ.query.limit || defaultLimit;
+	const limit: number = parseInt(requ.query.limit) || defaultLimit;
 
 	if (page === 1) {
 		skip = 0;
@@ -50,8 +50,10 @@ export default function(requ: Request) {
 }
 
 function getSort(requ: Request) {
-	const sortField: string = requ.query.sort || null;
-	const sortOrder: string = requ.query.sortOrder || null;
+	const {sort: sortFieldString, sortOrder: sortOrderString} = requ.query;
+	const sortField: string = sortFieldString || null;
+	const sortOrderVal: number = sortOrderString ? parseInt(sortOrderString) : null;
+	const sortOrder: number = [1, -1].includes(sortOrderVal) ? sortOrderVal: null;
 
 	const sort : Object = {};
 

@@ -67,6 +67,7 @@
 		"flat": "4.0.0",
 		"foundation-sites": "6.2.1",
 		"full-icu": "1.2.0",
+		"griddle-react": "^1.9.0",
 		"has-color": "0.1.7",
 		"immutable": "3.8.2",
 		"ioredis": "3.1.4",

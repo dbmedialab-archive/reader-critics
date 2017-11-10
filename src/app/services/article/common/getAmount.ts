@@ -17,6 +17,40 @@
 
 import {ArticleModel} from 'app/db/models';
 
-export default function () : Promise <number> {
-	return ArticleModel.count({}).then(amount => amount);
+export default function (search?: string) : Promise <number> {
+	const match = {
+		feedbacks: {$not: {$eq: 0}},
+		'itemField.order.type': 1,
+		'itemField.order.item': 1,
+	};
+	if (search) {
+		match['itemField.text'] = new RegExp(`${search}`, 'i');
+	}
+
+	return ArticleModel.aggregate([
+			{
+				$lookup: {
+					from: 'feedbacks',
+					localField: '_id',
+					foreignField: 'article',
+					as: 'feedbacks',
+				},
+			},
+			{
+				$project: {
+					ID: '$_id',
+					itemField: '$items',
+					feedbacks: {
+						$size: '$feedbacks',
+					},
+				},
+			},
+			{
+				$unwind: '$itemField',
+			},
+			{
+				$match: match,
+			},
+		])
+		.then((d: any) => d.length);
 }

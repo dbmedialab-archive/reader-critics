@@ -17,6 +17,7 @@
 //
 
 import Pagination from 'base/Pagination';
+import {defaultLimit} from 'app/services/BasicPersistingService';
 
 /**
  * Capitalize first letter in string
@@ -35,34 +36,51 @@ export function getPaginationParams (search: string): Pagination {
 
 	return {
 		page: parseInt(query.get('page')) || 1,
-		limit: parseInt(query.get('limit')),
+		limit: parseInt(query.get('limit')) || defaultLimit,
 		sort: query.get('sort'),
 		sortOrder: parseInt(query.get('sortOrder')),
 	};
 }
 
-export function getFormattedPagination(page?, limit?, sort?, sortOrder?) {
-	let result: string = '';
-	const pagination: string[] = [];
+export function getFormattedPagination(
+	page?: number,
+	limit?: number,
+	sort?: string,
+	sortOrder?: number
+) {
+	const query = new URLSearchParams();
+	if (page && page > 0) {
+		query.append('page', page.toString());
+	}
+	if (typeof limit === 'number') {
+		query.append('limit', limit.toString());
+	}
+	if (sort && typeof sortOrder !== 'undefined') {
+		query.append('sort', sort);
+		query.append('sortOrder', sortOrder.toString());
+	}
 
-	if (sort || page || limit) {
-		if (page) {
-			pagination.push(`page=${page}`);
-		}
-		if (limit) {
-			pagination.push(`limit=${limit}`);
-		}
-		if (sort) {
-			pagination.push(`sort=${sort}`);
+	return query.toString() ? `?${query.toString()}` : '';
+}
 
-			if (sortOrder) {
-				pagination.push(`sortOrder=${sortOrder}`);
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+export function debounce(func, wait, immediate) {
+	let timeout;
+	return function(...args) {
+		const later = () => {
+			timeout = null;
+			if (!immediate) {
+				func.apply(this, args);
 			}
+		};
+		const callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) {
+			func.apply(this, args);
 		}
-	}
-
-	if (pagination.length) {
-		result = '?' + pagination.join('&');
-	}
-	return result;
+	};
 }

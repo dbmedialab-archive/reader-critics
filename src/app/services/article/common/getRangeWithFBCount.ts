@@ -21,8 +21,30 @@ import {ArticleDocument, ArticleModel} from 'app/db/models';
 // getRange with count of feedbacks using internal populate
 export default function(skip: number = defaultSkip,
 						limit: number = defaultLimit,
-						sort: Object = defaultSort): Promise <ArticleDocument[]> {
-	return ArticleModel.aggregate([
+						sort: Object = defaultSort,
+						search?: string
+): Promise <ArticleDocument[]> {
+	if ('title' in sort) {
+		sort['itemField.text'] = sort['title'];
+		delete sort['title'];
+	}
+
+	const match = {
+		feedbacks: {$not: {$eq: 0}},
+		'itemField.order.type': 1,
+		'itemField.order.item': 1,
+	};
+
+	if (search) {
+		match['$or'] = [
+			{'itemField.text' : new RegExp(`${search}`, 'i')},
+			{'url' : new RegExp(`^(?:http(?:s)?\\:\\/\\/)?(?:www\\.)?(?:.*\\..*\\/)${search}`, 'i')},
+			// The RegExp above is looking for search string match in URL AFTER the domain part
+		];
+	}
+
+	return ArticleModel
+		.aggregate([
 			{
 				$lookup: {
 					from: 'feedbacks',
@@ -43,11 +65,30 @@ export default function(skip: number = defaultSkip,
 					feedbacks: {
 						$size: '$feedbacks',
 					},
+					itemField: '$items',
 				},
+			},
+			{
+				$unwind: '$itemField',
+			},
+			{
+				$match: match,
 			},
 			{$sort: sort},
 			{$skip: skip},
 			{$limit: limit},
+			{
+				$project: {
+					ID: '$_id',
+					url: '$url',
+					version: '$version',
+					website: '$website',
+					date: '$date',
+					items: '$items',
+					authors: '$authors',
+					feedbacks: '$feedbacks',
+				},
+			},
 		])
 		.then(populateArticle);
 }
