@@ -24,7 +24,11 @@ export default function (search?: string) : Promise <number> {
 		'itemField.order.item': 1,
 	};
 	if (search) {
-		match['itemField.text'] = new RegExp(`${search}`, 'i');
+		match['$or'] = [
+			{'itemField.text' : new RegExp(`${search}`, 'i')},
+			{'url' : new RegExp(`^(?:http(?:s)?\\:\\/\\/)?(?:www\\.)?(?:.*\\..*\\/)${search}`, 'i')},
+			// The RegExp above is looking for search string match in URL AFTER the domain part
+		];
 	}
 
 	return ArticleModel.aggregate([
