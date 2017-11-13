@@ -27,7 +27,7 @@ export interface IArticlesFilter {
 }
 
 export default class ArticlesFilter extends React.Component <IArticlesFilter, any> {
-	constructor (props) {
+	constructor (props: IArticlesFilter) {
 		super(props);
 		this.onFilterChange = this.onFilterChange.bind(this);
 		this.onKeyUp = this.onKeyUp.bind(this);

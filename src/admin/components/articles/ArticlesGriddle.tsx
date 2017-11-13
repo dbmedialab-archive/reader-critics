@@ -37,7 +37,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 	private RowEnhancer: (component: any) => (props: any) => JSX.Element;
 	private events: any;
 
-	constructor (props) {
+	constructor (props: IArticlesGriddle) {
 		super(props);
 		this.updateArticlesList = this.updateArticlesList.bind(this);
 		this.findTitle = this.findTitle.bind(this);
