@@ -10,6 +10,9 @@ button {
 
 button[disabled] {
 	cursor: default;
+	color: #444 !important;
+	background-color: #CCC !important;
+	border-color: #BBB !important;
 }
 
 button::-moz-focus-inner {

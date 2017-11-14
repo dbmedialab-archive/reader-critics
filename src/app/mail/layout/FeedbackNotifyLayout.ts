@@ -57,7 +57,7 @@ const whenSentIn = (f : Feedback) =>
 // Formatting - Article Items
 
 const itemComment = (i : ItemFormatPayload) =>
-	(i.fItem.comment.length <= 0) ? ''
+	(i.fItem.comment !== undefined && i.fItem.comment.length <= 0) ? ''
 		: '<div class="el-comment">' + __('label.comment') + ': <i>'
 		+ i.fItem.comment
 		+ '</i></div>';
@@ -96,7 +96,7 @@ const cssItemDiffText = concat(cssItemTextGeneric, [
 ]).join(';');
 
 const itemText = (i : ItemFormatPayload) => {
-	if (i.fItem.text.length <= 0) {
+	if (i.fItem.text !== undefined && i.fItem.text.length <= 0) {
 		return `<div class="el-diff" style="${cssItemText}">${i.aItem.text}</div>`;
 	}
 	else {
@@ -107,7 +107,7 @@ const itemText = (i : ItemFormatPayload) => {
 };
 
 const itemLinks = (i : ItemFormatPayload) => {
-	if (i.fItem.links.length <= 0) {
+	if (i.fItem.links === undefined ? true : i.fItem.links.length <= 0) {
 		return '';
 	}
 

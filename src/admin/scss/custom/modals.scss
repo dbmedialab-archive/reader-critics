@@ -47,6 +47,10 @@
 
 		}
 
+		textarea[name='template'] {
+			height: 40rem;
+		}
+
 	}
 
 	> .row > img {
@@ -81,6 +85,14 @@
 				margin-left: 30px;
 				float: right;
 			}
+		}
+	}
+
+	.authentication-form {
+		.callout.alert {
+			position: relative;
+			top: -.8rem;
+			padding: .6rem;
 		}
 	}
 }

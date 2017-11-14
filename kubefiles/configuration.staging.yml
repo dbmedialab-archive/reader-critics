@@ -5,3 +5,4 @@ metadata:
   namespace: reader-critics-stage
 data:
   NODE_ENV: production
+  I18N_SYS_LOCALE: nb

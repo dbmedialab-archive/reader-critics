@@ -46,6 +46,7 @@ export default class FeedbackContainer
 extends React.Component <any, FeedbackContainerState> {
 
 	private articleElements : ArticleElement[] = [];
+	private finishBtn : FinishButton;
 
 	constructor() {
 		super();
@@ -67,10 +68,36 @@ extends React.Component <any, FeedbackContainerState> {
 		});
 	}
 
+	public onChange() {
+		let changedItems = 0;
+		// console.log('received onChange');
+		this.articleElements.forEach((elem, index) => {
+			if (elem.hasData()) {
+				// const d = elem.getCurrentData();
+				// console.log(`item ${d.type}-${d.order.item}-${d.order.type} has data`);
+				changedItems += 1;
+			}
+		});
+		// console.log('changedItems =', changedItems);
+		if (changedItems > 0) {
+			// console.log('form has data, enable submit/change button');
+			this.finishBtn.enable(<FormattedMessage
+				id="fb.message.form-has-input"
+				values={{
+					count: changedItems,
+				}}
+			/>);
+		}
+		else {
+			// console.log('form is empty');
+			this.finishBtn.disable(<span>No changes so far</span>);
+		}
+	}
+
 	private nextFeedbackStep() {
 		const items : FeedbackItem[] = this.articleElements
-			.map((element : ArticleElement) => element.getCurrentData())
-			.filter((item : FeedbackItem) => item !== null);  // TODO fix with "isEdited" or similar
+			.filter((element : ArticleElement) => element.hasData())
+			.map((element : ArticleElement) => element.getCurrentData());
 
 		if (items.length <= 0) {
 			alert(<FormattedMessage id="fb.errors.emptyErr"/>);
@@ -101,8 +128,8 @@ extends React.Component <any, FeedbackContainerState> {
 		// Iterate article elements and render sub components
 		return (
 			<section id="content">
-				{ this.state.article.items.map(item => createArticleElement(item, refFn)) }
-				<FinishButton SendForm={sendFn} />
+				{ this.state.article.items.map(item => createArticleElement(this, item, refFn)) }
+				<FinishButton SendForm={sendFn} ref={r => this.finishBtn = r}/>
 			</section>
 		);
 	}
