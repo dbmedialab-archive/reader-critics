@@ -152,6 +152,18 @@
 		},
 		label: {
 			'article-el': {
+				'feat-image': {
+					en: 'Featured Image',
+					nb: 'Fremhevet bilde',
+				},
+				'lead-in': {
+					en: 'Introduction',
+					nb: 'Innledning',
+				},
+				link: {
+					en: 'Link #{order}',
+					nb: 'Link #{order}',
+				},
 				maintitle: {
 					en: 'Title',
 					nb: 'Tittel',
@@ -160,42 +172,26 @@
 					en: 'Paragraph #{order}',
 					nb: 'Avsnitt #{order}',
 				},
-				paragraphEmpty: {
-					en: 'Paragraph',
-					nb: 'Avsnitt',
-				},
-				text: {
-					en: 'Text',
-					nb: 'Tekst',
-				},
-				editComment: {
-					en: 'Add comment',
-					nb: 'Legg til kommentar',
-				},
-				addLinks: {
-					en: 'Add links',
-					nb: 'Legg til lenker',
-				},
-				featImage: {
-					en: 'Featured Image',
-					nb: 'Utvalgte bilder',
-				},
 				picture: {
 					en: 'Picture #{order}',
 					nb: 'Bilde #{order}',
 				},
-				introduction: {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				subHead: {
+				'sub-head': {
 					en: 'Sub Heading #{order}',
 					nb: 'Mellomtittel #{order}',
 				},
+			},
+			'add-comment': {
+				en: 'Add comment',
+				nb: 'Legg til kommentar',
+			},
+			'add-links': {
+				en: 'Add links',
+				nb: 'Legg til lenker',
+			},
+			'no-img-caption': {
+				en: 'No image caption',
+				nb: 'Ingen bildetekst',
 			},
 		},
 		message: {
@@ -212,6 +208,36 @@
 			errors: {
 				emptyErr: 'The feedback form is still empty, nothing was sent',
 			},
+			label: {
+				name: {
+					en: 'Name',
+					nb: 'Navn',
+				},
+				getRecommend: {
+					en: 'e-mail', // 'Get notifications via e-mail',
+					nb: 'e-post', // 'Få tilbakemelding på e-post',
+				},
+				keepInfo: {
+					en: 'Send your feedback now',
+					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+				},
+				backToArticle: {
+					en: 'Back to the article',
+					nb: 'Tilbake til artikkelen',
+				},
+			},
+			message: {
+				'form-has-input': {
+					en: 'You have {count, plural, one {one input} other {# inputs}}. Continue?',
+					nb: 'Du har {count, plural, one {ett innlegg} other {# innlegg}}. Gå videre?',
+				}
+			},
+			post: {
+				transmitted: {
+					en: 'Feedback was finally transmitted!',
+					nb: 'Tilbakemeldingen har akkurat blitt overført!',
+				},
+			},
 			sendForm: {
 				message: {
 					en: 'Click here when you are done',
@@ -221,30 +247,6 @@
 					en: 'Send feedback.',
 					nb: 'Send tilbakemelding.',
 				}
-			},
-			post: {
-				transmitted: {
-					en: 'Feedback was finally transmitted!',
-					nb: 'Tilbakemeldingen har akkurat blitt overført!',
-				},
-			},
-			label: {
-				name: {
-					en: 'Name',
-					nb: 'Navn',
-				},
-				getRecommend: {
-					en: 'Get notifications via e-mail',
-					nb: 'Få tilbakemelding på e-post',
-				},
-				keepInfo: {
-					en: 'Keep me updated',
-					nb: 'Hold meg oppdatert',
-				},
-				backToArticle: {
-					en: 'Back to the article',
-					nb: 'Tilbake til artikkelen',
-				},
 			},
 		},
 		suggest: {

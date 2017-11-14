@@ -1,0 +1,148 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
+import * as React from 'react';
+import {connect} from 'react-redux';
+import ReactModal from './ReactModalComponent';
+import * as UIActions from 'admin/actions/UIActions';
+import * as WebsiteActions from 'admin/actions/WebsiteActions';
+import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParserClass';
+import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
+import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
+import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
+import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
+import {WebsiteLayoutProps} from 'admin/types/Website';
+
+export interface IWebsiteUpdateProps {
+	currentName: string;
+	name?: string;
+	parserClass?: string;
+	hosts?: string[];
+	chiefEditors?: {name: string, email: string}[];
+	layout?: WebsiteLayoutProps;
+}
+
+class AddUserModalComponent extends React.Component <any, any> {
+	constructor (props) {
+		super(props);
+
+		this.closePopup = this.closePopup.bind(this);
+		this.closeReset = this.closeReset.bind(this);
+		this.onUpdate = this.onUpdate.bind(this);
+		this.onNewWebsiteSave = this.onNewWebsiteSave.bind(this);
+	}
+
+	componentWillMount () {
+		UIActions.initModalWindows(this.props.windowName);
+	}
+
+	componentWillUnmount () {
+		WebsiteActions.setSelectedWebsite(null);
+	}
+
+	closePopup (): void {
+		if (this.props.ID) {
+			UIActions.closeReset(this.props.windowName);
+		} else {
+			UIActions.modalWindowsChangeState(this.props.windowName, {isOpen: false});
+		}
+	}
+
+	closeReset (): void {
+		UIActions.closeReset(this.props.windowName);
+	}
+
+	onUpdate (data): void {
+		if (this.props.ID) {
+			const dataToSend:IWebsiteUpdateProps = Object.assign({currentName: this.props.name}, data);
+			return WebsiteActions.updateWebsite(dataToSend);
+		} else {
+			return WebsiteActions.updateNewWebsiteTemplate(data);
+		}
+	}
+
+	onNewWebsiteSave () {
+		if (!this.props.ID && this.props.name) {
+			WebsiteActions.createWebsite(this.props.currentWebsite);
+			return this.closeReset();
+		}
+	}
+
+	render (): JSX.Element {
+		const isDisabled = !!this.props.name && !this.props.ID;
+		return (
+			<ReactModal isOpen={this.props.isOpen} name="website" closeHandler={this.closePopup}>
+				<div className="modal-window">
+					<div className="close-btn">
+						<i onClick={this.closeReset} className="fa fa-close"/>
+					</div>
+					<div className="row">
+						<div className="medium-12 columns">
+							{this.props.ID ? <p className="lead">Edit Website</p>
+								: <p className="lead">Add new Website</p>
+							}
+						</div>
+					</div>
+					<form className="website-edit-form">
+						<div className="row">
+							<WebsiteName onSubmit={this.onUpdate} name={this.props.name} />
+							<WebsiteParserClass	onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteHosts onChange={this.onUpdate}	/>
+						</div>
+						<div className="row">
+							<WebsiteEditors	onChange={this.onUpdate} />
+						</div>
+						<WebsiteLayout feedbackPage={this.props.feedbackPage} onSubmit={this.onUpdate}	/>
+						{!this.props.ID ?
+						<div className="row button-holder">
+							<div className="medium-12 columns">
+								<button type="button"
+										disabled={!isDisabled}
+										onClick={this.onNewWebsiteSave}
+										className="button">Save
+								</button>
+								<button type="button"
+										onClick={this.closeReset}
+										className="secondary button cancel-button">Cancel
+								</button>
+							</div>
+						</div> : null}
+					</form>
+				</div>
+			</ReactModal>
+		);
+	}
+}
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
+		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage']),
+		ID: state.website.getIn(['selected', 'ID'], null),
+		name: state.website.getIn(['selected', 'name']),
+		currentWebsite: state.website.getIn(['selected']),
+	};
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddUserModalComponent);

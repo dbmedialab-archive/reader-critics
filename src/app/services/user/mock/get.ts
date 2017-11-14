@@ -10,5 +10,6 @@ export default function(username: string, email?: string): Promise<User> {
 		name: 'admin',
 		email: 'admin@examplemedia.no',
 		role: UserRole.SystemAdmin,
+		users: [],
 	});
 }

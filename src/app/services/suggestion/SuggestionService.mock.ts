@@ -31,11 +31,14 @@ import {
 	save,
 } from './SuggestionDAO';
 
+import getAmount from 'app/services/suggestion/common/getAmount';
+
 const service : SuggestionService
 	= createPersistingService <SuggestionDocument, SuggestionService, Suggestion> (
 		SuggestionModel, {
 			getSince,
 			save,
+			getAmount,
 		}
 	);
 

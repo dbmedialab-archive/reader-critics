@@ -9,6 +9,10 @@ body {
 	color: #888 !important;
 }
 
+#app {
+	height: 100%;
+}
+
 .off-canvas-wrap {
 	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
@@ -47,6 +51,7 @@ body {
 					right: 10px;
 					bottom: 10px;
 					top: 85px;
+					overflow-y: auto;
 
 					.helpme {
 						@include transition(opacity, .3s, ease-out);
@@ -155,4 +160,13 @@ body {
 		}
 
 	}
+}
+
+ins {
+	color: $color-success;
+	text-decoration: none;
+}
+
+del {
+	color: $color-warning;
 }

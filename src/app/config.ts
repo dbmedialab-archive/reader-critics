@@ -34,58 +34,38 @@ const log = app.createLog('config');
 
 const isHexSecret = (val : any) => /^[a-fA-F0-9]{64}$/.test(val);
 
-convict.addFormat({
-	name: 'hex-secret',
-	validate: (value) => {
-		if (!isHexSecret(value)) {
-			log(value);
-			throw new Error('Must be a 64 character hex key');
-		}
+convict.addFormats({
+	'hex-secret': {
+		validate: (value) => {
+			if (!isHexSecret(value)) {
+				log(value);
+				throw new Error('Must be a 64 character hex key');
+			}
+		},
+	},
+	'string-or-empty': {
+		validate: (value) => {
+			if (!(
+				((typeof value === 'string') && value.length > 0)
+				|| value === null
+				|| value === undefined
+			)) {
+				log(value);
+				throw new Error('Must be a string value or empty (null/undefined)');
+			}
+		},
 	},
 });
 
 const config = convict({
-	http: {
-		port: {
-			doc: 'Network port where the HTTP server is going to listen',
-			format: 'port',
-			default: 4000,
-			env: 'HTTP_PORT',
-		},
-	},
-	db: {
-		mongo: {
-			url: {
-				doc: 'MongoDB connection URL for the main backend database',
-				format: String,
-				default: 'mongodb://localhost:27017/readercritics',
-				env: 'MONGODB_URL',
+	analytics: {
+		google: {
+			trackingID: {
+				default: undefined,
+				format: 'string-or-empty',
+				doc: 'Set this to your GA tracking ID to activate it in all page templates',
+				env: 'ANALYTICS_GOOGLE_TRACKING_ID',
 			},
-		},
-		redis: {
-			url: {
-				// See app/db/createRedisConnection for details about the constants
-				[dbMessageQueue]: {
-					doc: 'Redis URL for the database that holds the message queue',
-					format: String,
-					default: null,
-					env: 'REDIS_URL_MESSAGE_QUEUE',
-				},
-				[dbSessionCache]: {
-					doc: 'Redis URL for the database that holds the session cache',
-					format: String,
-					default: null,
-					env: 'REDIS_URL_SESSION_CACHE',
-				},
-			},
-		},
-	},
-	localization: {
-		systemLocale: {
-			doc: 'Default system locale that will be used when websites do not override',
-			format: String,
-			default: 'en',
-			env: 'I18N_SYS_LOCALE',
 		},
 	},
 	auth: {
@@ -127,6 +107,49 @@ const config = convict({
 			},
 		},
 	},
+	db: {
+		mongo: {
+			url: {
+				doc: 'MongoDB connection URL for the main backend database',
+				format: String,
+				default: 'mongodb://localhost:27017/readercritics',
+				env: 'MONGODB_URL',
+			},
+		},
+		redis: {
+			url: {
+				// See app/db/createRedisConnection for details about the constants
+				[dbMessageQueue]: {
+					doc: 'Redis URL for the database that holds the message queue',
+					format: String,
+					default: null,
+					env: 'REDIS_URL_MESSAGE_QUEUE',
+				},
+				[dbSessionCache]: {
+					doc: 'Redis URL for the database that holds the session cache',
+					format: String,
+					default: null,
+					env: 'REDIS_URL_SESSION_CACHE',
+				},
+			},
+		},
+	},
+	http: {
+		port: {
+			doc: 'Network port where the HTTP server is going to listen',
+			format: 'port',
+			default: 4000,
+			env: 'HTTP_PORT',
+		},
+	},
+	localization: {
+		systemLocale: {
+			doc: 'Default system locale that will be used when websites do not override',
+			format: String,
+			default: 'en',
+			env: 'I18N_SYS_LOCALE',
+		},
+	},
 	mail: {
 		sender: {
 			domain: {
@@ -137,54 +160,59 @@ const config = convict({
 		},
 		sendgrid: {
 			api_key: {
-				default: '',
-				format: String,
+				default: undefined,
+				format: 'string-or-empty',
 				doc: 'API key for SendGrid mail service, used if no other service is configured',
 				env: 'SENDGRID_API_KEY',
 			},
 		},
 		bccRecipient: {
-			default: '',
-			format: String,
+			default: undefined,
+			format: 'string-or-empty',
 			doc: 'Set this to a valid e-mail address to BCC all outgoing mail to it.',
 			env: 'MAIL_BCC_RECIPIENT',
 		},
 		testOverride: {
-			default: '',
-			format: String,
+			default: undefined,
+			format: 'string-or-empty',
 			doc: 'Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode.',
 			env: 'MAIL_TEST_OVERRIDE',
-		},
-	},
-	slack: {
-		channel: {
-			default: '',
-			format: String,
-			doc: 'Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver.',
-		},
-		botname: {
-			default: 'Reader Critics',
-			format: String,
-			doc: 'Bot name for the Slack integration.',
-		},
-		webhook: {
-			default: '',
-			format: String,
-			doc: 'If set to a Slack webhook URL, warnings and errors will be posted to this integration',
 		},
 	},
 	recaptcha: {
 		key: {
 			secret: {
+				default: undefined,
 				doc: 'Secret Google Recaptcha key',
-				default: '',
+				format: 'string-or-empty',
 				env: 'RECAPTCHA_SECRET_KEY',
 			},
 			public: {
+				default: undefined,
 				doc: 'Public Google Recaptcha key',
-				default: '',
+				format: 'string-or-empty',
 				env: 'RECAPTCHA_PUBLIC_KEY',
 			},
+		},
+	},
+	slack: {
+		channel: {
+			default: undefined,
+			format: 'string-or-empty',
+			doc: 'Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver.',
+			env: 'SLACK_CHANNEL',
+		},
+		botname: {
+			default: 'Reader Critics',
+			format: 'string-or-empty',
+			doc: 'Bot name for the Slack integration.',
+			env: 'SLACK_BOTNAME',
+		},
+		webhook: {
+			default: undefined,
+			format: 'string-or-empty',
+			doc: 'If set to a Slack webhook URL, warnings and errors will be posted to this integration',
+			env: 'SLACK_WEBHOOK',
 		},
 	},
 });
