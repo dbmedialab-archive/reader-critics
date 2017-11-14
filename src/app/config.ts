@@ -52,16 +52,17 @@ convict.addFormats({
 	},
 	'string-or-empty': {
 		validate: (value) => {
-			log('typeof:', typeof value);
-			log('inspect:', app.inspect(value));
 			if (!(
-				((typeof value === 'string') && value.length > 0)
+				((typeof value === 'string'))
 				|| value === null
 				|| value === undefined
 			)) {
 				throw new Error('Must be a string value or empty (null/undefined)');
 			}
 		},
+		coerce: (value) => ((typeof value === 'string') && value.length > 0)
+			? value
+			: undefined,
 	},
 });
 
