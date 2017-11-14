@@ -18,8 +18,12 @@
 
 // tslint:disable:max-line-length max-file-line-count
 
+import * as cluster from 'cluster';
+import * as fs from 'fs';
 import * as path from 'path';
 import * as convict from 'convict';
+
+import printEnvironment from 'print-env';
 
 import {
 	dbMessageQueue,
@@ -34,11 +38,14 @@ const log = app.createLog('config');
 
 const isHexSecret = (val : any) => /^[a-fA-F0-9]{64}$/.test(val);
 
+if (cluster.isMaster) {
+	printEnvironment(log);
+}
+
 convict.addFormats({
 	'hex-secret': {
 		validate: (value) => {
 			if (!isHexSecret(value)) {
-				log(value);
 				throw new Error('Must be a 64 character hex key');
 			}
 		},
@@ -46,14 +53,16 @@ convict.addFormats({
 	'string-or-empty': {
 		validate: (value) => {
 			if (!(
-				((typeof value === 'string') && value.length > 0)
+				((typeof value === 'string'))
 				|| value === null
 				|| value === undefined
 			)) {
-				log(value);
 				throw new Error('Must be a string value or empty (null/undefined)');
 			}
 		},
+		coerce: (value) => ((typeof value === 'string') && value.length > 0)
+			? value
+			: undefined,
 	},
 });
 
@@ -217,11 +226,18 @@ const config = convict({
 	},
 });
 
-try {
-	config.loadFile(path.join(rootPath, 'config.json5'));
-}
-catch (err) {
-	log('Can\'t find file /config.json5. Environment settings will apply.');
+{
+	const configFile = path.join(rootPath, 'config.json5');
+
+	if (fs.existsSync(configFile)) {
+		try {
+			config.loadFile(configFile);
+		}
+		catch (error) {
+			log('Error while trying to load %s', configFile);
+			log(error);
+		}
+	}
 }
 
 try {
@@ -229,6 +245,10 @@ try {
 
 	if (config.get('auth.jwt.secret') === config.get('auth.session.secret')) {
 		throw new Error('JWT and session secret are identical');
+	}
+
+	if (cluster.isMaster) {
+		log(app.inspect(config.getProperties()));
 	}
 }
 catch (error) {
