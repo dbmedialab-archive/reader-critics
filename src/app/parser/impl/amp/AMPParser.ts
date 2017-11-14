@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import GenericParser from './GenericParser';
+import GenericParser from '../generic/GenericParser';
 
 import * as app from 'app/util/applib';
 

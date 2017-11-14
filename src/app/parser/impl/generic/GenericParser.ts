@@ -22,10 +22,10 @@ import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 import Parser from 'base/Parser';
 
-import AbstractParser from '../AbstractParser';
+import AbstractParser from '../../AbstractParser';
 
-import * as CheerioPlugin from '../util/CheerioPlugin';
-import * as NodeReadPlugin from '../util/NodeReadPlugin';
+import * as CheerioPlugin from '../../util/CheerioPlugin';
+import * as NodeReadPlugin from '../../util/NodeReadPlugin';
 
 import * as app from 'app/util/applib';
 

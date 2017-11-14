@@ -20,10 +20,10 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 
-import GenericParser from './GenericParser';
+import GenericParser from '../generic/GenericParser';
 
-import { getOpenGraphAuthors } from '../util/AuthorParser';
-import { getOpenGraphModifiedTime } from '../util/VersionParser';
+import { getOpenGraphAuthors } from '../../util/AuthorParser';
+import { getOpenGraphModifiedTime } from '../../util/VersionParser';
 
 import * as app from 'app/util/applib';
 
