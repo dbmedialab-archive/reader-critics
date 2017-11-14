@@ -24,8 +24,6 @@ import * as semver from 'semver';
 
 import { readFileSync } from 'fs';
 
-import printEnvironment from 'print-env';
-
 import config from 'app/config';
 
 import {
@@ -49,9 +47,6 @@ const workerMap = {};
 export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
-
-	printEnvironment(app.createLog('env'));
-	log(app.inspect(config.getProperties()));
 
 	checkEngineVersion()
 		.then(startWorkers)
