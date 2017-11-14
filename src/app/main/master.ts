@@ -24,8 +24,6 @@ import * as semver from 'semver';
 
 import { readFileSync } from 'fs';
 
-import config from 'app/config';
-
 import {
 	typeJobWorker,
 	typeWebWorker,
