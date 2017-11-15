@@ -20,7 +20,7 @@
 			"www.ampbladet.no",
 		],
 		"locale": "nb",
-		parserClass: 'AMPParser',
+		parserClass: 'AMP Parser',
 		"chiefEditors": [
 			{
 				"name": "Vakt Sjef",
@@ -37,7 +37,7 @@
 			"www.dagbladet.no",
 		],
 		"locale": "nb",
-		parserClass: 'DagbladetParser',
+		parserClass: 'Dagbladet Parser',
 		"chiefEditors": [
 			{
 				"name": "Vakt Sjef",
