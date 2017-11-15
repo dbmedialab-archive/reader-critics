@@ -18,14 +18,11 @@
 
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
+import * as moment from 'moment';
 import * as path from 'path';
 import * as semver from 'semver';
 
 import { readFileSync } from 'fs';
-
-import printEnvironment from 'print-env';
-
-import config from 'app/config';
 
 import {
 	typeJobWorker,
@@ -48,9 +45,6 @@ const workerMap = {};
 export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
-
-	printEnvironment(app.createLog('env'));
-	log(app.inspect(config.getProperties()));
 
 	checkEngineVersion()
 		.then(startWorkers)
@@ -102,7 +96,7 @@ function startWorkers() : Promise <any> {
 
 cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => {
 	log('Worker %d died (%s)', worker.id, signal || code);
-	app.notify(`Worker ${worker.id} died`);
+	app.notify(`_${moment().format('YY.MM.DD HH:mm:ss.SSS')}_  Worker ${worker.id} died`);
 
 	// Get the type of the recently deceased worker process
 	const workerType = workerMap[worker.id].workerType;
