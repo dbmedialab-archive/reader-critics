@@ -27,7 +27,7 @@
 		email: 'ee@aller.com',
 		role: 'journalist',
 		// "test123"
-		password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
+    password: '$2a$04$jR27jl7ioYoGuwcixuCdyOU8H1J78tivm69a6.0OEXDjBX3Rg0H26',
 	},
 	{
 		name: 'Philipp Gröschler',

@@ -16,27 +16,32 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	ExtractJwt,
-	Strategy as JwtStrategy,
-	StrategyOptions,
-} from 'passport-jwt';
+import AdminConstants from 'admin/constants/AdminConstants';
 
-import User from 'base/User';
-import { userService } from 'app/services';
-import { RetrieveCallback } from '../passportConfig';
-
-import config from 'app/config';
-
-export const options : StrategyOptions = {
-	jwtFromRequest: ExtractJwt.fromAuthHeader(),
-	secretOrKey: config.get('auth.jwt.secret'),
-};
-
-function verify(jwtPayload, done : RetrieveCallback) {
-	userService.get(jwtPayload.username).then((user : User) => {
-		done(user === null ? 'User not found' : null, user);
-	});
+export interface IAction {
+		type: any;
+		payload?: any;
 }
 
-export const jwtStrategy = new JwtStrategy(options, verify);
+export type TAction = IAction;
+
+export function setArticle(payload): IAction {
+	return {
+		type: AdminConstants.ARTICLE_RECEIVED,
+		payload,
+	};
+}
+
+export function setArticleFeedbacks(payload): IAction {
+	return {
+		type: AdminConstants.ARTICLE_FEEDBACKS_RECEIVED,
+		payload,
+	};
+}
+
+export function clear(payload?): IAction {
+	return {
+		type: AdminConstants.ARTICLE_CLEAR,
+		payload,
+	};
+}

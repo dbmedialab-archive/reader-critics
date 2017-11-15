@@ -25,8 +25,10 @@ export default class LeadInElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label><FormattedMessage id="label.article-el.introduction"/></label>
-			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
+			<label><FormattedMessage id="label.article-el.lead-in"/></label>
+			<p hidden={this.state.editing}>
+				<b>{ this.textDiff(this.props.item.originalText, this.state.text) }</b>
+			</p>
 		</div>;
 	}
 

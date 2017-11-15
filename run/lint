@@ -20,7 +20,6 @@ echo -e "\033[1;38;5;39mTSlint ...\033[0m"
 
 TS_OUT=$(node_modules/.bin/tslint \
 	--project tsconfig.json \
-	--type-check \
 	--config conf/tslint-strict.json \
 	'src/**/*.{ts,tsx}' \
 	2>&1)

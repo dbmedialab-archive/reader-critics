@@ -12,7 +12,18 @@
 		{{~}}
 	</head>
 	<body>
+		{{? it.analytics.gaTrackingID }}
+		<script async src="https://www.googletagmanager.com/gtag/js?id={{=it.analytics.gaTrackingID}}"></script>
+		{{?}}
 		<script>
+			{{? it.analytics.gaTrackingID }}
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', '{{=it.analytics.gaTrackingID}}');
+			{{?}}
 			window.app = {{=it.params}};
 		</script>
 
