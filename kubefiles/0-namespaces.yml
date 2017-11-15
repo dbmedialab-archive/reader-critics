@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{env "WERCKER_GIT_REPOSITORY"}}
