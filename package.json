@@ -128,7 +128,7 @@
 		"@types/ioredis": "0.0.27",
 		"@types/kue": "0.11.7",
 		"@types/lodash": "4.14.79",
-		"@types/mocha": "2.2.43",
+		"@types/mocha": "2.2.44",
 		"@types/mongodb": "2.2.15",
 		"@types/mongoose": "4.7.24",
 		"@types/node": "8.0.52",
