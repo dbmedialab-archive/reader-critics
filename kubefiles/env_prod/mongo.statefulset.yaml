@@ -32,8 +32,8 @@ spec:
           env:
             - name: MONGO_SIDECAR_POD_LABELS
               value: role=mongo,environment={{env "ENV"}}
-						- name: KUBE_NAMESPACE
-							value: {{env "WERCKER_GIT_REPOSITORY"}}
+            - name: KUBE_NAMESPACE
+              value: {{env "WERCKER_GIT_REPOSITORY"}}
   volumeClaimTemplates:
   - metadata:
       name: mongo-persistent-storage
