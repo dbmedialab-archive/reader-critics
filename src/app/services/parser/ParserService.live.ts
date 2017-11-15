@@ -17,13 +17,13 @@
 //
 
 import ParserService from './ParserService';
+import getParserFor from './common/getParserFor';
 
-import getParserFor from './live/getParserFor';
-import getParsersRange from './live/getParsersRange';
+import { getAvailableParsers } from './common/parserResolver';
 
 const service : ParserService = {
 	getParserFor,
-	getParsersRange,
+	getAvailableParsers,
 };
 
 module.exports = service;

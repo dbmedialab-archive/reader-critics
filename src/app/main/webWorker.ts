@@ -30,6 +30,7 @@ import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
 import { initLocalizationStrings } from 'app/services/localization';
+import { initParserResolver } from 'app/services/parser/common/parserResolver';
 import { initWebWorkerQueue } from 'app/queue';
 import { signal } from './clusterSignals';
 
@@ -58,6 +59,7 @@ export default function() {
 	Promise.resolve()
 		.then(initLocalizationStrings)
 		.then(initDatabase)
+		.then(initParserResolver)
 		.then(initWebWorkerQueue)
 		.then(startHTTP)
 		.then(initExpress)
