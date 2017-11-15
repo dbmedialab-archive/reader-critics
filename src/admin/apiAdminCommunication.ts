@@ -36,7 +36,9 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 export function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
 	return fetch(url, {
 		method,
-		headers: { 'Content-Type': 'application/json' },
+		headers: [
+			[ 'Content-Type', 'application/json' ],
+		],
 		body: data ? JSON.stringify(data) : null,
 		credentials: 'include',
 	})
