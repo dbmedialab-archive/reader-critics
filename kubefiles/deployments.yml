@@ -21,9 +21,9 @@ spec:
             name: http-port
           envFrom:
             - configMapRef:
-                name: configuration
+                name: reader-critics-config
             - secretRef:
-                name: service-auth
+                name: reader-critics-secrets
           livenessProbe:
             httpGet:
               path: /api/version
