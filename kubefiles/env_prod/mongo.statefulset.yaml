@@ -19,7 +19,7 @@ spec:
           command:
             - mongod
             - "--replSet"
-            - rs0
+            - {{env "WERCKER_GIT_REPOSITORY"}}
             - "--smallfiles"
             - "--noprealloc"
           ports:
