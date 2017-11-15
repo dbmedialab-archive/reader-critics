@@ -165,6 +165,9 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 						RowEnhancer: this.RowEnhancer,
 						Layout: this.Layout,
 					}}
+					classNames={{
+						NoResults: 'griddle-no-results',
+					}}
 				>
 					<RowDefinition>
 						<ColumnDefinition id="title" title="Title"/>
