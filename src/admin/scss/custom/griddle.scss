@@ -1,5 +1,5 @@
 .griddle-table {
-	font-family: FontAwesome;
+	font-family: Roboto;
 
 	.griddle-table-body {
 
@@ -12,6 +12,7 @@
 .griddle-pagination {
 	margin: 1.5rem 0;
 	text-align: right;
+	font-family: Roboto;
 
 	.griddle-page-select, .griddle-next-button, .griddle-previous-button {
 		display: inline-block;
@@ -37,6 +38,7 @@
 
 .griddle-no-results {
 	font-size: 2rem;
+	font-family: Roboto;
 }
 
 @media only screen and (max-width: 768px) {

@@ -48,21 +48,20 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 		this.onSort = this.onSort.bind(this);
 		this.onRowSelect = this.onRowSelect.bind(this);
 		this.onFilterChange = this.onFilterChange.bind(this);
+		this.clear = this.clear.bind(this);
 
 		this.Layout = ({Table, Pagination, Filter, SettingsWrapper}) => (
 			<div>
 				<Table />
 				<Pagination />
-			</div>
-		);
+			</div>);
 
 		this.RowEnhancer = OriginalComponent =>
 			componentProps => (
 				<OriginalComponent
 					{...componentProps}
 					onClick={this.onRowSelect.bind(this, componentProps.griddleKey)}
-				/>
-			);
+				/>);
 
 		this.events = {
 			onNext: this.nextHandler,
@@ -73,7 +72,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 
 		this.state = {
 			page: 1,
-			limit: defaultLimit,
+			limit: 10 || defaultLimit,
 			sort: '',
 			sortOrder: 1,
 			search: '',
@@ -119,6 +118,9 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 	onFilterChange(search: string) {
 		this.setState({search});
 	}
+	clear() {
+		this.setState({search: ''});
+	}
 	generateGridData() {
 		const {articles} = this.props;
 		return articles.map((article: Article) => {
@@ -144,11 +146,13 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 			<div>
 				<div className="small-12">
 					<div className="row expanded">
-						<div className="small-12 large-5">
+						<div className="small-12 large-7">
 							<ArticlesFilter
 								onSubmit={this.updateArticlesList}
 								onChange={this.onFilterChange}
-								search={this.state.search}/>
+								search={this.state.search}
+								clear={this.clear}
+							/>
 						</div>
 					</div>
 				</div>

@@ -24,6 +24,7 @@ export interface IArticlesFilter {
 	search: string;
 	placeholder?: string;
 	buttonText?: string;
+	clear: () => void;
 }
 
 export default class ArticlesFilter extends React.Component <IArticlesFilter, any> {
@@ -50,7 +51,7 @@ export default class ArticlesFilter extends React.Component <IArticlesFilter, an
 			<div>
 				<div className="filter-container">
 					<div className="row">
-						<div className="column small-12 medium-6 large-9">
+						<div className="column small-12 medium-6">
 							<input
 								className="filter-input" value={search}
 								placeholder={placeholder} onChange={this.onFilterChange}
@@ -63,6 +64,12 @@ export default class ArticlesFilter extends React.Component <IArticlesFilter, an
 								onClick={this.props.onSubmit}
 							>
 								{buttonText}
+							</button>
+							<button
+								className="button default"
+								onClick={this.props.clear}
+							>
+								Clear
 							</button>
 						</div>
 					</div>
