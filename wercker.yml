@@ -65,8 +65,8 @@ js-lint-build-test:
 
 push-image:
   box:
-    id: node:8-alpine
-    cmd: /bin/sh
+    id: node:8
+    cmd: /bin/bash
   steps:
   - script:
     name: set dependency cache

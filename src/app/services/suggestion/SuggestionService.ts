@@ -22,6 +22,7 @@ import BasicPersistingService from '../BasicPersistingService';
 interface SuggestionService extends BasicPersistingService <Suggestion> {
 	getSince(since : Date) : Promise <Suggestion[]>;
 	save(suggestion : Suggestion) : Promise <void>;
+	getAmount() : Promise <number>;
 }
 
 export default SuggestionService;

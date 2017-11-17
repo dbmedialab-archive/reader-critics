@@ -58,6 +58,34 @@ export function okResponse(
 	resp.status(statusCode).end(stringify(response));
 }
 
+/**
+ * Sends success API response
+ * API means JSON
+ */
+export function okApiResponse(
+	resp : Response,
+	data? : any,
+	options? : ResponseOptions
+) : void {
+	const response : any = {
+		success: true,
+	};
+
+	response.data = data || {};
+
+	let statusCode = 200;
+
+	if (options !== undefined) {
+		Object.assign(response, options);
+
+		if (options.status) {
+			statusCode = options.status;
+		}
+	}
+
+	resp.status(statusCode).json(response);
+}
+
 // Send a "failure" response
 
 export function errorResponse(
@@ -102,4 +130,18 @@ export function errorResponse(
 
 function stringify (value : any) : string {
 	return app.isProduction ? JSON.stringify(value) : JSON.stringify(value, null, 2) + '\n';
+}
+
+/*
+ * Responds with collection of entities
+ * if empty - will respond with 404
+ * JSON format
+ */
+export function bulkResponse (resp, collection) {
+	const notFound = 'Resourse not found';
+	if (collection.length > 0) {
+		okApiResponse(resp, collection);
+	} else {
+		errorResponse(resp, undefined, notFound, { status: 404 });
+	}
 }

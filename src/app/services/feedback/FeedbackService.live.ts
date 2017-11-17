@@ -26,6 +26,7 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
+import getAmountByArticle from './common/getAmountByArticle';
 import validateAndSave from './common/validateAndSave';
 
 import {
@@ -43,6 +44,7 @@ import {
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
+			getAmountByArticle,
 			getByArticle,
 			getByArticleAuthor,
 			getByID,
