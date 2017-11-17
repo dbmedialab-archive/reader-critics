@@ -20,3 +20,5 @@ export { default as getFeedbackNotifyTemplate } from './mail/getFeedbackNotifyTe
 
 export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
 export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';
+
+export { default as getAdminPageTemplate} from './common/getAdminPageTemplate';
