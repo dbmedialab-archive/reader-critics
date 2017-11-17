@@ -25,6 +25,7 @@ import {
 import { translate as __ } from 'app/services/localization';
 
 import AbstractTemplate from './AbstractTemplate';
+import config from 'app/config';
 
 export default class PageTemplate extends AbstractTemplate {
 
@@ -68,12 +69,17 @@ export default class PageTemplate extends AbstractTemplate {
 	}
 
 	public render() : string {
+		const gaTrackingID : string = config.get('analytics.google.trackingID');
+
 		return this.dotRender({
 			params: JSON.stringify(this.params),
 			locale: this.locale,
 			scripts: this.scripts,
 			styles: this.styles,
 			title: this.title,
+			analytics: {
+				gaTrackingID,
+			},
 		});
 	}
 
