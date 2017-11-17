@@ -19,42 +19,30 @@
 import * as doT from 'dot';
 import * as path from 'path';
 
-import { isEmpty } from 'lodash';
-
-import emptyCheck from 'app/util/emptyCheck';
 import PageTemplate from 'app/template/PageTemplate';
-import Website from 'base/Website';
-
-import { localizationService } from 'app/services';
 
 import * as app from 'app/util/applib';
+import {
+	systemLocale,
+} from 'app/services/localization';
 
-const __ = localizationService.translate;
-const defaultTemplate = path.join('templates', 'page', 'defaultFeedback.html');
+const defaultTemplate = path.join('templates', 'page', 'defaultAdmin.html');
 
-export default function(website : Website) : Promise <PageTemplate> {
-	emptyCheck(website);
+export default function() : Promise <PageTemplate> {
 
 	const rawTemplate = () : Promise <string> => {
-		const raw = website.layout.templates.feedbackPage;
-		return isEmpty(raw)
-			? app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
-			: Promise.resolve(raw);
+		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
 	};
 
-	const templateSettings = Object.assign({}, doT.templateSettings, {
-		strip: app.isProduction,
-	});
-
 	return rawTemplate().then((raw : string) => {
-		return new PageTemplate (doT.template(raw, templateSettings), website.locale)
-			.pushStyle('/static/fb.css')
+		return new PageTemplate (doT.template(raw))
+			.pushStyle('/static/admin.css')
 			.pushScript(
 				'/static/react/react.js',
 				'/static/react/react-dom.js',
-				`/static/locale/${website.locale}.js`,
-				'/static/front.bundle.js'
-			)
-			.setTitle(__('app.title', website.locale));
+				`/static/locale/${systemLocale}.js`,
+				'/static/admin.bundle.js',
+				'https://use.fontawesome.com/b15ebca61e.js'
+			);
 	});
 }
