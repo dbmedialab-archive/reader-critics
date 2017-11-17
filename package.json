@@ -80,7 +80,7 @@
 		"mongoose": "4.13.3",
 		"node-fetch": "1.7.3",
 		"node-read": "0.1.7",
-		"node-sass": "4.5.3",
+		"node-sass": "4.6.1",
 		"passport": "0.4.0",
 		"passport-jwt": "2.2.1",
 		"passport-local": "1.0.0",
