@@ -51,10 +51,10 @@ export const sendSuggestion = ((data : any) : Promise <any> => {
 function fetchData(url : string) : Promise <any> {
 	return fetch(url, {
 		method: 'GET',
-		headers: {
-			'Accept': apiMIME,
-			'Accept-Language': getLocale(),
-		},
+		headers: [
+			[ 'Accept', apiMIME ],
+			[ 'Accept-Language', getLocale() ],
+		],
 	})
 	.then(checkStatus);
 }
@@ -68,10 +68,10 @@ function postData(uri : string, data : any) : Promise <any> {
 function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
 	return fetch(uri, {
 		method: method,
-		headers: {
-			'Accept-Language': getLocale(),
-			'Content-Type': apiMIME,
-		},
+		headers: [
+			[ 'Accept-Language', getLocale() ],
+			[ 'Content-Type', apiMIME ],
+		],
 		body: JSON.stringify(data),
 	});
 }
