@@ -139,7 +139,7 @@
 		"@types/react-dom": "^16.0.0",
 		"@types/react-redux": "^5.0.0",
 		"@types/react-router": "4.0.17",
-		"@types/react-router-dom": "4.0.8",
+		"@types/react-router-dom": "^4.0.0",
 		"@types/redux-promise-middleware": "0.0.9",
 		"@types/webpack": "^3.0.0",
 		"awesome-typescript-loader": "3.2.3",
