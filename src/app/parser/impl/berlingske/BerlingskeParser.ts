@@ -29,11 +29,7 @@ import {
 import { getOpenGraphAuthors } from '../../util/AuthorParser';
 import { getOpenGraphModifiedTime } from '../../util/VersionParser';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
-export default class DagbladetParser extends AbstractIteratingParser {
+export default class BerlingskeParser extends AbstractIteratingParser {
 
 	// Implement AbstractParser
 
@@ -42,13 +38,16 @@ export default class DagbladetParser extends AbstractIteratingParser {
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		return Promise.resolve(getOpenGraphAuthors(this.cheerio));
+		/*const authors = getOpenGraphAuthors(this.select);
+		log('parsing byline:', authors);*/
+		return Promise.resolve([]);
 	}
 
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {
-		return 'main';
+		// return 'div#content.main-content';
+		return 'div#content.main-content';
 	}
 
 	protected getParsedElementNames() : string[] {
@@ -61,20 +60,18 @@ export default class DagbladetParser extends AbstractIteratingParser {
 	}
 
 	protected isMainTitle(item : IteratingParserItem) : boolean {
-		return item.name === 'h2'
-			&& item.css.includes('headline')
+		return item.name === 'h1'
+			&& item.css.includes('article-header__title')
 			&& item.text.length > 0;
 	}
 
 	protected isSubTitle(item : IteratingParserItem) : boolean {
-		return item.name === 'h1'
-			&& item.css.includes('intro')
-			&& item.text.length > 0;
+		return false;
 	}
 
 	protected isLeadIn(item : IteratingParserItem) : boolean {
 		return item.name === 'p'
-			&& item.css.includes('standfirst')
+			&& item.css.includes('article-header__summary')
 			&& item.text.length > 0;
 	}
 
@@ -92,19 +89,9 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		const capEl = this.cheerio('figcaption', fromItem.elem);
 
 		const imgSrc = this.cheerio(imgEl).attr('src');
-		const altTxt = this.cheerio(capEl).text().replace(/Vis mer/, '').trim();
+		const altTxt = this.cheerio(capEl).text().trim();
 
 		return this.createFigureEl(imgSrc, altTxt);
 	}
-
-/*
-<figure itemscope itemtype="http://schema.org/ImageObject" class="columns  large-6 small-12 medium-6 left" style="">
-  <img itemprop="image" title="" alt="" src="&#x2F;&#x2F;dbstatic.no&#x2F;67729294.jpg?imageId=67729294&amp;width=512&amp;height=308" class="">
-  <figcaption class="caption" itemprop="caption" data-expand>
-	<strong>ALDRI FRITT FOR:</strong> Det er sjelden å finne et belgiske torg uten en sjappe som selger pommes frites. Foto: NTB Scanpix
-	<a class="toggle">Vis mer</a>
-  <figcaption>
-</figure>
-*/
 
 }

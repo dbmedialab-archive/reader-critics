@@ -74,6 +74,20 @@ abstract class BaseElements {
 		});
 	}
 
+	protected createSubTitleEl(title : string) : ArticleItem {
+		const text = clean(title);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.SubTitle, {
+			text,
+		});
+	}
+
+	protected createLeadInEl(leadin : string) : ArticleItem {
+		const text = clean(leadin);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.LeadIn, {
+			text,
+		});
+	}
+
 	protected createSubHeadingEl(subheading : string) : ArticleItem {
 		const text = clean(subheading);
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.SubHeading, {
