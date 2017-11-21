@@ -19,10 +19,12 @@
 import * as Cheerio from 'cheerio';
 
 import ArticleItem from 'base/ArticleItem';
+import Parser from 'base/Parser';
+
 import AbstractParser from './AbstractParser';
 import IteratingParserItem from './IteratingParserItem';
 
-abstract class BaseIteratingItems extends AbstractParser {
+abstract class BaseIteratingItems extends AbstractParser implements Parser {
 
 	// Prototypes for overriding parser implementations
 

@@ -19,7 +19,6 @@
 import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
-import ArticleItem from 'base/ArticleItem';
 
 import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';

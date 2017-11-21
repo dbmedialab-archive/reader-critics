@@ -19,30 +19,25 @@
 // tslint:disable: max-file-line-count
 
 import * as Cheerio from 'cheerio';
-import * as util from 'util';
 
 import * as app from 'app/util/applib';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 
-import BaseIteratingElements from './BaseIteratingElements';
+import BaseIteratingItems from './BaseIteratingItems';
 import IteratingParserItem from './IteratingParserItem';
 
 const log = app.createLog();
 
-const trimText = (str : string) => str === undefined ? '' : str.replace(/[\r\n\t\s]+/g, ' ').trim();
-const splitCSS = (css : string) => css === undefined ? [] : css.replace(/\s+/, ' ').split(' ');
-const getElemID = (id : string) => id === undefined ? undefined : id.trim();
-
-const shallowInspect = (obj) => util.inspect(obj, {
+/* const shallowInspect = (obj) => util.inspect(obj, {
 	breakLength: 128,
 	colors: true,
 	depth: 1,
 	showHidden: false,
-});
+}); */
 
-abstract class AbstractIteratingParser extends BaseIteratingElements {
+abstract class AbstractIteratingParser extends BaseIteratingItems {
 
 	protected select : Cheerio;
 
@@ -85,9 +80,9 @@ abstract class AbstractIteratingParser extends BaseIteratingElements {
 		.toArray().map(elem => ({
 			// Some properties are collected and prefiltered here so access is easier
 			name: elem.name,
-			text: trimText(this.select(elem).text()),
-			css: splitCSS(this.select(elem).attr('class')),
-			id: getElemID(this.select(elem).attr('id')),
+			text: CheerioPlugin.trimText(this.select(elem).text()),
+			css: CheerioPlugin.splitCSS(this.select(elem).attr('class')),
+			id: CheerioPlugin.getElemID(this.select(elem).attr('id')),
 			// Reference the original Cheerio object here for advanced access
 			elem,
 		}) as IteratingParserItem);

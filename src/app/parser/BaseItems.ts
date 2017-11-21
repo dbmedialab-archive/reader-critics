@@ -21,7 +21,7 @@ import ArticleItemType from 'base/ArticleItemType';
 
 const clean = (s : string) => s.trim().replace(/\s+/g, ' ');
 
-abstract class BaseElements {
+abstract class BaseItems {
 
 	private totalElementCount : number = 0;
 
@@ -105,4 +105,4 @@ abstract class BaseElements {
 
 }
 
-export default BaseElements;
+export default BaseItems;

@@ -22,7 +22,7 @@ import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 
-import BaseElements from './BaseElements';
+import BaseItems from './BaseItems';
 
 import * as app from 'app/util/applib';
 
@@ -38,7 +38,7 @@ interface ParserWorkflowPayload {
 const sortArticleItems = (a : ArticleItem, b : ArticleItem) : number	=>
 	a.order.item - b.order.item;
 
-abstract class AbstractParser extends BaseElements implements Parser {
+abstract class AbstractParser extends BaseItems implements Parser {
 
 	constructor(
 		protected readonly rawArticle : string,

@@ -25,3 +25,12 @@ export function create(rawArticle : string) : Promise <Cheerio> {
 		lowerCaseTags: true,
 	}));
 }
+
+export const trimText = (str : string) =>
+	str === undefined ? '' : str.replace(/[\r\n\t\s]+/g, ' ').trim();
+
+export const splitCSS = (css : string) =>
+	css === undefined ? [] : css.replace(/\s+/, ' ').split(' ');
+
+export const getElemID = (id : string) =>
+	id === undefined ? undefined : id.trim();

@@ -19,12 +19,11 @@
 import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
-import ArticleItem from 'base/ArticleItem';
 
 import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
+// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
 export default class BerlingskeParser extends AbstractIteratingParser {
