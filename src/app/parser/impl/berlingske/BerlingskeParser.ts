@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Cheerio from 'cheerio';
-
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 
@@ -26,7 +24,7 @@ import {
 	IteratingParserItem,
 } from '../../AbstractIteratingParser';
 
-import { getOpenGraphAuthors } from '../../util/AuthorParser';
+// import { getOpenGraphAuthors } from '../../util/AuthorParser';
 import { getOpenGraphModifiedTime } from '../../util/VersionParser';
 
 export default class BerlingskeParser extends AbstractIteratingParser {

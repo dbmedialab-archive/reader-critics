@@ -16,13 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// tslint:disable: max-file-line-count
+
 import * as Cheerio from 'cheerio';
 import * as util from 'util';
 
 import * as app from 'app/util/applib';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
-import ArticleAuthor from 'base/ArticleAuthor';
+// import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 
 import AbstractParser from './AbstractParser';

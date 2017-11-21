@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Cheerio from 'cheerio';
-
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 
@@ -28,10 +26,6 @@ import {
 
 import { getOpenGraphAuthors } from '../../util/AuthorParser';
 import { getOpenGraphModifiedTime } from '../../util/VersionParser';
-
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
 
 export default class DagbladetParser extends AbstractIteratingParser {
 
@@ -96,15 +90,5 @@ export default class DagbladetParser extends AbstractIteratingParser {
 
 		return this.createFigureEl(imgSrc, altTxt);
 	}
-
-/*
-<figure itemscope itemtype="http://schema.org/ImageObject" class="columns  large-6 small-12 medium-6 left" style="">
-  <img itemprop="image" title="" alt="" src="&#x2F;&#x2F;dbstatic.no&#x2F;67729294.jpg?imageId=67729294&amp;width=512&amp;height=308" class="">
-  <figcaption class="caption" itemprop="caption" data-expand>
-	<strong>ALDRI FRITT FOR:</strong> Det er sjelden å finne et belgiske torg uten en sjappe som selger pommes frites. Foto: NTB Scanpix
-	<a class="toggle">Vis mer</a>
-  <figcaption>
-</figure>
-*/
 
 }
