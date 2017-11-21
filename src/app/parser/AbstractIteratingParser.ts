@@ -24,10 +24,10 @@ import * as util from 'util';
 import * as app from 'app/util/applib';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
-// import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 
-import AbstractParser from './AbstractParser';
+import BaseIteratingElements from './BaseIteratingElements';
+import IteratingParserItem from './IteratingParserItem';
 
 const log = app.createLog();
 
@@ -42,16 +42,9 @@ const shallowInspect = (obj) => util.inspect(obj, {
 	showHidden: false,
 });
 
-export interface IteratingParserItem {
-	name : string
-	text : string
-	css : Array <string>
-	elem : {}
-}
+abstract class AbstractIteratingParser extends BaseIteratingElements {
 
-abstract class AbstractIteratingParser extends AbstractParser {
-
-	protected cheerio : Cheerio;
+	protected select : Cheerio;
 
 	private parsedItems : Array <IteratingParserItem>;
 
@@ -72,8 +65,8 @@ abstract class AbstractIteratingParser extends AbstractParser {
 
 		return super.initialize()
 		.then(() => CheerioPlugin.create(this.rawArticle))
-		.then((c : Cheerio) => {
-			this.cheerio = c;
+		.then((cheeeer : Cheerio) => {
+			this.select = cheeeer;
 		});
 	}
 
@@ -85,35 +78,29 @@ abstract class AbstractIteratingParser extends AbstractParser {
 	}
 
 	private parseElements() : void {
-		this.parsedItems = this.cheerio(
+		this.parsedItems = this.select(
 			this.getParsedElementNames().join(','),
 			this.getContentScopeElement()
 		)
 		.toArray().map(elem => ({
 			// Some properties are collected and prefiltered here so access is easier
 			name: elem.name,
-			text: trimText(this.cheerio(elem).text()),
-			css: splitCSS(this.cheerio(elem).attr('class')),
-			id: getElemID(this.cheerio(elem).attr('id')),
+			text: trimText(this.select(elem).text()),
+			css: splitCSS(this.select(elem).attr('class')),
+			id: getElemID(this.select(elem).attr('id')),
 			// Reference the original Cheerio object here for advanced access
 			elem,
 		}) as IteratingParserItem);
 	}
 
 	private getContentScopeElement() : Cheerio {
-		log('#####################################################################');
-
-		const scopeElArr = this.cheerio(this.getArticleContentScope()).toArray();
+		const scopeElArr = this.select(this.getArticleContentScope()).toArray();
 
 		if (scopeElArr.length !== 1) {
-			throw new Error(`Could not identify a unique content scope element, \
-			DOM query returned ${scopeElArr.length} items`);
+			throw new Error('Could not identify a unique content scope element, '
+			+ `DOM query returned ${scopeElArr.length} items`);
 		}
 
-		log('scopeEl:', shallowInspect(scopeElArr));
-		log('attribs:', shallowInspect(scopeElArr[0].attribs));
-
-		log('#####################################################################');
 		return scopeElArr[0];
 	}
 
@@ -122,24 +109,28 @@ abstract class AbstractIteratingParser extends AbstractParser {
 			const item = this.parsedItems.shift();
 			console.log(`<${item.name} "${item.css.join('|')}"> ${item.text}`);
 
-			if (this.isMainTitle(item)) {
-				this.pushNewTitleItem(this.createMainTitle(item));
+			if (this.isMainTitle(item, this.select)) {
+				this.pushNewTitleItem(this.createMainTitle(item, this.select));
 			}
-			else if (this.isSubTitle(item)) {
-				this.pushNewTitleItem(this.createSubTitle(item));
-			}
-			else if (this.isLeadIn(item)) {
-				this.pushNewContentItem(this.createLeadIn(item));
+			else if (this.isSubTitle(item, this.select)) {
+				this.pushNewTitleItem(this.createSubTitle(item, this.select));
 			}
 
-			else if (this.isFigure(item)) {
-				this.pushNewContentItem(this.createFigure(item));
+			else if (this.isLeadIn(item, this.select)) {
+				this.pushNewContentItem(this.createLeadIn(item, this.select));
 			}
-			else if (this.isParagraph(item)) {
-				this.pushNewContentItem(this.createParagraph(item));
+			else if (this.isFeaturedImage(item, this.select)) {
+				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
+			}
+
+			else if (this.isFigure(item, this.select)) {
+				this.pushNewContentItem(this.createFigure(item, this.select));
+			}
+			else if (this.isParagraph(item, this.select)) {
+				this.pushNewContentItem(this.createParagraph(item, this.select));
 			}
 			else {
-				this.checkOtherVariants(item);
+				this.checkOtherVariants(item, this.select);
 			}
 		}
 	}
@@ -161,14 +152,12 @@ abstract class AbstractIteratingParser extends AbstractParser {
 	// Implementing AbstractParser to return special kinds of parsed items
 
 	protected parseTitles() : Promise <ArticleItem[]> {
-		log('### parseTitles');
 		return Promise.resolve(this.articleItems.titles);
 	}
 
 	// Nur zum Testen
 
 	protected parseFeaturedImage() : Promise <ArticleItem[]> {
-		log('### parseFeaturedImage');
 		return Promise.resolve([]);
 	}
 
@@ -178,46 +167,14 @@ abstract class AbstractIteratingParser extends AbstractParser {
 		return 'body';
 	}
 
-	protected checkOtherVariants(item : IteratingParserItem) {
+	protected checkOtherVariants(
+		item : IteratingParserItem,
+		select : Cheerio
+	) {
 		// No further checks implemented at this point, all remaining items
 		// are turned into a paragraph by default.
 		// this.pushNewContentItem(this.createParagraph(item));
 	}
-
-	// Prototypes for overriding parser implementations
-
-	protected abstract getParsedElementNames() : string[];
-
-	protected abstract isMainTitle(item : IteratingParserItem) : boolean;
-	protected abstract isSubTitle(item : IteratingParserItem) : boolean;
-	protected abstract isLeadIn(item : IteratingParserItem) : boolean;
-
-	protected abstract isFigure(item : IteratingParserItem) : boolean;
-	protected abstract isParagraph(item : IteratingParserItem) : boolean;
-
-	// Default implementations of methods that create an ArticleItem
-	// from a (complex) parsed item of the iterator. Most item types should work
-	// fine with these implementations as long as getting to their actual content
-	// is just copying their text contents.
-
-	protected createMainTitle(fromItem : IteratingParserItem) : ArticleItem {
-		return this.createMainTitleEl(fromItem.text);
-	}
-
-	protected createSubTitle(fromItem : IteratingParserItem) : ArticleItem {
-		return this.createSubTitleEl(fromItem.text);
-	}
-
-	protected createLeadIn(fromItem : IteratingParserItem) : ArticleItem {
-		return this.createLeadInEl(fromItem.text);
-	}
-
-	protected createParagraph(fromItem : IteratingParserItem) : ArticleItem {
-		return this.createParagraphEl(fromItem.text);
-	}
-
-	// Not implementing createFigure() here, this is normally an advanced item.
-	protected abstract createFigure(fromItem : IteratingParserItem) : ArticleItem;
 
 }
 

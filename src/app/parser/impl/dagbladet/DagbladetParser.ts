@@ -16,33 +16,33 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Cheerio from 'cheerio';
+
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 
-import {
-	default as AbstractIteratingParser,
-	IteratingParserItem,
-} from '../../AbstractIteratingParser';
+import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
+import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-import { getOpenGraphAuthors } from '../../util/AuthorParser';
-import { getOpenGraphModifiedTime } from '../../util/VersionParser';
+import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
+import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
 export default class DagbladetParser extends AbstractIteratingParser {
 
 	// Implement AbstractParser
 
 	protected parseVersion() : Promise <string> {
-		return Promise.resolve(getOpenGraphModifiedTime(this.cheerio));
+		return Promise.resolve(getOpenGraphModifiedTime(this.select));
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		return Promise.resolve(getOpenGraphAuthors(this.cheerio));
+		return Promise.resolve(getOpenGraphAuthors(this.select));
 	}
 
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {
-		return 'main';
+		return 'main[role="main"]';
 	}
 
 	protected getParsedElementNames() : string[] {
@@ -54,41 +54,67 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		];
 	}
 
-	protected isMainTitle(item : IteratingParserItem) : boolean {
+	protected isMainTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
 		return item.name === 'h2'
 			&& item.css.includes('headline')
 			&& item.text.length > 0;
 	}
 
-	protected isSubTitle(item : IteratingParserItem) : boolean {
+	protected isSubTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
 		return item.name === 'h1'
 			&& item.css.includes('intro')
 			&& item.text.length > 0;
 	}
 
-	protected isLeadIn(item : IteratingParserItem) : boolean {
+	protected isLeadIn(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
 		return item.name === 'p'
 			&& item.css.includes('standfirst')
 			&& item.text.length > 0;
 	}
 
-	protected isParagraph(item : IteratingParserItem) : boolean {
+	protected isFeaturedImage(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		// Fail-fast if this isn't a figure element
+		if (!this.isFigure(item, select)) {
+			return false;
+		}
+
+		// The only way to figure out if a <figure> is a featured image on
+		// dagbladet.no is to look at its parent element. If by climbing up the
+		// DOM tree we find a <header> element, then this is a featured image.
+		// If that container is missing, it's just a plain inline figure.
+		const parents : string[] = select(item.elem)
+			.parentsUntil(this.getArticleContentScope())
+			.toArray()
+			.map(thisEl => thisEl.name);
+
+		return parents.includes('header');
+	}
+
+	protected isParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
 		return item.name === 'p' && item.text.length > 0;
 	}
 
-	protected isFigure(item : IteratingParserItem) : boolean {
+	protected isFigure(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
 		return item.name === 'figure'
-			&& this.cheerio(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}
-
-	protected createFigure(fromItem : IteratingParserItem) : ArticleItem {
-		const imgEl = this.cheerio('img', fromItem.elem);
-		const capEl = this.cheerio('figcaption', fromItem.elem);
-
-		const imgSrc = this.cheerio(imgEl).attr('src');
-		const altTxt = this.cheerio(capEl).text().replace(/Vis mer/, '').trim();
-
-		return this.createFigureEl(imgSrc, altTxt);
+			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
 	}
 
 }

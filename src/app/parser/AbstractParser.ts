@@ -35,6 +35,9 @@ interface ParserWorkflowPayload {
 	featured : ArticleItem[]
 }
 
+const sortArticleItems = (a : ArticleItem, b : ArticleItem) : number	=>
+	a.order.item - b.order.item;
+
 abstract class AbstractParser extends BaseElements implements Parser {
 
 	constructor(
@@ -88,7 +91,7 @@ abstract class AbstractParser extends BaseElements implements Parser {
 				...a.titles,
 				...a.featured,
 				...content,
-			],
+			].sort(sortArticleItems),
 		}));
 	}
 

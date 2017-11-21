@@ -47,16 +47,17 @@ abstract class BaseElements {
 
 	// Article element creators
 
-	protected createFeaturedImageEl(href : string) : ArticleItem {
+	protected createFeaturedImageEl(imgSrc : string, altTxt : string) : ArticleItem {
 		return this.createEl(ArticleItemType.FeaturedImage, {
-			href,
+			href: imgSrc,
+			text: altTxt ? altTxt.trim() : '',
 		});
 	}
 
-	protected createFigureEl(href : string, altText : string) : ArticleItem {
+	protected createFigureEl(href : string, altTxt : string) : ArticleItem {
 		return this.createEl(ArticleItemType.Figure, {
 			href,
-			text: altText ? altText.trim() : '',
+			text: altTxt ? altTxt.trim() : '',
 		});
 	}
 

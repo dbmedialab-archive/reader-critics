@@ -79,7 +79,7 @@ export default class GenericParser extends AbstractParser implements Parser {
 		const featured : ArticleItem[] = [];
 
 		if (meta.length === 1) {
-			featured.push(this.createFeaturedImageEl(meta.attr('content')));
+			featured.push(this.createFeaturedImageEl(meta.attr('content'), ''));
 		}
 
 		return Promise.resolve(featured);
