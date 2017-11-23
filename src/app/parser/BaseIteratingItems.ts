@@ -50,12 +50,22 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		select : Cheerio
 	) : boolean;
 
-	protected abstract isFigure(
+	protected abstract isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean;
 
 	protected abstract isParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean;
+
+	protected abstract isFigure(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean;
+
+	protected abstract isLink(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean;
@@ -86,11 +96,25 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		return this.createLeadInEl(fromItem.text);
 	}
 
+	protected createSubHeading(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createSubHeadingEl(fromItem.text);
+	}
+
 	protected createParagraph(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createParagraphEl(fromItem.text);
+	}
+
+	protected createLink(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createLinkEl(fromItem.text, fromItem.text);  // TODO split data
 	}
 
 	// The more advanced item types

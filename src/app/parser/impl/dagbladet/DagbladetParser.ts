@@ -101,6 +101,13 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		return parents.includes('header');
 	}
 
+	protected isSubHeading(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return item.name === 'h2' && item.text.length > 0 && item.css.length === 0;
+	}
+
 	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
@@ -114,6 +121,13 @@ export default class DagbladetParser extends AbstractIteratingParser {
 	) : boolean {
 		return item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
+	}
+
+	protected isLink(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return false;
 	}
 
 }
