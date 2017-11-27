@@ -77,7 +77,11 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			this.getParsedElementNames().join(','),
 			this.getContentScopeElement()
 		)
-		.toArray().map(elem => ({
+		.toArray().map(elem => this.preprocessElement(elem));
+	}
+
+	private preprocessElement(elem : Cheerio, getParents : boolean = true) : IteratingParserItem {
+		const preprocessed : IteratingParserItem = {
 			// Some properties are collected and prefiltered here so access is easier
 			name: elem.name,
 			text: CheerioPlugin.trimText(this.select(elem).text()),
@@ -85,7 +89,17 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			id: CheerioPlugin.getElemID(this.select(elem).attr('id')),
 			// Reference the original Cheerio object here for advanced access
 			elem,
-		}) as IteratingParserItem);
+		};
+
+		// Provide an array of parent items
+		if (getParents) {
+			preprocessed.parents = this.select(elem)
+			.parentsUntil(this.getArticleContentScope())
+			.toArray()
+			.map(parentEl => this.preprocessElement(parentEl, false));
+		}
+
+		return preprocessed;
 	}
 
 	private getContentScopeElement() : Cheerio {
@@ -102,7 +116,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	private iterateParsedElements() : void {
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
-			console.log(`<${item.name} "${item.css.join('|')}"> ${item.text}`);
 
 			if (this.isMainTitle(item, this.select)) {
 				this.pushNewTitleItem(this.createMainTitle(item, this.select));
