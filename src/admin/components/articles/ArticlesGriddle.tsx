@@ -58,8 +58,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 
 		this.RowEnhancer = OriginalComponent =>
 			componentProps => (
-				<OriginalComponent
-					{...componentProps}
+				<OriginalComponent	{...componentProps}
 					onClick={this.onRowSelect.bind(this, componentProps.griddleKey)}
 				/>);
 
@@ -128,6 +127,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 			return {
 				title: this.findTitle(article),
 				date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
+				version: article.version || '',
 				feedbacks: article.feedbacks || 0,
 			};
 		});
@@ -176,6 +176,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 					<RowDefinition>
 						<ColumnDefinition id="title" title="Title"/>
 						<ColumnDefinition id="date" title="Date"/>
+						<ColumnDefinition id="version" title="Version"/>
 						<ColumnDefinition id="feedbacks" title="Feedbacks"/>
 					</RowDefinition>
 				</Griddle>
