@@ -67,7 +67,7 @@ function authCheck(response: Response): any {
 	if (response.status === 401) {
 		UIActions.hideMainPreloader();
 		UIActions.showDialog({
-			yesBtnName: 'Sign IN',
+			yesBtnName: 'Sign In',
 			dialogTitle: 'Authentication session lost. Please, try to login again.',
 			onlyAcceptable: true,
 			yesHandler: () => window.location.href = '/admin/login',
