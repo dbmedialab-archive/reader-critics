@@ -21,6 +21,8 @@ import * as Cheerio from 'cheerio';
 export default interface IteratingParserItem {
 	name : string
 	text : string
+	id : string
 	css : Array <string>
 	elem : Cheerio
+	parents? : Array <IteratingParserItem>
 }
