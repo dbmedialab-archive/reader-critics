@@ -18,7 +18,6 @@
 
 import 'whatwg-fetch';
 import * as UIActions from 'admin/actions/UIActions';
-import AdminConstants from 'admin/constants/AdminConstants';
 
 /**
  * Sends an authentication request

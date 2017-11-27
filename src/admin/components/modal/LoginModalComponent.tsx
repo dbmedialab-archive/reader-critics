@@ -104,7 +104,7 @@ class LoginModalComponent extends React.Component <any, any> {
 					this.props.getBack();
 				})
 				.catch(err => {
-					this.updateErrorState(err, true);
+					this.updateErrorState(err.message, true);
 					UIActions.hideMainPreloader();
 				});
 		}
