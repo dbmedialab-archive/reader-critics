@@ -63,21 +63,22 @@ class DialogModal extends React.Component <any, any> {
 					</div>
 					<div className="row">
 						<div className="medium-12 columns">
-							<p className="lead">{this.props.dialogTitle}</p>
+							<p className="lead text-center">{this.props.dialogTitle}</p>
 						</div>
 					</div>
 					<div className="row button-holder">
-						<div className="medium-12 columns">
+						<div className={`medium-12 columns${this.props.onlyAcceptable ? ' text-center': ''}`}>
 							<a
 								onClick={this.yesHandler}
 								className="button alert"
 								href="#">{this.props.yesBtnName}
 							</a>
-							<a
-								onClick={this.noHandler}
-								className="secondary button cancel-button"
-								href="#">{this.props.noBtnName}
-							</a>
+							{!this.props.onlyAcceptable ?
+								<a
+									onClick={this.noHandler}
+									className="secondary button cancel-button"
+									href="#">{this.props.noBtnName}
+								</a> : null}
 						</div>
 					</div>
 				</div>
@@ -89,14 +90,15 @@ class DialogModal extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
-		dialogTitle: state.UI.getIn(['modalWindows', ownProps.windowName, 'dialogTitle']) || '',
-		yesHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesHandler']) || null,
-		noHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'noHandler']) || null,
-		yesBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesBtnName']) || 'Yes',
+		dialogTitle: state.UI.getIn(['modalWindows', ownProps.windowName, 'dialogTitle'], ''),
+		yesHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesHandler'], null),
+		noHandler: state.UI.getIn(['modalWindows', ownProps.windowName, 'noHandler'], null),
+		yesBtnName: state.UI.getIn(['modalWindows', ownProps.windowName, 'yesBtnName'], 'Yes'),
 		noBtnName:
-			state.UI.getIn(['modalWindows', ownProps.windowName, 'noBtnName']) || 'No',
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'noBtnName'], 'No'),
 		closeHandler:
-			state.UI.getIn(['modalWindows', ownProps.windowName, 'closeHandler']) || null,
+			state.UI.getIn(['modalWindows', ownProps.windowName, 'closeHandler'], null),
+		onlyAcceptable: state.UI.getIn(['modalWindows', ownProps.windowName, 'onlyAcceptable'], false),
 	};
 };
 

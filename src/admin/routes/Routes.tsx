@@ -29,7 +29,7 @@ import Suggestions from 'admin/components/suggestions/SuggestionsContainer';
 
 const Routes : React.StatelessComponent <any> =	() =>
 	<Switch>
-		<Route exact path="/" component={Users}/>
+		<Route exact path="/" component={Feedbacks}/>
 		<Route path="/login" component={Login}/>
 		<Route path="/logout" component={Login}/>
 		<Route path="/users" component={Users}/>
