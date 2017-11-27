@@ -91,7 +91,12 @@ const Api = {
 	 * Get suggestions
 	 * @type {()=>Promise<any>}
 	 */
-	getSuggestionsList: function(page?, limit?, sort?, sortOrder?) {
+	getSuggestionsList: function(
+		page?: number,
+		limit?: number,
+		sort?: string,
+		sortOrder?: number
+	) {
 		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
 		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
 	},
@@ -100,9 +105,18 @@ const Api = {
 	 * Get all articles with feedbacks count
 	 * @type {()=>Promise<any>}
 	 */
-	getArticleList: (page?, limit?, sort?, sortOrder?) => {
-		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
-		return sendRequest(`/admin/api/articles${pagination}`, 'GET');
+	getArticleList: (
+		page?: number,
+		limit?: number,
+		sort?: string,
+		sortOrder?: number,
+		search?: string
+	) => {
+		const query = new URLSearchParams(getFormattedPagination(page, limit, sort, sortOrder));
+		if (search) {
+			query.append('search', search);
+		}
+		return sendRequest(`/admin/api/articles?${query}`, 'GET');
 	},
 
 	/**

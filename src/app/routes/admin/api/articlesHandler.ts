@@ -35,9 +35,10 @@ import pagination from 'app/util/pagination';
 export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
 	const {skip, limit, sort} = params;
+	const {search} = requ.query;
 	return Promise.all([
-					articleService.getRangeWithFBCount(skip, limit, sort),
-					articleService.getAmount(),
+					articleService.getRangeWithFBCount(skip, limit, sort, search),
+					articleService.getAmount(search),
 				])
 				.then(data => {
 					const [articles, amount] = data;
