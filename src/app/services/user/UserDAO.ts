@@ -81,7 +81,6 @@ export function getByID(id : String) : Promise <User> {
 
 export function save(user : User) : Promise <User> {
 	emptyCheck(user);
-
 	return wrapSave<User>(new UserModel(user).save());
 }
 
