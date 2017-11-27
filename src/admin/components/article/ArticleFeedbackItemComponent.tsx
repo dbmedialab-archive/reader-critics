@@ -26,6 +26,7 @@ class ArticleFeedbackItemComponent extends React.Component <any, any> {
 
 		this.renderFeedbackLinks = this.renderFeedbackLinks.bind(this);
 		this.textDiff = this.textDiff.bind(this);
+		this.getFeedbackText = this.getFeedbackText.bind(this);
 	}
 
 	renderFeedbackLinks(feedbackLinks){
@@ -39,14 +40,25 @@ class ArticleFeedbackItemComponent extends React.Component <any, any> {
 		});
 	}
 
-	textDiff() {
-		const {feedback, articleItem} = this.props;
-		if (feedback && articleItem) {
-			const {text: originalText = ''} = articleItem;
-			const {text: newText = ''} = feedback;
-			return originalText === newText ? originalText : diffToReactElem(originalText, newText);
+	// Calculates and highlights the diff of two sentences.
+	// Used to preview changes to the text done by the user.
+	protected textDiff(text1 : string = '', text2 : string) : any {
+		return text2 === undefined ? text1 : diffToReactElem(text1, text2);
+	}
+	getFeedbackText() {
+		const {feedback} = this.props;
+		let originalText = feedback.text;
+		const originalItem = feedback.article.items.find(
+			i => i.order.type === feedback.order.type && i.order.item === feedback.order.item
+		);
+		if (originalItem) {
+			if (!originalText) {
+				originalText = originalItem.text;
+			} else {
+				originalText = this.textDiff(originalItem.text, originalText);
+			}
 		}
-		return '';
+		return originalText;
 	}
 
 	render() {
@@ -55,6 +67,7 @@ class ArticleFeedbackItemComponent extends React.Component <any, any> {
 		const feedbackDateTime = feedbackDateTimeObj.toLocaleDateString() + ' '
 			+ feedbackDateTimeObj.toLocaleTimeString();
 		const feedbackLinks = this.renderFeedbackLinks(feedback.links);
+		const feedbackText = this.getFeedbackText();
 
 		return (
 			<div className="article-feedback-item">
@@ -66,7 +79,7 @@ class ArticleFeedbackItemComponent extends React.Component <any, any> {
 				</div>
 				<div className="row expanded feedback-section">
 					<div className="small-12 feedback-text">
-						{this.textDiff()}
+						{feedbackText}
 					</div>
 				</div>
 				{feedback.comment?

@@ -74,6 +74,7 @@ class ArticleContainer extends React.Component <any, any> {
 			return feedback.items.map((feedbackItem: FeedbackItem)=>{
 				const feedbackObj = {
 					date: feedback.date,
+					article: feedback.article,
 					...feedbackItem,
 				};
 				return <ArticleFeedbackItemComponent
@@ -90,7 +91,6 @@ class ArticleContainer extends React.Component <any, any> {
 
 	render () {
 		const feedbacks = this.getFeedbacks();
-		// const pagination = this.getPaginationParams();
 		const {search} = this.props.location;
 		const pagination = getPaginationParams(search);
 		const {page} = pagination;
