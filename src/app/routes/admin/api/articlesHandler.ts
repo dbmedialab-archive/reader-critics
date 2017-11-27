@@ -22,7 +22,7 @@ import {
 } from 'express';
 
 import {
-	errorResponse, okApiResponse,
+	errorResponse, okResponse,
 } from 'app/routes/api/apiResponse';
 
 import {articleService, feedbackService} from 'app/services';
@@ -42,7 +42,7 @@ export function list (requ: Request, resp: Response) {
 				.then(data => {
 					const [articles, amount] = data;
 					const pages = Math.ceil(amount / limit);
-					return okApiResponse(resp, {articles, pages});
+					return okResponse(resp, {articles, pages});
 				})
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
@@ -53,7 +53,7 @@ export function list (requ: Request, resp: Response) {
 export function show (requ: Request, resp: Response) {
 	const ID = requ.params.id;
 	return articleService.getByID(ID)
-				.then(article => okApiResponse(resp, article))
+				.then(article => okResponse(resp, article))
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
 
@@ -71,7 +71,7 @@ export function getArticleFeedbacks(requ: Request, resp: Response) {
 		.then(data => {
 			const [feedbacks, amount] = data;
 			const pages = Math.ceil(amount / limit);
-			return okApiResponse(resp, {feedbacks, pages});
+			return okResponse(resp, {feedbacks, pages});
 		})
 		.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
