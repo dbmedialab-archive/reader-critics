@@ -16,8 +16,12 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 import * as React from 'react';
-import { WebsiteProps } from 'admin/types/Website';
+
+import Website from 'base/Website';
 import AdminConstants from 'admin/constants/AdminConstants';
+
+import { WebsiteProps } from 'admin/types/Website';
+
 import * as UIActions from 'admin/actions/UIActions';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
 
@@ -35,7 +39,7 @@ export default class WebsitesRow extends React.Component <any, any> {
 		const websiteRes = {
 			isOpen: true,
 		};
-		WebsiteActions.setSelectedWebsite(website);
+		WebsiteActions.setSelectedWebsite(website as Website);
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
 

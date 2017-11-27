@@ -11,7 +11,5 @@ export AUTH_SESSION_SECRET="8888888899999999aaaaaaaabbbbbbbbccccccccddddddddeeee
 
 node_modules/.bin/nodemon \
 	--quiet --watch out/app --delay 1 \
-	--icu-data-dir=node_modules/full-icu \
-	out/start.js \
-
+	out/start.js
 
