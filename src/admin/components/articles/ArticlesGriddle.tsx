@@ -72,7 +72,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 
 		this.state = {
 			page: 1,
-			limit: 10 || defaultLimit,
+			limit: defaultLimit,
 			sort: '',
 			sortOrder: 1,
 			search: '',
