@@ -54,20 +54,38 @@ export function initParserResolver() : Promise <void> {
 					stats: fs.statSync(fullpath),
 				};
 			})
+
 			// We're only interested in sub directories
 			.filter((entry : ResolveSearchEntry) => entry.stats.isDirectory())
+
 			// Inspect each sub directory, look for the main module file
 			.forEach((entry : ResolveSearchEntry) => {
+				console.log('sub dir .....', entry.filename);
 				// Create a regular expression to match the main module file
-				const rx = new RegExp(`^${entry.filename}parser\.js$`, 'i');
+				const rx = new RegExp(`^${entry.filename.replace('-', '')}parser\.js$`, 'i');
+				console.log('regex .......', rx.toString());
 
 				// Search the sub directory for that file
 				fs.readdirSync(entry.fullpath).forEach(subfile => {
 					if (rx.test(subfile)) {
+						// This is the "human readable" name of a parser implementation
+						// and at the same time the index in the map of available parsers
+						const parserName = subfile
+							.substr(0, subfile.length - 9)  // Remove "parser.js" at the end
+							.replace(/([A-Z]+)/g, ' $1')  // Insert spaces before capitals
+							.trim()
+							.concat(' Parser');
+
+						// Relative path to the parser's main module, for dynamic import
+						const moduleName = path.join(
+							implRelPath,
+							entry.filename,
+							subfile.substr(0, subfile.length - 3)
+						);
+
 						// Got it! Now create an entry in the parser map
-						const name = `${subfile.substr(0, subfile.length - 9)} Parser`;
-						availableParsers[name] = {
-							moduleName: `${implRelPath}/${entry.filename}/${subfile.substr(0, subfile.length - 3)}`,
+						availableParsers[parserName] = {
+							moduleName,
 						} as ParserModule;
 					}
 				});

@@ -59,28 +59,39 @@
 		]
 	},
 	{
-		name: "morgenposten.no",
+		name: 'morgenposten.no',
 		hosts: [
-			"mopo.no",
-			"morgenposten.no",
-			"www.mopo.no",
-			"www.morgenposten.no",
+			'mopo.no',
+			'morgenposten.no',
+			'www.mopo.no',
+			'www.morgenposten.no',
 		],
-		locale: "nb",
+		locale: 'nb',
 		chiefEditors: [
 			{
-				name: "Like A. Boss",
-				email: "redaksjon@morgenposten.no",
+				name: 'Like A. Boss',
+				email: 'redaksjon@morgenposten.no',
 			},
 		],
 	},
 	{
-		name: "b.dk",
+		name: 'f-b.no',
 		hosts: [
-			"b.dk",
-			"www.b.dk",
+			'f-b.no',
+			'www.f-b.no',
 		],
-		locale: "da",
+		locale: 'nb',
+		parserClass: 'Fredriksstad Blad Parser',
+		chiefEditors: [
+		],
+	},
+	{
+		name: 'b.dk',
+		hosts: [
+			'b.dk',
+			'www.b.dk',
+		],
+		locale: 'da',
 		parserClass: 'Berlingske Parser',
 		chiefEditors: [
 		],
