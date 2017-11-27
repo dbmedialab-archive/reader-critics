@@ -18,15 +18,24 @@
 
 import * as React from 'react';
 
+import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class ParagraphElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
-		const order : number = this.props.item.order.type;
 		return <div>
-			<label>Avsnitt #{order}</label>
-			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
+			<label>
+				<FormattedMessage
+					id="label.article-el.paragraph"
+					values={{
+						order: this.props.item.order.type,
+					}}
+				/>
+			</label>
+			<p hidden={this.state.editing}>
+				{ this.textDiff(this.props.item.originalText, this.state.text) }
+			</p>
 		</div>;
 	}
 

@@ -17,6 +17,8 @@
 //
 
 import {sendRequest} from 'admin/apiAdminCommunication';
+import {getFormattedPagination} from 'admin/services/Utils';
+
 const Api = {
 	/**
  * Get all feedbacks
@@ -36,6 +38,40 @@ const Api = {
 	},
 
 	/**
+	 * Get all websites
+	 * @type {()=>Promise<any>}
+	 */
+	getWebsiteList: function() {
+		return sendRequest(`/admin/api/websites/`, 'GET');
+	},
+
+	/**
+	 * Get website data by name
+	 * @type {()=>Promise<any>}
+	 */
+	getSelectedWebsite: function(name) {
+		return sendRequest(`/admin/api/websites/${name}`, 'GET');
+	},
+
+	/**
+	 * Send website data to update
+	 * @type {()=>Promise<any>}
+	 */
+	updateWebsite: function(data) {
+		const {currentName} = data;
+		delete data.currentName;
+		return sendRequest(`/admin/api/websites/${currentName}`, 'PATCH', data);
+	},
+
+	/**
+	 * Send website data to create a new one
+	 * @type {()=>Promise<any>}
+	 */
+	createWebsite: function(data) {
+		return sendRequest(`/admin/api/websites`, 'POST', data);
+	},
+
+	/**
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */
@@ -50,5 +86,37 @@ const Api = {
 
 	deleteUser:(userId: any): Promise<any> =>
 		sendRequest(`/admin/api/users/${userId}`, 'DELETE'),
+
+	/**
+	 * Get suggestions
+	 * @type {()=>Promise<any>}
+	 */
+	getSuggestionsList: function(page?, limit?, sort?, sortOrder?) {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/suggestions${pagination}`, 'GET');
+	},
+
+	/**
+	 * Get all articles with feedbacks count
+	 * @type {()=>Promise<any>}
+	 */
+	getArticleList: (page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles${pagination}`, 'GET');
+	},
+
+	/**
+	 * Get article by ID
+	 */
+	getArticle: (id) =>
+		sendRequest(`/admin/api/articles/${id}`, 'GET'),
+
+	/**
+	 * Get feedbacks belong to article by ID
+	 */
+	getArticleFeedbacks: (id, page?, limit?, sort?, sortOrder?) => {
+		const pagination = getFormattedPagination(page, limit, sort, sortOrder);
+		return sendRequest(`/admin/api/articles/${id}/feedbacks${pagination}`, 'GET');
+	},
 };
 export default Api;

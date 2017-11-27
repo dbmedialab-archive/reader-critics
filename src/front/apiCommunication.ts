@@ -18,8 +18,10 @@
 
 import 'whatwg-fetch';
 
+import { getLocale } from 'front/uiGlobals';
 import { showError } from 'front/uiHelpers';
 
+const apiMIME = 'application/json';
 const rxUnencoded = /:\/\//;
 
 // Fetch data
@@ -30,8 +32,7 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 		: url;
 	const encVersion = encodeURIComponent(version);
 
-	return fetch(`/api/article/?url=${encURL}&version=${encVersion}`)
-	.then(checkStatus)
+	return fetchData(`/api/article/?url=${encURL}&version=${encVersion}`)
 	.then(data => data.article);
 });
 
@@ -45,20 +46,34 @@ export const sendSuggestion = ((data : any) : Promise <any> => {
 	return postData('/api/suggest/', data).then(checkStatus);
 });
 
-function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
-	return fetch(uri, {
-		method: method,
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
+// GET data
+
+function fetchData(url : string) : Promise <any> {
+	return fetch(url, {
+		method: 'GET',
+		headers: [
+			[ 'Accept', apiMIME ],
+			[ 'Accept-Language', getLocale() ],
+		],
+	})
+	.then(checkStatus);
 }
 
 // POST data
 
 function postData(uri : string, data : any) : Promise <any> {
 	return sendData('POST', uri, data);
+}
+
+function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
+	return fetch(uri, {
+		method: method,
+		headers: [
+			[ 'Accept-Language', getLocale() ],
+			[ 'Content-Type', apiMIME ],
+		],
+		body: JSON.stringify(data),
+	});
 }
 
 // Check response for success and display error popup if necessary

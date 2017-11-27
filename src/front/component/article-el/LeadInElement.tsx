@@ -19,13 +19,16 @@
 import * as React from 'react';
 
 import { ArticleElement } from '../ArticleElement';
+import { FormattedMessage } from 'react-intl';
 
 export default class LeadInElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label>Innledning</label>
-			<p>{ this.textDiff(this.props.item.originalText, this.state.text) }</p>
+			<label><FormattedMessage id="label.article-el.lead-in"/></label>
+			<p hidden={this.state.editing}>
+				<b>{ this.textDiff(this.props.item.originalText, this.state.text) }</b>
+			</p>
 		</div>;
 	}
 

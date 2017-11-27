@@ -19,9 +19,11 @@
 import ParserService from './ParserService';
 
 import getParserFor from './live/getParserFor';
+import getParsersRange from './live/getParsersRange';
 
 const service : ParserService = {
 	getParserFor,
+	getParsersRange,
 };
 
 module.exports = service;

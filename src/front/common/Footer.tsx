@@ -17,25 +17,27 @@
 //
 
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+
+const year = new Date().getFullYear();
 
 const Footer : React.StatelessComponent <any> =
 	() => <footer className="main-footer">
 		<div className="container">
 			<div className="content four columns">
-				<span>Ris eller ros?</span>
-				<a title="Gi oss din tilbakemelding på verktøyet" href="/suggestion-box">
-					Gi oss din tilbakemelding på verktøyet
+				<span><FormattedMessage id="app.subtitle.fame-blame"/></span>
+				<a href="/suggestion-box">
+					<FormattedMessage id="footer.giveUsF"/>
 				</a>
 			</div>
 			<div className="content four columns">
-				<span>Ansvarlig redaktør <a href="#">John Arne Markussen</a></span>
+				<span><FormattedMessage id="footer.chiefEditor"/> <a href="#">John Arne Markussen</a></span>
 				<div itemType="http://schema.org/Organization">
-					© 2017 <span itemProp="name">DB Medialab</span>
+					© {year} <span itemProp="name">DB Medialab</span>
 				</div>
 			</div>
 		</div>
-		<div id="err-section"></div>
-
+		<div id="err-section"/>
 	</footer>;
 
 export default Footer;

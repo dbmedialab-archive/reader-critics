@@ -19,15 +19,27 @@
 import * as React from 'react';
 
 import { ArticleElement } from '../ArticleElement';
+import { FormattedMessage } from 'react-intl';
 
 export default class FeaturedImageElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label>Featured Image</label>
+			<label>
+				<FormattedMessage
+					id="label.article-el.feat-image"
+					values={{
+						order: this.props.item.order.type,
+					}}
+				/>
+			</label>
 			{ this.props.item.href && <p><img src={this.props.item.href} width="100%"/></p> }
-			<p>{ this.textDiff(this.props.item.altText, this.state.text) }</p>
+			<p hidden={this.state.editing}>
+				{ (this.props.item.originalText && this.props.item.originalText.length > 0)
+					? this.textDiff(this.props.item.originalText, this.state.text)
+					: <i><FormattedMessage id="label.no-img-caption"/></i>
+				}
+			</p>
 		</div>;
 	}
-
 }

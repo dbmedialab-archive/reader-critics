@@ -28,16 +28,22 @@ import createPersistingService from '../createPersistingService';
 
 import {
 	get,
+	getByID,
 	identify,
 	save,
+	update,
 } from './WebsiteDAO';
+import validateAndUpdate from './common/validateAndUpdate';
 
 const service : WebsiteService
 	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
 		WebsiteModel, {
 			get,
+			getByID,
 			identify,
 			save,
+			update,
+			validateAndUpdate,
 		}
 	);
 

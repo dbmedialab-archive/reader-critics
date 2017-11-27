@@ -20,7 +20,6 @@ import {
 	isEmpty,
 	isObject,
 } from 'lodash';
-import * as bcrypt from 'bcrypt';
 
 import {
 	userService,
@@ -29,7 +28,6 @@ import {
 import {
 	SchemaValidationError,
 } from 'app/util/errors';
-import config from 'app/config';
 
 /**
  * Validating input data and saving users
@@ -42,14 +40,16 @@ export function validateAndSave (data: any): Promise<any> {
 		return Promise.reject(error);
 	}
 
-	return checkUniqueEmail(data.email)
-		.then((unique: boolean) => {
-			if (unique) {
-				return hashPasswordAndGoThrough(data, userService.save.bind(null));
-			} else {
-				throw new SchemaValidationError('Email already exists in database');
-			}
-		});
+	return Promise.all([
+		checkUniqueEmail(data.email),
+		userService.setPasswordHash(data, data.password),
+	]).then(res => {
+		const [unique, user] = res;
+		if (unique) {
+			return userService.save(user);
+		}
+		throw new SchemaValidationError('Email already exists in database');
+	});
 }
 
 /*
@@ -71,12 +71,12 @@ export function validateAndUpdate (id: String, data: any): Promise<any> {
 			}
 
 			if (data.email === user.email) {
-				return hashPasswordAndGoThrough(data, userService.update.bind(null, id));
+				return userService.update(id, data);
 			} else {
 				return checkUniqueEmail(data.email)
 					.then((unique: boolean) => {
 						if (unique) {
-							return hashPasswordAndGoThrough(data, userService.update.bind(null, id));
+							return userService.update(id, data);
 						} else {
 							throw new SchemaValidationError('Email already exists in database');
 						}
@@ -97,7 +97,7 @@ function checkUniqueEmail (userMail: string): Promise<boolean> {
 }
 
 /**
- * Schema Validation
+ * Schema Validator
  */
 function validateSchema (data: any) {
 	if (!isObject(data)) {
@@ -139,17 +139,5 @@ function validateSchemaUpdate (data: any) {
 
 	if (isEmpty(data.role)) {
 		throw new SchemaValidationError('Role field is required');
-	}
-}
-
-function hashPasswordAndGoThrough (userData, cb) {
-	if (userData.password !== undefined) {
-		//hashing password
-		return bcrypt.hash(userData.password, config.get('auth.bcrypt.rounds')).then((hash) => {
-			userData.password = hash;
-			return cb(userData);
-		});
-	} else {
-		return cb(userData);
 	}
 }

@@ -78,7 +78,6 @@ export default function(this: ISuiteCallbackContext) {
 		]).then((results: User[]) => {
 			assert.lengthOf(results, 4);
 			results.forEach(u => {
-				console.dir(u);
 				assertUserObject(u);
 			});
 		});

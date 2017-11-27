@@ -1,0 +1,27 @@
+{
+	"restartable": "rs",
+	"ignore": [
+		"*.d.ts",
+		"*.map",
+		".git",
+		"assets",
+		"doc",
+		"kubefiles",
+		"node_modules/",
+		"src",
+		"stats",
+		"templates"
+	],
+	"verbose": false,
+	"execMap": {
+		"js": "node"
+	},
+	"events": {
+		"restart": "osascript -e '\"Change detected in: '$FILENAME'\"'"
+	},
+	"watch": [
+		"out/app/",
+		"resources/"
+	],
+	"ext": "js json"
+}

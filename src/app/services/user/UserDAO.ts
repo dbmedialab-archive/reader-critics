@@ -25,8 +25,6 @@ import {
 	UserModel
 } from 'app/db/models';
 
-import config from 'app/config';
-
 import {
 	wrapFindOne,
 	wrapSave,
@@ -76,8 +74,8 @@ export function getByID(id : String) : Promise <User> {
 	return UserModel.findOne({'_id': id})
 	.select('-password').exec()
 	.then(res => (res === null)
-				? Promise.reject(new NotFoundError('User not found'))
-				: Promise.resolve(res)
+		? Promise.reject(new NotFoundError('User not found'))
+		: Promise.resolve(res)
 	);
 }
 

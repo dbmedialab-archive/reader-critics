@@ -31,7 +31,7 @@ interface UsersInit {
 	users: User[];
 }
 
-const initialState = Immutable.from<UsersInit>({
+const initialState = Immutable.from <UsersInit> ({
 	users: [],
 });
 
