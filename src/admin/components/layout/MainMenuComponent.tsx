@@ -24,20 +24,20 @@ const MainMenuComponent : React.StatelessComponent <any> = () =>
 		<ul className="menu-nav">
 				<li className="menu-item">
 					<Link
-							to="/users"
-							className="tooltip-tip tooltipster-disable"
-							title="All users"
-						>
-							<i className="fa fa-users" />
-							<span>Users</span>
-					</Link>
-					<Link
 							to="/feedbacks"
 							className="tooltip-tip tooltipster-disable"
 							title="All feedbacks"
 						>
 							<i className="fa fa-list-ul" />
 							<span>Feedbacks</span>
+					</Link>
+					<Link
+						to="/articles"
+						className="tooltip-tip tooltipster-disable"
+						title="All articles"
+					>
+						<i className="fa fa-list-ul" />
+						<span>Articles</span>
 					</Link>
 					<Link
 						to="/suggestions"
@@ -48,12 +48,12 @@ const MainMenuComponent : React.StatelessComponent <any> = () =>
 						<span>Suggestions</span>
 					</Link>
 					<Link
-						to="/articles"
-						className="tooltip-tip tooltipster-disable"
-						title="All articles"
-					>
-						<i className="fa fa-list-ul" />
-						<span>Articles</span>
+							to="/users"
+							className="tooltip-tip tooltipster-disable"
+							title="All users"
+						>
+							<i className="fa fa-users" />
+							<span>Users</span>
 					</Link>
 					<Link
 						to="/websites"
