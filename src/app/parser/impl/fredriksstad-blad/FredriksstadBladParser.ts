@@ -26,10 +26,6 @@ import IteratingParserItem from 'app/parser/IteratingParserItem';
 // import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 export default class FredriksstadBladParser extends AbstractIteratingParser {
 
 	// Implement AbstractParser
