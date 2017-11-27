@@ -60,10 +60,8 @@ export function initParserResolver() : Promise <void> {
 
 			// Inspect each sub directory, look for the main module file
 			.forEach((entry : ResolveSearchEntry) => {
-				console.log('sub dir .....', entry.filename);
 				// Create a regular expression to match the main module file
 				const rx = new RegExp(`^${entry.filename.replace('-', '')}parser\.js$`, 'i');
-				console.log('regex .......', rx.toString());
 
 				// Search the sub directory for that file
 				fs.readdirSync(entry.fullpath).forEach(subfile => {
