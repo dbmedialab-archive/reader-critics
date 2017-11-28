@@ -56,6 +56,7 @@ export function okResponse(
 	}
 
 	resp.status(statusCode).end(stringify(response));
+	return null;
 }
 
 /**
@@ -84,6 +85,7 @@ export function okApiResponse(
 	}
 
 	resp.status(statusCode).json(response);
+	return null;
 }
 
 // Send a "failure" response
@@ -123,6 +125,7 @@ export function errorResponse(
 	if (response.status === 500) {
 		log(error.stack || error);
 	}
+	return null;
 }
 
 // Return the response JSON. Pretty printed format in development mode, because
@@ -138,10 +141,10 @@ function stringify (value : any) : string {
  * JSON format
  */
 export function bulkResponse (resp, collection) {
-	const notFound = 'Resourse not found';
+	const notFound = 'Resource not found';
 	if (collection.length > 0) {
-		okApiResponse(resp, collection);
+		return okApiResponse(resp, collection);
 	} else {
-		errorResponse(resp, undefined, notFound, { status: 404 });
+		return errorResponse(resp, undefined, notFound, { status: 404 });
 	}
 }
