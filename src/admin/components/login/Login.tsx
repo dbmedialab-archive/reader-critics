@@ -28,14 +28,14 @@ class Login extends React.Component <any, any> {
 		super(props);
 
 		this.getBack = this.getBack.bind(this);
-		if (this.props.history.location.pathname !== 'login') {
-			UserActions.deauthenticate();
-			this.props.history.replace('login');
-		}
+	}
+
+	componentDidMount() {
+		UserActions.deauthenticate();
 	}
 
 	getBack() {
-		this.props.history.goBack();
+		this.props.history.push('/');
 	}
 
 	render() {

@@ -26,5 +26,5 @@ export default function (requ : Request, resp : Response, next : NextFunction) :
 	if (!requ.isAuthenticated()) {
 		return next();
 	}
-	resp.redirect('/admin/login');
+	resp.redirect('/admin');
 }
