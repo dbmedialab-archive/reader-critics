@@ -23,8 +23,11 @@ import ArticleAuthor from 'base/ArticleAuthor';
 import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 
 export default class FredriksstadBladParser extends AbstractIteratingParser {
 
@@ -90,13 +93,6 @@ export default class FredriksstadBladParser extends AbstractIteratingParser {
 			&& item.text.length > 0;
 	}
 
-	protected isSubTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
-	}
-
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
@@ -114,11 +110,18 @@ export default class FredriksstadBladParser extends AbstractIteratingParser {
 			return false;
 		}
 
+		log('### isFeaturedImage [ %s ]', item.parents.map(el => el.name).join());
+
+		item.parents.forEach(el => {
+			log('  <%s> %s', el.name, app.inspect(el.elem.attribs));
+			// css.join(' '), select(el).attr('itemprop')
+		});
+
 		// Featured images are embedded in a <div itemprop="associatedMedia">
 		// element; check the parents of this figure.
 		return undefined !== item.parents.find((parentEl : IteratingParserItem) => {
 			return parentEl.name === 'div'
-				&& select(parentEl).attr('itemprop') === 'associatedMedia';
+				&& select(parentEl.elem).attr('itemprop') === 'associatedMedia';
 		});
 	}
 
@@ -146,13 +149,6 @@ export default class FredriksstadBladParser extends AbstractIteratingParser {
 	) : boolean {
 		return item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}
-
-	protected isLink(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
 	}
 
 	protected isInContentDiv(item : IteratingParserItem) : boolean {
