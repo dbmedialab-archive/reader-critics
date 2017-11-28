@@ -30,13 +30,6 @@ import IteratingParserItem from './IteratingParserItem';
 
 const log = app.createLog();
 
-/* const shallowInspect = (obj) => util.inspect(obj, {
-	breakLength: 128,
-	colors: true,
-	depth: 1,
-	showHidden: false,
-}); */
-
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 
 	protected select : Cheerio;
