@@ -64,13 +64,6 @@ export default class BerlingskeParser extends AbstractIteratingParser {
 			&& item.text.length > 0;
 	}
 
-	protected isSubTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
-	}
-
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
@@ -91,14 +84,17 @@ export default class BerlingskeParser extends AbstractIteratingParser {
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'h2' && item.text.length > 0 && item.css.length === 0;
+		return item.name === 'h2'
+			&& item.text.length > 0
+			&& item.css.length === 0;
 	}
 
 	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'p' && item.text.length > 0;
+		return item.name === 'p'
+			&& item.text.length > 0;
 	}
 
 	protected isFigure(
@@ -107,13 +103,6 @@ export default class BerlingskeParser extends AbstractIteratingParser {
 	) : boolean {
 		return item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}
-
-	protected isLink(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
 	}
 
 }

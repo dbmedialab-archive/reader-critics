@@ -17,6 +17,7 @@
 //
 
 import * as Cheerio from 'cheerio';
+import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 import Parser from 'base/Parser';
@@ -30,50 +31,70 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 
 	protected abstract getParsedElementNames() : string[];
 
-	protected abstract isMainTitle(
+	// The functions that check for a certain article item type do all return
+	// false in their default implementation, thus overriding is optional
+	// (yet recommended for the most common/available item types).
+
+	protected isMainTitle(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isSubTitle(
+	protected isSubTitle(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isLeadIn(
+	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isFeaturedImage(
+	protected isFeaturedImage(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isSubHeading(
+	protected isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isParagraph(
+	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isFigure(
+	protected isFigure(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	protected abstract isLink(
+	protected isLink(
 		item : IteratingParserItem,
 		select : Cheerio
-	) : boolean;
+	) : boolean {
+		return false;
+	}
 
-	// Default implementations of methods that create an ArticleItem
-	// from a (complex) parsed item of the iterator. Most item types should work
-	// fine with these implementations as long as getting to their actual content
-	// is just copying their text contents.
+	// Default implementations of methods that create an ArticleItem from a
+	// (complex) parsed item of the iterator. Most item types should work fine
+	// with these implementations as long as getting to their actual content is
+	// just copying their text contents.
 
 	protected createMainTitle(
 		fromItem : IteratingParserItem,
@@ -129,7 +150,7 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 
 		return {
 			imgSrc: select(imgEl).attr('src'),
-			altTxt: select(capEl).text().replace(/Vis mer/, '').trim(),
+			altTxt: CheerioPlugin.trimText(select(capEl).text()).replace(/Vis mer/, ''),
 		};
 	}
 
