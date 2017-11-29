@@ -22,7 +22,7 @@ import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 
-import BaseElements from './BaseElements';
+import BaseItems from './BaseItems';
 
 import * as app from 'app/util/applib';
 
@@ -32,11 +32,13 @@ interface ParserWorkflowPayload {
 	version : any;
 	authors : any;
 	titles : any;
-	featured : any;
-	content : any;
+	featured : ArticleItem[]
 }
 
-abstract class BaseParser extends BaseElements implements Parser {
+const sortArticleItems = (a : ArticleItem, b : ArticleItem) : number	=>
+	a.order.item - b.order.item;
+
+abstract class AbstractParser extends BaseItems implements Parser {
 
 	constructor(
 		protected readonly rawArticle : string,
@@ -47,10 +49,7 @@ abstract class BaseParser extends BaseElements implements Parser {
 
 	parse() : Promise <Article> {
 		log('parse');
-		return this.initialize().then(() => {
-			log('begin parseArticle');
-			return this.parseArticle();
-		});
+		return this.initialize().then(() => this.parseArticle());
 	}
 
 	/**
@@ -58,7 +57,7 @@ abstract class BaseParser extends BaseElements implements Parser {
 	 * some asynchronous bootstrap functions to run before the parser will
 	 * be ready. Don't forget to return a Promise! (void return value)
 	 */
-	protected initialize() : Promise <any> {
+	protected initialize() : Promise <void> {
 		return Promise.resolve();
 	}
 
@@ -66,15 +65,24 @@ abstract class BaseParser extends BaseElements implements Parser {
 	 * Parser workflow. Taken out of parse() for readability.
 	 */
 	private parseArticle() : Promise <Article> {
-		const workflow : ParserWorkflowPayload = {
-			version: this.parseVersion(),
-			authors: this.parseByline(),
-			titles: this.parseTitles(),
-			featured: this.parseFeaturedImage(),
-			content: this.parseContent(),
-		};
+		let content : Array<ArticleItem>;
 
-		return Promise.resolve(Promise.props(workflow))
+		// First the handler that parses all the content is called. Each implementing
+		// parser has the freedom to extract *all* necessary items (like titles, etc)
+		// in this step already. Sometimes or for some page structures, this might
+		// even be necessary. Intermediate results can then be stored inside the
+		// parser instance and just be returned/resolved in f.ex. parseTitles().
+		return this.parseContent()
+		.then(items => {
+			content = items;
+
+			return Promise.props({
+				version: this.parseVersion(),
+				authors: this.parseByline(),
+				titles: this.parseTitles(),
+				featured: this.parseFeaturedImage(),
+			});
+		})
 		.then((a : ParserWorkflowPayload) : Article => ({
 			url: this.articleURL,
 			version: a.version,
@@ -82,8 +90,8 @@ abstract class BaseParser extends BaseElements implements Parser {
 			items: [
 				...a.titles,
 				...a.featured,
-				...a.content,
-			],
+				...content,
+			].sort(sortArticleItems),
 		}));
 	}
 
@@ -97,4 +105,4 @@ abstract class BaseParser extends BaseElements implements Parser {
 
 }
 
-export default BaseParser;
+export default AbstractParser;

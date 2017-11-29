@@ -21,7 +21,7 @@ import Website from 'base/Website';
 
 interface ParserService {
 	getParserFor(website : Website) : Promise <ParserFactory>;
-	getParsersRange(): Promise <string[]>;
+	getAvailableParsers(): Promise <string[]>;
 }
 
 export default ParserService;

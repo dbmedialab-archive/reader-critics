@@ -17,6 +17,7 @@
 //
 
 import Pagination from 'base/Pagination';
+import {defaultLimit} from 'app/services/BasicPersistingService';
 
 /**
  * Capitalize first letter in string
@@ -35,34 +36,29 @@ export function getPaginationParams (search: string): Pagination {
 
 	return {
 		page: parseInt(query.get('page')) || 1,
-		limit: parseInt(query.get('limit')),
+		limit: parseInt(query.get('limit')) || defaultLimit,
 		sort: query.get('sort'),
 		sortOrder: parseInt(query.get('sortOrder')),
 	};
 }
 
-export function getFormattedPagination(page?, limit?, sort?, sortOrder?) {
-	let result: string = '';
-	const pagination: string[] = [];
-
-	if (sort || page || limit) {
-		if (page) {
-			pagination.push(`page=${page}`);
-		}
-		if (limit) {
-			pagination.push(`limit=${limit}`);
-		}
-		if (sort) {
-			pagination.push(`sort=${sort}`);
-
-			if (sortOrder) {
-				pagination.push(`sortOrder=${sortOrder}`);
-			}
-		}
+export function getFormattedPagination(
+	page?: number,
+	limit?: number,
+	sort?: string,
+	sortOrder?: number
+) {
+	const query = new URLSearchParams();
+	if (page && page > 0) {
+		query.append('page', page.toString());
+	}
+	if (typeof limit === 'number') {
+		query.append('limit', limit.toString());
+	}
+	if (sort && typeof sortOrder !== 'undefined') {
+		query.append('sort', sort);
+		query.append('sortOrder', sortOrder.toString());
 	}
 
-	if (pagination.length) {
-		result = '?' + pagination.join('&');
-	}
-	return result;
+	return query.toString() ? `?${query.toString()}` : '';
 }

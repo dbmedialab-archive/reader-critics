@@ -35,10 +35,11 @@ import { rootPath } from 'app/util/applib';
 import * as app from 'app/util/applib';
 
 const log = app.createLog('config');
+const isDumpEnabled = cluster.isMaster && app.isDevelop;
 
 const isHexSecret = (val : any) => /^[a-fA-F0-9]{64}$/.test(val);
 
-if (cluster.isMaster) {
+if (isDumpEnabled) {
 	printEnvironment(log);
 }
 
@@ -247,7 +248,7 @@ try {
 		throw new Error('JWT and session secret are identical');
 	}
 
-	if (cluster.isMaster) {
+	if (isDumpEnabled) {
 		log(app.inspect(config.getProperties()));
 	}
 }
