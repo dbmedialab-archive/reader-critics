@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{env "WERCKER_GIT_REPOSITORY"}}-config
+  name: config
 data:
   NODE_ENV: production
   I18N_SYS_LOCALE: nb
