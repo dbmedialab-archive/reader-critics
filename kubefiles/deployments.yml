@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: reader-critics
+        app: {{env "WERCKER_GIT_REPOSITORY"}}
     spec:
       containers:
         - name: {{env "WERCKER_GIT_REPOSITORY"}}
@@ -21,9 +21,9 @@ spec:
             name: http-port
           envFrom:
             - configMapRef:
-                name: reader-critics-config
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-config
             - secretRef:
-                name: reader-critics-secrets
+                name: {{env "WERCKER_GIT_REPOSITORY"}}-secrets
           livenessProbe:
             httpGet:
               path: /api/version
