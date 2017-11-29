@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: redis
-	namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
   replicas: 1
   revisionHistoryLimit: 1
