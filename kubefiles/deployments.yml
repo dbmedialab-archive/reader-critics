@@ -5,7 +5,8 @@ metadata:
   namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
   selector:
-    app: {{env "WERCKER_GIT_REPOSITORY"}}
+    matchLabels:
+      app: {{env "WERCKER_GIT_REPOSITORY"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
