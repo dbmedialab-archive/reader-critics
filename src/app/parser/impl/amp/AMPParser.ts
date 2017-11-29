@@ -16,12 +16,20 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ParserFactory from 'base/ParserFactory';
-import Website from 'base/Website';
+import GenericParser from '../generic/GenericParser';
 
-interface ParserService {
-	getParserFor(website : Website) : Promise <ParserFactory>;
-	getAvailableParsers(): Promise <string[]>;
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
+export default class AMPParser extends GenericParser {
+
+	// The generic parser is already capable enough to parse 90% of the elements
+	// of an Accelerated Mobile Page. The remaining elements are TBD.
+
+	protected initialize() : Promise <any> {
+		log('initialize');
+		return super.initialize();
+	}
+
 }
-
-export default ParserService;

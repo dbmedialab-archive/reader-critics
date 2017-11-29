@@ -18,30 +18,11 @@
 
 import * as Cheerio from 'cheerio';
 
-/**
- * Facebook's OpenGraph scheme
- * looks for <meta property="article:modified_time" content="...">
- */
-export function getOpenGraphModifiedTime(
-	select : Cheerio,
-	looseMatching : boolean = false
-) : string {
-	let meta;
-
-	if (looseMatching) {
-		meta = select('meta[property="article:modified_time"]').toArray();
-
-		if (meta.length === 0) {  // Fallback for sites that use the wrong attribute
-			meta = select('meta[name="article:modified_time"]').toArray();
-		}
-	}
-	else {
-		meta = select('head').find('meta[property="article:modified_time"]');
-
-		if (meta.length === 0) {  // Fallback for sites that use the wrong attribute
-			meta = select('head').find('meta[name="article:modified_time"]');
-		}
-	}
-
-	return meta.length < 1 ? undefined : select(meta[0]).attr('content');
+export default interface IteratingParserItem {
+	name : string
+	text : string
+	id : string
+	css : Array <string>
+	elem : Cheerio
+	parents? : Array <IteratingParserItem>
 }

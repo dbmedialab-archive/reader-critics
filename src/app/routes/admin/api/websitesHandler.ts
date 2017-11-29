@@ -26,7 +26,11 @@ import {
 	okResponse,
 } from 'app/routes/api/apiResponse';
 
-import {parserService, websiteService} from 'app/services';
+import {
+	parserService,
+	websiteService,
+} from 'app/services';
+
 import pagination from 'app/util/pagination';
 
 /**
@@ -37,7 +41,7 @@ export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
 	Promise.all([
 		websiteService.getRange(params.skip, params.limit, params.sort),
-		parserService.getParsersRange(),
+		parserService.getAvailableParsers(),
 	]).then(data => {
 		const [websites, parsers = []] = data;
 		if (websites.length > 0) {
@@ -63,7 +67,7 @@ export function show (requ: Request, resp: Response) {
 	}
 	Promise.all([
 		websiteService.get(name),
-		parserService.getParsersRange(),
+		parserService.getAvailableParsers(),
 	]).then(data => {
 		const [website, parsers = []] = data;
 		if (website) {
