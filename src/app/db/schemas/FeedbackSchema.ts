@@ -23,6 +23,19 @@ import { ModelNames } from 'app/db/names';
 
 import FeedbackStatus from 'base/FeedbackStatus';
 
+const FeedbackStatusEntry = {
+	status : {
+		type: String,
+		required: true,
+		enum: Object.values(FeedbackStatus),
+		default: FeedbackStatus.New,
+	},
+	changeDate : {
+		type : Date,
+		required : true,
+	},
+};
+
 const FeedbackSchema : Schema = new Schema({
 	// Direct references to related objects
 	article: objectReference(ModelNames.Article),
@@ -39,20 +52,15 @@ const FeedbackSchema : Schema = new Schema({
 	},
 
 	// Processing status
-	status: {
-		type: String,
-		required: true,
-		enum: Object.values(FeedbackStatus),
-		default: FeedbackStatus.New,
-	},
+	status: Object.assign({
+		log: {
+			type : [FeedbackStatusEntry],
+			required : false,
+		},
+	}, FeedbackStatusEntry),
 
 	// The actual feedback data
 	items: [Schema.Types.Mixed],
-
-	// Additional date field that holds the latest status update
-	date: {
-		statusChange: Date,
-	},
 });
 
 export default FeedbackSchema;
