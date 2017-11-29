@@ -21,10 +21,10 @@ spec:
           - containerPort: 4000
             name: http-port
           envFrom:
-            - configMapRef:
-                name: config
             - secretRef:
                 name: secrets
+            - configMapRef:
+                name: config
           livenessProbe:
             httpGet:
               path: /api/version
