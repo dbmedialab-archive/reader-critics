@@ -17,20 +17,22 @@
 //
 
 import PersistedModel from 'base/zz/PersistedModel';
+import Person from 'base/zz/Person';
 
 interface Website extends PersistedModel {
-	name : string;
-	parserClass? : string;
-	locale? : string;
+	name : string
+	parserClass? : string
+	locale? : string
 
-	hosts : string[];
-	chiefEditors : string[];
+	hosts : string[]
+	chiefEditors : Person[]
 
 	layout : {
 		templates : {
-			feedbackPage? : string;
-		},
-		scssVariables? : Object;
+			feedbackPage? : string
+			feedbackNotificationMail? : string
+		}
+		scssVariables? : Object
 	};
 }
 

@@ -16,12 +16,13 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { isString } from 'lodash';
+import { isString, pick, pickBy } from 'lodash';
 import { URL } from 'url';
 
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
+import { ObjectID } from 'app/db';
 import { WebsiteModel } from 'app/db/models';
 
 import {
@@ -40,6 +41,11 @@ export function get(name : string) : Promise <Website> {
 	return wrapFindOne(WebsiteModel.findOne({ name }));
 }
 
+export function getByID(id : ObjectID|string) : Promise <Website> {
+	emptyCheck(id);
+	return wrapFindOne(WebsiteModel.findOne({ _id: id }));
+}
+
 export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 	emptyCheck(articleURL);
 
@@ -52,4 +58,28 @@ export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 export function save(website : Website) : Promise <Website> {
 	emptyCheck(website);
 	return wrapSave(new WebsiteModel(website).save());
+}
+
+export function update(name : string, data:any) : Promise <Website> {
+	emptyCheck(name, data);
+	const {layout} = data;
+	// Get only data we expect to update
+	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	// Remove empty
+	updateData = pickBy(updateData);
+
+	return WebsiteModel.findOne({ name })
+		.then(wsite => {
+			if (!wsite) {
+				throw new Error(`No such website ${name}`);
+			}
+			const resWrite = Object.assign(wsite, updateData);
+
+			if (layout && 'templates' in layout) {
+				if ('feedbackPage' in layout.templates) {
+					resWrite.layout.templates.feedbackPage = layout.templates.feedbackPage;
+				}
+			}
+			return wrapSave(resWrite.save());
+		});
 }

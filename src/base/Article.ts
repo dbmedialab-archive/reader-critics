@@ -34,6 +34,10 @@ interface Article extends PersistedModel {
 
 	// Contents - Title, subtitle, everything is picked up as an item
 	items : ArticleItem[];
+	date? : {
+		created?: Date;
+	};
+	feedbacks? : number;
 }
 
 export default Article;

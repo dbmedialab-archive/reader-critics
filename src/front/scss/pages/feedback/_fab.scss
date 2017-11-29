@@ -2,17 +2,21 @@
 	pointer-events: none;
 	overflow: hidden;
 	position: fixed;
-	bottom: 0;
-	right: 0;
+	bottom: 1.5rem;
 	padding: 1rem;
 	text-align: right;
 	margin: 0 auto;
 
-	span {
-		pointer-events: all;
+	right: 0;
+	@media (min-width: $content-max-width) {
+		right: calc(50% - (5rem + (#{$content-max-width} / 2)));
+	}
+
+	#message {
+		/*pointer-events: all; - "hide" button disabled for now */
 		background-color: $color-success;
 		color: $color-background;
-		padding: .75rem 0 .75rem .5rem;
+		padding: 1rem 0 1rem 1rem;
 		position: relative;
 		top: -.5rem;
 		left: -1rem;
@@ -24,7 +28,7 @@
 			opacity: 0;
 		}
 
-		&::before {
+		/* &::before { - "hide" button disabled for now
 			@include material-icon;
 			margin-right: .3rem;
 			content: 'close';
@@ -32,7 +36,7 @@
 			position: relative;
 			top: .30rem;
 			cursor: pointer;
-		}
+		} */
 
 		&::after {
 			border-style: solid;
@@ -72,7 +76,7 @@
 	&.disabled {
 		a {
 			transition: bottom $speed-appear;
-			bottom: -6rem;
+			bottom: -8rem;
 		}
 	}
 
@@ -82,7 +86,7 @@
 			bottom: 0;
 		}
 
-		span {
+		#message {
 			@include appear;
 			opacity: 1;
 

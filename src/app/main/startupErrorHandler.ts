@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import { signal } from './clusterSignals';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog('error');
@@ -34,5 +36,6 @@ export default function (error : Error) {
 		log(error.stack || error.toString());
 	}
 
+	signal.workerDOA();
 	process.exit(-128);
 }
