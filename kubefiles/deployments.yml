@@ -4,7 +4,8 @@ metadata:
   name: {{env "WERCKER_GIT_REPOSITORY"}}
   namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
-  selector: {{env "WERCKER_GIT_REPOSITORY"}}
+  selector:
+    app: {{env "WERCKER_GIT_REPOSITORY"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
