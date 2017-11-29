@@ -105,6 +105,8 @@ export default function(requ : Request, resp : Response) : void {
 		}
 	})
 	.catch(error => {
+		log('Need to handle problem:', error);
+
 		if (error instanceof NotFoundError) {
 			return errorResponse(resp, error);
 		}

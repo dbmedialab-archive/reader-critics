@@ -50,6 +50,11 @@ const WebsiteSchema : Schema = new Schema({
 				required: false,
 				default: null,
 			},
+			feedbackNotificationMail: {
+				type: String,
+				required: false,
+				default: null,
+			},
 		},
 		scssVariables: {
 			type: Object,

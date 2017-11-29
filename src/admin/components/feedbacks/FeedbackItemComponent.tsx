@@ -43,14 +43,14 @@ class FeedbackItemComponent extends React.Component <any, any> {
 	getFeedbackText() {
 		const {feedback} = this.props;
 		let originalText = feedback.text;
-		const originalItemsArr = feedback.article.items.filter(
+		const originalItem = feedback.article.items.find(
 			i => i.order.type === feedback.order.type && i.order.item === feedback.order.item
 		);
-		if (originalItemsArr.length) {
+		if (originalItem) {
 			if (!originalText) {
-				originalText = originalItemsArr[0].text;
+				originalText = originalItem.text;
 			} else {
-				originalText = this.textDiff(originalItemsArr[0].text, originalText);
+				originalText = this.textDiff(originalItem.text, originalText);
 			}
 		}
 		return originalText;

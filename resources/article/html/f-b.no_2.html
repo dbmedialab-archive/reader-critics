@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="no" data-access="true" data-paywall="false">
+    <head>
+        <link rel="preconnect" href="https://r.api.no/" />
+        <link rel="preconnect" href="https://r.acdn.no/" />
+        <link rel="preconnect" href="https://g.acdn.no/" />
+        <link rel="preconnect" href="https://services.api.no/" />
+        <link rel="preconnect" href="https://bed.api.no/" />
+        <link rel="preconnect" href="https://www.aid.no/" />
+
+        <script id="amediaConfig">
+            window.amediaConfig={"apiUrl":"/api/maelstrom/v1/","servicesHost":"services.api.no","assetsHost":"r.acdn.no","graphicsHost":"g.acdn.no","assetUrl":"//r.acdn.no/api/maelstrom/v1","gaiaUrlRoot":"/api/maelstrom/v1/gaia","useESI":true,"logLevel":"info","acpApiVersion":"v1.1","acpTimeout":10000,"meetixVersion":"v0.1","serverType":"production","serverName":"osl3","buckyUrl":"//bed.api.no/api/bucky","staticAssets":true,"sendClientDataToBucky":true,"maelstromVersion":"1.53.44"};
+
+            (function () {
+    window.proxyToken      = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MTE3NjcyODcsImp0aSI6IjI2OTU1MjQwNjkiLCJpYXQiOjE1MTE3NjcxNjcsIm5iZiI6MTUxMTc2NzE2Nywic3ViIjoiYnJvd3NlciJ9.JzoLMxLqBYnyBcNFmTw-HZ3mn5HkM9tN2uHS7xZt1FI';
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('https://' + window.location.host + '/serviceworker.js')
+        .catch(function (err) {
+            console.error(err);
+        });
+
+        navigator.serviceWorker.addEventListener('message', function(event){
+            var msg = [];
+            if (event.data.indexOf('get:page-url') !== -1) {
+                msg.push('"page-url":"' +window.location.href + '"');
+            }
+
+            event.ports[0].postMessage('{' + msg.join(',') + '}');
+        });
+    }
+}());
+
+        </script>
+
+        <script  type="application/pagedata" is="page-data">
+    {"env":{"publication":{"name":"www.f-b.no","id":-20952,"wwwDomain":"www.f-b.no","displayName":"FB","fullDisplayName":"Fredriksstad Blad"},"gaia":{"aid.api.base.url":"https://www.aid.no/api","aid.api.cached.base.url":"//bed.api.no/api","aid.assets.version":"3.2.2","aid.newsletter.teaser":"","aid.newsletter.url":"https://www.aid.no/aid/nyhetsbrev/www.f-b.no/5939677f90d2ec30ae12247e/","apple-itunes-appId":"986807096","arena.design.version":"design2","article.comments.message.enabled":false,"article.comments.message.signature":"","article.comments.message.text":"","article.comments.message.title":"Kommentarer","castor.arena.version":"0.8.42","castor.external.version":"0.1.8","client.metric.sampleSize":"0.1","comments.openinghours":"06:15-23:50,06:15-23:50,06:15-23:50,06:15-23:50,06:15-23:50,07:00-23:50,08:00-23:50","custom.html.head.desktop":"&gt;script&lt;\n(function(w) {\n  var doc = w.document;\n  if (doc.getElementById(\"apr-ics\")) {\n    return;\n  }\n  w._ics = w._ics || [];\n  w._ics.push([\"init\", \"0672adab285a4bc6b4cf232afc289fdf\"]);\n  var ics = doc.createElement(\"script\");\n  ics.async = true;\n  ics.id = \"apr-ics\";\n  ics.src = \"//ics.userreport.com/launcher.js\";\n  var s = doc.getElementsByTagName(\"script\")[0];\n  if (s && s.parentNode) {\n    s.parentNode.insertBefore(ics, s);\n  } else {\n    (doc.head || doc.body).appendChild(ics);\n  }\n})(window.top.contentWindow || window.top.window || window.top);\n&gt;/script&lt;","custom.html.head.mobile":"","cxense.use":false,"dax.networksite":"","default.publication.locale":"nb_NO","facebook.app_id":"133470800078528","facebook.comments.override_response":false,"facebook.page_url":"https://www.facebook.com/fredrikstadblad/","facebook.pages":"196577908683,845870525534302,1667810000000000,1717920000000000,983071845115677,602884516531120","frontpage.description":"Lokale nyheter, sport, kultur, næringsliv, hilsener, dødsannonser og mye mer","https.proxy.apikey":"Liet4chuEisoo4ei","https.proxy.server":"https://httpsproxy.acdn.no/api/httpsproxy","https.proxy.token":"/api/httpsproxy/token","localcss.menu.background.color":"#2D77A2","localcss.premiumlogo.custom.url":"//r.api.no/local/v3/publications/default/gfx/subscription/pluss_icon.svg","localcss.premiumlogo.custom.use":false,"nedstat.site.id":"fb","origo.comments.response.url":"//amedia.o5.no/api/response/v1/js/response.js?cb=2017-10-12","play.appId":"no.f-b.areader","play.iconUrl":"https://lh3.googleusercontent.com/nxUO1hvJLbVm5OmXCIa5eYW69S2lunEZ0u-NoIGRiXnIQspJxMy_8LGn70NIzchByDA=w300","springscores.contentpath.prefix":"amedia","springscores.sitename":"amedia","subscriptionsystem.use":true,"subscriptionsystem.use.emergencyaccess":false,"tags.configuration":"{\"debatt\":{\"buttontext\":\"Skriv ditt leserbrev her\",\"color\":\"#8FBFE0\",\"color.text\":\"#64859c\",\"quotetext\":\"DELTA I DEBATTEN! Vi oppfordrer leserne til å bidra med sine meninger, både på nett og i papir\",\"show.button\":\"true\",\"show.quote\":\"true\",\"submit.url\":\"/vis/skrivinnlegg\",\"titletext\":\"Debatt\"},\"kultur\":{\"buttontext\":\"Send inn tekst og bilder\",\"color\":\"#2d77a2\",\"color.inverted\":\"#fff\",\"quotetext\":\"Fortell nyheter om deg selv, din forening, ditt kultursted osv., både på nett og i papir\",\"show.button\":\"true\",\"show.quote\":\"true\",\"submit.url\":\"/vis/skrivinnlegg/skriverommet_f-b/compose/create.stories.default?tag=kultur\",\"titletext\":\"Kultur\"},\"minkultur\":{\"buttontext\":\"Send inn tekst og bilder\",\"color\":\"#2d77a2\",\"color.inverted\":\"#fff\",\"quotetext\":\"Fortell nyheter om deg selv, din forening, ditt kultursted osv., både på nett og i papir\",\"show.button\":\"true\",\"show.quote\":\"true\",\"submit.url\":\"/vis/skrivinnlegg/skriverommet_f-b/compose/create.stories.default?tag=minkultur\",\"titletext\":\"Minkultur\"},\"minsport\":{\"buttontext\":\"Send inn tekst og bilder\",\"color\":\"#2d77a2\",\"color.inverted\":\"#fff\",\"quotetext\":\"Fortell nyheter om deg selv, din idrettsklubb/forening osv., både på nett og i papir\",\"show.button\":\"true\",\"show.quote\":\"true\",\"submit.url\":\"/vis/skrivinnlegg/skriverommet_f-b/compose/create.stories.default?tag=minsport\",\"titletext\":\"Minsport\"},\"sport\":{\"buttontext\":\"Send inn tekst og bilder\",\"color\":\"#2d77a2\",\"color.inverted\":\"#fff\",\"quotetext\":\"Fortell nyheter om deg selv, din idrettsklubb/forening osv., både på nett og i papir\",\"show.button\":\"true\",\"show.quote\":\"true\",\"submit.url\":\"/vis/skrivinnlegg/skriverommet_f-b/compose/create.stories.default?tag=sport\",\"titletext\":\"Sport\"},\"postnord-ligaen\":{\"buttontext\":\"Kjøp tilgang i dag\",\"color\":\"#177ECC\",\"color.inverted\":\"#fff\",\"quotetext\":\"Her vises alle kampene i postnord-ligaen - direkte, opptak og høydepunkter. Alt er inkludert for deg som abonnerer på avisen.\",\"show.button\":\"false\",\"show.quote\":\"true\",\"titletext\":\"Postnord-ligaen\"},\"futsal-elite\":{\"buttontext\":\"Kjøp tilgang i dag\",\"color\":\"#177ECC\",\"color.inverted\":\"#fff\",\"quotetext\":\"Her vises kampene i eliteserien i futsal - direkte, opptak og høydepunkter. Alt er inkludert for deg som abonnerer på avisen.\",\"show.button\":\"false\",\"show.quote\":\"true\",\"titletext\":\"Eliteserien Futsal\"}}","tagsection.valg.velgerhjelpen.use":false,"tip.box.text":"SMS: FBTIPS til 2005 Telefon: 02303 &gt;a href=\"mailto:tips@f-b.no\"&lt;tips@f-b.no&gt;/a&lt; &gt;a href=\"http://f-b.no/vis/videotips/\"&lt;Send video&gt;/a&lt;","traffic.adplogger.active":true,"traffic.adplogger.url":"//services.api.no/api/adplogger/v1/bundle/internal","wot.verification.id":"cc64d0259124a13a95a0"},"params":{},"contentId":"5-59-946349","contentDescription":{"model":"story"},"isMobile":false,"isTablet":false,"isDesktop":true,"version":"1.53.44","i18n":{"related2":"Flere saker","go_to_frontpage":"Gå til forsiden","readmore":"Les mer om","comments_goto":"Se kommentarer","electionHeadline":"Valg","electionTag":"valg","electionCount":"dager igjen til valget.","electionText":"Ta Velgerhjelpen og finn ut hvilket parti du er mest enig med.","electionTry":"Prøv Velgerhjelpen","electionAll":"Se alle valgsaker","comments_for_this":"Kommentarer til denne saken","related2_showmore":"Vis flere saker","callToAction":"Vil du også bidra?","callToActionLink":"Skriv ditt leserbrev her"},"dependencyHashes":[],"css":["./templates/common/layout/html.css","./templates/common/layout/pushapp.css","./templates/relations/component.css","./templates/components/smartbanner/smartbanner.css","./templates/common/layout/lazy-include.css","./templates/components/album/style.css","./templates/common/totop/totop.css","./templates/common/properties/title.css","./templates/article/more-articles-header.css","./templates/common/properties/tags.css","./templates/common/properties/byline.css","./templates/article/article-commentInvite.css","./templates/components/election/style.css","./templates/components/comments/comments.css","./templates/components/related-stories/style.css","./templates/article/article-newsletter.css","./templates/common/properties/bodytext.css","./templates/relations/quote.css","./templates/relations/factbox.css","./templates/relations/contribution.css","./templates/article/article-facebook-like.css","./templates/common/properties/amedia-share.css","//services.api.no/api/mnemonic/v1/public/smartembed.css","//r.acdn.no/s3files/castor/arena/0.8.42/css/design2.css","//r.acdn.no/s3files/castor/arena/0.8.42/css/escenic.css","//r.acdn.no/s3files/castor/arena/0.8.42/css/article.css"],"js":["./lib-browser/utils/browserupgrade.js","./lib-browser/utils/stats.js","./lib-browser/utils/expandable-images.js","./maelstrom-templates/templates/components/smartbanner/smartbanner.browser.js","./lib-browser/utils/track-ad-blocker.js","./lib-browser/utils/component-debug.js","./lib-browser/abtesting.js","./lib-browser/utils/lazy-include.js","./lib-browser/utils/lazy-image.js","./maelstrom-templates/templates/components/page-data-collector/collector.browser.js","./maelstrom-templates/templates/common/totop/totop.browser.js","./lib-browser/utils/datebar.js","./maelstrom-templates/templates/components/election/election.browser.js","./lib-browser/utils/rotate.js","./maelstrom-templates/templates/components/comments/comments.browser.js","./maelstrom-templates/templates/components/related-stories/browser/related.browser.js","./lib-browser/utils/sharingIsCaring.js"]},"data":{"_links":{"self":{"href":"http://services.api.no/api/acpcomposer/v1.1/content/5-59-946349"}},"adInfo":{"keywords":"arkiv+nyheter+politiet+julebord+art","page":"Udefinerte"},"fields":{"comments":"conversation","isPreview":false,"lastModifiedDate":"2017-11-25T09:00:00.000+0100","isPremium":false,"id":"5-59-946349","bodyVignette":null,"relativeUrl":"/nyheter/politiet/julebord/politiet-vi-merker-at-dette-er-den-forste-julebordhelga/s/5-59-946349"},"published":"2017-11-25T07:52:08.000+0100","model":"story","title":"Politiet: – Vi merker at dette er den første julebordhelga","authors":[{"name":"Elisabeth Skovly","email":"elisabeth.skovly@f-b.no"}],"wordCount":{"title":10,"leadText":17,"body":809},"tags":[{"displayName":"Nyheter","urlPattern":"nyheter"},{"displayName":"politiet","urlPattern":"politiet"},{"displayName":"Julebord","urlPattern":"julebord"}],"relationsLength":2},"relations":{"$_5e8c4c2b-826a-492c-b267-26ee219b6462":{"data":{}},"$_529a9815-f9e8-4240-8a8d-43ff0781f98d":{"data":{}}}}
+</script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#2D77A2" />
+        <link rel="manifest" href="/manifest.json">
+        <meta name="wot-verification" content="cc64d0259124a13a95a0"/>
+        <bazaar-config><script type="application/bazaarscript">{"cxense.use":"false","bucky.url":"//bed.api.no/api/bucky","dfp.slotUrl":"/56257416/{publication}/{position}","dfp.batchedRequests":"false","isMobile":false,"keywords":["arkiv","nyheter","politiet","julebord","art"],"positions":["toppbanner","skyskraper","outstreamvideo","netboard"],"publication":"www.f-b.no"}</script></bazaar-config>
+
+        <script src="//r.acdn.no/api/shoal/v1/single_file/08ddde8f89e4ca4dfbef7f5b076284526ed0a3085a6d07355379a8f987fcdd23"></script>
+
+        <script src="//services.api.no/api/bazaar/assets/v2/bundle.js"></script>
+
+        <script type="application/javascript">
+            if (/pushvarslings\-app/i.test(navigator.userAgent)) {
+                document.documentElement.classList.add('pushapp');
+            }
+        </script>
+
+		<!-- BEGIN TRACKJS -->
+        <script>
+            window._trackJs = {
+            token: '96594c63c23e41da9eb6ac8bf73c3c1e',
+            callback: {
+                bindStack: true
+            },
+            application: "kjerne", //assign error to kjerneteamet by default
+            onError: function (payload) {
+                try {
+                    var msg = payload.message,
+                        stack = payload.stack,
+                        api;
+
+                    //There should be an application corresponding to each app name in trackjs
+                    var apis = {
+                        '/dirwww/': 'direkte',
+                        '/direkte/': 'direkte',
+                        '/maelstrom/': 'maelstrom',
+                        '/rubrikk/':'rubrikk',
+                        '/bazaar|ads|gampad/': 'bazaar',
+                        '/aid/':'aid',
+                    }, teams = {
+                        'direkte': 'innhold',
+                        'rubrikk':'rubrikk',
+                        'bazaar': 'ateam',
+                        'maelstrom': 'kjerne',
+                        'aid': 'aid'
+                    };
+
+                    if(stack) {
+                        var stackItems = stack.split(' at ');
+                        //console.error and exception have different stack traces
+                        stackItems = stackItems.filter(function(item, index){
+                            return !/(Error\s\(native\)|tracker\.js)/.exec(item);
+                        });
+
+                        payload.message = stackItems[0] + ' ' + stackItems[1];
+                    }
+
+                    api = Object.keys(apis).find(function(key){
+                        return stack.match(key);
+                    });
+
+                    if(api) {
+                        //Map error to team
+                        payload.customer.application = teams[apis[api]];
+                        payload.metadata.push({
+                            key: 'api',
+                            value: apis[api]
+                        });
+                    }
+
+                    payload.metadata.push({
+                        key: 'entry',
+                        value: payload.entry
+                    });
+
+                }catch (err){
+                    console.log("TrackJS script error. "+err);
+                }
+                return true;
+            }
+        };
+        </script>
+        <script>
+            //Load on 1.5% of pageviews
+            if(Math.random() <= 0.010 || window.location.host.match('salsaposten')) {
+                var scr = document.createElement('script');
+                scr.src = '//d2zah9y47r7bi2.cloudfront.net/releases/current/tracker.js';
+                scr.type = 'text/javascript';
+                scr.crossorigin = "anonymous";
+                //Insert immediately after this tag
+                var currentScript= document.scripts[document.scripts.length - 1];
+                var scriptParent = currentScript.parentElement;
+                scriptParent.insertBefore(scr, currentScript.nextSibling);
+            }
+        </script>
+		<!-- END TRACKJS -->
+
+        
+        
+            <script>
+            window.abheaders = { "x-ab-asimov": 0, "x-ab-chfooter": 1, "x-ab-sistenytt": 0, "x-ab-magnum": 0, "x-ab-magnum2": 3};
+            </script>
+        
+
+
+        <title>Fredriksstad Blad - Politiet: – Vi merker at dette er den første julebordhelga</title>
+
+        <link rel="apple-touch-icon" href="//r.acdn.no/local/v3/publications/www.f-b.no/gfx/square_logo.jpg"/>
+        <link rel="android-touch-icon" href="https://lh3.googleusercontent.com/nxUO1hvJLbVm5OmXCIa5eYW69S2lunEZ0u-NoIGRiXnIQspJxMy_8LGn70NIzchByDA=w300"/>
+
+            <link media="all" rel="stylesheet" type="text/css" href="//services.api.no/api/mnemonic/v1/public/smartembed.css"/>
+            <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/s3files/castor/arena/0.8.42/css/design2.css"/>
+            <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/s3files/castor/arena/0.8.42/css/escenic.css"/>
+            <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/s3files/castor/arena/0.8.42/css/article.css"/>
+            <link media="all" rel="stylesheet" type="text/css" href="//bed.api.no/api/curiosity/v1/css/searchbox.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/api/maelstrom/v1/css/publication/www.f-b.no/publication.css"/>
+        <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/s3files/maelstrom/assets/css/story.css/c6b52bee45fff2f82ed5f6bc3ca7b2bd2c94e2badaba45d5ae0270c5f85d61fe.css"/>
+        
+        <link media="all" rel="stylesheet" type="text/css" href="//r.acdn.no/api/shoal/v1/bundle/49778dcb2ea70ace53f9ed0814ecea6a9825aa1ac11a0fb85ce44243a9a18299"/>
+
+        <meta name="fb:app_id" content="133470800078528" />
+  <meta property="fb:pages" content="196577908683,845870525534302,1667810000000000,1717920000000000,983071845115677,602884516531120" />
+<meta name="robots" content="noodp" />
+
+        <meta name="og:title" content="Politiet: – Vi merker at dette er den første julebordhelga" />
+        <meta property="twitter:title" content="Politiet: – Vi merker at dette er den første julebordhelga" />
+
+    <meta name="title" content="Politiet: – Vi merker at dette er den første julebordhelga" />
+    <meta name="description" content="Politiets logg natt til lørdag vitner om at julebordsesongen er over oss. Bli med gjennom natten." />
+
+    <link href="" rel="image_src">
+
+
+    <meta name="og:description" content="Politiets logg natt til lørdag vitner om at julebordsesongen er over oss. Bli med gjennom natten." />
+
+    <meta name="og:type" content="article" />
+
+    <meta name="article:published_time" content="2017-11-25T07:52:08.000+0100" />
+    <meta name="article:modified_time" content="2017-11-25T09:00:00.000+0100" />
+    <meta property="og:site_name" content="www.f-b.no" />
+    <meta property="og:url" content="http://www.f-b.no/nyheter/politiet/julebord/politiet-vi-merker-at-dette-er-den-forste-julebordhelga/s/5-59-946349?ns_campaign=article&amp;ns_mchannel=recommend_button&amp;ns_source=facebook&amp;ns_linkname=facebook&amp;ns_fee=0" />
+    <meta property="og:image" content="https://r.acdn.no/local/v3/publications/www.f-b.no/gfx/square_logo.jpg" />
+    
+
+    <meta name="twitter:description" content="Politiets logg natt til lørdag vitner om at julebordsesongen er over oss. Bli med gjennom natten." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="" />
+
+
+    <link rel="canonical" href="https://www.f-b.no/nyheter/politiet/julebord/politiet-vi-merker-at-dette-er-den-forste-julebordhelga/s/5-59-946349" />
+
+
+    <meta property="lp:premium" content="false" />
+    <meta property="lp:type" content="story" />
+
+    <meta name="google-play-app" content="app-id=no.f-b.areader" />
+    <meta name="apple-itunes-app" content="app-id=986807096" />
+
+            <script defer type="text/javascript" src="//r.acdn.no/s3files/castor/arena/0.8.42/js/maelstrom-desktop-head.js" crossorigin="anonymous"></script>
+
+
+
+        <!-- shiv -->
+        <script>
+            // Picture element HTML5 shiv
+            document.createElement( 'picture' );
+            document.createElement( 'source' );
+            (function consoleLog() {
+                // Avoid `console` errors in browsers that lack a console.
+                var method;
+                var noop = function () {};
+                var methods = [
+                    'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+                    'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+                    'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+                    'timeline', 'timelineEnd', 'timeStamp', 'trace', 'warn'
+                ];
+                var length = methods.length;
+                var console = (window.console = window.console || {});
+
+                while (length--) {
+                    method = methods[length];
+
+                    // Only stub undefined methods.
+                    if (!console[method]) {
+                        console[method] = noop;
+                    }
+                }
+            }());
+        </script>
+        <script>
+        //Temporary linkpulse tag code for DrFront
+        if(false) {
+            document.addEventListener('DOMContentLoaded', function () {
+                var drWrapper = document.getElementsByClassName('drfront-outer'),
+                    rowCounter = 1,
+                    posCounter = 1,
+                    drDecks;
+
+                function toArr(nodelist) {
+                    if(nodelist) {
+                        return Array.prototype.slice.call(nodelist);
+                    }
+                    return [];
+                }
+
+                if(drWrapper.length > 0) {
+                    drDecks = toArr(drWrapper[0].children);
+                }
+
+                if(drDecks && drDecks.length > 0) {
+                    drDecks.forEach(function (deck) {
+                        var art = toArr(deck.getElementsByClassName('df-article')),
+                            extracts = toArr(deck.getElementsByClassName('article-extract'));
+
+                        if(art.length > 0 || extracts.length > 0) {
+                            deck.classList.add('lp_row' + ( rowCounter++ ));
+                            posCounter = 1;
+                        }
+
+                        art.forEach(function (article) {
+                            article.classList.add('lp_pos' + ( posCounter++ ));
+                        });
+
+                        extracts.forEach(function (article) {
+                            article.classList.add('lp_pos' + ( posCounter++ ));
+                        });
+                    });
+                }
+            });
+        }
+        </script>
+
+            <script>
+(function(w) {
+  var doc = w.document;
+  if (doc.getElementById("apr-ics")) {
+    return;
+  }
+  w._ics = w._ics || [];
+  w._ics.push(["init", "0672adab285a4bc6b4cf232afc289fdf"]);
+  var ics = doc.createElement("script");
+  ics.async = true;
+  ics.id = "apr-ics";
+  ics.src = "//ics.userreport.com/launcher.js";
+  var s = doc.getElementsByTagName("script")[0];
+  if (s && s.parentNode) {
+    s.parentNode.insertBefore(ics, s);
+  } else {
+    (doc.head || doc.body).appendChild(ics);
+  }
+})(window.top.contentWindow || window.top.window || window.top);
+</script>
+
+            <script src="//r.acdn.no/s3files/castor/arena/0.8.42/js/pollux-desktop-head.js"></script>
+    </head>
+
+    <body class="design2 am-page am-page--rwd am-skin--page am-model-story  ">
+        <script>
+    (function () {
+        'use strict';
+
+        var elements = [];
+         
+        var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+               var index = elements.indexOf(entry.target);
+
+               if (index !== -1 && (entry.isInsersecting || entry.intersectionRatio > 0)) {
+                   window.requestAnimationFrame(entry.target.render.bind(entry.target));
+                   observer.unobserve(entry.target);
+                   elements.splice(index, 1);
+               }
+           }) 
+        }, {
+            rootMargin: '200px'
+        });
+
+        document.addEventListener('amedia:registerLazyLoad', function (e) {
+            var element = e.detail;
+
+            if (!element) {
+                throw new Error('Missing element for amedia:registerLazyLoad');
+            }
+
+            if (elements.indexOf(element) === -1) {
+                elements.push(element);
+                observer.observe(element);
+            }
+        });
+    }());
+</script>
+        
+        <smart-banner
+            title=FB
+            author=FB
+        >
+        </smart-banner>
+        <a href="#am-page-body" class="am-skipLink">
+    Gå til sidens hovedinnhold
+</a>
+          <div class="am-page-header">
+        <header class="lp_header amedia-header design2 ">
+    <amedia-branding class="">
+        <div class="amedia-branding-inner">
+            <a tabindex="0" class="lp_logo logo" href="/">
+                <img tabindex="-1" src=//r.api.no/local/v3/publications/www.f-b.no/gfx/small-positive.svg alt="FB">
+            </a>
+            <bazaar-ad 
+            position="challengetop" 
+            labeled="false" 
+            data-positive="">
+            </bazaar-ad>
+        </div>
+    </amedia-branding>
+    <nav role="navigation" aria-label="Hovedmeny">
+        <div class="menubar-wrapper">
+            <amedia-menubar class="menubar" role="menubar">
+                <ul role="menu">
+                        <li><a tabindex="0" href="http://www.f-b.no/vis/dodsannonser/">Dødsannonser (+)</a></li>
+                        <li><a tabindex="0" href="/debatt/">Debatt</a></li>
+                        <li><a tabindex="0" href="http://www.f-b.no/vis/kalender/">Kalender</a></li>
+                        <li><a tabindex="0" href="https://www.f-b.no/postnord-ligaen">Postnord-ligaen</a></li>
+                </ul>
+                <amedia-date></amedia-date>
+                <amedia-subscriber-link domain="www.f-b.no"
+                        adpurl="//bed.api.no/api/adpsegment"
+                        orderpage="/kundesenter/oversikt/kampanje/bestill-abonnement/"
+                        positiveheader="true"
+                        buckyurl="//bed.api.no/api/bucky">
+</amedia-subscriber-link>
+
+                <amedia-menutrigger tabindex="0" class="" aria-label="Hovedmeny" aria-expanded="false" role="button" aria-controls="bigmenu" aria-haspopup="true" >
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         viewBox="0 0 24 20" xml:space="preserve">
+                    <path class="hamburgerColor" d="M22.2,4H1.8C0.8,4,0,3.2,0,2.2l0-0.4C0,0.8,0.8,0,1.8,0l20.4,0c1,0,1.8,0.8,1.8,1.8v0.4C24,3.2,23.2,4,22.2,4z"
+                        />
+                    <path class="hamburgerColor" d="M22.2,12H1.8c-1,0-1.8-0.8-1.8-1.8l0-0.4C0,8.8,0.8,8,1.8,8h20.4c1,0,1.8,0.8,1.8,1.8v0.4
+                        C24,11.2,23.2,12,22.2,12z"/>
+                    <path class="hamburgerColor" d="M22.2,20H1.8c-1,0-1.8-0.8-1.8-1.8l0-0.4c0-1,0.8-1.8,1.8-1.8h20.4c1,0,1.8,0.8,1.8,1.8v0.4
+                        C24,19.2,23.2,20,22.2,20z"/>
+                    </svg>
+                </amedia-menutrigger>            </amedia-menubar>
+        </div>
+        <amedia-bigmenu role="menu" aria-hidden="true" id="bigmenu">
+            <div class="columns">
+                <div class="column column3">
+                    <amedia-searchbox><form class="front large" action="/sok" data-reactroot="" data-reactid="1" data-react-checksum="396589096"><label for="am-globalSearchField" class="front" data-reactid="2">Søk</label><input type="search" name="query" placeholder="Søk" value="" data-reactid="3"/><input type="hidden" name="tags" value="" data-reactid="4"/><button type="submit" data-reactid="5">Søk</button></form></amedia-searchbox>
+                        <h2>Aktuelle temaer</h2>
+                        <ul class="topics">
+                                <li><a tabindex="0" href="/bildeserier/">Bildeserier</a></li>
+                                <li><a tabindex="0" href="http://www.f-b.no/nyheter/">Nyheter</a></li>
+                                <li><a tabindex="0" href="http://www.f-b.no/naeringsliv">Næringsliv</a></li>
+                                <li><a tabindex="0" href="/stjernen/">Stjernen</a></li>
+                                <li><a tabindex="0" href="http://www.f-b.no/sport">Sport</a></li>
+                                <li><a tabindex="0" href="https://frblad.podbean.com">Podkast</a></li>
+                                <li><a tabindex="0" href="/ffk/">FFK</a></li>
+                                <li><a tabindex="0" href="http://www.f-b.no/kultur">Kultur</a></li>
+                                <li><a tabindex="0" href="http://www.f-b.no/video">FBTV</a></li>
+                                <li><a tabindex="0" href="https://www.f-b.no/digitale-magasiner/">Digitale Magasiner</a></li>
+                        </ul>
+                            <h2>EAVIS OG UTGAVER</h2>
+                        <div class="issues">
+                            <a href="/vis/utgaver">
+                                <div class="issues-images" style="padding-right: 40px">
+                                        <img src="//g.api.no/obscura/API/dynamic/r1/external/tr_150_267_l_f/0000/http%3A//smooth-storage.aptoma.no/users/drf-amedia/images/4432371.jpg%3Ft%5Bresize%5D%5Bwidth%5D%3D375%26t%5Bresize%5D%5Bheight%5D%3D559%26accessToken%3Df99f7afac369bac41aafe5dee80b0dff1bbbc0bc9df297c1993b12fbd553b168?chk&#x3D;99D290" style="left: 0px">
+                                        <img src="//www.e-pages.dk/amediaekstra/532/teasers/small.jpg" style="left: 20px">
+                                        <img src="//www.e-pages.dk/fredriksstadblad/1097/teasers/small.jpg" style="left: 40px">
+                                </div>
+                            </a>
+                            <a href="/vis/utgaver" class="issues-link">Les dem her</a>
+                    </div>
+                </div>
+                <div class="column column4">
+                        <amedia-expandable expanded="true" selector=".am-siteHeader2-panelBody" class="aid-menu-wrapper"><div id="am-siteHeader2-aid-menu" class="aid-menu"></div></amedia-expandable>
+
+    <script src="//r.acdn.no/s3files/castor/aid/3.2.2/js/menu.js"
+        data-assets-base-url="//r.acdn.no/s3files/castor/aid/3.2.2"
+        data-api-base-url="https://www.aid.no/api"
+        data-api-cached-base-url="//bed.api.no/api"
+        id="aid-bundle-menu"
+        data-publication-domain="www.f-b.no" async></script>
+
+                </div>
+                <div class="column column1">
+                    <amedia-expandable expanded="true" class="tip-us lp_tipus">
+                        <h2>Tips oss!</h2>
+                        <div class="panel">
+                            <dl>
+                                    <dt>SMS:</dt>
+                                    <dd>
+                                        <a href="sms:2005">
+                                                <strong>FBTIPS</strong> til
+                                            <strong>2005</strong>
+                                        </a>
+                                    </dd>
+                                    <dt>Telefon:</dt>
+                                    <dd>
+                                        <a href="tel:Kundeservice:69204130">
+                                            <strong>Kundeservice: 69204130</strong>
+                                        </a>
+                                    </dd>
+                                    <dt>E-post:</dt>
+                                    <dd>
+                                        <a href="mailto:tips@f-b.no">
+                                            <strong>tips@f-b.no</strong>
+                                        </a>
+                                    </dd>
+                            </dl>
+                                <a href="/kundesenter/oversikt/om-fredrikstad-blad/ansatte/" class="tipsLink">Tipstelefon: 46807777 / Trykk her for å se ansatte</a>
+                        </div>
+                    </amedia-expandable>
+                    <amedia-expandable expanded="true" class="advertising lp_advertising">
+                        <h2>ANNONSERING</h2>
+                        <ul class="panel">
+                                <li><a href="/kundesenter/oversikt/annonsering/rubrikkannonser-for-privatpersoner/">Privat</a></li>
+                            <li><a href="https://site.amediaressurs.no/region/follo-ostfold/">Bedrift</a></li>
+                        </ul>
+                    </amedia-expandable>                </div>
+                <div class="column column2">
+                    <amedia-expandable expanded="true" class="share lp_share">
+                        <h2>Del med oss</h2>
+                        <ul class="panel">
+                                <li>
+                                    <a href="/vis/videotips/" class="videoupload">Last opp video</a>
+                                </li>
+                                <li>
+                                    <a href="http://www.f-b.no/vis/lesernes/bilder/collections/14125263" class="uploadimage">Last opp bilde</a>
+                                </li>
+                                <li>
+                                    <a href="/vis/kalender/" class="addevent">Legg til arrangement</a>
+                                </li>
+                                <li>
+                                    <a href="/vis/personalia/" class="sendgreet">Send hilsen</a>
+                                </li>
+                                <li>
+                                    <a href="/vis/skrivinnlegg/" class="writeletter">Skriv leserbrev</a>
+                                </li>
+                        </ul>
+                    </amedia-expandable>
+                    
+                    <amedia-expandable expanded="true" class="follow lp_share">
+                        <h2>Følg oss</h2>
+                        <ul class="panel">
+                                <li>
+                                    <a href="https://twitter.com/FrBlad" class="twitter" title="twitter"></a>
+                                </li>
+                                <li>
+                                    <a href="https://www.facebook.com/fredriksstadblad?fref=ts" class="facebook" title="facebook"></a>
+                                </li>
+                        </ul>
+                    </amedia-expandable>
+                </div>
+            </div>
+            <div class="classifieds lp_services">
+        <a href="https://www.f-b.no/vis/eiendomtilsalgs">
+            <svg version="1.1" x="0px" y="0px" viewBox="0 -8 44 44" enable-background="new 0 0 44 32" xml:space="preserve">
+                <title>Eiendom - Hoved</title>
+                <g>
+                    <path fill="#F26C4F" d="M43.6,30l-7.4-7.4c1.5-1.9,2.4-4.2,2.4-6.8c0-6-4.9-10.8-10.8-10.8c-1.3,0-2.5,0.2-3.7,0.6l-6.4-5.4
+                        c-0.4-0.3-1.1-0.3-1.5,0L0.9,12.9c-0.4,0.3-0.9,1-0.9,2v15.9c0,0.6,0.4,1,0.9,1h32c0.5,0,0.9-0.5,0.9-1l0-6.1
+                        c0.3-0.2,0.5-0.4,0.8-0.6l7.4,7.4c0.4,0.4,1,0.4,1.3,0l0.3-0.3C43.9,31,43.9,30.4,43.6,30z M12.9,24.9H5v-8h8V24.9z M27.8,24.9
+                        c-5,0-9.1-4.1-9.1-9.1c0-5,4.1-9.1,9.1-9.1c5,0,9.1,4.1,9.1,9.1C36.9,20.9,32.8,24.9,27.8,24.9z"/>
+                    <path fill="#F26C4F" d="M28.2,8.3c-0.6,0-1,0.4-1,1s0.4,1,1,1c2.8,0,5.1,2.3,5.1,5.1c0,0.6,0.4,1,1,1s1-0.4,1-1
+                        C35.3,11.5,32.1,8.3,28.2,8.3z"/>
+                </g>
+            </svg>
+            Eiendom
+        </a>
+        <a href="https://www.f-b.no/vis/stillingledig">
+            <svg version="1.1" x="0px" y="0px" viewBox="0 -8 44 44" enable-background="new 0 0 44 32" xml:space="preserve">
+                <title>Stilling - Hoved</title>
+                <g>
+                    <path fill="#F26C4F" d="M43.7,30.1l-7.4-7.4c1.5-1.9,2.4-4.3,2.4-6.9c0-5.6-4.3-10.3-9.8-10.8c0,0,0,0,0-0.1c0-0.7-0.5-0.9-1-1
+                        c0,0-4,0-4,0V0.9C24,0.4,23.5,0,23,0H0.9C0.4,0,0,0.4,0,0.9V29c0,1.7,1.3,3,3,3h23c1.8,0,3-1.3,3-3c0,0,0-0.9,0-2.3
+                        c2.2-0.2,4.1-1.1,5.7-2.4l7.4,7.4c0.4,0.4,1,0.4,1.3,0l0.3-0.3C44.1,31.1,44.1,30.5,43.7,30.1z M4,5h3.4v3.4H4V5z M4,12h13.7
+                        c-0.2,0.6-0.4,1.3-0.6,2H4V12z M4,16h13c0,0.7,0.1,1.4,0.2,2H4V16z M4,20h13.8c0.3,0.7,0.6,1.4,1.1,2H4V20z M20,26H4v-2h16V26z
+                         M27,28.5c0,0.8-0.7,1.5-1.5,1.5S24,29.3,24,28.5V26c0.9,0.4,1.9,0.6,3,0.7V28.5z M27.9,25c-5,0-9.1-4.1-9.1-9.1s4.1-9.1,9.1-9.1
+                        s9.1,4.1,9.1,9.1S32.9,25,27.9,25z"/>
+                    <path fill="#F26C4F" d="M28.3,8.4c-0.6,0-1,0.4-1,1s0.4,1,1,1c2.8,0,5.1,2.3,5.1,5.1c0,0.6,0.4,1,1,1s1-0.4,1-1
+                        C35.4,11.5,32.2,8.4,28.3,8.4z"/>
+                </g>
+            </svg>
+            Stilling
+        </a>
+    <a href="https://www.f-b.no/derdubor/">
+        <svg version="1.1" viewBox="-457 464.62 100 100" enable-background="new -457 464.62 100 100" xml:space="preserve">
+            <g class="companyicon" fill="#6a8a14">
+                <path d="M-361.709,509.211c0,0-3.29,0.553-7.058-3.182c-2.482-2.462-2.495-5.906-2.07-8.448
+                        c-8.672-8.6-16.713-19.709-44.908-13.998l0.004,1.436c0,0,21.549,2.129,19.368,19.372l-15.526,15.473
+                        c-2.638-0.682-5.428,1.847-12.732,9.125l-4.655,4.639c-4.157,4.14-9.875,9.153-13.517,12.09c-3.639,2.94-6.763,5.008-1.198,10.532
+                        l4.086,4.045c5.566,5.521,7.648,2.412,10.59-1.215c2.944-3.623,7.973-9.326,12.13-13.469l4.654-4.639
+                        c7.125-7.1,9.711-9.917,9.19-12.483l15.984-15.931c2.33-0.664,7.274-1.555,10.456,1.596c3.769,3.734,3.216,7.006,3.216,7.006
+                        l4.706,4.668L-357,513.877L-361.709,509.211z"/>
+                <g>
+                    <path d="M-379.544,545.46l-17.931-17.779c-0.573,3.359-4.043,7.006-10.163,13.105l-1.748,1.742l16.433,16.293
+                            c2.288,2.268,5.237,3.428,8.046,3.428c2.37,0,4.64-0.826,6.327-2.506C-374.892,556.067-375.328,549.639-379.544,545.46z
+                             M-381.638,556.758c-1.349,1.342-4.9,2.4-7.604-0.305l-14.018-13.935c2.987-2.997,5.285-5.403,6.94-7.606l14.338,14.252
+                            C-379.138,552.008-380.303,555.424-381.638,556.758z"/>
+                    <path d="M-420.962,504.4c1.445-5.956-0.181-12.497-4.864-17.145c-3.576-3.541-8.25-5.311-12.922-5.311
+                            c-1.458,0-2.915,0.172-4.338,0.516l7.195,7.13c2.257,2.244,2.265,5.871,0.013,8.117l-5.259,5.24
+                            c-1.127,1.124-2.606,1.687-4.084,1.687c-1.475,0-2.951-0.56-4.079-1.68l-7.194-7.13c-1.438,5.957,0.184,12.493,4.868,17.141
+                            c3.574,3.541,8.249,5.311,12.92,5.311c1.458,0,2.915-0.173,4.338-0.518l8.164,8.094l1.745-1.738
+                            c6.121-6.1,9.779-9.559,13.161-10.137L-420.962,504.4z M-426.211,519.762l-6.827-6.775l-2.352,0.573
+                            c-1.079,0.261-2.197,0.394-3.317,0.394c-3.727,0-7.235-1.442-9.879-4.06c-0.759-0.753-1.42-1.58-1.978-2.46
+                            c1.588,0.991,3.425,1.521,5.342,1.521c2.695,0,5.229-1.046,7.135-2.947l5.259-5.239c1.908-1.903,2.958-4.43,2.956-7.117
+                            c-0.001-1.91-0.535-3.739-1.529-5.322c0.908,0.559,1.757,1.225,2.532,1.993c3.469,3.443,4.856,8.325,3.707,13.057l-0.575,2.373
+                            l7.154,7.088C-420.792,514.494-423.205,516.785-426.211,519.762z"/>
+                    <circle cx="-385.5" cy="552.995" r="3.375"/>
+                </g>
+            </g>
+        </svg>
+        Lokale bedrifter
+    </a>
+
+    <amedia-catalog class="lp_1881 catalog">
+        <a href="https://www.1881.no">1881 Telefonkatalogen</a>
+        <form role="search" action="//www.1881.no/" method="GET">
+            <label for="catalogSearchField">Søk i 1881 Telefonkatalogen</label>
+            <input type="hidden" name="utm_source" value="amedia_meny" />
+            <input type="hidden" name="utm_medium" value="sokeboks" />
+            <input type="hidden" name="utm_campaign" value="amedia" />
+            <input type="search" placeholder="Søk person, bedrift, tlf.nr, sted..." id="catalogSearchField" size="25" name="query" />
+            <button type="submit"></button>
+        </form>
+        <img src="//r.acdn.no/s3files/castor/arena/0.8.42/img/components/global/menu/1881.svg" alt="Søk i 1881" />
+    </amedia-catalog>
+</div>
+            <div class="bigmenu-bottom">
+                <amedia-expandable expanded="true" class="atoz lp_allcontent">
+                    <h2>A til Å</h2>
+                    <ul class="panel">
+                            <li><a href="http://450folkifredrikstad.no">450 folk i Fredrikstad</a>
+                            <li><a href="https://www.f-b.no/kundesenter/oversikt/om-fredrikstad-blad/ansatte/">Ansatte i Fredriksstad Blad</a>
+                            <li><a href="/bildeserier">Bildeserier</a>
+                            <li><a href="/bolig">Bolig &amp; Interiør</a>
+                            <li><a href="/debatt">Debatt</a>
+                            <li><a href="https://www.f-b.no/digitale-magasiner/">Digitale Magasiner</a>
+                            <li><a href="/vis/utgaver/">E-avis</a>
+                            <li><a href="http://www.f-b.no/bolig/oversikt-over-solgte-eiendommer-i-fredrikstad-hvaler-og-rade/s/5-59-103604">Eiendom</a>
+                            <li><a href="/tv/">FBTV</a>
+                            <li><a href="/ffk">FFK</a>
+                            <li><a href="http://live.f-b.no/fotball/live/">Fotball live</a>
+                            <li><a href="/h%C3%A5ndball">Håndball</a>
+                            <li><a href="/fotballbloggen">Jokkes fotballblogg</a>
+                            <li><a href="https://www.1881.no/Kart/?utm_source&#x3D;amedia_meny&amp;utm_medium&#x3D;lenke&amp;utm_content&#x3D;kart&amp;utm_campaign&#x3D;amedia">Kart</a>
+                            <li><a href="/kultur">Kultur</a>
+                            <li><a href="/vis/videotips/">Last opp din video her!</a>
+                            <li><a href="http://f-b.no/derdubor/">Lokale bedrifter</a>
+                            <li><a href="http://www.f-b.no/maktlisten-2016/">Maktlisten 2016</a>
+                            <li><a href="/motor">Motor &amp; Trafikk</a>
+                            <li><a href="/nyheter">Nyheter</a>
+                            <li><a href="http://www.f-b.no/naeringsliv">Næringsliv</a>
+                            <li><a href="https://www.f-b.no/postnord-ligaen">Postnord-ligaen</a>
+                            <li><a href="//www.prisguide.no/">Prisguide.no</a>
+                            <li><a href="/sport">Sport</a>
+                            <li><a href="/vis/stillingledig">Stilling ledig</a>
+                            <li><a href="/stjernen">Stjernen</a>
+                            <li><a href="http://www.f-b.no/Oversikt_over_solgte_eiendommer_i_Fredrikstad__Hvaler_og_R_de-5-59-103604.html">Søk i eiendomsbasen</a>
+                            <li><a href="http://bilder.f-b.no/index.php?info&#x3D;foto&amp;search&#x3D;1">Søk i historiske bilder</a>
+                            <li><a href="https://www.1881.no/?utm_source&#x3D;amedia_meny&amp;utm_medium&#x3D;lenke&amp;utm_content&#x3D;telefonkatalogen&amp;utm_campaign&#x3D;amedia">Telefonkatalogen 1881</a>
+                            <li><a href="http://annonsearkiv.f-b.no/">Ukens avisannonser</a>
+                            <li><a href="/vis/kalender/">Ut i dag</a>
+                            <li><a href="http://www.f-b.no/vis/velgerhjelpen/">Velgerhjelpen</a>
+                            <li><a href="/vis/vaeret/">Været</a>
+                    </ul>
+                </amedia-expandable>                <amedia-expandable expanded="true" class="customer-service lp_customerservice">
+                    <h2>Kundeservice</h2>
+                    <ul class="panel">
+                        <li><a class="phone" href="tel:69204130">69 20 41 30</a></li>
+                            <li><a href="http://forhandler.amedia.no/?title&#x3D;FB">Løssalg</a>
+                            <li><a href="https://site.amediaressurs.no/region/follo-ostfold/">Annonsering</a>
+                            <li><a href="http://www.f-b.no/kundesenter/oversikt/annonsering/rubrikkannonser-for-privatpersoner/">Sett inn annonse</a>
+                            <li><a href="/vis/dodsannonser/">Dødsannonser</a>
+                            <li><a href="/kundesenter/kontakt-kundesenteret/">Kontakt oss</a>
+                            <li><a href="http://www.f-b.no/kundesenter/oversikt/om-fredrikstad-blad/ansatte/">Kontakt</a>
+                    </ul>
+                </amedia-expandable>            </div>
+        </amedia-bigmenu>
+    </nav>
+    
+</header>
+
+</div>
+          <div class="am-page-content">
+        <div class="am-page-ad">
+            <div class="am-gridContainer am-gridContainer--constrained am-gridContainer--centered">
+    <div class="am-gridRow am-adTopBanner">
+        <div id="apiTopAdContainer">
+            <div class="am-gridSpan--20">
+                    <bazaar-ad position="toppbanner" class="am-bazaar-ad lp_toppbanner" labeled="true"></bazaar-ad>
+            </div>
+            <div id="skyscraper-ads-container" class="am-gridSpan--4 am-gridPush--20 am-adHangover--right">
+        <bazaar-ad position="skyskraper" class="am-bazaar-ad lp_skyskraper" labeled="true" disabled></bazaar-ad>
+</div>
+        </div>
+    </div>
+</div>
+        </div>
+
+    <div class="am-page-inner am-skin--page">
+    <div class="am-page-body" id="am-page-body">
+        <main id="am-mainContent" class="am-page-main am-mainContent am-clearfix lp_main" role="main">
+                <article class="am-gridContainer am-gridContainer--constrained am-gridContainer--centered
+    am-article" itemscope="" itemtype="http://schema.org/Article">
+       <header class="am-article-header">
+    <div class="am-article-title">
+            <h1 class="maelstrom-article-mainTitle am-txt--head" itemprop="headline">
+    Politiet: – Vi merker at dette er den første julebordhelga
+</h1>
+    </div>
+    <div class="am-article-tags">
+            <h2 class="am-is-vishidden">Artikkeltags</h2>
+
+
+<ul class="maelstrom-articleTagList am-articleTagList--prominent" itemprop="keywords">
+                <li class="am-articleTagList-item lp_articletag lp_articletag-nyheter"><a href="/nyheter" class="am-articleTag">Nyheter</a></li>
+                <li class="am-articleTagList-item lp_articletag lp_articletag-politiet"><a href="/politiet" class="am-articleTag">politiet</a></li>
+                <li class="am-articleTagList-item lp_articletag lp_articletag-julebord"><a href="/julebord" class="am-articleTag">Julebord</a></li>
+</ul>
+    </div>
+    <div class="am-article-headerImage">
+      <div class="am-articleItem am-articleItem--main">
+</div>
+    </div>
+    <div class="maelstrom-article-publicationBar">
+            <div class="maelstrom-articleByline ">
+        Av
+            
+                <a href="mailto:elisabeth.skovly@f-b.no" itemscope="" itemprop="author" itemtype="http://schema.org/Person" class="maelstrom-articleByline-item">
+                    <span itemprop="name">Elisabeth Skovly</span>
+                </a>
+</div>
+            <div class="maelstrom-articleDateBar maelstrom-articleDateBar--expandable">
+    <span class="maelstrom-articleDateBar-published">
+        <span class="am-is-vishidden">Publisert:</span>
+        <time datetime="2017-11-25T07:52:08.000+0100" itemprop="datePublished">25. november 2017, kl. 07:52</time>
+    </span>
+    <span class="maelstrom-articleDateBar-updated">
+        Sist oppdatert:
+        <time datetime="2017-11-25T09:00:00.000+0100" itemprop="dateModified">25. november 2017, kl. 09:00</time>
+    </span>
+</div>
+    </div>
+    <div class="am-article-leadText">
+      <div class="maelstrom-article-summary am-txt--medium am-txt--lead am-adjust-length">
+    <p>Politiets logg natt til lørdag vitner om at julebordsesongen er over oss. Bli med gjennom natten.</p>
+</div>
+    </div>
+</header>
+       <div class="am-gridComp am-gridComp--article">
+    <div class="am-gridComp-body">
+        <div class="am-gridComp-items">
+                <div class="maelstrom-body" itemprop="articleBody">
+        <div class="am-article-actions">
+    <amedia-share>
+    <span id="share-title">DEL</span>
+
+    <ul aria-labelledby="share-title" class="am-list">
+        <li>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=:url:facebook" aria-label="Del på facebook">
+                <i class="am-icon am-icon--facebook am-icon--circle" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li class="am-extendedItem am-hidden-listelement" aria-hidden="false">
+            <a href="http://twitter.com/intent/tweet/?url=:url:twitter&text=:title" aria-label="Del på Twitter">
+                <i class="am-icon am-icon--twitter am-icon--circle" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li class="am-extendedItem am-hidden-listelement" aria-hidden="false">
+            <a href="mailto:?subject=:title&body=:title%0A:url:email" aria-label="Del på e-post">
+                <i class="am-icon am-icon--mail am-icon--circle" aria-hidden="true"></i>
+            </a>
+        </li>
+        <li aria-hidden="true">
+            <span role="button" aria-label="Flere valg" class="am-btnSharingIsCaring" aria-hidden="true" tabindex="0">
+                <i class="am-icon am-icon--menuDotsH am-icon--circle"></i>
+            </span>
+        </li>
+    </ul>
+</amedia-share>
+</div>
+        <div class="am-articleItem--bodyAds am-articleItem--push">
+    <bazaar-ad position="netboard" class="am-bazaar-ad lp_netboard" labeled="true"></bazaar-ad>
+</div>
+    
+    <div class="content">
+            
+            
+            
+            
+ <p class="lp_contentrow1">– Natten har vært grei, men vi merker at dette er den første julebordhelga. Spesielt tidlig i natt var det en del hendelser, men så roet det seg litt utover, sier operasjonsleder i politiet, Villy Meier.</p>
+            
+            
+            
+ <p class="lp_contentrow2">Allerede litt før midnatt måtte politiet i Sarpsborg rykke ut til en ungdomsfest hvor det var kommet en del gjester som ikke var invitert. Det endte med at politiet måtte avslutte festen.</p>
+            
+            
+            
+ <p class="lp_contentrow3">I nabobyen Fredrikstad ble en person på samme tid bortvist fra Hotell Scandic City fordi han var for full.</p>
+            
+            
+            
+ <p class="lp_contentrow4">Også på Quality hotell på Grålum ble det nødvendig politifolk. Like over midnatt ble en mann i 40-årene pågrepet og anmeldt for ordensforstyrrelse og trusler mot vekterne som jobbet der.</p>
+            
+            
+            
+ <ul class="lp_contentrow5">
+  <li><strong>LES OGSÅ: <a href="https://www.f-b.no/nyheter/byggesak/nummer-20-as/oppgitt-over-byggearbeid-i-storgata-20-vi-kan-ikke-sitte-i-en-vat-bar/s/5-59-943658">Oppgitt over byggearbeid i Storgata 20: – Vi kan ikke sitte i en våt bar!</a></strong></li>
+ </ul>
+ <h2 class="lp_contentrow6">Så full at han ble sendt til Kalnes</h2>
+ <p class="lp_contentrow7">Tilbake i Fredrikstad ble en mann i 40-årene bortvist fra et serveringssted etter å ha utøvd skadeverk på stedet, og på Twitter skriver politiet at han vil bli anmeldt for forholdet.</p>
+            
+            
+            
+ <p class="lp_contentrow8">Etter hvert som klokken gikk ut over natten ble flere personer tatt hånd om fordi de var for fulle.</p>
+            
+            
+            
+ <p class="lp_contentrow9">Først ble en kar i 20-årene satt i fyllearresten og anmeldt for ikke å ha etterkommet politiets pålegg på et utested i Sarpsborg. I samme by ble en annen overstadig beruset mann i Utsiktsveien tatt hånd om av helsepersonell etter at både politiet og ambulanse dukket opp cirka klokka 01.30.</p>
+            
+            
+            
+ <p class="lp_contentrow10">På samme tid ble en overstadig beruset person i Rakkestad møtt av både politi og ambulanse. Politiet skriver at han var så beruset at han ble kjørt til sykehuset på Kalnes.</p>
+            
+            
+            
+ <ul class="lp_contentrow11">
+  <li><strong>LES OGSÅ: <a href="https://www.f-b.no/nyheter/tollvesenet/smugling/smuglere-tatt-med-1-600-liter-alkohol/s/5-59-945719">Smuglere tatt med 1.600 liter alkohol</a></strong></li>
+ </ul>
+ <h2 class="lp_contentrow12">Til Quality hotell – igjen</h2>
+ <p class="lp_contentrow13">Nærmere klokken to måtte politiet ut og avslutte en fest i Moreneveien ved Stjernehallen i Fredrikstad, fordi festen gikk ut over naboers nattesøvn.</p>
+            
+            
+            
+ <p class="lp_contentrow14">I Sarpsborg ble på samme tid en kvinne i 20-årene innbrakt fra Sarpsborg sentrum, overstadig beruset. Kvinnen skal ha kastet fra seg noe narkotika da hun ble møtt av politiet.</p>
+            
+            
+            
+ <div class="am-articleItem maelstrom--imageFull  lp_contentrow15"><div class="am-smartembed">
+    <div class="am-embed-container">
+        <blockquote class="twitter-tweet"><p lang="no" dir="ltr">Politiet i Sarpsborg måtte kjøre til Hotell Quality på Grålum, hvor de hadde problemer med en beruset gjest. Vedkommende ble gitt pålegg om å holde seg på rommet resten av natta.</p>&mdash; Politiet Østfold OPS (@PolitiOstfldOPS) <a href="https://twitter.com/PolitiOstfldOPS/status/934227624116748288?ref_src=twsrc%5Etfw">November 25, 2017</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    </div>
+</div>
+</div>
+ <p class="lp_contentrow16">Og for andre gang i løpet av natten måtte politiet rykke ut til Quality hotell på Grålum. Nå var det de ansatte som hadde problemer med en beruset gjest. Vedkommende fikk pålegg av politiet om å holde seg på rommet resten av natten, og måtte dermed avslutte festen cirka klokka to.</p>
+            <div id="smartclipContainer" style="position: relative; display: block;  width: 100%; clear: both;">
+            <div style="position: relative;">
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAMAAABHPGVmAAAAhFBMVEUAAAAAAAD///8AAAAAAAAAAAAAAAAAAAAuLi4AAAAAAAAAAAD8/Pz6+vr4+Pj09PTR0dFkZGRWVlZBQUGMjIwDAwMAAAAAAAAAAAD+/v4nJyf29vby8vLg4ODa2trCwsK9vb2zs7OoqKiioqIAAAAAAAAAAAAAAAD29vaPj4+Ojo7+/v66fPJpAAAALHRSTlMAUtkKBU9IO1hBMyzMxsG0j2VjXltTTCMb1Vm7spuWhoN+eXc4KBUSvHFw1DoHUwYAAAGPSURBVHja7djZcoIwFAbg/sGwKriBiFr3pe37v19HCc2AtAqHTrw43xVzbv7JSpI3xhhjjDH2anqno+8lEpCJ5x9PvX9ISB2JEumk3eZYQYIaSWB114pA4hcy6Kg1qY0/2GkXzfDxgN8jZ3h4yCOmWDaeYFvUDHIKva/oPXbA0w5tM2ZoYNZyQCQK7nTqQqurynbD4qDwORdivkfF/lr9QMFpk3HGj1Bc7VCyE1ehLpxJDYHIbQFtq4qgNMWCFoncRpc2qhRBaz4qAbRRX+TWUNaq0B9BCxqH2KhLGeJmWJcBu1VvaeNBkRIDcZExGKPEoi1EnfIex+86g7YgfVRMQpFbrdRHOEGF33YC65SFKFlMUOUQxl1xF6UMFzeUkZe4l0U6I8pwTzYMQZ1sKZRlhjoGQujd5RK6izbw9Cl8ESUXwhQmLUYj24r5DZK+1Zv/adF/v+YPEvQjEfFw90U43Bk4phIP3EauDuYvQfTrnPmLKf2Kbf6xgP7sYf4Bh/4UZf5Rjf48yBhjjDHGXsw3n3UdZapofcYAAAAASUVORK5CYII=" id="smartclipClose" class="lp_closeSmartclip" style="display: none; width: 15%; height: auto; margin: 0px; position: absolute; z-index: 999999; float:right; transform: translate3d(0px, 0px, 0px); top: 25px; right: 5px;">
+                <bazaar-ad position="outstreamvideo" class="am-bazaar-ad lp_outstreamvideo am-bazaar-ad--outstreamvideo" labeled="false"></bazaar-ad>
+            </div>
+        </div>
+            
+            
+ <ul class="lp_contentrow17">
+  <li><strong>LES OGSÅ: <a href="https://www.f-b.no/utgave/julebordmagasin-2017/edition/5a0ae73b94dce12788b04f74/">FBs store julebordmagasin for 2017</a></strong></li>
+ </ul>
+ <h2 class="lp_contentrow18">Fikk kontroll på en lift</h2>
+ <p class="lp_contentrow19">I Rygge ble en mann i 30-årene innbrakt fra et utested etter å ha vært beruset og kranglet med gjestene. Han var heller ikke særlig samarbeidsvillig da politiet kom, og resultatet ble fyllearresten. Mannen ble også anmeldt for både ordensforstyrrelse og for ikke å ha etterkommet politiets pålegg.</p>
+            
+            
+            
+ <p class="lp_contentrow20">Klokken har nå blitt nærmere 02.30, og i Moss ble en mann i 30-årene bortvist fra sentrum etter å ha vært bråkete inne på et utested.</p>
+            
+            
+            
+ <div class="am-articleItem maelstrom--imageFull  lp_contentrow21"><div class="am-smartembed">
+    <div class="am-embed-container">
+        <blockquote class="twitter-tweet"><p lang="no" dir="ltr">Politiet og brannvesenet måtte ta hånd om en lift i St. Mariegate i Sarpsborg. Uvedkommende hadde klart å få kontroll på denne og heist kurven høyt til værs.</p>&mdash; Politiet Østfold OPS (@PolitiOstfldOPS) <a href="https://twitter.com/PolitiOstfldOPS/status/934235612210716672?ref_src=twsrc%5Etfw">November 25, 2017</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    </div>
+</div>
+</div>
+ <p class="lp_contentrow22">I Sarpsborg ble det noe å gjøre for både politiet og brannvesenet på den tiden. Uvedkommende hadde nemlig kommet seg opp i og fått kontroll på en lift som sto i St. Maries gate i sentrum. Kurven på liften var reist høyt opp, og dermed måtte også brannvesenet trå til.</p>
+            
+            
+            
+ <p class="lp_contentrow23">Det hadde nå vært rolig i Halden helt frem til klokken nærmet seg fem på det som må kunne kalles morgenkvisten. Da måtte politiet stoppe musikken som en beboer i en leilighet i Søndre Elvegate sto for. Det var til sjenanse for naboene som ikke fikk sove.</p>
+            
+            
+            
+
+
+    </div>
+
+  
+    
+</div>
+    <aside class="am-article-aside" role="complementary">
+</aside>
+    <div class="maelstrom-newsletter">
+        <div class="button">
+            <a class="url" href="https://www.aid.no/aid/nyhetsbrev/www.f-b.no/5939677f90d2ec30ae12247e/">
+                Meld deg på vårt nyhetsbrev
+            </a>
+        </div>
+    </div>
+    <div class="facebook-like-box am-factBox am-skin--color">
+        <div class="am-factBox-main">
+            <h3 class="am-facebook-like-box--title">
+                Lik Fredriksstad Blad på Facebook
+            </h3>
+            <iframe
+                src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Ffredrikstadblad%2F&amp;width=500&amp;layout=standard&amp;action=like&amp;size=large&amp;show_faces=true&amp;share=false&amp;height=80&amp;locale=nb_NO&amp;appId=133470800078528"
+                width="100%"
+                height="65px"
+                style="border:none;overflow:hidden"
+                scrolling="no"
+                frameborder="0"
+                allowTransparency="true">
+            </iframe>
+        </div>
+    </div>
+    <h2 class="am-is-vishidden">Artikkeltags</h2>
+
+    <span class="am-articleTagList-subtitle">Les mer om: </span>
+
+<ul class="maelstrom-articleTagList am-articleTagList--plain" itemprop="keywords">
+            <li class="am-articleTagList-item lp_articletag lp_articletag-nyheter"><a href="/nyheter" class="am-articleTag">Nyheter</a></li>
+            <li class="am-articleTagList-item lp_articletag lp_articletag-politiet"><a href="/politiet" class="am-articleTag">politiet</a></li>
+            <li class="am-articleTagList-item lp_articletag lp_articletag-julebord"><a href="/julebord" class="am-articleTag">Julebord</a></li>
+</ul>
+        </div>
+    </div>
+</div>
+       <footer class="am-gridComp-item am-article-footer">
+        <div class="am-commentInvite">
+	<a class="am-btn am-btn--basic am-btn--debatt am-btn--light" href="#am-commentArea" aria-label="Hopper til kommentarfelt">Se kommentarer</a>
+</div>
+        <div class="am-moreArticlesHeader">
+	<div class="am-moreArticlesHeader-heading">
+		<h2>Flere saker</h2>
+	</div>
+	<div class="am-moreArticlesHeader-linkout am-color--brandMonoInverted">
+		<a href="/" class="am-btn am-btn--basic lp_tofrontpage am-newspaper-color">Gå til forsiden</a>
+	</div>
+</div>
+        <amedia-related
+    publication="www.f-b.no"
+    contentId="5-59-946349"
+    tags="nyheter|politiet|julebord"
+    contentTypes="story,opinion,feature"
+    noads=""></amedia-related>
+        <amedia-comments></amedia-comments>
+</footer>
+</article>
+        </main>
+    </div>
+</div>
+    
+    <div class="am-page-inner am-skin--page ">
+    <div class="am-page-body" id="am-page-body">
+        <div class="am-gridContainer am-gridContainer--constrained am-gridContainer--to-top
+            ">
+               <div class="am-btn--to-top-container">
+    <button class="am-btn--related am-btn am-btn--light am-btn--basic am-btn--to-top">
+        Til toppen
+    </button>
+</div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <div class="am-page-footer ">
+        <footer class="am-siteFooter2 lp_footer" role="contentinfo">
+    <div class="am-siteFooter2-bottom am-txt-scale--small">
+        <a href="/" class="am-siteFooter2-logo">
+            <img src="//r.api.no/local/v3/publications/www.f-b.no/gfx/small.svg" alt="FB"/>
+        </a>
+        <ul class="am-list am-list--horizontal am-list--itemsSeparated">
+                <li>Utgitt av Fredriksstad Blad AS</li>
+                <li>Adresse: Stortorvet 3, 1601 Fredrikstad</li>
+                <li>Sjefredaktør: René Svendsen</li>
+                <li><a href="https://www.aid.no/aid/personvern_policy/">Personvernpolicy / Informasjonskapsler</a></li>
+                <li><a href="http://presse.no/Etisk-regelverk/Redaktoerplakaten">Redaktørplakaten</a></li>
+                <li><a href="http://www.pfu.no/simple.php">PFU</a></li>
+                <li><a href="http://www.f-b.no/kundesenter/tips-til-redaksjonen/">Tips oss!</a></li>
+                <li>Tlf: 46 80 77 77</li>
+        </ul>
+    </div>
+</footer>
+
+</div>
+
+
+
+        <script>window.unispring=function (){var do_dt=true,c="undefined",f="1.7.1",v="test",l="tns-cs.net",d=typeof unispring_ms!=c?unispring_ms:2048,q=typeof unispring_debug!=c?unispring_debug:null,g=encodeURIComponent,p="site",n="s",t={},w=null,k,x;function m(){if("https"==document.location.href.slice(0,5)){return"https://ssl-"}return"http://"}function r(A,e){if(!e){if(!A){return k}e=A;A={r:document.referrer}}k=[A,e];var z=e[n]?e[n]:A[n];if(!z){z=e[p]?e[p]:(A[p]?A[p]:v)}if(!t[z]){t[z]=[]}t[z].push([A,e]);w=1;return k}function i(z,E){if(!w){r({})}var C,B,D,A,e;for(B in t){if(t.hasOwnProperty(B)){D=t[B];while(D.length>0){A=",",e=[];while(D.length>0){A=A+s(y(D.shift(),e),e);if(A.length>d){break}if(D.length>0){A+="+"}}C=b(z,A+";",B,E)}}}t={};return C}function b(A,E,B,F,D,C,z){C=m()+(B?B:v)+"."+l;D=C+"/j0="+E,u=D+"?lt="+(new Date()).getTime().toString(36)+"&x="+screen.width+"x"+screen.height+"x"+screen.colorDepth+h();var tpp=document.getElementById('unispring-tp');var ctp=function(src){var tp=document.createElement('img');tp.id='unispring-tp';tp.src=src;tp.width=1;tp.height=1;return tp};if(!F||F==1){if(tpp){tpp.parentNode.replaceChild(ctp(u),tpp)}else{document.body.appendChild(ctp(u))}}else{if(F==2){(new Image()).src=u}}if(q){alert(u)}return D}function h(){var a_id='i00';var st=document.cookie.indexOf(a_id+"=");if(st!=-1){st=st+(a_id.length+1);var end=document.cookie.indexOf(';',st);if(end==-1){end=document.cookie.length}return"&c="+document.cookie.substring(st,end)}else{var A="0000";var val=A+Math.ceil((new Date()).getTime()/1000).toString(16)+(32768|Math.random()*65535).toString(16)+A;var date=new Date();date.setTime(date.getTime()+(63072000000*5));var expires="; expires="+date.toGMTString();var di=new String(document.domain).split(".");di.reverse();var d='.'+di[1]+'.'+di[0];document.cookie=a_id+"="+val+expires+"; path=/; domain="+d}return''}function s(e,A){for(var z=0;z<A.length;z+=1){if(A[z]==e){return"~"+z}}A.push(e);return e}function y(B,D){var z,C,A,e,E;if(!D){D=[]}switch(typeof B){case"string":return g(B);case"number":return isFinite(B)?String(B):"null";case"boolean":case"null":return String(B);case"object":if(!B){return"null"}z=[];if(typeof B.length==="number"&&!(B.propertyIsEnumerable("length"))){e=B.length;for(C=0;C<e;C+=1){z.push(s(y(B[C],D),D)||"null")}return","+z.join("+")+";"}for(A in B){if(typeof A==="string"){if(A!=p&&A!=n){E=y(B[A],D);if(E){z.push(s(y(A,D)+"="+E,D))}}}}return","+z.join("+")+";"}return""}function j(z,e,A){if(z.hasOwnProperty('cp')&&do_dt){z=U(z)}else if(e.hasOwnProperty('cp')&&do_dt){e=U(e)}r(z,e);return i(!this.ns,A)}function U(C){var mob=0;var ua=navigator.userAgent;if(C.hasOwnProperty('dt')){C.dt=(C.dt).toLowerCase();if(!(C.dt=='desktop')){C.cp=C.dt+'/'+C.cp}}else{if(/Android|Windows|iPad/i.test(ua)){if((/Android/i.test(ua)&&/mobile|Opera\sMobi/i.test(ua))||(/Windows/i.test(ua)&&/[Pp]hone|[Mm]obile/.test(ua))){mob=1}else if(/Android|iPad/i.test(ua)){mob=2}}else if(!/Macintosh|Solaris|BSD|Linux|PLAYSTATION|Nintendo\sWii|Xbox/i.test(ua)){mob=1}C.cp=mob===1?'mobile/'+C.cp:C.cp}return C}function dt(C){do_dt=C}function o(){while(unispringq.length>0){var e=unispringq.shift();if(e[1]){r(e[0],e[1])}else{if(e.hasOwnProperty('cp')&&do_dt){e=U(e)}r(e,false)}}i(!this.ns,2);setTimeout("unispring.p()",50)}return{a:r,add:r,c:j,commit:j,p:o}}();if(this.unispringq){unispring.p()}; unispring.c({"s":"amedia","cp":"amedia/www.f-b.no","url":"www.f-b.no/nyheter/politiet/julebord/politiet-vi-merker-at-dette-er-den-forste-julebordhelga/s/5-59-946349"});</script><noscript><img src="//amedia.tns-cs.net/j0=,,,;+,cp=amedia/www.f-b.no+url=www.f-b.no%2Fnyheter%2Fpolitiet%2Fjulebord%2Fpolitiet-vi-merker-at-dette-er-den-forste-julebordhelga%2Fs%2F5-59-946349;;;" alt=""/></noscript>
+  <script src="//sak.userreport.com/amediadk/launcher.js" async="async"></script>
+
+        <script defer src="//r.acdn.no/api/shoal/v1/single_file/2ff0c48c283d7789dbfe7b35e3424f2500477e86ba495222aff911c22908f9f9" crossorigin="anonymous"></script>
+<script defer src="//r.acdn.no/api/shoal/v1/bundle/dcc34d25c38ffb54aae13413a2ac079bc9988d4c1bbea40ff4654e22ca17298e" crossorigin="anonymous"></script>
+
+
+        <script defer src="//r.acdn.no/s3files/maelstrom/assets/js/story.js/7f990393f2ba89f1544660897c62d0256f870d49b2e53d575b6366e391c8363f.js" crossorigin="anonymous"></script>
+        
+
+    </body>
+</html>
