@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: {{env "WERCKER_GIT_REPOSITORY"}}
   namespace: {{env "WERCKER_GIT_REPOSITORY"}}
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no.
   labels:
     app: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
