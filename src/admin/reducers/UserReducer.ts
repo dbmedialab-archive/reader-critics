@@ -59,8 +59,6 @@ function deauthenticateUser(action, state) {
 
 function UserReducer(state: User = initialState, action: UserActionsCreator.TAction): User {
 	switch (action.type) {
-		case AdminConstants.AUTHENTICATE_USER:
-			return updateUser(action, state);
 		case AdminConstants.DEAUTHENTICATE_USER:
 			return deauthenticateUser(action, state);
 		case AdminConstants.UPDATE_CURRENT_USER:
