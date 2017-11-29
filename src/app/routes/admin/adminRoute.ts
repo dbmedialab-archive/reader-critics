@@ -58,7 +58,7 @@ adminRoute.use(cookieParser(secret));
 
 adminRoute.get('/login', isNotAuthenticated, adminPageHandler);
 adminRoute.post('/login', isNotAuthenticated, loginHandler);
-adminRoute.get('/logout', isAuthenticated, logoutHandler);
+adminRoute.get('/logout', isAuthenticated, logoutHandler, adminPageHandler);
 adminRoute.get([
 	'/',
 	'/users',

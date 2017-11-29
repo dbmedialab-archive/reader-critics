@@ -36,7 +36,7 @@ export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
 	const {skip, limit, sort} = params;
 	const {search} = requ.query;
-	return Promise.all([
+	Promise.all([
 					articleService.getRangeWithFBCount(skip, limit, sort, search),
 					articleService.getAmount(search),
 				])
@@ -53,7 +53,7 @@ export function list (requ: Request, resp: Response) {
  */
 export function show (requ: Request, resp: Response) {
 	const ID = requ.params.id;
-	return articleService.getByID(ID)
+	articleService.getByID(ID)
 				.then(article => okApiResponse(resp, article))
 				.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
@@ -62,7 +62,7 @@ export function getArticleFeedbacks(requ: Request, resp: Response) {
 	const ID = requ.params.id;
 	const params = pagination(requ);
 	const {skip, limit, sort} = params;
-	return articleService.getByID(ID)
+	articleService.getByID(ID)
 		.then(article => {
 			return Promise.all([
 				feedbackService.getByArticle(article, skip, limit, sort),

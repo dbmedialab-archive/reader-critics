@@ -16,20 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import GenericParser from './GenericParser';
+import 'mocha';
 
-import * as app from 'app/util/applib';
+import { assert } from 'chai';
 
-const log = app.createLog();
+import {
+	getAvailableParsers,
+	initParserResolver,
+} from 'app/services/parser/common/parserResolver';
 
-export default class AMPParser extends GenericParser {
-
-	// The generic parser is already capable enough to parse 90% of the elements
-	// of an Accelerated Mobile Page. The remaining elements are TBD.
-
-	protected initialize() : Promise <any> {
-		log('initialize');
-		return super.initialize();
-	}
-
-}
+describe('ParserService', () => {
+	it('getAvailableParsers', () => {
+		return initParserResolver()
+		.then(() => getAvailableParsers())
+		.then((parsers : string[]) => {
+			// It should at least find two parser implementations (see next)
+			assert.isAtLeast(parsers.length, 2);
+			// Check if our default implementations are resolved
+			assert.include(parsers, 'AMP Parser');
+			assert.include(parsers, 'Generic Parser');
+		});
+	});
+});

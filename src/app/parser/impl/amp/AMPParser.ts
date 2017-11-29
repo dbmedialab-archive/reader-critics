@@ -16,15 +16,20 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	NextFunction,
-	Request,
-	Response,
-} from 'express';
+import GenericParser from '../generic/GenericParser';
 
-export default function (requ : Request, resp : Response, next : NextFunction) : void {
-	if (requ.isAuthenticated()) {
-		return next();
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
+export default class AMPParser extends GenericParser {
+
+	// The generic parser is already capable enough to parse 90% of the elements
+	// of an Accelerated Mobile Page. The remaining elements are TBD.
+
+	protected initialize() : Promise <any> {
+		log('initialize');
+		return super.initialize();
 	}
-	return resp.status(401).end();
+
 }

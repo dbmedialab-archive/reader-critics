@@ -98,16 +98,15 @@ class LoginModalComponent extends React.Component <any, any> {
 		if (this.isFormValid()) {
 			UIActions.showMainPreloader();
 			const {login: {value: login}, password: {value: password}} = this.props;
-			sendAuthRequest({login, password}).then((res: any): void => {
-				if (res.error || (!res.success && res.message)) {
-					this.updateErrorState(res.error || res.message, true);
-				} else {
-					UserActions.authenticate(res);
-					UIActions.hideLoginDialog();
+			sendAuthRequest({login, password})
+				.then((res: any): void => {
+					UserActions.update(res);
 					this.props.getBack();
-				}
-				UIActions.hideMainPreloader();
-			});
+				})
+				.catch(err => {
+					this.updateErrorState(err.message, true);
+					UIActions.hideMainPreloader();
+				});
 		}
 	}
 

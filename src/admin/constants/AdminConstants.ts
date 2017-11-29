@@ -32,7 +32,6 @@ const AdminConstants = keykey([
 	'LOGIN_DIALOG_MODAL_WINDOW',
 
 	//User actions
-	'AUTHENTICATE_USER',
 	'DEAUTHENTICATE_USER',
 	'UPDATE_CURRENT_USER',
 
