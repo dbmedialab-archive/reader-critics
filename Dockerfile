@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ADD package.json /tmp/package.json
 
-RUN cd /tmp && npm install
+RUN cd /tmp && npm install --no-optional --no-package-lock
 
 RUN apt-get -q update && apt-get -y install rsync ca-certificates
 
@@ -21,5 +21,5 @@ RUN /bin/bash -l -c "run/build"
 
 RUN rm -rf node_modules
 
-RUN NODE_ENV=production && npm install --production
+RUN NODE_ENV=production && npm install --production --no-optional --no-package-lock
 

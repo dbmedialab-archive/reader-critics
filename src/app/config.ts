@@ -125,6 +125,12 @@ const config = convict({
 				default: 'mongodb://localhost:27017/readercritics',
 				env: 'MONGODB_URL',
 			},
+			reconnectionLimit: {
+				default: 5,
+				format: Number,
+				doc: 'Amount of tries for reconnect to mongoDB if it is down on startup',
+				env: 'MONGODB_RECONNECTION_LIMIT',
+			},
 		},
 		redis: {
 			url: {
