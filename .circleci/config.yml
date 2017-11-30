@@ -159,22 +159,21 @@ jobs:
     steps:
       - checkout
       - run: apk add --no-cache curl
-      - <<: *install_docker_compose
       - <<: *setup_remote_docker
       - <<: *docker_build
       - <<: *setup_tests
       - run:
           name: Tests
           command: |
-            set -x
-            curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-            chmod +x /usr/local/bin/docker-compose
             docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            /usr/local/bin/docker-compose -f docker-compose.ci.yml up -d
-            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_P  ROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
-            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_P  ROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
-            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_P  ROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
-            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_P  ROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
+            set -x
+            curl -sSL https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` -o ./docker-compose
+            chmod +x ./docker-compose
+            ./docker-compose -f docker-compose.ci.yml up -d
+            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
+            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
+            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
+            docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
