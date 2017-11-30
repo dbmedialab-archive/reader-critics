@@ -99,7 +99,7 @@ common_aliases:
   - &container_defaults
     working_directory: /app
     docker:
-      - image: docker:17.05.0-ce-git
+      - image: docker:stable
 
   - &setup_remote_docker
       setup_remote_docker:
