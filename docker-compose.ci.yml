@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     container_name: app
-    image:
+    build: .
     links:
       - redis
       - mongo
