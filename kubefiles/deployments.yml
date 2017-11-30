@@ -4,12 +4,15 @@ metadata:
   name: {{env "WERCKER_GIT_REPOSITORY"}}
   namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
+  selector:
+    matchLabels:
+      app: {{env "WERCKER_GIT_REPOSITORY"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        app: reader-critics
+        app: {{env "WERCKER_GIT_REPOSITORY"}}
     spec:
       containers:
         - name: {{env "WERCKER_GIT_REPOSITORY"}}
@@ -20,10 +23,10 @@ spec:
           - containerPort: 4000
             name: http-port
           envFrom:
-            - configMapRef:
-                name: reader-critics-config
             - secretRef:
-                name: reader-critics-secrets
+                name: secrets
+            - configMapRef:
+                name: config
           livenessProbe:
             httpGet:
               path: /api/version
