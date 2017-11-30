@@ -99,11 +99,11 @@ common_aliases:
   - &container_defaults
     working_directory: /app
     docker:
-      - image: docker:stable
+      - image: docker:17.11
 
   - &setup_remote_docker
       setup_remote_docker:
-        version: stable
+        version: 17.11
         docker_layer_caching: true
 
   - &install_docker_compose
