@@ -35,10 +35,10 @@ const options: MoreConnectionOptions = {
 	reconnectTries: Number.MAX_VALUE,
 	socketTimeoutMS: 2000,
 };
-const reconnectionLimit = 5;
+const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
 let reconnectionAmount = 1;
 
-export default function initDatabase() : Promise <void> {
+export function initDatabase() : Promise <void> {
 	log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
 
 	return new Promise((resolve, reject) => {
@@ -49,9 +49,11 @@ export default function initDatabase() : Promise <void> {
 				resolve();
 			})
 			.catch(error => {
+				const reconnectionCooldown = Math.min(Math.pow(reconnectionAmount++, 2), 60);
 				log('Failed to connected to database:', error.message);
 				if (reconnectionAmount < reconnectionLimit) {
-					setTimeout(() => resolve(initDatabase()), 1000 * Math.pow(reconnectionAmount++, 2));
+					log(`Retry in ${reconnectionCooldown} seconds`);
+					setTimeout(() => resolve(initDatabase()), reconnectionCooldown * 1000);
 				} else {
 					reject(error);
 				}
