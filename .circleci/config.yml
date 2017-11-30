@@ -171,8 +171,8 @@ jobs:
             docker run --network container:busybox $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
             docker run --network container:busybox $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
             docker run --network container:busybox $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
-            docker run --network container:busybox -e MONGODB_URL="mongodb://mongo/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://redis:6379/1" -e REDIS_URL_SESSION_CACHE="redis://redis:6379/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
             docker run --network container:busybox -e MONGODB_URL="mongodb://mongo/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://redis:6379/1" -e REDIS_URL_SESSION_CACHE="redis://redis:6379/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 printenv
+            docker run --network container:busybox -e MONGODB_URL="mongodb://mongo/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://redis:6379/1" -e REDIS_URL_SESSION_CACHE="redis://redis:6379/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
