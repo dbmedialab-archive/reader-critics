@@ -167,6 +167,7 @@ jobs:
           name: Tests
           command: |
             set -x
+            export PATH=$PATH:/usr/local/bin
             docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
             docker-compose -f docker-compose.ci.yml up -d
             docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_P  ROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
