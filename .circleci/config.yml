@@ -158,7 +158,7 @@ jobs:
       - <<: *docker_build
       - <<: *setup_tests
       - run:
-        name: Tests
+          name: Tests
           command: |
             docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
             #            IP=$(docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 /sbin/ip route | awk '/default/ { print $3 }')
