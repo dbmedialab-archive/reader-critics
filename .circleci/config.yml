@@ -167,8 +167,8 @@ jobs:
           command: |
             docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
             set -x
-            apk --update add 'py-pip==8.1.2-r0'
-            pip install 'docker-compose==1.8.0'
+            apk --update add py-pip
+            pip install docker-compose
             docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
             docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
             docker run --network container:app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
