@@ -167,11 +167,15 @@ jobs:
       - run:
           name: Tests
           command: |
-            docker run --network host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localho  st/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ss -ntlp
-            docker run --network host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
-            docker run --network host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
-            docker run --network host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
-            docker run --network host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
+            docker run --network host $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ss -ntlp
+            docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
+            docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
+            docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
+            docker run --network host \
+              -e MONGODB_URL=mongodb://localhost/readercritics \
+              -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 \
+              -e REDIS_URL_SESSION_CACHE=redis://localhost/2 \
+              $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
