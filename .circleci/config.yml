@@ -158,22 +158,8 @@ jobs:
     <<: *container_defaults
     steps:
       - checkout
-      - run: apk add --no-cache curl
       - <<: *setup_remote_docker
-      - restore_cache:
-          keys:
-            # Find a cache corresponding to this specific package.json checksum
-            # when this file is changed, this key will fail
-            - v1-npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            # Find the most recent cache used in this branch
-            - v1-npm-deps-{{ .Branch }}
-            # Find the most recent cache used from any branch
-            - v1-npm-deps-
       - <<: *docker_build
-      - save_cache:
-          key: v1-npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - node_modules
       - <<: *setup_tests
       - run:
           name: Tests
