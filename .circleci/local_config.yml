@@ -1,0 +1,28 @@
+jobs:
+  build:
+    working_directory: /app
+      docker:
+        - image: docker:17.05.0-ce-git
+        - image: redis:3.2
+        - image: mongo:3.0
+    steps:
+      - checkout
+      - <<: *setup_remote_docker
+      - <<: *docker_build
+      - <<: *setup_tests
+      - run:
+          name: Tests
+          command: |
+            export MONGODB_URL="mongodb://$MONGO_PORT_27017_TCP_ADDR:$MONGO_PORT_27017_TCP_PORT/readercritics"
+            export REDIS_URL_MESSAGE_QUEUE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/1"
+            export REDIS_URL_SESSION_CACHE="redis://$REDIS_PORT_6379_TCP_ADDR:$REDIS_PORT_6379_TCP_PORT/2"
+            echo $MONGODB_URL $REDIS_URL_MESSAGE_QUEUE $REDIS_URL_SESSION_CACHE
+            run/test --libs
+            run/test --base
+            run/test --app
+            run/test --db
+      - <<: *docker_push_gcr
+
+  deploy_prod:  *deploy_prod
+  deploy_stage: *deploy_stage
+  deploy_test:  *deploy_test
