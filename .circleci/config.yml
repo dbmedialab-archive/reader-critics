@@ -153,10 +153,13 @@ jobs:
       - image: redis:3.2
       - image: mongo:3.0
     steps:
+      - checkout
       - <<: *setup_remote_docker
-      - run:
-          name: Tests
-          command: |
+      - <<: *docker_build
+      - <<: *setup_tests
+        #      - run:
+        #          name: Tests
+          #          command: |
             #            IP=$(docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 /sbin/ip route | awk '/default/ { print $3 }')
             #docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ip r
             #docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ip a
@@ -169,8 +172,9 @@ jobs:
             #  -e REDIS_URL_MESSAGE_QUEUE="redis://$IP/1" \
             #  -e REDIS_URL_SESSION_CACHE="redis://$IP/2" \
             #  $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 printenv
-            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            docker run -e MONGODB_URL="mongodb://localhost/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://10.142.0.1/1" -e REDIS_URL_SESSION_CACHE="redis://10.142.0.1/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:circleci run/test --db
+#            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
+#            docker run -e MONGODB_URL="mongodb://localhost/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://10.142.0.1/1" -e REDIS_URL_SESSION_CACHE="redis://10.142.0.1/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:circleci run/test --db
+      - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
   deploy_stage: *deploy_stage
