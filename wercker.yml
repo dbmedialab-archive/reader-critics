@@ -12,6 +12,8 @@ js-lint-build-test:
   - script:
     name: install dependencies
     code: |
+      npm config set quiet
+      npm config set loglevel warn
       npm config set cache $WERCKER_CACHE_DIR/wercker/npm
       npm install --no-optional --no-package-lock
   - script:
@@ -42,6 +44,9 @@ js-lint-build-test:
   - script:
     name: test db services
     code: run/test --db
+  # - script:
+  #   name: build backend app
+  #   code: npm run build:front
 
 deploy:
   box:
