@@ -160,7 +160,7 @@ jobs:
           name: Tests
           command: |
             docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            IP=$(docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 /sbin/ip route | awk '/default/ { print $3 }')
+            IP=$(docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME /sbin/ip route | awk '/default/ { print $3 }')
             #docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ip r
             #docker run --network="host" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 ip a
             #docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
