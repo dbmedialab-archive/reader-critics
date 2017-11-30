@@ -1,102 +1,40 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: reader-critics
+  name: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
 spec:
+  selector:
+    matchLabels:
+      app: {{env "WERCKER_GIT_REPOSITORY"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        app: reader-critics
+        app: {{env "WERCKER_GIT_REPOSITORY"}}
     spec:
       containers:
-        - name: reader-critics
+        - name: {{env "WERCKER_GIT_REPOSITORY"}}
           image: {{env "IMAGE"}}
           command: ["npm"]
           args: ["start"]
           ports:
           - containerPort: 4000
             name: http-port
-          env:
-          - name: AUTH_JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: AUTH_JWT_SECRET
-          - name: AUTH_SESSION_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: AUTH_SESSION_SECRET
-          - name: I18N_SYS_LOCALE
-            valueFrom:
-              configMapKeyRef:
-                name: reader-critics-config
-                key: I18N_SYS_LOCALE
-          - name: MAIL_TEST_OVERRIDE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MAIL_TEST_OVERRIDE
-          - name: MONGODB_URL
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MONGODB_URL
-          - name: NODE_ENV
-            valueFrom:
-              configMapKeyRef:
-                name: reader-critics-config
-                key: NODE_ENV
-          - name: REDIS_URL_MESSAGE_QUEUE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: REDIS_URL_MESSAGE_QUEUE
-          - name: REDIS_URL_SESSION_CACHE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: REDIS_URL_SESSION_CACHE
-          - name: MAIL_SENDER_DOMAIN
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MAIL_SENDER_DOMAIN
-          - name: MAIL_BCC_RECIPIENT
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MAIL_BCC_RECIPIENT
-          - name: RECAPTCHA_PUBLIC_KEY
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: RECAPTCHA_PUBLIC_KEY
-          - name: RECAPTCHA_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: RECAPTCHA_SECRET_KEY
-          - name: SENDGRID_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SENDGRID_API_KEY
-          - name: SLACK_CHANNEL
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SLACK_CHANNEL
-          - name: SLACK_BOTNAME
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SLACK_BOTNAME
-          - name: SLACK_WEBHOOK
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SLACK_WEBHOOK
+          envFrom:
+            - secretRef:
+                name: secrets
+            - configMapRef:
+                name: config
+          livenessProbe:
+            httpGet:
+              path: /api/version
+              port: http-port
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/version
+              port: http-port
+            timeoutSeconds: 5
 

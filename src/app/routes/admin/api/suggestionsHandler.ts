@@ -43,12 +43,12 @@ export function list (requ: Request, resp: Response) {
 		const [suggestions, pages] = data;
 		const pageCount = Math.ceil(pages / limit);
 		if (suggestions.length > 0) {
-			okResponse(resp, {suggestions, pageCount});
+			return okResponse(resp, {suggestions, pageCount});
 		} else {
-			errorResponse(resp, undefined, notFound, { status: 404 });
+			return errorResponse(resp, undefined, notFound, { status: 404 });
 		}
 
 	}).catch((err) => {
-		errorResponse(resp, undefined, err.stack, { status: 500 });
+		return errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
 }

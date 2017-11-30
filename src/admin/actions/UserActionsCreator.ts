@@ -25,12 +25,6 @@ export interface IAction {
 }
 
 export type TAction = IAction;
-export function authenticateUser(payload: User): IAction {
-	return {
-		type: AdminConstants.AUTHENTICATE_USER,
-		payload,
-	};
-}
 export function deauthenticateUser(): IAction {
 	return {
 		type: AdminConstants.DEAUTHENTICATE_USER,

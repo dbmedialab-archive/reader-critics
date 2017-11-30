@@ -34,7 +34,8 @@ export function getArticleList(page?, limit?, sort?, sortOrder?, search?) {
 	.then((resp)=>{
 		ArticlesActions.setArticleList(resp.articles);
 		PaginationActions.setPageCount(resp.pages);
-	});
+	})
+	.catch(err => console.log(err));
 }
 
 export function clear() {

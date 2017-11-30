@@ -19,13 +19,9 @@
 import MainStore from 'admin/stores/MainStore';
 import User from 'base/User';
 
+import * as UIActions from 'admin/actions/UIActions';
 import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
 
-export function authenticate(user: User) {
-	MainStore.dispatch(
-		UserActionsCreator.authenticateUser(user)
-	);
-}
 export function deauthenticate() {
 	localStorage.removeItem('rcUsername');
 	localStorage.removeItem('rcUserEmail');
@@ -42,4 +38,6 @@ export function update(user: User) {
 	MainStore.dispatch(
 		UserActionsCreator.updateUser(user)
 	);
+	UIActions.hideLoginDialog();
+	UIActions.hideMainPreloader();
 }

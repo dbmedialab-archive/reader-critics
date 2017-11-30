@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no.
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "gce"
+spec:
+  tls:
+  - hosts:
+    - {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no
+    secretName: tls
+  rules:
+  - host: {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: {{env "WERCKER_GIT_REPOSITORY"}}
+          servicePort: 80

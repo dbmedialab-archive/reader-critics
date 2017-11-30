@@ -37,12 +37,12 @@ export function loginHandler(requ : Request, resp : Response, next : NextFunctio
 	passport.authenticate('local', callback)(requ, resp, next);
 }
 
-export function logoutHandler(requ : Request, resp : Response, next : NextFunction): void {
+export function logoutHandler(requ : Request, resp : Response): void {
 	requ.logOut();
 	requ.session.destroy((err) => {  // "session" does not exist on type Request. What now?
 		if (err) {
 			log(err);
 		}
-		return next();
+		return resp.redirect('/'); //Returns to site's homepage
 	});
 }
