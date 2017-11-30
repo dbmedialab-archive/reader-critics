@@ -155,11 +155,7 @@ version: 2
 
 jobs:
   build:
-    working_directory: /app
-    docker:
-      - image: docker:17.05.0-ce-git
-      - image: redis:3.2
-      - image: mongo:3.0
+    <<: *container_defaults
     steps:
       - checkout
       - run: apk add --no-cache curl
