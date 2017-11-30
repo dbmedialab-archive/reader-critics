@@ -2,8 +2,8 @@ version: "2"
 
 services:
   app:
-    container_name: app
-    image: "$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1"
+    container_name: busybox
+    image: busybox
     links:
       - redis
       - mongo
@@ -11,13 +11,10 @@ services:
       MONGODB_URL: mongodb://mongo/readercritics
       REDIS_URL_MESSAGE_QUEUE: redis://redis/1
       REDIS_URL_SESSION_CACHE: redis://redis/2
-    command: npm start
-
   redis:
     image: redis:3.2
     ports:
       - 6379:6379
-
   mongo:
     image: mongo:3.0
     ports:
