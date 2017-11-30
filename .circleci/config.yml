@@ -121,7 +121,7 @@ common_aliases:
         docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
-  
+
   - &setup_tests
       run:
         name: Create folder for tests output
@@ -140,7 +140,7 @@ common_aliases:
 #########################################################################
 #
 # Anything below this line comes from local_config.yml inside the project
-# 
+#
 #########################################################################
 
 version: 2
@@ -155,14 +155,12 @@ jobs:
     steps:
       - checkout
       - <<: *setup_remote_docker
-      - <<: *docker_build
-      - <<: *setup_tests
       - run:
           name: Show us where we are
           command: |
             env
             echo
-            ss -tlnp
+            netstat -tlnp
             echo
       - run:
           name: Tests
@@ -171,10 +169,3 @@ jobs:
             docker run --network=host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
             docker run --network=host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
             docker run --network=host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://localhost/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
-      - <<: *docker_push_gcr
-
-  deploy_prod:  *deploy_prod
-  deploy_stage: *deploy_stage
-  deploy_test:  *deploy_test
-
-workflows: *default_workflows
