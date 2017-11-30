@@ -162,7 +162,7 @@ jobs:
           command: |
             env
             echo
-            ss -tlnp
+            netstat -tlnp
             echo
       - run:
           name: Tests
