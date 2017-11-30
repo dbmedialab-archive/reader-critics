@@ -3,7 +3,7 @@ version: "2"
 services:
   app:
     container_name: app
-    build: .
+    image: "$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1"
     links:
       - redis
       - mongo
