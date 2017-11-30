@@ -169,6 +169,7 @@ jobs:
             #  -e REDIS_URL_MESSAGE_QUEUE="redis://$IP/1" \
             #  -e REDIS_URL_SESSION_CACHE="redis://$IP/2" \
             #  $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 printenv
+            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
             docker run -e MONGODB_URL="mongodb://localhost/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://10.142.0.1/1" -e REDIS_URL_SESSION_CACHE="redis://10.142.0.1/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:6c445dbcd5167071a7e18145cbf1dfe09c772726 run/test --db
 
   deploy_prod:  *deploy_prod
