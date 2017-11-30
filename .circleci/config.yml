@@ -155,8 +155,6 @@ jobs:
     steps:
       - checkout
       - <<: *setup_remote_docker
-      - <<: *docker_build
-      - <<: *setup_tests
       - run:
           name: Tests
           command: |
@@ -194,7 +192,6 @@ jobs:
               -e REDIS_URL_SESSION_CACHE="redis://$IP/2" \
               $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1:circleci ip a
             docker run -e MONGODB_URL="mongodb://localhost/readercritics" -e REDIS_URL_MESSAGE_QUEUE="redis://10.142.0.1/1" -e REDIS_URL_SESSION_CACHE="redis://10.142.0.1/2" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:circleci run/test --db
-      - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
   deploy_stage: *deploy_stage
