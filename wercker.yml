@@ -29,6 +29,9 @@ js-lint-build-test:
       export SENDGRID_API_KEY="1234abcd"
       export WEB_CONCURRENCY=1
   - script:
+    name: build
+    code: npm run build:app
+  - script:
     name: test libraries
     code: run/test --libs
   - script:
