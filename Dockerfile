@@ -21,5 +21,5 @@ RUN /bin/bash -l -c "run/build"
 
 #RUN rm -rf node_modules
 
-RUN npm cache clean
+RUN npm cache clean --force
 
