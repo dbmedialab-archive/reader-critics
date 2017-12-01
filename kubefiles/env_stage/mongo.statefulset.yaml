@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: mongo
-  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "REPONAME"}}
 spec:
   serviceName: "mongo"
   replicas: 3
@@ -33,7 +33,7 @@ spec:
             - name: MONGO_SIDECAR_POD_LABELS
               value: role=mongo,environment={{env "ENV"}}
             - name: KUBE_NAMESPACE
-              value: {{env "WERCKER_GIT_REPOSITORY"}}
+              value: {{env "REPONAME"}}
   volumeClaimTemplates:
   - metadata:
       name: mongo-persistent-storage

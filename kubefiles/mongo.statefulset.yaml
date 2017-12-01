@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: mongo
-  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "REPONAME"}}
 spec:
   serviceName: "mongo"
   replicas: 1
