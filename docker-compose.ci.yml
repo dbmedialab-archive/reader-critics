@@ -2,7 +2,7 @@ version: "2"
 
 services:
   app:
-    container_name: busybox
+    container_name: test
     image: busybox
     links:
       - redis
