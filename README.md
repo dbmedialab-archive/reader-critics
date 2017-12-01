@@ -6,11 +6,9 @@
 &nbsp;
 [![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
-[![Wercker status](https://app.wercker.com/status/becb14dfb1645c8010f604bdbb6aeeca/s/develop "wercker status")](https://app.wercker.com/project/byKey/becb14dfb1645c8010f604bdbb6aeeca)
-&nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 &nbsp;
-[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/)
+[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org//dbmedialab/reader-critics)
 
 ## Table of Contents
 
