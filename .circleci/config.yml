@@ -99,11 +99,11 @@ common_aliases:
   - &container_defaults
     working_directory: /app
     docker:
-      - image: docker:17.11.0-ce-git
+      - image: docker:17.05.0-ce-git
 
   - &setup_remote_docker
       setup_remote_docker:
-        version: 17.11.0-ce
+        version: 17.10.0-ce
         docker_layer_caching: true
 
   - &install_docker_compose
@@ -129,7 +129,7 @@ common_aliases:
         docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
-
+  
   - &setup_tests
       run:
         name: Create folder for tests output
@@ -148,7 +148,7 @@ common_aliases:
 #########################################################################
 #
 # Anything below this line comes from local_config.yml inside the project
-#
+# 
 #########################################################################
 
 version: 2
@@ -164,29 +164,23 @@ jobs:
       - run:
           name: Setup docker-compose and credentials
           command: |
-            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
             apk --no-cache add py-pip
             pip -q install docker-compose
-            docker-compose -f docker-compose.ci.yml up -d
+			- run:
+					name: Fire up compose context for later tests
+					command: docker-compose -f docker-compose.ci.yml up -d
       - run:
           name: Test libs
-          command: |
-            docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
+          command: docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
       - run:
           name: Test base
-          command: |
-            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
+          command: docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
       - run:
           name: Test app
-          command: |
-            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
+          command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
       - run:
           name: Test db
-          command: |
-            docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-            docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
+          command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
