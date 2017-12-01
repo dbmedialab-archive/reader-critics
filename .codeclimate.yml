@@ -33,3 +33,5 @@ exclude_paths:
 - 'resources/**'
 - 'templates/**'
 - 'tmp/**'
+- 'webpack*.js'
+- '*.yml'
