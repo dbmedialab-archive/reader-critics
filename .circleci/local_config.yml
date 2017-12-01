@@ -11,9 +11,9 @@ jobs:
           command: |
             apk --no-cache add py-pip
             pip -q install docker-compose
-			- run:
-					name: Fire up compose context for later tests
-					command: docker-compose -f docker-compose.ci.yml up -d
+      - run:
+          name: Fire up compose context for later tests
+          command: docker-compose -f docker-compose.ci.yml up -d
       - run:
           name: Test libs
           command: docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
