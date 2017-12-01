@@ -25,6 +25,7 @@ ratings:
   - 'run/**.sh'
 
 exclude_paths:
+- '.circleci/**'
 - 'assets/**'
 - 'conf/**'
 - 'kubefiles/**'
