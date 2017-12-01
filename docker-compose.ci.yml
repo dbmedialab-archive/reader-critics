@@ -1,0 +1,27 @@
+version: "2"
+
+services:
+  app:
+    container_name: test
+    image: busybox
+    links:
+      - redis
+      - mongo
+    environment:
+      MONGODB_URL: mongodb://mongo/readercritics
+      REDIS_URL_MESSAGE_QUEUE: redis://redis/1
+      REDIS_URL_SESSION_CACHE: redis://redis/2
+    entrypoint:
+      - /bin/sh
+      - -c
+      - --
+      - "trap : TERM INT; sleep 600 & wait"
+  redis:
+    image: redis:3.2
+    ports:
+      - 6379:6379
+  mongo:
+    image: mongo:3.0
+    ports:
+      - 27017:27017
+

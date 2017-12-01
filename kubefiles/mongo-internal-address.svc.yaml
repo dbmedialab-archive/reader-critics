@@ -4,7 +4,7 @@ metadata:
   annotations:
     cloud.google.com/load-balancer-type: internal
   name: mongo-internal
-  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  namespace: {{env "REPONAME"}}
 spec:
   ports:
   - port: 27017
