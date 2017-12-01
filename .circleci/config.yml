@@ -182,13 +182,7 @@ jobs:
             apk --no-cache add py-pip
             pip -q install docker-compose
             docker-compose -f docker-compose.ci.yml up -d
-            docker run --network=host \
-              -e MONGODB_URL=mongodb://localhost/readercritics \
-              -e REDIS_URL_MESSAGE_QUEUE=redis://127.0.0.1:6379/1 \
-              -e REDIS_URL_SESSION_CACHE=redis://localhost/2 \
-              -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" \
-              -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" \
-              $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
+            docker run --network=host -e MONGODB_URL=mongodb://localhost/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://127.0.0.1:6379/1 -e REDIS_URL_SESSION_CACHE=redis://localhost/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
   deploy_prod:  *deploy_prod
