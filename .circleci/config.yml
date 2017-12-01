@@ -129,7 +129,7 @@ common_aliases:
         docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
-  
+
   - &setup_tests
       run:
         name: Create folder for tests output
@@ -148,7 +148,7 @@ common_aliases:
 #########################################################################
 #
 # Anything below this line comes from local_config.yml inside the project
-# 
+#
 #########################################################################
 
 version: 2
@@ -188,3 +188,4 @@ jobs:
   deploy_test:  *deploy_test
 
 workflows: *default_workflows
+
