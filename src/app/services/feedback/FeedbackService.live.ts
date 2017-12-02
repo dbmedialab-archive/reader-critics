@@ -41,6 +41,10 @@ import {
 	updateEndUser,
 } from './dao/feedbackSave';
 
+import {
+	updateStatus,
+} from './dao/feedbackStatus';
+
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
@@ -52,6 +56,7 @@ const service : FeedbackService
 			save,
 			validateAndSave,
 			updateEndUser,
+			updateStatus,
 		}
 	);
 

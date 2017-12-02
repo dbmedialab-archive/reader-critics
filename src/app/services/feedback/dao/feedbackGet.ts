@@ -129,7 +129,7 @@ export function getRange (
 
 // Internal populate
 
-function populateFeedback <D extends Document> (
+export function populateFeedback <D extends Document> (
 	query : DocumentQuery <D[], D>
 ) : DocumentQuery <D[], D>
 {

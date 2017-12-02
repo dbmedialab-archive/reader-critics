@@ -20,11 +20,13 @@ import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
-import {ObjectID} from 'app/db';
+
+import { ObjectID } from 'app/db';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions
@@ -118,11 +120,21 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Returns amount of feedbacks exist for current article
 	 *
-	 *  @throws EmptyError If article parameter is missing.
+	 * @throws EmptyError If article parameter is missing.
 	 */
 	getAmountByArticle(
-		article: Article
-	) : Promise<number>;
+		article : Article
+	) : Promise <number>;
+
+	/**
+	 * Updates the current status of the feedback object and puts the (now)
+	 * previous status into the log array.
+	 */
+	updateStatus(
+		feedback : Feedback,
+		newStatus : FeedbackStatus
+	) : Promise <void>
+
 }
 
 export default FeedbackService;

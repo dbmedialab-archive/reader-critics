@@ -54,7 +54,7 @@ const FeedbackSchema : Schema = new Schema({
 	// Processing status
 	status: Object.assign({
 		log: {
-			type : [FeedbackStatusEntry],
+			type : [Schema.Types.Mixed],
 			required : false,
 		},
 	}, FeedbackStatusEntry),

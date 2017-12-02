@@ -24,6 +24,7 @@ import { ISuiteCallbackContext } from 'mocha';
 
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
 	articleService,
@@ -38,6 +39,7 @@ const feedbackIDs = [];
 
 export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
+	let thatFeedback : Feedback;
 
 	it('clear()', () => feedbackService.clear());
 
@@ -69,6 +71,9 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 1);
 			results.forEach(feedback => assertFeedbackObject(feedback));
+			// Save this object for later tests so we don't have to query it from
+			// the database again
+			thatFeedback = results[0];
 		});
 	});
 
@@ -82,6 +87,14 @@ export default function(this: ISuiteCallbackContext) {
 			results.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
+		});
+	});
+
+	it ('updateStatus()', () => {
+		console.log('doing something');
+		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.AwaitEnduserData)
+		.then(updatedFeedback => {
+			console.dir(updatedFeedback);
 		});
 	});
 }
