@@ -27,15 +27,38 @@ import * as app from 'app/util/applib';
 const log = app.createLog('db:mongo');
 
 const mongoURL = config.get('db.mongo.url');
-const options: MoreConnectionOptions = {
+const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
+
+// Options that apply to both (normal) server and replica set connections
+const subOptions = {
+	auto_reconnect: true,
+	reconnectTries: Number.MAX_VALUE,
+	sslValidate: false,
+	socketOptions: {
+		keepAlive: 1000,
+		connectTimeoutMS: 30000,
+	},
+};
+
+// Mongoose connection options
+const options : MoreConnectionOptions = {
 	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
 	connectTimeoutMS: 4000,
 	keepAlive: 120,
 	useMongoClient: true,
 	reconnectTries: Number.MAX_VALUE,
 	socketTimeoutMS: 2000,
+
+	server: Object.assign({
+		poolSize: 4,
+	}, subOptions),
+
+	replset: Object.assign({
+		poolSize: 12,
+		connectWithNoPrimary: true,
+	}, subOptions),
 };
-const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
+
 let reconnectionAmount = 1;
 
 export function initDatabase() : Promise <void> {
@@ -51,10 +74,12 @@ export function initDatabase() : Promise <void> {
 			.catch(error => {
 				const reconnectionCooldown = Math.min(Math.pow(reconnectionAmount++, 2), 60);
 				log('Failed to connected to database:', error.message);
+
 				if (reconnectionAmount < reconnectionLimit) {
 					log(`Retry in ${reconnectionCooldown} seconds`);
 					setTimeout(() => resolve(initDatabase()), reconnectionCooldown * 1000);
-				} else {
+				}
+				else {
 					reject(error);
 				}
 			});
