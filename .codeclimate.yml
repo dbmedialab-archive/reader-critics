@@ -25,6 +25,7 @@ ratings:
   - 'run/**.sh'
 
 exclude_paths:
+- '.circleci/**'
 - 'assets/**'
 - 'conf/**'
 - 'kubefiles/**'
@@ -32,3 +33,5 @@ exclude_paths:
 - 'resources/**'
 - 'templates/**'
 - 'tmp/**'
+- 'webpack*.js'
+- '*.yml'
