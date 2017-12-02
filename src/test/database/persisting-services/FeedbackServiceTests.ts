@@ -90,11 +90,35 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	it ('updateStatus()', () => {
-		console.log('doing something');
+	it('updateStatus()', () => {
 		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.AwaitEnduserData)
-		.then(updatedFeedback => {
-			console.dir(updatedFeedback);
+		.then(() => {
+			return feedbackService.getByID(thatFeedback.ID);
+		})
+		.then((updatedFeedback) => {
+			assertFeedbackObject(updatedFeedback);
+			assert.strictEqual(
+				updatedFeedback.status.status,
+				FeedbackStatus.AwaitEnduserData.toString()
+			);
+		});
+	});
+
+	it('getByStatus()', () => {
+		return Promise.all([
+			feedbackService.getByStatus(FeedbackStatus.New),
+			feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData),
+		])
+		.spread((statusNew : Feedback[], statusAwait : Feedback[]) => {
+			assert.lengthOf(statusNew, 2);
+			statusNew.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
+
+			assert.lengthOf(statusAwait, 1);
+			statusAwait.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
 		});
 	});
 }
@@ -127,6 +151,9 @@ const assertFeedbackObject = (f : Feedback) => {
 
 	assert.isObject(f.date);
 	assert.isObject(f.enduser);
+
+	assert.isObject(f.status);
+	assert.isString(f.status.status);
 
 	assert.isArray(f.items);
 };

@@ -33,6 +33,7 @@ import {
 	getByArticle,
 	getByArticleAuthor,
 	getByID,
+	getByStatus,
 	getRange,
 } from './dao/feedbackGet';
 
@@ -52,6 +53,7 @@ const service : FeedbackService
 			getByArticle,
 			getByArticleAuthor,
 			getByID,
+			getByStatus,
 			getRange,
 			save,
 			validateAndSave,

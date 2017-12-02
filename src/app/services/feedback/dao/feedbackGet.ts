@@ -23,6 +23,7 @@ import {
 
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
@@ -63,6 +64,11 @@ export function getByArticle (
 
 // getByArticleAuthor
 
+type QueryByArticleAuthor = {
+	articleAuthors? : ObjectID | string
+	website? : ObjectID | string
+};
+
 export function getByArticleAuthor (
 	author : User,
 	website? : Website,
@@ -73,7 +79,7 @@ export function getByArticleAuthor (
 {
 	emptyCheck(author);
 
-	const query : any = {
+	const query : QueryByArticleAuthor = {
 		articleAuthors: author.ID,
 	};
 
@@ -113,6 +119,26 @@ export function getByID(
 	return wrapFindOne(result);
 }
 
+// getByStatus with additional query parameter
+
+export function getByStatus (
+	currentStatus : FeedbackStatus,
+	additionalQuery : {} = {},
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]>
+{
+	emptyCheck(currentStatus);
+
+	return wrapFind(populateFeedback(
+		FeedbackModel.find(Object.assign({}, additionalQuery, {
+			'status.status': currentStatus.toString(),
+		}))
+		.sort(sort).skip(skip).limit(limit)
+	));
+}
+
 // getRange, using internal populate
 
 export function getRange (
@@ -129,7 +155,7 @@ export function getRange (
 
 // Internal populate
 
-export function populateFeedback <D extends Document> (
+function populateFeedback <D extends Document> (
 	query : DocumentQuery <D[], D>
 ) : DocumentQuery <D[], D>
 {

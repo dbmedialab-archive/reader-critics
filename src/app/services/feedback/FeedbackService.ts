@@ -41,8 +41,18 @@ import { ObjectID } from 'app/db';
  * service does not have a generic update() function.
  */
 interface FeedbackService extends BasicPersistingService <Feedback> {
+
+	/**
+	 * Returns amount of feedbacks exist for current article
+	 * @throws EmptyError
+	 */
+	getAmountByArticle(
+		article : Article
+	) : Promise <number>;
+
 	/**
 	 * Get all feedback objects related to one article.
+	 * @throws EmptyError
 	 */
 	getByArticle(
 		article : Article,
@@ -54,6 +64,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Get all feedback objects related to one article author, optionally filter
 	 * also by website.
+	 * @throws EmptyError
 	 */
 	getByArticleAuthor(
 		author : User,
@@ -64,9 +75,21 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	) : Promise <Feedback[]>;
 
 	/**
-	 * Get a single feedback object, identified by its database object
+	 * Get a single feedback object, identified by its database ID
+	 * @throws EmptyError
 	 */
 	getByID(objectID : string, populated? : boolean) : Promise <Feedback>;
+
+	/**
+	 * Get all feedbacks with a specific status, with additional query object
+	 */
+	getByStatus(
+		currentStatus : FeedbackStatus,
+		additionalQuery? : {},
+		skip? : number,
+		limit? : number,
+		sort? : Object
+	) : Promise <Feedback[]>;
 
 	/**
 	 * Save the new feedback object and create references to all involved objects.
@@ -109,22 +132,12 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 
 	/**
 	 * Updates the existing feedback object with enduser data.
-	 *
 	 * @throws EmptyError If enduser parameter is missing.
 	 */
 	updateEndUser(
 		id : ObjectID,
 		enduser : EndUser
 	) : Promise <Feedback>;
-
-	/**
-	 * Returns amount of feedbacks exist for current article
-	 *
-	 * @throws EmptyError If article parameter is missing.
-	 */
-	getAmountByArticle(
-		article : Article
-	) : Promise <number>;
 
 	/**
 	 * Updates the current status of the feedback object and puts the (now)
