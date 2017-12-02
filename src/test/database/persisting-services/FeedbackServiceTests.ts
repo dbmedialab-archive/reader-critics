@@ -24,6 +24,7 @@ import { ISuiteCallbackContext } from 'mocha';
 
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
 	articleService,
@@ -38,6 +39,7 @@ const feedbackIDs = [];
 
 export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
+	let thatFeedback : Feedback;
 
 	it('clear()', () => feedbackService.clear());
 
@@ -69,6 +71,9 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 1);
 			results.forEach(feedback => assertFeedbackObject(feedback));
+			// Save this object for later tests so we don't have to query it from
+			// the database again
+			thatFeedback = results[0];
 		});
 	});
 
@@ -80,6 +85,38 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 2);
 			results.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
+		});
+	});
+
+	it('updateStatus()', () => {
+		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.AwaitEnduserData)
+		.then(() => {
+			return feedbackService.getByID(thatFeedback.ID);
+		})
+		.then((updatedFeedback) => {
+			assertFeedbackObject(updatedFeedback);
+			assert.strictEqual(
+				updatedFeedback.status.status,
+				FeedbackStatus.AwaitEnduserData.toString()
+			);
+		});
+	});
+
+	it('getByStatus()', () => {
+		return Promise.all([
+			feedbackService.getByStatus(FeedbackStatus.New),
+			feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData),
+		])
+		.spread((statusNew : Feedback[], statusAwait : Feedback[]) => {
+			assert.lengthOf(statusNew, 2);
+			statusNew.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
+
+			assert.lengthOf(statusAwait, 1);
+			statusAwait.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 		});
@@ -114,6 +151,9 @@ const assertFeedbackObject = (f : Feedback) => {
 
 	assert.isObject(f.date);
 	assert.isObject(f.enduser);
+
+	assert.isObject(f.status);
+	assert.isString(f.status.status);
 
 	assert.isArray(f.items);
 };
