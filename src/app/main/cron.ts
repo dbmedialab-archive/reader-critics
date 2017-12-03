@@ -16,9 +16,13 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+// import { CronJob } from 'cron';
+
 import * as app from 'app/util/applib';
 
 const log = app.createLog('cron');
+
+// const activeJobs : Array <CronJob> = [];
 
 export function initCron() : Promise <void> {
 	log('Initialising ...');
