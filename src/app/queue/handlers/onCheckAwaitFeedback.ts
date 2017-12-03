@@ -17,11 +17,9 @@
 //
 
 import {
-	Request,
-	Response,
-} from 'express';
-
-import { feedbackService } from 'app/services';
+	DoneCallback,
+	Job,
+} from 'kue';
 
 import {
 	sendMessage,
@@ -29,13 +27,27 @@ import {
 } from 'app/queue';
 
 import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
+	feedbackService,
+} from 'app/services';
 
-export default function (requ : Request, resp : Response) : void {
-	feedbackService.validateAndSave(requ.body)
-	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
-	.then(() => okResponse(resp))
-	.catch(error => errorResponse(resp, error));
+import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
+export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
+	feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData)
+	.then((feedbacks : Feedback[]) => {
+		log('%d feedbacks to trigger for notification', feedbacks.length);
+
+		return Promise.map(feedbacks, (item : Feedback) => {
+			return sendMessage(MessageType.NewFeedback, {
+				feedbackID: item.ID,
+			});
+		});
+	})
+	// Don't forget to clean up the kue job!
+	.then(() => done());
 }

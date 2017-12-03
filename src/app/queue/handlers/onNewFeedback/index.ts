@@ -41,13 +41,14 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-export default function(job : Job, done : DoneCallback) : void {
-	if (!job.data.ID) {
+export function onNewFeedback(job : Job, done : DoneCallback) : void {
+	const { feedbackID } = job.data;
+
+	if (feedbackID === undefined) {
 		log('Feedback "ID" not found in job data');
 		return done();
 	}
 
-	const feedbackID = job.data.ID;
 	log(`Received new feedback event for ID ${feedbackID}`);
 
 	// There's loads of objects that need to be loaded:

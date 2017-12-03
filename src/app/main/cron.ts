@@ -16,15 +16,31 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// import { CronJob } from 'cron';
+import { CronJob } from 'cron';
+
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
 
 import * as app from 'app/util/applib';
 
 const log = app.createLog('cron');
 
-// const activeJobs : Array <CronJob> = [];
+const activeJobs : Array <CronJob> = [];
 
 export function initCron() : Promise <void> {
 	log('Initialising ...');
+	jobCheckAwaitFeedback();
 	return Promise.resolve();
+}
+
+function jobCheckAwaitFeedback() {
+	activeJobs.push(new CronJob({
+		cronTime: '*/10 * * * * *',
+		onTick: () => {
+			sendMessage(MessageType.CheckAwaitFeedback);
+		},
+		start: true,
+	}));
 }
