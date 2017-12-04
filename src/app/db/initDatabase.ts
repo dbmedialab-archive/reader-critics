@@ -26,27 +26,38 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog('db:mongo');
 
-export default function () : Promise <void> {
-	const mongoURL = config.get('db.mongo.url');
-
-	const options : MoreConnectionOptions = {
+const mongoURL = config.get('db.mongo.url');
+const options: MoreConnectionOptions = {
 	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
-		connectTimeoutMS: 4000,
-		keepAlive: 120,
-		useMongoClient: true,
-		reconnectTries: Number.MAX_VALUE,
-		socketTimeoutMS: 2000,
-	};
+	connectTimeoutMS: 4000,
+	keepAlive: 120,
+	useMongoClient: true,
+	reconnectTries: Number.MAX_VALUE,
+	socketTimeoutMS: 2000,
+};
+const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
+let reconnectionAmount = 1;
 
+export function initDatabase() : Promise <void> {
 	log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
 
-	return Mongoose.connect(mongoURL, options)
-	.then(() => {
-		log('Connection ready');
-	})
-	.catch(error => {
-		log('Failed to connected to database:', error.message);
-		return Promise.reject(error);
+	return new Promise((resolve, reject) => {
+		Mongoose.connect(mongoURL, options)
+			.then(() => {
+				log('Connection ready');
+				reconnectionAmount = 1;
+				resolve();
+			})
+			.catch(error => {
+				const reconnectionCooldown = Math.min(Math.pow(reconnectionAmount++, 2), 60);
+				log('Failed to connected to database:', error.message);
+				if (reconnectionAmount < reconnectionLimit) {
+					log(`Retry in ${reconnectionCooldown} seconds`);
+					setTimeout(() => resolve(initDatabase()), reconnectionCooldown * 1000);
+				} else {
+					reject(error);
+				}
+			});
 	});
 }
 
@@ -59,6 +70,7 @@ interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
 	keepAlive?: number;
 	reconnectTries?: number;
 	socketTimeoutMS?: number;
+	reconnectInterval?: number;
 
 	// Recommended with Mongoose 4.11+ but also not yet reflected
 	useMongoClient?: boolean;

@@ -33,6 +33,7 @@ import {
 	getByArticle,
 	getByArticleAuthor,
 	getByID,
+	getByStatus,
 	getRange,
 } from './dao/feedbackGet';
 
@@ -41,6 +42,10 @@ import {
 	updateEndUser,
 } from './dao/feedbackSave';
 
+import {
+	updateStatus,
+} from './dao/feedbackStatus';
+
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
@@ -48,10 +53,12 @@ const service : FeedbackService
 			getByArticle,
 			getByArticleAuthor,
 			getByID,
+			getByStatus,
 			getRange,
 			save,
 			validateAndSave,
 			updateEndUser,
+			updateStatus,
 		}
 	);
 

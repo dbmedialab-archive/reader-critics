@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: reader-critics
+  name: {{env "REPONAME"}}
+  namespace: {{env "REPONAME"}}
   labels:
-    app: reader-critics
+    app: {{env "REPONAME"}}
 spec:
   type: LoadBalancer
   ports:
@@ -11,4 +12,5 @@ spec:
     protocol: TCP
     targetPort: http-port
   selector:
-    app: reader-critics
+    app: {{env "REPONAME"}}
+
