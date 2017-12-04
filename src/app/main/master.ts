@@ -22,9 +22,10 @@ import * as moment from 'moment';
 import * as path from 'path';
 import * as semver from 'semver';
 
-import { readFileSync } from 'fs';
-import { initJobWorkerQueue } from 'app/queue';
+import { initDatabase } from 'app/db';
 import { initCron } from './cron';
+import { initJobWorkerQueue } from 'app/queue';
+import { readFileSync } from 'fs';
 
 import {
 	typeJobWorker,
@@ -50,6 +51,7 @@ export default function() {
 
 	checkEngineVersion()
 		.then(initJobWorkerQueue)
+		.then(initDatabase)
 		.then(startWorkers)
 		.then(initCron)
 		.then(notifyTestMaster)
