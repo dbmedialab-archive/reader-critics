@@ -66,7 +66,7 @@ export default feedbackRoute;
 function getHandler(requ : Request, resp : Response, next : Function) : void {
 	parseParameters(requ).then((params : FeedbackParams) => {
 		log(app.inspect(params));
-		feedbackHandler(requ, resp, params.url, params.version);
+		return feedbackHandler(requ, resp, params.url, params.version);
 	})
 	.catch((error : Error) => next(error));
 }
@@ -152,5 +152,6 @@ function feedbackHandler(
 		//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}).render())
 		.status(200).end();
+		return null;
 	});
 }
