@@ -1,10 +1,10 @@
 $color-main-bg: #2f323a;
 $color-main-bg-darken: #25272E;
-$color-highlight-strip: rgba(255, 235, 59, .7);
+
 $color-border-light: rgba(0, 0, 0, .1);
 $color-border-medium: rgba(0, 0, 0, .4);
-$color-drop-denied: rgba(255, 0, 0, .3);
-$color-drop-granted: rgba(146, 205, 24, .3);
+$color-user-comment-background: #fffff1;
+
 $color-icon-light: rgba(172, 172, 172, 1);
 $color-icon-darken: rgba(136, 136, 136, 1);
 $background-item-light: rgba(0, 0, 0, .1);
@@ -20,3 +20,6 @@ $react-dates-width-day-picker: 300px !default;
 
 //$glyphicons-halflings-font-path: '//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/fonts'ж
 //$glyphicons-halflings-font-path:'http://getbootstrap.com/dist/fonts/';
+
+$color-success:      rgba(89, 126, 151, 1);
+$color-warning:      rgba(185, 79, 112,  1);

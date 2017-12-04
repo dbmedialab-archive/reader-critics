@@ -1,40 +1,99 @@
 [
 	{
-		"name": "dagbladet.no",
-		"hosts": [
-			"www.dagbladet.no"
+		name: "abendschau.de",
+		hosts: [
+			"abendschau.de",
+			"www.abendschau.de",
 		],
-		parserClass: 'DagbladetParser',
-		"chiefEditors": [
+		locale: "de",
+		chiefEditors: [
 			{
-				"name": "Vakt Sjef",
+				name: "Gustl Bayrhammer",
+				"email": "gb@br.de"
+			}
+		]
+	},
+	{
+		name: "ampbladet.no",
+		hosts: [
+			"ampbladet.no",
+			"www.ampbladet.no",
+		],
+		locale: "nb",
+		parserClass: 'AMP Parser',
+		chiefEditors: [
+			{
+				name: "Vakt Sjef",
+				"email": "vakt@ampbladet.no"
+			}
+		]
+	},
+	{
+		name: "dagbladet.no",
+		hosts: [
+			"db.no",
+			"www.db.no",
+			"dagbladet.no",
+			"www.dagbladet.no",
+		],
+		locale: "nb",
+		parserClass: 'Dagbladet Parser',
+		chiefEditors: [
+			{
+				name: "Vakt Sjef",
 				"email": "vakt@dagbladet.no"
 			}
 		]
 	},
 	{
-		"name": "dinside.no",
-		"hosts": [
+		name: "dinside.no",
+		hosts: [
 			"www.dinside.no"
 		],
-		"chiefEditors": [
+		locale: "nb",
+		chiefEditors: [
 			{
-				"name": "Vakt Sjef",
+				name: "Vakt Sjef",
 				"email": "vakt@dinside.no"
 			}
 		]
 	},
 	{
-		"name": "morgenposten.no",
-		"hosts": [
-			"www.morgenposten.no",
-			"www.mopo.no"
+		name: 'morgenposten.no',
+		hosts: [
+			'mopo.no',
+			'morgenposten.no',
+			'www.mopo.no',
+			'www.morgenposten.no',
 		],
-		"chiefEditors": [
+		locale: 'nb',
+		chiefEditors: [
 			{
-				"name": "Like A. Boss",
-				"email": "redaksjon@morgenposten.no"
-			}
-		]
-	}
+				name: 'Like A. Boss',
+				email: 'redaksjon@morgenposten.no',
+			},
+		],
+	},
+	{
+		name: 'f-b.no',
+		hosts: [
+			'f-b.no',
+			'www.f-b.no',
+		],
+		locale: 'nb',
+		parserClass: 'Fredriksstad Blad Parser',
+		chiefEditors: [
+		],
+	},
+	{
+		name: 'b.dk',
+		hosts: [
+			'b.dk',
+			'www.b.dk',
+		],
+		locale: 'da',
+		parserClass: 'Berlingske Parser',
+		chiefEditors: [
+		],
+	},
 ]

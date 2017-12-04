@@ -25,6 +25,7 @@ import User from 'base/User';
 import { ArticleModel } from 'app/db/models';
 
 import {
+	wrapExists,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
@@ -35,15 +36,28 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
+export function exists(
+	articleURL : string|ArticleURL,
+	version : string
+) : Promise <boolean>
+{
+	emptyCheck(articleURL, version);
+
+	return wrapExists(ArticleModel.find({
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
+		version,
+	}));
+}
+
 export function get(
-	articleURL : ArticleURL,
+	articleURL : string|ArticleURL,
 	version : string,
 	populated : boolean = false
 ) : Promise <Article> {
 	emptyCheck(articleURL, version);
 
 	let result = ArticleModel.findOne({
-		url: articleURL.href,
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
 		version,
 	});
 

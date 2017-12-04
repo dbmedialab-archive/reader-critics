@@ -33,7 +33,7 @@ const UserSchema : Schema = new Schema({
 		type: String,
 		required: true,
 		enum: Object.values(UserRole),
-		default: UserRole.Normal,
+		default: UserRole.Journalist,
 	},
 	password: {
 		type: String,
@@ -54,15 +54,9 @@ const UserSchema : Schema = new Schema({
 
 UserSchema.index({
 	'name': 1,
-}, {
-	name: 'unique_name',
-	unique: true,
-});
-
-UserSchema.index({
 	'email': 1,
 }, {
-	name: 'unique_email',
+	name: 'unique_name_mail',
 	unique: true,
 });
 

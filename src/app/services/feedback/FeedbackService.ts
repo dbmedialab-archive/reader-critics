@@ -20,10 +20,13 @@ import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+
+import { ObjectID } from 'app/db';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions
@@ -38,8 +41,18 @@ import BasicPersistingService from '../BasicPersistingService';
  * service does not have a generic update() function.
  */
 interface FeedbackService extends BasicPersistingService <Feedback> {
+
+	/**
+	 * Returns amount of feedbacks exist for current article
+	 * @throws EmptyError
+	 */
+	getAmountByArticle(
+		article : Article
+	) : Promise <number>;
+
 	/**
 	 * Get all feedback objects related to one article.
+	 * @throws EmptyError
 	 */
 	getByArticle(
 		article : Article,
@@ -51,10 +64,28 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Get all feedback objects related to one article author, optionally filter
 	 * also by website.
+	 * @throws EmptyError
 	 */
 	getByArticleAuthor(
 		author : User,
 		website? : Website,
+		skip? : number,
+		limit? : number,
+		sort? : Object
+	) : Promise <Feedback[]>;
+
+	/**
+	 * Get a single feedback object, identified by its database ID
+	 * @throws EmptyError
+	 */
+	getByID(objectID : string, populated? : boolean) : Promise <Feedback>;
+
+	/**
+	 * Get all feedbacks with a specific status, with additional query object
+	 */
+	getByStatus(
+		currentStatus : FeedbackStatus,
+		additionalQuery? : {},
 		skip? : number,
 		limit? : number,
 		sort? : Object
@@ -77,7 +108,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Takes a raw input object and validates its structure before saving the
 	 * contained feedback with all references. This function uses save() as soon
-	 * as all involved objects have been fetched for referencing, of cource under
+	 * as all involved objects have been fetched for referencing, of course under
 	 * the condition that the initial validation does not throw an error.
 	 *
 	 * This function is intended for usage on the API, so that the data does not
@@ -86,7 +117,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * After validating, the function internally fetches the article that this
 	 * feedback is based on (identified by its key properties "url" and "version")
 	 * and in a parallel database action, retrieves or (if not existing) creates
-	 * the EndUser object that contains the feedback giver's data.
+	 * the EndUser object of Anonymous user.
 	 *
 	 * When these two objects (Article and EndUser) are ready, both are give to
 	 * save() together with the feedback items, which are also parsed from the raw
@@ -98,6 +129,25 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
 	validateAndSave(data : any) : Promise <Feedback>;
+
+	/**
+	 * Updates the existing feedback object with enduser data.
+	 * @throws EmptyError If enduser parameter is missing.
+	 */
+	updateEndUser(
+		id : ObjectID,
+		enduser : EndUser
+	) : Promise <Feedback>;
+
+	/**
+	 * Updates the current status of the feedback object and puts the (now)
+	 * previous status into the log array.
+	 */
+	updateStatus(
+		feedback : Feedback,
+		newStatus : FeedbackStatus
+	) : Promise <void>
+
 }
 
 export default FeedbackService;

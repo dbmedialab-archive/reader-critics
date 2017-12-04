@@ -1,4 +1,23 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 import 'whatwg-fetch';
+import * as UIActions from 'admin/actions/UIActions';
 
 /**
  * Sends an authentication request
@@ -9,35 +28,28 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 });
 
 /**
- * Test request to be sure that we cn get data from admin api
- * TODO remove it after any one real admin api request is done
- * @type {()=>Promise<any>}
- */
-export const sendUsersRequest = ((): Promise<any> => {
-	return sendRequest(`/admin/api/users/`, 'GET');
-});
-
-/**
  * Wrapper to send requests to backend
  * @param url                   URL to get data from
  * @param method                Request method
  * @param data                  Request data
  * @returns {Promise<any>}
  */
-function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
+export function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
 	return fetch(url, {
 		method,
-		headers: { 'Content-Type': 'application/json' },
+		headers: [
+			[ 'Content-Type', 'application/json' ],
+		],
 		body: data ? JSON.stringify(data) : null,
 		credentials: 'include',
 	})
-	.then(authCheck)
-	.then(status)
-	.then(json)
-	.catch(function (error) {
-		console.log('request failed', error);
-		return {error: error.message};
-	});
+		.then(authCheck)
+		.then(status)
+		.then(json)
+		.catch(function (error) {
+			console.log('request failed', error);
+			throw new Error(error.message);
+		});
 }
 
 /**
@@ -53,7 +65,14 @@ function authCheck(response: Response): any {
 	}
 
 	if (response.status === 401) {
-		window.history.pushState({}, 'Authorization', '/admin/login');
+		UIActions.hideMainPreloader();
+		UIActions.showDialog({
+			yesBtnName: 'Sign In',
+			dialogTitle: 'Authentication session lost. Please, try to login again.',
+			onlyAcceptable: true,
+			yesHandler: () => window.location.href = '/admin/login',
+			closeHandler: () => window.location.href = '/admin/login',
+		});
 		throw new Error(response.statusText);
 	} else {
 		return response;
@@ -80,5 +99,15 @@ function status(response) {
  * @returns {any}
  */
 function json(response) {
-	return response.json();
+	return response.json().then((payload) => {
+		if (response.status < 200 || response.status >= 300 || !payload.success) {
+			return payload.message || payload.error || response.statusText;
+		}
+
+		if (!payload.data) {
+			return 'No "data" property in response payload';
+		}
+
+		return payload.data;
+	});
 }

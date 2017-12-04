@@ -16,6 +16,7 @@
 		"no-duplicate-variable": true,
 		"no-eval": true,
 		"no-irregular-whitespace": true,
+		"no-parameter-reassignment": true,
 		"no-require-imports": true,
 		"no-reference": true,
 		"no-shadowed-variable": true,

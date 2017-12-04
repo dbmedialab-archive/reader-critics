@@ -1,9 +1,9 @@
 import ArticleItem from './ArticleItem';
 
 interface FeedbackItem extends ArticleItem {
-	text : String|null;
-	comment : String|null;
-	links : String[];
+	text : string|null;
+	comment : string|null;
+	links : string[];
 }
 
 export default FeedbackItem;

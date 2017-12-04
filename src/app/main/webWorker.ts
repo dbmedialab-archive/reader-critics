@@ -29,7 +29,14 @@ import routes from 'app/routes';
 import * as app from 'app/util/applib';
 
 import { initDatabase } from 'app/db';
+import { initLocalizationStrings } from 'app/services/localization';
 import { initWebWorkerQueue } from 'app/queue';
+import { signal } from './clusterSignals';
+
+import {
+	getAvailableParsers,
+	initParserResolver,
+} from 'app/services/parser/common/parserResolver';
 
 import startupErrorHandler from './startupErrorHandler';
 
@@ -38,9 +45,8 @@ let expressApp : Express;
 let httpPort;
 let httpServer;
 
-/**
- * Main function of worker process
- */
+// Main function of worker process
+
 export default function() {
 	log = app.createLog('worker');
 	log('Starting %s worker - ID %d', colors.brightGreen('web'), cluster.worker.id);
@@ -52,18 +58,20 @@ export default function() {
 	httpServer = http.createServer(expressApp);
 
 	// Main application startup
-
 	Promise.resolve()
+		.then(initLocalizationStrings)
 		.then(initDatabase)
+		.then(initParserResolver)
+		.then(printAvailableParsers)
 		.then(initWebWorkerQueue)
 		.then(startHTTP)
 		.then(initExpress)
-		.catch(startupErrorHandler);
+		.catch(startupErrorHandler)
+		.then(signal.workerReady);
 }
 
-/**
- * Starting the HTTP server
- */
+// HTTP server
+
 function startHTTP() {
 	httpServer.on('error', startupErrorHandler);
 
@@ -80,6 +88,14 @@ function startHTTP() {
 function initExpress() {
 	routes(expressApp);
 	return Promise.resolve();  // Sync finish
+}
+
+// Additional startup functions
+
+function printAvailableParsers() : Promise <void> {
+	return getAvailableParsers().then(parsers => {
+		log('Available parsers: %s', parsers.join(', '));
+	});
 }
 
 // TODO Graceful shutdown

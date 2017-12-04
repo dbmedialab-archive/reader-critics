@@ -1,11 +1,7 @@
-// import {
-// 	User,
-// 	UserRole
-// } from 'base';
 import User from 'base/User';
 import UserRole from 'base/UserRole';
 
-export default function (username : string) : Promise <User> {
+export default function(username: string, email?: string): Promise<User> {
 	if (username !== 'admin') {
 		return Promise.resolve(null);
 	}
@@ -14,5 +10,6 @@ export default function (username : string) : Promise <User> {
 		name: 'admin',
 		email: 'admin@examplemedia.no',
 		role: UserRole.SystemAdmin,
+		users: [],
 	});
 }

@@ -7,8 +7,10 @@
 /out/bundle/
 /out/front/
 /out/test/
+/out/version.*
 
-# App config file 
+# App config files
+kubefiles/secret.*
 config.json5
 
 # Package manager lock files

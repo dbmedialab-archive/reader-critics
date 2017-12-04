@@ -22,16 +22,12 @@ import Footer from 'front/common/Footer';
 import Header from 'front/common/Header';
 
 import FeedbackContainer from './FeedbackContainer';
-import FinishButton from './FinishButton';
 
 const FeedbackPageLayout : React.StatelessComponent <any> =	() => {
-	let container : FeedbackContainer;
-
 	return <div>
-		<Header />
-		<FeedbackContainer ref={(i : any) => { container = i; }} />
-		<FinishButton SendForm={() => container.sendFeedback()} />
-		<Footer />
+		<Header/>
+		<FeedbackContainer/>
+		<Footer/>
 	</div>;
 };
 

@@ -16,6 +16,13 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+export class ConfigError extends Error {
+	constructor(message : string) {
+		super(message);
+		Object.setPrototypeOf(this, ConfigError.prototype);
+	}
+}
+
 export class EmptyError extends Error {
 	constructor(message : string) {
 		super(message);

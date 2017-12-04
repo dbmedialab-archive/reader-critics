@@ -27,6 +27,7 @@ import Website from 'base/Website';
 
 import {
 	articleService,
+	localizationService,
 	websiteService,
 } from 'app/services';
 
@@ -41,65 +42,71 @@ import {
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
+const __ = localizationService.translate;
 
 // Main handler, checks for URL parameter and invalid requests
 
 export default function(requ : Request, resp : Response) : void {
-	const version = requ.query.version;
-
 	let articleURL : ArticleURL;
 	let website : Website;
-	let wasFetched = false;
+	let article : Article;
 
-	ArticleURL.from(requ.query.url)
-	.then((url : ArticleURL) => {
+	let version : string = requ.query.version || null;
+
+	// 1 - Article URL and Website identification
+	ArticleURL.from(requ.query.url).then((url : ArticleURL) => {
 		articleURL = url;
-		log('article: "%s"', articleURL.href);
-		log('version: "%s"', version);
-		// Fetch the article from the database. If not stored, will return null
-		return articleService.get(articleURL, version);
+		log(url.toString());
+		return websiteService.identify(articleURL);
 	})
-	.then((article : Article) => {
-		if (article !== null) {
-			return article;
+
+	// 2 - Query versioned article directly from our database
+	.then((w : Website) => {
+		if (w === null) {
+			log('not identified');
+			return Promise.reject(new Error(__('err.no-website-identify')));
 		}
 
-		// Article is not in the database, fetch a fresh version from the web
-		wasFetched = true;
+		website = w;
 
-		return websiteService.identify(articleURL).then((w : Website) => {
-			if (w === null) {
-				log('not identified');
-				return Promise.reject(new Error('Could not identify website'));
-			}
+		// Check if there is a version parameter and if yes, query the database
+		// for this article version. If no version was requested, trigger a fetch
+		// by returning <null> and get the latest version from the web.
 
-			website = w;
-			// The article returned at this point could be already in the database:
-			// Incoming versions that do not match anything in the DB will end up here
-			// and the version of the now parsed article might indeed exist already.
-			// This needs an "exists" check later to see if it actually needs to be
-			// stored or can be ignored.
-			return articleService.fetch(website, articleURL);
-		});
+		if (version) {
+			return articleService.get(articleURL, version);
+		}
+
+		log('No article version in request, fallback to fetch latest');
+		return null;
 	})
 
-	// Deliver the API response ...
-	.then((article : Article) => {
+	// 3 - Fetch stage (if no database hit or no version parameter in request)
+	.then((a : Article) => {
+		return (a !== null) ? a : articleService.fetch(website, articleURL);
+	})
+
+	// 4 - Deliver the API response
+	.then((a : Article) => {
+		article = a;
+		version = article.version;
 		okResponse(resp, { article });
-		return article;
 	})
-	// After serving the request: if the article is just fetched, store it in
-	// the database now. This step is done after delivering the response to the
-	// client to save the rtt to the database in the response time.
-	.then((article : Article) => {
-		if (wasFetched) {
-			// Using upsert here because of the different-version-approximation
-			// described above. Should the article already exist, it is ignored.
+
+	// 5 - Save article to the database after serving the request
+	// If the article has just been fetched, store it in the database now. This
+	// step is done after delivering the response to the client to save the RTT
+	// to the database in the response time.
+	.then(() => articleService.exists(articleURL, version))
+	.then((exists : boolean) => {
+		if (!exists) {
 			return articleService.upsert(website, article)
 			.catch(error => log(error));
 		}
 	})
 	.catch(error => {
+		log('Need to handle problem:', error);
+
 		if (error instanceof NotFoundError) {
 			return errorResponse(resp, error);
 		}
@@ -109,11 +116,8 @@ export default function(requ : Request, resp : Response) : void {
 		};
 
 		if (error instanceof EmptyError) {
-			errorResponse(resp, error, 'Mandatory URL parameter is missing or empty', options);
+			errorResponse(resp, error, __('err.no-url-param'), options);
 		}
-		// else if (error instanceof TypeError) {
-		// 	errorResponse(resp, error, 'URL parameter invalid', options);
-		// }
 		else {
 			// Whatever passes down until here is probably a 500 internal server terror
 			errorResponse(resp, error);

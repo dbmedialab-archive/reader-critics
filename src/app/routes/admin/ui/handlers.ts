@@ -1,9 +1,4 @@
-//TO DO remove this test page
-import * as doT from 'dot';
-import * as path from 'path';
 import * as passport from 'passport';
-
-import { readFileSync } from 'fs';
 
 import {
 	NextFunction,
@@ -19,35 +14,6 @@ import {
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
-
-// Template stuff
-const styles: string[] = [
-	'/static/admin.css',
-];
-
-const scripts: string[] = [
-	'/static/react/react.js',
-	'/static/react/react-dom.js',
-	'/static/admin.bundle.js',
-];
-
-const mainTemplate = createTemplate();
-
-function createTemplate() {
-	const templatePath : string = path.join(app.rootPath, 'tmp/templates/admin.html');
-	const templateRaw : string = readFileSync(templatePath).toString();
-
-	return doT.template(templateRaw);
-}
-
-export function loginPageHandler(requ : Request, resp : Response) : void {
-	resp.send(mainTemplate({
-		styles,
-		scripts,
-	}));
-
-	resp.status(200).end();
-}
 
 export function loginHandler(requ : Request, resp : Response, next : NextFunction) : void {
 	const notAuth = (error) => errorResponse(resp, error, 'Not authorized', {
@@ -77,6 +43,6 @@ export function logoutHandler(requ : Request, resp : Response): void {
 		if (err) {
 			log(err);
 		}
-		return loginPageHandler(requ, resp);
+		return resp.redirect('/'); //Returns to site's homepage
 	});
 }

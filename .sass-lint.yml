@@ -42,7 +42,7 @@ rules:
       exclude: ['display']
   no-empty-rulesets: 2
   no-extends: 0
-  no-ids: 1
+  no-ids: 0
   no-important: 0
   no-invalid-hex: 2
   no-mergeable-selectors: 2
@@ -64,7 +64,7 @@ rules:
   force-pseudo-nesting: 0
 
   # Name Formats
-  function-name-format: 2
+  function-name-format: 0
   mixin-name-format: 2
   placeholder-name-format: 2
   variable-name-format:

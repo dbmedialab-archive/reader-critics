@@ -19,13 +19,13 @@
 import ArticleItemType from 'base/ArticleItemType';
 
 interface ArticleItem {
+	text? : string;
 	type : ArticleItemType;
 
 	order: {
 		item: number,
 		type: number,
 	};
-
 }
 
 export default ArticleItem;

@@ -82,7 +82,7 @@ class PromptModal extends React.Component <any, any> {
 			<ReactModal isOpen={this.props.isOpen} name="newComic" closeHandler={this.closePopup}>
 				<div className="modal-window">
 					<div className="close-btn">
-						<i onClick={this.closePopup} className="fa fa-close"></i>
+						<i onClick={this.closePopup} className="fa fa-close" />
 					</div>
 					<div className="row">
 						<div className="medium-12 columns">

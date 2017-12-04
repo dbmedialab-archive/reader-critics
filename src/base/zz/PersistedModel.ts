@@ -17,7 +17,7 @@
 //
 
 interface PersistedModel {
-	ID? : String;
+	ID? : string;
 }
 
 export default PersistedModel;

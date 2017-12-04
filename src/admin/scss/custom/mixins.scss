@@ -22,3 +22,11 @@
 	overflow: hidden;
 	display: inline-block;
 }
+
+@mixin no-line-break($ending) {
+	overflow: hidden;
+	white-space: nowrap;
+	@if $ending {
+		text-overflow: ellipsis;
+	}
+}

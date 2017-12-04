@@ -11,21 +11,27 @@ engines:
     enabled: false
     issue_override:
       severity: info
-  sass-lint:
-    enabled: true
+#  scss-lint:
+#    enabled: true
+#    config:
+#      config: .sass-lint.yml
   shellcheck:
     enabled: true
 
 ratings:
   paths:
   - 'src/**.js'
-  - 'src/**.scss'
+#  - 'src/**.scss'
   - 'run/**.sh'
 
 exclude_paths:
+- '.circleci/**'
 - 'assets/**'
 - 'conf/**'
 - 'kubefiles/**'
 - 'node_modules/**'
 - 'resources/**'
+- 'templates/**'
 - 'tmp/**'
+- 'webpack*.js'
+- '*.yml'

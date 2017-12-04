@@ -25,7 +25,7 @@ import SuggestionContainer from 'front/suggest/SuggestionContainer';
 
 const SuggestionLayout : React.StatelessComponent <any> =
 	() => <div>
-		<Header pageTitle="Hvordan syns du det er å gi tilbakemeldinger på denne måten?"/>
+		<Header/>
 		<SuggestionContainer/>
 		<Footer/>
 	</div>;

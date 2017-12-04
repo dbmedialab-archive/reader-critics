@@ -31,10 +31,11 @@ const create = (
 	enduser,
 
 	items,
-	status: FeedbackStatus.New,
 
-	date: {
-		statusChange: new Date(),
+	status: {
+		status: FeedbackStatus.New,
+		changeDate: new Date(),
+		log: [],
 	},
 });
 
