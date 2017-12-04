@@ -9,50 +9,33 @@
 	overflow-x: hidden;
 	padding: 10px;
 
-	.article {
-		cursor: pointer;
-		margin-bottom: 50px;
-		border: 1px solid rgba(0, 0, 0, .1);
-		border-radius: 3px;
-		padding: .935rem;
-
-		.time-section {
-			.time-item, .feedbacks-count-item {
-				color: #000;
-				opacity: .6;
-
-				i {
-					margin-right: .2rem;
-				}
-
+	.griddle-table {
+		.griddle-cell, .griddle-table-heading-cell {
+			&:nth-child(2) {
+				text-align: center;
 			}
 
-			.feedbacks-count-item {
-				text-align: right;
+			&:last-child {
+				text-align: center;
 			}
 		}
+	}
 
-		.article-url-section {
-			margin: .5rem 0;
+	.filter-container {
+		padding: .7rem 0;
 
-			.article-url-link, .article-website-name {
-				@include no-line-break(true);
-				font-size: 1.2rem;
-				line-height: 1;
-			}
-
-			.article-website-name {
-				text-align: right;
-			}
+		.filter-input {
+			width: 100%;
+			height: 2.5rem;
+			padding: 0 .5rem;
 		}
+	}
 
-		.article-title-section {
-			margin-top: 1rem;
-
-			.article-text {
-				font-size: 1.6rem;
-			}
-		}
+	.button {
+		font-weight: 600;
+		line-height: .9rem;
+		margin: 0 .2rem;
+		padding: 10px 30px;
 	}
 }
 
@@ -146,14 +129,6 @@
 
 				.feedback-text {
 					font-size: 1.6rem;
-
-					ins {
-						color: #228b22;
-					}
-
-					del {
-						color: #f00;
-					}
 				}
 			}
 

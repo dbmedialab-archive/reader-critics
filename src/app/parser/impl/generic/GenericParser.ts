@@ -22,10 +22,10 @@ import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
 import Parser from 'base/Parser';
 
-import BaseParser from '../BaseParser';
+import AbstractParser from '../../AbstractParser';
 
-import * as CheerioPlugin from '../util/CheerioPlugin';
-import * as NodeReadPlugin from '../util/NodeReadPlugin';
+import * as CheerioPlugin from '../../util/CheerioPlugin';
+import * as NodeReadPlugin from '../../util/NodeReadPlugin';
 
 import * as app from 'app/util/applib';
 
@@ -35,7 +35,7 @@ const elementTags = [
 	'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'ul', 'img', 'ol', 'a',
 ];
 
-export default class GenericParser extends BaseParser implements Parser {
+export default class GenericParser extends AbstractParser implements Parser {
 
 	protected nodeRead : NodeReadPlugin.NodeReadArticle;
 	protected select : Cheerio;
@@ -79,7 +79,7 @@ export default class GenericParser extends BaseParser implements Parser {
 		const featured : ArticleItem[] = [];
 
 		if (meta.length === 1) {
-			featured.push(this.createFeaturedImageEl(meta.attr('content')));
+			featured.push(this.createFeaturedImageEl(meta.attr('content'), ''));
 		}
 
 		return Promise.resolve(featured);

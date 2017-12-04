@@ -16,21 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as passport from 'passport';
-
 import {
 	NextFunction,
 	Request,
 	Response,
 } from 'express';
 
-import config from 'app/config';
-
-const jwtSession = config.get('auth.jwt.session');
-
 export default function (requ : Request, resp : Response, next : NextFunction) : void {
 	if (requ.isAuthenticated()) {
 		return next();
 	}
-	return passport.authenticate('jwt', jwtSession)(requ, resp, next);
+	return resp.status(401).end();
 }

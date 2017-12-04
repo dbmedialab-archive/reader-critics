@@ -23,10 +23,8 @@ import * as path from 'path';
 import * as semver from 'semver';
 
 import { readFileSync } from 'fs';
-
-import printEnvironment from 'print-env';
-
-import config from 'app/config';
+import { initJobWorkerQueue } from 'app/queue';
+import { initCron } from './cron';
 
 import {
 	typeJobWorker,
@@ -50,11 +48,10 @@ export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
-	printEnvironment(app.createLog('env'));
-	log(app.inspect(config.getProperties()));
-
 	checkEngineVersion()
+		.then(initJobWorkerQueue)
 		.then(startWorkers)
+		.then(initCron)
 		.then(notifyTestMaster)
 		.catch(startupErrorHandler);
 }

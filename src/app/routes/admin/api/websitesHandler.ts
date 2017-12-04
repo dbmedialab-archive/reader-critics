@@ -26,7 +26,11 @@ import {
 	okResponse,
 } from 'app/routes/api/apiResponse';
 
-import {parserService, websiteService} from 'app/services';
+import {
+	parserService,
+	websiteService,
+} from 'app/services';
+
 import pagination from 'app/util/pagination';
 
 /**
@@ -37,17 +41,17 @@ export function list (requ: Request, resp: Response) {
 	const params = pagination(requ);
 	Promise.all([
 		websiteService.getRange(params.skip, params.limit, params.sort),
-		parserService.getParsersRange(),
+		parserService.getAvailableParsers(),
 	]).then(data => {
 		const [websites, parsers = []] = data;
 		if (websites.length > 0) {
-			okResponse(resp, {websites, options: {parsers}});
+			return okResponse(resp, {websites, options: {parsers}});
 		} else {
-			errorResponse(resp, undefined, notFound, { status: 404 });
+			return errorResponse(resp, undefined, notFound, { status: 404 });
 		}
 
 	}).catch((err) => {
-		errorResponse(resp, undefined, err.stack, { status: 500 });
+		return errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
 }
 
@@ -63,16 +67,16 @@ export function show (requ: Request, resp: Response) {
 	}
 	Promise.all([
 		websiteService.get(name),
-		parserService.getParsersRange(),
+		parserService.getAvailableParsers(),
 	]).then(data => {
 		const [website, parsers = []] = data;
 		if (website) {
-			okResponse(resp, {website, options: {parsers}});
+			return okResponse(resp, {website, options: {parsers}});
 		} else {
-			errorResponse(resp, undefined, notFound, { status: 404 });
+			return errorResponse(resp, undefined, notFound, { status: 404 });
 		}
 	}).catch((err) => {
-		errorResponse(resp, undefined, err.stack, { status: 500 });
+		return errorResponse(resp, undefined, err.stack, { status: 500 });
 	});
 }
 

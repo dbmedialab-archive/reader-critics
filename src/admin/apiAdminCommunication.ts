@@ -17,6 +17,7 @@
 //
 
 import 'whatwg-fetch';
+import * as UIActions from 'admin/actions/UIActions';
 
 /**
  * Sends an authentication request
@@ -36,7 +37,9 @@ export const sendAuthRequest = ((data: any): Promise<any> => {
 export function sendRequest(url: string, method: string = 'GET', data?: any): Promise<any> {
 	return fetch(url, {
 		method,
-		headers: { 'Content-Type': 'application/json' },
+		headers: [
+			[ 'Content-Type', 'application/json' ],
+		],
 		body: data ? JSON.stringify(data) : null,
 		credentials: 'include',
 	})
@@ -45,7 +48,7 @@ export function sendRequest(url: string, method: string = 'GET', data?: any): Pr
 		.then(json)
 		.catch(function (error) {
 			console.log('request failed', error);
-			return {error: error.message};
+			throw new Error(error.message);
 		});
 }
 
@@ -62,7 +65,14 @@ function authCheck(response: Response): any {
 	}
 
 	if (response.status === 401) {
-		window.history.pushState({}, 'Authorization', '/admin/login');
+		UIActions.hideMainPreloader();
+		UIActions.showDialog({
+			yesBtnName: 'Sign In',
+			dialogTitle: 'Authentication session lost. Please, try to login again.',
+			onlyAcceptable: true,
+			yesHandler: () => window.location.href = '/admin/login',
+			closeHandler: () => window.location.href = '/admin/login',
+		});
 		throw new Error(response.statusText);
 	} else {
 		return response;

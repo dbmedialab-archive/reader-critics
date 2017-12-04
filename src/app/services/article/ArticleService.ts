@@ -100,7 +100,9 @@ interface ArticleService extends BasicPersistingService <Article> {
 
 	getRangeWithFBCount(skip: number,
 			limit: number,
-			sort: Object): Promise <ArticleDocument[]>
+			sort: Object,
+			search?: string
+	): Promise <ArticleDocument[]>
 
 	/**
 	 * Get an Article by it's ID
@@ -112,7 +114,7 @@ interface ArticleService extends BasicPersistingService <Article> {
 	/**
 	 * Get amount of Articles
 	 */
-	getAmount() : Promise <number>
+	getAmount(search?: string) : Promise <number>
 }
 
 export default ArticleService;

@@ -21,7 +21,7 @@ import ArticleItemType from 'base/ArticleItemType';
 
 const clean = (s : string) => s.trim().replace(/\s+/g, ' ');
 
-abstract class BaseElements {
+abstract class BaseItems {
 
 	private totalElementCount : number = 0;
 
@@ -47,16 +47,17 @@ abstract class BaseElements {
 
 	// Article element creators
 
-	protected createFeaturedImageEl(href : string) : ArticleItem {
+	protected createFeaturedImageEl(imgSrc : string, altTxt : string) : ArticleItem {
 		return this.createEl(ArticleItemType.FeaturedImage, {
-			href,
+			href: imgSrc,
+			text: altTxt ? altTxt.trim() : '',
 		});
 	}
 
-	protected createFigureEl(href : string, altText : string) : ArticleItem {
+	protected createFigureEl(href : string, altTxt : string) : ArticleItem {
 		return this.createEl(ArticleItemType.Figure, {
 			href,
-			text: altText ? altText.trim() : '',
+			text: altTxt ? altTxt.trim() : '',
 		});
 	}
 
@@ -70,6 +71,20 @@ abstract class BaseElements {
 	protected createMainTitleEl(title : string) : ArticleItem {
 		const text = clean(title);
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.MainTitle, {
+			text,
+		});
+	}
+
+	protected createSubTitleEl(title : string) : ArticleItem {
+		const text = clean(title);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.SubTitle, {
+			text,
+		});
+	}
+
+	protected createLeadInEl(leadin : string) : ArticleItem {
+		const text = clean(leadin);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.LeadIn, {
 			text,
 		});
 	}
@@ -90,4 +105,4 @@ abstract class BaseElements {
 
 }
 
-export default BaseElements;
+export default BaseItems;

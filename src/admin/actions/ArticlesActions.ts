@@ -29,12 +29,13 @@ export function setArticleList(articles: Array<Article>) {
 	);
 }
 
-export function getArticleList(page?, limit?, sort?, sortOrder?) {
-	Api.getArticleList(page, limit, sort, sortOrder)
+export function getArticleList(page?, limit?, sort?, sortOrder?, search?) {
+	Api.getArticleList(page, limit, sort, sortOrder, search)
 	.then((resp)=>{
 		ArticlesActions.setArticleList(resp.articles);
 		PaginationActions.setPageCount(resp.pages);
-	});
+	})
+	.catch(err => console.log(err));
 }
 
 export function clear() {
