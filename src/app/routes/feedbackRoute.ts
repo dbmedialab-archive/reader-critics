@@ -34,10 +34,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import {
-	InvalidRequestError,
-	NotFoundError,
-} from 'app/util/errors';
+import { NotFoundError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
