@@ -34,10 +34,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import {
-	InvalidRequestError,
-	NotFoundError,
-} from 'app/util/errors';
+import { NotFoundError } from 'app/util/errors';
 
 import * as app from 'app/util/applib';
 
@@ -68,7 +65,7 @@ function getHandler(requ : Request, resp : Response, next : Function) : void {
 		log(app.inspect(params));
 		feedbackHandler(requ, resp, params.url, params.version);
 	})
-	.catch((error : Error) => next(new InvalidRequestError(__('err.invalid-param'))));
+	.catch((error : Error) => next(error));
 }
 
 function parseParameters(requ : Request) : Promise <FeedbackParams> {
@@ -84,16 +81,27 @@ function parseParameters(requ : Request) : Promise <FeedbackParams> {
 		}));
 	}
 	else if (!hasSingleParam && hasQueryParams) {
-		if (!requ.query.url) {
+		log('query:', app.inspect(requ.query));
+		let url : string;
+
+		if (requ.query.url) {
+			url = requ.query.url.trim();
+		}
+		else if (requ.query.articleURL) {
+			url = requ.query.articleURL.trim();
+		}
+		else {
+			log('Failed to parse query parameters, couldn\'t find article URL');
 			return Promise.reject(new NotFoundError(__('err.no-url-param')));
 		}
 
-		return ArticleURL
-		.from(requ.query.url.trim())
-		.then((url : ArticleURL) : FeedbackParams => ({
-			url,
-			version: requ.query.version ? requ.query.version.trim() : null,
-		}));
+		return ArticleURL.from(url)
+		.then((articleURL : ArticleURL) : FeedbackParams => {
+			return {
+				url: articleURL,
+				version: requ.query.version ? requ.query.version.trim() : null,
+			};
+		});
 	}
 
 	return Promise.reject(new NotFoundError(__('err.invalid-param')));

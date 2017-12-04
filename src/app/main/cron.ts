@@ -16,27 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import EndUser from 'base/EndUser';
-import Feedback from 'base/Feedback';
-import FeedbackItem from 'base/FeedbackItem';
-import FeedbackStatus from 'base/FeedbackStatus';
+// import { CronJob } from 'cron';
 
-const create = (
-	article : Article,
-	enduser : EndUser,
-	items : FeedbackItem[]
-) : Feedback => ({
-	article,
-	enduser,
+import * as app from 'app/util/applib';
 
-	items,
+const log = app.createLog('cron');
 
-	status: {
-		status: FeedbackStatus.New,
-		changeDate: new Date(),
-		log: [],
-	},
-});
+// const activeJobs : Array <CronJob> = [];
 
-export default create;
+export function initCron() : Promise <void> {
+	log('Initialising ...');
+	return Promise.resolve();
+}

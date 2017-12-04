@@ -17,6 +17,8 @@
 //
 
 enum FeedbackStatus {
+	AwaitEnduserData = 'await_enduser_data',
+	FeedbackSent = 'feedback_sent',
 	New = 'new',
 }
 

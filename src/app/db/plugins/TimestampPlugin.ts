@@ -34,5 +34,4 @@ export default function(schema : Schema, options : any) {
 		}
 		next();
 	});
-
 }
