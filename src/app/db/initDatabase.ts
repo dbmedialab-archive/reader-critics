@@ -16,78 +16,98 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as cluster from 'cluster';
 import * as colors from 'ansicolors';
 import * as stripUrlAuth from 'strip-url-auth';
 import * as Mongoose from 'mongoose';
+import * as app from 'app/util/applib';
 
 import { Document, Model } from 'mongoose';
 
-import config from 'app/config';
 import models from 'app/db/models';
-
-import * as app from 'app/util/applib';
+import config from 'app/config';
 
 const log = app.createLog('db:mongo');
 
-export default function () : Promise <void> {
-	const mongoURL = config.get('db.mongo.url');
+const mongoURL = config.get('db.mongo.url');
 
-	const options : MoreConnectionOptions = {
-	//	autoIndex: !app.isProduction,  // Option not supported, although the docs mention it
+const options : MoreConnectionOptions = {
+	autoIndex: false,
 	connectTimeoutMS: 4000,
 	keepAlive: 120,
+	poolSize: cluster.isMaster || (!cluster.isMaster && !cluster.isWorker) ? 1 : 8,
 	useMongoClient: true,
 	reconnectTries: Number.MAX_VALUE,
 	socketTimeoutMS: 2000,
 };
+
 const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
-let reconnectionAmount = 1;
 
 export function initDatabase() : Promise <void> {
-	log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
+	return initiaConnection().then(() => ensureIndexes());
+}
 
+// Create initial connection, retry if necessary (e.g. connection error)
+
+let reconnectionAmount = 1;
+
+export function initiaConnection() : Promise <void> {
 	return new Promise((resolve, reject) => {
+		log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
 		Mongoose.connect(mongoURL, options)
-			.then(() => {
-				log('Connection ready');
-				reconnectionAmount = 1;
-				resolve();
-			})
-			.catch(error => {
-				const reconnectionCooldown = Math.min(Math.pow(reconnectionAmount++, 2), 60);
-				log('Failed to connected to database:', error.message);
-				if (reconnectionAmount < reconnectionLimit) {
-					log(`Retry in ${reconnectionCooldown} seconds`);
-					setTimeout(() => resolve(initDatabase()), reconnectionCooldown * 1000);
-				} else {
-					reject(error);
-				}
-			});
+		.then(() => {
+			log('Connection ready');
+			reconnectionAmount = 1;
+			resolve();
+		})
+		.catch(error => {
+			const reconnectionCooldown = Math.min(Math.pow(reconnectionAmount++, 2), 60);
+			log('Failed to connected to database:', error.message);
+
+			if (reconnectionAmount < reconnectionLimit) {
+				log(`Retry in ${reconnectionCooldown} seconds`);
+				setTimeout(() => resolve(initiaConnection()), reconnectionCooldown * 1000);
+			}
+			else {
+				reject(error);
+			}
+		});
 	});
 }
 
+// Ensure all collection indexes are created. Due to Mongoose's buggy auto index
+// feature, we have to do this manually and one collection after another here,
+// otherwise this can create a race condition with concurrent access (queries
+// colliding with MongoDB background job that creates the indexes)
+// The flaw is documented, suggested fix is to actually do it like here.
+
 function ensureIndexes() : Promise <void> {
-		log('Maintaining database indexes');
-		return Promise.mapSeries(Object.values(models), <T extends Document> (model : Model<T>) => {
-			//ensureIndexes
-		})
-		.then(results => {
-			log('Indexing finished');
-			// return
-		});
+	if (cluster.isWorker) {
+		return Promise.resolve();  // Only initialize indexes on the master process
+	}
+
+	return new Promise((resolve, reject) => {
+		Promise.mapSeries(Object.values(models), ensureIndex)
+		.then(() => resolve())
+		.catch(error => reject(error));
+	});
+}
+
+function ensureIndex <T extends Document> (model : Model<T>) : Promise <void> {
+	return model.ensureIndexes();
 }
 
 // Current @types/mongoose is missing a lot of the recent options,
 // here's some overrides and extensions:
 
 interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
-	autoIndex?: boolean;
-	connectTimeoutMS?: number;
-	keepAlive?: number;
-	reconnectTries?: number;
-	socketTimeoutMS?: number;
-	reconnectInterval?: number;
-
+	autoIndex? : boolean
+	connectTimeoutMS? : number
+	keepAlive? : number
+	poolSize? : number
+	reconnectInterval? : number
+	reconnectTries? : number
+	socketTimeoutMS? : number
 	// Recommended with Mongoose 4.11+ but also not yet reflected
-	useMongoClient?: boolean;
+	useMongoClient? : boolean
 }
