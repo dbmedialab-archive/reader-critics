@@ -39,6 +39,11 @@ const WebsiteSchema : Schema = new Schema({
 	// Fallback e-mail addresses and related options
 	chiefEditors: [Schema.Types.Mixed],
 	onlyNotifyEditors: {
+		// Turning this on will send all outgoing notification e-mails on the
+		// customer side to the configured editors *only*. Authors of articles will
+		// not receive notifications, even if their mail addresses could be parsed
+		// from the articles. This setting does *not* affect e-mails that go out
+		// to endusers.
 		type: Boolean,
 		required: false,
 		default: false,
