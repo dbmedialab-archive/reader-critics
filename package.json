@@ -109,6 +109,7 @@
 		"seamless-immutable-mergers": "7.0.0",
 		"semver": "5.4.1",
 		"serve-favicons": "2.1.5",
+		"spinkit": "^1.2.5",
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.19.0",
 		"typed-immutable-record": "0.0.6",
