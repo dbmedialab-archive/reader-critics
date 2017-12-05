@@ -16,6 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as moment from 'moment';
+import * as app from 'app/util/applib';
+
 import {
 	DoneCallback,
 	Job,
@@ -33,16 +36,38 @@ import {
 import Feedback from 'base/Feedback';
 import FeedbackStatus from 'base/FeedbackStatus';
 
-import * as app from 'app/util/applib';
-
 const log = app.createLog();
 
+// Number of minutes to wait for feedbacks in AwaitEnduserData status before
+// their notification mail gets triggered
+const awaitTimeoutMinutes : number = 15;
+
 export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
-	feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData)
+	let totalCount : number;
+
+	feedbackService.count().then((count : number) => {
+		totalCount = count;
+
+		return feedbackService.getByStatus(
+			FeedbackStatus.AwaitEnduserData,
+			{
+				'status.changeDate': {
+					'$lte': moment()
+						.subtract(awaitTimeoutMinutes, 'minutes')
+						.second(0)
+						.millisecond(0)
+						.toISOString(),
+				},
+			},
+			0,  // query "skip" value
+			totalCount  // override default limit with total count of feedback objects
+		);
+	})
 	.then((feedbacks : Feedback[]) => {
-		log('%d feedbacks to trigger for notification', feedbacks.length);
+		log('%d total feedbacks, %d to trigger for notification', totalCount, feedbacks.length);
 
 		return Promise.map(feedbacks, (item : Feedback) => {
+			log('Trigger notification for feedback ID ', item.ID);
 			return sendMessage(MessageType.NewFeedback, {
 				feedbackID: item.ID,
 			});
