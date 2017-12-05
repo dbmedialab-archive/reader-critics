@@ -159,7 +159,7 @@
 		"eslint-config-airbnb-base": "12.1.0",
 		"eslint-plugin-import": "^2.7.0",
 		"mocha": "3.5.3",
-		"nightwatch": "0.9.16",
+		"nightwatch": "0.9.19",
 		"sass-lint": "1.12.1",
 		"selenium-server-standalone-jar": "3.7.1",
 		"source-map-support": "^0.4.16",
