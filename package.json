@@ -38,6 +38,7 @@
 		"Dmitry Marchenko",
 		"Dmitry Pogorelovsky",
 		"Ole Nedrebrø",
+		"Ørjan Ommundsen",
 		"Sebastian Brage Hansen",
 		"Simen Berge",
 		"Tibor Vukovic",
@@ -187,11 +188,13 @@
 			"eslint-plugin-react",
 			"foundation-sites",
 			"geckodriver",
+			"nodemon",
 			"npm-run-all",
 			"react-modal",
 			"source-map-support",
 			"supports-color",
-			"webpack-bundle-analyzer"
+			"webpack-bundle-analyzer",
+			"webpack-dev-server"
 		]
 	}
 }
