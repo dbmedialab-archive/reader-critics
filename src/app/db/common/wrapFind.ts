@@ -61,16 +61,8 @@ export function wrapFindOne <D extends Document, Z> (
 {
 	return new Promise((resolve, reject) => {
 		result.exec()
-		.then((doc : D) => {
-			if (doc === null) {
-				return resolve(null);
-			}
-			// console.log('------------------------------------------------------------');
-			// console.log('wrapFindOne:', doc);
-			// console.log('\n');
-			return doc.toObject();
-		})
-		.then((doc : any) => {
+		.then((doc : D) => (doc === null) ? resolve(null) : doc.toObject())
+		.then((doc : null|Object) => {
 			if (!isObject(doc)) {
 				return reject(new Error('result.exec() did not return a single object'));
 			}

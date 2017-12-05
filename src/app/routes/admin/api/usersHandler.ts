@@ -22,15 +22,52 @@ import {
 } from 'express';
 
 import {
+	bulkResponse,
 	errorResponse,
-	okResponse,
+	okApiResponse,
 } from 'app/routes/api/apiResponse';
 
-export default function(requ : Request, resp : Response) : void {
-	try {
-		okResponse(resp, {});
-	}
-	catch (error) {
-		errorResponse(resp, error);
-	}
+import { userService } from 'app/services';
+
+import emptyCheck from 'app/util/emptyCheck';
+
+import pagination from 'app/util/pagination';
+
+/*
+ * Creating new user
+ */
+export function create (requ: Request, resp: Response) : void {
+	emptyCheck(requ.body);
+	userService.validateAndSave(requ.body)
+	.then(user => okApiResponse(resp, user))
+	.catch(error => errorResponse(resp, error));
+}
+
+/*
+ * Showing list of users. pagination included
+ */
+export function list (requ: Request, resp: Response) : void {
+	const params = pagination(requ);
+	userService.getRange(params.skip, params.limit, params.sort)
+	.then(users => bulkResponse(resp, users))
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+}
+
+/*
+ * Deletes user by ID parameter
+ */
+export function doDelete (requ: Request, resp: Response) : void {
+	userService.doDelete(requ.params.id)
+	.then(res => okApiResponse(resp, res))
+	.catch(err => errorResponse(resp, err));
+}
+
+/*
+ * Updating user by ID
+ * Doesn't affect user password
+ */
+export function update (requ: Request, resp: Response) : void {
+	userService.validateAndUpdate(requ.params.id, requ.body)
+	.then(res => okApiResponse(resp, res))
+	.catch(err => errorResponse(resp, err));
 }

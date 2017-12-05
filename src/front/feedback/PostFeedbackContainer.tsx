@@ -201,7 +201,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 				</Transition>
 				<fieldset>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
-					<p className="message"><FormattedMessage id="message.ty"/></p>
+					<p className="message"><FormattedMessage id="message.postFeedback"/></p>
 				</fieldset>
 				<Transition timeout={300} in={this.state.finalText.show}>
 					{(status) => (

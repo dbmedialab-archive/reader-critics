@@ -22,7 +22,6 @@ import { userService } from 'app/services';
 export type SerializeCallback = (err : string|null, username : string|null) => void;
 export type RetrieveCallback = (err : string|null, user? : User) => void;
 
-export { jwtStrategy } from './strategy/jwt';
 export { localStrategy } from './strategy/local';
 
 export function serializeUser(user : User, done: SerializeCallback) {

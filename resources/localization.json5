@@ -1,3 +1,21 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
 {
 	common: {
 		app: {
@@ -12,14 +30,82 @@
 				nb: 'Leserkritikk',
 			},
 		},
+		'article-el': {
+			featured: {
+				en: 'Featured Image',
+				nb: 'Hovedbilde',
+			},
+			figure: {
+				en: 'Picture #{order}',
+				nb: 'Bilde #{order}',
+			},
+			lead: {
+				en: 'Lead-In',
+				nb: 'Innledning',
+			},
+			link: {
+				en: 'Link #{order}',
+				nb: 'Link #{order}',
+			},
+			paragraph: {
+				en: 'Paragraph #{order}',
+				nb: 'Avsnitt #{order}',
+			},
+			subhead: {
+				en: 'Sub Heading #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			subtitle: {
+				en: 'Sub Title #{order}',
+				nb: 'Mellomtittel #{order}',
+			},
+			title: {
+				en: 'Title',
+				nb: 'Tittel',
+			},
+		},
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
 				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
 			},
 		},
+		label: {
+			amend: {
+				en: 'Amendment',
+				nb: 'Endringsforslag',
+			},
+			comment: {
+				en: 'Comment',
+				nb: 'Kommentar',
+			},
+			links: {
+				en: 'Links',
+				nb: 'Lenker',
+			},
+			'orig-text': {
+				en: 'Original text',
+				nb: 'Original tekst',
+			},
+			'sent-in': {
+				en: 'Sent in:',
+				nb: 'Sendt inn:',
+			},
+		},
 	},
 	app: {
+		mail: {
+			'fb-notify': {
+				'got-feedback': {
+					en: 'You received a feedback on the article',
+					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'who-sent': {
+					en: 'Send in by',
+					nb: 'Sendt inn av',
+				}
+			},
+		},
 		err: {
 			'invalid-param': {
 				en: 'Parameters are missing or have invalid format',
@@ -31,10 +117,7 @@
 				en: 'Article does not exist',
 			},
 			'no-url-param': {
-				en: 'Mandatory URL parameter is missing or empty',
-			},
-			'no-version-param': {
-				en: 'Mandatory version parameter is missing or empty.'
+				en: 'URL parameter is missing or empty',
 			},
 			'no-website-identify': {
 				en: 'Could not identify website',
@@ -69,6 +152,18 @@
 		},
 		label: {
 			'article-el': {
+				'feat-image': {
+					en: 'Featured Image',
+					nb: 'Fremhevet bilde',
+				},
+				'lead-in': {
+					en: 'Introduction',
+					nb: 'Innledning',
+				},
+				link: {
+					en: 'Link #{order}',
+					nb: 'Link #{order}',
+				},
 				maintitle: {
 					en: 'Title',
 					nb: 'Tittel',
@@ -77,42 +172,26 @@
 					en: 'Paragraph #{order}',
 					nb: 'Avsnitt #{order}',
 				},
-				paragraphEmpty: {
-					en: 'Paragraph',
-					nb: 'Avsnitt',
-				},
-				text: {
-					en: 'Text',
-					nb: 'Tekst',
-				},
-				editComment: {
-					en: 'Add comment',
-					nb: 'Legg til kommentar',
-				},
-				addLinks: {
-					en: 'Add links',
-					nb: 'Legg til lenker',
-				},
-				featImage: {
-					en: 'Featured Image',
-					nb: 'Utvalgte bilder',
-				},
 				picture: {
 					en: 'Picture #{order}',
 					nb: 'Bilde #{order}',
 				},
-				introduction: {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				subHead: {
+				'sub-head': {
 					en: 'Sub Heading #{order}',
 					nb: 'Mellomtittel #{order}',
 				},
+			},
+			'add-comment': {
+				en: 'Add comment',
+				nb: 'Legg til kommentar',
+			},
+			'add-links': {
+				en: 'Add links',
+				nb: 'Legg til lenker',
+			},
+			'no-img-caption': {
+				en: 'No image caption',
+				nb: 'Ingen bildetekst',
 			},
 		},
 		message: {
@@ -129,6 +208,36 @@
 			errors: {
 				emptyErr: 'The feedback form is still empty, nothing was sent',
 			},
+			label: {
+				name: {
+					en: 'Name',
+					nb: 'Navn',
+				},
+				getRecommend: {
+					en: 'e-mail', // 'Get notifications via e-mail',
+					nb: 'e-post', // 'Få tilbakemelding på e-post',
+				},
+				keepInfo: {
+					en: 'Send your feedback now',
+					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+				},
+				backToArticle: {
+					en: 'Back to the article',
+					nb: 'Tilbake til artikkelen',
+				},
+			},
+			message: {
+				'form-has-input': {
+					en: 'You have {count, plural, one {one input} other {# inputs}}. Continue?',
+					nb: 'Du har {count, plural, one {ett innlegg} other {# innlegg}}. Gå videre?',
+				}
+			},
+			post: {
+				transmitted: {
+					en: 'Feedback was finally transmitted!',
+					nb: 'Tilbakemeldingen har akkurat blitt overført!',
+				},
+			},
 			sendForm: {
 				message: {
 					en: 'Click here when you are done',
@@ -138,30 +247,6 @@
 					en: 'Send feedback.',
 					nb: 'Send tilbakemelding.',
 				}
-			},
-			post: {
-				transmitted: {
-					en: 'Feedback was finally transmitted!',
-					nb: 'Tilbakemeldingen har akkurat blitt overført!',
-				},
-			},
-			label: {
-				name: {
-					en: 'Name',
-					nb: 'Navn',
-				},
-				getRecommend: {
-					en: 'Get notifications via e-mail',
-					nb: 'Få tilbakemelding på e-post',
-				},
-				keepInfo: {
-					en: 'Keep me updated',
-					nb: 'Hold meg oppdatert',
-				},
-				backToArticle: {
-					en: 'Back to the article',
-					nb: 'Tilbake til artikkelen',
-				},
 			},
 		},
 		suggest: {

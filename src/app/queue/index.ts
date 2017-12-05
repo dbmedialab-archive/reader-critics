@@ -24,7 +24,10 @@ import { dbMessageQueue } from 'app/db/createRedisConnection';
 
 import MessageType from './MessageType';
 
-import * as jobHandlers from './handlers/job';
+import {
+	jobWorkerHandlers,
+	// webWorkerHandlers
+} from './WorkerHandlers';
 
 import * as app from 'app/util/applib';
 
@@ -41,7 +44,7 @@ export function initJobWorkerQueue() : Promise <void> {
 	});
 
 	Object.keys(MessageType).forEach((msgType : string) => {
-		const handler = jobHandlers[`on${msgType}`];
+		const handler = jobWorkerHandlers[`on${msgType}`];
 		if (handler) {
 			queue.process(MessageType[msgType], handler);
 			log('Installed handler for "%s" messages', colors.brightGreen(msgType));
@@ -66,8 +69,8 @@ export function initWebWorkerQueue() : Promise <void> {
 }
 
 export function sendMessage(type : MessageType, payload : any, options? : any) : Promise <void> {
-	log(`sending "${type}" message`);
-	queue.create(type, payload).priority('normal').attempts(5).save();
+	log(`Sending "${type}" message:`, app.inspect(payload));
+	queue.create(type, payload).priority('normal').attempts(1).save();
 
 	return Promise.resolve();
 }
