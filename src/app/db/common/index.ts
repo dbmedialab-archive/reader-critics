@@ -38,6 +38,7 @@ export function clearCollection <T extends Document> (model : Model <T>) : Promi
 	if (isTest) {
 		return model.remove({})
 		.then(() => model.collection.dropIndexes())
+		.then(() => model.ensureIndexes())
 		.then(() => undefined);
 	}
 	throw new Error('Function can only be used in TEST mode');
