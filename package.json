@@ -38,6 +38,7 @@
 		"Dmitry Marchenko",
 		"Dmitry Pogorelovsky",
 		"Ole Nedrebrø",
+		"Ørjan Ommundsen",
 		"Sebastian Brage Hansen",
 		"Simen Berge",
 		"Tibor Vukovic",
@@ -100,7 +101,7 @@
 		"react-router-redux": "4.0.8",
 		"react-transition-group": "2.2.1",
 		"redux-logger": "3.0.6",
-		"redux-promise-middleware": "4.4.1",
+		"redux-promise-middleware": "5.0.0",
 		"redux-thunk": "2.2.0",
 		"sass-loader": "6.0.6",
 		"schema-inspector": "^1.6.8",
@@ -111,7 +112,7 @@
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.19.0",
 		"typed-immutable-record": "0.0.6",
-		"webpack": "3.9.1",
+		"webpack": "3.10.0",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
@@ -187,11 +188,13 @@
 			"eslint-plugin-react",
 			"foundation-sites",
 			"geckodriver",
+			"nodemon",
 			"npm-run-all",
 			"react-modal",
 			"source-map-support",
 			"supports-color",
-			"webpack-bundle-analyzer"
+			"webpack-bundle-analyzer",
+			"webpack-dev-server"
 		]
 	}
 }
