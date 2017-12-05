@@ -24,6 +24,7 @@ import {
 import ArticleItem from 'base/ArticleItem';
 import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
 
@@ -90,9 +91,7 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
-	// Funny enough, just doing .then(done) will trigger the infamous
-	// "a promise was created in blah ... but was not returned from it"
-	// warning.
+	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
 	.then(() => {
 		done();
 		return null;  // Silences the "Promise handler not returned" warnings

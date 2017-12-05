@@ -37,10 +37,8 @@ export function initCron() : Promise <void> {
 
 function jobCheckAwaitFeedback() {
 	activeJobs.push(new CronJob({
-		cronTime: '*/15 * * * * *',
-		onTick: () => {
-			sendMessage(MessageType.CheckAwaitFeedback);
-		},
+		cronTime: '0 * * * * *',  // Every minute
+		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
 		start: true,
 	}));
 }
