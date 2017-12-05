@@ -35,7 +35,6 @@ import {
 } from 'app/services';
 
 import {
-	InvalidRequestError,
 	NotFoundError,
 } from 'app/util/errors';
 
