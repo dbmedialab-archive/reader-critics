@@ -18,12 +18,12 @@
 import * as React from 'react';
 
 const Spinner : React.StatelessComponent <any> = () => (
-	<div className="spinner">
-		<div className="rect1"/>
-		<div className="rect2"/>
-		<div className="rect3"/>
-		<div className="rect4"/>
-		<div className="rect5"/>
+	<div className="sk-wave">
+		<div className="sk-rect sk-rect1"/>
+		<div className="sk-rect sk-rect2"/>
+		<div className="sk-rect sk-rect3"/>
+		<div className="sk-rect sk-rect4"/>
+		<div className="sk-rect sk-rect5"/>
 	</div>
 );
 
