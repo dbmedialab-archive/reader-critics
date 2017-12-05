@@ -16,27 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import EndUser from 'base/EndUser';
-import Feedback from 'base/Feedback';
-import FeedbackItem from 'base/FeedbackItem';
-import FeedbackStatus from 'base/FeedbackStatus';
+import { Schema } from 'mongoose';
 
-const create = (
-	article : Article,
-	enduser : EndUser,
-	items : FeedbackItem[]
-) : Feedback => ({
-	article,
-	enduser,
-
-	items,
-
-	status: {
-		status: FeedbackStatus.New,
-		changeDate: new Date(),
-		log: [],
-	},
-});
-
-export default create;
+export default function(schema : Schema, options : any) {
+	schema.set('autoIndex', false);
+	schema.set('retainKeyOrder', true);
+}

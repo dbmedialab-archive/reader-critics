@@ -70,13 +70,10 @@ function send400Response(resp : Response, message? : string) {
 }
 
 function send404Response(resp : Response, message? : string) {
-	let template = notFoundPage;
-
-	if (message) {
-		template = template
-			.replace(/#main-title#/g, __('err.not-found'))
-			.replace(/#message#/g, message);
-		}
+	const msg = message || 'Resource not found';
+	const template = notFoundPage
+		.replace(/#main-title#/g, __('err.not-found'))
+		.replace(/#message#/g, msg);
 
 	resp.status(404).send(template);
 }

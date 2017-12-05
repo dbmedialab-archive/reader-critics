@@ -53,10 +53,11 @@ const makeDocument = (
 	articleAuthors: article.authors.map(author => author.ID),
 
 	items,
-	status: FeedbackStatus.New,
 
-	date: {
-		statusChange: new Date(),
+	status: {
+		status: FeedbackStatus.New,
+		changeDate: new Date(),
+		log: [],
 	},
 });
 
@@ -69,8 +70,8 @@ export function updateEndUser (
 {
 	emptyCheck(enduser);
 
-	const updateData:{
-		enduser: any,
+	const updateData : {
+		enduser: any,  // This is going to be a problem when we disallow explicit-any types
 	} = {
 		enduser: null,
 	};

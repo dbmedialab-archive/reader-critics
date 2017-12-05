@@ -37,12 +37,14 @@ import SuggestionSchema from './schemas/SuggestionSchema';
 import UserSchema from './schemas/UserSchema';
 import WebsiteSchema from './schemas/WebsiteSchema';
 
+import OptionsPlugin from './plugins/CommonSchemaOptionsPlugin';
 import TimestampPlugin from './plugins/TimestampPlugin';
 
 import { ModelNames } from './names';
 
 // Install global plugins
 
+plugin(OptionsPlugin);
 plugin(TimestampPlugin);
 
 // Create models
@@ -70,3 +72,14 @@ export const UserModel : Model <UserDocument>
 export interface WebsiteDocument extends Website, Document {}
 export const WebsiteModel : Model <WebsiteDocument>
 	= model <WebsiteDocument> (ModelNames.Website, WebsiteSchema);
+
+const models = Object.freeze({
+	ArticleModel,
+	EndUserModel,
+	FeedbackModel,
+	SuggestionModel,
+	UserModel,
+	WebsiteModel,
+});
+
+export default models;
