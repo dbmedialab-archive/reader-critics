@@ -23,7 +23,7 @@ import * as path from 'path';
 import * as semver from 'semver';
 
 import { readFileSync } from 'fs';
-import { initJobWorkerQueue } from 'app/queue';
+import { initMasterQueue } from 'app/queue';
 import { initCron } from './cron';
 
 import {
@@ -49,7 +49,7 @@ export default function() {
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
 	checkEngineVersion()
-		.then(initJobWorkerQueue)
+		.then(initMasterQueue)
 		.then(startWorkers)
 		.then(initCron)
 		.then(notifyTestMaster)

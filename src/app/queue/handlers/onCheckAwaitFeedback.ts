@@ -49,5 +49,13 @@ export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
 		});
 	})
 	// Don't forget to clean up the kue job!
-	.then(() => done());
+	.then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
 }

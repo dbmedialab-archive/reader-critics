@@ -39,6 +39,27 @@ export enum MessageType {
 	SendSuggestionDigest = 'send-suggestion-digest',
 }
 
+export function initMasterQueue() : Promise <void> {
+	log('Initialising %s worker queue', colors.brightRed('master'));
+
+	queue = kue.createQueue({
+		redis: {
+			createClientFactory: () => createRedisConnection(dbMessageQueue),
+		},
+	});
+
+	queue.active((error, ids : number[]) => {
+		ids.forEach((jobID : number) => {
+			kue.Job.get(jobID, (error2, job) => {
+				log('Removing completed job', jobID);
+				job.remove();
+			});
+		});
+	});
+
+	return Promise.resolve();
+}
+
 export function initJobWorkerQueue() : Promise <void> {
 	log('Initialising %s worker queue', colors.brightYellow('job'));
 	queue = kue.createQueue({
@@ -73,9 +94,14 @@ export function initWebWorkerQueue() : Promise <void> {
 }
 
 export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
-	// log(`Sending "${type}" message:`, app.inspect(payload));
 	const paypayloadload = payload === undefined ? {} : payload;
-	queue.create(type, paypayloadload).priority('normal').attempts(1).save();
+	log(type, app.inspect(paypayloadload));
+
+	queue.create(type, paypayloadload)
+		.priority('normal')
+		.attempts(1)
+		.removeOnComplete(true)
+		.save();
 
 	return Promise.resolve();
 }

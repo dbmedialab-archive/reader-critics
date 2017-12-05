@@ -93,10 +93,14 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 	// Funny enough, just doing .then(done) will trigger the infamous
 	// "a promise was created in blah ... but was not returned from it"
 	// warning.
-	.then(() => done)
+	.then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
 	.catch(error => {
 		app.yell(error);
-		return done(error);
+		done(error);
+		return null;
 	});
 }
 
