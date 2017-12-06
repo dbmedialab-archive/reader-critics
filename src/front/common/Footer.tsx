@@ -28,7 +28,6 @@ const Footer : React.StatelessComponent <any> =
 					<FormattedMessage id="footer.giveUsF"/>
 				</a>
 			</div>
-			<div className="content four columns"/>
 		</div>
 		<div id="err-section"/>
 	</footer>;
