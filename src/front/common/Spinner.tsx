@@ -14,22 +14,17 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-const Footer : React.StatelessComponent <any> =
-	() => <footer className="main-footer">
-		<div className="container">
-			<div className="content four columns">
-				<span><FormattedMessage id="app.subtitle.fame-blame"/></span>
-				<a href="/suggestion-box">
-					<FormattedMessage id="footer.giveUsF"/>
-				</a>
-			</div>
-		</div>
-		<div id="err-section"/>
-	</footer>;
+const Spinner : React.StatelessComponent <any> = () => (
+	<div className="sk-wave">
+		<div className="sk-rect sk-rect1"/>
+		<div className="sk-rect sk-rect2"/>
+		<div className="sk-rect sk-rect3"/>
+		<div className="sk-rect sk-rect4"/>
+		<div className="sk-rect sk-rect5"/>
+	</div>
+);
 
-export default Footer;
+export default Spinner;
