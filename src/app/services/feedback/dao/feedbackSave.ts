@@ -33,18 +33,28 @@ import emptyCheck from 'app/util/emptyCheck';
 export function save (
 	article : Article,
 	enduser : EndUser,
-	items : FeedbackItem[]
+	items : FeedbackItem[],
+	status : FeedbackStatus = FeedbackStatus.New,
+	oneshotUpdateToken? : string
 ) : Promise <Feedback>
 {
 	emptyCheck(article, enduser, items);
-	return makeDocument(article, enduser, items)
+	return makeDocument(
+		article,
+		enduser,
+		items,
+		status,
+		oneshotUpdateToken
+	)
 	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }
 
 const makeDocument = (
 	article : Article,
 	enduser : EndUser,
-	items : FeedbackItem[]
+	items : FeedbackItem[],
+	status : FeedbackStatus,
+	oneshotUpdateToken : string
 ) => Promise.resolve({
 	article: article.ID,
 	enduser: enduser.ID,
@@ -53,9 +63,10 @@ const makeDocument = (
 	articleAuthors: article.authors.map(author => author.ID),
 
 	items,
+	oneshotUpdateToken,
 
 	status: {
-		status: FeedbackStatus.New,
+		status,
 		changeDate: new Date(),
 		log: [],
 	},

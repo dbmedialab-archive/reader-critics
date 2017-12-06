@@ -50,8 +50,8 @@ export default function(this: ISuiteCallbackContext) {
 			return app.loadJSON(path.join(feedbackDir, filename))
 			.then((a : any) => {
 				assert.isNotNull(a);
-				return feedbackService.validateAndSave(a).then((doc) => {
-					feedbackIDs.push(doc.ID);
+				return feedbackService.validateAndSave(a).then(feedback => {
+					feedbackIDs.push(feedback.ID);
 				});
 			});
 		});
@@ -106,17 +106,27 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('getByStatus()', () => {
 		return Promise.all([
-			feedbackService.getByStatus(FeedbackStatus.New),
+			feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData),
 			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 		])
-		.spread((statusNew : Feedback[], statusSent : Feedback[]) => {
-			assert.lengthOf(statusNew, 2);
-			statusNew.forEach((feedback, index) => {
+		.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
+			const numNew = 2;
+			assert.lengthOf(
+				resultAwait, numNew,
+				`Expected ${numNew} feedbacks in status "AwaitEnduserData"`
+			);
+
+			resultAwait.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 
-			assert.lengthOf(statusSent, 1);
-			statusSent.forEach((feedback, index) => {
+			const numSent = 1;
+			assert.lengthOf(
+				resultSent, numSent,
+				`Expected ${numSent} feedbacks in status"FeedbackSent"`
+			);
+
+			resultSent.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 		});

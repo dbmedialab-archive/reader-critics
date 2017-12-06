@@ -102,7 +102,9 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	save(
 		article : Article,
 		user : EndUser,
-		items : FeedbackItem[]
+		items : FeedbackItem[],
+		status? : FeedbackStatus,
+		oneshotUpdateToken? : string
 	) : Promise <Feedback>;
 
 	/**

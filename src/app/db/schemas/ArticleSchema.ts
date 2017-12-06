@@ -34,10 +34,14 @@ const ArticleSchema : Schema = new Schema({
 		required: true,
 	},
 
+	items: [Schema.Types.Mixed],
+
 	authors: [objectReference(ModelNames.User)],
 	website: objectReference(ModelNames.Website),
 
-	items: [Schema.Types.Mixed],
+	// Point references to all feedbacks of this article,
+	// makes counting them a lot easier!
+	feedbacks: [objectReference(ModelNames.Feedback)],
 }, {
 	toObject: {
 		retainKeyOrder: true,

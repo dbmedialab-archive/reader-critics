@@ -16,15 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	isObject,
-	isString,
-} from 'lodash';
+import * as cryptoRandomString from 'crypto-random-string';
+
+import { isObject } from 'lodash';
 
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
 	articleService,
@@ -36,6 +36,7 @@ import {
 	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
+
 import FeedbackItem from 'base/FeedbackItem';
 
 /**
@@ -58,13 +59,22 @@ export default function(data : {}) : PromiseLike <Feedback> {
 		getArticle(rawArticle.article),
 		getAnonymousEndUser(),
 		rawArticle.feedback.items,
+		getOneShotToken(),
 	]))
-
-	// TODO create one-shot update ID here, optional parameter to feedbackService.save
-
-	.spread((article : Article, enduser : EndUser, items : Array <FeedbackItem>) => {
-		return feedbackService.save(article, enduser, items);
-	});
+	// After gathering all the necessary data, persist the new Feedback
+	// object to the database
+	.spread((
+		article : Article,
+		enduser : EndUser,
+		items : Array <FeedbackItem>,
+		oneshotUpdateToken : string
+	) => feedbackService.save(
+		article,
+		enduser,
+		items,
+		FeedbackStatus.AwaitEnduserData,
+		oneshotUpdateToken
+	));
 
 	// TODO update article object with reference to the new feedback object
 }
@@ -91,6 +101,14 @@ function getArticle(articleData : any) : Promise <Article> {
  */
 function getAnonymousEndUser() : Promise <EndUser> {
 	return enduserService.get();  // Yes, it's really that easy!
+}
+
+/**
+ * Generate a (cryptographically strong) random string for the enduser data
+ * one shot update token.
+ */
+function getOneShotToken() : string {
+	return cryptoRandomString(92);  // 368 bytes of random. Yes, an unusual number!
 }
 
 /**

@@ -24,18 +24,18 @@ import {
 import { feedbackService } from 'app/services';
 
 import {
-	sendMessage,
-	MessageType,
-} from 'app/queue';
-
-import {
 	errorResponse,
 	okResponse,
 } from './apiResponse';
 
 export default function (requ : Request, resp : Response) : void {
+	// Store the new feedback
 	feedbackService.validateAndSave(requ.body)
-	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
-	.then(() => okResponse(resp))
+	// Reply with only the one-shot token in the response.
+	// No e-mail notification is triggered here! The cron takes care of this.
+	.then(newFeedback => okResponse(resp, {
+		updateToken: newFeedback.oneshotUpdateToken,
+	}))
+	// Catch them nasty errors
 	.catch(error => errorResponse(resp, error));
 }
