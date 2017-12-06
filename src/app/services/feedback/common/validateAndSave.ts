@@ -36,26 +36,42 @@ import {
 	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
+import FeedbackItem from 'base/FeedbackItem';
 
-// Validate and store to database
+/**
+ * Intermediate type for internal use, used between validation and persistence.
+ */
+type RawArticle = {
+	article? : {}
+	feedback? : {
+		items? : [{}],
+	},
+};
 
-export default function(data : any) : Promise <Feedback> {
-	try {
-		validateSchema(data);
-	}
-	catch (error) {
-		return Promise.reject(error);
-	}
-	let article : Article;
-	let enduser : EndUser;
-	return Promise.all([
-		getArticle(data.article).then((a : Article) => article = a),
-		getEndUser(data.user).then((u : EndUser) => enduser = u),
-	])
-	.then(() => feedbackService.save(article, enduser, data.feedback.items));
+/**
+ * Validate and store to database
+ */
+export default function(data : {}) : PromiseLike <Feedback> {
+	return validateSchema(data)
+	// Collect all the objects that we need to create and persist a new Feedback
+	.then((rawArticle : RawArticle) => Promise.all([
+		getArticle(rawArticle.article),
+		getAnonymousEndUser(),
+		rawArticle.feedback.items,
+	]))
+
+	// TODO create one-shot update ID here, optional parameter to feedbackService.save
+
+	.spread((article : Article, enduser : EndUser, items : Array <FeedbackItem>) => {
+		return feedbackService.save(article, enduser, items);
+	});
+
+	// TODO update article object with reference to the new feedback object
 }
 
-// Fetch article object
+/**
+ * Fetch article object belonging to the new feedback
+ */
 function getArticle(articleData : any) : Promise <Article> {
 	const url = articleData.url;
 	const version = articleData.version;
@@ -68,32 +84,35 @@ function getArticle(articleData : any) : Promise <Article> {
 	));
 }
 
-// Fetch user object from database or create a new one
-function getEndUser(userData : any) : Promise <EndUser> {
-	const name = isString(userData.name) ? userData.name : null;
-	const email = isString(userData.email) ? userData.email : null;
-
-	return enduserService.get(name, email)
-	.then((u : EndUser) => u !== null ? u : enduserService.save({
-		name,
-		email,
-	}));
+/**
+ * Fetch the anonymous enduser; initially the feedback will be linked to that
+ * user until the real enduser has typed in his data into the frontend site
+ * and has submitted this "update". If the user
+ */
+function getAnonymousEndUser() : Promise <EndUser> {
+	return enduserService.get();  // Yes, it's really that easy!
 }
 
-// Schema Validator
-
-function validateSchema(data : any) {
+/**
+ * Schema Validator
+ */
+function validateSchema(data : {}) : Promise <RawArticle> {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
-		throw new SchemaValidationError('Invalid feedback data');
+		return Promise.reject(new SchemaValidationError(
+			'Invalid feedback data'
+		));
 	}
-	if (!isObject(data.article)) {
-		throw new SchemaValidationError('Feedback data is missing "article" object');
+	if (!isObject(data['article'])) {
+		return Promise.reject(new SchemaValidationError(
+			'Feedback data is missing "article" object'
+		));
 	}
-	if (!isObject(data.feedback)) {
-		throw new SchemaValidationError('Feedback data is missing "feedback" object');
+	if (!isObject(data['feedback'])) {
+		return Promise.reject(new SchemaValidationError(
+			'Feedback data is missing "feedback" object'
+		));
 	}
-	if (!isObject(data.user)) {
-		throw new SchemaValidationError('Feedback data is missing "user" object');
-	}
+
+	return Promise.resolve(data as RawArticle);  // cast to intermediate type
 }
