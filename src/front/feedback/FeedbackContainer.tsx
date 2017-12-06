@@ -35,11 +35,13 @@ import {
 	getArticleURL,
 	getArticleVersion,
 } from 'front/uiGlobals';
+import Spinner from 'front/common/Spinner';
 
 export interface FeedbackContainerState {
 	article: Article;
 	articleItems: Array<FeedbackItem>;
 	isFeedbackReady: boolean;
+	gotServerError: boolean;
 }
 
 export default class FeedbackContainer
@@ -54,6 +56,7 @@ extends React.Component <any, FeedbackContainerState> {
 			article: null,
 			isFeedbackReady: false,
 			articleItems: [],
+			gotServerError: false,
 		};
 	}
 
@@ -65,7 +68,10 @@ extends React.Component <any, FeedbackContainerState> {
 			self.setState({
 				article,
 			});
-		}).catch(err => console.error(err.message));
+		}).catch(err => {
+			console.error(err.message);
+			this.setState({gotServerError: true});
+		});
 	}
 
 	public onChange() {
@@ -117,9 +123,11 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 
 	private renderFeedbackForm() {
-		// Initial state has no article data, render empty
-		if (this.state.article === null) {
-			return null;
+		const {article, gotServerError} = this.state;
+
+		// Initial state has no article data, render loading while not gotten server error
+		if (article === null) {
+			return !gotServerError ? <Spinner/> : null;
 		}
 
 		const refFn = (i : any) => { this.articleElements.push(i); };
@@ -128,7 +136,7 @@ extends React.Component <any, FeedbackContainerState> {
 		// Iterate article elements and render sub components
 		return (
 			<section id="content">
-				{ this.state.article.items.map(item => createArticleElement(this, item, refFn)) }
+				{ article.items.map(item => createArticleElement(this, item, refFn)) }
 				<FinishButton SendForm={sendFn} ref={r => this.finishBtn = r}/>
 			</section>
 		);
