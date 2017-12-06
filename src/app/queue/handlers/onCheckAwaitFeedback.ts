@@ -40,7 +40,7 @@ const log = app.createLog();
 
 // Number of minutes to wait for feedbacks in AwaitEnduserData status before
 // their notification mail gets triggered
-const awaitTimeoutMinutes : number = 1;
+const awaitTimeoutMinutes : number = 15;
 
 export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
 	let totalCount : number;
