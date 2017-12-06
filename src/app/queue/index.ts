@@ -22,8 +22,6 @@ import * as kue from 'kue';
 import { createRedisConnection } from 'app/db';
 import { dbMessageQueue } from 'app/db/createRedisConnection';
 
-import MessageType from './MessageType';
-
 import {
 	jobWorkerHandlers,
 	// webWorkerHandlers
@@ -34,6 +32,33 @@ import * as app from 'app/util/applib';
 const log = app.createLog();
 
 let queue : kue.Queue;
+
+export enum MessageType {
+	CheckAwaitFeedback = 'check-await-feedback',
+	NewFeedback = 'new-feedback',
+	SendSuggestionDigest = 'send-suggestion-digest',
+}
+
+export function initMasterQueue() : Promise <void> {
+	log('Initialising %s worker queue', colors.brightRed('master'));
+
+	queue = kue.createQueue({
+		redis: {
+			createClientFactory: () => createRedisConnection(dbMessageQueue),
+		},
+	});
+
+	queue.active((error, ids : number[]) => {
+		ids.forEach((jobID : number) => {
+			kue.Job.get(jobID, (error2, job) => {
+				log('Removing completed job', jobID);
+				job.remove();
+			});
+		});
+	});
+
+	return Promise.resolve();
+}
 
 export function initJobWorkerQueue() : Promise <void> {
 	log('Initialising %s worker queue', colors.brightYellow('job'));
@@ -68,9 +93,15 @@ export function initWebWorkerQueue() : Promise <void> {
 	return Promise.resolve();
 }
 
-export function sendMessage(type : MessageType, payload : any, options? : any) : Promise <void> {
-	log(`Sending "${type}" message:`, app.inspect(payload));
-	queue.create(type, payload).priority('normal').attempts(1).save();
+export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
+	const paypayloadload = payload === undefined ? {} : payload;
+	log(type, app.inspect(paypayloadload));
+
+	queue.create(type, paypayloadload)
+		.priority('normal')
+		.attempts(1)
+		.removeOnComplete(true)
+		.save();
 
 	return Promise.resolve();
 }
