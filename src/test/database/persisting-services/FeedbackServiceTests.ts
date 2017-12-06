@@ -107,16 +107,16 @@ export default function(this: ISuiteCallbackContext) {
 	it('getByStatus()', () => {
 		return Promise.all([
 			feedbackService.getByStatus(FeedbackStatus.New),
-			feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData),
+			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 		])
-		.spread((statusNew : Feedback[], statusAwait : Feedback[]) => {
+		.spread((statusNew : Feedback[], statusSent : Feedback[]) => {
 			assert.lengthOf(statusNew, 2);
 			statusNew.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 
-			assert.lengthOf(statusAwait, 1);
-			statusAwait.forEach((feedback, index) => {
+			assert.lengthOf(statusSent, 1);
+			statusSent.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 		});
