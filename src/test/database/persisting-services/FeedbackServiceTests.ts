@@ -91,7 +91,7 @@ export default function(this: ISuiteCallbackContext) {
 	});
 
 	it('updateStatus()', () => {
-		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.AwaitEnduserData)
+		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.FeedbackSent)
 		.then(() => {
 			return feedbackService.getByID(thatFeedback.ID);
 		})
@@ -99,7 +99,7 @@ export default function(this: ISuiteCallbackContext) {
 			assertFeedbackObject(updatedFeedback);
 			assert.strictEqual(
 				updatedFeedback.status.status,
-				FeedbackStatus.AwaitEnduserData.toString()
+				FeedbackStatus.FeedbackSent.toString()
 			);
 		});
 	});
