@@ -65,7 +65,7 @@ extends React.Component <any, FeedbackContainerState> {
 			self.setState({
 				article,
 			});
-		});
+		}).catch(err => console.error(err.message));
 	}
 
 	public onChange() {
