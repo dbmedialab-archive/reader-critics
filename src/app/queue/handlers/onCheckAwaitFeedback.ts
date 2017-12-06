@@ -40,38 +40,19 @@ const log = app.createLog();
 
 // Number of minutes to wait for feedbacks in AwaitEnduserData status before
 // their notification mail gets triggered
-const awaitTimeoutMinutes : number = 15;
+const awaitTimeoutMinutes : number = 1;
 
 export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
 	let totalCount : number;
 
-	feedbackService.count().then((count : number) => {
+	feedbackService.count()
+	.then((count : number) => {
 		totalCount = count;
-
-		return feedbackService.getByStatus(
-			FeedbackStatus.AwaitEnduserData,
-			{
-				'status.changeDate': {
-					'$lte': moment()
-						.subtract(awaitTimeoutMinutes, 'minutes')
-						.second(0)
-						.millisecond(0)
-						.toISOString(),
-				},
-			},
-			0,  // query "skip" value
-			totalCount  // override default limit with total count of feedback objects
-		);
+		return getFeedbacks(totalCount);
 	})
 	.then((feedbacks : Feedback[]) => {
 		log('%d total feedbacks, %d to trigger for notification', totalCount, feedbacks.length);
-
-		return Promise.map(feedbacks, (item : Feedback) => {
-			log('Trigger notification for feedback ID ', item.ID);
-			return sendMessage(MessageType.NewFeedback, {
-				feedbackID: item.ID,
-			});
-		});
+		return sendMessages(feedbacks);
 	})
 	// Don't forget to clean up the kue job!
 	.then(() => {
@@ -80,7 +61,32 @@ export function onCheckAwaitFeedback(job : Job, done : DoneCallback) : void {
 	})
 	.catch(error => {
 		app.yell(error);
-		done(error);
-		return null;
+		return done(error);
+	});
+}
+
+function getFeedbacks(totalCount : number) {
+	return feedbackService.getByStatus(
+		FeedbackStatus.AwaitEnduserData,
+		{
+			'status.changeDate': {
+				'$lte': moment()
+					.subtract(awaitTimeoutMinutes, 'minutes')
+					.second(0)
+					.millisecond(0)
+					.toISOString(),
+			},
+		},
+		0,  // query "skip" value
+		totalCount  // override default limit with total count of feedback objects
+	);
+}
+
+function sendMessages(feedbacks : Feedback[]) {
+	return Promise.map(feedbacks, (item : Feedback) => {
+		log('Trigger notification for feedback ID ', item.ID);
+		return sendMessage(MessageType.NewFeedback, {
+			feedbackID: item.ID,
+		});
 	});
 }
