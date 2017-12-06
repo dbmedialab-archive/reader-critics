@@ -38,6 +38,7 @@
 		"Dmitry Marchenko",
 		"Dmitry Pogorelovsky",
 		"Ole Nedrebrø",
+		"Ørjan Ommundsen",
 		"Sebastian Brage Hansen",
 		"Simen Berge",
 		"Tibor Vukovic",
@@ -158,7 +159,7 @@
 		"eslint-config-airbnb-base": "12.1.0",
 		"eslint-plugin-import": "^2.7.0",
 		"mocha": "3.5.3",
-		"nightwatch": "0.9.16",
+		"nightwatch": "0.9.19",
 		"sass-lint": "1.12.1",
 		"selenium-server-standalone-jar": "3.7.1",
 		"source-map-support": "^0.4.16",
@@ -187,11 +188,13 @@
 			"eslint-plugin-react",
 			"foundation-sites",
 			"geckodriver",
+			"nodemon",
 			"npm-run-all",
 			"react-modal",
 			"source-map-support",
 			"supports-color",
-			"webpack-bundle-analyzer"
+			"webpack-bundle-analyzer",
+			"webpack-dev-server"
 		]
 	}
 }
