@@ -120,7 +120,6 @@ common_aliases:
       command: |
         docker build -t app .
         docker tag app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
-        docker tag app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
 
   - &docker_push_gcr
     run:
@@ -128,7 +127,6 @@ common_aliases:
       command: |
         docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
         docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
-        docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_BRANCH
 
   - &setup_tests
       run:
@@ -188,4 +186,3 @@ jobs:
   deploy_test:  *deploy_test
 
 workflows: *default_workflows
-

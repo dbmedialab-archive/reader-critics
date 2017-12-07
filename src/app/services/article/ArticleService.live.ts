@@ -33,6 +33,7 @@ import getByID from 'app/services/article/common/getByID';
 import getAmount from 'app/services/article/common/getAmount';
 
 import {
+	addFeedback,
 	exists,
 	get,
 	save,
@@ -42,6 +43,7 @@ import {
 const service : ArticleService
 	= createPersistingService <ArticleDocument, ArticleService, Article> (
 		ArticleModel, {
+			addFeedback,
 			download,
 			exists,
 			fetch,

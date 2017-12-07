@@ -26,8 +26,6 @@ import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
 
-import { ObjectID } from 'app/db';
-
 /**
  * The feedback service stores feedbacks to articles and provides functions
  * for several types of queries (TBD).
@@ -92,6 +90,11 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	) : Promise <Feedback[]>;
 
 	/**
+	 * Get a feedback object by its one-shot update token
+	 */
+	getByUpdateToken(oneshotUpdateToken : string) : Promise <Feedback>;
+
+	/**
 	 * Save the new feedback object and create references to all involved objects.
 	 * The references to the Website and User objects are copied over from the
 	 * provided Article object. This is needed for complex querying with filters.
@@ -102,7 +105,9 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	save(
 		article : Article,
 		user : EndUser,
-		items : FeedbackItem[]
+		items : FeedbackItem[],
+		status? : FeedbackStatus,
+		oneshotUpdateToken? : string
 	) : Promise <Feedback>;
 
 	/**
@@ -119,7 +124,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * and in a parallel database action, retrieves or (if not existing) creates
 	 * the EndUser object of Anonymous user.
 	 *
-	 * When these two objects (Article and EndUser) are ready, both are give to
+	 * When these two objects (Article and EndUser) are ready, both are given to
 	 * save() together with the feedback items, which are also parsed from the raw
 	 * input object.
 	 *
@@ -128,14 +133,21 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 *
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
-	validateAndSave(data : any) : Promise <Feedback>;
+	validateAndSave(data : {}) : Promise <Feedback>;
+
+	/**
+	 * Takes another raw input object from the API, validates its structure, then
+	 * checks the update-token and on success, updates the enduser data ob the
+	 * Feedback object in the database.
+	 */
+	validateAndUpdateEnduser(data : {}) : Promise <Feedback>;
 
 	/**
 	 * Updates the existing feedback object with enduser data.
 	 * @throws EmptyError If enduser parameter is missing.
 	 */
 	updateEndUser(
-		id : ObjectID,
+		feedback : Feedback,
 		enduser : EndUser
 	) : Promise <Feedback>;
 

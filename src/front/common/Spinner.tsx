@@ -14,28 +14,17 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
 
-import {
-	Request,
-	Response,
-} from 'express';
+import * as React from 'react';
 
-import { feedbackService } from 'app/services';
+const Spinner : React.StatelessComponent <any> = () => (
+	<div className="sk-wave">
+		<div className="sk-rect sk-rect1"/>
+		<div className="sk-rect sk-rect2"/>
+		<div className="sk-rect sk-rect3"/>
+		<div className="sk-rect sk-rect4"/>
+		<div className="sk-rect sk-rect5"/>
+	</div>
+);
 
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
-
-export default function (requ : Request, resp : Response) : void {
-	// Store the new feedback
-	feedbackService.validateAndSave(requ.body)
-	// Reply with only the one-shot token in the response.
-	// No e-mail notification is triggered here! The cron takes care of this.
-	.then(newFeedback => okResponse(resp, {
-		updateToken: newFeedback.oneshotUpdateToken,
-	}))
-	// Catch them nasty errors
-	.catch(error => errorResponse(resp, error));
-}
+export default Spinner;

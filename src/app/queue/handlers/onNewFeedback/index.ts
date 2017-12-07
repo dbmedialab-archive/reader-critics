@@ -24,6 +24,7 @@ import {
 import ArticleItem from 'base/ArticleItem';
 import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
 
@@ -41,13 +42,14 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-export default function(job : Job, done : DoneCallback) : void {
-	if (!job.data.ID) {
+export function onNewFeedback(job : Job, done : DoneCallback) : void {
+	const { feedbackID } = job.data;
+
+	if (feedbackID === undefined) {
 		log('Feedback "ID" not found in job data');
 		return done();
 	}
 
-	const feedbackID = job.data.ID;
 	log(`Received new feedback event for ID ${feedbackID}`);
 
 	// There's loads of objects that need to be loaded:
@@ -89,13 +91,15 @@ export default function(job : Job, done : DoneCallback) : void {
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
-	// Funny enough, just doing .then(done) will trigger the infamous
-	// "a promise was created in blah ... but was not returned from it"
-	// warning.
-	.then(() => done)
+	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
+	.then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
 	.catch(error => {
 		app.yell(error);
-		return done(error);
+		done(error);
+		return null;
 	});
 }
 
