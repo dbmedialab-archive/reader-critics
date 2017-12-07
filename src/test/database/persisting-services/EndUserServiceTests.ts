@@ -32,20 +32,28 @@ import * as app from 'app/util/applib';
 
 const demoUsers = path.join('resources', 'user', 'demo-endusers.json5');
 
+const testParameterChecks = () => it('parameter checks', () => {
+	// No checks for empty parameters to get() will be here, because this
+	// function returns the "Anonymous" user if all parameters are empty.
+	// This anonymous user is created in the get() function, should it not
+	// exist in the current database.
+	// But at least we can test for some parameter combinations here:
+	assert.doesNotThrow(() => enduserService.get('Jake Peralta'), Error);
+	assert.doesNotThrow(() => enduserService.get(null, 'det.peralta@99prec.nyc'), Error);
+
+	assert.throws(() => enduserService.save(null), EmptyError);
+});
+
+const testAnonymousGet = () => it('anonymous save()', () => enduserService
+	.save({ name: null, email: null })
+	.then(() => assert.fail())
+	.catch(() => assert.ok(true))
+);
+
 export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
-	it('parameter checks', () => {
-		// No checks for empty parameters to get() will be here, because this
-		// function returns the "Anonymous" user if all parameters are empty.
-		// This anonymous user is created in the get() function, should it not
-		// exist in the current database.
-		// But at least we can test for some parameter combinations here:
-		assert.doesNotThrow(() => enduserService.get('Jake Peralta'), Error);
-		assert.doesNotThrow(() => enduserService.get(null, 'det.peralta@99prec.nyc'), Error);
-
-		assert.throws(() => enduserService.save(null), EmptyError);
-	});
+	testParameterChecks();
 
 	it('clear()', () => enduserService.clear());
 
@@ -108,14 +116,17 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	it('anonymous save()', () => enduserService
-		.save({ name: null, email: null })
-		.then(() => assert.fail())
-		.catch(() => assert.ok(true))
-	);
+	testAnonymousGet();
 
-	it('anonymous get()', () => enduserService
-		.get(null, null)
+	// We could use Promise.all here and execute both queries concurrently.
+	// But no, due to missing locks in MongoDB we will almost always get
+	// an error here because two queries will try to upsert a new "Anonymous"
+	// user object at the same time. When starting the DB tests, the collections
+	// are cleaned up and anonymous does not yet exist.
+	// Hence: concurrent write, unique index violation, *kablaam*
+	it('anonymous get()', () => enduserService.get(null, null)
+		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
+		.then(() => enduserService.get())
 		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
 	);
 }
