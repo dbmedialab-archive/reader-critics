@@ -22,11 +22,14 @@ import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
 
-import { ObjectID } from 'app/db';
 import { FeedbackModel } from 'app/db/models';
-import { wrapSave } from 'app/db/common';
+import { wrapFindOne, wrapSave } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 
 // save
 
@@ -72,28 +75,23 @@ const makeDocument = (
 	},
 });
 
-// update
+// Update enduser data
 
-export function updateEndUser (
-	id : ObjectID,
-	enduser : EndUser
-) : Promise <Feedback>
-{
+export function updateEndUser (feedback : Feedback, enduser : EndUser) : Promise <Feedback> {
+	log('updateEndUser [[[ %s ]]] [[[ %s ]]]', app.inspect(feedback), app.inspect(enduser));
 	emptyCheck(enduser);
 
-	const updateData : {
-		enduser: any,  // This is going to be a problem when we disallow explicit-any types
-	} = {
-		enduser: null,
-	};
-
-	updateData.enduser = enduser.ID;
-
-	return FeedbackModel.findById(id).then((feedback) => {
-		if (!feedback) {
-			throw new Error(`No such feedback ${id}`);
+	return wrapFindOne(FeedbackModel.findOneAndUpdate(
+		// Query:
+		{ _id : feedback.ID },
+		// Update data:
+		{
+			'$set': {
+				enduser: enduser.ID,
+			},
+			'$unset': {
+				oneshotUpdateToken: '',
+			},
 		}
-		feedback.enduser = updateData.enduser;
-		return wrapSave(feedback.save());
-	});
+	));
 }

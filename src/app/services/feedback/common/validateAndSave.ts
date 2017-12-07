@@ -24,6 +24,7 @@ import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
 import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
@@ -36,8 +37,6 @@ import {
 	NotFoundError,
 	SchemaValidationError,
 } from 'app/util/errors';
-
-import FeedbackItem from 'base/FeedbackItem';
 
 /**
  * Intermediate type for internal use, used between validation and persistence.
@@ -52,31 +51,42 @@ type RawArticle = {
 /**
  * Validate and store to database
  */
-export default function(data : {}) : PromiseLike <Feedback> {
+export function validateAndSave(data : {}) : PromiseLike <Feedback> {
 	return validateSchema(data)
 	// Collect all the objects that we need to create and persist a new Feedback
 	.then((rawArticle : RawArticle) => Promise.all([
 		getArticle(rawArticle.article),
 		getAnonymousEndUser(),
+		// These are synchronous, but work nonetheless with Promise.all()
 		rawArticle.feedback.items,
 		getOneShotToken(),
 	]))
 	// After gathering all the necessary data, persist the new Feedback
 	// object to the database
-	.spread((
-		article : Article,
-		enduser : EndUser,
-		items : Array <FeedbackItem>,
-		oneshotUpdateToken : string
-	) => feedbackService.save(
+	.spread(storeFeedback)
+	// Update article object with reference to the new feedback object
+	.then(({ article, feedback } : { article : Article, feedback : Feedback}) => {
+		return articleService.addFeedback(article, feedback).then(() => feedback);
+	});
+}
+
+function storeFeedback(
+	article : Article,
+	enduser : EndUser,
+	items : Array <FeedbackItem>,
+	oneshotUpdateToken : string
+) {
+	return feedbackService.save(
 		article,
 		enduser,
 		items,
 		FeedbackStatus.AwaitEnduserData,
 		oneshotUpdateToken
-	));
-
-	// TODO update article object with reference to the new feedback object
+	)
+	.then((feedback) => ({
+		article,
+		feedback,
+	}));
 }
 
 /**
