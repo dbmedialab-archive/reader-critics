@@ -27,13 +27,16 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import getAmountByArticle from './common/getAmountByArticle';
-import validateAndSave from './common/validateAndSave';
+
+import { validateAndSave } from './common/validateAndSave';
+import { validateAndUpdateEnduser } from './common/validateAndUpdateEnduser';
 
 import {
 	getByArticle,
 	getByArticleAuthor,
 	getByID,
 	getByStatus,
+	getByUpdateToken,
 	getRange,
 } from './dao/feedbackGet';
 
@@ -54,9 +57,11 @@ const service : FeedbackService
 			getByArticleAuthor,
 			getByID,
 			getByStatus,
+			getByUpdateToken,
 			getRange,
 			save,
 			validateAndSave,
+			validateAndUpdateEnduser,
 			updateEndUser,
 			updateStatus,
 		}
