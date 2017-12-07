@@ -21,6 +21,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 
 const styles = {
 	modalWrapper: {
@@ -89,6 +90,9 @@ const AlertIcon : React.StatelessComponent <IAlertIcon> = (props : IAlertIcon) =
 	return (<svg height={height} version="1.1" viewBox="0 0 16 16" width={width} xmlns="http://www.w3.org/2000/svg"><title/><defs/><g fill="none" fillRule="evenodd" id="Icons with numbers" stroke="none" strokeWidth="1"><g fill={color} id="Group" transform="translate(-96.000000, -432.000000)"><path d="M103,443 L103,445 L105,445 L105,443 Z M104,448 C99.5817218,448 96,444.418278 96,440 C96,435.581722 99.5817218,432 104,432 C108.418278,432 112,435.581722 112,440 C112,444.418278 108.418278,448 104,448 Z M103,435 L103,442 L105,442 L105,435 Z M103,435" id="Oval 208 copy"/></g></g></svg>);
 };
 
+const { messages, locale } = (window['app'] && window['app'].localization) ||
+{ messages: {}, locale: 'en' };
+
 class ModalWindow extends React.Component <IModalWindowProps, any> {
 	constructor(props: IModalWindowProps){
 		super(props);
@@ -108,26 +112,26 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 		const errMsg: string | JSX.Element = this.props.msg ||
 			<FormattedMessage id="common.errors.tryLater"/>;
 		return(
-			<div className="modal-overlay" style={styles.modalOverlay}>
-				<div className="modal-wrapper" style={styles.modalWrapper}>
-					<div className="modal" style={styles.modal}>
-						<div className="icon-section" style={styles.iconSection}>
-							<AlertIcon />
-						</div>
-						<div className="content" style={styles.content}>
-							{errMsg}
-						</div>
-						<div className="buttonsSection" style={styles.buttonsSection}>
-							<button
-								type="submit"
-								className="button button-primary"
-								onClick={this.okBtnClick}>
-								<FormattedMessage id="button.ok"/>
-							</button>
+			<IntlProvider locale={locale} messages={messages}>
+				<div className="modal-overlay" style={styles.modalOverlay}>
+					<div className="modal-wrapper" style={styles.modalWrapper}>
+						<div className="modal" style={styles.modal}>
+							<div className="icon-section" style={styles.iconSection}>
+								<AlertIcon />
+							</div>
+							<div className="content" style={styles.content}>
+								{errMsg}
+							</div>
+							<div className="buttonsSection" style={styles.buttonsSection}>
+								<button	type="submit" className="button button-primary"
+									onClick={this.okBtnClick}>
+									<FormattedMessage id="button.ok"/>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</IntlProvider>
 		);
 	}
 }

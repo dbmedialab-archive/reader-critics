@@ -88,8 +88,7 @@ export function getByArticleAuthor (
 	}
 
 	return wrapFind(populateFeedback(
-		FeedbackModel.find(query)
-		.sort(sort).skip(skip).limit(limit)
+		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
 	));
 }
 
@@ -131,11 +130,12 @@ export function getByStatus (
 {
 	emptyCheck(currentStatus);
 
+	const query = Object.assign({}, additionalQuery, {
+		'status.status': currentStatus.toString(),
+	});
+
 	return wrapFind(populateFeedback(
-		FeedbackModel.find(Object.assign({}, additionalQuery, {
-			'status.status': currentStatus.toString(),
-		}))
-		.sort(sort).skip(skip).limit(limit)
+		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
 	));
 }
 
@@ -148,8 +148,7 @@ export function getRange (
 ) : Promise <Feedback[]>
 {
 	return wrapFind(populateFeedback(
-		FeedbackModel.find()
-		.sort(sort).skip(skip).limit(limit)
+		FeedbackModel.find().sort(sort).skip(skip).limit(limit)
 	));
 }
 
