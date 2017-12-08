@@ -16,19 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
-
+import { Request, Response } from 'express';
 import { feedbackService } from 'app/services';
+import { errorResponse, okResponse } from './apiResponse';
 
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 
 export default function (requ : Request, resp : Response) : void {
+	log(app.inspect(requ.body));
 	// Store the new feedback
 	feedbackService.validateAndSave(requ.body)
 	// Reply with only the one-shot token in the response.

@@ -15,19 +15,21 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+
 // tslint:disable max-file-line-count
 
 import * as React from 'react';
-import Transition from 'react-transition-group/Transition';
-import { FormattedMessage } from 'react-intl';
 
-import {
-	getArticleURL,
-	getArticleVersion,
-} from 'front/uiGlobals';
-
-import { sendFeedback } from 'front/apiCommunication';
 import EndUser from 'base/EndUser';
+import Transition from 'react-transition-group/Transition';
+
+import { FormattedMessage } from 'react-intl';
+import { getArticleURL } from 'front/uiGlobals';
+import { sendEnduserData } from 'front/apiCommunication';
+
+export interface EndUserFormProps {
+	updateToken : string
+}
 
 export interface FeedbackUserState {
 	isSend: boolean;
@@ -55,7 +57,9 @@ export interface FeedbackUserState {
 	},
 }
 
-export default class PostFeedbackContainer extends React.Component <any, FeedbackUserState> {
+export default class PostFeedbackContainer
+extends React.Component <EndUserFormProps, FeedbackUserState>
+{
 
 	constructor() {
 		super();
@@ -92,7 +96,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.hideComponent = this.hideComponent.bind(this);
 		this.showComponent = this.showComponent.bind(this);
 		this.afterSendingAnimation = this.afterSendingAnimation.bind(this);
-		this.sendFeedback = this.sendFeedback.bind(this);
+		this.postEnduserData = this.postEnduserData.bind(this);
 		this.onUnload = this.onUnload.bind(this);
 	}
 
@@ -117,7 +121,6 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 	onUnload(event) {
 		if (!this.state.isSend) {
 			event.preventDefault();
-			this.sendFeedback();
 			const dialogText = 'Thank you for your feedback';
 			(event || window.event).returnValue = dialogText; //Gecko + IE
 			return dialogText;
@@ -155,7 +158,7 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 
 	private _handleSubmit(e) {
 		e.preventDefault();
-		this.sendFeedback();
+		this.postEnduserData();
 	}
 
 	private _inputChanged(e) {
@@ -165,21 +168,18 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 		this.setState({user:userObj});
 	}
 
-	public sendFeedback() {
-		const {user} = this.state;
+	private postEnduserData() {
+		const { user } = this.state;
 
-		return sendFeedback({
-			article: {
-				url: getArticleURL(),
-				version: getArticleVersion(),
-			},
-			user,
-			feedback: {
-				items: this.props.articleItems,
-			},
-		})
+		return sendEnduserData(
+			Object.assign({
+				updateToken: this.props.updateToken,
+			}, this.state.user)
+		)
 		.then((response) => {
-			this.setState({isSend:true}, this.afterSendingAnimation);
+			this.setState({
+				isSend: true,
+			}, this.afterSendingAnimation);
 		});
 	}
 
@@ -245,12 +245,10 @@ export default class PostFeedbackContainer extends React.Component <any, Feedbac
 										<span className="btn-text"><FormattedMessage id="fb.label.keepInfo"/></span>
 									</a>
 								:<div>
-									{this.props.articleUrl?
-											<a href={this.props.articleUrl}>
-												<span className="icon back"/>
-												<span className="btn-text"><FormattedMessage id="fb.label.backToArticle"/></span>
-											</a>
-									:null}
+									<a href={getArticleURL()}>
+										<span className="icon back"/>
+										<span className="btn-text"><FormattedMessage id="fb.label.backToArticle"/></span>
+									</a>
 								</div>
 							}
 						</fieldset>
