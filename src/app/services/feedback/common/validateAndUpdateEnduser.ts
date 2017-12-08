@@ -16,29 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	isObject,
-	isString,
-} from 'lodash';
+import { isObject, isString } from 'lodash';
 
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 
-import {
-	enduserService,
-	feedbackService,
-} from 'app/services';
-
+import { RawPostEndUser } from 'base/api/RawPostEndUser';
 import { SchemaValidationError } from 'app/util/errors';
-
-/**
- * Intermediate type for internal use, used between validation and persistence.
- */
-type RawUpdateData = {
-	token : string
-	name : string
-	email : string
-};
+import { enduserService, feedbackService } from 'app/services';
 
 /**
  * Validate enduser data and store it on a feedback object
@@ -49,7 +34,7 @@ export function validateAndUpdateEnduser(data : {}) : Promise <Feedback> {
 	return new Promise((resolve, reject) => {
 		validateSchema(data)
 
-		.then((updateData : RawUpdateData) => Promise.all([
+		.then((updateData : RawPostEndUser) => Promise.all([
 			getFeedback(updateData),
 			getEndUser(updateData),
 		]))
@@ -61,11 +46,11 @@ export function validateAndUpdateEnduser(data : {}) : Promise <Feedback> {
 	});
 }
 
-function getFeedback(data : RawUpdateData) : Promise <Feedback> {
-	return feedbackService.getByUpdateToken(data.token);
+function getFeedback(data : RawPostEndUser) : Promise <Feedback> {
+	return feedbackService.getByUpdateToken(data.updateToken);
 }
 
-function getEndUser(data : RawUpdateData) : Promise <EndUser> {
+function getEndUser(data : RawPostEndUser) : Promise <EndUser> {
 	const name = trimUserData(data.name);
 	const email = trimUserData(data.email);
 
@@ -84,19 +69,19 @@ function getEndUser(data : RawUpdateData) : Promise <EndUser> {
 	});
 }
 
-function validateSchema(data : {}) : Promise <RawUpdateData> {
+function validateSchema(data : {}) : Promise <RawPostEndUser> {
 	if (!isObject(data)) {
 		return Promise.reject(new SchemaValidationError(
 			'Invalid feedback data'
 		));
 	}
-	if (!isString(data['token'])) {
+	if (!isString(data['updateToken'])) {
 		return Promise.reject(new SchemaValidationError(
-			'Update data is missing "token" string'
+			'Update data is missing "updateToken" string'
 		));
 	}
 
-	return Promise.resolve(data as RawUpdateData);
+	return Promise.resolve(data as RawPostEndUser);
 }
 
 function trimUserData(a : string) : string | null {
