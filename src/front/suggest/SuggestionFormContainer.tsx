@@ -27,8 +27,6 @@ import { getLocale } from 'front/uiGlobals';
 
 const recaptchaLang = getLocale();
 
-let recaptchaInstance;
-
 export interface FormPayload {
 	email: string;
 	comment: string;
@@ -43,6 +41,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private commentArea : any;
 	private emailInput : any;
 	private validator : Validation;
+	private recaptchaInstance;
 
 	constructor(props) {
 		super(props);
@@ -63,7 +62,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.UpdateState = this.UpdateState.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.hasCommentError = this.hasCommentError.bind(this);
-		this.verifyCallback = this.verifyCallback.bind(this);
+		this.verifyCaptcha = this.verifyCaptcha.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
@@ -77,12 +76,13 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			return <FormattedMessage id="suggest.label.commentErr"/>;
 		}
 
-		const validation = this.validator.validate('suggestionComment',
-			this.state.comment, {required: true});
-		if (validation.isError) {
-			return validation.message;
-		}
-		return false;
+		const validation = this.validator.validate(
+			'suggestionComment',
+			this.state.comment,
+			{ required: true }
+		);
+
+		return validation.isError ? validation.message : false;
 	}
 
 	private isFormValid() {
@@ -105,27 +105,11 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			console.log('res', res);
 		})
 		.catch((err) => {
-			this.recaptchaReset();
+			this.recaptchaInstance.reset();
 		});
-	}
-
-	private verifyCallback(response){
-		this.setState({
-			captcha: response,
-		});
-	}
-
-	private recaptchaReset() {
-		recaptchaInstance.reset();
-	}
-
-	private onloadCallback() {
-		//RE-Captcha was loaded
 	}
 
 	public render() : JSX.Element {
-		const isDisabled = !this.isFormValid();
-		const publicKey = window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : '';
 		return (
 			<form
 				name="suggestBox"
@@ -136,48 +120,63 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				<fieldset>
 					<p className="thank-message"><FormattedMessage id="suggest.ty"/></p>
 				</fieldset>
-				<fieldset className="text">
-					<label htmlFor="email">Email</label>
-					<input
-						type="email"
-						name="email"
-						ref={r => this.emailInput = r}
-						id="email"
-						onBlur={this.handleBlur('email')}
-						onChange={() => this.UpdateState('email', this.emailInput)}
-					/>
-				</fieldset>
-				<fieldset className="text">
-					<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
-					<textarea
-						name="comment"
-						onKeyUp={() => this.UpdateState('comment', this.commentArea)}
-						ref={r => this.commentArea = r}
-						rows={3}
-						id="commentArea"
-						onBlur={this.handleBlur('comment')}
-					/>
-					<InputError
-						errorText={this.hasCommentError()}
-						touchedField={this.state.touched['comment']}
-					/>
-				</fieldset>
-				<fieldset>
-					<Recaptcha
-						ref={e => recaptchaInstance = e}
-						sitekey={publicKey}
-						render="explicit"
-						hl={recaptchaLang}
-						verifyCallback={this.verifyCallback}
-						onloadCallback={this.onloadCallback}
-					/>
-				</fieldset>
-				<fieldset className="actions">
-					<button type="submit" disabled={isDisabled} className="button-primary">
-						<FormattedMessage id="button.save"/>
-					</button>
-				</fieldset>
+				{ this.renderEmailInput() }
+				{ this.renderCommentInput() }
+				{ this.renderCaptcha() }
+				{ this.renderButtons() }
 			</form>
 		);
 	}
+
+	private renderEmailInput = () => <fieldset className="text">
+		<label htmlFor="email">Email</label>
+		<input
+			type="email"
+			name="email"
+			ref={r => this.emailInput = r}
+			id="email"
+			onBlur={this.handleBlur('email')}
+			onChange={() => this.UpdateState('email', this.emailInput)}
+		/>
+	</fieldset>
+
+	private renderCommentInput = () => <fieldset className="text">
+		<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
+		<textarea
+			name="comment"
+			onKeyUp={() => this.UpdateState('comment', this.commentArea)}
+			ref={r => this.commentArea = r}
+			rows={4}
+			id="commentArea"
+			onBlur={this.handleBlur('comment')}
+		/>
+		<InputError
+			errorText={this.hasCommentError()}
+			touchedField={this.state.touched['comment']}
+		/>
+	</fieldset>
+
+	private renderCaptcha = () => <fieldset>
+		<Recaptcha
+			ref={e => this.recaptchaInstance = e}
+			sitekey={window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : ''}
+			render="explicit"
+			hl={recaptchaLang}
+			verifyCallback={this.verifyCaptcha}
+			onloadCallback={() => undefined}
+		/>
+	</fieldset>
+
+	private verifyCaptcha(response) {
+		this.setState({
+			captcha: response,
+		});
+	}
+
+	private renderButtons = () => <fieldset className="actions">
+		<button type="submit" disabled={!this.isFormValid()} className="button-primary">
+			<FormattedMessage id="button.save"/>
+		</button>
+	</fieldset>
+
 }
