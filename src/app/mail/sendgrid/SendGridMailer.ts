@@ -48,12 +48,13 @@ export default function(
 		return Promise.reject(new ConfigError('SendGrid API key is not configured'));
 	}
 
+	log(`Sending e-mail to ${recipients.join(', ')}`);
+
 	if (app.isTest) {
 		log(`Not sending in test mode`);
 		return Promise.resolve();
 	}
 
-	log(`Sending e-mail to ${recipients.join(', ')}`);
 	sendgridMail.setApiKey(apiKey);
 
 	const options : any = {
