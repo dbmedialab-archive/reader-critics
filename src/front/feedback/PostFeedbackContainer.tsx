@@ -169,13 +169,9 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 	}
 
 	private postEnduserData() {
-		const { user } = this.state;
-
-		return sendEnduserData(
-			Object.assign({
-				updateToken: this.props.updateToken,
-			}, this.state.user)
-		)
+		return sendEnduserData(Object.assign({
+			updateToken: this.props.updateToken,
+		}, this.state.user))
 		.then((response) => {
 			this.setState({
 				isSend: true,
