@@ -27,9 +27,10 @@ import {
 	feedbackService,
 } from 'app/services';
 
-import { sendMessage } from 'app/queue';
-
-import MessageType from 'app/queue/MessageType';
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
 
 import * as app from 'app/util/applib';
 

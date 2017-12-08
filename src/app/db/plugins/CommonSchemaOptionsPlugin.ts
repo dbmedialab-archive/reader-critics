@@ -16,23 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Request, Response } from 'express';
-import { feedbackService } from 'app/services';
-import { errorResponse, okResponse } from './apiResponse';
+import { Schema } from 'mongoose';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
-export default function (requ : Request, resp : Response) : void {
-	log(app.inspect(requ.body));
-	// Store the new feedback
-	feedbackService.validateAndSave(requ.body)
-	// Reply with only the one-shot token in the response.
-	// No e-mail notification is triggered here! The cron takes care of this.
-	.then(newFeedback => okResponse(resp, {
-		updateToken: newFeedback.oneshotUpdateToken,
-	}))
-	// Catch them nasty errors
-	.catch(error => errorResponse(resp, error));
+export default function(schema : Schema, options : any) {
+	schema.set('autoIndex', false);
+	schema.set('retainKeyOrder', true);
 }

@@ -126,6 +126,62 @@
 				en: 'Not Found',
 			},
 		},
+		auth: {
+			en: 'Authorization',
+			nb: 'Autorisasjon'
+		},
+		password: {
+			en: 'Password',
+			nb: 'Passord'
+		},
+		role: {
+			en: 'Role',
+			nb: 'Rolle'
+		},
+		dltUsrAsk: {
+			en: 'Do you want delete this user?',
+			nb: 'Vil du slette denne brukeren?'
+		},
+		yOnPg: {
+			en: "You're on page",
+			nb: "Du er på side"
+		},
+		users: {
+			en: 'Users',
+			nb: 'Brukere'
+		},
+		suggests: {
+			en: 'Suggestions',
+			nb: 'Forslag'
+		}, 
+		artcls: {
+			en: 'Articles',
+			nb: 'Artikler'
+		},
+		wbsts: {
+			en: 'Websites',
+			nb: 'Nettsteder'
+		},
+		wbst: {
+			en: 'Website',
+			nb: 'Nettsted'
+		},
+		feedbacks: {
+			en: 'Feedbacks',
+			nb: 'Tilbakemeldinger'
+		},
+		login: {
+			en: 'Login',
+			nb: 'Logg Inn'
+		},
+		logout: {
+			en: 'Logout',
+			nb: 'Logg ut'
+		},
+		created: {
+			en: 'Created',
+			nb: 'Laget'
+		}
 	},
 	frontend: {
 		button: {
@@ -141,6 +197,10 @@
 				en: 'Save',
 				nb: 'Lagre',
 			},
+			delete: {
+				en: 'Delete',
+				nb: 'Slett'
+			},
 			ok: {
 				en: 'Ok',
 				nb: 'Ok',
@@ -148,6 +208,14 @@
 			sendForm: {
 				en: 'Send form',
 				nb: 'Send skjema',
+			},
+			prev: {
+				en: 'Prev',
+				nb: 'Prev'
+			},
+			next: {
+				en: 'Next',
+				nb: 'Neste'
 			},
 		},
 		label: {
@@ -286,4 +354,68 @@
 			},
 		},
 	},
+	admin: {
+			links: {
+				en: 'Links',
+				nb: 'Lenker'
+			},
+			userComment: {
+				en: 'User comment',
+				nb: 'Brukerkommentar'
+			},
+			editUsr: {
+				en: 'Edit user',
+				nb: 'Rediger bruker'
+			},
+			addUsr: {
+				en: 'Add User',
+				nb: 'Legg til bruker'
+			},
+			chiEd: {
+				en: 'Chief Editors',
+				nb: 'Sjefredaktører'
+			},
+			hsts: {
+				en: 'Hosts',
+				nb: 'Verter'
+			},
+			lStngs: {
+				en: 'Layout Settings',
+				nb: 'Oppsettinnstillinger'
+			},
+			parser: {
+				en: 'Parser',
+				nb: 'Parser'
+			},
+			crtWeb: {
+				en: 'Create website',
+				nb: 'Lag nettside'
+			},
+			edWeb: {
+				en: 'Edit Website',
+				nb: 'Rediger nettsted'
+			},
+			err: {
+				usrN: {
+					en: 'Name has to be more than 3 symbols',
+					nb: 'Navnet må være mer enn 3 symboler'
+				},
+				email: {
+					en: 'Please enter valid email address',
+					nb: 'Vennligst skriv inn gyldig email'
+				},
+				pswrd: {
+					en: 'Password has to be more than 3 symbols',
+					nb: 'Passordet må være mer enn 3 symboler'
+				},
+				login: {
+					en: 'Login has to be more than 3 symbols',
+					nb: 'Logg inn må være mer enn 3 symboler'
+				},
+
+
+			}
+
+			
+		},
 }

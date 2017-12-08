@@ -32,7 +32,11 @@ const log = app.createLog();
 
 const apiKey : string = config.get('mail.sendgrid.api_key');
 const senderDomain : string = config.get('mail.sender.domain');
-const bccRecipient : Array <string> = config.get('mail.bccRecipient').split(/,/);
+
+const bccRecipient : Array <string> = (() => {
+	const bcc = config.get('mail.bccRecipient');
+	return bcc === undefined ? [] : bcc.split(/,/);
+})();
 
 export default function(
 	recipients : Array <string>,
@@ -44,12 +48,13 @@ export default function(
 		return Promise.reject(new ConfigError('SendGrid API key is not configured'));
 	}
 
+	log(`Sending e-mail to ${recipients.join(', ')}`);
+
 	if (app.isTest) {
 		log(`Not sending in test mode`);
 		return Promise.resolve();
 	}
 
-	log(`Sending e-mail to ${recipients.join(', ')}`);
 	sendgridMail.setApiKey(apiKey);
 
 	const options : any = {

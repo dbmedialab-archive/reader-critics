@@ -50,7 +50,7 @@ export const isParamEmpty = v => isNil(v) || (isString(v) && v.length <= 0);
  * @param name string
  * @param email string
  */
-export function get(name : string|null, email? : string|null) : Promise <EndUser> {
+export function get(name? : string|null, email? : string|null) : Promise <EndUser> {
 	const isAnonymous = isParamEmpty(name) && isParamEmpty(email);
 	let query : any = {};
 

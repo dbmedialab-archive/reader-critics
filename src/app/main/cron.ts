@@ -16,23 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Request, Response } from 'express';
-import { feedbackService } from 'app/services';
-import { errorResponse, okResponse } from './apiResponse';
+import { CronJob } from 'cron';
+
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
 
 import * as app from 'app/util/applib';
 
-const log = app.createLog();
+const log = app.createLog('cron');
 
-export default function (requ : Request, resp : Response) : void {
-	log(app.inspect(requ.body));
-	// Store the new feedback
-	feedbackService.validateAndSave(requ.body)
-	// Reply with only the one-shot token in the response.
-	// No e-mail notification is triggered here! The cron takes care of this.
-	.then(newFeedback => okResponse(resp, {
-		updateToken: newFeedback.oneshotUpdateToken,
-	}))
-	// Catch them nasty errors
-	.catch(error => errorResponse(resp, error));
+const activeJobs : Array <CronJob> = [];
+
+export function initCron() : Promise <void> {
+	log('Initialising ...');
+	jobCheckAwaitFeedback();
+	return Promise.resolve();
+}
+
+function jobCheckAwaitFeedback() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 * * * * *',  // Every minute
+		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
+		start: true,
+	}));
 }

@@ -4,13 +4,13 @@
 &nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
-[![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
-&nbsp;
 [![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=svg)](https://circleci.com/gh/dbmedialab/reader-critics)
+&nbsp;
+[![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 &nbsp;
-[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/)
+[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/dbmedialab/reader-critics)
 
 ## Table of Contents
 

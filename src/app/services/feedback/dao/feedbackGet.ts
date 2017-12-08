@@ -23,6 +23,7 @@ import {
 
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
@@ -53,7 +54,7 @@ export function getByArticle (
 {
 	emptyCheck(article);
 
-	return wrapFind(populateFeedback(
+	return wrapFind(populateFeedbacks(
 		FeedbackModel.find({
 			article: article.ID,
 		})
@@ -62,6 +63,11 @@ export function getByArticle (
 }
 
 // getByArticleAuthor
+
+type QueryByArticleAuthor = {
+	articleAuthors? : ObjectID | string
+	website? : ObjectID | string
+};
 
 export function getByArticleAuthor (
 	author : User,
@@ -73,7 +79,7 @@ export function getByArticleAuthor (
 {
 	emptyCheck(author);
 
-	const query : any = {
+	const query : QueryByArticleAuthor = {
 		articleAuthors: author.ID,
 	};
 
@@ -81,9 +87,8 @@ export function getByArticleAuthor (
 		query.website = website.ID;
 	}
 
-	return wrapFind(populateFeedback(
-		FeedbackModel.find(query)
-		.sort(sort).skip(skip).limit(limit)
+	return wrapFind(populateFeedbacks(
+		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
 	));
 }
 
@@ -96,21 +101,42 @@ export function getByID(
 {
 	emptyCheck(objectID);
 
-	let result = FeedbackModel.findOne({
+	return wrapFindOne(populateFeedback(FeedbackModel.findOne({
 		_id: new ObjectID(objectID),
+	})));
+}
+
+// getByStatus with additional query parameter
+
+export function getByStatus (
+	currentStatus : FeedbackStatus,
+	additionalQuery : {} = {},
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : Object = defaultSort
+) : Promise <Feedback[]>
+{
+	emptyCheck(currentStatus);
+
+	const query = Object.assign({}, additionalQuery, {
+		'status.status': currentStatus.toString(),
 	});
 
-	if (populated) {
-		result = result.populate({  // TODO use common populate; type compatibility?
-			path: 'article',
-			populate: {
-				path: 'authors',
-			},
-		})
-		.populate('enduser');
-	}
+	return wrapFind(populateFeedbacks(
+		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
+	));
+}
 
-	return wrapFindOne(result);
+// getByUpdateToken
+
+export function getByUpdateToken(oneshotUpdateToken : string) : Promise <Feedback> {
+	emptyCheck(oneshotUpdateToken);
+
+	return wrapFindOne(populateFeedback(
+		FeedbackModel.findOne({
+			oneshotUpdateToken,
+		})
+	));
 }
 
 // getRange, using internal populate
@@ -121,17 +147,29 @@ export function getRange (
 	sort : Object = defaultSort
 ) : Promise <Feedback[]>
 {
-	return wrapFind(populateFeedback(
-		FeedbackModel.find()
-		.sort(sort).skip(skip).limit(limit)
+	return wrapFind(populateFeedbacks(
+		FeedbackModel.find().sort(sort).skip(skip).limit(limit)
 	));
 }
 
 // Internal populate
 
 function populateFeedback <D extends Document> (
-	query : DocumentQuery <D[], D>
-) : DocumentQuery <D[], D>
+	query : DocumentQuery <D, D> // | DocumentQuery <D, D>
+) : DocumentQuery <D, D> // | DocumentQuery <D, D>
+{
+	return query.populate({
+		path: 'article',
+		populate: {
+			path: 'authors',
+		},
+	})
+	.populate('enduser');
+}
+
+function populateFeedbacks <D extends Document> (
+	query : DocumentQuery <D[], D> // | DocumentQuery <D, D>
+) : DocumentQuery <D[], D> // | DocumentQuery <D, D>
 {
 	return query.populate({
 		path: 'article',
