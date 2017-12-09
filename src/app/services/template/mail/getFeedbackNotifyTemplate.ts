@@ -22,13 +22,20 @@ import * as path from 'path';
 import MailTemplate from 'app/template/MailTemplate';
 
 import * as app from 'app/util/applib';
+import Website from 'base/Website';
+import emptyCheck from 'app/util/emptyCheck';
 
 const log = app.createLog();
 const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
 
-export default function() : Promise <MailTemplate> {
+export default function(website : Website) : Promise <MailTemplate> {
+	emptyCheck(website);
+
 	const rawTemplate = () : Promise <string> => {
-		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
+		const raw = website.layout.templates.feedbackNotificationMail;
+		return isEmpty(raw) ?
+			app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
+			: Promise.resolve(raw);
 	};
 
 	return rawTemplate().then((raw : string) => {
