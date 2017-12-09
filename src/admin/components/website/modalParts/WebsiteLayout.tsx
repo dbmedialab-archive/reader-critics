@@ -53,7 +53,6 @@ export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps,
 	}
 
 	onChange(templateName: templates, value: string) {
-		console.log(templateName, value);
 		this.setState({[templateName]: value});
 	}
 
