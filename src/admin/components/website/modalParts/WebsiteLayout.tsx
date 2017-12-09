@@ -79,8 +79,7 @@ export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps,
 	}
 
 	toggleVisibility () {
-		const {visible} = this.state;
-		this.setState({visible: !visible});
+		this.setState({visible: !this.state.visible});
 	}
 
 	render () {
@@ -94,10 +93,10 @@ export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps,
 				</div>
 				<div className="small-12 columns layout-content">
 					<WebsiteLayoutContentSection
-						value={feedbackPage}
 						buttonText={'Feedback page template'}
 						templateName={'feedbackPage'}
 						onSubmit={this.onSubmit}
+						value={feedbackPage}
 						onChange={this.onChange.bind(this,'feedbackPage')}/>
 					<WebsiteLayoutContentSection
 						value={feedbackNotificationMail}
