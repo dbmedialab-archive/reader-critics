@@ -17,13 +17,27 @@
 //
 
 import * as React from 'react';
+import WebsiteLayoutContentSection from
+	'admin/components/website/modalParts/WebsiteLayoutContentSection';
 
-export default class WebsiteLayout extends React.Component <any, any> {
-	constructor (props) {
+export interface IWebsiteLayoutProps {
+	feedbackPage?: string;
+	feedbackNotificationMail?: string;
+	onSubmit: (object: object) => void;
+}
+
+export enum templates {
+	feedbackPage= 'feedbackPage',
+	feedbackNotificationMail = 'feedbackNotificationMail',
+}
+
+export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps, any> {
+	constructor (props: IWebsiteLayoutProps) {
 		super(props);
 		this.state = {
 			visible: false,
-			value: this.props.feedbackPage,
+			feedbackPage: this.props.feedbackPage,
+			feedbackNotificationMail: this.props.feedbackNotificationMail,
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);
@@ -33,60 +47,64 @@ export default class WebsiteLayout extends React.Component <any, any> {
 
 	componentWillReceiveProps (nextProps) {
 		this.setState({
-			value: nextProps.feedbackPage,
+			feedbackPage: nextProps.feedbackPage,
+			feedbackNotificationMail: nextProps.feedbackNotificationMail,
 		});
 	}
 
-	onChange (e) {
-		this.setState({
-			value: e.target.value,
-		});
+	onChange(templateName: templates, value: string) {
+		console.log(templateName, value);
+		this.setState({[templateName]: value});
 	}
 
 	onSubmit () {
-		if (this.state.value !== this.props.feedbackPage) {
+		const {feedbackPage, feedbackNotificationMail} = this.state;
+		const {
+			feedbackPage: oldFeedbackPage,
+			feedbackNotificationMail: oldFeedbackNotificationMail,
+		} = this.props;
+		if (feedbackPage !== oldFeedbackPage ||
+			feedbackNotificationMail !== oldFeedbackNotificationMail) {
 			return this.props.onSubmit(
 				{
 					layout: {
 						templates: {
-							feedbackPage: this.state.value,
+							feedbackPage,
+							feedbackNotificationMail,
 						},
 					},
-				});
+				}
+			);
 		}
 	}
 
 	toggleVisibility () {
-		this.setState({visible: !this.state.visible});
+		const {visible} = this.state;
+		this.setState({visible: !visible});
 	}
 
 	render () {
-		const className = `row additional-settings-section
-							${this.state.visible ? ' opened' : ''}`;
+		const {visible, feedbackPage, feedbackNotificationMail} = this.state;
 		return (
-			<div className={className}>
+			<div className={`row layout-settings-section${visible ? ' opened' : ''}`}>
 				<div className="small-12 columns">
-					<div className="additional-btn" onClick={this.toggleVisibility}>
+					<div className="layout-btn" onClick={this.toggleVisibility}>
 						Layout Settings
 					</div>
 				</div>
-				<div className="small-12 columns additional-content">
-					<div className="additional-content-section">
-						<div className="row">
-							<div className="small-12 columns">
-								<fieldset className="text">
-									<label htmlFor="feedbackPage">Feedback Page</label>
-									<textarea
-										value={this.state.value || ''}
-										onChange={this.onChange}
-										name="feedbackPage"
-										onBlur={this.onSubmit}
-										rows={10}
-									/>
-								</fieldset>
-							</div>
-						</div>
-					</div>
+				<div className="small-12 columns layout-content">
+					<WebsiteLayoutContentSection
+						value={feedbackPage}
+						buttonText={'Feedback page template'}
+						templateName={'feedbackPage'}
+						onSubmit={this.onSubmit}
+						onChange={this.onChange.bind(this,'feedbackPage')}/>
+					<WebsiteLayoutContentSection
+						value={feedbackNotificationMail}
+						buttonText={'Feedback notification mail template'}
+						templateName={'feedbackNotificationMail'}
+						onSubmit={this.onSubmit}
+						onChange={this.onChange.bind(this,'feedbackNotificationMail')}/>
 				</div>
 			</div>
 		);

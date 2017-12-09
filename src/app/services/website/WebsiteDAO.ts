@@ -79,6 +79,9 @@ export function update(name : string, data:any) : Promise <Website> {
 				if ('feedbackPage' in layout.templates) {
 					resWrite.layout.templates.feedbackPage = layout.templates.feedbackPage;
 				}
+				if ('feedbackNotificationMail' in layout.templates) {
+					resWrite.layout.templates.feedbackNotificationMail = layout.templates.feedbackNotificationMail;
+				}
 			}
 			return wrapSave(resWrite.save());
 		});
