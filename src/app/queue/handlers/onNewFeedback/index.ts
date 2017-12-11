@@ -57,25 +57,25 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 	let template : MailTemplate;
 	let website : Website;
 
-	// First, get the feedback object and the e-mail template.
-	// Those two are independent, so we can query them in parallel:
-	Promise.all([
-		feedbackService.getByID(feedbackID),
-		templateService.getFeedbackNotifyTemplate(),
-	])
+	// First, get the feedback object
+	feedbackService.getByID(feedbackID)
 	// Now that we have the article inside the feedback object, we can
 	// ask for the "Website" that all this belongs to:
-	.spread((f : Feedback, t : MailTemplate) => {
+	.then((f : Feedback) => {
 		feedback = f;  // But first, store these objects for later
-		template = t;
 
 		const websiteID : any = feedback.article.website;
 		return websiteService.getByID(websiteID as string);
 	})
-	// Now we have all the necessary objects, let's go ahead and make an e-mail
-	// out of them
 	.then((w : Website) => {
 		website = w;
+
+		return templateService.getFeedbackNotifyTemplate(website);
+	})
+	// Now we have all the necessary objects, let's go ahead and make an e-mail
+	// out of them
+	.then((t: MailTemplate) => {
+		template = t;
 
 		// Again in parallel: layout the e-mail content and create a list of
 		// recipients mail addresses that will receive this. Currently, the

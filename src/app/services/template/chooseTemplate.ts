@@ -14,27 +14,12 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
-
-import * as doT from 'dot';
-import * as path from 'path';
-
-import MailTemplate from 'app/template/MailTemplate';
 
 import * as app from 'app/util/applib';
-import Website from 'base/Website';
-import emptyCheck from 'app/util/emptyCheck';
-import chooseTemplate from 'app/services/template/chooseTemplate';
+import { isEmpty } from 'lodash';
 
-const log = app.createLog();
-const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
-
-export default function(website : Website) : Promise <MailTemplate> {
-	emptyCheck(website);
-
-	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
-		.then((raw : string) => {
-			log('Mail notification template loaded');
-			return new MailTemplate (doT.template(raw));
-		});
+export default function (template, defaultTemplate) : Promise <string> {
+	return isEmpty(template) ?
+		app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'))
+		: Promise.resolve(template);
 }
