@@ -24,15 +24,15 @@ import { ModelNames } from 'app/db/names';
 import FeedbackStatus from 'base/FeedbackStatus';
 
 const FeedbackStatusEntry = {
-	status : {
+	status: {
 		type: String,
 		required: true,
 		enum: Object.values(FeedbackStatus),
 		default: FeedbackStatus.New,
 	},
-	changeDate : {
-		type : Date,
-		required : true,
+	changeDate: {
+		type: Date,
+		required: true,
 	},
 };
 
@@ -58,6 +58,11 @@ const FeedbackSchema : Schema = new Schema({
 			required : false,
 		},
 	}, FeedbackStatusEntry),
+
+	oneshotUpdateToken: {
+		type: String,
+		required: false,
+	},
 
 	// The actual feedback data
 	items: [Schema.Types.Mixed],
