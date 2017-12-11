@@ -54,7 +54,7 @@ export function getByArticle (
 {
 	emptyCheck(article);
 
-	return wrapFind(populateFeedback(
+	return wrapFind(populateFeedbacks(
 		FeedbackModel.find({
 			article: article.ID,
 		})
@@ -87,7 +87,7 @@ export function getByArticleAuthor (
 		query.website = website.ID;
 	}
 
-	return wrapFind(populateFeedback(
+	return wrapFind(populateFeedbacks(
 		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
 	));
 }
@@ -101,21 +101,9 @@ export function getByID(
 {
 	emptyCheck(objectID);
 
-	let result = FeedbackModel.findOne({
+	return wrapFindOne(populateFeedback(FeedbackModel.findOne({
 		_id: new ObjectID(objectID),
-	});
-
-	if (populated) {
-		result = result.populate({  // TODO use common populate; type compatibility?
-			path: 'article',
-			populate: {
-				path: 'authors',
-			},
-		})
-		.populate('enduser');
-	}
-
-	return wrapFindOne(result);
+	})));
 }
 
 // getByStatus with additional query parameter
@@ -134,8 +122,20 @@ export function getByStatus (
 		'status.status': currentStatus.toString(),
 	});
 
-	return wrapFind(populateFeedback(
+	return wrapFind(populateFeedbacks(
 		FeedbackModel.find(query).sort(sort).skip(skip).limit(limit)
+	));
+}
+
+// getByUpdateToken
+
+export function getByUpdateToken(oneshotUpdateToken : string) : Promise <Feedback> {
+	emptyCheck(oneshotUpdateToken);
+
+	return wrapFindOne(populateFeedback(
+		FeedbackModel.findOne({
+			oneshotUpdateToken,
+		})
 	));
 }
 
@@ -147,7 +147,7 @@ export function getRange (
 	sort : Object = defaultSort
 ) : Promise <Feedback[]>
 {
-	return wrapFind(populateFeedback(
+	return wrapFind(populateFeedbacks(
 		FeedbackModel.find().sort(sort).skip(skip).limit(limit)
 	));
 }
@@ -155,8 +155,21 @@ export function getRange (
 // Internal populate
 
 function populateFeedback <D extends Document> (
-	query : DocumentQuery <D[], D>
-) : DocumentQuery <D[], D>
+	query : DocumentQuery <D, D> // | DocumentQuery <D, D>
+) : DocumentQuery <D, D> // | DocumentQuery <D, D>
+{
+	return query.populate({
+		path: 'article',
+		populate: {
+			path: 'authors',
+		},
+	})
+	.populate('enduser');
+}
+
+function populateFeedbacks <D extends Document> (
+	query : DocumentQuery <D[], D> // | DocumentQuery <D, D>
+) : DocumentQuery <D[], D> // | DocumentQuery <D, D>
 {
 	return query.populate({
 		path: 'article',

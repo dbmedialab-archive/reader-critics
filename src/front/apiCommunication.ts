@@ -18,6 +18,8 @@
 
 import 'whatwg-fetch';
 
+import { RawPostEndUser } from 'base/api/RawPostEndUser';
+
 import { getLocale } from 'front/uiGlobals';
 import { showError } from 'front/uiHelpers';
 
@@ -43,6 +45,10 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
+});
+
+export const sendEnduserData = ((data : RawPostEndUser) : Promise <any> => {
+	return postData('/api/enduser/', data).then(checkStatus);
 });
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
