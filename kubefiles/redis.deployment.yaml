@@ -10,6 +10,9 @@ spec:
     metadata:
       labels:
         app: redis
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: 9121
     spec:
       containers:
       - name: redis
@@ -17,6 +20,11 @@ spec:
         ports:
         - name: redis
           containerPort: 6379
+      - name: redis_exporter
+        image: oliver006/redis_exporter
+        ports:
+        - name: prometheus
+          containerPort: 9121
       init-containers:
       - name: transparent_hugepage
         image: busybox
