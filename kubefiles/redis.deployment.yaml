@@ -20,13 +20,13 @@ spec:
         ports:
         - name: redis
           containerPort: 6379
-      - name: redis_exporter
+      - name: redis-exporter
         image: oliver006/redis_exporter
         ports:
         - name: prometheus
           containerPort: 9121
       initContainers:
-      - name: transparent_hugepage
+      - name: transparent-hugepage
         image: busybox
         command:
         - sh
