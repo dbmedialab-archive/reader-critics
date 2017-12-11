@@ -11,9 +11,9 @@ spec:
       labels:
         role: mongo
         environment: {{env "ENV"}}
-			annotations:
-				prometheus.io/scrape: "true"
-				prometheus.io/port: 9216
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: 9216
     spec:
       terminationGracePeriodSeconds: 10
       containers:
