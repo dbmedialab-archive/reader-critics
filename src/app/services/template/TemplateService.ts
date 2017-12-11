@@ -26,7 +26,7 @@ interface TemplateService {
 	getSuggestionPageTemplate(): Promise <PageTemplate>;
 
 	// E-Mail templates
-	getFeedbackNotifyTemplate() : Promise <MailTemplate>;
+	getFeedbackNotifyTemplate(website : Website) : Promise <MailTemplate>;
 
 	// Admin page template
 	getAdminPageTemplate(): Promise <PageTemplate>;

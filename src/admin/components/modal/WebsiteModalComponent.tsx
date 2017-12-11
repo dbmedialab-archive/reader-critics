@@ -85,7 +85,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 
 	render (): JSX.Element {
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
-		const isDisabled = !!name && !ID;
+		const isDisabled = name && !ID;
 		return (
 			<ReactModal isOpen={isOpen} name="website" closeHandler={this.closePopup}>
 				<div className="modal-window">
