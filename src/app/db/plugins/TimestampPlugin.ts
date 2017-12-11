@@ -36,8 +36,13 @@ export default function(schema : Schema, options : any) {
 	});
 
 	schema.pre('update', function () {
-		if (typeof this.date === 'undefined' || typeof this.date.created === 'undefined') {
-			this.update({}, { $set: {'date.created': new Date()}});
-		}
+		this.update({}, {
+			'$set': {
+				'date.modified': new Date(),
+			},
+			'$setOnInsert': {
+				'date.created': new Date(),
+			},
+		});
 	});
 }
