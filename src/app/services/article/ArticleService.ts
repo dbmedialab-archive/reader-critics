@@ -18,11 +18,13 @@
 
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
+import Feedback from 'base/Feedback';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
-import {ArticleDocument} from 'app/db/models';
-import {ObjectID} from 'bson';
+
+import { ArticleDocument } from 'app/db/models';
+import { ObjectID } from 'app/db';
 
 /**
  * The Article Service persists Article objects to the database and keeps
@@ -115,6 +117,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Get amount of Articles
 	 */
 	getAmount(search?: string) : Promise <number>
+
+	/**
+	 * Add another feedback object reference
+	 */
+	addFeedback(article : Article, feedback : Feedback) : Promise <void>
 }
 
 export default ArticleService;
