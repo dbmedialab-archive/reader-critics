@@ -34,4 +34,10 @@ export default function(schema : Schema, options : any) {
 		}
 		next();
 	});
+
+	schema.pre('update', function () {
+		if (this.date === undefined || this.date.created === undefined) {
+			this.update({}, { $set: {'date.created': new Date()}});
+		}
+	});
 }
