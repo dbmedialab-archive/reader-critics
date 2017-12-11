@@ -17,4 +17,16 @@ spec:
         ports:
         - name: redis
           containerPort: 6379
-
+      init-containers:
+      - name: transparent_hugepage
+        image: busybox
+        command:
+        - sh
+        - -c
+        - "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+      - name: somaxconn
+        image: busybox
+        command:
+        - sh
+        - -c
+        - "echo 512 > /proc/sys/net/core/somaxconn"
