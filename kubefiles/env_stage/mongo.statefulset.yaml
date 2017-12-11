@@ -13,7 +13,7 @@ spec:
         environment: {{env "ENV"}}
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: 9126
+        prometheus.io/port: "9126"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
