@@ -11,9 +11,6 @@ spec:
       labels:
         role: mongo
         environment: {{env "ENV"}}
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9126"
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -37,13 +34,6 @@ spec:
               value: role=mongo,environment={{env "ENV"}}
             - name: KUBE_NAMESPACE
               value: {{env "REPONAME"}}
-        - name: mongodb-exporter
-          image: eu.gcr.io/container-registry-186614/mongodb-exporter
-          env:
-            - name: MONGODB_URL
-              value: mongodb://mongo:27017
-          ports:
-            - containerPort: 9126
   volumeClaimTemplates:
   - metadata:
       name: mongo-persistent-storage
