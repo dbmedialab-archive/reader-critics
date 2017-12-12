@@ -31,9 +31,11 @@ spec:
         - name: mongodb-exporter
           image: eu.gcr.io/container-registry-186614/mongodb-exporter
           imagePullPolicy: Always
-          env:
-            - name: MONGODB_URL
-              value: mongodb://localhost:27017
+          envFrom:
+            - secretRef:
+                name: secrets
+            - configMapRef:
+                name: config
           ports:
             - containerPort: 9001
   volumeClaimTemplates:
