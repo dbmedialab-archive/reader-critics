@@ -24,6 +24,7 @@ import { sendSuggestion } from 'front/apiCommunication';
 import { FormattedMessage } from 'react-intl';
 import Validation from 'base/Validation';
 import { getLocale } from 'front/uiGlobals';
+import {showSuccess} from 'front/uiHelpers';
 
 const recaptchaLang = getLocale();
 
@@ -101,8 +102,8 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private handleSubmit(e: any) {
 		e.preventDefault();
 		sendSuggestion(this.state)
-		.then((res) => {
-			console.log('res', res);
+		.then(() => {
+			showSuccess(null, () => window.location.href = '/');
 		})
 		.catch((err) => {
 			this.recaptchaInstance.reset();
@@ -128,7 +129,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		);
 	}
 
-	private renderEmailInput = () => <fieldset className="text">
+	private renderEmailInput = () => (<fieldset className="text">
 		<label htmlFor="email">Email</label>
 		<input
 			type="email"
@@ -138,7 +139,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 			onBlur={this.handleBlur('email')}
 			onChange={() => this.UpdateState('email', this.emailInput)}
 		/>
-	</fieldset>
+	</fieldset>)
 
 	private renderCommentInput = () => <fieldset className="text">
 		<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
