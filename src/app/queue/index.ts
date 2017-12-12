@@ -35,6 +35,7 @@ let queue : kue.Queue;
 
 export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
+	CheckEscalationToEditor = 'check-escalation-to-editor',
 	NewFeedback = 'new-feedback',
 	SendSuggestionDigest = 'send-suggestion-digest',
 }

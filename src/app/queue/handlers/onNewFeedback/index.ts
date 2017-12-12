@@ -34,6 +34,11 @@ import {
 	websiteService,
 } from 'app/services';
 
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
+
 import getRecipients from './getRecipients';
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
@@ -92,6 +97,9 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
 	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
+	.then(() => sendMessage(MessageType.CheckEscalationToEditor, {
+		articleID: feedback.article.ID,
+	}))
 	.then(() => {
 		done();
 		return null;  // Silences the "Promise handler not returned" warnings

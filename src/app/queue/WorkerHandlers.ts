@@ -1,10 +1,14 @@
-import { Job } from 'kue';  // tslint:disable-line
+import { Job } from 'kue';
 
-import { onCheckAwaitFeedback } from './handlers/onCheckAwaitFeedback';
-import { onNewFeedback } from './handlers/onNewFeedback';
+import {
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onNewFeedback,
+} from './handlers';
 
 export const jobWorkerHandlers = Object.freeze({
 	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
 	onNewFeedback,
 });
 
