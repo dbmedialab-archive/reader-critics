@@ -25,16 +25,16 @@ spec:
         ports:
         - name: prometheus
           containerPort: 9121
-      initContainers:
-      - name: transparent-hugepage
-        image: busybox
-        command:
-        - sh
-        - -c
-        - "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
-      - name: somaxconn
-        image: busybox
-        command:
-        - sh
-        - -c
-        - "echo 512 > /proc/sys/net/core/somaxconn"
+					#      initContainers:
+					#      - name: transparent-hugepage
+					#        image: busybox
+					#        command:
+					#        - sh
+					#        - -c
+					#        - "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+					#      - name: somaxconn
+					#        image: busybox
+					#        command:
+					#        - sh
+					#        - -c
+					#        - "echo 512 > /proc/sys/net/core/somaxconn"
