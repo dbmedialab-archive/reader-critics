@@ -18,23 +18,8 @@ spec:
       - name: redis
         image: redis
         ports:
-        - name: redis
-          containerPort: 6379
+					- containerPort: 6379
       - name: redis-exporter
         image: oliver006/redis_exporter
         ports:
-        - name: prometheus
-          containerPort: 9121
-#      initContainers:
-#      - name: transparent-hugepage
-#        image: busybox
-#        command:
-#        - sh
-#        - -c
-#        - "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
-#      - name: somaxconn
-#        image: busybox
-#        command:
-#        - sh
-#        - -c
-#        - "echo 512 > /proc/sys/net/core/somaxconn"
+					- containerPort: 9121
