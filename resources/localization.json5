@@ -67,7 +67,13 @@
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
-				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
+				nb: 'En feil oppstod. Vennligst prøv igjen senere.',
+			},
+		},
+		success: {
+			thanks: {
+				en: 'Thank you!',
+				nb: 'Takk!',
 			},
 		},
 		label: {

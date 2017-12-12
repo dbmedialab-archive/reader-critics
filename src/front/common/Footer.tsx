@@ -29,7 +29,7 @@ const Footer : React.StatelessComponent <any> =
 				</a>
 			</div>
 		</div>
-		<div id="err-section"/>
+		<div id="modal-section"/>
 	</footer>;
 
 export default Footer;
