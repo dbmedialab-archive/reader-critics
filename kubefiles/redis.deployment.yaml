@@ -18,8 +18,8 @@ spec:
       - name: redis
         image: redis
         ports:
-					- containerPort: 6379
+          - containerPort: 6379
       - name: redis-exporter
         image: oliver006/redis_exporter
         ports:
-					- containerPort: 9121
+          - containerPort: 9121
