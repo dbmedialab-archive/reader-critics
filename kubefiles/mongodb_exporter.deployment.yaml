@@ -8,6 +8,8 @@ spec:
   revisionHistoryLimit: 1
   template:
     metadata:
+			label:
+				app: mongodb-exporter
       annotations:
         prometheus.io/scrape: "true"
     spec:
