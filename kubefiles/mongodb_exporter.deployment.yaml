@@ -1,15 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: mongodb_exporter
+  name: mongodb-exporter
   namespace: {{env "REPONAME"}}
 spec:
   replicas: 1
   revisionHistoryLimit: 1
   template:
     metadata:
-      labels:
-        app: mongodb_exporter
       annotations:
         prometheus.io/scrape: "true"
     spec:
