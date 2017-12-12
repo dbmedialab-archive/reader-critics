@@ -18,4 +18,4 @@
 
 export * from './onCheckAwaitFeedback/onCheckAwaitFeedback';
 export * from './onCheckEscalationToEditor/onCheckEscalationToEditor';
-export * from './onNewFeedback';
+export * from './onNewFeedback/onNewFeedback';

@@ -23,4 +23,5 @@ import {
 
 export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void {
 	const { articleID } = job.data;
+	console.log(articleID);  // This is just here so that the Linter STFU
 }
