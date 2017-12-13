@@ -26,6 +26,7 @@ import {
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
 	onNewFeedback,
+	onSendEditorEscalation,
 } from './handlers';
 
 import * as app from 'app/util/applib';
@@ -36,6 +37,7 @@ const jobWorkerHandlers = Object.freeze({
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
 	onNewFeedback,
+	onSendEditorEscalation,
 });
 
 // const webWorkerHandlers = Object.freeze({
@@ -53,6 +55,7 @@ export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
 	CheckEscalationToEditor = 'check-escalation-to-editor',
 	NewFeedback = 'new-feedback',
+	SendEditorEscalation = 'send-editor-escalation',
 	SendSuggestionDigest = 'send-suggestion-digest',
 }
 
@@ -116,7 +119,7 @@ export function initWebWorkerQueue() : Promise <void> {
 
 export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
 	const paypayloadload = payload === undefined ? {} : payload;
-	log(type, app.inspect(paypayloadload));
+	log(type, app.inspect(paypayloadload, 1, false));
 
 	queue.create(type, paypayloadload)
 		.priority('normal')

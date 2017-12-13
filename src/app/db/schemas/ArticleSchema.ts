@@ -21,7 +21,7 @@ import { Schema } from 'mongoose';
 import ArticleURL from 'base/ArticleURL';
 
 import { objectReference } from 'app/db/common';
-import { EscalationLevel } from 'base/EscalationLevel';
+// import { EscalationLevel } from 'base/EscalationLevel';
 import { ModelNames } from 'app/db/names';
 
 const ArticleSchema : Schema = new Schema({
@@ -47,8 +47,8 @@ const ArticleSchema : Schema = new Schema({
 	status: {
 		escalated: {
 			type: String,
-			required: true,
-			enum: Object.values(EscalationLevel),
+			// required: true,
+			// enum: Object.values(EscalationLevel),
 			default: null,
 		},
 	},

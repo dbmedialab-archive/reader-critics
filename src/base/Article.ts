@@ -43,7 +43,7 @@ interface Article extends PersistedModel {
 	feedbacks? : Feedback[]
 
 	status?: {
-		escalated : string
+		escalated? : string
 	}
 }
 

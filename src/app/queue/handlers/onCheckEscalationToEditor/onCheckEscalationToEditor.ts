@@ -24,21 +24,20 @@ import {
 import { articleService } from 'app/services';
 import { EscalationThresholds } from 'base/EscalationThresholds';
 
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
+
 import Article from 'base/Article';
 import Website from 'base/Website';
 import config from 'app/config';
-
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
 
 const minThreshold = 3;
 const maxThreshold = 200;
 
 export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void {
 	const { articleID } = job.data;
-	log('articleID:', articleID);  // This is just here so that the Linter STFU
-
 	// We could just push the whole article object into the job message and check
 	// the length of the "feedbacks" array here. Two problems with that:
 	// - Increased pressure on the queue database because it would have to handle
@@ -55,7 +54,10 @@ export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void
 		const thresholds = getThresholds(article.website);
 
 		if (shouldNotifyEditor(thresholds, article)) {
-			log('SHOULD I DO IT??');
+			// Opposite to what's mentioned above, here indeed the whole article
+			// object is stuffed into the queue job. But this happens way less often
+			// than the check operation.
+			sendMessage(MessageType.SendEditorEscalation, { article });
 		}
 	});
 }

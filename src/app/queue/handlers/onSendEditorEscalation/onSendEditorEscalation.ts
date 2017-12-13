@@ -16,7 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export * from './onCheckAwaitFeedback/onCheckAwaitFeedback';
-export * from './onCheckEscalationToEditor/onCheckEscalationToEditor';
-export * from './onNewFeedback/onNewFeedback';
-export * from './onSendEditorEscalation/onSendEditorEscalation';
+import {
+	DoneCallback,
+	Job,
+} from 'kue';
+
+// import {
+// 	articleService,
+// 	feedbackService,
+// } from 'app/services';
+
+import Article from 'base/Article';
+// import Website from 'base/Website';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
+export function onSendEditorEscalation(job : Job, done : DoneCallback) : void {
+	const { article } : { article : Article } = job.data;
+
+	// First, check if there are any receipients available for this operation
+	if (article.website.chiefEditors.length < 1) {
+		log(`Website ${article.website.name} has no editors configured. Escalation mail not sent.`);
+		return done();
+	}
+}
