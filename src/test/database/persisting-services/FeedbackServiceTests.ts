@@ -110,10 +110,10 @@ export default function(this: ISuiteCallbackContext) {
 			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 		])
 		.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
-			const numNew = 2;
+			const numAwait = 5;
 			assert.lengthOf(
-				resultAwait, numNew,
-				`Expected ${numNew} feedbacks in status "AwaitEnduserData"`
+				resultAwait, numAwait,
+				`Expected ${numAwait} feedbacks in status "AwaitEnduserData"`
 			);
 
 			resultAwait.forEach((feedback, index) => {
