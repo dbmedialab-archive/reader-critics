@@ -17,8 +17,10 @@
 //
 
 import Article from 'base/Article';
+import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
@@ -122,6 +124,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Add another feedback object reference
 	 */
 	addFeedback(article : Article, feedback : Feedback) : Promise <void>
+
+	/**
+	 * Helper function to match feedback items with article items
+	 */
+	getRelatedArticleItem(article : Article, item : FeedbackItem) : ArticleItem
 }
 
 export default ArticleService;

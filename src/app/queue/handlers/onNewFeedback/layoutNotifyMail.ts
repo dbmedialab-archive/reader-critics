@@ -29,6 +29,7 @@ import {
 
 import * as app from 'app/util/applib';
 
+import { articleService } from 'app/services';
 import { translate as __ } from 'app/services/localization';
 
 const log = app.createLog();
@@ -43,7 +44,7 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
 		const i : ItemFormatPayload = {
-			aItem: getRelatedArticleItem(feedback.article, fItem),
+			aItem: articleService.getRelatedArticleItem(feedback.article, fItem),
 			fItem,
 		};
 
@@ -83,14 +84,6 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 	// notifyBrowser(html);  // -- this is only for convenient local testing
 
 	return Promise.resolve(html);
-}
-
-function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
-	return article.items.find((aItem : ArticleItem) => {
-		return aItem.order.item === fItem.order.item
-			&& aItem.order.type === fItem.order.type
-			&& aItem.type === fItem.type;
-	});
 }
 
 function debugInfo(feedback : Feedback) : string {

@@ -21,12 +21,14 @@ import {
 	Job,
 } from 'kue';
 
-// import {
+import {
 // 	articleService,
-// 	feedbackService,
-// } from 'app/services';
+	feedbackService,
+} from 'app/services';
 
 import Article from 'base/Article';
+import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
 // import Website from 'base/Website';
 
 import * as app from 'app/util/applib';
@@ -41,4 +43,31 @@ export function onSendEditorEscalation(job : Job, done : DoneCallback) : void {
 		log(`Website ${article.website.name} has no editors configured. Escalation mail not sent.`);
 		return done();
 	}
+
+	process(article).then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
+}
+
+function process(article : Article) {
+	return feedbackService.getByArticle(article, 0, Number.MAX_SAFE_INTEGER)
+	.then((feedbacks : Feedback[]) => {
+		const formattedFeedbacks : string[] = [];
+		feedbacks.forEach(fb => formattedFeedbacks.push(formatFeedback(article, fb)));
+	});
+}
+
+function formatFeedback(article : Article, feedback : Feedback) : string {
+	log('Formatting feedback %s', feedback.ID);
+	return '';
+}
+
+function formatFeedbackItem(article : Article, item : FeedbackItem) : string {
+	return '';
 }
