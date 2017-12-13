@@ -26,10 +26,12 @@ import {
 	feedbackService,
 } from 'app/services';
 
+import { layoutNotifyMail } from './layoutNotifyMail';
+
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
-// import Website from 'base/Website';
+import Website from 'base/Website';
 
 import * as app from 'app/util/applib';
 
@@ -57,17 +59,16 @@ export function onSendEditorEscalation(job : Job, done : DoneCallback) : void {
 
 function process(article : Article) {
 	return feedbackService.getByArticle(article, 0, Number.MAX_SAFE_INTEGER)
-	.then((feedbacks : Feedback[]) => {
-		const formattedFeedbacks : string[] = [];
-		feedbacks.forEach(fb => formattedFeedbacks.push(formatFeedback(article, fb)));
-	});
+	.then((feedbacks : Feedback[]) => Promise.all([
+		layoutNotifyMail(article, feedbacks),
+		getRecipients(article.website),
+	]));
+	// .then( send mail )
+	// .then( set article escalation status )
 }
 
-function formatFeedback(article : Article, feedback : Feedback) : string {
-	log('Formatting feedback %s', feedback.ID);
-	return '';
-}
+// Mail handling
 
-function formatFeedbackItem(article : Article, item : FeedbackItem) : string {
-	return '';
+function getRecipients(website : Website) : Promise <Array <string>> {
+	return Promise.resolve(['']);
 }
