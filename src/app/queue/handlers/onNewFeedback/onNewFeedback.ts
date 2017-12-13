@@ -57,13 +57,24 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 
 	log(`Received new feedback event for ID ${feedbackID}`);
 
-	// There's loads of objects that need to be loaded:
+	process(feedbackID).then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
+}
+
+function process(feedbackID : string) {
 	let feedback : Feedback;
 	let template : MailTemplate;
 	let website : Website;
 
 	// First, get the feedback object
-	feedbackService.getByID(feedbackID)
+	return feedbackService.getByID(feedbackID)
 	// Now that we have the article inside the feedback object, we can
 	// ask for the "Website" that all this belongs to:
 	.then((f : Feedback) => {
@@ -99,16 +110,7 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
 	.then(() => sendMessage(MessageType.CheckEscalationToEditor, {
 		articleID: feedback.article.ID,
-	}))
-	.then(() => {
-		done();
-		return null;  // Silences the "Promise handler not returned" warnings
-	})
-	.catch(error => {
-		app.yell(error);
-		done(error);
-		return null;
-	});
+	}));
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {
