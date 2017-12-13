@@ -150,6 +150,16 @@ const config = convict({
 			},
 		},
 	},
+	escalateThreshold: {
+		defaults: {
+			toEditor: {
+				doc: 'Default number of feedbacks that an article can receive before being escalated to the editor',
+				format: Number,
+				default: 5,
+				env: 'ESCALATE_THRESHOLD_DEFAULT_TO_EDITOR',
+			},
+		},
+	},
 	http: {
 		port: {
 			doc: 'Network port where the HTTP server is going to listen',

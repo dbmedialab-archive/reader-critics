@@ -20,20 +20,24 @@ import PersistedModel from 'base/zz/PersistedModel';
 import Person from 'base/zz/Person';
 
 interface Website extends PersistedModel {
-	name : string;
-	parserClass? : string;
-	locale? : string;
+	name : string
+	parserClass? : string
+	locale? : string
 
-	hosts : string[];
-	chiefEditors : Person[];
+	hosts : string[]
+	chiefEditors : Person[]
+
+	escalateThreshold : {
+		toEditor? : number
+	}
 
 	layout : {
 		templates : {
-			feedbackPage? : string;
-			feedbackNotificationMail? : string;
+			feedbackPage? : string
+			feedbackNotificationMail? : string
 		}
-		scssVariables? : object;
-	};
+		scssVariables? : object
+	}
 }
 
 export default Website;
