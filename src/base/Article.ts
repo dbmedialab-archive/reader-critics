@@ -25,20 +25,26 @@ import Website from './Website';
 
 interface Article extends PersistedModel {
 	// Defining a unique version of one article
-	url : ArticleURL;
-	version : string;
+	url : ArticleURL
+	version : string
 
 	// Byline
-	authors : User[];
+	authors : User[]
 
-	website? : Website;
+	website? : Website
 
 	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[];
+	items : ArticleItem[]
+
 	date? : {
-		created?: Date;
-	};
-	feedbacks? : Feedback[];
+		created?: Date
+	}
+
+	feedbacks? : Feedback[]
+
+	status?: {
+		escalated : string
+	}
 }
 
 export default Article;

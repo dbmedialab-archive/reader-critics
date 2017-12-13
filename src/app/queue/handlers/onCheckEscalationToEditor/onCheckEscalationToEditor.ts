@@ -21,7 +21,66 @@ import {
 	Job,
 } from 'kue';
 
+import { articleService } from 'app/services';
+import { EscalationThresholds } from 'base/EscalationThresholds';
+
+import Article from 'base/Article';
+import Website from 'base/Website';
+import config from 'app/config';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
+const minThreshold = 3;
+const maxThreshold = 200;
+
 export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void {
 	const { articleID } = job.data;
-	console.log(articleID);  // This is just here so that the Linter STFU
+	log('articleID:', articleID);  // This is just here so that the Linter STFU
+
+	// We could just push the whole article object into the job message and check
+	// the length of the "feedbacks" array here. Two problems with that:
+	// - Increased pressure on the queue database because it would have to handle
+	//   potentially large payload objects;
+	// - Another process concurrently pushing another feedback to this article
+	//   will increase the count in the database, but the object in this process
+	//   here would know nothing about that; There is actually no guaranteed
+	//   "immediate" execution of a queue job so several seconds could pass
+	//   between queueing "CheckEscalationToEditor" and picking it up here.
+	// The logical thing to do: requery the article here, the round trip to the
+	// database is arguable.
+	articleService.getByID(articleID)
+	.then(article => {
+		const thresholds = getThresholds(article.website);
+
+		if (shouldNotifyEditor(thresholds, article)) {
+			log('SHOULD I DO IT??');
+		}
+	});
 }
+
+function getThresholds(website : Website) : EscalationThresholds {
+	// Default threshold value from the application config
+	let toEditor : number = config.get('escalateThreshold.defaults.toEditor');
+
+	// Get the threshold setting from the website configuration, if it is set
+	if (website.escalateThreshold) {
+		if (website.escalateThreshold.toEditor) {
+			toEditor = website.escalateThreshold.toEditor;
+		}
+	}
+
+	// Apply some sensible boundaries to that number
+	toEditor = Math.max(toEditor, minThreshold);
+	toEditor = Math.min(toEditor, maxThreshold);
+
+	return {
+		toEditor,
+	};
+}
+
+const shouldNotifyEditor = (thresholds : EscalationThresholds, article : Article) => (
+	article.status.escalated === null
+	&& article.feedbacks.length > thresholds.toEditor
+);
