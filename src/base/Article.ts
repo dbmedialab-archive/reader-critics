@@ -18,6 +18,7 @@
 
 import ArticleItem from './ArticleItem';
 import ArticleURL from './ArticleURL';
+import Feedback from './Feedback';
 import PersistedModel from './zz/PersistedModel';
 import User from './User';
 import Website from './Website';
@@ -37,7 +38,7 @@ interface Article extends PersistedModel {
 	date? : {
 		created?: Date;
 	};
-	feedbacks? : number;
+	feedbacks? : Feedback[];
 }
 
 export default Article;
