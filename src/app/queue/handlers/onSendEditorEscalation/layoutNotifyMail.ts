@@ -19,23 +19,119 @@
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
+
+import { articleService }  from 'app/services';
+import { translate as __ } from 'app/services/localization';
+
+import { notifyBrowser } from 'app/util/notifyBrowser';
+import {
+	format,
+	ItemFormatPayload,
+} from 'app/mail/layout/FeedbackNotifyLayout';
 
 import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-export function layoutNotifyMail(article : Article, feedbacks : Feedback[]) {
-	const formattedFeedbacks : string[] = [];
-	feedbacks.forEach(fb => formattedFeedbacks.push(formatFeedback(article, fb)));
+const cssFeedbackItemBox = [
+	'padding: 0.8em',
+	'margin-bottom: 0.5em',
+].join(';');
+
+export function layoutNotifyMail(
+	article : Article,
+	feedbacks : Feedback[],
+	template : MailTemplate
+) {
+	const { locale } = article.website;
+
+	const html : string = template.setParams({
+		editorEscalation: __('mail.fb-notify.editor-escalation', {
+			locale,
+			values: {
+				count: feedbacks.length,
+			},
+		}),
+		ccEditor: __('mail.fb-notify.cc-editor', locale),
+
+		articleTitle: format.articleTitle(article),
+		// enduser: format.enduser(feedback),
+		// sentIn: format.whenSentIn(feedback),
+
+		debugInfo: debugInfo(article, feedbacks),
+
+		feedbacks: formatFeedbacks(article, feedbacks, locale),
+	})
+	.render();
+
+	notifyBrowser(html);  // -- this is only for convenient local testing
+
+	return Promise.resolve(html);
 }
 
-function formatFeedback(article : Article, feedback : Feedback) : string {
+function formatFeedbacks(
+	article : Article,
+	feedbacks : Feedback[],
+	locale : string
+) : string[] {
+	return feedbacks.map(fb => formatFeedback(article, fb, locale));
+}
+
+function formatFeedback(article : Article, feedback : Feedback, locale : string) : string {
 	log('Formatting feedback %s', feedback.ID);
-	feedback.items.forEach(item => formatFeedbackItem(article, item));
-	return '';
+
+	const d = new Date(feedback.date.created);
+	const p = __('mail.fb-notify.posted', locale);
+	const x = d.toLocaleDateString(locale);
+	const y = d.toLocaleTimeString(locale);
+	const head = `<div class="feedback-date">${p} ${x} ${y}</div>`;
+
+	return head + (feedback.items
+	.map((fItem, index) => {
+		const item : ItemFormatPayload = {
+			aItem: articleService.getRelatedArticleItem(feedback.article, fItem),
+			fItem,
+		};
+
+		if (item.aItem === undefined) {
+			log('Could not find related article item (feedback ID %s)', feedback.ID, app.inspect(fItem));
+			return;
+		}
+
+		if (item.fItem.text === undefined) {
+			log('Found a feedback object without text property, ignoring');
+			return;
+		}
+
+		return formatFeedbackItem(item, locale);
+	})
+	.filter(item => item !== undefined)
+	.join('\n'));
 }
 
-function formatFeedbackItem(article : Article, item : FeedbackItem) : string {
-	return '';
+function formatFeedbackItem(item : ItemFormatPayload, locale : string) : string {
+	const formatted = [
+		format.itemHeader(item, locale),
+		format.itemText(item),
+		format.itemComment(item, locale),
+		format.itemLinks(item, locale),
+	];
+
+	const borderCol = (item.fItem.text.length <= 0) ? format.colorItemText : format.colorItemDiff;
+	const css = `${cssFeedbackItemBox}; border-left: 3px solid ${borderCol};`;
+	return `<div class="fb-item-box" style="${css}">${formatted.join('')}</div>`;
+}
+
+function debugInfo(article : Article, feedbacks : Feedback[]) : string {
+	const what = feedbacks.map((feedback : Feedback, index : number) => (
+		`feedback #${index} ID = ${feedback.ID}`
+	)).concat([
+		`article ID = ${article.ID}`,
+		`article URL = ${article.url}`,
+		`article version = ${article.version}`,
+	]);
+
+	return what.join('<br/>');
 }

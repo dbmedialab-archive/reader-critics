@@ -22,8 +22,8 @@ import {
 } from 'kue';
 
 import {
-// 	articleService,
 	feedbackService,
+	templateService,
 } from 'app/services';
 
 import { layoutNotifyMail } from './layoutNotifyMail';
@@ -31,6 +31,7 @@ import { layoutNotifyMail } from './layoutNotifyMail';
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
 
 import * as app from 'app/util/applib';
@@ -58,9 +59,12 @@ export function onSendEditorEscalation(job : Job, done : DoneCallback) : void {
 }
 
 function process(article : Article) {
-	return feedbackService.getByArticle(article, 0, Number.MAX_SAFE_INTEGER)
-	.then((feedbacks : Feedback[]) => Promise.all([
-		layoutNotifyMail(article, feedbacks),
+	return Promise.all([
+		feedbackService.getByArticle(article, 0, Number.MAX_SAFE_INTEGER),
+		templateService.getEscalateToEditorMailTemplate(article.website),
+	])
+	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
+		layoutNotifyMail(article, feedbacks, template),
 		getRecipients(article.website),
 	]));
 	// .then( send mail )

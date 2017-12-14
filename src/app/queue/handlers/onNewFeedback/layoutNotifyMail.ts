@@ -39,7 +39,7 @@ const cssFeedbackItemBox = [
 	'margin-bottom: 0.5em',
 ].join(';');
 
-export default function (feedback : Feedback, template : MailTemplate) : Promise <any> {
+export default function (feedback : Feedback, template : MailTemplate) : Promise <string> {
 	let dtxt = '';
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
@@ -48,7 +48,10 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 			fItem,
 		};
 
-		log('Formatting item #%d: %s', fIndex, app.inspect(i));
+		if (i.aItem === undefined) {
+			log('Could not find related article item (feedback ID %s)', feedback.ID, app.inspect(fItem));
+			return;
+		}
 
 		if (i.fItem.text === undefined) {
 			log('Found a feedback object without text property, ignoring');
@@ -67,11 +70,11 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 		dtxt += `<div class="fb-item-box" style="${css}">${formatted.join('')}</div>`;
 	});
 
-	const html = template.setParams({
+	const html : string = template.setParams({
 		gotFeedback: __('mail.fb-notify.got-feedback'),
 		whoSent: __('mail.fb-notify.who-sent'),
 
-		articleTitle: format.articleTitle(feedback),
+		articleTitle: format.articleTitle(feedback.article),
 		enduser: format.enduser(feedback),
 		sentIn: format.whenSentIn(feedback),
 

@@ -27,14 +27,14 @@ import emptyCheck from 'app/util/emptyCheck';
 import chooseTemplate from 'app/services/template/chooseTemplate';
 
 const log = app.createLog();
-const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
+const defaultTemplate = path.join('templates', 'mail', 'defaultEscalateToEditorNotify.html');
 
 export function getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate> {
 	emptyCheck(website);
 
 	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
 		.then((raw : string) => {
-			log('Mail notification template loaded');
+			log('Escalation notification template loaded');
 			return new MailTemplate (doT.template(raw));
 		});
 }

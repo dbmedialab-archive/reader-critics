@@ -86,7 +86,7 @@ function process(feedbackID : string) {
 	.then((w : Website) => {
 		website = w;
 
-		return templateService.getFeedbackNotifyTemplate(website);
+		return templateService.getFeedbackMailTemplate(website);
 	})
 	// Now we have all the necessary objects, let's go ahead and make an e-mail
 	// out of them

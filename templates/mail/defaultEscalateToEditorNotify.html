@@ -21,20 +21,33 @@
 			a:hover {
 				text-decoration: underline;
 			}
+			hr.feedback-sep {
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+			div.feedback-date {
+				font-size: 10pt;
+				margin-bottom: 0.2cm;
+			}
+			.em {
+				color: #293a46;
+				font-weight: bold;
+			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
-			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.gotFeedback}}</div>
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.editorEscalation}}</div>
 			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.articleTitle}}</div>
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.ccEditor}}</div>
 
-			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.whoSent}}</div>
-			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.enduser}}</div>
-
-			<div class="feedback-box">{{=it.feedbackBox}}</div>
-
-			<div style="font-size: 12pt; margin-top: 0.5cm;">{{=it.sentIn}}</div>
+			<hr class="feedback-sep"/>
+			{{~it.feedbacks :feedback}}
+			<div class="feedback-box">{{=feedback}}</div>
+			<hr class="feedback-sep"/>
+			{{~}}
 
 			<div style="font-size: 12pt; margin-top: 0.5cm; font-style: italic;">
-				Har du spørsmål ta kontakt med <a href="mailto:christoph.schmitz@dagbladet.no">Christoph Schmitz</a>.
+				Denne eposten kommer fra Betatesten av Leserkritikk 2.<br/>
+				Har du spørsmål ta kontakt med <a href="mailto:christoph.schmitz@dagbladet.no">Christoph Schmitz</a> eller les mer på <a href="https://github.com/dbmedialab/reader-critics">GitHub</a>.
 			</div>
 
 			<hr style="margin: 2em 0 1em;"/>
