@@ -33,11 +33,27 @@ import Article from 'base/Article';
 import Website from 'base/Website';
 import config from 'app/config';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
 const minThreshold = 3;
 const maxThreshold = 200;
 
 export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void {
 	const { articleID } = job.data;
+	process(articleID).then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
+}
+
+function process(articleID) {
 	// We could just push the whole article object into the job message and check
 	// the length of the "feedbacks" array here. Two problems with that:
 	// - Increased pressure on the queue database because it would have to handle
@@ -49,16 +65,26 @@ export function onCheckEscalationToEditor(job : Job, done : DoneCallback) : void
 	//   between queueing "CheckEscalationToEditor" and picking it up here.
 	// The logical thing to do: requery the article here, the round trip to the
 	// database is arguable.
-	articleService.getByID(articleID)
+	return articleService.getByID(articleID)
 	.then(article => {
 		const thresholds = getThresholds(article.website);
+
+		log(
+			'%s has %d feedbacks / editor needs %d',
+			articleID, article.feedbacks.length,
+			thresholds.toEditor
+		);
+
+		const msgPromises : Promise <void> [] = [];
 
 		if (shouldNotifyEditor(thresholds, article)) {
 			// Opposite to what's mentioned above, here indeed the whole article
 			// object is stuffed into the queue job. But this happens way less often
 			// than the check operation.
-			sendMessage(MessageType.SendEditorEscalation, { article });
+			msgPromises.push(sendMessage(MessageType.SendEditorEscalation, { article }));
 		}
+
+		return Promise.all(msgPromises);
 	});
 }
 

@@ -29,7 +29,7 @@ import chooseTemplate from 'app/services/template/chooseTemplate';
 const log = app.createLog();
 const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
 
-export default function(website : Website) : Promise <MailTemplate> {
+export function getFeedbackMailTemplate(website : Website) : Promise <MailTemplate> {
 	emptyCheck(website);
 
 	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
