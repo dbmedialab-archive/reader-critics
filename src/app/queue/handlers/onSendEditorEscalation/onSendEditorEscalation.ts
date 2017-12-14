@@ -22,12 +22,14 @@ import {
 } from 'kue';
 
 import {
+	articleService,
 	feedbackService,
 	templateService,
 } from 'app/services';
 
 import { getRecipients } from 'app/mail/getRecipients';
 import { layoutNotifyMail } from './layoutNotifyMail';
+import { EscalationLevel } from 'base/EscalationLevel';
 
 import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
@@ -74,10 +76,10 @@ function process(article : Article) {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent, {
 			highPriority: true,
 		});
-	});
-
-	// .then( send mail )
-	// .then( set article escalation status )
+	})
+	.then(() => articleService.setOptions(article, {
+		escalated: EscalationLevel.ToEditor,
+	}));
 }
 
 function getMailSubject(article : Article) : Promise <string> {

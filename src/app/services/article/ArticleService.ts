@@ -26,6 +26,7 @@ import Website from 'base/Website';
 import BasicPersistingService from '../BasicPersistingService';
 
 import { ArticleDocument } from 'app/db/models';
+import { ArticleOptions } from 'base/ArticleOptions';
 import { ObjectID } from 'app/db';
 
 /**
@@ -129,6 +130,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Helper function to match feedback items with article items
 	 */
 	getRelatedArticleItem(article : Article, item : FeedbackItem) : ArticleItem
+
+	/**
+	 * Set various options and flags on an article.
+	 */
+	setOptions(article : Article, options : ArticleOptions) : Promise <void>
 }
 
 export default ArticleService;

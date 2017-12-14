@@ -22,6 +22,7 @@ import {
 } from 'kue';
 
 import { articleService } from 'app/services';
+import { EscalationLevel } from 'base/EscalationLevel';
 import { EscalationThresholds } from 'base/EscalationThresholds';
 
 import {
@@ -70,9 +71,10 @@ function process(articleID) {
 		const thresholds = getThresholds(article.website);
 
 		log(
-			'%s has %d feedbacks / editor needs %d',
-			articleID, article.feedbacks.length,
-			thresholds.toEditor
+			'%s in status "%s" has %d feedbacks / "%s" needs %d',
+			articleID, (article.status.escalated || 'none'),
+			article.feedbacks.length,
+			EscalationLevel.ToEditor, thresholds.toEditor
 		);
 
 		const msgPromises : Promise <void> [] = [];

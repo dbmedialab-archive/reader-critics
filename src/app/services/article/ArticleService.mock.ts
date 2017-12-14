@@ -32,6 +32,7 @@ import getRangeWithFBCount from 'app/services/article/common/getRangeWithFBCount
 import getByID from 'app/services/article/common/getByID';
 import getAmount from 'app/services/article/common/getAmount';
 import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { setOptions } from './common/setOptions';
 
 import {
 	addFeedback,
@@ -55,6 +56,7 @@ const service : ArticleService
 			getByID,
 			getRangeWithFBCount,
 			getRelatedArticleItem,
+			setOptions,
 		}
 	);
 
