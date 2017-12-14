@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';

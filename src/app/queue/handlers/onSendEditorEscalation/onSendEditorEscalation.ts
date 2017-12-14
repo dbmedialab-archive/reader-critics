@@ -30,7 +30,6 @@ import { layoutNotifyMail } from './layoutNotifyMail';
 
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
-import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
 

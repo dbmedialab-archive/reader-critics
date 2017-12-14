@@ -18,9 +18,7 @@
 
 import Article from 'base/Article';
 import Feedback from 'base/Feedback';
-import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
-import Website from 'base/Website';
 
 import { articleService }  from 'app/services';
 import { translate as __ } from 'app/services/localization';
