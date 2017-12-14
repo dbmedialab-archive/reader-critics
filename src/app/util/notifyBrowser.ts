@@ -23,7 +23,11 @@ import { spawn } from 'child_process';
 
 const testPath = '/tmp/mailtest.html';
 
-export default function (html : string) {
+// What's it doing? It stores the html input that some other function produced
+// into a temporary file and launches a browser to show it. Very convenient
+// for testing mail templates and other outputs from the template engine.
+
+export function notifyBrowser(html : string) {
 	writeFileSync(testPath, html, {
 		flag: 'w',
 		mode: 0o644,
