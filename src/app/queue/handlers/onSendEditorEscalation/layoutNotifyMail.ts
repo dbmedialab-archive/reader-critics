@@ -22,8 +22,8 @@ import MailTemplate from 'app/template/MailTemplate';
 
 import { articleService }  from 'app/services';
 import { translate as __ } from 'app/services/localization';
+// import { notifyBrowser } from 'app/util/notifyBrowser';
 
-import { notifyBrowser } from 'app/util/notifyBrowser';
 import {
 	format,
 	ItemFormatPayload,
@@ -55,16 +55,12 @@ export function layoutNotifyMail(
 		ccEditor: __('mail.fb-notify.cc-editor', locale),
 
 		articleTitle: format.articleTitle(article),
-		// enduser: format.enduser(feedback),
-		// sentIn: format.whenSentIn(feedback),
-
 		debugInfo: debugInfo(article, feedbacks),
-
 		feedbacks: formatFeedbacks(article, feedbacks, locale),
 	})
 	.render();
 
-	notifyBrowser(html);  // -- this is only for convenient local testing
+	// notifyBrowser(html);  // -- this is only for convenient local testing
 
 	return Promise.resolve(html);
 }
@@ -78,8 +74,6 @@ function formatFeedbacks(
 }
 
 function formatFeedback(article : Article, feedback : Feedback, locale : string) : string {
-	log('Formatting feedback %s', feedback.ID);
-
 	const d = new Date(feedback.date.created);
 	const p = __('mail.fb-notify.posted', locale);
 	const x = d.toLocaleDateString(locale);

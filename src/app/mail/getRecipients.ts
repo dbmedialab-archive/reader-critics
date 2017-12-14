@@ -18,7 +18,7 @@
 
 import { uniq } from 'lodash';
 
-import Feedback from 'base/Feedback';
+import Article from 'base/Article';
 import Person from 'base/zz/Person';
 import Website from 'base/Website';
 
@@ -34,14 +34,18 @@ const msgNoRcpt = 'Could not determine recipients for feedback notification e-ma
 // for testing purposes and is therefore disabled in production mode.
 const override : string = config.get('mail.testOverride');
 
-export default function (website : Website, feedback : Feedback) : Promise <Array <string>> {
+export function getRecipients(
+	website : Website,
+	article : Article,
+	includeEditors : boolean = false
+) : Promise <Array <string>> {
 	if (override && !app.isProduction) {
 		return Promise.resolve([ override ]);
 	}
 
-	let recipients : Array <string> = filterForMailAddr(feedback.article.authors);
+	let recipients : Array <string> = filterForMailAddr(article.authors);
 
-	if (recipients.length <= 0) {
+	if (recipients.length <= 0 || includeEditors) {
 		recipients = filterForMailAddr(website.chiefEditors);
 	}
 
@@ -54,6 +58,7 @@ export default function (website : Website, feedback : Feedback) : Promise <Arra
 	return Promise.resolve(uniq(recipients));
 }
 
-const filterForMailAddr = (people : Array <Person>) : Array <string> =>
+const filterForMailAddr = (people : Array <Person>) : Array <string> => (
 	people.filter((p : Person) => p.email.length > 0)
-	.map((author : Person) => author.email);
+	.map((author : Person) => author.email)
+);

@@ -26,12 +26,15 @@ import {
 	templateService,
 } from 'app/services';
 
+import { getRecipients } from 'app/mail/getRecipients';
 import { layoutNotifyMail } from './layoutNotifyMail';
 
 import Article from 'base/Article';
+import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import MailTemplate from 'app/template/MailTemplate';
-import Website from 'base/Website';
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import * as app from 'app/util/applib';
 
@@ -64,14 +67,21 @@ function process(article : Article) {
 	])
 	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
 		layoutNotifyMail(article, feedbacks, template),
-		getRecipients(article.website),
-	]));
+		getRecipients(article.website, article, true),
+		getMailSubject(article),
+	]))
+	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
+		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent, {
+			highPriority: true,
+		});
+	});
+
 	// .then( send mail )
 	// .then( set article escalation status )
 }
 
-// Mail handling
-
-function getRecipients(website : Website) : Promise <Array <string>> {
-	return Promise.resolve(['']);
+function getMailSubject(article : Article) : Promise <string> {
+	return Promise.resolve(article.items.find(
+		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
+	).text);
 }
