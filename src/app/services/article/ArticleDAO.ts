@@ -107,13 +107,15 @@ export function addFeedback(article : Article, feedback : Feedback) : Promise <A
 
 // Helper functions for save() and upsert()
 
-const makeDocument = (website : Website, article : Article) => getUsers(article)
-	.then((authors : User[]) => {
-		return Object.assign({}, article, {
-			authors: authors.map(author => author.ID),
-			website: website.ID,
-		});
-	});
+const makeDocument = (website : Website, article : Article) => (
+	getUsers(article).then((authors : User[]) => Object.assign({}, article, {
+		authors: authors.map(author => author.ID),
+		website: website.ID,
+		status: {
+			escalated: null,
+		},
+	}))
+);
 
 const getUsers = (article : Article) : Promise <User[]> => Promise.all(
 	// For some reason, TypeScript rejects Promise.map here. I stopped bothering

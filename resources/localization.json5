@@ -102,9 +102,21 @@
 	app: {
 		mail: {
 			'fb-notify': {
+				'cc-editor': {
+					en: 'A copy of this mail will be sent to the editor in chief.',
+					nb: 'En kopi av denne mailen er sendt til vaktsjef.',
+				},
+				'editor-escalation': {
+					en: 'This article has received {count} feedbacks:',
+					nb: 'Denne artikkelen har fatt {count} tilbakemeldinger:',
+				},
 				'got-feedback': {
 					en: 'You received a feedback on the article',
 					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'posted': {
+					en: 'Posted on',
+					nb: 'Postet på',
 				},
 				'who-sent': {
 					en: 'Send in by',
@@ -159,7 +171,7 @@
 		suggests: {
 			en: 'Suggestions',
 			nb: 'Forslag'
-		}, 
+		},
 		artcls: {
 			en: 'Articles',
 			nb: 'Artikler'
@@ -422,6 +434,6 @@
 
 			}
 
-			
+
 		},
 }

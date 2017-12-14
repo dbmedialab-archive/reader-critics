@@ -20,6 +20,7 @@ import { flatten } from 'flat';
 
 import {
 	isEmpty,
+	isObject,
 	isString,
 	throttle,
 } from 'lodash';
@@ -81,15 +82,21 @@ export function getFrontendStrings(website? : Website) : Promise <Object> {
 	return Promise.resolve(flatten(applyLocale(allStrings, locale)));
 }
 
-export function translate(id : string, options? : string|any) : string {
-	let usedLocale = systemLocale;
+export type TranslateOptions = {
+	locale? : string
+	values? : {}
+};
+
+export function translate(id : string, options? : string|TranslateOptions) : string {
+	let usedLocale;
 
 	// A single string value in "options" means to override the system default locale
 	if (isString(options)) {
 		usedLocale = options;
 	}
-
-	// The "object" alternative is not yet used, but will allow default values, etc.
+	else if (isObject(options)) {
+		usedLocale = options.locale || systemLocale;
+	}
 
 	const allStrings = Object.assign({}, strings.common, strings.app);
 	const flattened = flatten(applyLocale(allStrings, usedLocale));
@@ -103,7 +110,7 @@ export function translate(id : string, options? : string|any) : string {
 			return {};
 		}
 
-		return (options.values || {});
+		return ((options as TranslateOptions).values || {});
 	})();
 
 	const replacer = (match : string) => {

@@ -16,28 +16,24 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { EscalationThresholds } from './EscalationThresholds';
+// THIS FILE IS FOR TESTING PURPOSES ONLY
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
+import { writeFileSync } from 'fs';
+import { spawn } from 'child_process';
 
-interface Website extends PersistedModel {
-	name : string
-	parserClass? : string
-	locale? : string
+const testPath = '/tmp/mailtest.html';
 
-	hosts : string[]
-	chiefEditors : Person[]
+// What's it doing? It stores the html input that some other function produced
+// into a temporary file and launches a browser to show it. Very convenient
+// for testing mail templates and other outputs from the template engine.
 
-	escalateThreshold : EscalationThresholds
+export function notifyBrowser(html : string) {
+	writeFileSync(testPath, html, {
+		flag: 'w',
+		mode: 0o644,
+	});
 
-	layout : {
-		templates : {
-			feedbackPage? : string
-			feedbackNotificationMail? : string
-		}
-		scssVariables? : object
-	}
+	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
+		detached: true,
+	});
 }
-
-export default Website;

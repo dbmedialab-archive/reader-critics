@@ -28,9 +28,11 @@ import createPersistingService from '../createPersistingService';
 
 import download from './live/download';
 import fetch from './common/fetch';
-import getRangeWithFBCount from 'app/services/article/common/getRangeWithFBCount';
-import getByID from 'app/services/article/common/getByID';
-import getAmount from 'app/services/article/common/getAmount';
+import getRangeWithFBCount from './common/getRangeWithFBCount';
+import getByID from './common/getByID';
+import getAmount from './common/getAmount';
+import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { setOptions } from './common/setOptions';
 
 import {
 	addFeedback,
@@ -50,9 +52,11 @@ const service : ArticleService
 			get,
 			save,
 			upsert,
-			getRangeWithFBCount,
-			getByID,
 			getAmount,
+			getByID,
+			getRangeWithFBCount,
+			getRelatedArticleItem,
+			setOptions,
 		}
 	);
 
