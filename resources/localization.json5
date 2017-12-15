@@ -256,8 +256,8 @@
 				nb: 'Tusen Takk!',
 			},
 			postFeedback: {
-				en: "Thanks a lot, your feedback was sent in! Now you can add your name and e-mail address if you want to, just so we can get in contact with you if need be.",
-				nb: "Tusen takk, tilbakemeldingen er sendt inn og mottatt. Nå kan du legge til navn og epost slik at vi kan komme i kontakt med deg hvis det er noe mer vi lurer på."
+				en: "Your feedback was sent in! Now you can add your name and e-mail address if you want to, just so we can get in contact with you if need be.",
+				nb: "Tilbakemeldingen din er mottatt. Vi setter pris på om du legger til navn og e-post-adresse, slik at vi kan komme i kontakt med deg dersom vi lurer på noe. Hilsen Dagbladet"
 			}
 		},
 		fb: {
