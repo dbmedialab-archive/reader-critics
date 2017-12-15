@@ -112,5 +112,5 @@ function getThresholds(website : Website) : EscalationThresholds {
 
 const shouldNotifyEditor = (thresholds : EscalationThresholds, article : Article) => (
 	article.status.escalated === null
-	&& article.feedbacks.length > thresholds.toEditor
+	&& article.feedbacks.length >= thresholds.toEditor
 );
