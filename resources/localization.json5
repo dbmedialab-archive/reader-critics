@@ -270,8 +270,8 @@
 					nb: 'Navn',
 				},
 				getRecommend: {
-					en: 'e-mail', // 'Get notifications via e-mail',
-					nb: 'e-post', // 'Få tilbakemelding på e-post',
+					en: 'e-mail',
+					nb: 'e-post',
 				},
 				keepInfo: {
 					en: 'Update the feedback with my personal information',
@@ -323,12 +323,11 @@
 					suggestions for improvements etc. We would appreciate that. If that's OK, \
 					Developers also appreciated information so they could come into contact with you \
 					if they would need it.",
-				nb: "Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en \
-					tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på. \
-					Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte, \
-					forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit, \
-					hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg \
-					hvis de skulle trenge det."
+				nb: "Vi setter pris på om du også tar deg tid til å gi en vurdering av selve verktøyet og \
+					måten å gi tilbakemeldinger på. Denne går til våre utviklere, som ønsker å vite mer om \
+					hva du likte, hva du ikke likte, og få forslag til forbedringer. Utviklerne setter også \
+					pris på å få kontaktinformasjonen din, slik at de kan komme i kontakt med deg dersom de \
+					skulle trenge det."
 			},
 		},
 		footer: {
