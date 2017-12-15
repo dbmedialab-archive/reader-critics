@@ -7,7 +7,7 @@ ADD package.json /tmp/package.json
 
 RUN cd /tmp && npm install --no-optional --no-package-lock
 
-RUN apt-get -q update && apt-get -y install rsync ca-certificates
+RUN apt-get -q update && apt-get -y install rsync ca-certificates iproute2
 
 RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
 
@@ -19,7 +19,7 @@ RUN /bin/bash -l -c "run/lint"
 
 RUN /bin/bash -l -c "run/build"
 
-RUN rm -rf node_modules
+#RUN rm -rf node_modules
 
-RUN NODE_ENV=production && npm install --production --no-optional --no-package-lock
+RUN npm cache clean --force
 

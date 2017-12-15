@@ -22,6 +22,9 @@ import * as moment from 'moment';
 import * as path from 'path';
 import * as semver from 'semver';
 
+import { initCron } from './cron';
+import { initDatabase } from 'app/db';
+import { initMasterQueue } from 'app/queue';
 import { readFileSync } from 'fs';
 
 import {
@@ -47,7 +50,10 @@ export default function() {
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
 	checkEngineVersion()
+		.then(initMasterQueue)
+		.then(initDatabase)
 		.then(startWorkers)
+		.then(initCron)
 		.then(notifyTestMaster)
 		.catch(startupErrorHandler);
 }

@@ -24,6 +24,7 @@ import { ISuiteCallbackContext } from 'mocha';
 
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
 	articleService,
@@ -38,6 +39,7 @@ const feedbackIDs = [];
 
 export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
+	let thatFeedback : Feedback;
 
 	it('clear()', () => feedbackService.clear());
 
@@ -48,8 +50,8 @@ export default function(this: ISuiteCallbackContext) {
 			return app.loadJSON(path.join(feedbackDir, filename))
 			.then((a : any) => {
 				assert.isNotNull(a);
-				return feedbackService.validateAndSave(a).then((doc) => {
-					feedbackIDs.push(doc.ID);
+				return feedbackService.validateAndSave(a).then(feedback => {
+					feedbackIDs.push(feedback.ID);
 				});
 			});
 		});
@@ -69,6 +71,9 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 1);
 			results.forEach(feedback => assertFeedbackObject(feedback));
+			// Save this object for later tests so we don't have to query it from
+			// the database again
+			thatFeedback = results[0];
 		});
 	});
 
@@ -80,6 +85,48 @@ export default function(this: ISuiteCallbackContext) {
 		.then((results : Feedback[]) => {
 			assert.lengthOf(results, 2);
 			results.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
+		});
+	});
+
+	it('updateStatus()', () => {
+		return feedbackService.updateStatus(thatFeedback, FeedbackStatus.FeedbackSent)
+		.then(() => {
+			return feedbackService.getByID(thatFeedback.ID);
+		})
+		.then((updatedFeedback) => {
+			assertFeedbackObject(updatedFeedback);
+			assert.strictEqual(
+				updatedFeedback.status.status,
+				FeedbackStatus.FeedbackSent.toString()
+			);
+		});
+	});
+
+	it('getByStatus()', () => {
+		return Promise.all([
+			feedbackService.getByStatus(FeedbackStatus.AwaitEnduserData),
+			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
+		])
+		.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
+			const numAwait = 5;
+			assert.lengthOf(
+				resultAwait, numAwait,
+				`Expected ${numAwait} feedbacks in status "AwaitEnduserData"`
+			);
+
+			resultAwait.forEach((feedback, index) => {
+				assertFeedbackObject(feedback);
+			});
+
+			const numSent = 1;
+			assert.lengthOf(
+				resultSent, numSent,
+				`Expected ${numSent} feedbacks in status"FeedbackSent"`
+			);
+
+			resultSent.forEach((feedback, index) => {
 				assertFeedbackObject(feedback);
 			});
 		});
@@ -114,6 +161,9 @@ const assertFeedbackObject = (f : Feedback) => {
 
 	assert.isObject(f.date);
 	assert.isObject(f.enduser);
+
+	assert.isObject(f.status);
+	assert.isString(f.status.status);
 
 	assert.isArray(f.items);
 };

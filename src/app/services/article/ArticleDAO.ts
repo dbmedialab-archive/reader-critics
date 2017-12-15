@@ -18,6 +18,7 @@
 
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
+import Feedback from 'base/Feedback';
 import Person from 'base/zz/Person';
 import Website from 'base/Website';
 import User from 'base/User';
@@ -91,15 +92,30 @@ export function upsert(website : Website, article : Article) : Promise <Article>
 	.then(doc => ArticleModel.update(query, doc, options).exec());
 }
 
+export function addFeedback(article : Article, feedback : Feedback) : Promise <Article> {
+	emptyCheck(feedback);
+
+	return wrapFindOne(ArticleModel.findOneAndUpdate(
+		{ _id : article.ID },
+		{
+			'$addToSet': {
+				feedbacks: feedback.ID,
+			},
+		}
+	));
+}
+
 // Helper functions for save() and upsert()
 
-const makeDocument = (website : Website, article : Article) => getUsers(article)
-	.then((authors : User[]) => {
-		return Object.assign({}, article, {
-			authors: authors.map(author => author.ID),
-			website: website.ID,
-		});
-	});
+const makeDocument = (website : Website, article : Article) => (
+	getUsers(article).then((authors : User[]) => Object.assign({}, article, {
+		authors: authors.map(author => author.ID),
+		website: website.ID,
+		status: {
+			escalated: null,
+		},
+	}))
+);
 
 const getUsers = (article : Article) : Promise <User[]> => Promise.all(
 	// For some reason, TypeScript rejects Promise.map here. I stopped bothering

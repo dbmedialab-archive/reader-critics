@@ -21,6 +21,7 @@ import { Schema } from 'mongoose';
 import ArticleURL from 'base/ArticleURL';
 
 import { objectReference } from 'app/db/common';
+// import { EscalationLevel } from 'base/EscalationLevel';
 import { ModelNames } from 'app/db/names';
 
 const ArticleSchema : Schema = new Schema({
@@ -34,17 +35,27 @@ const ArticleSchema : Schema = new Schema({
 		required: true,
 	},
 
+	items: [Schema.Types.Mixed],
+
 	authors: [objectReference(ModelNames.User)],
 	website: objectReference(ModelNames.Website),
 
-	items: [Schema.Types.Mixed],
+	// Point references to all feedbacks of this article,
+	// makes counting them a lot easier!
+	feedbacks: [objectReference(ModelNames.Feedback)],
+
+	status: {
+		escalated: {
+			type: String,
+			// required: true,
+			// enum: Object.values(EscalationLevel),
+			default: null,
+		},
+	},
 }, {
 	toObject: {
 		retainKeyOrder: true,
 		transform: (doc : Document, converted : any) => {
-			// console.log('------------------------------------------------------------');
-			// console.log('ArticleSchema transform:', converted);
-			// console.log('\n');
 			converted.authors.forEach(author => {
 				delete author.date;
 				delete author.role;

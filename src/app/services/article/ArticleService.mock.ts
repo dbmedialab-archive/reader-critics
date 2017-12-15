@@ -31,8 +31,11 @@ import fetch from './common/fetch';
 import getRangeWithFBCount from 'app/services/article/common/getRangeWithFBCount';
 import getByID from 'app/services/article/common/getByID';
 import getAmount from 'app/services/article/common/getAmount';
+import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { setOptions } from './common/setOptions';
 
 import {
+	addFeedback,
 	exists,
 	get,
 	save,
@@ -42,15 +45,18 @@ import {
 const service : ArticleService
 	= createPersistingService <ArticleDocument, ArticleService, Article> (
 		ArticleModel, {
+			addFeedback,
 			download,
 			exists,
 			fetch,
 			get,
 			save,
 			upsert,
-			getRangeWithFBCount,
-			getByID,
 			getAmount,
+			getByID,
+			getRangeWithFBCount,
+			getRelatedArticleItem,
+			setOptions,
 		}
 	);
 

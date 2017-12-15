@@ -20,11 +20,11 @@ import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 import User from 'base/User';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
-import {ObjectID} from 'app/db';
 
 /**
  * The feedback service stores feedbacks to articles and provides functions
@@ -39,8 +39,18 @@ import {ObjectID} from 'app/db';
  * service does not have a generic update() function.
  */
 interface FeedbackService extends BasicPersistingService <Feedback> {
+
+	/**
+	 * Returns amount of feedbacks exist for current article
+	 * @throws EmptyError
+	 */
+	getAmountByArticle(
+		article : Article
+	) : Promise <number>;
+
 	/**
 	 * Get all feedback objects related to one article.
+	 * @throws EmptyError
 	 */
 	getByArticle(
 		article : Article,
@@ -52,6 +62,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	/**
 	 * Get all feedback objects related to one article author, optionally filter
 	 * also by website.
+	 * @throws EmptyError
 	 */
 	getByArticleAuthor(
 		author : User,
@@ -62,9 +73,26 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	) : Promise <Feedback[]>;
 
 	/**
-	 * Get a single feedback object, identified by its database object
+	 * Get a single feedback object, identified by its database ID
+	 * @throws EmptyError
 	 */
 	getByID(objectID : string, populated? : boolean) : Promise <Feedback>;
+
+	/**
+	 * Get all feedbacks with a specific status, with additional query object
+	 */
+	getByStatus(
+		currentStatus : FeedbackStatus,
+		additionalQuery? : {},
+		skip? : number,
+		limit? : number,
+		sort? : Object
+	) : Promise <Feedback[]>;
+
+	/**
+	 * Get a feedback object by its one-shot update token
+	 */
+	getByUpdateToken(oneshotUpdateToken : string) : Promise <Feedback>;
 
 	/**
 	 * Save the new feedback object and create references to all involved objects.
@@ -77,7 +105,9 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	save(
 		article : Article,
 		user : EndUser,
-		items : FeedbackItem[]
+		items : FeedbackItem[],
+		status? : FeedbackStatus,
+		oneshotUpdateToken? : string
 	) : Promise <Feedback>;
 
 	/**
@@ -94,7 +124,7 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 * and in a parallel database action, retrieves or (if not existing) creates
 	 * the EndUser object of Anonymous user.
 	 *
-	 * When these two objects (Article and EndUser) are ready, both are give to
+	 * When these two objects (Article and EndUser) are ready, both are given to
 	 * save() together with the feedback items, which are also parsed from the raw
 	 * input object.
 	 *
@@ -103,26 +133,33 @@ interface FeedbackService extends BasicPersistingService <Feedback> {
 	 *
 	 * @throws SchemaValidationError If the input data does not pass validation
 	 */
-	validateAndSave(data : any) : Promise <Feedback>;
+	validateAndSave(data : {}) : Promise <Feedback>;
+
+	/**
+	 * Takes another raw input object from the API, validates its structure, then
+	 * checks the update-token and on success, updates the enduser data ob the
+	 * Feedback object in the database.
+	 */
+	validateAndUpdateEnduser(data : {}) : Promise <Feedback>;
 
 	/**
 	 * Updates the existing feedback object with enduser data.
-	 *
 	 * @throws EmptyError If enduser parameter is missing.
 	 */
 	updateEndUser(
-		id : ObjectID,
+		feedback : Feedback,
 		enduser : EndUser
 	) : Promise <Feedback>;
 
 	/**
-	 * Returns amount of feedbacks exist for current article
-	 *
-	 *  @throws EmptyError If article parameter is missing.
+	 * Updates the current status of the feedback object and puts the (now)
+	 * previous status into the log array.
 	 */
-	getAmountByArticle(
-		article: Article
-	) : Promise<number>;
+	updateStatus(
+		feedback : Feedback,
+		newStatus : FeedbackStatus
+	) : Promise <void>
+
 }
 
 export default FeedbackService;

@@ -114,8 +114,15 @@ export default function(this: ISuiteCallbackContext) {
 		.catch(() => assert.ok(true))
 	);
 
-	it('anonymous get()', () => enduserService
-		.get(null, null)
+	// We could use Promise.all here and execute both queries concurrently.
+	// But no, due to missing locks in MongoDB we will almost always get
+	// an error here because two queries will try to upsert a new "Anonymous"
+	// user object at the same time. When starting the DB tests, the collections
+	// are cleaned up and anonymous does not yet exist.
+	// Hence: concurrent write, unique index violation, *kablaam*
+	it('anonymous get()', () => enduserService.get(null, null)
+		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
+		.then(() => enduserService.get())
 		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
 	);
 }

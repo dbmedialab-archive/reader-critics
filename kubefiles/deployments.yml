@@ -1,21 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{env "WERCKER_GIT_REPOSITORY"}}
-  namespace: {{env "WERCKER_GIT_REPOSITORY"}}
+  name: {{env "REPONAME"}}
+  namespace: {{env "REPONAME"}}
 spec:
   selector:
     matchLabels:
-      app: {{env "WERCKER_GIT_REPOSITORY"}}
+      app: {{env "REPONAME"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        app: {{env "WERCKER_GIT_REPOSITORY"}}
+        app: {{env "REPONAME"}}
     spec:
       containers:
-        - name: {{env "WERCKER_GIT_REPOSITORY"}}
+        - name: {{env "REPONAME"}}
           image: {{env "IMAGE"}}
           command: ["npm"]
           args: ["start"]

@@ -5,5 +5,4 @@ metadata:
 data:
   NODE_ENV: production
   I18N_SYS_LOCALE: nb
-  MAIL_SENDER_DOMAIN: {{env "WERCKER_GIT_REPOSITORY"}}.{{env "ENV"}}.medialaben.no
-  MONGODB_URL: mongodb://mongo/readercritics/?replicaSet=rs0
+  MAIL_SENDER_DOMAIN: {{env "REPONAME"}}.{{env "ENV"}}.medialaben.no

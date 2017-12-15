@@ -16,20 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// THIS FILE IS FOR TESTING PURPOSES ONLY
+import { Schema } from 'mongoose';
 
-import { writeFileSync } from 'fs';
-import { spawn } from 'child_process';
-
-const testPath = '/tmp/mailtest.html';
-
-export default function (html : string) {
-	writeFileSync(testPath, html, {
-		flag: 'w',
-		mode: 0o644,
-	});
-
-	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
-		detached: true,
-	});
+export default function(schema : Schema, options : any) {
+	schema.set('autoIndex', false);
+	schema.set('retainKeyOrder', true);
 }

@@ -54,7 +54,7 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 	// Get second item of the call stack, this points back to the place where
 	// "createLog" is invoked. Then replace several things in the file path
 	// to create a log channel name in "debug" syntax.
-	const originName = callstack[1].getFileName()
+	const originName = deleteDuplicates(callstack[1].getFileName()
 		// strip file suffix
 		.replace(regexFileSuffix, '')
 		// strip "index"
@@ -64,11 +64,24 @@ const logChannelName = (callstack: callsite.CallSite[]) : string => {
 		// ...service modules etc.
 		.replace(regexEnvSuffix, '')
 		// replace slashes with colons
-		.replace(regexForwardSlashes, ':');
+		.replace(regexForwardSlashes, ':'));
 
 	// Replace "app" directory name with the application name
 	const pos = originName.lastIndexOf(':app:');
 	return originName.substr(pos + 5);
+};
+
+/**
+ * Deletes duplicate entries at the end of the log channel name
+ */
+const deleteDuplicates = (s : string) : string => {
+	const a = s.split(/:/);
+
+	if (a.length > 1 && (a[a.length - 1] === a[a.length - 2])) {
+		a.pop();
+	}
+
+	return a.join(':');
 };
 
 /**

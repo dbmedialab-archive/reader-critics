@@ -27,7 +27,7 @@ export default class FigureElement extends ArticleElement {
 		return <div>
 			<label>
 				<FormattedMessage
-					id="label.article-el.picture"
+					id="article-el.figure"
 					values={{
 						order: this.props.item.order.type,
 					}}

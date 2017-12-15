@@ -24,6 +24,7 @@ import {
 import ArticleItem from 'base/ArticleItem';
 import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
+import FeedbackStatus from 'base/FeedbackStatus';
 import MailTemplate from 'app/template/MailTemplate';
 import Website from 'base/Website';
 
@@ -33,7 +34,13 @@ import {
 	websiteService,
 } from 'app/services';
 
-import getRecipients from './getRecipients';
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
+
+import { getRecipients } from 'app/mail/getRecipients';
+
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
@@ -41,39 +48,51 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-export default function(job : Job, done : DoneCallback) : void {
-	if (!job.data.ID) {
+export function onNewFeedback(job : Job, done : DoneCallback) : void {
+	const { feedbackID } = job.data;
+
+	if (feedbackID === undefined) {
 		log('Feedback "ID" not found in job data');
 		return done();
 	}
 
-	const feedbackID = job.data.ID;
 	log(`Received new feedback event for ID ${feedbackID}`);
 
-	// There's loads of objects that need to be loaded:
+	process(feedbackID).then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
+}
+
+function process(feedbackID : string) {
 	let feedback : Feedback;
 	let template : MailTemplate;
 	let website : Website;
 
-	// First, get the feedback object and the e-mail template.
-	// Those two are independent, so we can query them in parallel:
-	Promise.all([
-		feedbackService.getByID(feedbackID),
-		templateService.getFeedbackNotifyTemplate(),
-	])
+	// First, get the feedback object
+	return feedbackService.getByID(feedbackID)
 	// Now that we have the article inside the feedback object, we can
 	// ask for the "Website" that all this belongs to:
-	.spread((f : Feedback, t : MailTemplate) => {
+	.then((f : Feedback) => {
 		feedback = f;  // But first, store these objects for later
-		template = t;
 
 		const websiteID : any = feedback.article.website;
 		return websiteService.getByID(websiteID as string);
 	})
-	// Now we have all the necessary objects, let's go ahead and make an e-mail
-	// out of them
 	.then((w : Website) => {
 		website = w;
+
+		return templateService.getFeedbackMailTemplate(website);
+	})
+	// Now we have all the necessary objects, let's go ahead and make an e-mail
+	// out of them
+	.then((t: MailTemplate) => {
+		template = t;
 
 		// Again in parallel: layout the e-mail content and create a list of
 		// recipients mail addresses that will receive this. Currently, the
@@ -82,21 +101,17 @@ export default function(job : Job, done : DoneCallback) : void {
 		// reject for flow control.
 		return Promise.all([
 			layoutNotifyMail(feedback, template),
-			getRecipients(website, feedback),
+			getRecipients(website, feedback.article),
 			getMailSubject(feedback),
 		]);
 	})
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
-	// Funny enough, just doing .then(done) will trigger the infamous
-	// "a promise was created in blah ... but was not returned from it"
-	// warning.
-	.then(() => done)
-	.catch(error => {
-		app.yell(error);
-		return done(error);
-	});
+	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
+	.then(() => sendMessage(MessageType.CheckEscalationToEditor, {
+		articleID: feedback.article.ID,
+	}));
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {
