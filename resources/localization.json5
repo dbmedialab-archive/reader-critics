@@ -56,8 +56,8 @@
 				nb: 'Mellomtittel #{order}',
 			},
 			subtitle: {
-				en: 'Sub Title #{order}',
-				nb: 'Mellomtittel #{order}',
+				en: 'Sub Title',
+				nb: 'Undertittel',
 			},
 			title: {
 				en: 'Title',
