@@ -45,7 +45,7 @@
 			},
 			link: {
 				en: 'Link #{order}',
-				nb: 'Link #{order}',
+				nb: 'Lenke #{order}',
 			},
 			paragraph: {
 				en: 'Paragraph #{order}',
@@ -237,36 +237,6 @@
 			},
 		},
 		label: {
-			'article-el': {
-				'feat-image': {
-					en: 'Featured Image',
-					nb: 'Fremhevet bilde',
-				},
-				'lead-in': {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				maintitle: {
-					en: 'Title',
-					nb: 'Tittel',
-				},
-				paragraph: {
-					en: 'Paragraph #{order}',
-					nb: 'Avsnitt #{order}',
-				},
-				picture: {
-					en: 'Picture #{order}',
-					nb: 'Bilde #{order}',
-				},
-				'sub-head': {
-					en: 'Sub Heading #{order}',
-					nb: 'Mellomtittel #{order}',
-				},
-			},
 			'add-comment': {
 				en: 'Add comment',
 				nb: 'Legg til kommentar',
@@ -286,8 +256,8 @@
 				nb: 'Tusen Takk!',
 			},
 			postFeedback: {
-				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
+				en: "Thanks a lot, your feedback was sent in! Now you can add your name and e-mail address if you want to, just so we can get in contact with you if need be.",
+				nb: "Tusen takk, tilbakemeldingen er sendt inn og mottatt. Nå kan du legge til navn og epost slik at vi kan komme i kontakt med deg hvis det er noe mer vi lurer på."
 			}
 		},
 		fb: {
@@ -304,8 +274,8 @@
 					nb: 'e-post', // 'Få tilbakemelding på e-post',
 				},
 				keepInfo: {
-					en: 'Send your feedback now',
-					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+					en: 'Update the feedback with my personal information',
+					nb: 'Oppdatere tilbakemeldingen med min personlig informasjon',
 				},
 				backToArticle: {
 					en: 'Back to the article',

@@ -26,7 +26,7 @@ export default class LinkElement extends ArticleElement {
 		return <div>
 			<label>
 				<FormattedMessage
-					id="label.article-el.link"
+					id="article-el.link"
 					values={{
 						order: this.props.item.order.type,
 					}}
