@@ -16,28 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { EscalationThresholds } from './EscalationThresholds';
+import * as doT from 'dot';
+import * as path from 'path';
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
+import MailTemplate from 'app/template/MailTemplate';
 
-interface Website extends PersistedModel {
-	name : string
-	parserClass? : string
-	locale? : string
+import * as app from 'app/util/applib';
+import Website from 'base/Website';
+import emptyCheck from 'app/util/emptyCheck';
+import chooseTemplate from 'app/services/template/chooseTemplate';
 
-	hosts : string[]
-	chiefEditors : Person[]
+const log = app.createLog();
+const defaultTemplate = path.join('templates', 'mail', 'defaultEscalateToEditorNotify.html');
 
-	escalateThreshold : EscalationThresholds
+export function getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate> {
+	emptyCheck(website);
 
-	layout : {
-		templates : {
-			feedbackPage? : string
-			feedbackNotificationMail? : string
-		}
-		scssVariables? : object
-	}
+	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
+		.then((raw : string) => {
+			log('Escalation notification template loaded');
+			return new MailTemplate (doT.template(raw));
+		});
 }
-
-export default Website;

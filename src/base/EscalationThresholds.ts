@@ -16,28 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { EscalationThresholds } from './EscalationThresholds';
+export interface EscalationThresholds {
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
+	toEditor? : number
 
-interface Website extends PersistedModel {
-	name : string
-	parserClass? : string
-	locale? : string
-
-	hosts : string[]
-	chiefEditors : Person[]
-
-	escalateThreshold : EscalationThresholds
-
-	layout : {
-		templates : {
-			feedbackPage? : string
-			feedbackNotificationMail? : string
-		}
-		scssVariables? : object
-	}
 }
-
-export default Website;

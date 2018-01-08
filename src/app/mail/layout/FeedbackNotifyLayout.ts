@@ -20,6 +20,7 @@ import { concat } from 'lodash';
 
 import diffToPlainHTML from 'base/diff/diffToPlainHTML';
 
+import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
 import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
@@ -37,9 +38,9 @@ export type ItemFormatPayload = {
 
 // Formatting - General
 
-const articleTitle = (f : Feedback) => {
-	const url = f.article.url;
-	const ttl = f.article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle).text;
+const articleTitle = (article : Article) => {
+	const url = article.url;
+	const ttl = article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle).text;
 
 	return `<a href="${url}">${ttl}</a>`;
 };
@@ -56,9 +57,9 @@ const whenSentIn = (f : Feedback) =>
 
 // Formatting - Article Items
 
-const itemComment = (i : ItemFormatPayload) =>
+const itemComment = (i : ItemFormatPayload, locale? : string) =>
 	(i.fItem.comment !== undefined && i.fItem.comment.length <= 0) ? ''
-		: '<div class="el-comment">' + __('label.comment') + ': <i>'
+		: '<div class="el-comment"><span class="em">' + __('label.comment', locale) + ':</span> <i>'
 		+ i.fItem.comment
 		+ '</i></div>';
 
@@ -69,9 +70,10 @@ const cssItemHeader = [
 	'margin-bottom: 0.5em',
 ].join(';');
 
-const itemHeader = (i : ItemFormatPayload) =>
+const itemHeader = (i : ItemFormatPayload, locale? : string) =>
 	`<div class="item-type" style="${cssItemHeader}">`
 	+ __(`article-el.${i.aItem.type}`, {
+		locale,
 		values: {
 			order: i.aItem.order.type,
 		},
@@ -106,7 +108,7 @@ const itemText = (i : ItemFormatPayload) => {
 	}
 };
 
-const itemLinks = (i : ItemFormatPayload) => {
+const itemLinks = (i : ItemFormatPayload, locale? : string) => {
 	if (i.fItem.links === undefined ? true : i.fItem.links.length <= 0) {
 		return '';
 	}
@@ -117,7 +119,7 @@ const itemLinks = (i : ItemFormatPayload) => {
 		links += `<li><a href="${link}">${link}</a></li>`;
 	});
 
-	return `<p style="margin: 0.4em 0;">${__('label.links')}:</p>`
+	return `<p style="margin: 0.4em 0;"><span class="em">${__('label.links', locale)}:</span></p>`
 	+ `<ul style="margin: 0;">${links}</ul>`;
 };
 

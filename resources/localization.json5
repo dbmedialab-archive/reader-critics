@@ -45,7 +45,7 @@
 			},
 			link: {
 				en: 'Link #{order}',
-				nb: 'Link #{order}',
+				nb: 'Lenke #{order}',
 			},
 			paragraph: {
 				en: 'Paragraph #{order}',
@@ -56,8 +56,8 @@
 				nb: 'Mellomtittel #{order}',
 			},
 			subtitle: {
-				en: 'Sub Title #{order}',
-				nb: 'Mellomtittel #{order}',
+				en: 'Sub Title',
+				nb: 'Undertittel',
 			},
 			title: {
 				en: 'Title',
@@ -102,9 +102,21 @@
 	app: {
 		mail: {
 			'fb-notify': {
+				'cc-editor': {
+					en: 'A copy of this mail will be sent to the editor in chief.',
+					nb: 'En kopi av denne mailen er sendt til vaktsjef.',
+				},
+				'editor-escalation': {
+					en: 'This article has received {count} feedbacks:',
+					nb: 'Denne artikkelen har fatt {count} tilbakemeldinger:',
+				},
 				'got-feedback': {
 					en: 'You received a feedback on the article',
 					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'posted': {
+					en: 'Posted on',
+					nb: 'Postet på',
 				},
 				'who-sent': {
 					en: 'Send in by',
@@ -159,7 +171,7 @@
 		suggests: {
 			en: 'Suggestions',
 			nb: 'Forslag'
-		}, 
+		},
 		artcls: {
 			en: 'Articles',
 			nb: 'Artikler'
@@ -225,36 +237,6 @@
 			},
 		},
 		label: {
-			'article-el': {
-				'feat-image': {
-					en: 'Featured Image',
-					nb: 'Fremhevet bilde',
-				},
-				'lead-in': {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				maintitle: {
-					en: 'Title',
-					nb: 'Tittel',
-				},
-				paragraph: {
-					en: 'Paragraph #{order}',
-					nb: 'Avsnitt #{order}',
-				},
-				picture: {
-					en: 'Picture #{order}',
-					nb: 'Bilde #{order}',
-				},
-				'sub-head': {
-					en: 'Sub Heading #{order}',
-					nb: 'Mellomtittel #{order}',
-				},
-			},
 			'add-comment': {
 				en: 'Add comment',
 				nb: 'Legg til kommentar',
@@ -274,8 +256,8 @@
 				nb: 'Tusen Takk!',
 			},
 			postFeedback: {
-				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
+				en: "Your feedback was sent in! Now you can add your name and e-mail address if you want to, just so we can get in contact with you if need be.",
+				nb: "Tilbakemeldingen din er mottatt. Vi setter pris på om du legger til navn og e-post-adresse, slik at vi kan komme i kontakt med deg dersom vi lurer på noe. Hilsen Dagbladet"
 			}
 		},
 		fb: {
@@ -288,12 +270,12 @@
 					nb: 'Navn',
 				},
 				getRecommend: {
-					en: 'e-mail', // 'Get notifications via e-mail',
-					nb: 'e-post', // 'Få tilbakemelding på e-post',
+					en: 'e-mail',
+					nb: 'e-post',
 				},
 				keepInfo: {
-					en: 'Send your feedback now',
-					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+					en: 'Update the feedback with my personal information',
+					nb: 'Oppdatere tilbakemeldingen med min personlig informasjon',
 				},
 				backToArticle: {
 					en: 'Back to the article',
@@ -341,12 +323,11 @@
 					suggestions for improvements etc. We would appreciate that. If that's OK, \
 					Developers also appreciated information so they could come into contact with you \
 					if they would need it.",
-				nb: "Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en \
-					tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på. \
-					Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte, \
-					forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit, \
-					hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg \
-					hvis de skulle trenge det."
+				nb: "Vi setter pris på om du også tar deg tid til å gi en vurdering av selve verktøyet og \
+					måten å gi tilbakemeldinger på. Denne går til våre utviklere, som ønsker å vite mer om \
+					hva du likte, hva du ikke likte, og få forslag til forbedringer. Utviklerne setter også \
+					pris på å få kontaktinformasjonen din, slik at de kan komme i kontakt med deg dersom de \
+					skulle trenge det."
 			},
 		},
 		footer: {
@@ -422,6 +403,6 @@
 
 			}
 
-			
+
 		},
 }

@@ -16,25 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as doT from 'dot';
-import * as path from 'path';
-
-import MailTemplate from 'app/template/MailTemplate';
-
-import * as app from 'app/util/applib';
-import Website from 'base/Website';
 import emptyCheck from 'app/util/emptyCheck';
-import chooseTemplate from 'app/services/template/chooseTemplate';
+import Article from 'base/Article';
 
-const log = app.createLog();
-const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
+import { ArticleModel } from 'app/db/models';
+import { ArticleOptions } from 'base/ArticleOptions';
+import { wrapFindOne } from 'app/db/common';
 
-export default function(website : Website) : Promise <MailTemplate> {
-	emptyCheck(website);
+export function setOptions(article : Article, options : ArticleOptions) : Promise <void> {
+	emptyCheck(article, options);
 
-	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
-		.then((raw : string) => {
-			log('Mail notification template loaded');
-			return new MailTemplate (doT.template(raw));
-		});
+	const updateQuery = {};
+
+	if (options.escalated) {
+		updateQuery['$set'] = {
+			'status.escalated': options.escalated,
+		};
+	}
+
+	if (Object.getOwnPropertyNames(updateQuery).length <= 0) {
+		return Promise.resolve();
+	}
+
+	return wrapFindOne(ArticleModel.findOneAndUpdate({ _id : article.ID }, updateQuery));
 }

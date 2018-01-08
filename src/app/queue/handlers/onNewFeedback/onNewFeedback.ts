@@ -34,7 +34,13 @@ import {
 	websiteService,
 } from 'app/services';
 
-import getRecipients from './getRecipients';
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
+
+import { getRecipients } from 'app/mail/getRecipients';
+
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
@@ -52,13 +58,24 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 
 	log(`Received new feedback event for ID ${feedbackID}`);
 
-	// There's loads of objects that need to be loaded:
+	process(feedbackID).then(() => {
+		done();
+		return null;  // Silences the "Promise handler not returned" warnings
+	})
+	.catch(error => {
+		app.yell(error);
+		done(error);
+		return null;
+	});
+}
+
+function process(feedbackID : string) {
 	let feedback : Feedback;
 	let template : MailTemplate;
 	let website : Website;
 
 	// First, get the feedback object
-	feedbackService.getByID(feedbackID)
+	return feedbackService.getByID(feedbackID)
 	// Now that we have the article inside the feedback object, we can
 	// ask for the "Website" that all this belongs to:
 	.then((f : Feedback) => {
@@ -70,7 +87,7 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 	.then((w : Website) => {
 		website = w;
 
-		return templateService.getFeedbackNotifyTemplate(website);
+		return templateService.getFeedbackMailTemplate(website);
 	})
 	// Now we have all the necessary objects, let's go ahead and make an e-mail
 	// out of them
@@ -84,7 +101,7 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 		// reject for flow control.
 		return Promise.all([
 			layoutNotifyMail(feedback, template),
-			getRecipients(website, feedback),
+			getRecipients(website, feedback.article),
 			getMailSubject(feedback),
 		]);
 	})
@@ -92,15 +109,9 @@ export function onNewFeedback(job : Job, done : DoneCallback) : void {
 		return SendGridMailer(recipients, `Leserkritikk - ${subject}`, htmlMailContent);
 	})
 	.then(() => feedbackService.updateStatus(feedback, FeedbackStatus.FeedbackSent))
-	.then(() => {
-		done();
-		return null;  // Silences the "Promise handler not returned" warnings
-	})
-	.catch(error => {
-		app.yell(error);
-		done(error);
-		return null;
-	});
+	.then(() => sendMessage(MessageType.CheckEscalationToEditor, {
+		articleID: feedback.article.ID,
+	}));
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {

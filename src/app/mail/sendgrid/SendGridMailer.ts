@@ -38,10 +38,15 @@ const bccRecipient : Array <string> = (() => {
 	return bcc === undefined ? [] : bcc.split(/,/);
 })();
 
+export type SendGridMailerOptions = {
+	highPriority? : boolean
+};
+
 export default function(
 	recipients : Array <string>,
 	subject : string,
-	htmlContent : string
+	htmlContent : string,
+	options : SendGridMailerOptions = {}
 ) : Promise <any>
 {
 	if (apiKey.length <= 0) {
@@ -57,16 +62,27 @@ export default function(
 
 	sendgridMail.setApiKey(apiKey);
 
-	const options : any = {
+	const message : any = {
 		to: recipients,
 		from: `no-reply@${senderDomain}`,
 		subject,
 		html: htmlContent,
+		isMultiple: true,
+		headers: {},
 	};
 
-	if (bccRecipient.length > 0) {
-		options.bcc = bccRecipient;
+	if (options && options.highPriority) {
+		// https://sendgrid.com/blog/magic-email-headers/
+		Object.assign(message.headers, {
+			'X-Priority': '1 (Highest)',
+			'X-MSMail-Priority': 'High',
+			'Importance': 'High',
+		});
 	}
 
-	return sendgridMail.send(options);
+	if (bccRecipient.length > 0) {
+		message.bcc = bccRecipient;
+	}
+
+	return sendgridMail.send(message);
 }
