@@ -16,7 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export { default as getFeedbackNotifyTemplate } from './mail/getFeedbackNotifyTemplate';
+export * from './mail/getEscalateToEditorMailTemplate';
+export * from './mail/getFeedbackMailTemplate';
 
 export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
 export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';
+
+export { default as getAdminPageTemplate} from './common/getAdminPageTemplate';

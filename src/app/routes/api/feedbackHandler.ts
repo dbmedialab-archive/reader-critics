@@ -16,24 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	Request,
-	Response,
-} from 'express';
-
+import { Request, Response } from 'express';
 import { feedbackService } from 'app/services';
-import { sendMessage } from 'app/queue';
+import { errorResponse, okResponse } from './apiResponse';
 
-import MessageType from 'app/queue/MessageType';
+import * as app from 'app/util/applib';
 
-import {
-	errorResponse,
-	okResponse,
-} from './apiResponse';
+const log = app.createLog();
 
 export default function (requ : Request, resp : Response) : void {
+	log(app.inspect(requ.body));
+	// Store the new feedback
 	feedbackService.validateAndSave(requ.body)
-	.then((newFeedback) => sendMessage(MessageType.NewFeedback, newFeedback))
-	.then(() => okResponse(resp))
+	// Reply with only the one-shot token in the response.
+	// No e-mail notification is triggered here! The cron takes care of this.
+	.then(newFeedback => okResponse(resp, {
+		updateToken: newFeedback.oneshotUpdateToken,
+	}))
+	// Catch them nasty errors
 	.catch(error => errorResponse(resp, error));
 }

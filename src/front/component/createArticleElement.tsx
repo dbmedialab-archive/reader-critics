@@ -19,6 +19,7 @@
 import * as React from 'react';
 
 import ArticleItemType from 'base/ArticleItemType';
+import FeedbackContainer from 'front/feedback/FeedbackContainer';
 
 import FeaturedImageElement from './article-el/FeaturedImageElement';
 import FigureElement from './article-el/FigureElement';
@@ -40,7 +41,11 @@ const elTypes = Object.freeze({
 	[ArticleItemType.SubTitle]: SubTitleElement,
 });
 
-export default function (articleItem : any, refFn : (i : any) => void) : JSX.Element
+export default function (
+	container : FeedbackContainer,
+	articleItem : any,
+	refFn : (i : any) => void
+) : JSX.Element
 {
 	if (articleItem === undefined ? true : articleItem.type === undefined) {
 		return null;
@@ -52,6 +57,7 @@ export default function (articleItem : any, refFn : (i : any) => void) : JSX.Ele
 
 	if (component === undefined) {
 		console.log(`Article item type ${item.type} is not mapped to a component`);
+		return <div>Unknown element type</div>;
 	}
 
 	item.originalText = text;
@@ -60,5 +66,6 @@ export default function (articleItem : any, refFn : (i : any) => void) : JSX.Ele
 		key,
 		ref: refFn,
 		item,
+		container,
 	});
 }

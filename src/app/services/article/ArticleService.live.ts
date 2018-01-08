@@ -28,8 +28,14 @@ import createPersistingService from '../createPersistingService';
 
 import download from './live/download';
 import fetch from './common/fetch';
+import getRangeWithFBCount from './common/getRangeWithFBCount';
+import getByID from './common/getByID';
+import getAmount from './common/getAmount';
+import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { setOptions } from './common/setOptions';
 
 import {
+	addFeedback,
 	exists,
 	get,
 	save,
@@ -39,12 +45,18 @@ import {
 const service : ArticleService
 	= createPersistingService <ArticleDocument, ArticleService, Article> (
 		ArticleModel, {
+			addFeedback,
 			download,
 			exists,
 			fetch,
 			get,
 			save,
 			upsert,
+			getAmount,
+			getByID,
+			getRangeWithFBCount,
+			getRelatedArticleItem,
+			setOptions,
 		}
 	);
 

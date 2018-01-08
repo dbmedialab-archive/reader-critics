@@ -35,4 +35,14 @@ export default function(schema : Schema, options : any) {
 		next();
 	});
 
+	schema.pre('update', function () {
+		this.update({}, {
+			'$set': {
+				'date.modified': new Date(),
+			},
+			'$setOnInsert': {
+				'date.created': new Date(),
+			},
+		});
+	});
 }

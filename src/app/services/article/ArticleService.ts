@@ -17,10 +17,17 @@
 //
 
 import Article from 'base/Article';
+import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
+import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
 import Website from 'base/Website';
 
 import BasicPersistingService from '../BasicPersistingService';
+
+import { ArticleDocument } from 'app/db/models';
+import { ArticleOptions } from 'base/ArticleOptions';
+import { ObjectID } from 'app/db';
 
 /**
  * The Article Service persists Article objects to the database and keeps
@@ -95,6 +102,39 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
 	upsert(website : Website, article : Article) : Promise <Article>
+
+	getRangeWithFBCount(skip: number,
+			limit: number,
+			sort: Object,
+			search?: string
+	): Promise <ArticleDocument[]>
+
+	/**
+	 * Get an Article by it's ID
+	 *
+	 * @throws EmptyError if ID not set
+	 */
+	getByID(ID : ObjectID) : Promise <Article>
+
+	/**
+	 * Get amount of Articles
+	 */
+	getAmount(search?: string) : Promise <number>
+
+	/**
+	 * Add another feedback object reference
+	 */
+	addFeedback(article : Article, feedback : Feedback) : Promise <void>
+
+	/**
+	 * Helper function to match feedback items with article items
+	 */
+	getRelatedArticleItem(article : Article, item : FeedbackItem) : ArticleItem
+
+	/**
+	 * Set various options and flags on an article.
+	 */
+	setOptions(article : Article, options : ArticleOptions) : Promise <void>
 }
 
 export default ArticleService;

@@ -28,6 +28,9 @@ import {
 	NotFoundError,
 } from 'app/util/errors';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 const __ = localizationService.translate;
 
 export function notFoundHandler(requ : Request, resp : Response) {
@@ -40,10 +43,12 @@ export function catchAllErrorHandler(
 	resp : Response,
 	next : Function
 ) {
+	log(`Catch-all got one ${Object.getPrototypeOf(err)}: ${err.message}`);
+
 	if (err instanceof InvalidRequestError) {
 		send400Response(resp, err.message);
 	}
-	if (err instanceof NotFoundError) {
+	else if (err instanceof NotFoundError) {
 		send404Response(resp, err.message);
 	}
 	else {
@@ -65,13 +70,10 @@ function send400Response(resp : Response, message? : string) {
 }
 
 function send404Response(resp : Response, message? : string) {
-	let template = notFoundPage;
-
-	if (message) {
-		template = template
-			.replace(/#main-title#/g, __('err.not-found'))
-			.replace(/#message#/g, message);
-		}
+	const msg = message || 'Resource not found';
+	const template = notFoundPage
+		.replace(/#main-title#/g, __('err.not-found'))
+		.replace(/#message#/g, msg);
 
 	resp.status(404).send(template);
 }

@@ -24,8 +24,10 @@ export default class SubTitleElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label><FormattedMessage id="label.article-el.maintitle"/></label>
-			<h2>{ this.textDiff(this.props.item.originalText, this.state.text) }</h2>
+			<label><FormattedMessage id="article-el.subtitle"/></label>
+			<h2 hidden={this.state.editing}>
+				{ this.textDiff(this.props.item.originalText, this.state.text) }
+			</h2>
 		</div>;
 	}
 

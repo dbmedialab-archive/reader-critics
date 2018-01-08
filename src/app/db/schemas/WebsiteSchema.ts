@@ -29,23 +29,52 @@ const WebsiteSchema : Schema = new Schema({
 		required: true,
 	},
 
+	// Language setting for this website (a ISO 639-1 code)
 	locale: {
 		type: String,
 		required: false,
 		default: systemLocale,
 	},
 
+	// Fallback e-mail addresses and related options
 	chiefEditors: [Schema.Types.Mixed],
 
+	// Articles with a feedback count greater or equal to the values configured
+	// here will trigger an escalation notification
+	escalateThreshold: {
+		toEditor: {
+			type: Number,
+			required: false,
+		},
+	},
+
+	// Turning this on will send all outgoing notification e-mails on the
+	// customer side to the configured editors *only*. Authors of articles will
+	// not receive notifications, even if their mail addresses could be parsed
+	// from the articles. This setting does *not* affect e-mails that go out
+	// to endusers.
+	onlyNotifyEditors: {
+		type: Boolean,
+		required: false,
+		default: false,
+	},
+
+	// Article parser
 	parserClass: {
 		type: String,
 		required: false,
 		default: null,
 	},
 
+	// Website-specific layout
 	layout: {
 		templates: {
 			feedbackPage: {
+				type: String,
+				required: false,
+				default: null,
+			},
+			feedbackNotificationMail: {
 				type: String,
 				required: false,
 				default: null,

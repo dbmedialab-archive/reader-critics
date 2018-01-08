@@ -1,63 +1,40 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: reader-critics
+  name: {{env "REPONAME"}}
+  namespace: {{env "REPONAME"}}
 spec:
+  selector:
+    matchLabels:
+      app: {{env "REPONAME"}}
   replicas: 2
   revisionHistoryLimit: 1
   template:
     metadata:
       labels:
-        app: reader-critics
+        app: {{env "REPONAME"}}
     spec:
       containers:
-        - name: reader-critics
-          image: eu.gcr.io/dagbladet-projects/reader-critics
+        - name: {{env "REPONAME"}}
+          image: {{env "IMAGE"}}
           command: ["npm"]
           args: ["start"]
           ports:
           - containerPort: 4000
             name: http-port
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "0.02"
-            limits:
-              memory: "1024Mi"
-              cpu: "0.1"
-          env:
-          - name: AUTH_JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: AUTH_JWT_SECRET
-          - name: AUTH_SESSION_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: AUTH_SESSION_SECRET
-          - name: MONGODB_URL
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: MONGODB_URL
-          - name: NODE_ENV
-            valueFrom:
-              configMapKeyRef:
-                name: reader-critics-config
-                key: NODE_ENV
-          - name: REDIS_URL_MESSAGE_QUEUE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: REDIS_URL_MESSAGE_QUEUE
-          - name: REDIS_URL_SESSION_CACHE
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: REDIS_URL_SESSION_CACHE
-          - name: SENDGRID_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: reader-critics-secrets
-                key: SENDGRID_API_KEY
+          envFrom:
+            - secretRef:
+                name: secrets
+            - configMapRef:
+                name: config
+          livenessProbe:
+            httpGet:
+              path: /api/version
+              port: http-port
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/version
+              port: http-port
+            timeoutSeconds: 5
+
