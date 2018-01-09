@@ -89,13 +89,14 @@ EXITCODE=0
 
 runMocha()
 {
-	echo -e "\033[1;38;5;214mTesting ${2} ...\033[0m"
+	echo -e "\033[1;38;5;214mTesting ${3} ...\033[0m"
 
 	# Run Mocha
 	CWD=$(pwd)
 	export CWD
+	export TEST_SUITE=${1}
 
-	node_modules/.bin/mocha --opts "conf/${1}"
+	node_modules/.bin/mocha --opts "conf/${2}"
 	RETURN_VALUE=$?
 
 	# Catch exit code
@@ -136,31 +137,31 @@ runNightwatch()
 	fi
 }
 
-### Test parts
+### Test suites
 
 testBackendApp()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_APP ]) ; then return ; fi
-	runMocha "mocha-app.opts" "Backend Application"
+	runMocha "app" "mocha-app.opts" "Backend Application"
 }
 
 testLibraries()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_LIBS ]) ; then return ; fi
-	runMocha "mocha-libs.opts" "Libraries"
+	runMocha "libs" "mocha-libs.opts" "Libraries"
 }
 
 testBaseSource()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_BASE ]) ; then return ; fi
-	runMocha "mocha-base.opts" "Base Sources"
+	runMocha "base" "mocha-base.opts" "Base Sources"
 }
 
 testDatabase()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_DATABASE ]) ; then return ; fi
 	export DEBUG="${DEBUG},-app:*"
-	runMocha "mocha-database.opts" "Database"
+	runMocha "database" "mocha-database.opts" "Database"
 }
 
 testFrontend()
