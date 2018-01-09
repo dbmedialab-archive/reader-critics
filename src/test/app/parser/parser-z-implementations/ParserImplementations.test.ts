@@ -22,6 +22,7 @@ import { assert } from 'chai';
 
 import {
 	collectArticleFiles,
+	loadResultJSON,
 	mapSitesToParser,
 } from './articleSitesAndFiles';
 
@@ -85,68 +86,14 @@ describe('Parser implementations', function() {
 					const articleID = parseInt(fileName.replace(/^.+_(\d+)\.html$/, '$1'));
 
 					it(`parse article ${hostName} / ${articleID}`, function() {
-						assert.equal(1, 1);
+						return loadResultJSON(fileName)
+						.catch(err => this.skip())
+						.then(() => {
+							assert.equal(1, 1);
+							// runParserTest
+						});
 					});
 				});
 		}); // describe(parserName)
 	}); // mapSitesToParser.forEach()
 });
-
-/*
-
-import ArticleURL from 'base/ArticleURL';
-
-import * as app from 'app/util/applib';
-
-import {
-	articleService,
-	websiteService,
-} from 'app/services';
-
-import { initParserResolver } from 'app/services/parser/common/parserResolver';
-
-Object.values(mapSitesToParser).forEach(thatParser => {
-	describe(thatParser, function () {
-		console.log('     ...', thatParser);
-	});
-});
-
-describe('Parser End-to-End', function () {
-	return (app.rootPath + '/resources/article/html/')
-	// Iterate over all the article files in the resource directory and feed
-	// those which we have a testable parser for into the parser system
-	.then((files : string[]) => {
-		files
-		.forEach(articleFileName => {
-			const articleSite = articleFileName.replace(/^(.+)_\d+\.html$/, '$1');
-
-			testArticle(`http://${articleSite}/${articleID}`);
-		});
-	});
-});
-
-function testArticle(incomingURL : string) {
-	return it(incomingURL, function () {
-		let articleURL;
-
-		// 1 - Article URL and Website identification
-		return ArticleURL.from(incomingURL).then((url : ArticleURL) => {
-			articleURL = url;
-			console.log(url.toString());
-			//return websiteService.identify(articleURL);
-
-			assert.ok(true, 'all good');
-		});
-
-		/*
-		const parserName = mapSitesToParser[articleSite];
-
-		if (parserName === undefined) {
-			return assert.fail(null, null, `Parser "${parserName}" not found`);
-		}
-		* * * /
-
-//		console.log('dozo');
-	});
-}
-*/

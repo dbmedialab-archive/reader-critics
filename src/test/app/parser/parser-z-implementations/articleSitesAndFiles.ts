@@ -7,7 +7,14 @@ export const mapSitesToParser = Object.freeze({
 	'nettavisen.no': 'Nettavisen Parser',
 });
 
+const htmlPath = path.join('resources', 'article', 'html');
+const jsonPath = path.join('resources', 'article', 'json');
+
 export function collectArticleFiles() : string[] {
-	const articlePath = path.join(app.rootPath, 'resources', 'article', 'html');
-	return fs.readdirSync(articlePath);
+	return fs.readdirSync(path.resolve(app.rootPath, htmlPath));
+}
+
+export function loadResultJSON(htmlFileName : string) : Promise <{}> {
+	const jsonFileName = htmlFileName.replace(/\.html$/, '.json5');
+	return app.loadJSON(path.join(jsonPath, jsonFileName));
 }
