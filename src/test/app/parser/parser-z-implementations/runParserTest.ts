@@ -30,7 +30,7 @@ export function runParserTest(
 	website : Website,
 	hostName : string,
 	articleID : number,
-	result : object
+	result : {}
 ) : Promise <void>
 {
 	return ArticleURL.from(`http://${hostName}/${articleID}`)
@@ -40,15 +40,25 @@ export function runParserTest(
 	// engine. The outcome should be a complete article object, like it would be
 	// persisted to the database.
 	.then((url : ArticleURL) => articleService.fetch(website, url))
-	// Perform a deep and through comparism of the parsed article object and the
+	// Perform a deep and through comparison of the parsed article object and the
 	// data structure that is expected. Again, the latter is a static resource.
 	.then((actual : Article) => {
 		console.log(app.inspect(actual));
 		const expected = result as Article;  // Type-cast the "expected" data
 
+		checkURL(actual, expected);
 		checkVersion(actual, expected);
 		checkAuthors(actual, expected);
 	});
+}
+
+function checkURL(actual : Article, expected : Article) {
+	assert.property(actual, 'url');
+	assert.isObject(actual.url);
+	assert.property(actual.url, 'href');
+	assert.isString(actual.url.href);
+	assert.isNotEmpty(actual.url.href);
+	assert.equal(actual.url.href, expected.url.href);
 }
 
 function checkVersion(actual : Article, expected : Article) {
@@ -64,7 +74,7 @@ function checkAuthors(actual : Article, expected : Article) {
 	assert.isNotEmpty(actual.authors);
 	assert.lengthOf(actual.authors, expected.authors.length);
 
-	// Yes, this type of comparism loop means that the order of the parsed
+	// Yes, this type of comparison loop means that the order of the parsed
 	// authors is expected to stay the same
 	expected.authors.forEach((a : ArticleAuthor, i : number) => {
 		assert.equal(actual.authors[i].name, a.name);

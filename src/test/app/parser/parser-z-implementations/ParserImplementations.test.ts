@@ -21,10 +21,9 @@ import 'mocha';
 import { assert } from 'chai';
 
 import {
-	collectArticleFiles,
-	loadResultJSON,
-	mapSitesToParser,
-} from './articleSitesAndFiles';
+	parserService,
+	websiteService,
+} from 'app/services';
 
 import {
 	getAvailableParsers,
@@ -32,10 +31,12 @@ import {
 } from 'app/services/parser/common/parserResolver';
 
 import {
-	parserService,
-	websiteService,
-} from 'app/services';
+	collectArticleFiles,
+	loadResultJSON,
+	mapSitesToParser,
+} from './articleSitesAndFiles';
 
+import { NotFoundError } from 'app/util/errors';
 import { assertParserFactory } from './assertParserFactory';
 import { runParserTest } from './runParserTest';
 
@@ -94,7 +95,12 @@ describe('Parser implementations', function() {
 					it(`parse article ${hostName} / ${articleID}`, function() {
 						return loadResultJSON(fileName)
 						// Skip this test is the result (expected) JSON data was not found
-						.catch(err => this.skip())
+						.catch(err => {
+							if (err instanceof NotFoundError) {
+								return this.skip();
+							}
+							throw err;
+						})
 						// Do the magic
 						.then((resultJSON) => runParserTest(
 							website,
