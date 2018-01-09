@@ -37,6 +37,7 @@ import {
 } from 'app/services';
 
 import { assertParserFactory } from './assertParserFactory';
+import { runParserTest } from './runParserTest';
 
 import Website from 'base/Website';
 
@@ -69,31 +70,40 @@ describe('Parser implementations', function() {
 
 			this.slow(5000);
 
+			// Get a (mock) website object
 			before(function() {
 				return websiteService  // Using the mock implementation, no database!
 				.identify(`http://${hostName}/something`)
 				.then(w => website = w);
 			});
 
+			// Test if the parser service returns a factory for the current website
 			it('resolves the parser factory', () => (
 				parserService.getParserFor(website)
 				.then(factory => assertParserFactory(factory))
 			));
 
-			inputFiles  // parse all articles that belong to the current website
+			// Parse and deep-compare all articles
+			inputFiles
+				// Filter those that belong to the current website
 				.filter(fileName => fileName.includes(hostName))
+				// Dynamically create tests for this article object
 				.forEach(function(fileName) {
 					const articleID = parseInt(fileName.replace(/^.+_(\d+)\.html$/, '$1'));
 
 					it(`parse article ${hostName} / ${articleID}`, function() {
 						return loadResultJSON(fileName)
+						// Skip this test is the result (expected) JSON data was not found
 						.catch(err => this.skip())
-						.then(() => {
-							assert.equal(1, 1);
-							// runParserTest
-						});
-					});
-				});
+						// Do the magic
+						.then((resultJSON) => runParserTest(
+							website,
+							hostName,
+							articleID,
+							resultJSON
+						));
+					}); // it()
+				}); // inputFiles...forEach()
 		}); // describe(parserName)
 	}); // mapSitesToParser.forEach()
 });
