@@ -16,14 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as util from 'util';
+import * as app from 'app/util/applib';
 
 import { assert } from 'chai';
 import { articleService } from 'app/services';
+import { checkContent } from './assertArticleContent';
 
 import Article from 'base/Article';
 import ArticleAuthor from 'base/ArticleAuthor';
-import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
@@ -44,11 +44,13 @@ export function runParserTest(
 	// Perform a deep and through comparison of the parsed article object and the
 	// data structure that is expected. Again, the latter is a static resource.
 	.then((actual : Article) => {
-	//	console.log(app.inspect(actual));
-
-		if (Object.getOwnPropertyNames(result).length <= 0) {
-			return;
+		if (actual.url.href.includes('nettavisen')) {
+			console.log(app.inspect(actual));
 		}
+
+		// if (Object.getOwnPropertyNames(result).length <= 0) {
+		// 	return;
+		// }
 
 		const expected = result as Article;  // Type-cast the "expected" data
 
@@ -66,22 +68,22 @@ function checkURL(actual : Article, expected : Article) {
 	assert.isObject(actual.url);
 
 	assert.property(actual.url, 'href');
-	assert.isString(actual.url.href);
-	assert.isNotEmpty(actual.url.href);
+	assert.isString(actual.url.href, 'Article URL "href" is not a string');
+	assert.isNotEmpty(actual.url.href, 'Article URL "href" is empty');
 
 	assert.strictEqual(actual.url.href, expected.url.href, 'Article URLs strings differ');
 }
 
 function checkVersion(actual : Article, expected : Article) {
 	assert.property(actual, 'version');
-	assert.isString(actual.version);
-	assert.isNotEmpty(actual.version);
+	assert.isString(actual.version, 'Article "version" is not a string');
+	assert.isNotEmpty(actual.version, 'Article "version" is empty');
 	assert.strictEqual(actual.version, expected.version, 'Article version strings differ');
 }
 
 function checkAuthors(actual : Article, expected : Article) {
 	assert.property(actual, 'authors');
-	assert.isArray(actual.authors);
+	assert.isArray(actual.authors, 'Article "authors" is not a string');
 	assert.isNotEmpty(actual.authors, 'Array of <ArticleAuthor> is empty');
 
 	assert.lengthOf(
@@ -97,86 +99,3 @@ function checkAuthors(actual : Article, expected : Article) {
 		assert.strictEqual(actual.authors[i].email, a.email);
 	});
 }
-
-// Check article content
-
-function checkContent(actual : Article, expected : Article) {
-	assert.property(actual, 'items');
-	assert.isArray(actual.items);
-	assert.isNotEmpty(actual.items, 'Array of <ArticleItem> is empty');
-
-	assert.lengthOf(
-		actual.items,
-		expected.items.length,
-		'Array of <ArticleItem> has different length than expected'
-	);
-
-	expected.items.forEach((expItem : ArticleItem, i : number) => {
-		const actItem = actual.items[i];
-		const inspect = articleItemInspect(actItem);
-
-		// Type
-		assert.property(actItem, 'type');
-		assert.isString(actItem.type);
-		assert.isNotEmpty(actItem.type);
-
-		assert.strictEqual(
-			actItem.type,
-			expItem.type,
-			`Article item ${i} has a different type\n${inspect}`
-		);
-
-		// Order
-		assert.property(actItem, 'order');
-		assert.isObject(actItem.order);
-		assert.isNotEmpty(actItem.order);
-
-		assert.property(actItem.order, 'item');
-		assert.isNumber(actItem.order.item);
-
-		assert.property(actItem.order, 'type');
-		assert.isNumber(actItem.order.type);
-
-		assert.strictEqual(
-			actItem.order.item,
-			expItem.order.item,
-			`Article item ${i} has different item order\n${inspect}`
-		);
-		assert.strictEqual(
-			actItem.order.type,
-			expItem.order.type,
-			`Article item ${i} has different type order\n${inspect}`
-		);
-
-		// Text
-		assert.property(actItem, 'text');
-		assert.isString(actItem.text);
-		assert.isNotEmpty(actItem.text);
-
-		assert.strictEqual(
-			actItem.text,
-			expItem.text,
-			`Article item ${i} has different text\n${inspect}`
-		);
-
-		// Other properties
-		if (expItem.type === 'featured' || expItem.type === 'figure') {
-			assert.property(actItem, 'href');
-			assert.isString(actItem.href);
-			assert.isNotEmpty(actItem.href);
-
-			assert.strictEqual(
-				actItem.href,
-				expItem.href,
-				`Article item ${i} has different "href"\n${inspect}`
-			);
-		}
-	});
-}
-
-const articleItemInspect = (item : ArticleItem) : string => util.inspect(item, {
-	breakLength: Infinity,
-	colors: false,
-	depth: null,
-	showHidden: true,
-}) + '\n';
