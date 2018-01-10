@@ -27,8 +27,6 @@ import ArticleItem from 'base/ArticleItem';
 import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
-import * as app from 'app/util/applib';
-
 export function runParserTest(
 	website : Website,
 	hostName : string,

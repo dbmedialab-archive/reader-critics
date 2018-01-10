@@ -19,16 +19,12 @@
 // tslint:disable: max-file-line-count
 
 import * as Cheerio from 'cheerio';
-
-import * as app from 'app/util/applib';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 
 import BaseIteratingItems from './BaseIteratingItems';
 import IteratingParserItem from './IteratingParserItem';
-
-const log = app.createLog();
 
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 
