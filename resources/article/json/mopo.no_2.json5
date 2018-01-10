@@ -1,5 +1,7 @@
 {
-	url: "http://www.mopo.no/2",
+	url: {
+		href: "http://mopo.no/2",
+	},
 	version: "201707251349",
 	authors: [
 		{
