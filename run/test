@@ -142,6 +142,7 @@ runNightwatch()
 testBackendApp()
 {
 	if [ $EXITCODE -ne 0 ] || ([ $DONT_TEST_ALL ] && [ ! $TEST_APP ]) ; then return ; fi
+	export DEBUG="${DEBUG},-app:*"
 	runMocha "app" "mocha-app.opts" "Backend Application"
 }
 

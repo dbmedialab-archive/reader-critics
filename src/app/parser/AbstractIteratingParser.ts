@@ -43,8 +43,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	};
 
 	protected initialize() : Promise <void> {
-		log('### initialize');
-
 		this.articleItems = Object.freeze({
 			featured: undefined,
 			titles: [],
@@ -59,7 +57,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	}
 
 	protected parseContent() : Promise <ArticleItem[]> {
-		log('### parseContent');
 		this.parseElements();
 		this.iterateParsedElements();
 		return Promise.resolve(this.articleItems.content);

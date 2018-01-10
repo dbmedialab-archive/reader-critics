@@ -45,3 +45,11 @@ export function getOpenGraphModifiedTime(
 
 	return meta.length < 1 ? undefined : select(meta[0]).attr('content');
 }
+
+export function getLinkedDataSchemaOrgModifiedTime(select : Cheerio) : string {
+	const jsonLDraw = select('script[type="application/ld+json"]').text();
+
+	console.log(jsonLDraw);
+
+	return '';
+}
