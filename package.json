@@ -168,7 +168,7 @@
 		"supports-color": "^4.2.1",
 		"ts-node": "4.0.1",
 		"tsconfig-paths": "2.6.0",
-		"tslint": "5.8.0",
+		"tslint": "5.9.0",
 		"typescript": "2.6.2",
 		"webpack-bundle-analyzer": "^2.8.3"
 	},
