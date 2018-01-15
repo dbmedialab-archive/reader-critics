@@ -45,7 +45,7 @@ export function runParserTest(
 	// data structure that is expected. Again, the latter is a static resource.
 	.then((actual : Article) => {
 		if (actual.url.href.includes('nettavisen')) {
-			console.log(app.inspect(actual));
+		//	console.log(app.inspect(actual));
 		}
 
 		// if (Object.getOwnPropertyNames(result).length <= 0) {
