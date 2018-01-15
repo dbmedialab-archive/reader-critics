@@ -94,7 +94,7 @@
 		"react-helmet": "5.2.0",
 		"react-intl": "2.4.0",
 		"react-modal": "2.2.4",
-		"react-preloader-icon": "0.1.0",
+		"react-preloader-icon": "0.1.1",
 		"react-recaptcha": "2.3.5",
 		"react-redux": "5.0.6",
 		"react-router": "4.2.0",
