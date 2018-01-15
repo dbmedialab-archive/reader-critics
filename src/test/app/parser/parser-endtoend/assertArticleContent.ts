@@ -39,7 +39,7 @@ const articleItemInspect = (item : ArticleItem) : string => util.inspect(item, {
 }) + '\n';
 
 export function checkContent(actual : Article, expected : Article) {
-	assert.property(actual, 'items');
+	assert.property(actual, 'items', 'Article "items" does not exist');
 	assert.isArray(actual.items, 'Article "items" is not a string');
 	assert.isNotEmpty(actual.items, 'Array of <ArticleItem> is empty');
 
