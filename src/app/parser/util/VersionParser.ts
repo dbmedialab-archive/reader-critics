@@ -18,6 +18,8 @@
 
 import * as Cheerio from 'cheerio';
 
+import { getLinkedData } from './LinkedData';
+
 /**
  * Facebook's OpenGraph scheme
  * looks for <meta property="article:modified_time" content="...">
@@ -46,10 +48,10 @@ export function getOpenGraphModifiedTime(
 	return meta.length < 1 ? undefined : select(meta[0]).attr('content');
 }
 
-export function getLinkedDataSchemaOrgModifiedTime(select : Cheerio) : string {
-	const jsonLDraw = select('script[type="application/ld+json"]').text();
-
-	console.log(jsonLDraw);
-
-	return '';
+/**
+ * Linked-data according to Schema.org
+ * looks for <script type="application/ld+json">...{JSON data}...</script>
+ */
+export function getLinkedDataModifiedTime(select : Cheerio) : string {
+	return getLinkedData(select).dateModified || undefined;
 }
