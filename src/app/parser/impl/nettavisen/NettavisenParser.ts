@@ -121,4 +121,25 @@ export default class NettavisenParser extends AbstractIteratingParser {
 		return checkParents.length === 0;
 	}
 
+	protected isFigure(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const parents = select(item.elem).parents('div.articleInlineImage');
+		return item.name === 'img'
+			&& parents.length === 1;
+	}
+
+	protected createFigure(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		const href = select(fromItem.elem).attr('src');
+		const caption = CheerioPlugin.trimText(select(fromItem.elem)
+			.parents('div.articleInlineImage')
+			.find('div.dp-article-image-description').text());
+			// caption_wrap / dp-article-image-description
+		return this.createFigureEl(href, caption);
+	}
+
 }

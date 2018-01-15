@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// import * as app from 'app/util/applib';
-
 import { assert } from 'chai';
 import { articleService } from 'app/services';
 import { checkContent } from './assertArticleContent';
@@ -44,13 +42,9 @@ export function runParserTest(
 	// Perform a deep and through comparison of the parsed article object and the
 	// data structure that is expected. Again, the latter is a static resource.
 	.then((actual : Article) => {
-		if (actual.url.href.includes('nettavisen')) {
-		//	console.log(app.inspect(actual));
+		if (Object.getOwnPropertyNames(result).length <= 0) {
+			return;
 		}
-
-		// if (Object.getOwnPropertyNames(result).length <= 0) {
-		// 	return;
-		// }
 
 		const expected = result as Article;  // Type-cast the "expected" data
 
