@@ -17,6 +17,7 @@
 //
 
 import * as Cheerio from 'cheerio';
+import * as CheerioPlugin from '../../util/CheerioPlugin';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
@@ -46,7 +47,7 @@ export default class NettavisenParser extends AbstractIteratingParser {
 	}
 
 	protected getParsedElementNames() : string[] {
-		return [ 'h1', 'h2', 'p', 'img', 'div' ];
+		return [ 'h1', 'h3', 'p', 'img', 'div' ];
 	}
 
 	protected isMainTitle(
@@ -85,8 +86,19 @@ export default class NettavisenParser extends AbstractIteratingParser {
 		select : Cheerio
 	) : ArticleItem {
 		const href = select(fromItem.elem).attr('src');
-		const caption = select(fromItem.elem).next('div.image_caption').text();
+		const caption = CheerioPlugin.trimText(select(fromItem.elem).next('div.image_caption').text());
 		return this.createFeaturedImageEl(href, caption);
+	}
+
+	protected isSubHeading(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const parents = select(item.elem).parents('div.sidebar-element');
+		return item.name === 'h3'
+			&& parents.length === 0
+			&& item.text.length > 0
+			&& item.css.length === 0;
 	}
 
 	protected isParagraph(
@@ -101,12 +113,12 @@ export default class NettavisenParser extends AbstractIteratingParser {
 
 		// There are several sub elements which contain plain <p> elements and which
 		// do *not* belong to the article content. Check this element's parents:
-		const checked = item.parents
+		const checkParents = item.parents
 			.filter(check => {
 				return check.css.includes('article_services_skin');
 			});
 
-		return checked.length === 0;
+		return checkParents.length === 0;
 	}
 
 }
