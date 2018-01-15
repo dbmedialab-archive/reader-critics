@@ -57,5 +57,6 @@ export function checkContent(actual : Article, expected : Article) {
 		checkItemOrder(actItem, expItem, index, inspect);
 		checkItemText(actItem, expItem, index, inspect);
 		checkItemOther(actItem, expItem, index, inspect);
+		checkItemStruct(actItem, expItem, index, inspect);
 	});
 }

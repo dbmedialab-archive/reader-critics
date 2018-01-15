@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
+// import * as app from 'app/util/applib';
 
 import { assert } from 'chai';
 import { articleService } from 'app/services';
