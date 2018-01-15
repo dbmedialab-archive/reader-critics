@@ -65,7 +65,7 @@ export default function(this: ISuiteCallbackContext) {
 	}));
 
 	it('getByArticle()', () => {
-		return ArticleURL.from('http://www.mopo.no/1')
+		return ArticleURL.from('http://mopo.no/1')
 		.then(articleURL => articleService.get(articleURL, 'final-draft'))
 		.then(article => feedbackService.getByArticle(article))
 		.then((results : Feedback[]) => {
