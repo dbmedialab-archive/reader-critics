@@ -24,13 +24,13 @@ export interface LinkedData {
 	// are the most interesting ones:
 	author?: string | {
 		email?: string
-		name?: string
+		name: string
 	}
 	publisher?: {}
 	headline?: string
 	image?: string[]
-	datePublished?: string
-	dateModified?: string
+	datePublished: string
+	dateModified: string
 	description?: string
 }
 
