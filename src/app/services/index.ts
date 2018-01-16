@@ -34,7 +34,9 @@ import WebsiteService from './website/WebsiteService';
 
 import * as app from 'app/util/applib';
 
-const env : string = app.env === 'test' ? 'mock' : 'live';
+const env : string = (app.env === 'test' && process.env.TEST_SUITE !== 'database')
+	? 'mock'
+	: 'live';
 
 // Declare service exports
 // tslint:disable no-require-imports

@@ -16,36 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Website from 'base/Website';
-import WebsiteService from './WebsiteService';
+import { assert } from 'chai';
 
-import {
-	WebsiteDocument,
-	WebsiteModel
-} from 'app/db/models';
+import ParserFactory from 'base/ParserFactory';
 
-import createPersistingService from '../createPersistingService';
+export function assertParserFactory(p : ParserFactory) {
+	assert.isNotNull(p);
+	assert.isObject(p);
 
-import {
-	get,
-	getByID,
-	save,
-	update,
-} from './WebsiteDAO';
-
-import { identify } from './mock/identify';
-import validateAndUpdate from './common/validateAndUpdate';
-
-const service : WebsiteService
-	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
-		WebsiteModel, {
-			get,
-			getByID,
-			identify,
-			save,
-			update,
-			validateAndUpdate,
-		}
-	);
-
-module.exports = service;
+	assert.property(p, 'newInstance');
+	assert.isFunction(p.newInstance);
+}

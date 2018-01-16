@@ -16,25 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
-
-import { assert } from 'chai';
+import * as app from 'app/util/applib';
 
 import {
-	getAvailableParsers,
-	initParserResolver,
-} from 'app/services/parser/common/parserResolver';
+	DoneCallback,
+	Job,
+} from 'kue';
 
-describe('ParserService', () => {
-	it('getAvailableParsers', () => {
-		return initParserResolver()
-		.then(() => getAvailableParsers())
-		.then((parsers : string[]) => {
-			// It should at least find two parser implementations (see next)
-			assert.isAtLeast(parsers.length, 2);
-			// Check if our default implementations are resolved
-			assert.include(parsers, 'AMP Parser');
-			assert.include(parsers, 'Generic Parser');
-		});
-	});
-});
+const log = app.createLog();
+
+export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
+	log('Alright, I\'m here!');
+	// Consume the message, implementation follows
+	done();
+}

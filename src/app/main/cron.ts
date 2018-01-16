@@ -31,7 +31,10 @@ const activeJobs : Array <CronJob> = [];
 
 export function initCron() : Promise <void> {
 	log('Initialising ...');
+
 	jobCheckAwaitFeedback();
+	jobCollectArticlesForPolling();
+
 	return Promise.resolve();
 }
 
@@ -41,4 +44,16 @@ function jobCheckAwaitFeedback() {
 		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
 		start: true,
 	}));
+}
+
+function jobCollectArticlesForPolling() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 30 * * * *',  // Every hour at xx:30
+		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
+		start: true,
+	}));
+
+	/* setTimeout(() => {
+		sendMessage(MessageType.CollectArticlesForPolling);
+	}, 5000); */
 }
