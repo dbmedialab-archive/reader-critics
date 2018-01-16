@@ -23,11 +23,6 @@ import {
 	Job,
 } from 'kue';
 
-import {
-	sendMessage,
-	MessageType,
-} from 'app/queue';
-
 const log = app.createLog();
 
 export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
