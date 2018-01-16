@@ -16,44 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { CronJob } from 'cron';
-
-import {
-	sendMessage,
-	MessageType,
-} from 'app/queue';
-
 import * as app from 'app/util/applib';
 
-const log = app.createLog('cron');
+import {
+	DoneCallback,
+	Job,
+} from 'kue';
 
-const activeJobs : Array <CronJob> = [];
+const log = app.createLog();
 
-export function initCron() : Promise <void> {
-	log('Initialising ...');
-
-	jobCheckAwaitFeedback();
-	jobCollectArticlesForPolling();
-
-	return Promise.resolve();
-}
-
-function jobCheckAwaitFeedback() {
-	activeJobs.push(new CronJob({
-		cronTime: '0 * * * * *',  // Every minute
-		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
-		start: true,
-	}));
-}
-
-function jobCollectArticlesForPolling() {
-	activeJobs.push(new CronJob({
-		cronTime: '0 30 * * * *',  // Every hour at xx:30
-		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
-		start: true,
-	}));
-
-	/* setTimeout(() => {
-		sendMessage(MessageType.CollectArticlesForPolling);
-	}, 5000); */
+export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
+	log('Alright, I\'m here!');
+	// Consume the message, implementation follows
+	done();
 }

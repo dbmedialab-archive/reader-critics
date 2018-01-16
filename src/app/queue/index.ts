@@ -25,6 +25,7 @@ import { dbMessageQueue } from 'app/db/createRedisConnection';
 import {
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
 	onNewFeedback,
 	onSendEditorEscalation,
 } from './handlers';
@@ -36,6 +37,7 @@ import * as app from 'app/util/applib';
 const jobWorkerHandlers = Object.freeze({
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
 	onNewFeedback,
 	onSendEditorEscalation,
 });
@@ -54,6 +56,7 @@ let queue : kue.Queue;
 export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
 	CheckEscalationToEditor = 'check-escalation-to-editor',
+	CollectArticlesForPolling = 'collect-articles-for-polling',
 	NewFeedback = 'new-feedback',
 	SendEditorEscalation = 'send-editor-escalation',
 	SendSuggestionDigest = 'send-suggestion-digest',
