@@ -18,5 +18,6 @@
 
 export * from './onCheckAwaitFeedback/onCheckAwaitFeedback';
 export * from './onCheckEscalationToEditor/onCheckEscalationToEditor';
+export * from './onCollectArticlesForPolling/onCollectArticlesForPolling';
 export * from './onNewFeedback/onNewFeedback';
 export * from './onSendEditorEscalation/onSendEditorEscalation';
