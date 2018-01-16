@@ -63,9 +63,6 @@ export default function() {
 function startWorkers() : Promise <any> {
 	const startupPromises : Promise <any> [] = [];
 
-	//const numJobWorkers = 1;  // TODO this number should scale with available CPU cores
-	// const numWebWorkers = app.numConcurrency;
-
 	log(
 		'%s threads available, running %s %s workers and %s %s workers',
 		colors.brightWhite(app.numThreads),
