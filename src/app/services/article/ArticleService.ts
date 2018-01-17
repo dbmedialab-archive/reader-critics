@@ -121,6 +121,8 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 */
 	getAmount(search?: string) : Promise <number>
 
+	getIDsToPullUpdates() : Promise <void>
+
 	/**
 	 * Add another feedback object reference
 	 */

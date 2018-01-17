@@ -53,7 +53,7 @@ function jobCollectArticlesForPolling() {
 		start: true,
 	}));
 
-	/* setTimeout(() => {
+	setTimeout(() => {
 		sendMessage(MessageType.CollectArticlesForPolling);
-	}, 5000); */
+	}, 5000);
 }

@@ -23,10 +23,18 @@ import {
 	Job,
 } from 'kue';
 
+import {
+	articleService
+} from 'app/services';
+
 const log = app.createLog();
 
 export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
 	log('Alright, I\'m here!');
 	// Consume the message, implementation follows
-	done();
+
+	articleService.getIDsToPullUpdates()
+	.then(() => {
+		done();
+	});
 }
