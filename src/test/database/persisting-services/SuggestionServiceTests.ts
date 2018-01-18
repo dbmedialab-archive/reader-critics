@@ -35,6 +35,8 @@ const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldin
 export default function(this: ISuiteCallbackContext) {
 	let totalCount : number;
 
+	this.slow(250);
+
 	it('parameter checks', () => {
 		assert.throws(() => suggestionService.getSince(null), EmptyError);
 		assert.throws(() => suggestionService.save(null), EmptyError);

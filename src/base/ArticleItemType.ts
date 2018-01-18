@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-enum ArticleItemType {
+export enum ArticleItemType {
 
 	MainTitle = 'title',
 	SubTitle = 'subtitle',

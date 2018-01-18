@@ -35,6 +35,8 @@ const demoUsers = path.join('resources', 'user', 'demo-endusers.json5');
 export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
+	this.slow(250);
+
 	it('parameter checks', () => {
 		// No checks for empty parameters to get() will be here, because this
 		// function returns the "Anonymous" user if all parameters are empty.

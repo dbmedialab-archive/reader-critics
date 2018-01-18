@@ -41,6 +41,8 @@ export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
 	let thatFeedback : Feedback;
 
+	this.slow(250);
+
 	it('clear()', () => feedbackService.clear());
 
 	it('validateAndSave()', () => app.scanDir(feedbackDir).then((files : string[]) => {

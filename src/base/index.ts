@@ -16,35 +16,30 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import Feedback from './Feedback';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+export * from './Article';
+export * from './ArticleAuthor';
+export * from './ArticleItem';
+export * from './ArticleItemType';
+export * from './ArticleOptions';
+export * from './ArticleURL';
 
-export interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL
-	version : string
+export * from './EndUser';
 
-	// Byline
-	authors : User[]
+export * from './EscalationLevel';
+export * from './EscalationThresholds';
 
-	website? : Website
+export * from './Feedback';
+export * from './FeedbackItem';
+export * from './FeedbackStatus';
 
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[]
+export * from './Pagination';
 
-	date? : {
-		created?: Date
-	}
+export * from './Parser';
+export * from './ParserFactory';
 
-	feedbacks? : Feedback[]
+export * from './Suggestion';
 
-	status?: {
-		escalated? : string
-	}
-}
+export * from './User';
+export * from './UserRole';
 
-export default Article;
+export * from './Website';
