@@ -29,7 +29,7 @@ export interface FeedbackStatusEntry {
 	changeDate : Date
 }
 
-interface Feedback extends PersistedModel {
+export interface Feedback extends PersistedModel {
 	/** The Article that this feedback object is based on */
 	article : Article
 

@@ -18,7 +18,7 @@
 
 import ArticleItemType from 'base/ArticleItemType';
 
-interface ArticleItem {
+export interface ArticleItem {
 	text? : string
 	type : ArticleItemType
 
