@@ -42,22 +42,19 @@ import {
 	upsert,
 } from './ArticleDAO';
 
-const service : ArticleService
-	= createPersistingService <ArticleDocument, ArticleService, Article> (
-		ArticleModel, {
-			addFeedback,
-			download,
-			exists,
-			fetch,
-			get,
-			save,
-			upsert,
-			getAmount,
-			getByID,
-			getRangeWithFBCount,
-			getRelatedArticleItem,
-			setOptions,
-		}
-	);
-
-module.exports = service;
+module.exports = createPersistingService <ArticleDocument, ArticleService, Article> (
+	ArticleModel, {
+		addFeedback,
+		download,
+		exists,
+		fetch,
+		get,
+		save,
+		upsert,
+		getAmount,
+		getByID,
+		getRangeWithFBCount,
+		getRelatedArticleItem,
+		setOptions,
+	}
+) as ArticleService;
