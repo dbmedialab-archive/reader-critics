@@ -19,7 +19,7 @@ RUN /bin/bash -l -c "run/lint"
 
 RUN /bin/bash -l -c "run/build"
 
-RUN npm install --production
+RUN npm prune --production
 
 RUN npm cache clean --force
 
