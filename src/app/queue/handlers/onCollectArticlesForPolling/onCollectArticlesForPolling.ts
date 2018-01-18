@@ -16,23 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as doT from 'dot';
-import * as path from 'path';
-
-import MailTemplate from 'app/template/MailTemplate';
-
 import * as app from 'app/util/applib';
 
+import {
+	DoneCallback,
+	Job,
+} from 'kue';
+
 const log = app.createLog();
-const defaultTemplate = path.join('templates', 'mail', 'defaultFeedbackNotify.html');
 
-export default function() : Promise <MailTemplate> {
-	const rawTemplate = () : Promise <string> => {
-		return app.loadResource(defaultTemplate).then(buf => buf.toString('utf8'));
-	};
-
-	return rawTemplate().then((raw : string) => {
-		log('Mail notification template loaded');
-		return new MailTemplate (doT.template(raw));
-	});
+export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
+	log('Alright, I\'m here!');
+	// Consume the message, implementation follows
+	done();
 }

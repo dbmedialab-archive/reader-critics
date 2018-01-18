@@ -16,15 +16,16 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import {
-	isObject,
-	isString,
-} from 'lodash';
+import * as cryptoRandomString from 'crypto-random-string';
+
+import { isObject } from 'lodash';
 
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
+import FeedbackItem from 'base/FeedbackItem';
+import FeedbackStatus from 'base/FeedbackStatus';
 
 import {
 	articleService,
@@ -37,25 +38,60 @@ import {
 	SchemaValidationError,
 } from 'app/util/errors';
 
-// Validate and store to database
+/**
+ * Intermediate type for internal use, used between validation and persistence.
+ */
+type RawArticle = {
+	article? : {}
+	feedback? : {
+		items? : [{}],
+	},
+};
 
-export default function(data : any) : Promise <Feedback> {
-	try {
-		validateSchema(data);
-	}
-	catch (error) {
-		return Promise.reject(error);
-	}
-	let article : Article;
-	let enduser : EndUser;
-	return Promise.all([
-		getArticle(data.article).then((a : Article) => article = a),
-		getEndUser(data.user).then((u : EndUser) => enduser = u),
-	])
-	.then(() => feedbackService.save(article, enduser, data.feedback.items));
+/**
+ * Validate and store to database
+ */
+export function validateAndSave(data : {}) : PromiseLike <Feedback> {
+	return validateSchema(data)
+	// Collect all the objects that we need to create and persist a new Feedback
+	.then((rawArticle : RawArticle) => Promise.all([
+		getArticle(rawArticle.article),
+		getAnonymousEndUser(),
+		// These are synchronous, but work nonetheless with Promise.all()
+		rawArticle.feedback.items,
+		getOneShotToken(),
+	]))
+	// After gathering all the necessary data, persist the new Feedback
+	// object to the database
+	.spread(storeFeedback)
+	// Update article object with reference to the new feedback object
+	.then(({ article, feedback } : { article : Article, feedback : Feedback}) => {
+		return articleService.addFeedback(article, feedback).then(() => feedback);
+	});
 }
 
-// Fetch article object
+function storeFeedback(
+	article : Article,
+	enduser : EndUser,
+	items : Array <FeedbackItem>,
+	oneshotUpdateToken : string
+) {
+	return feedbackService.save(
+		article,
+		enduser,
+		items,
+		FeedbackStatus.AwaitEnduserData,
+		oneshotUpdateToken
+	)
+	.then((feedback) => ({
+		article,
+		feedback,
+	}));
+}
+
+/**
+ * Fetch article object belonging to the new feedback
+ */
 function getArticle(articleData : any) : Promise <Article> {
 	const url = articleData.url;
 	const version = articleData.version;
@@ -68,32 +104,43 @@ function getArticle(articleData : any) : Promise <Article> {
 	));
 }
 
-// Fetch user object from database or create a new one
-function getEndUser(userData : any) : Promise <EndUser> {
-	const name = isString(userData.name) ? userData.name : null;
-	const email = isString(userData.email) ? userData.email : null;
-
-	return enduserService.get(name, email)
-	.then((u : EndUser) => u !== null ? u : enduserService.save({
-		name,
-		email,
-	}));
+/**
+ * Fetch the anonymous enduser; initially the feedback will be linked to that
+ * user until the real enduser has typed in his data into the frontend site
+ * and has submitted this "update". If the user
+ */
+function getAnonymousEndUser() : Promise <EndUser> {
+	return enduserService.get();  // Yes, it's really that easy!
 }
 
-// Schema Validator
+/**
+ * Generate a (cryptographically strong) random string for the enduser data
+ * one shot update token.
+ */
+function getOneShotToken() : string {
+	return cryptoRandomString(92);  // 368 bytes of random. Yes, an unusual number!
+}
 
-function validateSchema(data : any) {
+/**
+ * Schema Validator
+ */
+function validateSchema(data : {}) : Promise <RawArticle> {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
-		throw new SchemaValidationError('Invalid feedback data');
+		return Promise.reject(new SchemaValidationError(
+			'Invalid feedback data'
+		));
 	}
-	if (!isObject(data.article)) {
-		throw new SchemaValidationError('Feedback data is missing "article" object');
+	if (!isObject(data['article'])) {
+		return Promise.reject(new SchemaValidationError(
+			'Feedback data is missing "article" object'
+		));
 	}
-	if (!isObject(data.feedback)) {
-		throw new SchemaValidationError('Feedback data is missing "feedback" object');
+	if (!isObject(data['feedback'])) {
+		return Promise.reject(new SchemaValidationError(
+			'Feedback data is missing "feedback" object'
+		));
 	}
-	if (!isObject(data.user)) {
-		throw new SchemaValidationError('Feedback data is missing "user" object');
-	}
+
+	return Promise.resolve(data as RawArticle);  // cast to intermediate type
 }

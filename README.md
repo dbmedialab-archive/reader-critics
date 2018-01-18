@@ -4,6 +4,8 @@
 &nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
+[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=svg)](https://circleci.com/gh/dbmedialab/reader-critics)
+&nbsp;
 [![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
@@ -19,7 +21,6 @@
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
 * [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
-* [Crazy Ideas](doc/think-about-these-crazy-ideas.md) ‒ We won't do that right now, but we really want to
 
 ## License
 

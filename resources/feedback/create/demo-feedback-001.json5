@@ -1,6 +1,6 @@
 {
 	article: {
-		url: 'http://www.dagbladet.no/67728317',
+		url: 'http://dagbladet.no/67728317',
 		version: '2017-06-21T12:04:54.000Z',
 	},
 	user: {
@@ -14,7 +14,7 @@
 				text: '(Dagbladet): EU-kommisjonen har i disse dager et nytt forslag på trappene. Forslaget går ut på å regulere hvordan pommes de terres frites skal stekes.',
 				order: {
 					type: 1,
-					item: 3,
+					item: 5,
 				},
 				type: 'paragraph',
 			},

@@ -16,25 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
+import emptyCheck from 'app/util/emptyCheck';
+import Article from 'base/Article';
 
-import { assert } from 'chai';
+import { ArticleModel } from 'app/db/models';
+import { ArticleOptions } from 'base/ArticleOptions';
+import { wrapFindOne } from 'app/db/common';
 
-import {
-	getAvailableParsers,
-	initParserResolver,
-} from 'app/services/parser/common/parserResolver';
+export function setOptions(article : Article, options : ArticleOptions) : Promise <void> {
+	emptyCheck(article, options);
 
-describe('ParserService', () => {
-	it('getAvailableParsers', () => {
-		return initParserResolver()
-		.then(() => getAvailableParsers())
-		.then((parsers : string[]) => {
-			// It should at least find two parser implementations (see next)
-			assert.isAtLeast(parsers.length, 2);
-			// Check if our default implementations are resolved
-			assert.include(parsers, 'AMP Parser');
-			assert.include(parsers, 'Generic Parser');
-		});
-	});
-});
+	const updateQuery = {};
+
+	if (options.escalated) {
+		updateQuery['$set'] = {
+			'status.escalated': options.escalated,
+		};
+	}
+
+	if (Object.getOwnPropertyNames(updateQuery).length <= 0) {
+		return Promise.resolve();
+	}
+
+	return wrapFindOne(ArticleModel.findOneAndUpdate({ _id : article.ID }, updateQuery));
+}

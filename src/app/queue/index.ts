@@ -22,18 +22,68 @@ import * as kue from 'kue';
 import { createRedisConnection } from 'app/db';
 import { dbMessageQueue } from 'app/db/createRedisConnection';
 
-import MessageType from './MessageType';
-
 import {
-	jobWorkerHandlers,
-	// webWorkerHandlers
-} from './WorkerHandlers';
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onNewFeedback,
+	onSendEditorEscalation,
+} from './handlers';
 
 import * as app from 'app/util/applib';
+
+// Define which job handlers are available to what worker type
+
+const jobWorkerHandlers = Object.freeze({
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onNewFeedback,
+	onSendEditorEscalation,
+});
+
+// const webWorkerHandlers = Object.freeze({
+// }); - still empty
+
+// Internal resources
 
 const log = app.createLog();
 
 let queue : kue.Queue;
+
+// All message types
+
+export enum MessageType {
+	CheckAwaitFeedback = 'check-await-feedback',
+	CheckEscalationToEditor = 'check-escalation-to-editor',
+	CollectArticlesForPolling = 'collect-articles-for-polling',
+	NewFeedback = 'new-feedback',
+	SendEditorEscalation = 'send-editor-escalation',
+	SendSuggestionDigest = 'send-suggestion-digest',
+}
+
+// Queue initialization for the different worker types
+
+export function initMasterQueue() : Promise <void> {
+	log('Initialising %s worker queue', colors.brightRed('master'));
+
+	queue = kue.createQueue({
+		redis: {
+			createClientFactory: () => createRedisConnection(dbMessageQueue),
+		},
+	});
+
+	queue.active((error, ids : number[]) => {
+		ids.forEach((jobID : number) => {
+			kue.Job.get(jobID, (error2, job) => {
+				log('Removing completed job', jobID);
+				job.remove();
+			});
+		});
+	});
+
+	return Promise.resolve();
+}
 
 export function initJobWorkerQueue() : Promise <void> {
 	log('Initialising %s worker queue', colors.brightYellow('job'));
@@ -68,9 +118,17 @@ export function initWebWorkerQueue() : Promise <void> {
 	return Promise.resolve();
 }
 
-export function sendMessage(type : MessageType, payload : any, options? : any) : Promise <void> {
-	log(`Sending "${type}" message:`, app.inspect(payload));
-	queue.create(type, payload).priority('normal').attempts(1).save();
+// Push messages into the queue
+
+export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
+	const paypayloadload = payload === undefined ? {} : payload;
+	log(type, app.inspect(paypayloadload, 1, false));
+
+	queue.create(type, paypayloadload)
+		.priority('normal')
+		.attempts(1)
+		.removeOnComplete(true)
+		.save();
 
 	return Promise.resolve();
 }

@@ -25,7 +25,7 @@ export default class MainTitleElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
-			<label><FormattedMessage id="label.article-el.maintitle"/></label>
+			<label><FormattedMessage id="article-el.title"/></label>
 			<h1 hidden={this.state.editing}>
 				{ this.textDiff(this.props.item.originalText, this.state.text) }
 			</h1>

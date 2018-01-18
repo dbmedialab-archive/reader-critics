@@ -20,11 +20,11 @@ import * as util from 'util';
 
 import * as hasColor from 'has-color';
 
-export function inspect(obj : any) : string {
+export function inspect(obj : any, depth : number|null = null, linebreak = true) : string {
 	return util.inspect(obj, {
-		breakLength: 128,
+		breakLength: linebreak ? 128 : Infinity,
 		colors: <boolean> hasColor,
-		depth: null,
+		depth,
 		showHidden: true,
 	});
 }

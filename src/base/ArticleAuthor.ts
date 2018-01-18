@@ -16,9 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-interface ArticleAuthor {
-	name : string;
-	email : string;
+export interface ArticleAuthor {
+	name: string
+	email?: string
 }
 
 export default ArticleAuthor;

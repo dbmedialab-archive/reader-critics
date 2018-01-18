@@ -36,8 +36,9 @@ export const numThreads : number = os.cpus().length;
  * in WEB_CONCURRENCY greater than the processor thread count are capped.
  * At least one master-webworker-jobworker couple will be spawned to handle
  * interprocess messages and queue events.
+ * No export because this is only used for calculations.
  */
-export const numConcurrency : number = (function() {
+const numConcurrency : number = (function() {
 	if (!isNil(process.env.WEB_CONCURRENCY)) {
 		const webConcur = parseInt(process.env.WEB_CONCURRENCY);
 		if (Number.isSafeInteger(webConcur) && webConcur > 0 && webConcur < numThreads) {
@@ -47,3 +48,18 @@ export const numConcurrency : number = (function() {
 
 	return numThreads;
 })();
+
+/**
+ * The concurrency weight will determine how many threads of which worker type
+ * will be created. There will always be at least one job worker.
+ */
+const concurrencyWeight : number = 0.21;
+
+/**
+ * Don't be afraid. This is serious math ;-)
+*/
+export const numJobWorkers = Math.ceil(
+	(numConcurrency + 1) * (concurrencyWeight - (0.01 * (1 / numConcurrency)))
+);
+
+export const numWebWorkers = (numConcurrency + 1) - numJobWorkers;

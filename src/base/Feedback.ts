@@ -29,7 +29,7 @@ export interface FeedbackStatusEntry {
 	changeDate : Date
 }
 
-interface Feedback extends PersistedModel {
+export interface Feedback extends PersistedModel {
 	/** The Article that this feedback object is based on */
 	article : Article
 
@@ -50,7 +50,12 @@ interface Feedback extends PersistedModel {
 		log : FeedbackStatusEntry[]
 	}
 
-	/** Additional date field that holds the latest status update */
+	/**
+	 * Token which enables an enduser to update his/her data after the feedback
+	 * has already been posted
+	 */
+	oneshotUpdateToken? : string
+
 	date? : {
 		created? : Date
 		modified? : Date

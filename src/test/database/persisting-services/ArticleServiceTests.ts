@@ -40,6 +40,8 @@ const articleDir = path.join('resources', 'article', 'json');
 export default function(this: ISuiteCallbackContext) {
 	let articleCount : number;
 
+	this.slow(250);
+
 	it('parameter checks', () => {
 		assert.throws(() => articleService.get(null, null), EmptyError);
 		assert.throws(() => articleService.save(null, null), EmptyError);
@@ -59,7 +61,7 @@ export default function(this: ISuiteCallbackContext) {
 			.then((a : any) => {
 				assert.isNotNull(a);
 				return Object.assign(a, {
-					url: new ArticleURL(a.url),
+					url: new ArticleURL(a.url.href),
 				});
 			})
 			// Identify the website that this article belongs to
@@ -73,7 +75,11 @@ export default function(this: ISuiteCallbackContext) {
 				website = w;
 			})
 			// Finally: save the article to the database
-			.then(() => articleService.save(website, article));
+			.then(() => articleService.save(website, article))
+			.catch(error => {
+				error.message = `${error.message} (${filename})`;
+				throw error;
+			});
 		});
 	}));
 
@@ -83,7 +89,7 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('exists', () => {
 		return Promise.all([
-			articleService.exists('http://www.mopo.no/2', '201707251349'),
+			articleService.exists('http://mopo.no/2', '201707251349'),
 			articleService.exists('http://something-else.xyz/goes/nowhere', 'nil'),
 		])
 		.spread((a : boolean, b : boolean) => {
@@ -94,7 +100,7 @@ export default function(this: ISuiteCallbackContext) {
 
 	it('get()', () => {
 		return Promise.all([
-			articleService.get('http://www.mopo.no/2', '201707251349'),
+			articleService.get('http://mopo.no/2', '201707251349'),
 			articleService.get('http://something-else.xyz/goes/nowhere', 'nil'),
 		])
 		.spread((a : Article, b : Article) => {

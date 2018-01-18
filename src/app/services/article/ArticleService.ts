@@ -16,13 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleURL from 'base/ArticleURL';
-import Website from 'base/Website';
+import {
+	Article,
+	ArticleItem,
+	ArticleURL,
+	Feedback,
+	FeedbackItem,
+	Website,
+} from 'base';
 
-import BasicPersistingService from '../BasicPersistingService';
-import {ArticleDocument} from 'app/db/models';
-import {ObjectID} from 'bson';
+import { ArticleDocument } from 'app/db/models';
+import { ArticleOptions } from 'base/ArticleOptions';
+import { BasicPersistingService } from '../BasicPersistingService';
+import { ObjectID } from 'app/db';
 
 /**
  * The Article Service persists Article objects to the database and keeps
@@ -115,6 +121,21 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Get amount of Articles
 	 */
 	getAmount(search?: string) : Promise <number>
+
+	/**
+	 * Add another feedback object reference
+	 */
+	addFeedback(article : Article, feedback : Feedback) : Promise <void>
+
+	/**
+	 * Helper function to match feedback items with article items
+	 */
+	getRelatedArticleItem(article : Article, item : FeedbackItem) : ArticleItem
+
+	/**
+	 * Set various options and flags on an article.
+	 */
+	setOptions(article : Article, options : ArticleOptions) : Promise <void>
 }
 
 export default ArticleService;

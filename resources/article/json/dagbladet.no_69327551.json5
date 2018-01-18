@@ -1,0 +1,78 @@
+{
+  url: {
+    href: "http://dagbladet.no/69327551"
+  },
+  version: "2018-01-10T02:28:19.000Z",
+  authors: [
+    {
+      name: "",
+      email: ""
+    }
+  ],
+  items: [
+    {
+      type: "title",
+      order: {
+        item: 1,
+        type: 1
+      },
+      text: "Moon villig til å møte Kim"
+    },
+    {
+      type: "lead",
+      order: {
+        item: 2,
+        type: 1
+      },
+      text: "Men det følger med visse betingelser."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 3,
+        type: 1
+      },
+      text: "Sør-Koreas leder Moon Jae-in sier han er villig til å møte Nord-Koreas leder Kim Jong-un, men at det følger med betingelser."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 4,
+        type: 2
+      },
+      text: "Moon sier onsdag at han er villig til å møte Kim for å løse den fastlåste konflikten om Nord-Koreas atomvåpen. Han legger til at før et møte kan organiseres, vil han ha en garanti for at møtet blir vellykket."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 5,
+        type: 3
+      },
+      text: "Sør-Korea er blitt enig med Nord-Korea om å gjenopprette en direkte telefonlinje. Utsendinger fra de to landene møttes tirsdag til den første samtalen på to år."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 6,
+        type: 4
+      },
+      text: "De to landene ble enige om at Nord-Korea skal delta under vinter-OL i sørkoreanske Pyeonchang neste måned. Samtidig ble de to landene enige om å holde militære for å dempe spenningen på Koreahalvøya."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 7,
+        type: 5
+      },
+      text: "Moon legger til at han vil arrangere flere møter med det lukkede regimet for å diskutere situasjonen rundt landets atomprogram."
+    },
+    {
+      type: "paragraph",
+      order: {
+        item: 8,
+        type: 6
+      },
+      text: "(NTB)"
+    }
+  ]
+}

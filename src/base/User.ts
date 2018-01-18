@@ -20,7 +20,7 @@ import PersistedModel from './zz/PersistedModel';
 import Person from './zz/Person';
 import UserRole from './UserRole';
 
-interface User extends PersistedModel, Person {
+export interface User extends PersistedModel, Person {
 	role : UserRole;
 	password? : String;
 }

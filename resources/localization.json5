@@ -45,7 +45,7 @@
 			},
 			link: {
 				en: 'Link #{order}',
-				nb: 'Link #{order}',
+				nb: 'Lenke #{order}',
 			},
 			paragraph: {
 				en: 'Paragraph #{order}',
@@ -56,8 +56,8 @@
 				nb: 'Mellomtittel #{order}',
 			},
 			subtitle: {
-				en: 'Sub Title #{order}',
-				nb: 'Mellomtittel #{order}',
+				en: 'Sub Title',
+				nb: 'Undertittel',
 			},
 			title: {
 				en: 'Title',
@@ -67,7 +67,13 @@
 		errors: {
 			tryLater: {
 				en: 'An error occured, please try again later.',
-				nb: 'En feil oppstod. Vennligst prøv igjen senere.'
+				nb: 'En feil oppstod. Vennligst prøv igjen senere.',
+			},
+		},
+		success: {
+			thanks: {
+				en: 'Thank you!',
+				nb: 'Takk!',
 			},
 		},
 		label: {
@@ -96,9 +102,21 @@
 	app: {
 		mail: {
 			'fb-notify': {
+				'cc-editor': {
+					en: 'A copy of this mail will be sent to the editor in chief.',
+					nb: 'En kopi av denne mailen er sendt til vaktsjef.',
+				},
+				'editor-escalation': {
+					en: 'This article has received {count} feedbacks:',
+					nb: 'Denne artikkelen har fatt {count} tilbakemeldinger:',
+				},
 				'got-feedback': {
 					en: 'You received a feedback on the article',
 					nb: 'Du har fått tilbakemelding på artikkelen',
+				},
+				'posted': {
+					en: 'Posted on',
+					nb: 'Postet på',
 				},
 				'who-sent': {
 					en: 'Send in by',
@@ -126,6 +144,62 @@
 				en: 'Not Found',
 			},
 		},
+		auth: {
+			en: 'Authorization',
+			nb: 'Autorisasjon'
+		},
+		password: {
+			en: 'Password',
+			nb: 'Passord'
+		},
+		role: {
+			en: 'Role',
+			nb: 'Rolle'
+		},
+		dltUsrAsk: {
+			en: 'Do you want delete this user?',
+			nb: 'Vil du slette denne brukeren?'
+		},
+		yOnPg: {
+			en: "You're on page",
+			nb: "Du er på side"
+		},
+		users: {
+			en: 'Users',
+			nb: 'Brukere'
+		},
+		suggests: {
+			en: 'Suggestions',
+			nb: 'Forslag'
+		},
+		artcls: {
+			en: 'Articles',
+			nb: 'Artikler'
+		},
+		wbsts: {
+			en: 'Websites',
+			nb: 'Nettsteder'
+		},
+		wbst: {
+			en: 'Website',
+			nb: 'Nettsted'
+		},
+		feedbacks: {
+			en: 'Feedbacks',
+			nb: 'Tilbakemeldinger'
+		},
+		login: {
+			en: 'Login',
+			nb: 'Logg Inn'
+		},
+		logout: {
+			en: 'Logout',
+			nb: 'Logg ut'
+		},
+		created: {
+			en: 'Created',
+			nb: 'Laget'
+		}
 	},
 	frontend: {
 		button: {
@@ -141,6 +215,10 @@
 				en: 'Save',
 				nb: 'Lagre',
 			},
+			delete: {
+				en: 'Delete',
+				nb: 'Slett'
+			},
 			ok: {
 				en: 'Ok',
 				nb: 'Ok',
@@ -149,38 +227,16 @@
 				en: 'Send form',
 				nb: 'Send skjema',
 			},
+			prev: {
+				en: 'Prev',
+				nb: 'Prev'
+			},
+			next: {
+				en: 'Next',
+				nb: 'Neste'
+			},
 		},
 		label: {
-			'article-el': {
-				'feat-image': {
-					en: 'Featured Image',
-					nb: 'Fremhevet bilde',
-				},
-				'lead-in': {
-					en: 'Introduction',
-					nb: 'Innledning',
-				},
-				link: {
-					en: 'Link #{order}',
-					nb: 'Link #{order}',
-				},
-				maintitle: {
-					en: 'Title',
-					nb: 'Tittel',
-				},
-				paragraph: {
-					en: 'Paragraph #{order}',
-					nb: 'Avsnitt #{order}',
-				},
-				picture: {
-					en: 'Picture #{order}',
-					nb: 'Bilde #{order}',
-				},
-				'sub-head': {
-					en: 'Sub Heading #{order}',
-					nb: 'Mellomtittel #{order}',
-				},
-			},
 			'add-comment': {
 				en: 'Add comment',
 				nb: 'Legg til kommentar',
@@ -200,8 +256,8 @@
 				nb: 'Tusen Takk!',
 			},
 			postFeedback: {
-				en: "Thank you for helping us fix the mistakes in our articles. It is greatly appreciated.",
-				nb: "Takk for at du hjelper oss rette opp feil og  mangler i våre artikler. Det blir satt stor pris på."
+				en: "Your feedback was sent in! Now you can add your name and e-mail address if you want to, just so we can get in contact with you if need be.",
+				nb: "Tilbakemeldingen din er mottatt. Vi setter pris på om du legger til navn og e-post-adresse, slik at vi kan komme i kontakt med deg dersom vi lurer på noe. Hilsen Dagbladet"
 			}
 		},
 		fb: {
@@ -214,12 +270,12 @@
 					nb: 'Navn',
 				},
 				getRecommend: {
-					en: 'e-mail', // 'Get notifications via e-mail',
-					nb: 'e-post', // 'Få tilbakemelding på e-post',
+					en: 'e-mail',
+					nb: 'e-post',
 				},
 				keepInfo: {
-					en: 'Send your feedback now',
-					nb: 'Send inn tilbakemeldingen din nå', // 'Hold meg oppdatert',
+					en: 'Update the feedback with my personal information',
+					nb: 'Oppdatere tilbakemeldingen med min personlig informasjon',
 				},
 				backToArticle: {
 					en: 'Back to the article',
@@ -267,12 +323,11 @@
 					suggestions for improvements etc. We would appreciate that. If that's OK, \
 					Developers also appreciated information so they could come into contact with you \
 					if they would need it.",
-				nb: "Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en \
-					tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på. \
-					Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte, \
-					forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit, \
-					hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg \
-					hvis de skulle trenge det."
+				nb: "Vi setter pris på om du også tar deg tid til å gi en vurdering av selve verktøyet og \
+					måten å gi tilbakemeldinger på. Denne går til våre utviklere, som ønsker å vite mer om \
+					hva du likte, hva du ikke likte, og få forslag til forbedringer. Utviklerne setter også \
+					pris på å få kontaktinformasjonen din, slik at de kan komme i kontakt med deg dersom de \
+					skulle trenge det."
 			},
 		},
 		footer: {
@@ -286,4 +341,68 @@
 			},
 		},
 	},
+	admin: {
+			links: {
+				en: 'Links',
+				nb: 'Lenker'
+			},
+			userComment: {
+				en: 'User comment',
+				nb: 'Brukerkommentar'
+			},
+			editUsr: {
+				en: 'Edit user',
+				nb: 'Rediger bruker'
+			},
+			addUsr: {
+				en: 'Add User',
+				nb: 'Legg til bruker'
+			},
+			chiEd: {
+				en: 'Chief Editors',
+				nb: 'Sjefredaktører'
+			},
+			hsts: {
+				en: 'Hosts',
+				nb: 'Verter'
+			},
+			lStngs: {
+				en: 'Layout Settings',
+				nb: 'Oppsettinnstillinger'
+			},
+			parser: {
+				en: 'Parser',
+				nb: 'Parser'
+			},
+			crtWeb: {
+				en: 'Create website',
+				nb: 'Lag nettside'
+			},
+			edWeb: {
+				en: 'Edit Website',
+				nb: 'Rediger nettsted'
+			},
+			err: {
+				usrN: {
+					en: 'Name has to be more than 3 symbols',
+					nb: 'Navnet må være mer enn 3 symboler'
+				},
+				email: {
+					en: 'Please enter valid email address',
+					nb: 'Vennligst skriv inn gyldig email'
+				},
+				pswrd: {
+					en: 'Password has to be more than 3 symbols',
+					nb: 'Passordet må være mer enn 3 symboler'
+				},
+				login: {
+					en: 'Login has to be more than 3 symbols',
+					nb: 'Logg inn må være mer enn 3 symboler'
+				},
+
+
+			}
+
+
+		},
 }

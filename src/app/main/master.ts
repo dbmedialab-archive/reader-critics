@@ -22,9 +22,9 @@ import * as moment from 'moment';
 import * as path from 'path';
 import * as semver from 'semver';
 
-import { initDatabase } from 'app/db';
 import { initCron } from './cron';
-import { initJobWorkerQueue } from 'app/queue';
+import { initDatabase } from 'app/db';
+import { initMasterQueue } from 'app/queue';
 import { readFileSync } from 'fs';
 
 import {
@@ -50,7 +50,7 @@ export default function() {
 	log('App located in %s', colors.brightWhite(app.rootPath));
 
 	checkEngineVersion()
-		.then(initJobWorkerQueue)
+		.then(initMasterQueue)
 		.then(initDatabase)
 		.then(startWorkers)
 		.then(initCron)
@@ -63,22 +63,19 @@ export default function() {
 function startWorkers() : Promise <any> {
 	const startupPromises : Promise <any> [] = [];
 
-	const numJobWorkers = 1;  // TODO this number should scale with available CPU cores
-	const numWebWorkers = app.numConcurrency;
-
 	log(
 		'%s threads available, running %s %s workers and %s %s workers',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(numWebWorkers),
+		colors.brightWhite(app.numWebWorkers),
 		colors.brightGreen('web'),
-		colors.brightWhite(numJobWorkers),
+		colors.brightWhite(app.numJobWorkers),
 		colors.brightYellow('job')
 	);
 
-	const numTotal = numWebWorkers + numJobWorkers;
+	const numTotal = app.numWebWorkers + app.numJobWorkers;
 
 	for (let i = 0; i < numTotal; i++) {
-		const workerType = i < numWebWorkers ? typeWebWorker : typeJobWorker;
+		const workerType = i < app.numWebWorkers ? typeWebWorker : typeJobWorker;
 
 		const worker : cluster.Worker = cluster.fork({
 			WORKER_TYPE: workerType,
