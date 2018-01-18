@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-interface BasicPersistingService <T> {
+export interface BasicPersistingService <T> {
 	clear() : Promise <void>;
 	count() : Promise <number>;
 

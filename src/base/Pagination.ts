@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-interface Pagination {
+export interface Pagination {
 	page?: number;
 	limit?: number;
 	sort?: string;

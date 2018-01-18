@@ -40,6 +40,8 @@ const articleDir = path.join('resources', 'article', 'json');
 export default function(this: ISuiteCallbackContext) {
 	let articleCount : number;
 
+	this.slow(250);
+
 	it('parameter checks', () => {
 		assert.throws(() => articleService.get(null, null), EmptyError);
 		assert.throws(() => articleService.save(null, null), EmptyError);

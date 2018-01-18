@@ -21,7 +21,7 @@ import { EscalationThresholds } from './EscalationThresholds';
 import PersistedModel from './zz/PersistedModel';
 import Person from './zz/Person';
 
-interface Website extends PersistedModel {
+export interface Website extends PersistedModel {
 	name : string
 	parserClass? : string
 	locale? : string
