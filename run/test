@@ -217,7 +217,7 @@ runAllTests()
 	testBaseSource
 	testBackendApp
 	testDatabase
-	testFrontend
+#	testFrontend
 }
 
 ### Return global exit code for CI service
