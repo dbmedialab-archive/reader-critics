@@ -9,7 +9,7 @@ RUN cd /tmp && npm install --no-optional --no-package-lock
 
 RUN apt-get -q update && apt-get -y install rsync ca-certificates iproute2
 
-RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./
+RUN mkdir -p /opt/app/node_modules && rsync -av /tmp/node_modules/./ /opt/app/node_modules/./ && rm -rf /tmp/node_modules
 
 COPY . /opt/app/
 
@@ -19,7 +19,7 @@ RUN /bin/bash -l -c "run/lint"
 
 RUN /bin/bash -l -c "run/build"
 
-#RUN rm -rf node_modules
+RUN npm install --production
 
 RUN npm cache clean --force
 
