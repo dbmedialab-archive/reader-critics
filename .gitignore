@@ -1,6 +1,5 @@
 # Distribution paths
 /node_modules/
-/stats/
 /out/admin/
 /out/app/
 /out/base/
@@ -8,10 +7,12 @@
 /out/front/
 /out/test/
 /out/version.*
+/stats/
 
 # App config files
 kubefiles/secret.*
 config.json5
+*secret*
 
 # Package manager lock files
 package-lock.json
@@ -49,6 +50,8 @@ ehthumbs.db
 Thumbs.db
 
 # IDE and Editors
-.idea
+*.code-workspace
 *.sublime-*
+.idea
 .vscode
+
