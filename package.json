@@ -162,7 +162,7 @@
 		"mocha": "3.5.3",
 		"nightwatch": "0.9.19",
 		"sass-lint": "1.12.1",
-		"source-map-support": "^0.4.16",
+		"source-map-support": "0.4.18",
 		"supports-color": "^4.2.1",
 		"ts-node": "4.1.0",
 		"tsconfig-paths": "3.1.1",
@@ -220,7 +220,6 @@
 			"nodemon",
 			"npm-run-all",
 			"react-modal",
-			"source-map-support",
 			"supports-color",
 			"webpack-bundle-analyzer",
 			"webpack-dev-server"
