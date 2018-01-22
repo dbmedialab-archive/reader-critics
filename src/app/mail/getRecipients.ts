@@ -52,13 +52,13 @@ export function getRecipients(
 	// If the list of recipients is still empty here then we can't really do
 	// anything about that. The caller function will have to deal with it.
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(msgNoRcpt));
+		return Promise.reject(new EmptyError(`${msgNoRcpt} (${website.name})`));
 	}
 
 	return Promise.resolve(uniq(recipients));
 }
 
 const filterForMailAddr = (people : Array <Person>) : Array <string> => (
-	people.filter((p : Person) => p.email.length > 0)
+	people.filter((p : Person) => typeof p.email === 'string' && p.email.length > 0)
 	.map((author : Person) => author.email)
 );
