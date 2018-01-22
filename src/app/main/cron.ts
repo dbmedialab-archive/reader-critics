@@ -53,7 +53,8 @@ function jobCollectArticlesForPolling() {
 		start: true,
 	}));
 
-	setTimeout(() => {
+	// This is only for testing:
+	/* setTimeout(() => {
 		sendMessage(MessageType.CollectArticlesForPolling);
-	}, 5000);
+	}, 5000); */
 }
