@@ -28,9 +28,9 @@ import createPersistingService from '../createPersistingService';
 
 import download from './mock/download';
 import fetch from './common/fetch';
-import getRangeWithFBCount from 'app/services/article/common/getRangeWithFBCount';
-import getByID from 'app/services/article/common/getByID';
-import getAmount from 'app/services/article/common/getAmount';
+import getRangeWithFBCount from './common/getRangeWithFBCount';
+import getByID from './common/getByID';
+import getAmount from './common/getAmount';
 
 import { getIDsToPullUpdates } from './live/getIDsToPullUpdates';
 import { getRelatedArticleItem } from './common/getRelatedArticleItem';
@@ -55,6 +55,7 @@ module.exports = createPersistingService <ArticleDocument, ArticleService, Artic
 		upsert,
 		getAmount,
 		getByID,
+		getIDsToPullUpdates,
 		getRangeWithFBCount,
 		getRelatedArticleItem,
 		setOptions,

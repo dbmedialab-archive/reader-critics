@@ -55,6 +55,7 @@ module.exports = createPersistingService <ArticleDocument, ArticleService, Artic
 		upsert,
 		getAmount,
 		getByID,
+		getIDsToPullUpdates,
 		getRangeWithFBCount,
 		getRelatedArticleItem,
 		setOptions,

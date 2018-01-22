@@ -17,6 +17,7 @@
 //
 
 import * as app from 'app/util/applib';
+import * as moment from 'moment';
 
 import {
 	DoneCallback,
@@ -24,17 +25,69 @@ import {
 } from 'kue';
 
 import {
-	articleService
-} from 'app/services';
+	sendMessage,
+	MessageType,
+} from 'app/queue';
+
+import { articleService } from 'app/services';
+import { ObjectID } from 'app/db';
+import { pollParams } from './PollParameters';
 
 const log = app.createLog();
 
 export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
-	log('Alright, I\'m here!');
-	// Consume the message, implementation follows
+	queryArticles()
+	.then(uniqAndSort)
+	.then((articleIDs) => {
+		log('Found %d articles that should be polled for updates', articleIDs.length);
 
-	articleService.getIDsToPullUpdates()
-	.then(() => {
+		// Trigger an update job for each found article. This way we can make use
+		// of multiple available job workers by balancing the load throughout all
+		// threads that are dedicated to background jobs.
+		articleIDs.forEach(articleID => sendMessage(MessageType.PollArticleUpdate, {
+			articleID,
+		}));
+
 		done();
+		return null;
+	})
+	.catch(error => {
+		app.yell(error);
+		return done(error);
 	});
+}
+
+function queryArticles() : Promise <string[]> {
+	const now = moment().second(0).millisecond(0).toDate();
+
+	const queries = pollParams.map((pollParam, index) => {
+		// Calculate the query dates for certain query periods
+		const latestCreated = pollParam.pastBase
+			? moment(now).subtract(pollParam.pastBase).toDate()
+			: now;
+
+		const earliestCreated = moment(latestCreated).subtract(pollParam.querySpan).toDate();
+		const latestPoll = moment(now).subtract(pollParam.pollSpan).toDate();
+
+		return articleService.getIDsToPullUpdates(latestCreated, earliestCreated, latestPoll);
+	});
+
+	return Promise.all(queries).then((arrayOfArrays : string[][]) => {
+		// Concatenace all arrays of article IDs together into one single array
+		return [].concat(...arrayOfArrays) as string[];
+	});
+}
+
+function uniqAndSort(unsortedIDs : string[]) : Promise <string[]> {
+	// Create an intermediate map of IDs to filter out duplicates and get a sorted set.
+	// Duplicates shouldn't really occur if the polling parameters are set up correctly
+	// (no intersection of time periods). But better safe than sorry!
+	const theReducer = (acc, current) => {
+		acc[current] = true;
+		return acc;
+	};
+
+	const articleIDs = unsortedIDs.reduce(theReducer, Object.create(null));
+
+	return Promise.resolve(Object.keys(articleIDs).sort());
 }

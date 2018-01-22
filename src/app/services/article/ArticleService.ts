@@ -28,6 +28,7 @@ import {
 import { ArticleDocument } from 'app/db/models';
 import { ArticleOptions } from 'base/ArticleOptions';
 import { BasicPersistingService } from '../BasicPersistingService';
+import { Duration } from 'moment';
 import { ObjectID } from 'app/db';
 
 /**
@@ -122,7 +123,23 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 */
 	getAmount(search?: string) : Promise <number>
 
-	getIDsToPullUpdates() : Promise <void>
+	/**
+	 * Query a list of article IDs which should be polled for updates, according
+	 * to the provided parameters.
+	 *
+	 * The returned IDs have to be proce....
+	 *
+	 * @param latestCreated Article creation date earlier than or equal to this
+	 * @param earliestCreated Article creation date later than this
+	 * @param latestPoll Article last poll date earlier than this
+	 *
+	 * @throws EmptyError If one of the mandatory parameters is missing.
+	 */
+	getIDsToPullUpdates(
+		latestCreated : Date,
+		earliestCreated : Date,
+		latestPoll : Date
+	) : Promise <string[]>
 
 	/**
 	 * Add another feedback object reference
