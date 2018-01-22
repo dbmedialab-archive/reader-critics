@@ -30,7 +30,6 @@ import {
 } from 'app/queue';
 
 import { articleService } from 'app/services';
-import { ObjectID } from 'app/db';
 import { pollParams } from './PollParameters';
 
 const log = app.createLog();

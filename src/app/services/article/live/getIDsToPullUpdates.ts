@@ -21,8 +21,6 @@ import {
 	ArticleModel
 } from 'app/db/models';
 
-import { ObjectID } from 'app/db';
-
 import emptyCheck from 'app/util/emptyCheck';
 
 export function getIDsToPullUpdates (

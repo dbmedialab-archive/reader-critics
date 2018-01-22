@@ -28,7 +28,6 @@ import {
 import { ArticleDocument } from 'app/db/models';
 import { ArticleOptions } from 'base/ArticleOptions';
 import { BasicPersistingService } from '../BasicPersistingService';
-import { Duration } from 'moment';
 import { ObjectID } from 'app/db';
 
 /**
@@ -127,11 +126,11 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Query a list of article IDs which should be polled for updates, according
 	 * to the provided parameters.
 	 *
-	 * The returned IDs have to be proce....
+	 * The IDs are returned as strings to make post processing easier.
 	 *
-	 * @param latestCreated Article creation date earlier than or equal to this
-	 * @param earliestCreated Article creation date later than this
-	 * @param latestPoll Article last poll date earlier than this
+	 * @param latestCreated Article creation date: earlier than or equal to this
+	 * @param earliestCreated Article creation date: later than this
+	 * @param latestPoll Article last poll date: earlier than this
 	 *
 	 * @throws EmptyError If one of the mandatory parameters is missing.
 	 */
