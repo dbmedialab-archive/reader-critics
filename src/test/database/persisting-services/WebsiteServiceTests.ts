@@ -35,6 +35,8 @@ const demoSites = path.join('resources', 'website', 'demo-sites.json5');
 export default function(this: ISuiteCallbackContext) {
 	let websiteCount : number;
 
+	this.slow(250);
+
 	it('parameter checks', () => {
 		assert.throws(() => websiteService.get(null), EmptyError);
 		assert.throws(() => websiteService.identify(null), EmptyError);
