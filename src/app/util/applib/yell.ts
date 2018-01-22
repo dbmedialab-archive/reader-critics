@@ -16,7 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as callsite from 'callsite';
 import { default as axios } from 'axios';
 import { throttle } from 'lodash';
 
