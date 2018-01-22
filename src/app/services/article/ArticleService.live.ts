@@ -31,6 +31,8 @@ import fetch from './common/fetch';
 import getRangeWithFBCount from './common/getRangeWithFBCount';
 import getByID from './common/getByID';
 import getAmount from './common/getAmount';
+
+import { getIDsToPullUpdates } from './live/getIDsToPullUpdates';
 import { getRelatedArticleItem } from './common/getRelatedArticleItem';
 import { setOptions } from './common/setOptions';
 
@@ -53,6 +55,7 @@ module.exports = createPersistingService <ArticleDocument, ArticleService, Artic
 		upsert,
 		getAmount,
 		getByID,
+		getIDsToPullUpdates,
 		getRangeWithFBCount,
 		getRelatedArticleItem,
 		setOptions,

@@ -27,6 +27,7 @@ import {
 	onCheckEscalationToEditor,
 	onCollectArticlesForPolling,
 	onNewFeedback,
+	onPollArticleUpdate,
 	onSendEditorEscalation,
 } from './handlers';
 
@@ -39,6 +40,7 @@ const jobWorkerHandlers = Object.freeze({
 	onCheckEscalationToEditor,
 	onCollectArticlesForPolling,
 	onNewFeedback,
+	onPollArticleUpdate,
 	onSendEditorEscalation,
 });
 
@@ -58,6 +60,7 @@ export enum MessageType {
 	CheckEscalationToEditor = 'check-escalation-to-editor',
 	CollectArticlesForPolling = 'collect-articles-for-polling',
 	NewFeedback = 'new-feedback',
+	PollArticleUpdate = 'poll-article-update',
 	SendEditorEscalation = 'send-editor-escalation',
 	SendSuggestionDigest = 'send-suggestion-digest',
 }
