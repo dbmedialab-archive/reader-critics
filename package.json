@@ -220,7 +220,6 @@
 			"nodemon",
 			"npm-run-all",
 			"react-modal",
-			"source-map-support",
 			"supports-color",
 			"webpack-bundle-analyzer",
 			"webpack-dev-server"
