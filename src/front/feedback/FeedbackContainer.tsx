@@ -16,7 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as classnames from 'classnames';
 import * as React from 'react';
+
 import 'front/scss/fb.scss';
 
 import createArticleElement from 'front/component/createArticleElement';
@@ -146,6 +148,7 @@ extends React.Component <any, FeedbackContainerState> {
 		// Iterate article elements and render sub components
 		return (
 			<section id="content">
+				<this.IntroHelpBox/>
 				{ article.items.map(item => createArticleElement(this, item, refFn)) }
 				<FinishButton SendForm={sendFn} ref={r => this.finishBtn = r}/>
 			</section>
@@ -165,4 +168,12 @@ extends React.Component <any, FeedbackContainerState> {
 			</div>
 		);
 	}
+
+	private IntroHelpBox = () => (
+		<div className={classnames('card', 'helpbox')}>
+			<h1><FormattedMessage id="fb.helpbox.title"/></h1>
+			<p><FormattedMessage id="fb.helpbox.text"/></p>
+		</div>
+	)
+
 }
