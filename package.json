@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.5.2",
+	"version": "0.5.3",
 	"license": "GPL-3.0",
 	"private": false,
 	"description": "Leserkritikk v2 (Reader Critics)",
@@ -10,7 +10,7 @@
 	},
 	"main": "out/start.js",
 	"engines": {
-		"node": "^8.5.0"
+		"node": "^8.9.4"
 	},
 	"scripts": {
 		"build": "run/build",

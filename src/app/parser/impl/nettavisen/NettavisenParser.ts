@@ -25,7 +25,6 @@ import ArticleItem from 'base/ArticleItem';
 import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-import { getLinkedDataAuthors } from 'app/parser/util/AuthorParser';
 import { getLinkedDataModifiedTime } from 'app/parser/util/VersionParser';
 
 export default class NettavisenParser extends AbstractIteratingParser {
@@ -37,7 +36,17 @@ export default class NettavisenParser extends AbstractIteratingParser {
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		return Promise.resolve(getLinkedDataAuthors(this.select));
+		const authorWrap = this.select('div#byline-wrap').find('div.author-wrap').toArray();
+
+		return Promise.resolve(authorWrap.map(wrap => {
+			const name = this.select(wrap).find('span.byline-author').text();
+			const mail = this.select(wrap).find('a.byline-info').attr('href');
+
+			return {
+				name,
+				email: mail === undefined ? undefined : mail.replace('mailto:', ''),
+			};
+		}));
 	}
 
 	// Implement AbstractIteratingParser
