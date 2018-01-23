@@ -4,7 +4,10 @@
 	},
 	version: '2018-01-15T10:19:24.000Z',
 	authors: [
-		{ name: 'Halvor Ripegutu' },
+		{
+			name: 'Halvor Ripegutu',
+			email: 'halvor.ripegutu@nettavisen.no',
+		},
 	],
 	items: [
 		{
