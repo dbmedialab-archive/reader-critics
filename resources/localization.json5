@@ -264,6 +264,20 @@
 			errors: {
 				emptyErr: 'The feedback form is still empty, nothing was sent',
 			},
+			helpbox: {
+				title: {
+					en: 'This is how you get going:',
+					nb: 'Slik kommer du i gang:',
+				},
+				text: {
+					en: 'Go to the element where you have found a mistake that we should pay attention to. \
+						Click "Edit" to change the text, leave a comment or some links, then "Save". \
+						When you are done with all changes you can send in all feedbacks in one go.',
+					nb: 'Gå til stedet hvor du har funnet feil vi bør være oppmerksomme på. Klikk \
+						"Rediger" for å endre eller skrive inn kommentar, så "Lagre". Når du er ferdig \
+						med teksten kan du sende inn tilbakemeldingene samlet.',
+				},
+			},
 			label: {
 				name: {
 					en: 'Name',
