@@ -21,7 +21,6 @@ export * from './ArticleAuthor';
 export * from './ArticleItem';
 export * from './ArticleItemType';
 export * from './ArticleOptions';
-export * from './ArticleURL';
 
 export * from './EndUser';
 
