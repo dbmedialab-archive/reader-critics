@@ -21,13 +21,15 @@ import {
 	ArticleModel
 } from 'app/db/models';
 
+import { PollUpdateData } from 'app/services/article/ArticleService';
+
 import emptyCheck from 'app/util/emptyCheck';
 
 export function getIDsToPullUpdates (
 	latestCreated : Date,
 	earliestCreated : Date,
 	latestPoll : Date
-) : Promise <string[]>
+) : Promise <PollUpdateData[]>
 {
 	emptyCheck(latestCreated, earliestCreated, latestPoll);
 	// Returning the promise from Mongoose directly will, once again, make
@@ -69,9 +71,11 @@ export function getIDsToPullUpdates (
 			],
 		})
 		.lean().exec()
-		.then((docs : ArticleDocument[]) => {
-			resolve(docs.map(doc => doc._id as string));
-		})
+		.then((docs : ArticleDocument[]) => resolve(docs.map(doc => ({
+			ID: doc._id,
+			url: doc.url.toString(),
+			version: doc.version,
+		}))))  // That is a lot of brackets! Are we doing LISP here or what? :D
 		.catch(error => reject(error));
 	});
 }

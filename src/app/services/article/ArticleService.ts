@@ -19,7 +19,6 @@
 import {
 	Article,
 	ArticleItem,
-	ArticleURL,
 	Feedback,
 	FeedbackItem,
 	Website,
@@ -27,6 +26,7 @@ import {
 
 import { ArticleDocument } from 'app/db/models';
 import { ArticleOptions } from 'base/ArticleOptions';
+import { ArticleURL } from 'base/ArticleURL';
 import { BasicPersistingService } from '../BasicPersistingService';
 import { ObjectID } from 'app/db';
 
@@ -52,7 +52,7 @@ import { ObjectID } from 'app/db';
  * then the user closes the browser without send feedback)
  */
 
-interface ArticleService extends BasicPersistingService <Article> {
+export interface ArticleService extends BasicPersistingService <Article> {
 	/**
 	 * Fetch the raw article data from a remote source. It is returned as a string
 	 * and indended to be validated and processed through a parser.
@@ -94,6 +94,21 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * @throws DuplicateError If that Article already exists (unique constraint)
 	 */
 	save(website : Website, article : Article) : Promise <Article>;
+
+	/**
+	 * Saves a new Article from which there is already an existing, older version
+	 * in the database. Aditionally to what #save() does, this function also puts
+	 * a reference to this new Article on the old object in the database. This
+	 * will effectively create a chain or linked list of referenced objects as
+	 * new versions come in.
+	 *
+	 * @throws EmptyError If one of the mandatory parameters is missing.
+	 */
+	saveNewVersion(
+		website : Website,
+		newArticle : Article,
+		oldID : ObjectID
+	) : Promise <Article>;
 
 	/**
 	 * Does the same as save() but uses find+update with an upsert flag in the
@@ -138,7 +153,7 @@ interface ArticleService extends BasicPersistingService <Article> {
 		latestCreated : Date,
 		earliestCreated : Date,
 		latestPoll : Date
-	) : Promise <string[]>
+	) : Promise <PollUpdateData[]>
 
 	/**
 	 * Add another feedback object reference
@@ -154,6 +169,12 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Set various options and flags on an article.
 	 */
 	setOptions(article : Article, options : ArticleOptions) : Promise <void>
+}
+
+export interface PollUpdateData {
+	ID: string,
+	url: string,
+	version: string,
 }
 
 export default ArticleService;
