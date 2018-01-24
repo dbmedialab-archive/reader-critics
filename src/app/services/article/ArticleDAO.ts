@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
-
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
@@ -86,15 +84,18 @@ export function saveNewVersion(
 ) : Promise <Article> {
 	emptyCheck(website, newArticle, oldID);
 
-	makeDocument(website, newArticle)
+	return makeDocument(website, newArticle)
 	.then(newDoc => {
 		return new ArticleModel(newDoc).save();
 	})
-	.then(newObj => {
-		console.log(app.inspect(newObj));
-	});
-
-	return Promise.resolve(null);
+	.then(newObj => wrapFindOne(ArticleModel.findOneAndUpdate(
+		{ _id : oldID },
+		{
+			'$set': {
+				newerVersion: newObj._id,
+			},
+		}
+	)));
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {
