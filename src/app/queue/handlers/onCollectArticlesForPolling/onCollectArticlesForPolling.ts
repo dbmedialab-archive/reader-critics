@@ -30,23 +30,25 @@ import {
 } from 'app/queue';
 
 import { articleService } from 'app/services';
+import { PollUpdateData } from 'app/services/article/ArticleService';
 import { pollParams } from './PollParameters';
 
 const log = app.createLog();
 
 export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
 	queryArticles()
-	.then(uniqAndSort)
-	.then((articleIDs) => {
-		log('Found %d articles that should be polled for updates', articleIDs.length);
+	.then(uniq)
+	.then((reducedData) => {
+		log('Found %d articles that should be polled for updates', reducedData.length);
 
 		// Trigger an update job for each found article. This way we can make use
 		// of multiple available job workers by balancing the load throughout all
 		// threads that are dedicated to background jobs.
-		articleIDs.forEach(articleID => sendMessage(MessageType.PollArticleUpdate, {
-			articleID,
-		}));
+		return Promise.map(reducedData, data => sendMessage(MessageType.PollArticleUpdate, data));
 
+	//	reducedData.forEach();
+	})
+	.then(() => {
 		done();
 		return null;
 	})
@@ -56,7 +58,7 @@ export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : vo
 	});
 }
 
-function queryArticles() : Promise <string[]> {
+function queryArticles() : Promise <PollUpdateData[]> {
 	const now = moment().second(0).millisecond(0).toDate();
 
 	const queries = pollParams.map((pollParam, index) => {
@@ -71,22 +73,22 @@ function queryArticles() : Promise <string[]> {
 		return articleService.getIDsToPullUpdates(latestCreated, earliestCreated, latestPoll);
 	});
 
-	return Promise.all(queries).then((arrayOfArrays : string[][]) => {
+	return Promise.all(queries).then((arrayOfArrays : PollUpdateData[][]) => {
 		// Concatenace all arrays of article IDs together into one single array
-		return [].concat(...arrayOfArrays) as string[];
+		return [].concat(...arrayOfArrays) as PollUpdateData[];
 	});
 }
 
-function uniqAndSort(unsortedIDs : string[]) : Promise <string[]> {
-	// Create an intermediate map of IDs to filter out duplicates and get a sorted set.
+function uniq(unsortedData : PollUpdateData[]) : Promise <PollUpdateData[]> {
+	// Create an intermediate map of IDs to filter out duplicates.
 	// Duplicates shouldn't really occur if the polling parameters are set up correctly
 	// (no intersection of time periods). But better safe than sorry!
-	const theReducer = (acc, current) => {
-		acc[current] = true;
-		return acc;
+	const theReducer = (accu : {}, item : PollUpdateData) => {
+		accu[item.ID] = item;
+		return accu;
 	};
 
-	const articleIDs = unsortedIDs.reduce(theReducer, Object.create(null));
+	const reducedData = unsortedData.reduce(theReducer, Object.create(null));
 
-	return Promise.resolve(Object.keys(articleIDs).sort());
+	return Promise.resolve(Object.values(reducedData));
 }

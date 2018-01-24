@@ -52,7 +52,7 @@ import { ObjectID } from 'app/db';
  * then the user closes the browser without send feedback)
  */
 
-interface ArticleService extends BasicPersistingService <Article> {
+export interface ArticleService extends BasicPersistingService <Article> {
 	/**
 	 * Fetch the raw article data from a remote source. It is returned as a string
 	 * and indended to be validated and processed through a parser.
@@ -138,7 +138,7 @@ interface ArticleService extends BasicPersistingService <Article> {
 		latestCreated : Date,
 		earliestCreated : Date,
 		latestPoll : Date
-	) : Promise <string[]>
+	) : Promise <PollUpdateData[]>
 
 	/**
 	 * Add another feedback object reference
@@ -154,6 +154,12 @@ interface ArticleService extends BasicPersistingService <Article> {
 	 * Set various options and flags on an article.
 	 */
 	setOptions(article : Article, options : ArticleOptions) : Promise <void>
+}
+
+export interface PollUpdateData {
+	ID: string,
+	url: string,
+	version: string,
 }
 
 export default ArticleService;
