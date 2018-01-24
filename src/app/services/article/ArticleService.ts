@@ -96,6 +96,21 @@ export interface ArticleService extends BasicPersistingService <Article> {
 	save(website : Website, article : Article) : Promise <Article>;
 
 	/**
+	 * Saves a new Article from which there is already an existing, older version
+	 * in the database. Aditionally to what #save() does, this function also puts
+	 * a reference to this new Article on the old object in the database. This
+	 * will effectively create a chain or linked list of referenced objects as
+	 * new versions come in.
+	 *
+	 * @throws EmptyError If one of the mandatory parameters is missing.
+	 */
+	saveNewVersion(
+		website : Website,
+		newArticle : Article,
+		oldID : ObjectID
+	) : Promise <Article>;
+
+	/**
 	 * Does the same as save() but uses find+update with an upsert flag in the
 	 * query. Existing articles will not be overwritten but rather ignored, so
 	 * no DuplicateError is thrown.

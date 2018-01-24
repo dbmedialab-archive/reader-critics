@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as app from 'app/util/applib';
+
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import Feedback from 'base/Feedback';
@@ -24,6 +26,7 @@ import Website from 'base/Website';
 import User from 'base/User';
 
 import { ArticleModel } from 'app/db/models';
+import { ObjectID } from 'app/db';
 
 import {
 	wrapExists,
@@ -74,6 +77,24 @@ export function save(website : Website, article : Article) : Promise <Article> {
 
 	return makeDocument(website, article)
 	.then(doc => wrapSave<Article>(new ArticleModel(doc).save()));
+}
+
+export function saveNewVersion(
+	website : Website,
+	newArticle : Article,
+	oldID : ObjectID
+) : Promise <Article> {
+	emptyCheck(website, newArticle, oldID);
+
+	makeDocument(website, newArticle)
+	.then(newDoc => {
+		return new ArticleModel(newDoc).save();
+	})
+	.then(newObj => {
+		console.log(app.inspect(newObj));
+	});
+
+	return Promise.resolve(null);
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {
