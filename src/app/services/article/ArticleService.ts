@@ -19,7 +19,6 @@
 import {
 	Article,
 	ArticleItem,
-	ArticleURL,
 	Feedback,
 	FeedbackItem,
 	Website,
@@ -27,6 +26,7 @@ import {
 
 import { ArticleDocument } from 'app/db/models';
 import { ArticleOptions } from 'base/ArticleOptions';
+import { ArticleURL } from 'base/ArticleURL';
 import { BasicPersistingService } from '../BasicPersistingService';
 import { ObjectID } from 'app/db';
 

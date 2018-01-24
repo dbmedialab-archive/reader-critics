@@ -35,9 +35,7 @@ export default function(website : Website) : Promise <ParserFactory> {
 	emptyCheck(website);
 
 	const parserName = getParserName(website);
-	log('parserName:', parserName);
 	const parserData = resolveParserModule(parserName);
-	log('parserData:', parserData);
 
 	return loadParserClass(parserData.moduleName).then(createFactory);
 }
