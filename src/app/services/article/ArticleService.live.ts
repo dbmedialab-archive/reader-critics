@@ -41,6 +41,7 @@ import {
 	exists,
 	get,
 	save,
+	saveNewVersion,
 	upsert,
 } from './ArticleDAO';
 
@@ -52,6 +53,7 @@ module.exports = createPersistingService <ArticleDocument, ArticleService, Artic
 		fetch,
 		get,
 		save,
+		saveNewVersion,
 		upsert,
 		getAmount,
 		getByID,

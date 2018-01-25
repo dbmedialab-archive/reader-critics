@@ -52,9 +52,4 @@ function jobCollectArticlesForPolling() {
 		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
 		start: true,
 	}));
-
-	// This is only for testing:
-	/* setTimeout(() => {
-		sendMessage(MessageType.CollectArticlesForPolling);
-	}, 5000); */
 }

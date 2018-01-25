@@ -21,7 +21,6 @@ import { Schema } from 'mongoose';
 import ArticleURL from 'base/ArticleURL';
 
 import { objectReference } from 'app/db/common';
-// import { EscalationLevel } from 'base/EscalationLevel';
 import { ModelNames } from 'app/db/names';
 
 const ArticleSchema : Schema = new Schema({
@@ -52,6 +51,11 @@ const ArticleSchema : Schema = new Schema({
 			default: null,
 		},
 	},
+
+	newerVersion: objectReference(ModelNames.Article, {
+		required: false,
+		select: false,
+	}),
 }, {
 	toObject: {
 		retainKeyOrder: true,
