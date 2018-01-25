@@ -35,6 +35,7 @@ const dateRegex = /:00\.000Z$/;
 // TODO Flag in Website zur Aktivierung des Digest
 // TODO websiteService.getAll([flags/query])
 // TODO website-Parameter auf articleService.getNonUpdated()
+// TODO nach Wochenenden die Query-Zeitdauer bis zum vorigen Freitag berechnen
 // TODO Mailtemplate undsoweiter
 
 export function onCompileNonUpdatedDigest(job : Job, done : DoneCallback) : void {
