@@ -181,7 +181,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	public render() {
 		return (
-			<form name="postFeedbackBox" className="twelve columns feedbackform">
+			<form id="postFeedbackBox" className="twelve columns feedbackform">
 				{ this.renderMailIcon() }
 				<fieldset>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
@@ -220,7 +220,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 						</fieldset>
 					)}
 				</Transition>
-				{ this.renderArticleLink() }
+				{ this.renderBottomLinks() }
 			</form>
 		);
 	}
@@ -229,21 +229,32 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		<Transition timeout={200} in={this.state.mailIcon.show || this.state.doneIcon.show}>
 			{(status) => (
 				<fieldset className={`info-icon rotate hideit-after rotate-${status}`}>
-						{this.state.doneIcon.show ?
-							<span className="top icon done"/>
-							:<span className="top icon question"/>
+						{ this.state.doneIcon.show
+							? <span className="top icon done"/>
+							: <span className="top icon question"/>
 						}
 				</fieldset>
 			)}
 		</Transition>
 	)
 
-	private renderArticleLink = () => (
-		<div>
-			<a href={getArticleURL()}>
-				<span className="icon back"/>
-				<span className="btn-text"><FormattedMessage id="fb.label.backToArticle"/></span>
-			</a>
-		</div>
+	private renderBottomLinks = () => (
+		<fieldset
+			id="bottomLinks"
+			className={`control-icon hideit-after slide-left slide-left-${status}`}
+		>
+			<div id="submitForm">
+				<a href="#" role="button" onClick={this._handleSubmit}>
+					<span className="icon mail"/>
+					<span className="btn-text"><FormattedMessage id="fb.label.keepInfo"/></span>
+				</a>
+			</div>
+			<div id="backToArticle">
+				<a href={getArticleURL()}>
+					<span className="icon back"/>
+					<span className="btn-text"><FormattedMessage id="fb.label.backToArticle"/></span>
+				</a>
+			</div>
+		</fieldset>
 	)
 }
