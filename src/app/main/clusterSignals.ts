@@ -30,7 +30,7 @@ export interface ClusterMessage {
 
 function send(sign : ClusterSignal) {
 	process.send({
-		pid: cluster.worker.id,
+		pid: parseInt(cluster.worker.id),
 		type: sign.toString(),
 	} as ClusterMessage);
 }
