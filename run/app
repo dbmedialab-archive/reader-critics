@@ -2,7 +2,7 @@
 
 clear
 
-export DEBUG="*,-body-parser:*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-retry-as-promised,-send"
+export DEBUG="*,-body-parser:*,-express:*,-finalhandler,-follow-redirects,-ioredis:*,-mquery,-retry-as-promised,-send"
 export NODE_ENV=${NODE_ENV:-"development"}
 
 node out/start.js

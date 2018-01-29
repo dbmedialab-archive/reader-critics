@@ -17,6 +17,7 @@
 //
 
 import { CronJob } from 'cron';
+import { wrapCronFn } from './vote';
 
 import {
 	sendMessage,
@@ -41,7 +42,9 @@ export function initCron() : Promise <void> {
 function jobCheckAwaitFeedback() {
 	activeJobs.push(new CronJob({
 		cronTime: '0 * * * * *',  // Every minute
-		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
+		onTick: () => wrapCronFn(() => {
+			sendMessage(MessageType.CheckAwaitFeedback);
+		}),
 		start: true,
 	}));
 }
@@ -49,7 +52,9 @@ function jobCheckAwaitFeedback() {
 function jobCollectArticlesForPolling() {
 	activeJobs.push(new CronJob({
 		cronTime: '0 30 * * * *',  // Every hour at xx:30
-		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
+		onTick: () => wrapCronFn(() => {
+			sendMessage(MessageType.CollectArticlesForPolling);
+		}),
 		start: true,
 	}));
 }
