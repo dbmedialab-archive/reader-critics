@@ -1,0 +1,109 @@
+{
+	url: {
+		href: 'http://nettavisen.no/3423404096',
+	},
+	version: '2018-01-08T08:50:06.000Z',
+	authors: [
+		{
+			name: 'Halvor Ripegutu',
+			email: 'halvor.ripegutu@nettavisen.no',
+		},
+	],
+	items: [
+		{ type: 'featured',
+			order: { item: 1, type: 1 },
+			href: 'https://drp-images.nettavisen.no/images/article/2018/01/08/3423404101/1/w1024/4606352.jpg',
+			text: 'GODE NYHETER: Norwegian får fly over Russland. Foto: Heiko Junge (NTB scanpix)',
+		},
+		{
+			type: 'title',
+			order: { item: 2, type: 1 },
+			text: 'Norwegian får fly med to ruter over Russland',
+		},
+		{
+			type: 'lead',
+			order: { item: 3, type: 1 },
+			text: 'Får fly over Russland til Bangkok.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 4, type: 1 },
+			text: 'Norwegian Air Shuttle har fått lov av russiske myndigheter til å fly over russisk luftrom til Asia.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 5, type: 2 },
+			text: 'Det melder den danske luftfartsnyhetsstedet Check-in.dk mandag morgen.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 6, type: 3 },
+			text: 'De to rutene er København og Stockholm til Bangkok. Ruten innebærer at turen til den thailandske hovedstaden blir kuttet med rundt 50 minutter.',
+		},
+		{
+			type: 'subhead',
+			order: { item: 7, type: 1 },
+			text: 'Langt unna',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 8, type: 4 },
+			text: 'I november 2016 fikk Norwegian lov til å fly ruten Oslo-Bangkok gjennom russisk luftrom.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 9, type: 5 },
+			text: '- Nå får vi fly tilsvarende trasé fra Stockholm og København. Det innebærer en besparelse på opp mot en time. Vi er likevel veldig langt unna å få like konkurransevilkår med andre skandinaviske selskaper i dette området, sier Lasse Sandaker-Nielsen, kommunikasjonsdirektør i Norwegian, til Nettavisen.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 10, type: 6 },
+			text: 'Han viser til en avtale inngått mellom Skandinavia og daværende Sovjetunionen i 1956 som ga SAS enerett i Skandinavia til å fly over Russland i Sibir.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 11, type: 7 },
+			text: 'Avtalene forhindrer Norwegian å fly gjennom russisk luftrom på turer mellom Skandinavia og Asia, med unntak av de tre konkrete rutene til Bangkok.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 12, type: 8 },
+			text: '- Spørsmålet om Sibir-korridoren er noe helt annet, men vi er likevel fornøyd med å få disse rettighetene, sier Sandaker-Nielsen.',
+		},
+		{
+			type: 'subhead',
+			order: { item: 13, type: 2 },
+			text: 'Rekord',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 14, type: 9 },
+			text: 'I starten av november i fjor hadde norske samferdselsmyndigheter et forhandlingsmøte med Russland som endte uten resultater.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 15, type: 10 },
+			text: 'Kjos uttalte seg svært kritisk til ordningen i forrige uke og mente at dette gjør at Danmark, Island og spesielt Finland blir vinnere på den økte turismen fra Asia på bekostning av Norge.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 16, type: 11 },
+			text: 'Les mer her: Kjos ut mot flyordning: - Norge er den store taperen',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 17, type: 12 },
+			text: 'Norwegian har ellers hatt en veldig god start på året etter et 2017 som Bjørn Kjos omtalte som et «drittår». Fredagen var den børste børsdagen for selskapet noensinne med en oppgang på 20,17 prosent etter gode trafikktall.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 18, type: 13 },
+			text: 'Les også: Norwegian landet selskapets beste børsdag',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 19, type: 14 },
+			text: 'Lik NA24 her og få flere ferske økonominyheter!',
+		},
+	],
+}

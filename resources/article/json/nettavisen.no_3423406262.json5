@@ -1,0 +1,123 @@
+{
+	url: {
+		href: 'http://nettavisen.no/3423406262',
+	},
+	version: '2018-01-15T10:19:24.000Z',
+	authors: [
+		{
+			name: 'Halvor Ripegutu',
+			email: 'halvor.ripegutu@nettavisen.no',
+		},
+	],
+	items: [
+		{
+			type: 'featured',
+			order: { item: 1, type: 1 },
+			href: 'https://drp-images.nettavisen.no/images/article/2018/01/15/3423406275/1/w1024/4247541.jpg',
+			text: 'PENGEREGN: Kjell Inge Røkke er største eier i Aker BP. Foto: akerasa.com',
+		},
+		{
+			type: 'title',
+			order: { item: 2, type: 1 },
+			text: 'Røkkes Aker BP tar av på børsen',
+		},
+		{
+			type: 'lead',
+			order: { item: 3, type: 1 },
+			text: 'Pengeregn til aksjonærene sender aksjen opp på børsen.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 4, type: 1 },
+			text: 'Aker BP stiger nesten fem prosent på Oslo Børs etter at selskapet mandag la frem oppdaterte planer for 2018.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 5, type: 2 },
+			text: 'Det fremgår det blant annet at selskapet øker det årlige utbyttet fra 350 til 450 millioner dollar. Det tilsvarer rundt 3,6 millioner kroner.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 6, type: 3 },
+			text: 'Ved siden av det lover selskapet å øke utbytte med 100 millioner dollar, eller rundt 790 millioner kroner, hver år frem til 2021.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 7, type: 4 },
+			text: 'Da vil utbyttet være 750 millioner dollar eller seks milliarder kroner i året.',
+		},
+		{
+			type: 'figure',
+			order: { item: 8, type: 1 },
+			href: 'https://drp-images.nettavisen.no/images/article/2018/01/15/3423406278/1/w650/4633750.jpg',
+			text: 'STIGER: Aker BP-aksjen tar av mandag.',
+		},
+		{
+			type: 'subhead',
+			order: { item: 9, type: 1 },
+			text: 'Tar av på børsen',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 10, type: 5 },
+			text: 'Aksjen stiger 4,5 prosent på børsen og er nå verdt over 80 millioner kroner.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 11, type: 6 },
+			text: 'Analytiker Theodor Sveen-Nilsen i Sparebank1 Markets mener det er nettopp utbytte som løfter aksjen.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 12, type: 7 },
+			text: '- Ja, det er ingen tvil om at det er først og fremst utbytteguidingen som aksjemarkedet reagerer på, sier han til Nettavisen.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 13, type: 8 },
+			text: 'Han mener at dagens melding tyder på at Aker BP i enda større grad enn før vil fokusere på evnen til å betale utbytte.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 14, type: 9 },
+			text: 'Les også: Aker BP dobler omsetningen og firedobler resultatet før skatt',
+		},
+		{
+			type: 'subhead',
+			order: { item: 15, type: 2 },
+			text: 'Øker produksjonsguiding',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 16, type: 10 },
+			text: 'Selv om utbyttet stjeler overskiftene, har selskapet over kommet med andre nyheter.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 17, type: 11 },
+			text: 'Selskapet venter å ha en produksjon på 155-160.000 fat pr. dag. Det er en økning fra et anslag på 128.000 til 135.000 fat pr dag i 2017, og nok en indikasjon på at selskapet er i sterk vekst.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 18, type: 12 },
+			text: 'Aker BP anslår dessuten at produksjonskostnadene vil være på 12 dollar pr fat i 2018, noe som lover bra for lønnsomheten, siden et fat olje koster rundt 70 dollar mandag.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 19, type: 13 },
+			text: 'Selskapet har dessuten satset tungt på oppkjøp i det siste og det ble i høst kjent at de kjøper Hess Norge.',
+		},
+		// The next two elements should not be in the article content but cannot be filtered out
+		// currently due to missing classes or other, distinct properties.
+		{
+			type: 'paragraph',
+			order: { item: 20, type: 14 },
+			text: 'Les ogsp: Aker BP tar av på børsen etter Hess-kjøp',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 21, type: 15 },
+			text: 'Lik NA24 her og få flere ferske økonominyheter!',
+		},
+	],
+}

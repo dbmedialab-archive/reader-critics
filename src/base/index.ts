@@ -16,20 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// THIS FILE IS FOR TESTING PURPOSES ONLY
+export * from './Article';
+export * from './ArticleAuthor';
+export * from './ArticleItem';
+export * from './ArticleItemType';
+export * from './ArticleOptions';
 
-import { writeFileSync } from 'fs';
-import { spawn } from 'child_process';
+export * from './EndUser';
 
-const testPath = '/tmp/mailtest.html';
+export * from './EscalationLevel';
+export * from './EscalationThresholds';
 
-export default function (html : string) {
-	writeFileSync(testPath, html, {
-		flag: 'w',
-		mode: 0o644,
-	});
+export * from './Feedback';
+export * from './FeedbackItem';
+export * from './FeedbackStatus';
 
-	spawn('/usr/bin/qupzilla', [ '-c', `file://${testPath}` ], {
-		detached: true,
-	});
-}
+export * from './Pagination';
+
+export * from './Parser';
+export * from './ParserFactory';
+
+export * from './Suggestion';
+
+export * from './User';
+export * from './UserRole';
+
+export * from './Website';

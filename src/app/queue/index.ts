@@ -23,21 +23,49 @@ import { createRedisConnection } from 'app/db';
 import { dbMessageQueue } from 'app/db/createRedisConnection';
 
 import {
-	jobWorkerHandlers,
-	// webWorkerHandlers
-} from './WorkerHandlers';
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onNewFeedback,
+	onPollArticleUpdate,
+	onSendEditorEscalation,
+} from './handlers';
 
 import * as app from 'app/util/applib';
+
+// Define which job handlers are available to what worker type
+
+const jobWorkerHandlers = Object.freeze({
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onNewFeedback,
+	onPollArticleUpdate,
+	onSendEditorEscalation,
+});
+
+// const webWorkerHandlers = Object.freeze({
+// }); - still empty
+
+// Internal resources
 
 const log = app.createLog();
 
 let queue : kue.Queue;
 
+// All message types
+
 export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
+	CheckEscalationToEditor = 'check-escalation-to-editor',
+	CollectArticlesForPolling = 'collect-articles-for-polling',
 	NewFeedback = 'new-feedback',
+	PollArticleUpdate = 'poll-article-update',
+	SendEditorEscalation = 'send-editor-escalation',
 	SendSuggestionDigest = 'send-suggestion-digest',
 }
+
+// Queue initialization for the different worker types
 
 export function initMasterQueue() : Promise <void> {
 	log('Initialising %s worker queue', colors.brightRed('master'));
@@ -93,13 +121,16 @@ export function initWebWorkerQueue() : Promise <void> {
 	return Promise.resolve();
 }
 
+// Push messages into the queue
+
 export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
 	const paypayloadload = payload === undefined ? {} : payload;
-	log(type, app.inspect(paypayloadload));
+	log(type, app.inspect(paypayloadload, 1, false));
 
 	queue.create(type, paypayloadload)
 		.priority('normal')
 		.attempts(1)
+		.ttl(10 * 60 * 1000)
 		.removeOnComplete(true)
 		.save();
 

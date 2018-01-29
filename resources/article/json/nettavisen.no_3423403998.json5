@@ -1,0 +1,49 @@
+{
+	url: {
+		href: 'http://nettavisen.no/3423403998',
+	},
+	version: '2018-01-07T19:48:35.000Z',
+	authors: [
+		{ name: 'NTB' },
+	],
+	items: [
+		{
+			type: 'featured',
+			order: { item: 1, type: 1 },
+			href: 'https://drp-images.nettavisen.no/images/article/2018/01/07/3423404001/1/w1024/4605081.jpg',
+			text: 'Posten Norge utvider kjøretøyflåten ved å kjøpe en elektrisk semitrailer fra Tesla.',
+		},
+		{
+			type: 'title',
+			order: { item: 2, type: 1 },
+			text: 'Posten går for Tesla',
+		},
+		{
+			type: 'lead',
+			order: { item: 3, type: 1 },
+			text: 'Posten Norge utvider kjøretøyflåten ved å kjøpe en elektrisk semitrailer fra Tesla.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 4, type: 1 },
+			text: '– Vi ser at fremtiden er elektrisk i alle kjøretøysegmenter. Derfor er det viktig for oss å teste ny teknologi så tidlig som mulig, sier pressesjef John Eckhoff i Posten Norge.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 5, type: 2 },
+			text: 'Tesla starter i 2019 produksjon av semitrailer med en rekkevidde på inntil 800 kilometer ved maksimalvekt og motorveihastighet.',
+		},
+		{
+			type: 'paragraph',
+			order: { item: 6, type: 3 },
+			text: 'Posten planlegger å bruke den nye bilen mellom terminalene sine.',
+		},
+		// The next one isn't really supposed to be there, but with the current HTML structure
+		// it would be a very nasty hack to filter it out.
+		{
+			type: 'paragraph',
+			order: { item: 7, type: 4 },
+			text: 'Lik NA24 her og få flere ferske økonominyheter!',
+		},
+	],
+}

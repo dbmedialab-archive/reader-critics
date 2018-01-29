@@ -26,7 +26,7 @@ export default class SubHeadingElement extends ArticleElement {
 		return <div>
 			<label>
 				<FormattedMessage
-					id="label.article-el.sub-head"
+					id="article-el.subhead"
 					values={{
 						order: this.props.item.order.type,
 					}}

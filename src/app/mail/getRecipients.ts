@@ -18,7 +18,7 @@
 
 import { uniq } from 'lodash';
 
-import Feedback from 'base/Feedback';
+import Article from 'base/Article';
 import Person from 'base/zz/Person';
 import Website from 'base/Website';
 
@@ -34,26 +34,31 @@ const msgNoRcpt = 'Could not determine recipients for feedback notification e-ma
 // for testing purposes and is therefore disabled in production mode.
 const override : string = config.get('mail.testOverride');
 
-export default function (website : Website, feedback : Feedback) : Promise <Array <string>> {
+export function getRecipients(
+	website : Website,
+	article : Article,
+	includeEditors : boolean = false
+) : Promise <Array <string>> {
 	if (override && !app.isProduction) {
 		return Promise.resolve([ override ]);
 	}
 
-	let recipients : Array <string> = filterForMailAddr(feedback.article.authors);
+	let recipients : Array <string> = filterForMailAddr(article.authors);
 
-	if (recipients.length <= 0) {
+	if (recipients.length <= 0 || includeEditors) {
 		recipients = filterForMailAddr(website.chiefEditors);
 	}
 
 	// If the list of recipients is still empty here then we can't really do
 	// anything about that. The caller function will have to deal with it.
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(msgNoRcpt));
+		return Promise.reject(new EmptyError(`${msgNoRcpt} (${website.name})`));
 	}
 
 	return Promise.resolve(uniq(recipients));
 }
 
-const filterForMailAddr = (people : Array <Person>) : Array <string> =>
-	people.filter((p : Person) => p.email.length > 0)
-	.map((author : Person) => author.email);
+const filterForMailAddr = (people : Array <Person>) : Array <string> => (
+	people.filter((p : Person) => typeof p.email === 'string' && p.email.length > 0)
+	.map((author : Person) => author.email)
+);

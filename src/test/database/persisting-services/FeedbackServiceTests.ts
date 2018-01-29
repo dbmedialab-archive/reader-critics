@@ -41,6 +41,8 @@ export default function(this: ISuiteCallbackContext) {
 	let feedbackCount : number;
 	let thatFeedback : Feedback;
 
+	this.slow(250);
+
 	it('clear()', () => feedbackService.clear());
 
 	it('validateAndSave()', () => app.scanDir(feedbackDir).then((files : string[]) => {
@@ -65,7 +67,7 @@ export default function(this: ISuiteCallbackContext) {
 	}));
 
 	it('getByArticle()', () => {
-		return ArticleURL.from('http://www.mopo.no/1')
+		return ArticleURL.from('http://mopo.no/1')
 		.then(articleURL => articleService.get(articleURL, 'final-draft'))
 		.then(article => feedbackService.getByArticle(article))
 		.then((results : Feedback[]) => {
@@ -110,10 +112,10 @@ export default function(this: ISuiteCallbackContext) {
 			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 		])
 		.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
-			const numNew = 2;
+			const numAwait = 5;
 			assert.lengthOf(
-				resultAwait, numNew,
-				`Expected ${numNew} feedbacks in status "AwaitEnduserData"`
+				resultAwait, numAwait,
+				`Expected ${numAwait} feedbacks in status "AwaitEnduserData"`
 			);
 
 			resultAwait.forEach((feedback, index) => {

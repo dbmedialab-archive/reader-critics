@@ -29,10 +29,11 @@ import createPersistingService from '../createPersistingService';
 import {
 	get,
 	getByID,
-	identify,
 	save,
 	update,
 } from './WebsiteDAO';
+
+import { identify } from './mock/identify';
 import validateAndUpdate from './common/validateAndUpdate';
 
 const service : WebsiteService

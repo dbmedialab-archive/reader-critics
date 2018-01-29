@@ -122,7 +122,11 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'figure'
+		// Check if a video element is present, then this doesn't count as an image/figure
+		const hasVideo : boolean = select(item.elem).children('div[class="flex-video"]').length === 1;
+
+		return !hasVideo
+			&& item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
 	}
 

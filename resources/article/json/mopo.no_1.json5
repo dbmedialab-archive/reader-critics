@@ -1,5 +1,7 @@
 {
-	url: "http://www.mopo.no/1",
+	url: {
+		href: "http://mopo.no/1",
+	},
 	version: "final-draft",
 	authors: [
 		{

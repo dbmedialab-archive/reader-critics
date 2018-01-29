@@ -16,25 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
-
-import { assert } from 'chai';
-
-import {
-	getAvailableParsers,
-	initParserResolver,
-} from 'app/services/parser/common/parserResolver';
-
-describe('ParserService', () => {
-	it('getAvailableParsers', () => {
-		return initParserResolver()
-		.then(() => getAvailableParsers())
-		.then((parsers : string[]) => {
-			// It should at least find two parser implementations (see next)
-			assert.isAtLeast(parsers.length, 2);
-			// Check if our default implementations are resolved
-			assert.include(parsers, 'AMP Parser');
-			assert.include(parsers, 'Generic Parser');
-		});
-	});
-});
+export * from './onCheckAwaitFeedback/onCheckAwaitFeedback';
+export * from './onCheckEscalationToEditor/onCheckEscalationToEditor';
+export * from './onCollectArticlesForPolling/onCollectArticlesForPolling';
+export * from './onNewFeedback/onNewFeedback';
+export * from './onPollArticleUpdate/onPollArticleUpdate';
+export * from './onSendEditorEscalation/onSendEditorEscalation';
