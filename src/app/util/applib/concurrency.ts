@@ -17,6 +17,7 @@
 //
 
 import * as os from 'os';
+import * as uuid from 'uuid/v4';
 
 import { isNil } from 'lodash';
 
@@ -63,3 +64,5 @@ export const numJobWorkers = Math.ceil(
 );
 
 export const numWebWorkers = (numConcurrency + 1) - numJobWorkers;
+
+export const nodeID : string = uuid();
