@@ -6,8 +6,7 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog('vote');
 
-const lockPrefix = 'vote-lock';
-const dataPrefix = 'vote-data';
+const lockKey = 'vote-lock:masterID';
 
 // These time constants are in seconds
 const startupVariance = 2;
@@ -15,12 +14,7 @@ const rewriteVariance = 2;
 const lockTimeToLive = 10;
 
 let redis : IORedis.Redis;
-let master : boolean = false;
-
-let countReElect = 0;
-let countNoElect = 0;
-
-export const isMaster = () => master;
+let isMaster : boolean = false;
 
 export function initVote() : Promise <void> {
 	const startupDelay = Math.round(Math.random() * (startupVariance * 1000));
@@ -28,70 +22,41 @@ export function initVote() : Promise <void> {
 	redis = createRedisConnection(dbMessageQueue);
 
 	setTimeout(() => {
-		writeLock();
+		lockHandler();
 
-		const rewriteDelay = Math.round(Math.random() * (rewriteVariance * 1000))
-			+ (1000 * lockTimeToLive);
-		log('Starting lock rewrite loop (%dms)', rewriteDelay);
+		const rewriteDelay = (1000 * lockTimeToLive)
+			- Math.round(Math.random() * (rewriteVariance * 1000));
+		log('Starting vote lock rewrite loop (%dms)', rewriteDelay);
 
 		setInterval(() => {
-			writeLock();
+			lockHandler();
 		}, rewriteDelay);
 	}, startupDelay);
 
 	return Promise.resolve();
 }
 
-function writeLock() {
-	log('Writing vote lock');
-	const myKey = `${lockPrefix}:${app.nodeID}`;
-	redis.set(myKey, true, 'ex', lockTimeToLive);
+const getLock = () => redis.get(lockKey);
 
-	redis.keys(`${lockPrefix}:*`).then(function (keys) {
-		log(keys);
-		// This is obvious: either this node is the only one in the eco-system
-		// or it was the first one that got started. Double check for the ID though.
-		if (keys.length === 1 && keys[0] === myKey) {
-			log("I'm master");
-			redis.set(`${dataPrefix}:masterID`, app.nodeID);
-			master = true;
-			countReElect = 0;
-			countNoElect = 0;
+const setLock = () => redis.set(lockKey, app.nodeID, 'ex', lockTimeToLive);
+
+function lockHandler() {
+	getLock().then((value) => {
+		// Application start and the lock doesn't exist yet or the old master node
+		// has gone away and the lock was deleted by Redis after expiring its TTL
+		if (value === null) {
+			setLock();
+			isMaster = true;
+			log('Aquiring master');
 		}
-		// Now it gets more complicated; more nodes in the lock list?
-		// - check if my own ID matches the master ID, then I'm still master
-		// - check if the master ID is included in the lock list at all; if it is
-		//   not, this means the current master failed to rewrite its lock and is
-		//   probably dead.
-		else if (keys.length > 1 && keys.includes(myKey)) {
-			redis.get(`${dataPrefix}:masterID`).then((value) => {
-				if (value === app.nodeID) {
-					countReElect ++;
-					countNoElect = 0;
-					log("I'm still master (%d)", countReElect);
-					master = true;
-				}
-				else {
-					countReElect = 0;
-					countNoElect ++;
-					redis.del(myKey);
-					log('Not master (%d)', countNoElect);
-					master = false;
-				}
-			});
+		// Lock exists and contains the ID of this node; rewrite it to extend TTL
+		else if (value === app.nodeID) {
+			setLock();
+			isMaster = true;
 		}
+		// Every other case: this is not the master node
 		else {
-			log("I'm totally not master");
-			countReElect = 0;
-			countNoElect = 0;
-			master = false;
+			isMaster = false;
 		}
-		/* else {
-			redis.get(`${dataPrefix}:masterID`).then((value) => {
-				log('Current master is', value);
-			});
-			log("I'm not master");
-			master = false;
-		} */
 	});
 }
