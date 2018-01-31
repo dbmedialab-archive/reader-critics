@@ -34,8 +34,8 @@ const activeJobs : Array <CronJob> = [];
 export function initCron() : Promise <void> {
 	log('Initialising ...');
 
-	// jobCheckAwaitFeedback();
-	// jobCollectArticlesForPolling();
+	jobCheckAwaitFeedback();
+	jobCollectArticlesForPolling();
 	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
