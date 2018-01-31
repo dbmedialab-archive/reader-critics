@@ -47,6 +47,8 @@ const jobWorkerHandlers = Object.freeze({
 // const webWorkerHandlers = Object.freeze({
 // }); - still empty
 
+const maxCleanupJobs = 500;
+
 // Internal resources
 
 const log = app.createLog();
@@ -140,14 +142,32 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 // Regularly clean up finished and stuck jobs
 
 export function maintenance() {
-	log('Maintenance');
-	/*
-	kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
-		jobs.forEach( function( job ) {
-			job.remove( function(){
-				console.log( 'removed ', job.id );
-			});
+	return Promise.all([
+		cleanThatUp('complete'),
+		cleanThatUp('inactive'),
+		cleanThatUp('failed'),
+	]);
+}
+
+function cleanThatUp(jobStatus : string) : Promise <void> {
+	return new Promise((resolve, reject) => {
+		kue.Job.rangeByState(jobStatus, 0, maxCleanupJobs - 1, 'asc', (error, jobs) => {
+			if (error) {
+				return reject(error);
+			}
+
+			if (jobs.length <= 0) {
+				return resolve();  // Nothing to do, get out of here
+			}
+
+			log('Cleaning up %d %s queue jobs', jobs.length, jobStatus);
+
+			Promise.map(jobs, (job : kue.Job) => {
+				return new Promise((resolgrmpf) => {
+					job.remove(() => resolgrmpf(job.id));
+				});
+			})
+			.then(() => resolve());
 		});
 	});
-	*/
 }
