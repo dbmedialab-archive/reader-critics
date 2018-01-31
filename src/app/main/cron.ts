@@ -63,12 +63,10 @@ function jobCollectArticlesForPolling() {
 
 function jobMessageQueueMaintenance() {
 	activeJobs.push(new CronJob({
-		cronTime: '0 */20 * * * *',  // Every 20 minutes
+		cronTime: '0 */10 * * * *',  // Every 10 minutes
 		onTick: () => wrapCronFn(() => {
 			maintenance();
 		}),
 		start: true,
 	}));
-
-	setTimeout(() => maintenance(), 3000);
 }

@@ -47,8 +47,6 @@ const jobWorkerHandlers = Object.freeze({
 // const webWorkerHandlers = Object.freeze({
 // }); - still empty
 
-const maxCleanupJobs = 500;
-
 // Internal resources
 
 const log = app.createLog();
@@ -78,16 +76,7 @@ export function initMasterQueue() : Promise <void> {
 		},
 	});
 
-	queue.active((error, ids : number[]) => {
-		ids.forEach((jobID : number) => {
-			kue.Job.get(jobID, (error2, job) => {
-				log('Removing completed job', jobID);
-				job.remove();
-			});
-		});
-	});
-
-	return Promise.resolve();
+	return maintenance(5000);  // Clean up a greater batch on startup
 }
 
 export function initJobWorkerQueue() : Promise <void> {
@@ -132,7 +121,7 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 	queue.create(type, paypayloadload)
 		.priority('normal')
 		.attempts(1)
-		.ttl(10 * 60 * 1000)
+		.ttl(10 * 60 * 1000)  // That should be ten minutes
 		.removeOnComplete(true)
 		.save();
 
@@ -141,17 +130,18 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 
 // Regularly clean up finished and stuck jobs
 
-export function maintenance() {
+export function maintenance(maxJobs = 500) : Promise <void> {
 	return Promise.all([
-		cleanThatUp('complete'),
-		cleanThatUp('inactive'),
-		cleanThatUp('failed'),
-	]);
+		cleanThatUp('complete', maxJobs),
+		cleanThatUp('inactive', maxJobs),
+		cleanThatUp('failed', maxJobs),
+	])
+	.then(() => undefined);
 }
 
-function cleanThatUp(jobStatus : string) : Promise <void> {
+function cleanThatUp(jobStatus : string, maxJobs) : Promise <void> {
 	return new Promise((resolve, reject) => {
-		kue.Job.rangeByState(jobStatus, 0, maxCleanupJobs - 1, 'asc', (error, jobs) => {
+		kue.Job.rangeByState(jobStatus, 0, maxJobs - 1, 'asc', (error, jobs) => {
 			if (error) {
 				return reject(error);
 			}
