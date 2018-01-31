@@ -135,3 +135,18 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 
 	return Promise.resolve();
 }
+
+// Regularly clean up finished and stuck jobs
+
+export function maintenance() {
+	log('Maintenance');
+	/*
+	kue.Job.rangeByState( 'complete', 0, n, 'asc', function( err, jobs ) {
+		jobs.forEach( function( job ) {
+			job.remove( function(){
+				console.log( 'removed ', job.id );
+			});
+		});
+	});
+	*/
+}

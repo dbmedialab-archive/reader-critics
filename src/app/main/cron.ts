@@ -19,6 +19,7 @@
 import { CronJob } from 'cron';
 
 import {
+	maintenance,
 	sendMessage,
 	MessageType,
 } from 'app/queue';
@@ -32,8 +33,9 @@ const activeJobs : Array <CronJob> = [];
 export function initCron() : Promise <void> {
 	log('Initialising ...');
 
-	jobCheckAwaitFeedback();
-	jobCollectArticlesForPolling();
+	// jobCheckAwaitFeedback();
+	// jobCollectArticlesForPolling();
+	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
 }
@@ -52,4 +54,16 @@ function jobCollectArticlesForPolling() {
 		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
 		start: true,
 	}));
+}
+
+function jobMessageQueueMaintenance() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 */20 * * * *',  // Every 20 minutes
+		onTick: () => wrapCronFn(() => {
+			maintenance();
+		}),
+		start: true,
+	}));
+
+	setTimeout(() => maintenance(), 3000);
 }
