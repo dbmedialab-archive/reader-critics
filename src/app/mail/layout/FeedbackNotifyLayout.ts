@@ -40,7 +40,8 @@ export type ItemFormatPayload = {
 
 const articleTitle = (article : Article) => {
 	const url = article.url;
-	const ttl = article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle).text;
+	const itm = article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+	const ttl = itm === undefined ? '-title not found-' : itm.text;
 
 	return `<a href="${url}">${ttl}</a>`;
 };
