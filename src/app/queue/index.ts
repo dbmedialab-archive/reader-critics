@@ -76,16 +76,7 @@ export function initMasterQueue() : Promise <void> {
 		},
 	});
 
-	queue.active((error, ids : number[]) => {
-		ids.forEach((jobID : number) => {
-			kue.Job.get(jobID, (error2, job) => {
-				log('Removing completed job', jobID);
-				job.remove();
-			});
-		});
-	});
-
-	return Promise.resolve();
+	return maintenance(5000);  // Clean up a greater batch on startup
 }
 
 export function initJobWorkerQueue() : Promise <void> {
@@ -130,9 +121,43 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 	queue.create(type, paypayloadload)
 		.priority('normal')
 		.attempts(1)
-		.ttl(10 * 60 * 1000)
+		.ttl(10 * 60 * 1000)  // That should be ten minutes
 		.removeOnComplete(true)
 		.save();
 
 	return Promise.resolve();
+}
+
+// Regularly clean up finished and stuck jobs
+
+export function maintenance(maxJobs = 500) : Promise <void> {
+	return Promise.all([
+		cleanThatUp('complete', maxJobs),
+		cleanThatUp('inactive', maxJobs),
+		cleanThatUp('failed', maxJobs),
+	])
+	.then(() => undefined);
+}
+
+function cleanThatUp(jobStatus : string, maxJobs) : Promise <void> {
+	return new Promise((resolve, reject) => {
+		kue.Job.rangeByState(jobStatus, 0, maxJobs - 1, 'asc', (error, jobs) => {
+			if (error) {
+				return reject(error);
+			}
+
+			if (jobs.length <= 0) {
+				return resolve();  // Nothing to do, get out of here
+			}
+
+			log('Cleaning up %d %s queue jobs', jobs.length, jobStatus);
+
+			Promise.map(jobs, (job : kue.Job) => {
+				return new Promise((resolgrmpf) => {
+					job.remove(() => resolgrmpf(job.id));
+				});
+			})
+			.then(() => resolve());
+		});
+	});
 }

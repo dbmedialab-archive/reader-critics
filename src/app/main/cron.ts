@@ -20,6 +20,7 @@ import { CronJob } from 'cron';
 import { wrapCronFn } from './vote';
 
 import {
+	maintenance,
 	sendMessage,
 	MessageType,
 } from 'app/queue';
@@ -35,6 +36,7 @@ export function initCron() : Promise <void> {
 
 	jobCheckAwaitFeedback();
 	jobCollectArticlesForPolling();
+	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
 }
@@ -54,6 +56,16 @@ function jobCollectArticlesForPolling() {
 		cronTime: '0 30 * * * *',  // Every hour at xx:30
 		onTick: () => wrapCronFn(() => {
 			sendMessage(MessageType.CollectArticlesForPolling);
+		}),
+		start: true,
+	}));
+}
+
+function jobMessageQueueMaintenance() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 */10 * * * *',  // Every 10 minutes
+		onTick: () => wrapCronFn(() => {
+			maintenance();
 		}),
 		start: true,
 	}));
