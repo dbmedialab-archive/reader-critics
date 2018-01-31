@@ -121,7 +121,7 @@ function getMailSubject(feedback : Feedback) : Promise <string> {
 		return Promise.resolve(a.text);
 	}
 
-	const b = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+	const b = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
 
 	if (b) {
 		return Promise.resolve(b.text);
