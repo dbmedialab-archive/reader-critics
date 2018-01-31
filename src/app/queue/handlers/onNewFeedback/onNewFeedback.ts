@@ -115,7 +115,17 @@ function process(feedbackID : string) {
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {
-	return Promise.resolve(feedback.article.items.find(
-		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
-	).text);
+	const a = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+
+	if (a) {
+		return Promise.resolve(a.text);
+	}
+
+	const b = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+
+	if (b) {
+		return Promise.resolve(b.text);
+	}
+
+	return Promise.resolve('');
 }
