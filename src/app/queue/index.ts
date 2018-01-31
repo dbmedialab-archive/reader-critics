@@ -130,6 +130,7 @@ export function sendMessage(type : MessageType, payload? : {}, options? : {}) : 
 	queue.create(type, paypayloadload)
 		.priority('normal')
 		.attempts(1)
+		.ttl(10 * 60 * 1000)
 		.removeOnComplete(true)
 		.save();
 
