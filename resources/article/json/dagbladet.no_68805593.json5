@@ -3,6 +3,7 @@
 		href: 'http://dagbladet.no/68805593',
 	},
   version: '2017-10-30T09:53:58.000Z',
+	title: 'En tittel for leserkritikk',
   authors: [
 		{
 			name: 'Christoph Schmitz',
