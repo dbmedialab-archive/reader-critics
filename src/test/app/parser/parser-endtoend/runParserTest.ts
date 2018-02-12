@@ -16,7 +16,11 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { assert } from 'chai';
+import {
+	assert,
+	AssertionError,
+} from 'chai';
+
 import { articleService } from 'app/services';
 import { checkContent } from './assertArticleContent';
 
@@ -32,6 +36,8 @@ export function runParserTest(
 	result : {}
 ) : Promise <void>
 {
+	let actualResult;
+
 	return ArticleURL.from(`http://${hostName}/${articleID}`)
 	// Invoke fetch() from the article service. In test mode, this will load the
 	// static HTML files from the resource directory (instead of trying to
@@ -46,12 +52,33 @@ export function runParserTest(
 			return;
 		}
 
+		actualResult = actual;
 		const expected = result as Article;  // Type-cast the "expected" data
 
 		checkURL(actual, expected);
 		checkVersion(actual, expected);
 		checkAuthors(actual, expected);
 		checkContent(actual, expected);
+	})
+
+	.catch(error => {
+		if (error instanceof AssertionError) {
+			// If there was a problem with the article parser, print out a dump of all
+			// produced article items to the console. This makes finding errors in a
+			// parser much easier!
+			console.log('  Resulting article items:');
+
+			actualResult.items.forEach(item => {
+				console.log(
+					'    # %d "%s" = "%s%s"',
+					item.order.item, item.type, item.text.substr(0, 50),
+					item.text.length > 50 ? ' ...' : ''
+				);
+			});
+
+			console.log();
+			throw error;  // Rethrow the error to make the test suite fail
+		}
 	});
 }
 
