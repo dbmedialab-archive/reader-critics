@@ -19,6 +19,7 @@
 import Article from 'base/Article';
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
 
@@ -28,6 +29,7 @@ interface ParserWorkflowPayload {
 	version : any;
 	authors : any;
 	titles : any;
+	title : string;
 	featured : ArticleItem[]
 }
 
@@ -75,6 +77,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 				version: this.parseVersion(),
 				authors: this.parseByline(),
 				titles: this.parseTitles(),
+				title: this.findTitle(items),
 				featured: this.parseFeaturedImage(),
 			});
 		})
@@ -82,6 +85,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 			url: this.articleURL,
 			version: a.version,
 			authors: a.authors,
+			title: a.title,
 			items: [
 				...a.titles,
 				...a.featured,
@@ -97,6 +101,24 @@ abstract class AbstractParser extends BaseItems implements Parser {
 	protected abstract parseTitles() : Promise <ArticleItem[]>;
 	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
 	protected abstract parseContent() : Promise <ArticleItem[]>;
+
+	protected abstract parseTitleFromMetaData() : Promise <string>;
+
+	// Article title
+
+	private findTitle(items : ArticleItem[]) : Promise <string> {
+		let item = items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+
+		if (item === undefined) {
+			item = items.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
+		}
+
+		if (item) {
+			return Promise.resolve(item.text);
+		}
+
+		return this.parseTitleFromMetaData();
+	}
 
 }
 
