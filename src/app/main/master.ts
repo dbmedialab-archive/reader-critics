@@ -25,6 +25,7 @@ import * as semver from 'semver';
 import { initCron } from './cron';
 import { initDatabase } from 'app/db';
 import { initMasterQueue } from 'app/queue';
+import { initVote } from './vote';
 import { readFileSync } from 'fs';
 
 import {
@@ -38,6 +39,7 @@ import {
 } from './clusterSignals';
 
 import * as app from 'app/util/applib';
+
 const log = app.createLog('master');
 
 const workerMap = {};
@@ -48,10 +50,12 @@ const workerMap = {};
 export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
+	log('Node ID is %s', colors.brightMagenta(app.nodeID));
 
 	checkEngineVersion()
 		.then(initMasterQueue)
 		.then(initDatabase)
+		.then(initVote)
 		.then(startWorkers)
 		.then(initCron)
 		.then(notifyTestMaster)

@@ -17,8 +17,10 @@
 //
 
 import { CronJob } from 'cron';
+import { wrapCronFn } from './vote';
 
 import {
+	maintenance,
 	sendMessage,
 	MessageType,
 } from 'app/queue';
@@ -35,6 +37,7 @@ export function initCron() : Promise <void> {
 	jobCheckAwaitFeedback();
 	jobCollectArticlesForPolling();
 	jobCompileNonUpdatedDigest();
+	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
 }
@@ -42,7 +45,9 @@ export function initCron() : Promise <void> {
 function jobCheckAwaitFeedback() {
 	activeJobs.push(new CronJob({
 		cronTime: '0 * * * * *',  // Every minute
-		onTick: () => sendMessage(MessageType.CheckAwaitFeedback),
+		onTick: () => wrapCronFn(() => {
+			sendMessage(MessageType.CheckAwaitFeedback);
+		}),
 		start: true,
 	}));
 }
@@ -50,7 +55,9 @@ function jobCheckAwaitFeedback() {
 function jobCollectArticlesForPolling() {
 	activeJobs.push(new CronJob({
 		cronTime: '0 30 * * * *',  // Every hour at xx:30
-		onTick: () => sendMessage(MessageType.CollectArticlesForPolling),
+		onTick: () => wrapCronFn(() => {
+			sendMessage(MessageType.CollectArticlesForPolling);
+		}),
 		start: true,
 	}));
 }
@@ -67,4 +74,14 @@ function jobCompileNonUpdatedDigest() {
 		sendMessage(MessageType.CompileNonUpdatedDigest);
 	}, 2500);
 	// <<<<<<<<<<<< FIXME
+}
+
+function jobMessageQueueMaintenance() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 */10 * * * *',  // Every 10 minutes
+		onTick: () => wrapCronFn(() => {
+			maintenance();
+		}),
+		start: true,
+	}));
 }

@@ -38,12 +38,5 @@
 			order: { item: 6, type: 3 },
 			text: 'Posten planlegger å bruke den nye bilen mellom terminalene sine.',
 		},
-		// The next one isn't really supposed to be there, but with the current HTML structure
-		// it would be a very nasty hack to filter it out.
-		{
-			type: 'paragraph',
-			order: { item: 7, type: 4 },
-			text: 'Lik NA24 her og få flere ferske økonominyheter!',
-		},
 	],
 }

@@ -123,9 +123,9 @@ export default class NettavisenParser extends AbstractIteratingParser {
 		// There are several sub elements which contain plain <p> elements and which
 		// do *not* belong to the article content. Check this element's parents:
 		const checkParents = item.parents
-			.filter(check => {
-				return check.css.includes('article_services_skin');
-			});
+			.filter(check => check.css.includes('article_services_skin')
+				|| (check.name === 'div' && check.id === 'facebook-wrapper')
+			);
 
 		return checkParents.length === 0;
 	}
