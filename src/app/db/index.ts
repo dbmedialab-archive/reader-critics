@@ -28,4 +28,6 @@ export {
 
 export {
 	createRedisConnection,
+	dbMessageQueue,
+	dbSessionCache,
 } from './Redis';

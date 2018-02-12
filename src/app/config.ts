@@ -28,7 +28,7 @@ import printEnvironment from 'print-env';
 import {
 	dbMessageQueue,
 	dbSessionCache,
-} from 'app/db/createRedisConnection';
+} from 'app/db';
 
 import { rootPath } from 'app/util/applib';
 
