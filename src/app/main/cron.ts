@@ -36,7 +36,7 @@ export function initCron() : Promise <void> {
 
 	jobCheckAwaitFeedback();
 	jobCollectArticlesForPolling();
-	jobCompileNonUpdatedDigest();
+	jobCompileUnrevisedDigest();
 	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
@@ -62,16 +62,16 @@ function jobCollectArticlesForPolling() {
 	}));
 }
 
-function jobCompileNonUpdatedDigest() {
+function jobCompileUnrevisedDigest() {
 	activeJobs.push(new CronJob({
 		cronTime: '0 0 5 * * 1-5',  // Every work day at 5:30
-		onTick: () => sendMessage(MessageType.CompileNonUpdatedDigest),
+		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));
 
 	// FIXME only for testing !!
 	setTimeout(() => {
-		sendMessage(MessageType.CompileNonUpdatedDigest);
+		sendMessage(MessageType.CompileUnrevisedDigest);
 	}, 2500);
 	// <<<<<<<<<<<< FIXME
 }

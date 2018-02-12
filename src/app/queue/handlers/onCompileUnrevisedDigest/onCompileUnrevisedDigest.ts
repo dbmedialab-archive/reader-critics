@@ -38,7 +38,7 @@ const dateRegex = /:00\.000Z$/;
 // TODO nach Wochenenden die Query-Zeitdauer bis zum vorigen Freitag berechnen
 // TODO Mailtemplate undsoweiter
 
-export function onCompileNonUpdatedDigest(job : Job, done : DoneCallback) : void {
+export function onCompileUnrevisedDigest(job : Job, done : DoneCallback) : void {
 	const latestCreated = moment().second(0).millisecond(0)
 		.toDate();
 	const earliestCreated = moment(latestCreated)
@@ -51,7 +51,7 @@ export function onCompileNonUpdatedDigest(job : Job, done : DoneCallback) : void
 		latestCreated.toISOString().replace(dateRegex, 'Z')
 	);
 
-	articleService.getNonUpdated(latestCreated, earliestCreated)
+	articleService.getUnrevised(latestCreated, earliestCreated)
 	.then(articles => {
 		articles.forEach(article => {
 			log(article.ID, article.url);

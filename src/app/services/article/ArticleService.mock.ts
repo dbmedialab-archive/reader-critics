@@ -33,8 +33,8 @@ import getByID from './common/getByID';
 import getAmount from './common/getAmount';
 
 import { getIDsToPullUpdates } from './live/getIDsToPullUpdates';
-import { getNonUpdated } from './live/getNonUpdated';
 import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { getUnrevised } from './live/getUnrevised';
 import { setOptions } from './common/setOptions';
 
 import {
@@ -59,9 +59,9 @@ module.exports = createPersistingService <ArticleDocument, ArticleService, Artic
 		getAmount,
 		getByID,
 		getIDsToPullUpdates,
-		getNonUpdated,
 		getRangeWithFBCount,
 		getRelatedArticleItem,
+		getUnrevised,
 		setOptions,
 	}
 ) as ArticleService;

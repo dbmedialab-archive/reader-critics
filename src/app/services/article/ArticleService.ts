@@ -159,7 +159,7 @@ export interface ArticleService extends BasicPersistingService <Article> {
 	 * Get all articles within the given time span which have not received
 	 * updates yet.
 	 */
-	getNonUpdated (
+	getUnrevised (
 		latestCreated : Date,
 		earliestCreated : Date
 	) : Promise <Article[]>

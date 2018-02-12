@@ -22,7 +22,7 @@ import { wrapFind } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-export function getNonUpdated (
+export function getUnrevised (
 	latestCreated : Date,
 	earliestCreated : Date
 ) : Promise <Article[]>
