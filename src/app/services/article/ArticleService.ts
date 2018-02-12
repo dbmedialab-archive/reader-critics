@@ -160,6 +160,7 @@ export interface ArticleService extends BasicPersistingService <Article> {
 	 * updates yet.
 	 */
 	getUnrevised (
+		website : Website,
 		latestCreated : Date,
 		earliestCreated : Date
 	) : Promise <Article[]>

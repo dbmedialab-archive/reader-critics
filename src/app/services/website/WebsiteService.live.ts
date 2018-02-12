@@ -29,6 +29,7 @@ import createPersistingService from '../createPersistingService';
 import {
 	get,
 	getByID,
+	getToRunUnrevisedDigest,
 	identify,
 	save,
 	update,
@@ -40,6 +41,7 @@ const service : WebsiteService
 		WebsiteModel, {
 			get,
 			getByID,
+			getToRunUnrevisedDigest,
 			identify,
 			save,
 			update,

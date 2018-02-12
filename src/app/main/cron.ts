@@ -64,7 +64,7 @@ function jobCollectArticlesForPolling() {
 
 function jobCompileUnrevisedDigest() {
 	activeJobs.push(new CronJob({
-		cronTime: '0 0 5 * * 1-5',  // Every work day at 5:30
+		cronTime: '0 5 * * * *',
 		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));

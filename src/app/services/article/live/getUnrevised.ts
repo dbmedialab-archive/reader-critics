@@ -16,19 +16,25 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { Article } from 'base';
+import {
+	Article,
+	Website,
+} from 'base';
+
 import { ArticleModel } from 'app/db/models';
 import { wrapFind } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
 export function getUnrevised (
+	website : Website,
 	latestCreated : Date,
 	earliestCreated : Date
 ) : Promise <Article[]>
 {
 	emptyCheck(latestCreated, earliestCreated);
 	return wrapFind(ArticleModel.find({
+		'website': website.ID,
 		// Only a certain timespan will be checked
 		'date.created': {
 			'$gt': earliestCreated,

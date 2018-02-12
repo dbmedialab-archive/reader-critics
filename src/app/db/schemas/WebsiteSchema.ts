@@ -66,6 +66,28 @@ const WebsiteSchema : Schema = new Schema({
 		default: null,
 	},
 
+	// Digest of unrevised articles
+	unrevisedDigest: {
+		// Flag to switch on the digests for this website
+		isActive: {
+			type: Boolean,
+			required: false,
+			default: false,
+		},
+		// The timestamp of when the digest cronjob was run the last time
+		lastRun: {
+			type: Date,
+			required: false,
+			default: null,
+		},
+		// The hour of the day in which the digest cronjob should run
+		cronHour: {
+			type: Number,
+			required: false,
+			default: 6,
+		},
+	},
+
 	// Website-specific layout
 	layout: {
 		templates: {

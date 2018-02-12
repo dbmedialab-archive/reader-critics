@@ -29,6 +29,7 @@ import createPersistingService from '../createPersistingService';
 import {
 	get,
 	getByID,
+	getToRunUnrevisedDigest,
 	save,
 	update,
 } from './WebsiteDAO';
@@ -41,6 +42,7 @@ const service : WebsiteService
 		WebsiteModel, {
 			get,
 			getByID,
+			getToRunUnrevisedDigest,
 			identify,
 			save,
 			update,

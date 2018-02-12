@@ -25,40 +25,81 @@ import {
 } from 'kue';
 
 import {
+	Article,
+	Website,
+} from 'base';
+
+import {
 	articleService,
-//	websiteService,
+	websiteService,
 } from 'app/services';
 
 const log = app.createLog();
 const dateRegex = /:00\.000Z$/;
 
-// TODO Flag in Website zur Aktivierung des Digest
-// TODO websiteService.getAll([flags/query])
-// TODO website-Parameter auf articleService.getNonUpdated()
-// TODO nach Wochenenden die Query-Zeitdauer bis zum vorigen Freitag berechnen
+// TODO websiteService.setUnrevisedDigestLastRun()
+// TODO website-Parameter auf articleService.getUnrevised()
 // TODO Mailtemplate undsoweiter
 
+// Main handler method, execute the job function and handle the 'kue' job
+
 export function onCompileUnrevisedDigest(job : Job, done : DoneCallback) : void {
+	process().then(() => {
+		done();
+		return null;
+	})
+	.catch(error => {
+		app.yell(error);
+		return done(error);
+	});
+}
+
+// Job function: query all websites that should get a digest now and then
+// query their relevant articles.
+
+function process() {
+	const { latestCreated, earliestCreated } = getDates();
+
+	// We're reusing the article query date to get the websites which are up for the digest
+	return websiteService.getToRunUnrevisedDigest(latestCreated)
+	.then((websites) => {
+		websites.forEach(website => {
+			log(
+				'Checking articles from %s between %s and %s',
+				website.name,
+				earliestCreated.toISOString().replace(dateRegex, 'Z'),
+				latestCreated.toISOString().replace(dateRegex, 'Z')
+			);
+
+			articleService.getUnrevised(website, latestCreated, earliestCreated)
+			.then(articles => {
+				if (articles.length > 0) {
+					return compileDigest(website, articles);
+				}
+			});
+		});
+	});
+}
+
+// Get all articles together into one digest e-mail
+
+function compileDigest(website : Website, articles: Article[]) {
+	articles.forEach(article => {
+		log(website.name, article.ID, article.url);
+	});
+}
+
+// Query dates
+
+function getDates() {
 	const latestCreated = moment().second(0).millisecond(0)
 		.toDate();
 	const earliestCreated = moment(latestCreated)
 		.subtract(moment.duration({ hours: 24 }))
 		.toDate();
 
-	log(
-		'Checking articles between %s and %s',
-		earliestCreated.toISOString().replace(dateRegex, 'Z'),
-		latestCreated.toISOString().replace(dateRegex, 'Z')
-	);
-
-	articleService.getUnrevised(latestCreated, earliestCreated)
-	.then(articles => {
-		articles.forEach(article => {
-			log(article.ID, article.url);
-		});
-	})
-	.then(() => {
-		done();
-		return null;
-	});
+	return {
+		latestCreated,
+		earliestCreated,
+	};
 }
