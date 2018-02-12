@@ -24,6 +24,8 @@ export { ObjectID } from 'mongodb';
 export {
 	initDatabase,
 	closeDatabase,
-} from './initDatabase';
+} from './MongoDB';
 
-export { default as createRedisConnection } from './createRedisConnection';
+export {
+	createRedisConnection,
+} from './Redis';
