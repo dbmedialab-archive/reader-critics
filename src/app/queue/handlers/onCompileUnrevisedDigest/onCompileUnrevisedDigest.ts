@@ -26,10 +26,7 @@ import {
 	Job,
 } from 'kue';
 
-import {
-	Article,
-	Website,
-} from 'base';
+import { Article } from 'base/Article';
 
 import {
 	articleService,
