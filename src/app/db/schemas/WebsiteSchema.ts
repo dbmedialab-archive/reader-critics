@@ -96,7 +96,17 @@ const WebsiteSchema : Schema = new Schema({
 				required: false,
 				default: null,
 			},
+			escalateToEditorMail: {
+				type: String,
+				required: false,
+				default: null,
+			},
 			feedbackNotificationMail: {
+				type: String,
+				required: false,
+				default: null,
+			},
+			unrevisedDigestMail: {
 				type: String,
 				required: false,
 				default: null,

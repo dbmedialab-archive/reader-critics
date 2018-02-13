@@ -19,6 +19,8 @@
 import * as app from 'app/util/applib';
 import * as moment from 'moment';
 
+import MailTemplate from 'app/template/MailTemplate';
+
 import {
 	DoneCallback,
 	Job,
@@ -31,8 +33,11 @@ import {
 
 import {
 	articleService,
+	templateService,
 	websiteService,
 } from 'app/services';
+
+import { layoutDigest } from './layoutDigest';
 
 const log = app.createLog();
 const dateRegex = /:00\.000Z$/;
@@ -71,21 +76,17 @@ function process() {
 				latestCreated.toISOString().replace(dateRegex, 'Z')
 			);
 
-			articleService.getUnrevised(website, latestCreated, earliestCreated)
-			.then(articles => {
+			return Promise.all([
+				articleService.getUnrevised(website, latestCreated, earliestCreated),
+				templateService.getUnrevisedDigestMailTemplate(website),
+			])
+
+			.spread((articles : Article[], template : MailTemplate) => {
 				if (articles.length > 0) {
-					return compileDigest(website, articles);
+					return layoutDigest(website, articles, template);
 				}
 			});
 		});
-	});
-}
-
-// Get all articles together into one digest e-mail
-
-function compileDigest(website : Website, articles: Article[]) {
-	articles.forEach(article => {
-		log(website.name, article.ID, article.url);
 	});
 }
 

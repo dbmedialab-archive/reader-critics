@@ -16,22 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as doT from 'dot';
+import * as path from 'path';
+
 import MailTemplate from 'app/template/MailTemplate';
-import PageTemplate from 'app/template/PageTemplate';
+
+import * as app from 'app/util/applib';
+
 import Website from 'base/Website';
+import emptyCheck from 'app/util/emptyCheck';
+import chooseTemplate from 'app/services/template/chooseTemplate';
 
-interface TemplateService {
-	// Website page templates
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-	getSuggestionPageTemplate(): Promise <PageTemplate>;
+const log = app.createLog();
+const defaultTemplate = path.join('templates', 'mail', 'defaultUnrevisedDigest.html');
 
-	// E-Mail templates
-	getFeedbackMailTemplate(website : Website) : Promise <MailTemplate>;
-	getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate>;
-	getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate>;
+export function getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate> {
+	emptyCheck(website);
 
-	// Admin page template
-	getAdminPageTemplate(): Promise <PageTemplate>;
+	return chooseTemplate(website.layout.templates.unrevisedDigestMail, defaultTemplate)
+		.then((raw : string) => {
+			log('Unrevised digest template loaded');
+			return new MailTemplate (doT.template(raw));
+		});
 }
-
-export default TemplateService;

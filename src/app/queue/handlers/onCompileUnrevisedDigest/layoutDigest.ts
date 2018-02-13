@@ -16,22 +16,23 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as app from 'app/util/applib';
+
 import MailTemplate from 'app/template/MailTemplate';
-import PageTemplate from 'app/template/PageTemplate';
-import Website from 'base/Website';
 
-interface TemplateService {
-	// Website page templates
-	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
-	getSuggestionPageTemplate(): Promise <PageTemplate>;
+import { notifyBrowser } from 'app/util/notifyBrowser';
 
-	// E-Mail templates
-	getFeedbackMailTemplate(website : Website) : Promise <MailTemplate>;
-	getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate>;
-	getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate>;
+import {
+	Article,
+	Website,
+} from 'base';
 
-	// Admin page template
-	getAdminPageTemplate(): Promise <PageTemplate>;
+const log = app.createLog();
+
+// Get all articles together into one digest e-mail
+
+export function layoutDigest(website : Website, articles: Article[], template : MailTemplate) {
+	articles.forEach(article => {
+		log(website.name, article.ID, article.title);
+	});
 }
-
-export default TemplateService;
