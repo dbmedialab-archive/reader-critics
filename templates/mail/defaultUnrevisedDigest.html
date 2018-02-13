@@ -1,0 +1,57 @@
+<html lang="{{=it.locale}}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+			div {
+				font-size: 12pt;
+			}
+			ins {
+				color: #0060DD;
+			}
+			del {
+				color: #DD3300;
+			}
+			a {
+				color: #0070D0;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+			hr.feedback-sep {
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+			div.feedback-date {
+				font-size: 10pt;
+				margin-bottom: 0.2cm;
+			}
+			.em {
+				color: #293a46;
+				font-weight: bold;
+			}
+		</style>
+		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">Here be a headline</div>
+			<!-- <div style="font-size: 12pt; margin-bottom: 0.1cm;">{ {=it.editorEscalation} }</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{ {=it . articleTitle} }</div>
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{ {=it.ccEditor} }</div> -->
+
+			<hr class="article-sep"/>
+			{{~it.articles :article}}
+			<div class="article-box">{{=article.title}}</div>
+			<div class="byline-box">{{=article.byline}}</div>
+			<hr class="article-sep"/>
+			{{~}}
+
+			<hr style="margin: 2em 0 1em;"/>
+
+			<div style="font-size: 10pt; color: #0055AA;">
+				<p style="margin: 0.4em 0;"><u>Debug information:</u></p>
+				{{=it.debugInfo}}
+			</div>
+		</div>
+	</body>
+</html>

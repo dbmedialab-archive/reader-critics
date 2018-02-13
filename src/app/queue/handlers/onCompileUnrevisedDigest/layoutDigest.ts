@@ -31,8 +31,20 @@ const log = app.createLog();
 
 // Get all articles together into one digest e-mail
 
-export function layoutDigest(website : Website, articles: Article[], template : MailTemplate) {
+export function layoutDigest(website : Website, articles : Article[], template : MailTemplate) {
 	articles.forEach(article => {
 		log(website.name, article.ID, article.title);
 	});
+
+	const html : string = template.setParams({
+		articles: [
+			{
+				title: 'some title',
+				byline: 'av Da Boss',
+			},
+		],
+	})
+	.render();
+
+	notifyBrowser(html);  // -- this is only for convenient local testing
 }
