@@ -21,6 +21,7 @@ import * as app from 'app/util/applib';
 import * as Mongoose from 'mongoose';
 
 import { initDatabase } from 'app/db';
+import { wrapFind } from 'app/db/common';
 import { ArticleModel } from 'app/db/models';
 
 const log = app.createLog('migrator');
@@ -33,9 +34,20 @@ Promise.resolve()
 // Migration code
 
 function migrateDatabase() : Promise <any> {
-	return ArticleModel
-	.count({}).then(result => {
-		log('%d articles found', result);
+	log('Querying database ...');
+	return wrapFind(ArticleModel.find({
+		'title': {
+			'$exists': false,
+		},
+	}))
+	.then(results => {
+		log(typeof results);
+		// log('%d articles found', results.length);
+	})
+
+	.then(() => {
 		Mongoose.connection.close();
 	});
+	// .count({}).then(result => {
+	// });
 }
