@@ -43,7 +43,10 @@
 				name: "Vakt Sjef",
 				"email": "vakt@dagbladet.no"
 			}
-		]
+		],
+		unrevisedDigest: {
+			isActive: true,
+		},
 	},
 	{
 		name: "dinside.no",
@@ -73,6 +76,9 @@
 				email: 'redaksjon@morgenposten.no',
 			},
 		],
+		unrevisedDigest: {
+			isActive: true,
+		},
 	},
 	{
 		name: 'nettavisen.no',
