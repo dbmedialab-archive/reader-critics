@@ -20,6 +20,7 @@ import * as app from 'app/util/applib';
 import * as moment from 'moment';
 
 import MailTemplate from 'app/template/MailTemplate';
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
 
 import {
 	DoneCallback,
@@ -27,12 +28,19 @@ import {
 } from 'kue';
 
 import { Article } from 'base/Article';
+import { Website } from 'base/Website';
+import { translate as __ } from 'app/services/localization';
 
 import {
 	articleService,
 	templateService,
 	websiteService,
 } from 'app/services';
+
+import {
+	getRecipientList,
+	MailRecipientList,
+} from 'app/mail/MailRecipients';
 
 import { layoutDigest } from './layoutDigest';
 
@@ -89,6 +97,18 @@ function process() {
 				if (mailContent === null) {
 					return;
 				}
+
+				return Promise.all([
+					getRecipientList(website, MailRecipientList.Editors),
+					getMailSubject(website),
+				])
+				.spread((recipients : Array <string>, subject : string) => {
+					return SendGridMailer(recipients, subject, mailContent);
+				});
+			})
+			// Update the "last digest"-timestamp in the website object
+			.finally(() => {
+				websiteService.setUnrevisedDigestLastRun(website);
 			});
 		}); // websites.forEach
 	});
@@ -107,4 +127,10 @@ function getDates() {
 		latestCreated,
 		earliestCreated,
 	};
+}
+
+// E-mail subject
+
+function getMailSubject(website : Website) : Promise <string> {
+	return Promise.resolve(__('mail.digest.subject', website.locale));
 }

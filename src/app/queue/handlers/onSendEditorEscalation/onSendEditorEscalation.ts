@@ -27,7 +27,11 @@ import {
 	templateService,
 } from 'app/services';
 
-import { getRecipients } from 'app/mail/getRecipients';
+import {
+	getRecipientList,
+	MailRecipientList,
+} from 'app/mail/MailRecipients';
+
 import { layoutNotifyMail } from './layoutNotifyMail';
 import { EscalationLevel } from 'base/EscalationLevel';
 
@@ -69,7 +73,7 @@ function process(article : Article) {
 	])
 	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
 		layoutNotifyMail(article, feedbacks, template),
-		getRecipients(article.website, article, true),
+		getRecipientList(article.website, MailRecipientList.Editors),
 		getMailSubject(article),
 	]))
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
@@ -83,7 +87,5 @@ function process(article : Article) {
 }
 
 function getMailSubject(article : Article) : Promise <string> {
-	return Promise.resolve(article.items.find(
-		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
-	).text);
+	return Promise.resolve(article.title);
 }

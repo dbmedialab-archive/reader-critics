@@ -44,10 +44,11 @@ export function layoutDigest(
 		})),
 		// Localization
 		text: {
-			itsaDigest: __('mail.digest.head'),
-			articleVersion: __('mail.digest.article-version'),
+			itsaDigest: __('mail.digest.head', website.locale),
+			articleVersion: __('mail.digest.article-version', website.locale),
 			// Date range
 			dateRange: __('mail.digest.date-range', {
+				locale: website.locale,
 				values: {
 					earliestCreated: formatDate(earliestCreated, website.locale),
 					latestCreated: formatDate(latestCreated, website.locale),
