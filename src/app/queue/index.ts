@@ -19,8 +19,10 @@
 import * as colors from 'ansicolors';
 import * as kue from 'kue';
 
-import { createRedisConnection } from 'app/db';
-import { dbMessageQueue } from 'app/db/createRedisConnection';
+import {
+	createRedisConnection,
+	dbMessageQueue,
+} from 'app/db';
 
 import {
 	onCheckAwaitFeedback,
