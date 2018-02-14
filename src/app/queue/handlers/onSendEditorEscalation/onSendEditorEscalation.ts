@@ -36,8 +36,6 @@ import { layoutNotifyMail } from './layoutNotifyMail';
 import { EscalationLevel } from 'base/EscalationLevel';
 
 import Article from 'base/Article';
-import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import MailTemplate from 'app/template/MailTemplate';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
