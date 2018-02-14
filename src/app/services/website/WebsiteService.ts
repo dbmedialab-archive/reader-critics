@@ -31,6 +31,7 @@ interface WebsiteService extends BasicPersistingService <Website> {
 	save(website : Website) : Promise <void>;
 	update(name: string, data: any) : Promise <Website>;
 	validateAndUpdate(name: string, data: any) : Promise <Website>;
+	setUnrevisedDigestLastRun(website : Website) : Promise <void>;
 }
 
 export default WebsiteService;

@@ -31,6 +31,7 @@ import {
 	getByID,
 	getToRunUnrevisedDigest,
 	save,
+	setUnrevisedDigestLastRun,
 	update,
 } from './WebsiteDAO';
 
@@ -43,6 +44,7 @@ const service : WebsiteService
 			get,
 			getByID,
 			getToRunUnrevisedDigest,
+			setUnrevisedDigestLastRun,
 			identify,
 			save,
 			update,

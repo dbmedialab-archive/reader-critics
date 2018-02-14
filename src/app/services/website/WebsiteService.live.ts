@@ -32,6 +32,7 @@ import {
 	getToRunUnrevisedDigest,
 	identify,
 	save,
+	setUnrevisedDigestLastRun,
 	update,
 } from './WebsiteDAO';
 import validateAndUpdate from 'app/services/website/common/validateAndUpdate';
@@ -42,6 +43,7 @@ const service : WebsiteService
 			get,
 			getByID,
 			getToRunUnrevisedDigest,
+			setUnrevisedDigestLastRun,
 			identify,
 			save,
 			update,
