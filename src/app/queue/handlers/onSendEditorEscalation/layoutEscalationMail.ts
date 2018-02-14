@@ -22,7 +22,6 @@ import MailTemplate from 'app/template/MailTemplate';
 
 import { articleService }  from 'app/services';
 import { translate as __ } from 'app/services/localization';
-// import { notifyBrowser } from 'app/util/notifyBrowser';
 
 import {
 	format,
@@ -38,7 +37,7 @@ const cssFeedbackItemBox = [
 	'margin-bottom: 0.5em',
 ].join(';');
 
-export function layoutNotifyMail(
+export function layoutEscalationMail(
 	article : Article,
 	feedbacks : Feedback[],
 	template : MailTemplate
@@ -54,7 +53,7 @@ export function layoutNotifyMail(
 		}),
 		ccEditor: __('mail.fb-notify.cc-editor', locale),
 
-		articleTitle: format.articleTitle(article),
+		articleTitle: article.title,
 		debugInfo: debugInfo(article, feedbacks),
 		feedbacks: formatFeedbacks(article, feedbacks, locale),
 	})
