@@ -156,6 +156,16 @@ export interface ArticleService extends BasicPersistingService <Article> {
 	) : Promise <PollUpdateData[]>
 
 	/**
+	 * Get all articles within the given time span which have not received
+	 * updates yet.
+	 */
+	getUnrevised (
+		website : Website,
+		latestCreated : Date,
+		earliestCreated : Date
+	) : Promise <Article[]>
+
+	/**
 	 * Add another feedback object reference
 	 */
 	addFeedback(article : Article, feedback : Feedback) : Promise <void>

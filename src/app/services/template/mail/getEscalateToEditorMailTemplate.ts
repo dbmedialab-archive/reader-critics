@@ -32,7 +32,7 @@ const defaultTemplate = path.join('templates', 'mail', 'defaultEscalateToEditorN
 export function getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate> {
 	emptyCheck(website);
 
-	return chooseTemplate(website.layout.templates.feedbackNotificationMail, defaultTemplate)
+	return chooseTemplate(website.layout.templates.escalateToEditorMail, defaultTemplate)
 		.then((raw : string) => {
 			log('Escalation notification template loaded');
 			return new MailTemplate (doT.template(raw));

@@ -57,18 +57,22 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'h2'
-			&& item.css.includes('headline')
-			&& item.text.length > 0;
+		const withinHeader = select(item.elem).parents('header').length === 1;
+
+		return item.text.length > 0 && withinHeader
+			&& (item.name === 'h1' || item.name === 'h2' )
+			&& item.css.includes('headline');
 	}
 
 	protected isSubTitle(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'h1'
-			&& item.css.includes('intro')
-			&& item.text.length > 0;
+		const withinHeader = select(item.elem).parents('header').length === 1;
+
+		return item.text.length > 0 && withinHeader
+			&& (item.name === 'h1' || item.name === 'h2')
+			&& item.css.includes('intro');
 	}
 
 	protected isLeadIn(

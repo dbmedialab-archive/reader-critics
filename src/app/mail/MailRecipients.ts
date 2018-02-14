@@ -34,11 +34,16 @@ const msgNoRcpt = 'Could not determine recipients for feedback notification e-ma
 // for testing purposes and is therefore disabled in production mode.
 const override : string = config.get('mail.testOverride');
 
+// Get recipients for an article; collects the e-mail addresses from all article
+// authors and adds the website's editors if this is requested, or if the list
+// of article authors is empty (happens often on articles from external sources)
+
 export function getRecipients(
 	website : Website,
 	article : Article,
 	includeEditors : boolean = false
-) : Promise <Array <string>> {
+) : Promise <Array <string>>
+{
 	if (override && !app.isProduction) {
 		return Promise.resolve([ override ]);
 	}
@@ -46,7 +51,7 @@ export function getRecipients(
 	let recipients : Array <string> = filterForMailAddr(article.authors);
 
 	if (recipients.length <= 0 || includeEditors) {
-		recipients = filterForMailAddr(website.chiefEditors);
+		recipients = recipients.concat(filterForMailAddr(website.chiefEditors));
 	}
 
 	// If the list of recipients is still empty here then we can't really do
@@ -57,6 +62,40 @@ export function getRecipients(
 
 	return Promise.resolve(uniq(recipients));
 }
+
+// Get a specific list of recipients for a website. Currently, only the "editors"
+// list is defined.
+
+export enum MailRecipientList {
+	Editors,
+}
+
+export function getRecipientList(
+	website : Website,
+	recipientList : MailRecipientList
+) : Promise <Array <string>>
+{
+	if (override && !app.isProduction) {
+		return Promise.resolve([ override ]);
+	}
+
+	let recipients;
+
+	switch (recipientList) {
+		case MailRecipientList.Editors:
+			recipients = website.chiefEditors;
+	}
+
+	// If the list of recipients is still empty here then we can't really do
+	// anything about that. The caller function will have to deal with it.
+	if (recipients.length <= 0) {
+		return Promise.reject(new EmptyError(`${msgNoRcpt} (${website.name})`));
+	}
+
+	return Promise.resolve(uniq(filterForMailAddr(recipients)));
+}
+
+// Extract e-mail addresses from an array of <Person> objects
 
 const filterForMailAddr = (people : Array <Person>) : Array <string> => (
 	people.filter((p : Person) => typeof p.email === 'string' && p.email.length > 0)

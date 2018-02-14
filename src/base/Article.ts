@@ -31,6 +31,10 @@ export interface Article extends PersistedModel {
 	// Byline
 	authors : User[]
 
+	// Title as own property; this is also included in the article items if the
+	// parser works correctly.
+	title : string
+
 	website? : Website
 
 	// Contents - Title, subtitle, everything is picked up as an item

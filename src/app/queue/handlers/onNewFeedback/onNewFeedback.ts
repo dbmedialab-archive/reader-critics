@@ -39,7 +39,7 @@ import {
 	MessageType,
 } from 'app/queue';
 
-import { getRecipients } from 'app/mail/getRecipients';
+import { getRecipients } from 'app/mail/MailRecipients';
 
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';

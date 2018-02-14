@@ -33,6 +33,10 @@ const ArticleSchema : Schema = new Schema({
 		type: String,
 		required: true,
 	},
+	title: {
+		type: String,
+		required: true,
+	},
 
 	items: [Schema.Types.Mixed],
 
