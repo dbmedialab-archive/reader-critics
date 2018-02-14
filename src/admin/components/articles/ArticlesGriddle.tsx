@@ -40,7 +40,6 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 	constructor (props: IArticlesGriddle) {
 		super(props);
 		this.updateArticlesList = this.updateArticlesList.bind(this);
-		this.findTitle = this.findTitle.bind(this);
 		this.nextHandler = this.nextHandler.bind(this);
 		this.prevHandler = this.prevHandler.bind(this);
 		this.getPageHandler = this.getPageHandler.bind(this);
