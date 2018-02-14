@@ -53,5 +53,5 @@ export function getUnrevised (
 		'newerVersion': {
 			'$exists': false,
 		},
-	}));
+	}).populate('authors'));
 }

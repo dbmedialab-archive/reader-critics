@@ -124,11 +124,13 @@ export function getToRunUnrevisedDigest(nowDate : Date) : Promise <Website[]> {
 	}));
 }
 
-/*
-db.getCollection('websites').find({
-			{
-					'unrevisedDigest.lastRun': null
-			}
-	]}
-]})
-*/
+export function setUnrevisedDigestLastRun(website : Website) : Promise <void> {
+	return wrapFindOne(WebsiteModel.findOneAndUpdate(
+		{ _id : website.ID },
+		{
+			'$set': {
+				'unrevisedDigest.lastRun': new Date(),
+			},
+		}
+	));
+}

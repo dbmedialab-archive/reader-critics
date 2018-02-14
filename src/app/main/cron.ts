@@ -68,12 +68,6 @@ function jobCompileUnrevisedDigest() {
 		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));
-
-	// FIXME only for testing !!
-	setTimeout(() => {
-		sendMessage(MessageType.CompileUnrevisedDigest);
-	}, 2500);
-	// <<<<<<<<<<<< FIXME
 }
 
 function jobMessageQueueMaintenance() {

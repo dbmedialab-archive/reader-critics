@@ -19,27 +19,33 @@
 import * as app from 'app/util/applib';
 import * as moment from 'moment';
 
+import MailTemplate from 'app/template/MailTemplate';
+import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
+
 import {
 	DoneCallback,
 	Job,
 } from 'kue';
 
-import {
-	Article,
-	Website,
-} from 'base';
+import { Article } from 'base/Article';
+import { Website } from 'base/Website';
+import { translate as __ } from 'app/services/localization';
 
 import {
 	articleService,
+	templateService,
 	websiteService,
 } from 'app/services';
 
+import {
+	getRecipientList,
+	MailRecipientList,
+} from 'app/mail/MailRecipients';
+
+import { layoutDigest } from './layoutDigest';
+
 const log = app.createLog();
 const dateRegex = /:00\.000Z$/;
-
-// TODO websiteService.setUnrevisedDigestLastRun()
-// TODO website-Parameter auf articleService.getUnrevised()
-// TODO Mailtemplate undsoweiter
 
 // Main handler method, execute the job function and handle the 'kue' job
 
@@ -71,21 +77,38 @@ function process() {
 				latestCreated.toISOString().replace(dateRegex, 'Z')
 			);
 
-			articleService.getUnrevised(website, latestCreated, earliestCreated)
-			.then(articles => {
-				if (articles.length > 0) {
-					return compileDigest(website, articles);
+			// Load mail template and query unrevised articles for this website
+			return Promise.all([
+				articleService.getUnrevised(website, latestCreated, earliestCreated),
+				templateService.getUnrevisedDigestMailTemplate(website),
+			])
+
+			// Layout the digest e-mail
+			.spread((articles : Article[], template : MailTemplate) => (
+				(articles.length > 0)
+					? layoutDigest(website, articles, template, earliestCreated, latestCreated)
+					: null
+			))
+
+			// Send the digest e-mail
+			.then((mailContent : string|null) => {
+				if (mailContent === null) {
+					return;
 				}
+
+				return Promise.all([
+					getRecipientList(website, MailRecipientList.Editors),
+					getMailSubject(website),
+				])
+				.spread((recipients : Array <string>, subject : string) => {
+					return SendGridMailer(recipients, subject, mailContent);
+				});
+			})
+			// Update the "last digest"-timestamp in the website object
+			.finally(() => {
+				websiteService.setUnrevisedDigestLastRun(website);
 			});
-		});
-	});
-}
-
-// Get all articles together into one digest e-mail
-
-function compileDigest(website : Website, articles: Article[]) {
-	articles.forEach(article => {
-		log(website.name, article.ID, article.url);
+		}); // websites.forEach
 	});
 }
 
@@ -102,4 +125,10 @@ function getDates() {
 		latestCreated,
 		earliestCreated,
 	};
+}
+
+// E-mail subject
+
+function getMailSubject(website : Website) : Promise <string> {
+	return Promise.resolve(__('mail.digest.subject', website.locale));
 }
