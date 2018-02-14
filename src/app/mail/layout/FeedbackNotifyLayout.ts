@@ -38,20 +38,6 @@ export type ItemFormatPayload = {
 
 // Formatting - General
 
-const articleTitle = (article : Article) => {
-	const url = article.url;
-
-	let itm = article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
-
-	if (itm === undefined) {
-		itm = article.items.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
-	}
-
-	const ttl = itm === undefined ? '-title not found-' : itm.text;
-
-	return `<a href="${url}">${ttl}</a>`;
-};
-
 const enduser = (f : Feedback) => {
 	const n = f.enduser.name;
 	const m = f.enduser.email;
@@ -133,7 +119,6 @@ const itemLinks = (i : ItemFormatPayload, locale? : string) => {
 // Main export
 
 export const format = {
-	articleTitle,
 	colorItemText,
 	colorItemDiff,
 	enduser,

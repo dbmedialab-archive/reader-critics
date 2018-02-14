@@ -32,7 +32,7 @@ import {
 	MailRecipientList,
 } from 'app/mail/MailRecipients';
 
-import { layoutNotifyMail } from './layoutNotifyMail';
+import { layoutEscalationMail } from './layoutEscalationMail';
 import { EscalationLevel } from 'base/EscalationLevel';
 
 import Article from 'base/Article';
@@ -70,7 +70,7 @@ function process(article : Article) {
 		templateService.getEscalateToEditorMailTemplate(article.website),
 	])
 	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
-		layoutNotifyMail(article, feedbacks, template),
+		layoutEscalationMail(article, feedbacks, template),
 		getRecipientList(article.website, MailRecipientList.Editors),
 		getMailSubject(article),
 	]))

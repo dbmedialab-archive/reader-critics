@@ -21,8 +21,6 @@ import {
 	Job,
 } from 'kue';
 
-import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import FeedbackStatus from 'base/FeedbackStatus';
 import MailTemplate from 'app/template/MailTemplate';
@@ -115,17 +113,5 @@ function process(feedbackID : string) {
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {
-	const a = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
-
-	if (a) {
-		return Promise.resolve(a.text);
-	}
-
-	const b = feedback.article.items.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
-
-	if (b) {
-		return Promise.resolve(b.text);
-	}
-
-	return Promise.resolve('');
+	return Promise.resolve(feedback.article.title);
 }

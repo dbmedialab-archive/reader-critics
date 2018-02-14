@@ -92,10 +92,6 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 		const {page, limit, sort, sortOrder, search} = this.state;
 		ArticlesActions.getArticleList(page, limit, sort, sortOrder, search);
 	}
-	findTitle (article) {
-		const articleTitleElem = article.items.find(item => item.type === 'title');
-		return articleTitleElem ? articleTitleElem.text : 'Title not set';
-	}
 	nextHandler() {
 		let {page} = this.state;
 		this.setState({page: ++page}, this.updateArticlesList);
@@ -125,7 +121,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 		return articles.map((article: Article) => {
 			const date = ('date' in article) ? new Date(article.date.created) : new Date(0);
 			return {
-				title: this.findTitle(article),
+				title: article.title,
 				date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
 				version: article.version || '',
 				feedbacks: article.feedbacks || 0,

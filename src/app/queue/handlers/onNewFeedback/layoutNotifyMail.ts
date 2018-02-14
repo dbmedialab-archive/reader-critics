@@ -72,7 +72,7 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 		gotFeedback: __('mail.fb-notify.got-feedback'),
 		whoSent: __('mail.fb-notify.who-sent'),
 
-		articleTitle: format.articleTitle(feedback.article),
+		articleTitle: feedback.article.title,
 		enduser: format.enduser(feedback),
 		sentIn: format.whenSentIn(feedback),
 
