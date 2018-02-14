@@ -40,8 +40,6 @@ const log = app.createLog();
 const dateRegex = /:00\.000Z$/;
 
 // TODO websiteService.setUnrevisedDigestLastRun()
-// TODO website-Parameter auf articleService.getUnrevised()
-// TODO Mailtemplate undsoweiter
 
 // Main handler method, execute the job function and handle the 'kue' job
 
@@ -73,17 +71,26 @@ function process() {
 				latestCreated.toISOString().replace(dateRegex, 'Z')
 			);
 
+			// Load mail template and query unrevised articles for this website
 			return Promise.all([
 				articleService.getUnrevised(website, latestCreated, earliestCreated),
 				templateService.getUnrevisedDigestMailTemplate(website),
 			])
 
-			.spread((articles : Article[], template : MailTemplate) => {
-				if (articles.length > 0) {
-					return layoutDigest(website, articles, template);
+			// Layout the digest e-mail
+			.spread((articles : Article[], template : MailTemplate) => (
+				(articles.length > 0)
+					? layoutDigest(website, articles, template, earliestCreated, latestCreated)
+					: null
+			))
+
+			// Send the digest e-mail
+			.then((mailContent : string|null) => {
+				if (mailContent === null) {
+					return;
 				}
 			});
-		});
+		}); // websites.forEach
 	});
 }
 

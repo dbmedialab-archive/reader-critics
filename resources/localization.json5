@@ -123,6 +123,17 @@
 					nb: 'Sendt inn av',
 				}
 			},
+			digest: {
+				head: {
+					en: 'The following articles have received user feedback but have not yet been revised:',
+				},
+				'date-range': {
+					en: 'Articles queried from {earliestCreated} to {latestCreated}.',
+				},
+				'article-version': {
+					en: 'Article version',
+				},
+			},
 		},
 		err: {
 			'invalid-param': {

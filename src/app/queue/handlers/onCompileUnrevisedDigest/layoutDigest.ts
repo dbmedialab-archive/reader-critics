@@ -16,35 +16,53 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
-
 import MailTemplate from 'app/template/MailTemplate';
 
-import { notifyBrowser } from 'app/util/notifyBrowser';
+import { Article } from 'base/Article';
+import { User } from 'base/User';
+import { Website } from 'base/Website';
+import { translate as __ } from 'app/services/localization';
 
-import {
-	Article,
-	Website,
-} from 'base';
-
-const log = app.createLog();
+// import { notifyBrowser } from 'app/util/notifyBrowser';
 
 // Get all articles together into one digest e-mail
 
-export function layoutDigest(website : Website, articles : Article[], template : MailTemplate) {
-	articles.forEach(article => {
-		log(website.name, article.ID, article.title);
-	});
-
+export function layoutDigest(
+	website : Website,
+	articles : Article[],
+	template : MailTemplate,
+	earliestCreated : Date,
+	latestCreated : Date
+) : Promise <string> {
 	const html : string = template.setParams({
-		articles: [
-			{
-				title: 'some title',
-				byline: 'av Da Boss',
-			},
-		],
+		// Filter all needed data
+		articles: articles.map((article : Article) => ({
+			title: article.title,
+			url: article.url.toString(),
+			byline: formatAuthors(article.authors),
+			version: article.version,
+		})),
+		// Localization
+		text: {
+			itsaDigest: __('mail.digest.head'),
+			articleVersion: __('mail.digest.article-version'),
+			// Date range
+			dateRange: __('mail.digest.date-range', {
+				values: {
+					earliestCreated: formatDate(earliestCreated, website.locale),
+					latestCreated: formatDate(latestCreated, website.locale),
+				},
+			}),
+		},
 	})
 	.render();
 
-	notifyBrowser(html);  // -- this is only for convenient local testing
+	// notifyBrowser(html);  // -- this is only for convenient local testing
+	return Promise.resolve(html);
 }
+
+const formatAuthors = (authors : User[]) => authors.map(author => (
+	`<a href="mailto:${author.email}">${author.name}</a>`
+)).join(', ');
+
+const formatDate = (d : Date, locale : string) => d.toLocaleString(locale);

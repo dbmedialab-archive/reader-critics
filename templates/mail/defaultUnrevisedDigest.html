@@ -7,12 +7,6 @@
 			div {
 				font-size: 12pt;
 			}
-			ins {
-				color: #0060DD;
-			}
-			del {
-				color: #DD3300;
-			}
 			a {
 				color: #0070D0;
 				text-decoration: none;
@@ -20,38 +14,32 @@
 			a:hover {
 				text-decoration: underline;
 			}
-			hr.feedback-sep {
+			hr.article-sep {
 				margin-top: 15px;
 				margin-bottom: 15px;
 			}
-			div.feedback-date {
-				font-size: 10pt;
-				margin-bottom: 0.2cm;
-			}
-			.em {
-				color: #293a46;
+			div.article-box {
+				font-size: 14pt;
 				font-weight: bold;
+			}
+			div.article-box, div.byline-box {
+				margin-bottom: 4px;
 			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
-			<div style="font-size: 12pt; margin-bottom: 0.1cm;">Here be a headline</div>
-			<!-- <div style="font-size: 12pt; margin-bottom: 0.1cm;">{ {=it.editorEscalation} }</div>
-			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{ {=it . articleTitle} }</div>
-			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{ {=it.ccEditor} }</div> -->
+			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.text.itsaDigest}}</div>
 
 			<hr class="article-sep"/>
+
 			{{~it.articles :article}}
-			<div class="article-box">{{=article.title}}</div>
-			<div class="byline-box">{{=article.byline}}</div>
-			<hr class="article-sep"/>
+				<div class="article-box"><a href="{{=article.url}}">{{=article.title}}</a></div>
+				<div class="byline-box">({{=article.byline}})</div>
+				<div class="last-modified"><b>{{=it.text.articleVersion}}:</b> {{=article.version}}</div>
+
+				<hr class="article-sep"/>
 			{{~}}
 
-			<hr style="margin: 2em 0 1em;"/>
-
-			<div style="font-size: 10pt; color: #0055AA;">
-				<p style="margin: 0.4em 0;"><u>Debug information:</u></p>
-				{{=it.debugInfo}}
-			</div>
+			<div>{{=it.text.dateRange}}</div>
 		</div>
 	</body>
 </html>
