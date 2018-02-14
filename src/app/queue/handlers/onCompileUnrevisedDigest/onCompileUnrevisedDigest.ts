@@ -47,8 +47,6 @@ import { layoutDigest } from './layoutDigest';
 const log = app.createLog();
 const dateRegex = /:00\.000Z$/;
 
-// TODO websiteService.setUnrevisedDigestLastRun()
-
 // Main handler method, execute the job function and handle the 'kue' job
 
 export function onCompileUnrevisedDigest(job : Job, done : DoneCallback) : void {
