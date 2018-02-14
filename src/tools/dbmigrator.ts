@@ -1,6 +1,6 @@
 // Util path, add relative import base
 
-require('source-map-support').install();
+import 'source-map-support/register';
 
 import * as findRoot from 'find-root';
 import * as path from 'path';
@@ -28,7 +28,6 @@ import { wrapFind } from 'app/db/common';
 import { Article } from 'base/Article';
 import { ArticleItem } from 'base/ArticleItem';
 import { ArticleItemType } from 'base/ArticleItemType';
-import { ArticleURL } from 'base/ArticleURL';
 import { Website } from 'base/Website';
 
 import {
