@@ -20,9 +20,7 @@ import { concat } from 'lodash';
 
 import diffToPlainHTML from 'base/diff/diffToPlainHTML';
 
-import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 
