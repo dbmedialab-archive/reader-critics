@@ -133,6 +133,9 @@
 				'article-version': {
 					en: 'Article version',
 				},
+				subject: {
+					en: 'Digest of unrevised articles',
+				},
 			},
 		},
 		err: {
