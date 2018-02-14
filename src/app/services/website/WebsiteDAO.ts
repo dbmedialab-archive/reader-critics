@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as moment from 'moment';
+
 import { isString, pick, pickBy } from 'lodash';
 import { URL } from 'url';
 
@@ -26,6 +28,7 @@ import { ObjectID } from 'app/db';
 import { WebsiteModel } from 'app/db/models';
 
 import {
+	wrapFind,
 	wrapFindOne,
 	wrapSave
 } from 'app/db/common';
@@ -85,4 +88,49 @@ export function update(name : string, data:any) : Promise <Website> {
 			}
 			return wrapSave(resWrite.save());
 		});
+}
+
+export function getToRunUnrevisedDigest(nowDate : Date) : Promise <Website[]> {
+	const lastRunEarlierThan = moment(nowDate).subtract(22, 'hours').toDate();
+
+	return wrapFind(WebsiteModel.find({
+		'$and': [
+			// Get all website where the digest flag is activated
+			{
+				'unrevisedDigest.isActive': true,
+			},
+			// Query based on lastRun-timestamp
+			{
+				'$or': [
+					// If the job wasn't run yet, the timestamp is empty
+					{
+						'unrevisedDigest.lastRun': null,
+					},
+					// Otherwise check if the last run is at least 20 hours past (DST changes!)
+					{
+						'unrevisedDigest.lastRun': {
+							'$lte': lastRunEarlierThan,
+						},
+					},
+				],
+			}, // $or
+			// Now check if this is run past the "cron hour"
+			{
+				'unrevisedDigest.cronHour': {
+					'$lte': moment(nowDate).hour(),
+				},
+			},
+		], // $and
+	}));
+}
+
+export function setUnrevisedDigestLastRun(website : Website) : Promise <void> {
+	return wrapFindOne(WebsiteModel.findOneAndUpdate(
+		{ _id : website.ID },
+		{
+			'$set': {
+				'unrevisedDigest.lastRun': new Date(),
+			},
+		}
+	));
 }

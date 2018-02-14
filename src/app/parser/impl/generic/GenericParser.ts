@@ -74,6 +74,16 @@ export default class GenericParser extends AbstractParser implements Parser {
 		]);
 	}
 
+	protected parseTitleFromMetaData() : Promise <string> {
+		const meta = this.select('meta[name="title"]').toArray();
+
+		if (meta.length === 1) {
+			return Promise.resolve(this.select(meta[0]).attr('content'));
+		}
+
+		return Promise.resolve('');
+	}
+
 	protected parseFeaturedImage() : Promise <ArticleItem[]> {
 		const meta = this.select('head').find('meta[property="og:image"]');
 		const featured : ArticleItem[] = [];

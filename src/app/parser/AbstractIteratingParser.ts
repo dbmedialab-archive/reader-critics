@@ -156,6 +156,16 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		return Promise.resolve(this.articleItems.titles);
 	}
 
+	protected parseTitleFromMetaData() : Promise <string> {
+		const meta = this.select('meta[name="title"]').toArray();
+
+		if (meta.length === 1) {
+			return Promise.resolve(this.select(meta[0]).attr('content'));
+		}
+
+		return Promise.resolve('');
+	}
+
 	// Nur zum Testen
 
 	protected parseFeaturedImage() : Promise <ArticleItem[]> {

@@ -19,13 +19,16 @@
 import * as colors from 'ansicolors';
 import * as kue from 'kue';
 
-import { createRedisConnection } from 'app/db';
-import { dbMessageQueue } from 'app/db/createRedisConnection';
+import {
+	createRedisConnection,
+	dbMessageQueue,
+} from 'app/db';
 
 import {
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
 	onCollectArticlesForPolling,
+	onCompileUnrevisedDigest,
 	onNewFeedback,
 	onPollArticleUpdate,
 	onSendEditorEscalation,
@@ -39,6 +42,7 @@ const jobWorkerHandlers = Object.freeze({
 	onCheckAwaitFeedback,
 	onCheckEscalationToEditor,
 	onCollectArticlesForPolling,
+	onCompileUnrevisedDigest,
 	onNewFeedback,
 	onPollArticleUpdate,
 	onSendEditorEscalation,
@@ -59,6 +63,7 @@ export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
 	CheckEscalationToEditor = 'check-escalation-to-editor',
 	CollectArticlesForPolling = 'collect-articles-for-polling',
+	CompileUnrevisedDigest = 'compile-unrevised-digest',
 	NewFeedback = 'new-feedback',
 	PollArticleUpdate = 'poll-article-update',
 	SendEditorEscalation = 'send-editor-escalation',

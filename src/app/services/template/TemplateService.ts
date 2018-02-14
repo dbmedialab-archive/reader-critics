@@ -28,6 +28,7 @@ interface TemplateService {
 	// E-Mail templates
 	getFeedbackMailTemplate(website : Website) : Promise <MailTemplate>;
 	getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate>;
+	getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate>;
 
 	// Admin page template
 	getAdminPageTemplate(): Promise <PageTemplate>;

@@ -44,14 +44,18 @@ const options : MoreConnectionOptions = {
 const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
 
 export function initDatabase() : Promise <void> {
-	return initiaConnection().then(() => ensureIndexes());
+	return initiateConnection().then(() => ensureIndexes());
+}
+
+export function closeDatabase() : Promise <void> {
+	return Mongoose.connection.close();
 }
 
 // Create initial connection, retry if necessary (e.g. connection error)
 
 let reconnectionAmount = 1;
 
-export function initiaConnection() : Promise <void> {
+function initiateConnection() : Promise <void> {
 	return new Promise((resolve, reject) => {
 		log('Connecting to', colors.brightWhite(stripUrlAuth(mongoURL)));
 		Mongoose.connect(mongoURL, options)
@@ -66,7 +70,7 @@ export function initiaConnection() : Promise <void> {
 
 			if (reconnectionAmount < reconnectionLimit) {
 				log(`Retry in ${reconnectionCooldown} seconds`);
-				setTimeout(() => resolve(initiaConnection()), reconnectionCooldown * 1000);
+				setTimeout(() => resolve(initiateConnection()), reconnectionCooldown * 1000);
 			}
 			else {
 				reject(error);

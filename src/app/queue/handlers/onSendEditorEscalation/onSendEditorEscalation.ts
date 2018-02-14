@@ -27,13 +27,15 @@ import {
 	templateService,
 } from 'app/services';
 
-import { getRecipients } from 'app/mail/getRecipients';
-import { layoutNotifyMail } from './layoutNotifyMail';
+import {
+	getRecipientList,
+	MailRecipientList,
+} from 'app/mail/MailRecipients';
+
+import { layoutEscalationMail } from './layoutEscalationMail';
 import { EscalationLevel } from 'base/EscalationLevel';
 
 import Article from 'base/Article';
-import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import MailTemplate from 'app/template/MailTemplate';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
@@ -68,8 +70,8 @@ function process(article : Article) {
 		templateService.getEscalateToEditorMailTemplate(article.website),
 	])
 	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
-		layoutNotifyMail(article, feedbacks, template),
-		getRecipients(article.website, article, true),
+		layoutEscalationMail(article, feedbacks, template),
+		getRecipientList(article.website, MailRecipientList.Editors),
 		getMailSubject(article),
 	]))
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {
@@ -83,7 +85,5 @@ function process(article : Article) {
 }
 
 function getMailSubject(article : Article) : Promise <string> {
-	return Promise.resolve(article.items.find(
-		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
-	).text);
+	return Promise.resolve(article.title);
 }

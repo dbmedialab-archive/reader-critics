@@ -36,6 +36,7 @@ export function initCron() : Promise <void> {
 
 	jobCheckAwaitFeedback();
 	jobCollectArticlesForPolling();
+	jobCompileUnrevisedDigest();
 	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
@@ -57,6 +58,14 @@ function jobCollectArticlesForPolling() {
 		onTick: () => wrapCronFn(() => {
 			sendMessage(MessageType.CollectArticlesForPolling);
 		}),
+		start: true,
+	}));
+}
+
+function jobCompileUnrevisedDigest() {
+	activeJobs.push(new CronJob({
+		cronTime: '0 5 * * * *',
+		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));
 }
