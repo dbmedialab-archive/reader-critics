@@ -37,110 +37,139 @@ import * as app from 'app/util/applib';
 
 const articleDir = path.join('resources', 'article', 'json');
 
-export default function(this: ISuiteCallbackContext) {
-	let articleCount : number;
+// Main test function
 
+export default function(this: ISuiteCallbackContext) {
 	this.slow(250);
 
-	it('parameter checks', () => {
-		assert.throws(() => articleService.get(null, null), EmptyError);
-		assert.throws(() => articleService.save(null, null), EmptyError);
-	});
+	testParameterChecks();
+	testClear();
+	testSave();
+	testCount();
 
-	it('clear()', () => articleService.clear());
-
-	it('save()', () => app.scanDir(articleDir).then((files : string[]) => {
-		articleCount = files.length;
-
-		return Promise.mapSeries(files, (filename : string) => {
-			let article : Article;
-			let website : Website;
-
-			return app.loadJSON(path.join(articleDir, filename))
-			// Check the loaded JSON data and convert the article URL
-			.then((a : any) => {
-				assert.isNotNull(a);
-				return Object.assign(a, {
-					url: new ArticleURL(a.url.href),
-				});
-			})
-			// Identify the website that this article belongs to
-			.then((a : Article) => {
-				article = a;
-				return websiteService.identify(article.url);
-			})
-			// Check and store the identified website
-			.then((w : Website) => {
-				assert.isNotNull(w);
-				website = w;
-			})
-			// Finally: save the article to the database
-			.then(() => articleService.save(website, article))
-			.catch(error => {
-				error.message = `${error.message} (${filename})`;
-				throw error;
-			});
-		});
-	}));
-
-	it('count()', () => articleService.count().then(count => {
-		assert.strictEqual(count, articleCount);
-	}));
-
-	it('exists', () => {
-		return Promise.all([
-			articleService.exists('http://mopo.no/2', '201707251349'),
-			articleService.exists('http://something-else.xyz/goes/nowhere', 'nil'),
-		])
-		.spread((a : boolean, b : boolean) => {
-			assert.isTrue(a);
-			assert.isFalse(b);
-		});
-	});
-
-	it('get()', () => {
-		return Promise.all([
-			articleService.get('http://mopo.no/2', '201707251349'),
-			articleService.get('http://something-else.xyz/goes/nowhere', 'nil'),
-		])
-		.spread((a : Article, b : Article) => {
-			assertArticleObject(a);
-			assert.isNull(b);
-		});
-	});
-
-	it('getRange()', () => {
-		const testLimit = 2;
-
-		return Promise.all([
-			// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
-			articleService.getRange(),
-			// #2 should return exactly "testLimit" items:
-			articleService.getRange(0, testLimit),
-			// #3 skipping past the number of stored items should yield an empty result:
-			articleService.getRange(articleCount),
-		]).then((results : [Article[]]) => {
-			results.forEach(result => {
-				assert.isArray(result);
-				result.forEach(item => assertArticleObject(item));
-			});
-
-			const lengthCheck = [
-				Math.min(articleCount, defaultLimit),
-				testLimit,
-				0,
-			];
-
-			results.forEach((result : Article[], index : number) => {
-				assert.lengthOf(
-					result,
-					lengthCheck[index],
-					`Incorrect number of objects in test range #${index + 1}`
-				);
-			});
-		});
-	});
+	testExists();
+	testGet();
+	testGetRange();
 }
+
+// Test runtime data
+
+let articleCount : number;
+
+// Check for thrown exceptions
+
+const testParameterChecks = () => it('parameter checks', () => {
+	assert.throws(() => articleService.get(null, null), EmptyError);
+	assert.throws(() => articleService.save(null, null), EmptyError);
+});
+
+// articleService.clear()
+
+const testClear = () => it('clear()', () => articleService.clear());
+
+// articleService.save()
+
+const testSave = () => it('save()', () => app.scanDir(articleDir).then((files : string[]) => {
+	articleCount = files.length;
+
+	return Promise.mapSeries(files, (filename : string) => {
+		let article : Article;
+		let website : Website;
+
+		return app.loadJSON(path.join(articleDir, filename))
+		// Check the loaded JSON data and convert the article URL
+		.then((a : any) => {
+			assert.isNotNull(a);
+			return Object.assign(a, {
+				url: new ArticleURL(a.url.href),
+			});
+		})
+		// Identify the website that this article belongs to
+		.then((a : Article) => {
+			article = a;
+			return websiteService.identify(article.url);
+		})
+		// Check and store the identified website
+		.then((w : Website) => {
+			assert.isNotNull(w);
+			website = w;
+		})
+		// Finally: save the article to the database
+		.then(() => articleService.save(website, article))
+		.catch(error => {
+			error.message = `${error.message} (${filename})`;
+			throw error;
+		});
+	});
+}));
+
+// articleService.count()
+
+const testCount = () => it('count()', () => articleService.count().then(count => {
+	assert.strictEqual(count, articleCount);
+}));
+
+// articleService.exists()
+
+const testExists = () => it('exists', () => {
+	return Promise.all([
+		articleService.exists('http://mopo.no/2', '201707251349'),
+		articleService.exists('http://something-else.xyz/goes/nowhere', 'nil'),
+	])
+	.spread((a : boolean, b : boolean) => {
+		assert.isTrue(a);
+		assert.isFalse(b);
+	});
+});
+
+// articleService.get()
+
+const testGet = () => it('get()', () => {
+	return Promise.all([
+		articleService.get('http://mopo.no/2', '201707251349'),
+		articleService.get('http://something-else.xyz/goes/nowhere', 'nil'),
+	])
+	.spread((a : Article, b : Article) => {
+		assertArticleObject(a);
+		assert.isNull(b);
+	});
+});
+
+// articleService.getRange()
+
+const testGetRange = () => it('getRange()', () => {
+	const testLimit = 2;
+
+	return Promise.all([
+		// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
+		articleService.getRange(),
+		// #2 should return exactly "testLimit" items:
+		articleService.getRange(0, testLimit),
+		// #3 skipping past the number of stored items should yield an empty result:
+		articleService.getRange(articleCount),
+	]).then((results : [Article[]]) => {
+		results.forEach(result => {
+			assert.isArray(result);
+			result.forEach(item => assertArticleObject(item));
+		});
+
+		const lengthCheck = [
+			Math.min(articleCount, defaultLimit),
+			testLimit,
+			0,
+		];
+
+		results.forEach((result : Article[], index : number) => {
+			assert.lengthOf(
+				result,
+				lengthCheck[index],
+				`Incorrect number of objects in test range #${index + 1}`
+			);
+		});
+	});
+});
+
+// Generic structure check
 
 const assertArticleObject = (a : Article, name? : string) => {
 	assert.isObject(a);
