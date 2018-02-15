@@ -112,7 +112,7 @@ export default function(this: ISuiteCallbackContext) {
 			feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 		])
 		.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
-			const numAwait = 5;
+			const numAwait = 6;
 			assert.lengthOf(
 				resultAwait, numAwait,
 				`Expected ${numAwait} feedbacks in status "AwaitEnduserData"`
@@ -125,7 +125,7 @@ export default function(this: ISuiteCallbackContext) {
 			const numSent = 1;
 			assert.lengthOf(
 				resultSent, numSent,
-				`Expected ${numSent} feedbacks in status"FeedbackSent"`
+				`Expected ${numSent} feedbacks in status "FeedbackSent"`
 			);
 
 			resultSent.forEach((feedback, index) => {

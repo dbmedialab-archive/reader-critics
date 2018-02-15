@@ -126,16 +126,25 @@
 			digest: {
 				head: {
 					en: 'The following articles have received user feedback but have not yet been revised:',
+					nb: 'Disse artiklene har fått tilbakemeldinger det siste døgnet, men har ikke blitt endret:',
 				},
 				'date-range': {
-					en: 'Articles queried from {earliestCreated} to {latestCreated}.',
+					en: 'Period for the report is from {earliestCreated} to {latestCreated}.',
+					nb: 'Tidsperiode for rapporten {earliestCreated} til {latestCreated}.',
 				},
-				'article-version': {
-					en: 'Article version',
+				'feedback-count': {
+				//	en: '{count, plural, one {1 feedback} other {# feedbacks}}',
+				//	nb: '{count, plural, one {1 tilbakemelding} other {# tilbakemeldinger}}',
+					en: '{count} feedbacks',
+					nb: '{count} tilbakemeldinger',
 				},
 				subject: {
-					en: 'Digest of unrevised articles',
+					en: 'Reader Critics Editors Digest for {today}',
 				},
+				author: {
+					en: 'Author',
+					nb: 'Forfatter',
+				}
 			},
 		},
 		err: {
@@ -370,67 +379,63 @@
 		},
 	},
 	admin: {
-			links: {
-				en: 'Links',
-				nb: 'Lenker'
-			},
-			userComment: {
-				en: 'User comment',
-				nb: 'Brukerkommentar'
-			},
-			editUsr: {
-				en: 'Edit user',
-				nb: 'Rediger bruker'
-			},
-			addUsr: {
-				en: 'Add User',
-				nb: 'Legg til bruker'
-			},
-			chiEd: {
-				en: 'Chief Editors',
-				nb: 'Sjefredaktører'
-			},
-			hsts: {
-				en: 'Hosts',
-				nb: 'Verter'
-			},
-			lStngs: {
-				en: 'Layout Settings',
-				nb: 'Oppsettinnstillinger'
-			},
-			parser: {
-				en: 'Parser',
-				nb: 'Parser'
-			},
-			crtWeb: {
-				en: 'Create website',
-				nb: 'Lag nettside'
-			},
-			edWeb: {
-				en: 'Edit Website',
-				nb: 'Rediger nettsted'
-			},
-			err: {
-				usrN: {
-					en: 'Name has to be more than 3 symbols',
-					nb: 'Navnet må være mer enn 3 symboler'
-				},
-				email: {
-					en: 'Please enter valid email address',
-					nb: 'Vennligst skriv inn gyldig email'
-				},
-				pswrd: {
-					en: 'Password has to be more than 3 symbols',
-					nb: 'Passordet må være mer enn 3 symboler'
-				},
-				login: {
-					en: 'Login has to be more than 3 symbols',
-					nb: 'Logg inn må være mer enn 3 symboler'
-				},
-
-
-			}
-
-
+		links: {
+			en: 'Links',
+			nb: 'Lenker'
 		},
+		userComment: {
+			en: 'User comment',
+			nb: 'Brukerkommentar'
+		},
+		editUsr: {
+			en: 'Edit user',
+			nb: 'Rediger bruker'
+		},
+		addUsr: {
+			en: 'Add User',
+			nb: 'Legg til bruker'
+		},
+		chiEd: {
+			en: 'Chief Editors',
+			nb: 'Sjefredaktører'
+		},
+		hsts: {
+			en: 'Hosts',
+			nb: 'Verter'
+		},
+		lStngs: {
+			en: 'Layout Settings',
+			nb: 'Oppsettinnstillinger'
+		},
+		parser: {
+			en: 'Parser',
+			nb: 'Parser'
+		},
+		crtWeb: {
+			en: 'Create website',
+			nb: 'Lag nettside'
+		},
+		edWeb: {
+			en: 'Edit Website',
+			nb: 'Rediger nettsted'
+		},
+		err: {
+			usrN: {
+				en: 'Name has to be more than 3 symbols',
+				nb: 'Navnet må være mer enn 3 symboler'
+			},
+			email: {
+				en: 'Please enter valid email address',
+				nb: 'Vennligst skriv inn gyldig email'
+			},
+			pswrd: {
+				en: 'Password has to be more than 3 symbols',
+				nb: 'Passordet må være mer enn 3 symboler'
+			},
+			login: {
+				en: 'Login has to be more than 3 symbols',
+				nb: 'Logg inn må være mer enn 3 symboler'
+			},
+		},
+	},
 }

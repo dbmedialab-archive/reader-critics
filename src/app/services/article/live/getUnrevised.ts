@@ -47,7 +47,7 @@ export function getUnrevised (
 				'$size': 0,
 			},
 		},
-	// Only those where the "newerVersion" field does not exist yet, meaning
+		// Only those where the "newerVersion" field does not exist yet, meaning
 		// those which haven't been already outdated by an updated version that
 		// exists here in the database
 		'newerVersion': {

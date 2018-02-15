@@ -19,11 +19,10 @@
 import MailTemplate from 'app/template/MailTemplate';
 
 import { Article } from 'base/Article';
-import { User } from 'base/User';
 import { Website } from 'base/Website';
 import { translate as __ } from 'app/services/localization';
 
-// import { notifyBrowser } from 'app/util/notifyBrowser';
+import { notifyBrowser } from 'app/util/notifyBrowser';
 
 // Get all articles together into one digest e-mail
 
@@ -34,36 +33,46 @@ export function layoutDigest(
 	earliestCreated : Date,
 	latestCreated : Date
 ) : Promise <string> {
+	const { locale } = website;
 	const html : string = template.setParams({
 		// Filter all needed data
 		articles: articles.map((article : Article) => ({
 			title: article.title,
 			url: article.url.toString(),
-			byline: formatAuthors(article.authors),
-			version: article.version,
+			byline: formatAuthors(article),
+			feedbackCount: formatFeedbacks(article, locale),
 		})),
 		// Localization
 		text: {
-			itsaDigest: __('mail.digest.head', website.locale),
-			articleVersion: __('mail.digest.article-version', website.locale),
+			itsaDigest: __('mail.digest.head', locale),
+			author: __('mail.digest.author'),
 			// Date range
 			dateRange: __('mail.digest.date-range', {
-				locale: website.locale,
+				locale,
 				values: {
-					earliestCreated: formatDate(earliestCreated, website.locale),
-					latestCreated: formatDate(latestCreated, website.locale),
+					earliestCreated: `<b>${formatDate(earliestCreated, locale)}</b>`,
+					latestCreated: `<b>${formatDate(latestCreated, locale)}</b>`,
 				},
 			}),
 		},
 	})
 	.render();
 
-	// notifyBrowser(html);  // -- this is only for convenient local testing
+	notifyBrowser(html);  // -- this is only for convenient local testing
 	return Promise.resolve(html);
 }
 
-const formatAuthors = (authors : User[]) => authors.map(author => (
+const formatAuthors = (article : Article) => article.authors.map(author => (
 	`<a href="mailto:${author.email}">${author.name}</a>`
 )).join(', ');
+
+const formatFeedbacks = (article : Article, locale : string) => (
+	__('mail.digest.feedback-count', {
+		locale,
+		values: {
+			count: article.feedbacks.length,
+		},
+	})
+);
 
 const formatDate = (d : Date, locale : string) => d.toLocaleString(locale);

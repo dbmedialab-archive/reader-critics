@@ -1,0 +1,20 @@
+{
+	article: {
+		url: 'http://dagbladet.no/67732370',
+		version: '2017-06-21T14:02:49.000Z',
+	},
+	feedback: {
+		items: [
+			{
+				type: 'title',
+				order: {
+					item: 2,
+					type: 1
+				},
+				text: '',
+				comment: 'Soso, der Zirkus!',
+				links: [],
+			},
+		],
+	},
+}
