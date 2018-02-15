@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+/* eslint-disable indent */
+
 const assert = require('assert');
 
 const {
