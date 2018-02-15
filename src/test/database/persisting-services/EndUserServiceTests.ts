@@ -104,7 +104,7 @@ const testGet = () => it('get()', () => {
 	});
 });
 
-// testGetRange
+// enduserService.getRange()
 
 const testGetRange = () => it('getRange()', () => {
 	const testLimit = 5;
