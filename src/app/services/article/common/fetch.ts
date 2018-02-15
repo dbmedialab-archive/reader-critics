@@ -28,6 +28,10 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+
 /**
  * @param website Needed to determine the parser for this article
  * @param url The source of the article
@@ -36,16 +40,47 @@ export default function(website : Website, url : ArticleURL) : Promise <Article>
 	emptyCheck(website, url);
 
 	let parserFactory : ParserFactory;
+	let downloadURL : ArticleURL;
 	let rawArticle : string;
+
+	log('Initiating fetch of', url.toString());
+
+	// TODO convert download url if custom parser needs to download from
+	// a different location
+	// Example LabradorParser, retrieve article ID from URL and create
+	// URL for the JSON API:
+	// ${labradorHost}/api/v1/article/${articleID}.json?content=full
+	// So something like:
+	// https://labrador.dagbladet.no/api/v1/article/12345678.json?content=full
 
 	const parserPromise = parserService.getParserFor(website)
 		.then((fact : ParserFactory) => parserFactory = fact);
 
-	const fetchPromise = articleService.download(url)
+	const fetchPromise = determineLocation(website, url)
+		.then((realLocation : ArticleURL) => {
+			downloadURL = realLocation;
+			return articleService.download(downloadURL);
+		})
 		.then((data : string) => {
 			rawArticle = data;
 		});
 
 	return Promise.all([parserPromise, fetchPromise])
-	.then(() => parserFactory.newInstance(rawArticle, url).parse());
+	.then(() => parserFactory.newInstance(rawArticle, downloadURL).parse());
+}
+
+function determineLocation(website : Website, url : ArticleURL) : Promise <ArticleURL> {
+	if (app.isTest) {
+		// Shortcut: test URLs are shortened to refer to static local files in the repo.
+		return Promise.resolve(url);
+	}
+
+	switch (website.parserClass) {
+		case 'AMP Parser':
+			return ArticleURL.from(`${url.toString()}/amp/`);
+		case 'Nettavisen Parser':
+			return ArticleURL.from(url.toString().replace(/m.nettavisen.no/, 'www.nettavisen.no'));
+	}
+
+	return Promise.resolve(url);
 }

@@ -23,10 +23,23 @@ import * as  UserActionsCreator  from 'admin/actions/UserActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 
 const initialState = Immutable.from<User>({
-	name: '',
-	email: '',
-	role: UserRole.Journalist,
+	name: localStorage.getItem('rcUsername') || '',
+	email: localStorage.getItem('rcUserEmail') || '',
+	role: getRoleFromEnum(),
 });
+
+function getRoleFromEnum() {
+	switch (localStorage.getItem('rcUserRole')) {
+		case UserRole.Editor:
+			return UserRole.Editor;
+		case UserRole.SiteAdmin:
+			return UserRole.SiteAdmin;
+		case UserRole.SystemAdmin:
+			return UserRole.SystemAdmin;
+		default:
+			return UserRole.Journalist;
+	}
+}
 
 function updateUser(action, state) {
 	return state.merge({
@@ -46,8 +59,6 @@ function deauthenticateUser(action, state) {
 
 function UserReducer(state: User = initialState, action: UserActionsCreator.TAction): User {
 	switch (action.type) {
-		case AdminConstants.AUTHENTICATE_USER:
-			return updateUser(action, state);
 		case AdminConstants.DEAUTHENTICATE_USER:
 			return deauthenticateUser(action, state);
 		case AdminConstants.UPDATE_CURRENT_USER:

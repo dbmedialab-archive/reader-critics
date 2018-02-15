@@ -21,10 +21,17 @@ import {
 	Response,
 } from 'express';
 
+import { localizationService } from 'app/services';
+
 import {
 	InvalidRequestError,
 	NotFoundError,
 } from 'app/util/errors';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
+const __ = localizationService.translate;
 
 export function notFoundHandler(requ : Request, resp : Response) {
 	send404Response(resp);
@@ -36,10 +43,12 @@ export function catchAllErrorHandler(
 	resp : Response,
 	next : Function
 ) {
+	log(`Catch-all got one ${Object.getPrototypeOf(err)}: ${err.message}`);
+
 	if (err instanceof InvalidRequestError) {
 		send400Response(resp, err.message);
 	}
-	if (err instanceof NotFoundError) {
+	else if (err instanceof NotFoundError) {
 		send404Response(resp, err.message);
 	}
 	else {
@@ -51,39 +60,41 @@ function send400Response(resp : Response, message? : string) {
 	let template = badRequestPage;
 
 	if (message) {
-		template = template.replace('<h3></h3>', `<h3>${message}</h3>`);
+		template = template
+		.replace(/#main-title#/g, __('err.invalid-requ'))
+		.replace(/#main-message#/g, __('err.invalid-param'))
+		.replace(/#message#/g, message);
 	}
 
 	resp.status(404).send(template);
 }
 
 function send404Response(resp : Response, message? : string) {
-	let template = notFoundPage;
-
-	if (message) {
-		template = template.replace('<h3></h3>', `<h3>${message}</h3>`);
-	}
+	const msg = message || 'Resource not found';
+	const template = notFoundPage
+		.replace(/#main-title#/g, __('err.not-found'))
+		.replace(/#message#/g, msg);
 
 	resp.status(404).send(template);
 }
 
-const badRequestPage = '<html>\
+const badRequestPage = `<html>\
 <head>\
-	<title>Invalid Request</title>\
+	<title>#main-title#</title>\
 </head>\
 <body>\
-	<h1>Invalid Request</h1>\
-	<h2>Parameters are missing or have invalid format</h2>\
-	<h3></h3>\
+	<h1>#main-title#</h1>\
+	<h2>#main-message#</h2>\
+	<h3>#message#</h3>\
 </body>\
-</html>';
+</html>`;
 
 const notFoundPage = '<html>\
 <head>\
-	<title>Not Found</title>\
+	<title>#main-title#</title>\
 </head>\
 <body>\
-	<h1>Not Found</h1>\
-	<h3></h3>\
+	<h1>#main-title#</h1>\
+	<h3>#message#</h3>\
 </body>\
 </html>';

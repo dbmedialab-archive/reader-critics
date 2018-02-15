@@ -32,6 +32,8 @@ if (cluster.isMaster) {
 	require('./main/master').default();
 }
 else {
+	require('source-map-support').install();
+
 	switch (process.env.WORKER_TYPE) {
 		case typeJobWorker:
 			require('./main/jobWorker').default();

@@ -26,27 +26,44 @@ import {
 
 import createPersistingService from '../createPersistingService';
 
-import validateAndSave from './common/validateAndSave';
-import validateAndUpdateEndUser from './common/validateAndUpdateEndUser';
+import getAmountByArticle from './common/getAmountByArticle';
+
+import { validateAndSave } from './common/validateAndSave';
+import { validateAndUpdateEnduser } from './common/validateAndUpdateEnduser';
 
 import {
 	getByArticle,
 	getByArticleAuthor,
+	getByID,
+	getByStatus,
+	getByUpdateToken,
 	getRange,
+} from './dao/feedbackGet';
+
+import {
 	save,
 	updateEndUser,
-} from './FeedbackDAO';
+} from './dao/feedbackSave';
+
+import {
+	updateStatus,
+} from './dao/feedbackStatus';
 
 const service : FeedbackService
 	= createPersistingService <FeedbackDocument, FeedbackService,	Feedback> (
 		FeedbackModel, {
+			getAmountByArticle,
 			getByArticle,
 			getByArticleAuthor,
+			getByID,
+			getByStatus,
+			getByUpdateToken,
 			getRange,
 			save,
 			validateAndSave,
+			validateAndUpdateEnduser,
 			updateEndUser,
-			validateAndUpdateEndUser,
+			updateStatus,
 		}
 	);
 

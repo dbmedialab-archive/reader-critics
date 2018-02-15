@@ -21,10 +21,13 @@ import * as PreloaderIcon from 'react-preloader-icon';
 import Helmet from 'react-helmet';
 import { connect } from 'react-redux';
 import { ICON_TYPE } from 'react-preloader-icon';
+import AdminConstants from 'admin/constants/AdminConstants';
 
 import * as UIActions from 'admin/actions/UIActions';
 import SidebarComponent from 'admin/components/layout/SidebarComponent';
 import TopbarComponent from 'admin/components/layout/TopbarComponent';
+import PromptModalComponent from 'admin/components/modal/PromptModalComponent';
+import DialogModalComponent from 'admin/components/modal/DialogModalComponent';
 
 class LayoutComponent extends React.Component <any, any> {
 	constructor(props) {
@@ -73,6 +76,8 @@ class LayoutComponent extends React.Component <any, any> {
 						</div>
 					</div>
 				</div>
+				<PromptModalComponent windowName={AdminConstants.PROMPT_MODAL_WINDOW} />
+				<DialogModalComponent windowName={AdminConstants.DIALOG_MODAL_WINDOW} />
 			</div>
 		);
 	}

@@ -23,6 +23,7 @@ declare function require(arg : string) : any;
 import ArticleService from './article/ArticleService';
 import EndUserService from './enduser/EndUserService';
 import FeedbackService from './feedback/FeedbackService';
+import LocalizationService from './localization/LocalizationService';
 import ParserService from './parser/ParserService';
 import SuggestionService from './suggestion/SuggestionService';
 import TemplateService from './template/TemplateService';
@@ -33,7 +34,9 @@ import WebsiteService from './website/WebsiteService';
 
 import * as app from 'app/util/applib';
 
-const env : string = app.env === 'test' ? 'mock' : 'live';
+const env : string = (app.env === 'test' && process.env.TEST_SUITE !== 'database')
+	? 'mock'
+	: 'live';
 
 // Declare service exports
 // tslint:disable no-require-imports
@@ -47,6 +50,9 @@ export const enduserService : EndUserService
 export const feedbackService : FeedbackService
 	= require(`./feedback/FeedbackService.${env}`);
 
+export const localizationService : LocalizationService
+	= require('./localization');
+
 export const parserService : ParserService
 	= require(`./parser/ParserService.${env}`);
 
@@ -54,7 +60,7 @@ export const suggestionService : SuggestionService
 	= require(`./suggestion/SuggestionService.${env}`);
 
 export const templateService : TemplateService
-	= require(`./template/TemplateService.${env}`);
+	= require('./template');
 
 export const userService : UserService
 	= require(`./user/UserService.${env}`);

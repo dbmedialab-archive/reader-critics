@@ -25,10 +25,12 @@ import {
 import * as bodyParser from 'body-parser';
 
 import articleHandler from './api/articleHandler';
+import feedbackHandler from './api/feedbackHandler';
 import suggestionHandler from './api/suggestionHandler';
+import versionHandler from './api/versionHandler';
 
+import { enduserHandler } from './api/enduserHandler';
 import { errorResponse } from './api/apiResponse';
-import { feedbackPostHandler, feedbackUpdateEndUserHandler} from 'app/routes/api/feedbackHandler';
 
 // Prepare and export Express router
 
@@ -44,9 +46,11 @@ apiRoute.use(bodyParser.json({
 
 apiRoute.get('/article', articleHandler);
 
-apiRoute.post('/feedback', feedbackPostHandler);
-apiRoute.put('/feedback/:id/enduser', feedbackUpdateEndUserHandler);
+apiRoute.post('/enduser', enduserHandler);
+apiRoute.post('/feedback', feedbackHandler);
 apiRoute.post('/suggest', suggestionHandler);
+
+apiRoute.get('/version', versionHandler);
 
 apiRoute.get('/*', defaultHandler);
 

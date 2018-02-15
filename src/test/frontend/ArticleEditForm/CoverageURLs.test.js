@@ -73,11 +73,11 @@ describe('ArticleEditForm URLs coverage tests', () => {
 		thePage = openPage(browser, '/fb?articleURL=https://www.dagbladet.no&version=1')
 
 		// Wait for elements to render
-		.waitForElementVisible('body', timeToWait)
-		.waitForElementVisible('div#app section#content', timeToWait)
-		.waitForElementVisible('section#content > article.title', timeToWait)
+			.waitForElementVisible('body', timeToWait)
+			.waitForElementVisible('div#app section#content', timeToWait)
+			.waitForElementVisible('section#content > article.title', timeToWait)
 
-		.perform(() => done());
+			.perform(() => done());
 	});
 
 	after((browser, done) => browser.end().perform(() => done()));
@@ -90,62 +90,62 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should open the form and set URL\'s by two ways', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes hidden
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes hidden
+			.assert.visible(elFeedbackForm)
 
-		// Change the content of the text field. Needed to save changes
-		// TODO Remove this after RC-50 is solved
-		.click(elTextArea)
-		.clearValue(elTextArea)
-		.setValue(elTextArea, changedText)
+			// Change the content of the text field. Needed to save changes
+			// TODO Remove this after RC-50 is solved
+			.click(elTextArea)
+			.clearValue(elTextArea)
+			.setValue(elTextArea, changedText)
 
-		// Change the content of the link field and press Enter
-		.click(elLinkInput)
-		.clearValue(elLinkInput)
-		.setValue(elLinkInput, linkText0)
+			// Change the content of the link field and press Enter
+			.click(elLinkInput)
+			.clearValue(elLinkInput)
+			.setValue(elLinkInput, linkText0)
 
-		// Click outside the form to remove focus from the text field
-		.click(elContent)
+			// Click outside the form to remove focus from the text field
+			.click(elContent)
 
-		// Check if content has changed
-		.assert.value(elLinkInput, linkText0)
+			// Check if content has changed
+			.assert.value(elLinkInput, linkText0)
 
-		// Press "Enter" key on input
-		.click(elLinkInput)
-		.sendKeys(elLinkInput, browser.Keys.RETURN)
+			// Press "Enter" key on input
+			.click(elLinkInput)
+			.sendKeys(elLinkInput, browser.Keys.RETURN)
 
-		// Change the content of the link field and press Enter for the second URL
-		.click(elLinkInput)
-		.clearValue(elLinkInput)
-		.setValue(elLinkInput, linkText1)
+			// Change the content of the link field and press Enter for the second URL
+			.click(elLinkInput)
+			.clearValue(elLinkInput)
+			.setValue(elLinkInput, linkText1)
 
-		// Click outside the form to remove focus from the text field
-		.click(elContent)
+			// Click outside the form to remove focus from the text field
+			.click(elContent)
 
-		// Check if content has changed
-		.assert.value(elLinkInput, linkText1)
+			// Check if content has changed
+			.assert.value(elLinkInput, linkText1)
 
-		// Press "Enter" key
-		.click(elLinkInput)
-		.sendKeys(elLinkInput, browser.Keys.RETURN)
+			// Press "Enter" key
+			.click(elLinkInput)
+			.sendKeys(elLinkInput, browser.Keys.RETURN)
 
-		// Change the content of the link field without press Enter
-		.click(elLinkInput)
-		.clearValue(elLinkInput)
-		.setValue(elLinkInput, linkText2)
+			// Change the content of the link field without press Enter
+			.click(elLinkInput)
+			.clearValue(elLinkInput)
+			.setValue(elLinkInput, linkText2)
 
-		// Click outside the form to remove focus from the text fields
-		.click(elContent)
+			// Click outside the form to remove focus from the text fields
+			.click(elContent)
 
-		// Check if content has changed
-		.assert.value(elLinkInput, linkText2);
+			// Check if content has changed
+			.assert.value(elLinkInput, linkText2);
 
 		// Click "Save" button
-		thePage.click(elFormSaveBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait)
-		.assert.hidden(elFeedbackForm);
+		thePage.click(elEditBtn)
+			.waitForElementNotVisible(elFeedbackForm, timeToWait)
+			.assert.hidden(elFeedbackForm);
 	});
 
 	// Check if the links in form are the same we entered before on next open
@@ -154,15 +154,15 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should open the form and display the links entered before', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		// Check if the fields contain that links we had entered
-		.assert.containsText(elLinkOl, linkText0)
-		.assert.containsText(elLinkOl, linkText1)
-		.assert.containsText(elLinkOl, linkText2);
+			// Check if the fields contain that links we had entered
+			.assert.containsText(elLinkOl, linkText0)
+			.assert.containsText(elLinkOl, linkText1)
+			.assert.containsText(elLinkOl, linkText2);
 	});
 
 	// Check if the links in form are the same ordered we entered them before
@@ -170,12 +170,12 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should display the links entered before are in a correct order', (browser) => {
 		// Check if the fields contain that links we had entered
 		thePage.assert.containsText(elLinkLi0, linkText0)
-		.assert.containsText(elLinkLi1, linkText1)
-		.assert.containsText(elLinkLi2, linkText2);
+			.assert.containsText(elLinkLi1, linkText1)
+			.assert.containsText(elLinkLi2, linkText2);
 
 		// Click "Cancel" button
 		thePage.click(elFormCancelBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait);
+			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 
 	// Check if we can remove URLs from the list
@@ -183,18 +183,18 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should remove the link', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		// Check the form doesn't contain that link we had removed
-		.click(elLinkLi1)
-		.assert.elementNotPresent(elLinkLi2);
+			// Check the form doesn't contain that link we had removed
+			.click(elLinkLi1)
+			.assert.elementNotPresent(elLinkLi2);
 
 		// Click "Save" button
 		thePage.click(elFormSaveBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait);
+			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 
 	// Check if removed URL is not in a list on next open of <ArticleEditForm>
@@ -202,27 +202,27 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should removed URL not be in a list on next open', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		// Check if the fields contain that links we had entered
-		// and not contain link we removed. TExt of linkText2 has to
-		// be in elLinkLi1. elLinkLi2 has to not be in a form
+			// Check if the fields contain that links we had entered
+			// and not contain link we removed. TExt of linkText2 has to
+			// be in elLinkLi1. elLinkLi2 has to not be in a form
 
-		.assert.containsText(elLinkLi0, linkText0)
-		.assert.containsText(elLinkLi1, linkText2)
-		.assert.elementNotPresent(elLinkLi2)
+			.assert.containsText(elLinkLi0, linkText0)
+			.assert.containsText(elLinkLi1, linkText2)
+			.assert.elementNotPresent(elLinkLi2)
 
-		// Add link back.
-		.click(elLinkInput)
-		.clearValue(elLinkInput)
-		.setValue(elLinkInput, linkText1);
+			// Add link back.
+			.click(elLinkInput)
+			.clearValue(elLinkInput)
+			.setValue(elLinkInput, linkText1);
 
 		// Click "Save" button
 		thePage.click(elFormSaveBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait);
+			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 
 	// Check if the links in form are the same ordered we added them
@@ -231,19 +231,19 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should display the links entered in a correct order after remove one of them', (browser) => {
 		// Check if the fields contain that links we had entered
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		// Check the order of links is right
-		.assert.containsText(elLinkLi0, linkText0)
-		.assert.containsText(elLinkLi1, linkText2)
-		.assert.containsText(elLinkLi2, linkText1);
+			// Check the order of links is right
+			.assert.containsText(elLinkLi0, linkText0)
+			.assert.containsText(elLinkLi1, linkText2)
+			.assert.containsText(elLinkLi2, linkText1);
 
 		// Click "Cancel" button
 		thePage.click(elFormCancelBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait);
+			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 
 	// Check if we can discard removing URLs from the list
@@ -251,35 +251,35 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	it('should not remove the link on discard', (browser) => {
 		// Click "Edit" button
 		thePage.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		// Check the form doesn't contain that link we had removed
-		.click(elLinkLi2)
-		.assert.elementNotPresent(elLinkLi2)
+			// Check the form doesn't contain that link we had removed
+			.click(elLinkLi2)
+			.assert.elementNotPresent(elLinkLi2)
 
-		// Click "Cancel" button
-		.click(elFormCancelBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait)
+			// Click "Cancel" button
+			.click(elFormCancelBtn)
+			.waitForElementNotVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes hidden
-		.assert.hidden(elFeedbackForm)
+			// Check if the form becomes hidden
+			.assert.hidden(elFeedbackForm)
 
-		// Click "Edit" button
-		.click(elEditBtn)
-		.waitForElementVisible(elFeedbackForm, timeToWait)
+			// Click "Edit" button
+			.click(elEditBtn)
+			.waitForElementVisible(elFeedbackForm, timeToWait)
 
-		// Check if the form becomes visible
-		.assert.visible(elFeedbackForm)
+			// Check if the form becomes visible
+			.assert.visible(elFeedbackForm)
 
-		.assert.elementPresent(elLinkLi0)
-		.assert.elementPresent(elLinkLi1)
-		.assert.elementPresent(elLinkLi2);
+			.assert.elementPresent(elLinkLi0)
+			.assert.elementPresent(elLinkLi1)
+			.assert.elementPresent(elLinkLi2);
 
 		// Click "Cancel" button
 		thePage.click(elFormCancelBtn)
-		.waitForElementNotVisible(elFeedbackForm, timeToWait);
+			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 });

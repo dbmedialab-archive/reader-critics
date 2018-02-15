@@ -20,10 +20,14 @@ interface FeedbackParameters {
 	article : {
 		url : string,
 		version : string,
-	};
+	}
+	localization : any,
 }
 
-const globals : FeedbackParameters = window['app'] || { article: {} };
+const globals : FeedbackParameters = window['app'] || {
+	article: {},
+	localization: {},
+};
 
 export function getArticleURL() : string {
 	return globals.article.url;
@@ -31,4 +35,8 @@ export function getArticleURL() : string {
 
 export function getArticleVersion() : string {
 	return globals.article.version;
+}
+
+export function getLocale() : string {
+	return globals.localization.locale || 'default';
 }

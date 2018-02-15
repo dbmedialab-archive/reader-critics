@@ -17,32 +17,37 @@
 //
 
 // tslint:disable max-file-line-count
+
 import * as React from 'react';
+
+import { FormattedMessage } from 'react-intl';
+
+import ArticleItemType from 'base/ArticleItemType';
 
 import DynamicList from 'front/component/DynamicList';
 
 export interface EditFormPayload {
 	text : string;
 	comment : string;
-	links : Array <string>;
+	links : string[];
 }
 
 export interface ArticleEditFormProp {
-	/** The ID of this item. It's used to create references for labels to text areas and inputs */
+	// Numeric ID for creating references on sub components
 	id : number;
-	/** Funciton to trigger so input is reset */
+	/// Handler function to reset all data to its unmodified, original state
 	onCancel : Function;
-	/** Funciton to trigger so component's state is sent to parrent Article component */
+	// Handler function to send the modified state to the parent component
 	onSave : Function;
-	/** The text of the element, be it title, paragraph, lead etc. */
+	/// The original, unmodified text of the element
 	originalText: string;
-	/** The type of the content, e.g. title, subtitle, paraghrap etc */
-	type: string;
+	// The type of the content (title, subtitle, paragraph ...)
+	type: ArticleItemType;
 }
 
 export interface ArticleEditFormState {
 	current : EditFormPayload;
-	previous : EditFormPayload;
+	initial : EditFormPayload;
 }
 
 export default class ArticleEditForm
@@ -52,43 +57,37 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	private commentArea : any;
 	private linkInput : any;
 
+	// To prevent hidden references to nested objects (esp. the "links" array),
+	// define current/initial separately!
+	private static makeCleanState = (text : string) => ({
+		current: {
+			text,
+			comment: '',
+			links: [],
+		},
+		initial: {
+			text,
+			comment: '',
+			links: [],
+		},
+	})
+
 	constructor(props : ArticleEditFormProp) {
 		super(props);
-		this.state = {
-			current : {
-				text: props.originalText,
-				comment: '',
-				links: [],
-			},
-			previous : {
-				text: props.originalText,
-				comment: '',
-				links: [],
-			},
-		};
+		this.state = ArticleEditForm.makeCleanState(props.originalText);
+	}
+
+	public reset(originalText : string) {
+		this.setState(ArticleEditForm.makeCleanState(originalText), () => {
+			if (this.textArea && this.commentArea) {
+				this.textArea.value = originalText;
+				this.commentArea.value = '';
+			}
+		});
 	}
 
 	public getCurrentData() : EditFormPayload {
 		return this.state.current;
-	}
-
-	public reset(originalText : string) {
-		this.textArea.value = originalText;
-		this.commentArea.value = '';
-		this.linkInput.value = '';
-
-		this.setState({
-			current: {
-				text: originalText,
-				comment: '',
-				links: [],
-			},
-			previous: {
-				text: originalText,
-				comment: '',
-				links: [],
-			},
-		});
 	}
 
 	public render() {
@@ -100,93 +99,55 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 					ref={r => this.textArea = r}
 					defaultValue={this.state.current.text}
 					rows={3}
-					id={this.FieldId('content')}
+					id={this.makeID('content')}
 				/>
 			</fieldset>
 			<fieldset className="comment">
-				<label htmlFor={this.FieldId('comment')}>Legg til kommentar</label>
+				<label htmlFor={this.makeID('comment')}>
+					<FormattedMessage id="label.add-comment"/>
+				</label>
 				<textarea
 					onKeyUp={()=>this.UpdateState( 'comment', this.commentArea )}
 					ref={r => this.commentArea = r}
-					// defaultValue={this.state.comment}
 					rows={3}
-					id={this.FieldId('comment')}
+					id={this.makeID('comment')}
 				/>
 			</fieldset>
 			<fieldset className="link">
-				<label htmlFor={this.FieldId('link')}>Legg til lenker</label>
+				<label htmlFor={this.makeID('link')}><FormattedMessage id="label.add-links"/></label>
 				<DynamicList
 					items={this.state.current.links}
 					onRemove={this.RemoveLinkItem.bind(this)}
 				/>
 				<input
 					ref={(r) => this.linkInput = r}
-					id={this.FieldId('link')}
+					id={this.makeID('link')}
 					type="text"
 					onKeyDown={(e)=> e.keyCode === 13 ? this.AddLinkItem(e) : null}
 				/>
 			</fieldset>
 			<fieldset className="actions">
-				<a title="Avbryt" onClick={(e)=>this.onCancel(e)} className="button cancel">Avbryt</a>
-				<a title="Lagre" onClick={(e)=>this.onSave(e)} className="button save">Lagre</a>
+				<a onClick={(e)=>this.onCancel(e)} className="button cancel">
+					<FormattedMessage id="button.cancel"/>
+				</a>
+				<a onClick={(e)=>this.onSave(e)} className="button save">
+					<FormattedMessage id="button.save"/>
+				</a>
 			</fieldset>
 		</form>;
 	}
 
 	// Helper class to update the components state when inputing values in text areas.
 	private UpdateState(field : string, ref : any) {
-		const {current, previous} = this.state;
-		current[field] = ref.value;
-		const newState = {
-			current,
-			previous,
-		};
+		const newState = this.state;
+		newState.current[field] = ref.value;
 		this.setState(newState);
 	}
 
 	// @param {string} type
 	// Helper class to create unique ID for lables in form.
-	private FieldId(type : string) {
+	private makeID(type : string) {
 		return `edit-field-${this.props.id}-${type}`;
-	}
-
-	// @param {event} e
-	// Resets the components state to that of its initial props.
-	// Clears inputfeilds and calls the onCancle funciton for the
-	// parent component so it can collaps the edit feild.
-	private onCancel(e : any) {
-		e.stopPropagation();
-		const {current, previous} = this.state;
-
-		current.text = previous.text;
-		current.comment = previous.comment;
-		//for correct current and previous links working
-		current.links = [...previous.links];
-
-		this.textArea.value = previous.text;
-		this.commentArea.value = previous.comment;
-		this.linkInput.value = '';
-
-		this.setState({
-			current: current,
-		}, () => this.props.onCancel(this.state));
-	}
-
-	// @param {event} e
-	// Takes an event so it can stop bubbling in the dom.
-	// Adds the current input to the link feild
-	// Triggers the parrent onSave method to update state.
-	private onSave(e : any) {
-		e.stopPropagation();
-
-		if (this.linkInput.value) {
-			this.AddLinkItem();
-		}
-		const {current, previous} = this.state;
-		previous.text = current.text;
-		previous.comment = current.comment;
-		previous.links = current.links;
-		this.props.onSave(this.state.current);
 	}
 
 	// @param {event} e optional
@@ -197,11 +158,12 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 			e.preventDefault();
 		}
 		if (!this.linkInput.value) {
-			return;
+			return false;
 		}
 
 		const current : EditFormPayload = this.state.current;
 		current.links.push(this.linkInput.value);
+
 		this.setState({
 			current,
 		}, () => {
@@ -216,7 +178,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		const link = this.state.current.links;
 		const current : EditFormPayload = this.state.current;
 
-		// TODO do this with Array.splice() instead
 		current.links = [ ...link.slice( 0, index ), ...link.slice( index + 1 )];
 
 		this.setState({
@@ -224,15 +185,35 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 		});
 	}
 
-	// Helper to translate component type to native language.
-	private Translate(type : string) {
-		const lookup = {
-			lead: 'innledning',
-			title: 'tittel',
-			paragraph: 'avsnitt',
-		};
+	// @param {event} e
+	// Resets the components state to that of its initial props.
+	// Clears inputfeilds and calls the onCancle funciton for the
+	// parent component so it can collaps the edit feild.
+	private onCancel(e : any) {
+		e.stopPropagation();
 
-		return lookup [ type ] ? lookup [ type ] : 'tekst';
+		this.textArea.value = this.state.initial.text;
+		this.commentArea.value = this.state.initial.comment;
+
+		this.setState({
+			current: Object.assign({}, this.state.initial),
+		}, () => {
+			this.props.onCancel(this.state);
+		});
+	}
+
+	// @param {event} e
+	// Takes an event so it can stop bubbling in the dom.
+	// Adds the current input to the link feild
+	// Triggers the parrent onSave method to update state.
+	private onSave(e : any) {
+		e.stopPropagation();
+
+		if (this.linkInput.value) {
+			this.AddLinkItem();
+		}
+
+		this.props.onSave(this.state.current);
 	}
 
 }

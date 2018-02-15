@@ -19,6 +19,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+import { addLocaleData, IntlProvider } from 'react-intl';
+
 import FeedbackPageLayout from './feedback/FeedbackPageLayout';
 import SuggestionLayout from './suggest/SuggestionLayout';
 
@@ -32,13 +34,30 @@ const rootContainer : HTMLElement = document.getElementById('app');
 if (!rootContainer.hasAttribute('name')) {
 	throw new Error('Root <div> container must have a "name" attribute');
 }
-else {
-	const name = rootContainer.getAttribute('name');
 
-	if (typeof apps[name] === 'function') {
-		ReactDOM.render(React.createElement(apps[name]), rootContainer);
-	}
-	else {
-		throw new Error(`Unknown app type "${name}"`);
-	}
+const name = rootContainer.getAttribute('name');
+
+if (typeof apps[name] !== 'function') {
+	throw new Error(`Unknown app type "${name}"`);
 }
+
+const { locale, messages } = (() => {
+	if (!(window['app'] && window['app'].localization)) {
+		return {
+			locale: 'en',
+			messages: {},
+		};
+	}
+
+	return window['app'].localization;
+})();
+
+if (window['ReactIntlLocaleData']) {
+	addLocaleData(window['ReactIntlLocaleData'][locale]);
+}
+
+const rootEl = (<IntlProvider locale={locale} messages={messages}>
+	{ React.createElement(apps[name]) }
+</IntlProvider>);
+
+ReactDOM.render(rootEl, rootContainer);

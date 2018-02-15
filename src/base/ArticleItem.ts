@@ -18,14 +18,16 @@
 
 import ArticleItemType from 'base/ArticleItemType';
 
-interface ArticleItem {
-	type : ArticleItemType;
+export interface ArticleItem {
+	text? : string
+	type : ArticleItemType
 
 	order: {
-		item: number,
-		type: number,
-	};
+		item: number
+		type: number
+	}
 
+	href? : string
 }
 
 export default ArticleItem;

@@ -5,6 +5,7 @@
 	db: {
 		mongodb: {
 			url: fill,
+			reconnectionLimit: fill,
 		},
 		redis: {
 			url: {
@@ -12,6 +13,9 @@
 				'session-cache': fill,
 			},
 		},
+	},
+	localization: {
+		systemLocale: fill,
 	},
 	auth: {
 		jwt: {

@@ -17,23 +17,27 @@
 //
 
 import * as session from 'express-session';
-import * as redis from 'redis';
 import * as connectRedis from 'connect-redis';
+
+import {
+	createRedisConnection,
+	dbSessionCache,
+} from 'app/db';
+
+import * as app from 'app/util/applib';
 import config from 'app/config';
 
-const client = redis.createClient();
-const redisStore = connectRedis(session);
-const {host, port, ttl} = config.get('db.redis');
+export const secret : string = config.get('auth.session.secret');
+export const maxAge : number = config.get('auth.session.ttl') * 60 * 1000;  // => Milliseconds
 
-const secret = config.get('auth.session.secret');
-const maxAge = config.get('auth.session.ttl') * 60 * 1000;  // Milliseconds
+const log = app.createLog('session');
+const RedisStore = connectRedis(session);
 
-export const sessionConf = {
-	store: new redisStore({
-		host: host,
-		port: port,
-		client,
-		ttl: ttl,
+export const getSessionConfig = () => ({
+	store: new RedisStore({
+		client: createRedisConnection(dbSessionCache),
+		logErrors: log,
+		prefix: 'session',
 	}),
 	secret,
 	resave: false,
@@ -43,4 +47,4 @@ export const sessionConf = {
 		secure: false,
 		maxAge,
 	},
-};
+});

@@ -37,7 +37,7 @@ export default function(url : ArticleURL) : Promise <string> {
 		return Promise.resolve('<html></html>');
 	}
 
-	log(filename);
+	log('Article file name:', filename);
 	return app.loadResource(filename).then(buffer => buffer.toString('utf8'));
 }
 

@@ -18,9 +18,12 @@
 
 import 'whatwg-fetch';
 
-import { showError } from 'front/uiHelpers';
-import EndUser from 'base/EndUser';
+import { RawPostEndUser } from 'base/api/RawPostEndUser';
 
+import { getLocale } from 'front/uiGlobals';
+import { showError } from 'front/uiHelpers';
+
+const apiMIME = 'application/json';
 const rxUnencoded = /:\/\//;
 
 // Fetch data
@@ -31,9 +34,11 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 		: url;
 	const encVersion = encodeURIComponent(version);
 
-	return fetch(`/api/article/?url=${encURL}&version=${encVersion}`)
-	.then(checkStatus)
-	.then(data => data.article);
+	return fetchData(`/api/article/?url=${encURL}&version=${encVersion}`)
+	.then(data => data.article)
+	.catch(err => {
+		throw new Error(err);
+	});
 });
 
 // Send all kinds of data
@@ -41,28 +46,26 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
 });
-export const sendFeedbackUser = ((id: string, data : {user: EndUser}) : Promise <any> => {
-	return putData(`/api/feedback/${id}/enduser`, data).then(checkStatus);
+
+export const sendEnduserData = ((data : RawPostEndUser) : Promise <any> => {
+	return postData('/api/enduser/', data).then(checkStatus);
 });
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
 	return postData('/api/suggest/', data).then(checkStatus);
 });
 
-function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
-	return fetch(uri, {
-		method: method,
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
-}
+// GET data
 
-// PUT data
-
-function putData(uri : string, data : any) : Promise <any> {
-	return sendData('PUT', uri, data);
+function fetchData(url : string) : Promise <any> {
+	return fetch(url, {
+		method: 'GET',
+		headers: [
+			[ 'Accept', apiMIME ],
+			[ 'Accept-Language', getLocale() ],
+		],
+	})
+	.then(checkStatus);
 }
 
 // POST data
@@ -71,12 +74,23 @@ function postData(uri : string, data : any) : Promise <any> {
 	return sendData('POST', uri, data);
 }
 
+function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
+	return fetch(uri, {
+		method: method,
+		headers: [
+			[ 'Accept-Language', getLocale() ],
+			[ 'Content-Type', apiMIME ],
+		],
+		body: JSON.stringify(data),
+	});
+}
+
 // Check response for success and display error popup if necessary
 
 function checkStatus(resp : Response) : Promise <any> {
 	const bail = (message) => {
 		showError(message);
-		return Promise.reject(Promise.reject(new Error(message)));
+		return Promise.reject(new Error(message));
 	};
 
 	return resp.json().then((payload) => {

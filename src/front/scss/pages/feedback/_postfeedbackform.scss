@@ -151,11 +151,15 @@
 					&.btn-text {
 						text-transform: uppercase;
 						color: rgb(89, 126, 151);
-						font-family: Roboto, 'Helvetica Neue', Arial;
+						font-family: Roboto, 'Droid Sans', Arial, Helvetica, sans-serif;
 						font-size: 14px;
 					}
 				}
 			}
 		}
+	}
+
+	#submitForm {
+		margin-bottom: 24px;
 	}
 }

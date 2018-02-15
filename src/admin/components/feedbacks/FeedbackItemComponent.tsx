@@ -17,20 +17,43 @@
 //
 
 import * as React from 'react';
+import {diffToReactElem} from 'base/diff';
 
 class FeedbackItemComponent extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
+		this.getFeedbackText = this.getFeedbackText.bind(this);
+		this.textDiff = this.textDiff.bind(this);
 	}
 	renderFeedbackLinks(feedbackLinks){
 		return feedbackLinks.map((feedbackLink, index)=>{
 				return (
 					<a href={feedbackLink} key={index} className="link-item">
-						<i className="fa fa-external-link"></i>
+						<i className="fa fa-external-link" />
 						{feedbackLink}
 					</a>);
 
 		});
+	}
+	// Calculates and highlights the diff of two sentences.
+	// Used to preview changes to the text done by the user.
+	protected textDiff(text1 : string = '', text2 : string) : any {
+		return text2 === undefined ? text1 : diffToReactElem(text1, text2);
+	}
+	getFeedbackText() {
+		const {feedback} = this.props;
+		let originalText = feedback.text;
+		const originalItem = feedback.article.items.find(
+			i => i.order.type === feedback.order.type && i.order.item === feedback.order.item
+		);
+		if (originalItem) {
+			if (!originalText) {
+				originalText = originalItem.text;
+			} else {
+				originalText = this.textDiff(originalItem.text, originalText);
+			}
+		}
+		return originalText;
 	}
 	render(){
 		const {feedback} = this.props;
@@ -38,11 +61,12 @@ class FeedbackItemComponent extends React.Component <any, any> {
 		const	feedbackDateTime = feedbackDateTimeObj.toLocaleDateString() + ' '
 					+ feedbackDateTimeObj.toLocaleTimeString();
 		const feedbackLinks = this.renderFeedbackLinks(feedback.links);
+		const feedbackText = this.getFeedbackText();
 		return (
 			<div className="feedback-item">
 				<div className="row expanded time-section">
 					<div className="small-12  time-item">
-						<i className="fa fa-clock-o"></i>
+						<i className="fa fa-clock-o" />
 						{feedbackDateTime}
 					</div>
 				</div>
@@ -55,7 +79,7 @@ class FeedbackItemComponent extends React.Component <any, any> {
 				</div>
 				<div className="row expanded feedback-section">
 					<div className="small-12 feedback-text">
-						{feedback.text}
+						{feedbackText}
 					</div>
 				</div>
 				{feedback.comment?

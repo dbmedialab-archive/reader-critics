@@ -16,11 +16,22 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import MailTemplate from 'app/template/MailTemplate';
+import PageTemplate from 'app/template/PageTemplate';
 import Website from 'base/Website';
-import PageTemplate from 'base/PageTemplate';
 
 interface TemplateService {
+	// Website page templates
 	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
+	getSuggestionPageTemplate(): Promise <PageTemplate>;
+
+	// E-Mail templates
+	getFeedbackMailTemplate(website : Website) : Promise <MailTemplate>;
+	getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate>;
+	getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate>;
+
+	// Admin page template
+	getAdminPageTemplate(): Promise <PageTemplate>;
 }
 
 export default TemplateService;

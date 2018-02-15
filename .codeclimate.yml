@@ -1,3 +1,17 @@
+version: "2"
+checks:
+  argument-count:
+    enabled: false
+  file-lines:
+    enabled: false
+  method-complexity:
+    config:
+      threshold: 8
+  method-lines:
+    config:
+      threshold: 40
+  similar-code:
+    enabled: false
 engines:
   eslint:
     enabled: true
@@ -11,21 +25,22 @@ engines:
     enabled: false
     issue_override:
       severity: info
-  sass-lint:
-    enabled: true
   shellcheck:
     enabled: true
 
 ratings:
   paths:
   - 'src/**.js'
-  - 'src/**.scss'
   - 'run/**.sh'
 
 exclude_paths:
+- '.circleci/**'
 - 'assets/**'
 - 'conf/**'
 - 'kubefiles/**'
 - 'node_modules/**'
 - 'resources/**'
+- 'templates/**'
 - 'tmp/**'
+- 'webpack*.js'
+- '*.yml'

@@ -21,15 +21,17 @@ import * as Recaptcha from 'react-recaptcha';
 
 import { InputError } from 'front/form/InputError';
 import { sendSuggestion } from 'front/apiCommunication';
-
+import { FormattedMessage } from 'react-intl';
 import Validation from 'base/Validation';
+import { getLocale } from 'front/uiGlobals';
+import {showSuccess} from 'front/uiHelpers';
 
-let recaptchaInstance;
+const recaptchaLang = getLocale();
 
 export interface FormPayload {
 	email: string;
 	comment: string;
-	captcha:string | null;
+	captcha: string | null;
 	touched: {
 		email: boolean,
 		comment: boolean,
@@ -40,6 +42,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private commentArea : any;
 	private emailInput : any;
 	private validator : Validation;
+	private recaptchaInstance;
 
 	constructor(props) {
 		super(props);
@@ -60,7 +63,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.UpdateState = this.UpdateState.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.hasCommentError = this.hasCommentError.bind(this);
-		this.verifyCallback = this.verifyCallback.bind(this);
+		this.verifyCaptcha = this.verifyCaptcha.bind(this);
 	}
 
 	private handleBlur = (field) => (evt) => {
@@ -71,15 +74,16 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 
 	private hasCommentError() {
 		if (!this.state.comment) {
-			return 'Fortell oss hva du synes om å gi tilbakemeldinger på denne måten';
+			return <FormattedMessage id="suggest.label.commentErr"/>;
 		}
 
-		const validation = this.validator.validate('suggestionComment',
-			this.state.comment, {required: true});
-		if (validation.isError) {
-			return validation.message;
-		}
-		return false;
+		const validation = this.validator.validate(
+			'suggestionComment',
+			this.state.comment,
+			{ required: true }
+		);
+
+		return validation.isError ? validation.message : false;
 	}
 
 	private isFormValid() {
@@ -98,30 +102,15 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 	private handleSubmit(e: any) {
 		e.preventDefault();
 		sendSuggestion(this.state)
-		.then((res) => {
-			console.log('res', res);
+		.then(() => {
+			showSuccess(null, () => window.location.href = '/');
 		})
 		.catch((err) => {
-			this.recaptchaReset();
+			this.recaptchaInstance.reset();
 		});
-	}
-	private verifyCallback(response){
-		this.setState({
-			captcha:response,
-		});
-	}
-	private recaptchaReset(){
-		recaptchaInstance.reset();
-	}
-	private onloadCallback(){
-		//RE-Captcha was loaded
 	}
 
 	public render() : JSX.Element {
-		const isDisabled = this.isFormValid();
-		const publicKey = window['recaptcha'] ? window['recaptcha'].publicKey : '';
-		// TODO Change language for recaptcha. Recaptcha component, 'hl' prop
-		// const recaptchaLang = window['recaptcha'] ? window['recaptcha'].language : '';
 		return (
 			<form
 				name="suggestBox"
@@ -130,56 +119,65 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 				action="javascript:alert(grecaptcha.getResponse(widgetId1));"
 			>
 				<fieldset>
-					<p className="thank-message">
-						Vi hadde satt pris på om du også hadde tatt deg tid til å komme med en
-						tilbakemelding om selve verktøyet og måten å gi tilbakemeldinger på.
-						Dette går til utviklerne som ønsker å vite mer om hva du likte, hva du ikke likte,
-						forslag til forbedringer osv. Det hadde vi satt stor pris på. Hvis det er greit,
-						hadde utviklerne også satt pris på informasjon så de kan komme i kontakt med deg
-						hvis de skulle trenge det.
-					</p>
+					<p className="thank-message"><FormattedMessage id="suggest.ty"/></p>
 				</fieldset>
-				<fieldset className="text">
-					<label htmlFor="email">Email</label>
-					<input
-						type="text"
-						name="email"
-						ref={r => this.emailInput = r}
-						id="email"
-						onBlur={this.handleBlur('email')}
-						onChange={() => this.UpdateState('email', this.emailInput)}
-					/>
-				</fieldset>
-				<fieldset className="text">
-					<label htmlFor="comment">Comment</label>
-					<textarea
-						name="comment"
-						onKeyUp={() => this.UpdateState('comment', this.commentArea)}
-						ref={r => this.commentArea = r}
-						rows={3}
-						id="commentArea"
-						onBlur={this.handleBlur('comment')}
-					/>
-					<InputError
-						errorText={this.hasCommentError()}
-						touchedField={this.state.touched['comment']}
-					/>
-				</fieldset>
-				<fieldset>
-					<Recaptcha
-						ref={e => recaptchaInstance = e}
-						sitekey={publicKey}
-						render="explicit"
-						hl="no"
-						verifyCallback={this.verifyCallback}
-						onloadCallback={this.onloadCallback}
-					/>
-				</fieldset>
-				<fieldset className="actions">
-					<button type="submit" disabled={!isDisabled} className="button button-primary">Lagre</button>
-				</fieldset>
-
+				{ this.renderEmailInput() }
+				{ this.renderCommentInput() }
+				{ this.renderCaptcha() }
+				{ this.renderButtons() }
 			</form>
 		);
 	}
+
+	private renderEmailInput = () => (<fieldset className="text">
+		<label htmlFor="email">Email</label>
+		<input
+			type="email"
+			name="email"
+			ref={r => this.emailInput = r}
+			id="email"
+			onBlur={this.handleBlur('email')}
+			onChange={() => this.UpdateState('email', this.emailInput)}
+		/>
+	</fieldset>)
+
+	private renderCommentInput = () => <fieldset className="text">
+		<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
+		<textarea
+			name="comment"
+			onKeyUp={() => this.UpdateState('comment', this.commentArea)}
+			ref={r => this.commentArea = r}
+			rows={4}
+			id="commentArea"
+			onBlur={this.handleBlur('comment')}
+		/>
+		<InputError
+			errorText={this.hasCommentError()}
+			touchedField={this.state.touched['comment']}
+		/>
+	</fieldset>
+
+	private renderCaptcha = () => <fieldset>
+		<Recaptcha
+			ref={e => this.recaptchaInstance = e}
+			sitekey={window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : ''}
+			render="explicit"
+			hl={recaptchaLang}
+			verifyCallback={this.verifyCaptcha}
+			onloadCallback={() => undefined}
+		/>
+	</fieldset>
+
+	private verifyCaptcha(response) {
+		this.setState({
+			captcha: response,
+		});
+	}
+
+	private renderButtons = () => <fieldset className="actions">
+		<button type="submit" disabled={!this.isFormValid()} className="button-primary">
+			<FormattedMessage id="button.save"/>
+		</button>
+	</fieldset>
+
 }

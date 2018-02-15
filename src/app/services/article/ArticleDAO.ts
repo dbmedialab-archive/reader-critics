@@ -18,13 +18,16 @@
 
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
+import Feedback from 'base/Feedback';
 import Person from 'base/zz/Person';
 import Website from 'base/Website';
 import User from 'base/User';
 
 import { ArticleModel } from 'app/db/models';
+import { ObjectID } from 'app/db';
 
 import {
+	wrapExists,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
@@ -35,15 +38,28 @@ import {
 
 import emptyCheck from 'app/util/emptyCheck';
 
+export function exists(
+	articleURL : string|ArticleURL,
+	version : string
+) : Promise <boolean>
+{
+	emptyCheck(articleURL, version);
+
+	return wrapExists(ArticleModel.find({
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
+		version,
+	}));
+}
+
 export function get(
-	articleURL : ArticleURL,
+	articleURL : string|ArticleURL,
 	version : string,
 	populated : boolean = false
 ) : Promise <Article> {
 	emptyCheck(articleURL, version);
 
 	let result = ArticleModel.findOne({
-		url: articleURL.href,
+		url: articleURL instanceof ArticleURL ? articleURL.href : articleURL,
 		version,
 	});
 
@@ -59,6 +75,27 @@ export function save(website : Website, article : Article) : Promise <Article> {
 
 	return makeDocument(website, article)
 	.then(doc => wrapSave<Article>(new ArticleModel(doc).save()));
+}
+
+export function saveNewVersion(
+	website : Website,
+	newArticle : Article,
+	oldID : ObjectID
+) : Promise <Article> {
+	emptyCheck(website, newArticle, oldID);
+
+	return makeDocument(website, newArticle)
+	.then(newDoc => {
+		return new ArticleModel(newDoc).save();
+	})
+	.then(newObj => wrapFindOne(ArticleModel.findOneAndUpdate(
+		{ _id : oldID },
+		{
+			'$set': {
+				newerVersion: newObj._id,
+			},
+		}
+	)));
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {
@@ -77,15 +114,30 @@ export function upsert(website : Website, article : Article) : Promise <Article>
 	.then(doc => ArticleModel.update(query, doc, options).exec());
 }
 
+export function addFeedback(article : Article, feedback : Feedback) : Promise <Article> {
+	emptyCheck(feedback);
+
+	return wrapFindOne(ArticleModel.findOneAndUpdate(
+		{ _id : article.ID },
+		{
+			'$addToSet': {
+				feedbacks: feedback.ID,
+			},
+		}
+	));
+}
+
 // Helper functions for save() and upsert()
 
-const makeDocument = (website : Website, article : Article) => getUsers(article)
-	.then((authors : User[]) => {
-		return Object.assign({}, article, {
-			authors: authors.map(author => author.ID),
-			website: website.ID,
-		});
-	});
+const makeDocument = (website : Website, article : Article) => (
+	getUsers(article).then((authors : User[]) => Object.assign({}, article, {
+		authors: authors.map(author => author.ID),
+		website: website.ID,
+		status: {
+			escalated: null,
+		},
+	}))
+);
 
 const getUsers = (article : Article) : Promise <User[]> => Promise.all(
 	// For some reason, TypeScript rejects Promise.map here. I stopped bothering

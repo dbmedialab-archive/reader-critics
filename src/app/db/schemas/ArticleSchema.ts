@@ -33,18 +33,37 @@ const ArticleSchema : Schema = new Schema({
 		type: String,
 		required: true,
 	},
+	title: {
+		type: String,
+		required: true,
+	},
+
+	items: [Schema.Types.Mixed],
 
 	authors: [objectReference(ModelNames.User)],
 	website: objectReference(ModelNames.Website),
 
-	items: [Schema.Types.Mixed],
+	// Point references to all feedbacks of this article,
+	// makes counting them a lot easier!
+	feedbacks: [objectReference(ModelNames.Feedback)],
+
+	status: {
+		escalated: {
+			type: String,
+			// required: true,
+			// enum: Object.values(EscalationLevel),
+			default: null,
+		},
+	},
+
+	newerVersion: objectReference(ModelNames.Article, {
+		required: false,
+		select: false,
+	}),
 }, {
 	toObject: {
 		retainKeyOrder: true,
 		transform: (doc : Document, converted : any) => {
-			// console.log('------------------------------------------------------------');
-			// console.log('ArticleSchema transform:', converted);
-			// console.log('\n');
 			converted.authors.forEach(author => {
 				delete author.date;
 				delete author.role;

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  NODE_ENV: production
+  I18N_SYS_LOCALE: nb
+  MAIL_SENDER_DOMAIN: {{env "REPONAME"}}.{{env "ENV"}}.medialaben.no

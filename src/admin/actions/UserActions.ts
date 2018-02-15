@@ -19,21 +19,25 @@
 import MainStore from 'admin/stores/MainStore';
 import User from 'base/User';
 
+import * as UIActions from 'admin/actions/UIActions';
 import * as UserActionsCreator from 'admin/actions/UserActionsCreator';
 
-export function authenticate(user: User) {
-	MainStore.dispatch(
-		UserActionsCreator.authenticateUser(user)
-	);
-}
 export function deauthenticate() {
+	localStorage.removeItem('rcUsername');
+	localStorage.removeItem('rcUserEmail');
+	localStorage.removeItem('rcUserRole');
 	MainStore.dispatch(
 		UserActionsCreator.deauthenticateUser()
 	);
 }
 
 export function update(user: User) {
+	localStorage.setItem('rcUsername', user.name);
+	localStorage.setItem('rcUserEmail', user.email);
+	localStorage.setItem('rcUserRole', user.role);
 	MainStore.dispatch(
 		UserActionsCreator.updateUser(user)
 	);
+	UIActions.hideLoginDialog();
+	UIActions.hideMainPreloader();
 }

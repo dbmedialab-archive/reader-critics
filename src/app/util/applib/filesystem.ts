@@ -21,6 +21,7 @@ import * as fs from 'fs';
 import * as JSON5 from 'json5';
 import * as path from 'path';
 
+import { NotFoundError } from 'app/util/errors';
 import { isTest } from './environment';
 
 /** The filesystem root of the whole project */
@@ -35,7 +36,7 @@ export function loadResource(relativePath : string) : Promise <Buffer> {
 		fs.open(fullPath, 'r', (errOpen) => {
 			if (errOpen) {
 				if (errOpen.code === 'ENOENT') {
-					return reject(new Error(`${fullPath} does not exist`));
+					return reject(new NotFoundError(`${fullPath} does not exist`));
 				}
 
 				return reject(errOpen);
@@ -62,5 +63,12 @@ export function scanDir(folderName : string) : Promise <string[]> {
 		fs.readdir(folderName, (err, files : string[]) => {
 			return err ? reject(err) : resolve(files);
 		});
+	});
+}
+
+export function watchFile(relativePath : string, callback : any) : Promise <fs.FSWatcher> {
+	const fullPath : string = path.join(rootPath, relativePath);
+	return new Promise((resolve) => {
+		return resolve(fs.watch(fullPath, {}, callback));
 	});
 }
