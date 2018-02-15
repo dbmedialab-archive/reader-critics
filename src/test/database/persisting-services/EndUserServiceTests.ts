@@ -53,6 +53,8 @@ const testAnonymousGet = () => it('anonymous save()', () => enduserService
 export default function(this: ISuiteCallbackContext) {
 	let userCount : number;
 
+	this.slow(250);
+
 	testParameterChecks();
 
 	it('clear()', () => enduserService.clear());
@@ -116,17 +118,14 @@ export default function(this: ISuiteCallbackContext) {
 		});
 	});
 
-	testAnonymousGet();
+	it('anonymous save()', () => enduserService
+		.save({ name: null, email: null })
+		.then(() => assert.fail())
+		.catch(() => assert.ok(true))
+	);
 
-	// We could use Promise.all here and execute both queries concurrently.
-	// But no, due to missing locks in MongoDB we will almost always get
-	// an error here because two queries will try to upsert a new "Anonymous"
-	// user object at the same time. When starting the DB tests, the collections
-	// are cleaned up and anonymous does not yet exist.
-	// Hence: concurrent write, unique index violation, *kablaam*
-	it('anonymous get()', () => enduserService.get(null, null)
-		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
-		.then(() => enduserService.get())
+	it('anonymous get()', () => enduserService
+		.get(null, null)
 		.then((u : EndUser) => assertUserObject(u, anonymousEndUser))
 	);
 }

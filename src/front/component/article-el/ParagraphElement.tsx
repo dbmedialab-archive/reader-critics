@@ -27,7 +27,7 @@ export default class ParagraphElement extends ArticleElement {
 		return <div>
 			<label>
 				<FormattedMessage
-					id="label.article-el.paragraph"
+					id="article-el.paragraph"
 					values={{
 						order: this.props.item.order.type,
 					}}

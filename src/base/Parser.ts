@@ -19,7 +19,7 @@
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 
-interface Parser {
+export interface Parser {
 	parse() : Promise <Article>;
 }
 

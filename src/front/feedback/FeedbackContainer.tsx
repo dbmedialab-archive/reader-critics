@@ -16,32 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as classnames from 'classnames';
 import * as React from 'react';
+
 import 'front/scss/fb.scss';
 
+import createArticleElement from 'front/component/createArticleElement';
 import Article from 'base/Article';
 import FeedbackItem from 'base/FeedbackItem';
-
-import createArticleElement from 'front/component/createArticleElement';
-import { ArticleElement } from 'front/component/ArticleElement';
-
 import FinishButton from 'front/feedback/FinishButton';
 import PostFeedbackContainer from 'front/feedback/PostFeedbackContainer';
-
-import { FormattedMessage } from 'react-intl';
-import { fetchArticle } from 'front/apiCommunication';
-
-import {
-	getArticleURL,
-	getArticleVersion,
-} from 'front/uiGlobals';
 import Spinner from 'front/common/Spinner';
 
+import { ArticleElement } from 'front/component/ArticleElement';
+import { FormattedMessage } from 'react-intl';
+import { fetchArticle, sendFeedback } from 'front/apiCommunication';
+import { getArticleURL, getArticleVersion } from 'front/uiGlobals';
+
 export interface FeedbackContainerState {
-	article: Article;
-	articleItems: Array<FeedbackItem>;
-	isFeedbackReady: boolean;
-	gotServerError: boolean;
+	article : Article
+	articleItems : Array <FeedbackItem>
+	isFeedbackReady : boolean
+	gotServerError : boolean
+	updateToken? : string
 }
 
 export default class FeedbackContainer
@@ -63,7 +60,6 @@ extends React.Component <any, FeedbackContainerState> {
 	componentWillMount() {
 		const self = this;
 		fetchArticle(getArticleURL(), getArticleVersion()).then(article => {
-			// FIXME ganz mieser Hack:
 			window['app'].article.version = article.version;
 			self.setState({
 				article,
@@ -110,9 +106,25 @@ extends React.Component <any, FeedbackContainerState> {
 			return;
 		}
 
-		this.setState({
-			isFeedbackReady: true,
-			articleItems: items,
+		console.log('sending feedback');
+
+		sendFeedback({
+			article: {
+				url: getArticleURL(),
+				version: getArticleVersion(),
+			},
+			feedback: {
+				items,
+			},
+		})
+		.then((response) => {
+			console.dir(response);
+
+			this.setState({
+				isFeedbackReady: true,
+				articleItems: items,
+				updateToken: response.updateToken,
+			});
 		});
 	}
 
@@ -136,6 +148,7 @@ extends React.Component <any, FeedbackContainerState> {
 		// Iterate article elements and render sub components
 		return (
 			<section id="content">
+				<this.IntroHelpBox/>
 				{ article.items.map(item => createArticleElement(this, item, refFn)) }
 				<FinishButton SendForm={sendFn} ref={r => this.finishBtn = r}/>
 			</section>
@@ -148,14 +161,19 @@ extends React.Component <any, FeedbackContainerState> {
 				<div className="container">
 					<div className="row section frontpage">
 						<div className="content u-full-width">
-							<PostFeedbackContainer
-								articleUrl={this.state.article && this.state.article.url?this.state.article.url.href:null}
-								articleItems={this.state.articleItems}
-							/>
+							<PostFeedbackContainer updateToken={this.state.updateToken} />
 						</div>
 					</div>
 				</div>
 			</div>
 		);
 	}
+
+	private IntroHelpBox = () => (
+		<div className={classnames('card', 'helpbox')}>
+			<h1><FormattedMessage id="fb.helpbox.title"/></h1>
+			<p><FormattedMessage id="fb.helpbox.text"/></p>
+		</div>
+	)
+
 }

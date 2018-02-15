@@ -16,25 +16,22 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as colors from 'ansicolors';
-import * as cluster from 'cluster';
-
 import * as app from 'app/util/applib';
+import * as cluster from 'cluster';
+import * as colors from 'ansicolors';
 
 import { initDatabase } from 'app/db';
 import { initJobWorkerQueue } from 'app/queue';
 import { initLocalizationStrings } from 'app/services/localization';
+import { initParserResolver } from 'app/services/parser/common/parserResolver';
 import { signal } from './clusterSignals';
 
 import startupErrorHandler from './startupErrorHandler';
 
-let log;
+// Main function of worker process
 
-/**
- * Main function of worker process
- */
 export default function() {
-	log = app.createLog('worker');
+	const log = app.createLog('worker');
 	log('Starting %s worker - ID %d', colors.brightYellow('job'), cluster.worker.id);
 
 	// Main application startup
@@ -42,6 +39,7 @@ export default function() {
 	Promise.resolve()
 		.then(initLocalizationStrings)
 		.then(initDatabase)
+		.then(initParserResolver)
 		.then(initJobWorkerQueue)
 	//	.then(mockFeedbackEvent)  -- only used for template testing
 		.catch(startupErrorHandler)

@@ -102,8 +102,8 @@
 	}
 }
 
-.additional-settings-section {
-	.additional-content {
+.layout-settings-section {
+	.layout-content {
 		max-height: 0;
 		overflow-y: hidden;
 		margin-top: 10px;
@@ -113,38 +113,62 @@
 		transition: max-height .3s ease-in-out;
 
 
-		.additional-content-section {
-			border: 1px solid #cacaca;
+		.layout-content-section {
 			padding: .9375rem;
+			max-height: 0;
+			overflow-y: hidden;
+			-webkit-transition: max-height .3s ease-in-out;
+			-moz-transition: max-height .3s ease-in-out;
+			-o-transition: max-height .3s ease-in-out;
+			transition: max-height .3s ease-in-out;
 		}
 	}
 
-	.additional-btn {
+	.layout-btn, .layout-content-btn {
 		color: #2199e8;
 		padding: 0 2px;
 		background-color: #fff;
 		position: absolute;
 		cursor: pointer;
 		display: inline-block;
-		-webkit-transition: color .3s, transform .3s;
-		transition: color .3s, transform .3s;
+		-webkit-transition: margin .3s, transform .3s;
+		transition: margin .3s, transform .3s;
 
 		&:hover {
 			color: #1583cc;
 		}
 	}
 
+	.layout-content-btn {
+		display: none;
+	}
+
 	&.opened {
-		.additional-content {
-			max-height: 280px;
+		.layout-content {
+			max-height: 600px;
+			min-height: 90px;
+			border: 1px solid #cacaca;
 		}
 
-		.additional-btn {
+		.layout-btn {
 			padding: 0 2px;
 			transform: translateX(5px);
 
 			&:hover {
 				color: #1583cc;
+			}
+		}
+
+		.layout-content-btn {
+			display: block;
+		}
+
+		.layout-content-section.opened {
+			max-height: 280px;
+
+			.layout-content-btn {
+				margin: 5px 10px;
+				padding: 0 2px;
 			}
 		}
 	}

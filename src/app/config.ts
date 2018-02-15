@@ -28,7 +28,7 @@ import printEnvironment from 'print-env';
 import {
 	dbMessageQueue,
 	dbSessionCache,
-} from 'app/db/createRedisConnection';
+} from 'app/db/Redis';
 
 import { rootPath } from 'app/util/applib';
 
@@ -147,6 +147,16 @@ const config = convict({
 					default: null,
 					env: 'REDIS_URL_SESSION_CACHE',
 				},
+			},
+		},
+	},
+	escalateThreshold: {
+		defaults: {
+			toEditor: {
+				doc: 'Default number of feedbacks that an article can receive before being escalated to the editor',
+				format: Number,
+				default: 5,
+				env: 'ESCALATE_THRESHOLD_DEFAULT_TO_EDITOR',
 			},
 		},
 	},

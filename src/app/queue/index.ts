@@ -19,25 +19,58 @@
 import * as colors from 'ansicolors';
 import * as kue from 'kue';
 
-import { createRedisConnection } from 'app/db';
-import { dbMessageQueue } from 'app/db/createRedisConnection';
+import {
+	createRedisConnection,
+	dbMessageQueue,
+} from 'app/db';
 
 import {
-	jobWorkerHandlers,
-	// webWorkerHandlers
-} from './WorkerHandlers';
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onCompileUnrevisedDigest,
+	onNewFeedback,
+	onPollArticleUpdate,
+	onSendEditorEscalation,
+} from './handlers';
 
 import * as app from 'app/util/applib';
+
+// Define which job handlers are available to what worker type
+
+const jobWorkerHandlers = Object.freeze({
+	onCheckAwaitFeedback,
+	onCheckEscalationToEditor,
+	onCollectArticlesForPolling,
+	onCompileUnrevisedDigest,
+	onNewFeedback,
+	onPollArticleUpdate,
+	onSendEditorEscalation,
+});
+
+// const webWorkerHandlers = Object.freeze({
+// }); - still empty
+
+// Internal resources
 
 const log = app.createLog();
 
 let queue : kue.Queue;
 
+// All message types
+
 export enum MessageType {
 	CheckAwaitFeedback = 'check-await-feedback',
+	CheckEscalationToEditor = 'check-escalation-to-editor',
+	CollectArticlesForPolling = 'collect-articles-for-polling',
+	CompileUnrevisedDigest = 'compile-unrevised-digest',
 	NewFeedback = 'new-feedback',
+	PollArticleUpdate = 'poll-article-update',
+	SendEditorEscalation = 'send-editor-escalation',
 	SendSuggestionDigest = 'send-suggestion-digest',
 }
+
+// Queue initialization for the different worker types
 
 export function initMasterQueue() : Promise <void> {
 	log('Initialising %s worker queue', colors.brightRed('master'));
@@ -48,16 +81,7 @@ export function initMasterQueue() : Promise <void> {
 		},
 	});
 
-	queue.active((error, ids : number[]) => {
-		ids.forEach((jobID : number) => {
-			kue.Job.get(jobID, (error2, job) => {
-				log('Removing completed job', jobID);
-				job.remove();
-			});
-		});
-	});
-
-	return Promise.resolve();
+	return maintenance(5000);  // Clean up a greater batch on startup
 }
 
 export function initJobWorkerQueue() : Promise <void> {
@@ -93,15 +117,52 @@ export function initWebWorkerQueue() : Promise <void> {
 	return Promise.resolve();
 }
 
+// Push messages into the queue
+
 export function sendMessage(type : MessageType, payload? : {}, options? : {}) : Promise <void> {
 	const paypayloadload = payload === undefined ? {} : payload;
-	log(type, app.inspect(paypayloadload));
+	log(type, app.inspect(paypayloadload, 1, false));
 
 	queue.create(type, paypayloadload)
 		.priority('normal')
 		.attempts(1)
+		.ttl(10 * 60 * 1000)  // That should be ten minutes
 		.removeOnComplete(true)
 		.save();
 
 	return Promise.resolve();
+}
+
+// Regularly clean up finished and stuck jobs
+
+export function maintenance(maxJobs = 500) : Promise <void> {
+	return Promise.all([
+		cleanThatUp('complete', maxJobs),
+		cleanThatUp('inactive', maxJobs),
+		cleanThatUp('failed', maxJobs),
+	])
+	.then(() => undefined);
+}
+
+function cleanThatUp(jobStatus : string, maxJobs) : Promise <void> {
+	return new Promise((resolve, reject) => {
+		kue.Job.rangeByState(jobStatus, 0, maxJobs - 1, 'asc', (error, jobs) => {
+			if (error) {
+				return reject(error);
+			}
+
+			if (jobs.length <= 0) {
+				return resolve();  // Nothing to do, get out of here
+			}
+
+			log('Cleaning up %d %s queue jobs', jobs.length, jobStatus);
+
+			Promise.map(jobs, (job : kue.Job) => {
+				return new Promise((resolgrmpf) => {
+					job.remove(() => resolgrmpf(job.id));
+				});
+			})
+			.then(() => resolve());
+		});
+	});
 }

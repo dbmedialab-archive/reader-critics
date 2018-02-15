@@ -67,7 +67,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 		UIActions.closeReset(this.props.windowName);
 	}
 
-	onUpdate (data): void {
+	onUpdate (data: object): void {
 		if (this.props.ID) {
 			const dataToSend:IWebsiteUpdateProps = Object.assign({currentName: this.props.name}, data);
 			return WebsiteActions.updateWebsite(dataToSend);
@@ -84,23 +84,24 @@ class AddUserModalComponent extends React.Component <any, any> {
 	}
 
 	render (): JSX.Element {
-		const isDisabled = !!this.props.name && !this.props.ID;
+		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
+		const isDisabled = name && !ID;
 		return (
-			<ReactModal isOpen={this.props.isOpen} name="website" closeHandler={this.closePopup}>
+			<ReactModal isOpen={isOpen} name="website" closeHandler={this.closePopup}>
 				<div className="modal-window">
 					<div className="close-btn">
 						<i onClick={this.closeReset} className="fa fa-close"/>
 					</div>
 					<div className="row">
 						<div className="medium-12 columns">
-							{this.props.ID ? <p className="lead">Edit Website</p>
+							{ID ? <p className="lead">Edit Website</p>
 								: <p className="lead">Add new Website</p>
 							}
 						</div>
 					</div>
 					<form className="website-edit-form">
 						<div className="row">
-							<WebsiteName onSubmit={this.onUpdate} name={this.props.name} />
+							<WebsiteName onSubmit={this.onUpdate} name={name} />
 							<WebsiteParserClass	onChange={this.onUpdate} />
 						</div>
 						<div className="row">
@@ -109,8 +110,12 @@ class AddUserModalComponent extends React.Component <any, any> {
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
 						</div>
-						<WebsiteLayout feedbackPage={this.props.feedbackPage} onSubmit={this.onUpdate}	/>
-						{!this.props.ID ?
+						<WebsiteLayout
+							feedbackPage={feedbackPage}
+							feedbackNotificationMail={feedbackNotificationMail}
+							onSubmit={this.onUpdate}
+						/>
+						{!ID ?
 						<div className="row button-holder">
 							<div className="medium-12 columns">
 								<button type="button"
@@ -133,15 +138,17 @@ class AddUserModalComponent extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
-		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage']),
+		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen'], false),
+		feedbackPage: state.website.getIn(['selected', 'layout', 'templates', 'feedbackPage'], ''),
+		feedbackNotificationMail: state.website.getIn(['selected', 'layout', 'templates',
+										'feedbackNotificationMail'], ''),
 		ID: state.website.getIn(['selected', 'ID'], null),
-		name: state.website.getIn(['selected', 'name']),
+		name: state.website.getIn(['selected', 'name'], ''),
 		currentWebsite: state.website.getIn(['selected']),
 	};
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = () => {
 	return {};
 };
 

@@ -27,7 +27,7 @@ export default class FeaturedImageElement extends ArticleElement {
 		return <div>
 			<label>
 				<FormattedMessage
-					id="label.article-el.feat-image"
+					id="article-el.featured"
 					values={{
 						order: this.props.item.order.type,
 					}}
