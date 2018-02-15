@@ -93,7 +93,6 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 	public render() {
 		return <form>
 			<fieldset className="text">
-				<label htmlFor={this.FieldId('content')}>rediger {this.Translate(this.props.type)}</label>
 				<textarea
 					onKeyUp={() => this.UpdateState('text', this.textArea)}
 					ref={r => this.textArea = r}
