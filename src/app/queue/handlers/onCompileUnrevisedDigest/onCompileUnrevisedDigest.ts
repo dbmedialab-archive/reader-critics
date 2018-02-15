@@ -98,7 +98,7 @@ function process() {
 
 				return Promise.all([
 					getRecipientList(website, MailRecipientList.Editors),
-					getMailSubject(website),
+					getMailSubject(website, latestCreated),
 				])
 				.spread((recipients : Array <string>, subject : string) => {
 					return SendGridMailer(recipients, subject, mailContent);
@@ -106,7 +106,7 @@ function process() {
 			})
 			// Update the "last digest"-timestamp in the website object
 			.finally(() => {
-				websiteService.setUnrevisedDigestLastRun(website);
+	//			websiteService.setUnrevisedDigestLastRun(website);
 			});
 		}); // websites.forEach
 	});
@@ -129,6 +129,11 @@ function getDates() {
 
 // E-mail subject
 
-function getMailSubject(website : Website) : Promise <string> {
-	return Promise.resolve(__('mail.digest.subject', website.locale));
+function getMailSubject(website : Website, latestCreated : Date) : Promise <string> {
+	return Promise.resolve(__('mail.digest.subject', {
+		locale: website.locale,
+		values: {
+			today: latestCreated.toLocaleDateString(website.locale),
+		},
+	}));
 }

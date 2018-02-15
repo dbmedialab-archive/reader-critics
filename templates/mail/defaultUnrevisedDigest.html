@@ -14,32 +14,45 @@
 			a:hover {
 				text-decoration: underline;
 			}
-			hr.article-sep {
+			hr {
 				margin-top: 15px;
 				margin-bottom: 15px;
 			}
+			div.header {
+				font-size: 12pt;
+				margin-bottom: 15px;
+			}
+			div.bottom {
+				margin-top: 15px;
+			}
 			div.article-box {
+				margin-bottom: 8px;
+			}
+			span.article-title {
 				font-size: 14pt;
 				font-weight: bold;
 			}
-			div.article-box, div.byline-box {
-				margin-bottom: 4px;
+			span.article-byline {
 			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
-			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.text.itsaDigest}}</div>
+			<div class="header">{{=it.text.itsaDigest}}</div>
 
-			<hr class="article-sep"/>
+			<hr/>
 
 			{{~it.articles :article}}
-				<div class="article-box"><a href="{{=article.url}}">{{=article.title}}</a></div>
-				<div class="byline-box">({{=article.byline}})</div>
-				<div class="last-modified"><b>{{=it.text.articleVersion}}:</b> {{=article.version}}</div>
-
-				<hr class="article-sep"/>
+			<div class="article-box">
+				<span class="feedback-count">{{=article.feedbackCount}}</span>
+				&nbsp;&bull;&nbsp;
+				<span class="article-title"><a href="{{=article.url}}">{{=article.title}}</a></span>
+				&nbsp;&bull;&nbsp;
+				<span class="article-byline">{{=it.text.author}}:&nbsp;{{=article.byline}}</span>
+			</div>
 			{{~}}
 
-			<div>{{=it.text.dateRange}}</div>
+			<hr/>
+
+			<div class="bottom">{{=it.text.dateRange}}</div>
 		</div>
 	</body>
 </html>
