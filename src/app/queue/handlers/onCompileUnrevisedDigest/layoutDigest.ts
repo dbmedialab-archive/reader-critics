@@ -19,7 +19,6 @@
 import MailTemplate from 'app/template/MailTemplate';
 
 import { Article } from 'base/Article';
-import { User } from 'base/User';
 import { Website } from 'base/Website';
 import { translate as __ } from 'app/services/localization';
 
