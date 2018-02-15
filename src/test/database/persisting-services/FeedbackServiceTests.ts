@@ -58,7 +58,11 @@ export default function(this: ISuiteCallbackContext) {
 let feedbackCount : number;
 let thatFeedback : Feedback;
 
+// feedbackService.clear()
+
 const testClear = () => it('clear()', () => feedbackService.clear());
+
+// feedbackService.validateAndSave()
 
 const testValidateAndSave = () => it('validateAndSave()', () => app.scanDir(feedbackDir)
 .then((files : string[]) => {
@@ -75,6 +79,8 @@ const testValidateAndSave = () => it('validateAndSave()', () => app.scanDir(feed
 	});
 }));
 
+// feedbackService.count()
+
 const testCount = () => it('count()', () => feedbackService.count()
 .then(count => {
 	assert.strictEqual(
@@ -82,6 +88,8 @@ const testCount = () => it('count()', () => feedbackService.count()
 		`Expected object count of ${feedbackCount} but got ${count} instead`
 	);
 }));
+
+// feedbackService.getByArticle()
 
 const testGetByArticle = () => it('getByArticle()', () => {
 	return ArticleURL.from('http://mopo.no/1')
@@ -96,6 +104,8 @@ const testGetByArticle = () => it('getByArticle()', () => {
 	});
 });
 
+// feedbackService.getByArticleAuthor()
+
 const testGetByArticleAuthor = () => it('getByArticleAuthor()', () => {
 	return userService.get('Axel Egon Unterbichler')
 	.then(author => {
@@ -108,6 +118,8 @@ const testGetByArticleAuthor = () => it('getByArticleAuthor()', () => {
 		});
 	});
 });
+
+// feedbackService.updateStatus()
 
 const testUpdateStatus = () => it('updateStatus()', () => {
 	return feedbackService.updateStatus(thatFeedback, FeedbackStatus.FeedbackSent)
@@ -122,6 +134,8 @@ const testUpdateStatus = () => it('updateStatus()', () => {
 		);
 	});
 });
+
+// feedbackService.getByStatus()
 
 const testGetByStatus = () => it('getByStatus()', () => {
 	return Promise.all([
