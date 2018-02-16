@@ -66,18 +66,23 @@ const after = (browser, done) => {
 */
 // Test functions
 
-const openArticleEditForm = (browser) => {
+/* const openArticleEditForm = (browser) => (
 	browser.url('http://localhost:4000/')
-		.waitForElementVisible('body', timeToWait);
-};
+		.waitForElementVisible('body', timeToWait)
+); */
 
 // Export tests to Nightwatch
 
-export = Object.freeze({
+module.exports = {
 	// before,
 	// after,
-	openArticleEditForm,
-});
+	'Open Article Edit Form': function (browser) {
+		browser.url('http://localhost:4000/')
+		.waitForElementVisible('body', timeToWait)
+	},
+};
+
+//  openArticleEditForm,
 
 /*
 describe('ArticleEditForm URLs coverage tests', () => {
