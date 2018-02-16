@@ -18,16 +18,11 @@
 
 import Website from 'base/Website';
 
-import ParserFactory, { createFactory } from 'base/ParserFactory';
-
-import * as app from 'app/util/applib';
-
 import emptyCheck from 'app/util/emptyCheck';
+import ParserFactory, { createFactory } from 'base/ParserFactory';
 
 import { ParserNotFoundError } from 'app/util/errors';
 import { resolveParserModule } from '../common/parserResolver';
-
-const log = app.createLog();
 
 // getParserFor
 
@@ -35,9 +30,7 @@ export default function(website : Website) : Promise <ParserFactory> {
 	emptyCheck(website);
 
 	const parserName = getParserName(website);
-	log('parserName:', parserName);
 	const parserData = resolveParserModule(parserName);
-	log('parserData:', parserData);
 
 	return loadParserClass(parserData.moduleName).then(createFactory);
 }

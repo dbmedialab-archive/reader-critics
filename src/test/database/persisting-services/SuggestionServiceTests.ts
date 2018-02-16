@@ -32,80 +32,102 @@ import * as app from 'app/util/applib';
 
 const tilbakemeldinger = path.join('resources', 'suggestion-box', 'tilbakemeldinger.json');
 
+// Main test function
+
 export default function(this: ISuiteCallbackContext) {
-	let totalCount : number;
+	this.slow(250);
 
-	it('parameter checks', () => {
-		assert.throws(() => suggestionService.getSince(null), EmptyError);
-		assert.throws(() => suggestionService.save(null), EmptyError);
-	});
+	testParameterChecks();
+	testClear();
+	testSave();
+	testCount();
 
-	it('clear()', () => suggestionService.clear());
-
-	it('save()', () => {
-		return app.loadJSON(tilbakemeldinger)
-		.then(data => {
-			assert.isArray(data);
-			totalCount = data.length;
-
-			return Promise.mapSeries(data, suggestionService.save);
-		})
-		.then(results => {
-			assert.isArray(results);
-			assert.lengthOf(results, totalCount, 'Number of saved objects does not match');
-		});
-	});
-
-	it('count()', () => {
-		return suggestionService.count().then(count => {
-			assert.strictEqual(count, totalCount);
-		});
-	});
-
-	it('getRange()', () => {
-		const testLimit = 10;
-
-		return Promise.all([
-			// #1 should return the lesser of "defaultLimit" or "totalCount" number of items:
-			suggestionService.getRange(),
-			// #2 should return exactly "testLimit" items:
-			suggestionService.getRange(0, testLimit),
-			// #3 skipping past the number of stored items should yield an empty result:
-			suggestionService.getRange(totalCount),
-		]).then((results : [Suggestion[]]) => {
-			results.forEach(result => assert.isArray(result));
-
-			const lengthCheck = [
-				Math.min(totalCount, defaultLimit),
-				testLimit,
-				0,
-			];
-
-			results.forEach((result : Suggestion[], index : number) => {
-				assert.lengthOf(
-					result,
-					lengthCheck[index],
-					`Incorrect number of objects in test range #${index + 1}`
-				);
-			});
-		});
-	});
-
-	it('getSince()', () => {
-		const dateSince = new Date('2017-07-06T00:00:00Z');
-
-		return suggestionService.getSince(dateSince)
-		.then((results : Suggestion[]) => {
-			// Date checks
-			results.forEach((result : Suggestion) => {
-				const thatDate = new Date(result.date.created);
-
-				assert.isTrue(app.isValidDate(thatDate), 'Result date is not valid');
-				assert.isTrue(thatDate >= dateSince, 'Result date must be greater than query date');
-			});
-
-			// With the current test data we expect 5 result objects
-			assert.lengthOf(results, 5, 'Number of result objects does not match');
-		});
-	});
+	testGetRange();
+	testGetSince();
 }
+
+// Test runtime data
+
+let totalCount : number;
+
+// Check for thrown exceptions
+
+const testParameterChecks = () => it('parameter checks', () => {
+	assert.throws(() => suggestionService.getSince(null), EmptyError);
+	assert.throws(() => suggestionService.save(null), EmptyError);
+});
+
+// suggestionService.clear()
+
+const testClear = () => it('clear()', () => suggestionService.clear());
+
+// suggestionService.save()
+
+const testSave = () => it('save()', () => {
+	return app.loadJSON(tilbakemeldinger)
+	.then(data => {
+		assert.isArray(data);
+		totalCount = data.length;
+
+		return Promise.mapSeries(data, suggestionService.save);
+	})
+	.then(results => {
+		assert.isArray(results);
+		assert.lengthOf(results, totalCount, 'Number of saved objects does not match');
+	});
+});
+
+//
+
+const testCount = () => it('count()', () => {
+	return suggestionService.count().then(count => {
+		assert.strictEqual(count, totalCount);
+	});
+});
+
+const testGetRange = () => it('getRange()', () => {
+	const testLimit = 10;
+
+	return Promise.all([
+		// #1 should return the lesser of "defaultLimit" or "totalCount" number of items:
+		suggestionService.getRange(),
+		// #2 should return exactly "testLimit" items:
+		suggestionService.getRange(0, testLimit),
+		// #3 skipping past the number of stored items should yield an empty result:
+		suggestionService.getRange(totalCount),
+	]).then((results : [Suggestion[]]) => {
+		results.forEach(result => assert.isArray(result));
+
+		const lengthCheck = [
+			Math.min(totalCount, defaultLimit),
+			testLimit,
+			0,
+		];
+
+		results.forEach((result : Suggestion[], index : number) => {
+			assert.lengthOf(
+				result,
+				lengthCheck[index],
+				`Incorrect number of objects in test range #${index + 1}`
+			);
+		});
+	});
+});
+
+const testGetSince = () => it('getSince()', () => {
+	const dateSince = new Date('2017-07-06T00:00:00Z');
+
+	return suggestionService.getSince(dateSince)
+	.then((results : Suggestion[]) => {
+		// Date checks
+		results.forEach((result : Suggestion) => {
+			const thatDate = new Date(result.date.created);
+
+			assert.isTrue(app.isValidDate(thatDate), 'Result date is not valid');
+			assert.isTrue(thatDate >= dateSince, 'Result date must be greater than query date');
+		});
+
+		// With the current test data we expect 5 result objects
+		assert.lengthOf(results, 5, 'Number of result objects does not match');
+	});
+});

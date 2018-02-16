@@ -22,13 +22,15 @@ const {
 
 const articleEl1 = 'article#article-el-1';
 const articleEl2 = 'article#article-el-2';
-const articleEl5 = 'article#article-el-5';
+const articleEl3 = 'article#article-el-3';
+// const articleEl5 = 'article#article-el-5';
+const articleEl6 = 'article#article-el-6';
 
 describe('FeedbackFormContainer', () => {
 	let page;
 
 	before((client, done) => {
-		page = openPage(client, '/fb/http://test/xyz/1')
+		page = openPage(client, '/fb?articleURL=https://www.dagbladet.no&version=1')
 			.waitForElementVisible('body', 500)
 			.waitForElementVisible('div#app section#content', 1000)
 			.waitForElementVisible('section#content > article.title', 5000)
@@ -41,7 +43,7 @@ describe('FeedbackFormContainer', () => {
 
 	it('Check existence of article elements', (client) => {
 		page
-			.assert.containsText(`${articleEl1} h1`, 'Her blir Donald Trump sowas von historisk');
+			.assert.containsText(`${articleEl1} header div h1 span`, 'Ivanka-klemmen til senatoren gikk ikke helt som planlagt. Og så var sirkuset i gang');
 	});
 
 	it('Check CSS classes on article elements', (client) => {
@@ -50,9 +52,15 @@ describe('FeedbackFormContainer', () => {
 			.assert.cssClassPresent(articleEl1, 'title');
 		page
 			.assert.cssClassPresent(articleEl2, 'card')
-			.assert.cssClassPresent(articleEl2, 'paragraph');
+			.assert.cssClassPresent(articleEl2, 'featured');
 		page
+			.assert.cssClassPresent(articleEl3, 'card')
+			.assert.cssClassPresent(articleEl3, 'paragraph');
+		/* page
 			.assert.cssClassPresent(articleEl5, 'card')
-			.assert.cssClassPresent(articleEl5, 'subtitle');
+			.assert.cssClassPresent(articleEl5, 'subtitle'); */
+		page
+			.assert.cssClassPresent(articleEl6, 'card')
+			.assert.cssClassPresent(articleEl6, 'subhead');
 	});
 });

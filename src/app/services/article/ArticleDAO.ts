@@ -24,6 +24,7 @@ import Website from 'base/Website';
 import User from 'base/User';
 
 import { ArticleModel } from 'app/db/models';
+import { ObjectID } from 'app/db';
 
 import {
 	wrapExists,
@@ -74,6 +75,27 @@ export function save(website : Website, article : Article) : Promise <Article> {
 
 	return makeDocument(website, article)
 	.then(doc => wrapSave<Article>(new ArticleModel(doc).save()));
+}
+
+export function saveNewVersion(
+	website : Website,
+	newArticle : Article,
+	oldID : ObjectID
+) : Promise <Article> {
+	emptyCheck(website, newArticle, oldID);
+
+	return makeDocument(website, newArticle)
+	.then(newDoc => {
+		return new ArticleModel(newDoc).save();
+	})
+	.then(newObj => wrapFindOne(ArticleModel.findOneAndUpdate(
+		{ _id : oldID },
+		{
+			'$set': {
+				newerVersion: newObj._id,
+			},
+		}
+	)));
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {

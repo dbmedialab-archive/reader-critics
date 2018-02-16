@@ -16,7 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as callsite from 'callsite';
 import { default as axios } from 'axios';
 import { throttle } from 'lodash';
 
@@ -31,15 +30,37 @@ export enum Severity {
 	Critical,
 }
 
+const trashIt = [
+	'Async._drainQueue',
+	'Async.drainQueue',
+	'processImmediate',
+	'Promise._settlePromise',
+	'runCallback',
+	'tryCatcher',
+	'tryOnImmediate',
+];
+
+const pathRegex = new RegExp(`${app.rootPath}/?`, 'g');
+const trashRegex = new RegExp(`^.*(?:${trashIt.join('|')}).*$`, 'gm');
+const crlfRegex = /[\r\n]+/gm;
+
 export function yell (
 	err : Error,
 	severity : Severity = Severity.Warning
 ) : void {
-	log(err);
+	// Make the stack trace prettier by removing clutter
+	const stackTr = err.stack
+		.replace(pathRegex, '')
+		.replace(trashRegex, '')
+		.replace(crlfRegex, '\n')
+		.trim();
+
+	// Complain on our local console, because, why not?
+	log(stackTr);
 
 	// If the Slack integration isn't configured, we're done here
 	if (config.get('slack.webhook')) {
-		slackThrottled(err, severity, callsite());
+		slackThrottled(severity, stackTr);
 	}
 }
 
@@ -64,32 +85,18 @@ export function notify(text : string) : void {
 // again. So before risking to run into this limit, throttle the sending of
 // Slack messages to one every two seconds. Should there really be this much
 // traffic in the notification channel, someone better take a closer look anyway
-// so it doesn't matter that we're probably discard some of the exceptions.
+// so it doesn't matter that we're probably discarding some of the exceptions.
 // They can be found in the application logs anyway.
 const slackThrottled = throttle(slackIt, 2000, {
 	leading: true,
 	trailing: false,
 });
 
-function slackIt(
-	err : Error,
-	severity : Severity,
-	callstack : callsite.CallSite[]
-) : void {
-	let text = `*${err.name}*: ${err.message}\n`;
-
-	const csi = callstack[1];  // csi = short for "call site item", obviously
-	text = text.concat(
-		`in _${csi.getFileName().replace(app.rootPath, '')}_ - `,
-		`line ${csi.getLineNumber().toString()} - `,
-		csi.getFunctionName(),
-		'\n'
-	);
-
+function slackIt(severity : Severity, stackTr : string) : void {
 	const slackPayload : any = {
 		username: config.get('slack.botname'),
 		icon_emoji: getEmoji(severity),
-		text,
+		text: stackTr,
 	};
 
 	if (config.get('slack.channel')) {

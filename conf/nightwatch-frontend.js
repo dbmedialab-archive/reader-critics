@@ -15,20 +15,22 @@ console.log('Gecko driver version:', geckodriver.version);
 
 require('tsconfig-paths/register');
 
+const selenium = {
+	start_process: true,
+	server_path: seleniumJAR.path,
+	port: 4444,
+	cli_args: {
+		'webdriver.chrome.driver': chromedriver.path,
+		'webdriver.gecko.driver': geckodriver.path,
+	},
+};
+
 module.exports = {
 	src_folders: [ path.join(rootPath, 'out/test/frontend') ],
 
 	live_output: true,
 
-	selenium: {
-		server_path: seleniumJAR.path,
-		start_process: true,
-		port: 4444,
-		cli_args: {
-			'webdriver.chrome.driver': chromedriver.path,
-	//		'webdriver.gecko.driver': geckodriver.path,
-		},
-	},
+	selenium:,
 
 	'test_settings': {
 		'default': {
@@ -51,3 +53,19 @@ module.exports = {
 		},
 	},
 };
+
+/*
+const conf = {
+	src_folders: ['src/test/frontend'],
+	output_folder: false,
+	selenium: SELENIUM_CONFIGURATION,
+	test_runner: {
+		type: 'mocha',
+		options: {
+			ui: 'bdd',
+			reporter: 'list',
+		},
+	},
+	test_settings: ENVIRONMENTS,
+};
+*/

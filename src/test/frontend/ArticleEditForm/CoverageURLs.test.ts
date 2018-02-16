@@ -16,9 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable
-
-import { openPage } from '../util';
+const {
+	openPage,
+} = require('../test-tools-frontend');
 
 const timeToWait = 5000;
 
@@ -85,6 +85,7 @@ export = Object.freeze({
 
 /*
 describe('ArticleEditForm URLs coverage tests', () => {
+	let thePage;
 
 	// Set up the test page and extract some of the text values for
 	// later use. The test case was split up into before() and it(..)
@@ -105,7 +106,16 @@ describe('ArticleEditForm URLs coverage tests', () => {
 	// .perform() functions for these "late evaluations", but that blows
 	// up the code.
 
-	before();
+	before((browser, done) => {
+		thePage = openPage(browser, '/fb?articleURL=https://www.dagbladet.no&version=1')
+
+		// Wait for elements to render
+			.waitForElementVisible('body', timeToWait)
+			.waitForElementVisible('div#app section#content', timeToWait)
+			.waitForElementVisible('section#content > article.title', timeToWait)
+
+			.perform(() => done());
+	});
 
 	after((browser, done) => browser.end().perform(() => done()));
 
@@ -309,6 +319,4 @@ describe('ArticleEditForm URLs coverage tests', () => {
 		thePage.click(elFormCancelBtn)
 			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
-
 });
-*/

@@ -16,14 +16,14 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleService from './ArticleService';
+import { Article } from 'base';
 
 import {
 	ArticleDocument,
 	ArticleModel
 } from 'app/db/models';
 
+import ArticleService from './ArticleService';
 import createPersistingService from '../createPersistingService';
 
 import download from './live/download';
@@ -31,7 +31,10 @@ import fetch from './common/fetch';
 import getRangeWithFBCount from './common/getRangeWithFBCount';
 import getByID from './common/getByID';
 import getAmount from './common/getAmount';
+
+import { getIDsToPullUpdates } from './live/getIDsToPullUpdates';
 import { getRelatedArticleItem } from './common/getRelatedArticleItem';
+import { getUnrevised } from './live/getUnrevised';
 import { setOptions } from './common/setOptions';
 
 import {
@@ -39,25 +42,26 @@ import {
 	exists,
 	get,
 	save,
+	saveNewVersion,
 	upsert,
 } from './ArticleDAO';
 
-const service : ArticleService
-	= createPersistingService <ArticleDocument, ArticleService, Article> (
-		ArticleModel, {
-			addFeedback,
-			download,
-			exists,
-			fetch,
-			get,
-			save,
-			upsert,
-			getAmount,
-			getByID,
-			getRangeWithFBCount,
-			getRelatedArticleItem,
-			setOptions,
-		}
-	);
-
-module.exports = service;
+module.exports = createPersistingService <ArticleDocument, ArticleService, Article> (
+	ArticleModel, {
+		addFeedback,
+		download,
+		exists,
+		fetch,
+		get,
+		save,
+		saveNewVersion,
+		upsert,
+		getAmount,
+		getByID,
+		getIDsToPullUpdates,
+		getRangeWithFBCount,
+		getRelatedArticleItem,
+		getUnrevised,
+		setOptions,
+	}
+) as ArticleService;

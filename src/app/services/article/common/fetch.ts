@@ -76,8 +76,10 @@ function determineLocation(website : Website, url : ArticleURL) : Promise <Artic
 	}
 
 	switch (website.parserClass) {
-		case 'AMPParser':
+		case 'AMP Parser':
 			return ArticleURL.from(`${url.toString()}/amp/`);
+		case 'Nettavisen Parser':
+			return ArticleURL.from(url.toString().replace(/m.nettavisen.no/, 'www.nettavisen.no'));
 	}
 
 	return Promise.resolve(url);

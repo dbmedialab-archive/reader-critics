@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-enum FeedbackStatus {
+export enum FeedbackStatus {
 	AwaitEnduserData = 'await_enduser_data',
 	FeedbackSent = 'feedback_sent',
 	New = 'new',

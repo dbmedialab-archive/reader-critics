@@ -20,9 +20,7 @@ import { concat } from 'lodash';
 
 import diffToPlainHTML from 'base/diff/diffToPlainHTML';
 
-import Article from 'base/Article';
 import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 
@@ -37,13 +35,6 @@ export type ItemFormatPayload = {
 };
 
 // Formatting - General
-
-const articleTitle = (article : Article) => {
-	const url = article.url;
-	const ttl = article.items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle).text;
-
-	return `<a href="${url}">${ttl}</a>`;
-};
 
 const enduser = (f : Feedback) => {
 	const n = f.enduser.name;
@@ -126,7 +117,6 @@ const itemLinks = (i : ItemFormatPayload, locale? : string) => {
 // Main export
 
 export const format = {
-	articleTitle,
 	colorItemText,
 	colorItemDiff,
 	enduser,

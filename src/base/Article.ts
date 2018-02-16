@@ -23,13 +23,17 @@ import PersistedModel from './zz/PersistedModel';
 import User from './User';
 import Website from './Website';
 
-interface Article extends PersistedModel {
+export interface Article extends PersistedModel {
 	// Defining a unique version of one article
 	url : ArticleURL
 	version : string
 
 	// Byline
 	authors : User[]
+
+	// Title as own property; this is also included in the article items if the
+	// parser works correctly.
+	title : string
 
 	website? : Website
 

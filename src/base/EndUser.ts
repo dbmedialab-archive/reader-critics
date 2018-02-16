@@ -25,6 +25,6 @@ import Person from './zz/Person';
 // The definition here is made to add the features of "PersistedModel" and also
 // for keeping "Person" as an abstract concept in the background.
 
-interface EndUser extends PersistedModel, Person {}
+export interface EndUser extends PersistedModel, Person {}
 
 export default EndUser;

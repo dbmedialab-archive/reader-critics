@@ -21,7 +21,8 @@
 			"app/*": [ "app/*" ],
 			"base/*": [ "base/*" ],
 			"front/*": [ "front/*" ],
-			"test/*": [ "test/*" ]
+			"test/*": [ "test/*" ],
+			"tools/*": [ "tools/*" ]
 		},
 
 		"allowJs": false,

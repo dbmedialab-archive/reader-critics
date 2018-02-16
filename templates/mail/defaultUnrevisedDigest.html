@@ -1,0 +1,58 @@
+<html lang="{{=it.locale}}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+			div {
+				font-size: 12pt;
+			}
+			a {
+				color: #0070D0;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+			hr {
+				margin-top: 15px;
+				margin-bottom: 15px;
+			}
+			div.header {
+				font-size: 12pt;
+				margin-bottom: 15px;
+			}
+			div.bottom {
+				margin-top: 15px;
+			}
+			div.article-box {
+				margin-bottom: 8px;
+			}
+			span.article-title {
+				font-size: 14pt;
+				font-weight: bold;
+			}
+			span.article-byline {
+			}
+		</style>
+		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
+			<div class="header">{{=it.text.itsaDigest}}</div>
+
+			<hr/>
+
+			{{~it.articles :article}}
+			<div class="article-box">
+				<span class="feedback-count">{{=article.feedbackCount}}</span>
+				&nbsp;&bull;&nbsp;
+				<span class="article-title"><a href="{{=article.url}}">{{=article.title}}</a></span>
+				&nbsp;&bull;&nbsp;
+				<span class="article-byline">{{=it.text.author}}:&nbsp;{{=article.byline}}</span>
+			</div>
+			{{~}}
+
+			<hr/>
+
+			<div class="bottom">{{=it.text.dateRange}}</div>
+		</div>
+	</body>
+</html>

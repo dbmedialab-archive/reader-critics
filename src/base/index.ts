@@ -16,25 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import 'mocha';
+export * from './Article';
+export * from './ArticleAuthor';
+export * from './ArticleItem';
+export * from './ArticleItemType';
+export * from './ArticleOptions';
 
-import { assert } from 'chai';
+export * from './EndUser';
 
-import {
-	getAvailableParsers,
-	initParserResolver,
-} from 'app/services/parser/common/parserResolver';
+export * from './EscalationLevel';
+export * from './EscalationThresholds';
 
-describe('ParserService', () => {
-	it('getAvailableParsers', () => {
-		return initParserResolver()
-		.then(() => getAvailableParsers())
-		.then((parsers : string[]) => {
-			// It should at least find two parser implementations (see next)
-			assert.isAtLeast(parsers.length, 2);
-			// Check if our default implementations are resolved
-			assert.include(parsers, 'AMP Parser');
-			assert.include(parsers, 'Generic Parser');
-		});
-	});
-});
+export * from './Feedback';
+export * from './FeedbackItem';
+export * from './FeedbackStatus';
+
+export * from './Pagination';
+
+export * from './Parser';
+export * from './ParserFactory';
+
+export * from './Suggestion';
+
+export * from './User';
+export * from './UserRole';
+
+export * from './Website';
