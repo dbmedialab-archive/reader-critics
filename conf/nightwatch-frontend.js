@@ -27,10 +27,9 @@ const selenium = {
 
 module.exports = {
 	src_folders: [ path.join(rootPath, 'out/test/frontend') ],
-
 	live_output: true,
 
-	selenium:,
+	selenium,
 
 	'test_settings': {
 		'default': {

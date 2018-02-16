@@ -16,10 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-const {
-	openPage,
-} = require('../test-tools-frontend');
-
 const timeToWait = 5000;
 
 // CSS selectors for the various probed elements
@@ -320,3 +316,4 @@ describe('ArticleEditForm URLs coverage tests', () => {
 			.waitForElementNotVisible(elFeedbackForm, timeToWait);
 	});
 });
+*/
