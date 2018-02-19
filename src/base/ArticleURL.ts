@@ -52,7 +52,7 @@ export class ArticleURL {
 			: origURL;
 
 		if (!containsScheme.test(decodedURL)) {
-			throw new TypeError('URL must begin with a HTTP(S) scheme');
+			throw new TypeError(`URL must begin with a HTTP(S) scheme ($decodedURL})`);
 		}
 
 		// this.url = new URL(decodedURL);
