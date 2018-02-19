@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.5.7",
+	"version": "0.5.8",
 	"license": "GPL-3.0",
 	"private": false,
 	"description": "Leserkritikk v2 (Reader Critics)",
@@ -176,7 +176,7 @@
 		"geckodriver": "^1.8.0",
 		"nodemon": "^1.11.0",
 		"npm-run-all": "^4.0.0",
-		"selenium-server-standalone-jar": "3.8.1",
+		"selenium-server-standalone-jar": "3.9.1",
 		"webpack-dev-server": "^2.5.0"
 	},
 	"greenkeeper": {

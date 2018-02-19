@@ -6,6 +6,10 @@
 			"www.abendschau.de",
 		],
 		locale: "de",
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Gustl Bayrhammer",
@@ -21,6 +25,10 @@
 		],
 		locale: "nb",
 		parserClass: 'AMP Parser',
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
@@ -44,6 +52,10 @@
 				"email": "vakt@dagbladet.no"
 			}
 		],
+		layout: {
+			templates: {
+			},
+		},
 		unrevisedDigest: {
 			isActive: true,
 		},
@@ -54,6 +66,10 @@
 			"www.dinside.no"
 		],
 		locale: "nb",
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
@@ -76,6 +92,10 @@
 				email: 'redaksjon@morgenposten.no',
 			},
 		],
+		layout: {
+			templates: {
+			},
+		},
 		unrevisedDigest: {
 			isActive: true,
 		},
@@ -89,6 +109,10 @@
 			'www.nettavisen.no',
 		],
 		locale: 'nb',
+		layout: {
+			templates: {
+			},
+		},
 		parserClass: 'Nettavisen Parser',
 		chiefEditors: [
 		],
