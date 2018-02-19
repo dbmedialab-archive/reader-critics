@@ -22,7 +22,7 @@ import { Article } from 'base/Article';
 import { Website } from 'base/Website';
 import { translate as __ } from 'app/services/localization';
 
-import { notifyBrowser } from 'app/util/notifyBrowser';
+// import { notifyBrowser } from 'app/util/notifyBrowser';
 
 // Get all articles together into one digest e-mail
 
@@ -58,12 +58,14 @@ export function layoutDigest(
 	})
 	.render();
 
-	notifyBrowser(html);  // -- this is only for convenient local testing
+	// notifyBrowser(html);  // -- this is only for convenient local testing
 	return Promise.resolve(html);
 }
 
 const formatAuthors = (article : Article) => article.authors.map(author => (
-	`<a href="mailto:${author.email}">${author.name}</a>`
+	author.email
+		? `<a href="mailto:${author.email}">${author.name}</a>`
+		: author.name
 )).join(', ');
 
 const formatFeedbacks = (article : Article, locale : string) => (

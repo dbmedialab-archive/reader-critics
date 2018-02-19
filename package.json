@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.5.7",
+	"version": "0.5.8",
 	"license": "GPL-3.0",
 	"private": false,
 	"description": "Leserkritikk v2 (Reader Critics)",
@@ -112,7 +112,7 @@
 		"serve-favicons": "2.1.5",
 		"spinkit": "^1.2.5",
 		"strip-url-auth": "1.0.1",
-		"style-loader": "0.20.0",
+		"style-loader": "0.20.2",
 		"typed-immutable-record": "0.0.6",
 		"uuid": "3.2.1",
 		"webpack": "3.11.0",
@@ -176,7 +176,7 @@
 		"geckodriver": "^1.8.0",
 		"nodemon": "^1.11.0",
 		"npm-run-all": "^4.0.0",
-		"selenium-server-standalone-jar": "3.8.1",
+		"selenium-server-standalone-jar": "3.9.1",
 		"webpack-dev-server": "^2.5.0"
 	},
 	"greenkeeper": {
