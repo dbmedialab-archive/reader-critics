@@ -69,7 +69,7 @@ function process() {
 	// We're reusing the article query date to get the websites which are up for the digest
 	return websiteService.getToRunUnrevisedDigest(latestCreated)
 	.then((websites) => {
-		websites.forEach(website => {
+		return Promise.map(websites, ((website : Website) => {
 			log(
 				'Checking articles from %s between %s and %s',
 				website.name,
@@ -100,15 +100,15 @@ function process() {
 					getRecipientList(website, MailRecipientList.Editors),
 					getMailSubject(website, latestCreated),
 				])
-				.spread((recipients : Array <string>, subject : string) => {
-					return SendGridMailer(recipients, subject, mailContent);
-				});
+				.spread((recipients : Array <string>, subject : string) => (
+					SendGridMailer(recipients, subject, mailContent)
+				));
 			})
 			// Update the "last digest"-timestamp in the website object
 			.finally(() => {
-	//			websiteService.setUnrevisedDigestLastRun(website);
+				websiteService.setUnrevisedDigestLastRun(website);
 			});
-		}); // websites.forEach
+		})); // Promise.map(websites)
 	});
 }
 
