@@ -3,6 +3,10 @@
 const path = require('path');
 const rootPath = require('find-root')();
 
+require('app-module-path').addPath(path.join(rootPath, 'out'));
+require('source-map-support').install();
+require('tsconfig-paths/register');
+
 const chromedriver = require('chromedriver');
 // const geckodriver = require('geckodriver');
 const seleniumJAR = require('selenium-server-standalone-jar');
@@ -12,15 +16,13 @@ console.log('Selenium version:', seleniumJAR.version);
 console.log('Chrome driver version:', chromedriver.version);
 // console.log('Gecko driver version:', geckodriver.version);
 
-require('tsconfig-paths/register');
-
 const selenium = {
 	start_process: true,
 	server_path: seleniumJAR.path,
 	port: 4444,
 	cli_args: {
 		'webdriver.chrome.driver': chromedriver.path,
-	//	'webdriver.gecko.driver': geckodriver.path,
+		// 'webdriver.gecko.driver': geckodriver.path,
 	},
 };
 
@@ -29,7 +31,7 @@ module.exports = {
 		path.join(rootPath, 'out/test/frontend')
 	],
 	output_folder: 'stats',
-	live_output: true,
+	live_output: false,
 
 	selenium,
 
@@ -47,26 +49,6 @@ module.exports = {
 			desiredCapabilities: {
 				browserName: 'chrome',
 			},
-			// 'desiredCapabilities': {
-			//  	'browserName': 'firefox',
-			//  	'marionette': true
-			// },
 		},
 	},
 };
-
-/*
-const conf = {
-	src_folders: ['src/test/frontend'],
-	output_folder: false,
-	selenium: SELENIUM_CONFIGURATION,
-	test_runner: {
-		type: 'mocha',
-		options: {
-			ui: 'bdd',
-			reporter: 'list',
-		},
-	},
-	test_settings: ENVIRONMENTS,
-};
-*/

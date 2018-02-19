@@ -127,7 +127,7 @@ describe('ArticleEditForm Reset Tests', () => {
 	// Form elements in React can be set up in a way that makes them read-only
 	// (for example, declaring them with value=this.state.some)
 
-	it('should accept and keep user input', (browser) => {
+	/*it('should accept and keep user input', (browser) => {
 		// Focus comment field and type some text into it
 		thePage.click(elCommentArea)
 		.setValue(elCommentArea, userComment)
@@ -143,7 +143,7 @@ describe('ArticleEditForm Reset Tests', () => {
 		// Check if the input fields have kept the values that we just fed them
 		.assert.value(elCommentArea, userComment)
 		.assert.value(elTextArea, changedText);
-	});
+	});*/
 
 	// Check if "Cancel" button works properly. It should close the form
 	// without text diff

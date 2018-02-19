@@ -16,12 +16,10 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
+export const timeToWait = 5000;
 
-import config from 'app/config';
+const httpPort = process.env.HTTP_PORT || 4000;
 
-export const log = app.createLog('nightwatch');
-
-export function openPage(client, urlPath : string = '/') {
-	return client.url(`http://localhost:${config.get('http.port')}${urlPath}`);
+export function openPage(browser, urlPath : string = '/') {
+	return browser.url(`http://localhost:${httpPort}${urlPath}`);
 }
