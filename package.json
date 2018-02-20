@@ -48,7 +48,7 @@
 		"@sendgrid/mail": "6.2.1",
 		"ansicolors": "0.3.2",
 		"app-module-path": "2.2.0",
-		"axios": "0.17.1",
+		"axios": "0.18.0",
 		"bcrypt": "1.0.3",
 		"bluebird": "3.5.1",
 		"body-parser": "1.18.2",
