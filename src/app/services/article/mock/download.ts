@@ -24,7 +24,6 @@ import ArticleURL from 'base/ArticleURL';
 import { NotFoundError } from 'app/util/errors';
 
 const log = app.createLog();
-const defaultName = 'resources/article/html/dagbladet.no_67732370.html';
 
 // Check if the input URL matches the simple pattern
 // http[s]://(hostname)/(article ID)
