@@ -147,8 +147,9 @@ const testGetRange = () => it('getRange()', () => {
 		articleService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		articleService.getRange(articleCount),
-	]).then((results : [Article[]]) => {
-		results.forEach(result => {
+	])
+	.spread((...ranges : Article[][]) => {
+		ranges.forEach(result => {
 			assert.isArray(result);
 			result.forEach(item => assertArticleObject(item));
 		});
@@ -159,7 +160,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result : Article[], index : number) => {
+		ranges.forEach((result : Article[], index : number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],

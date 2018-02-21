@@ -116,8 +116,9 @@ const testGetRange = () => it('getRange()', () => {
 		enduserService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		enduserService.getRange(userCount),
-	]).then((results : [EndUser[]]) => {
-		results.forEach(result => {
+	])
+	.spread((...ranges : EndUser[][]) => {
+		ranges.forEach(result => {
 			assert.isArray(result);
 			result.forEach(item => assertUserObject(item));
 		});
@@ -128,7 +129,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result : EndUser[], index : number) => {
+		ranges.forEach((result : EndUser[], index : number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],
