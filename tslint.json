@@ -11,9 +11,11 @@
 		"max-file-line-count": [ true, 200 ],
 		"max-line-length": [ true, 100 ],
 		"new-parens": true,
+		"newline-per-chained-call": false,
 		"no-conditional-assignment": true,
 		"no-consecutive-blank-lines": true,
 		"no-duplicate-variable": true,
+		"no-dynamic-delete": false,
 		"no-eval": true,
 		"no-irregular-whitespace": true,
 		"no-parameter-reassignment": true,
@@ -32,6 +34,7 @@
 		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
+		"prefer-readonly": true,
 		"semicolon": [ true, "always", "ignore-interfaces" ],
 		"trailing-comma": [ true, {
 			"multiline": {

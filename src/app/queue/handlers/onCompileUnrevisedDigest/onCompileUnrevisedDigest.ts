@@ -83,26 +83,27 @@ function process() {
 				templateService.getUnrevisedDigestMailTemplate(website),
 			])
 
-			// Layout the digest e-mail
-			.spread((articles : Article[], template : MailTemplate) => (
-				(articles.length > 0)
-					? layoutDigest(website, articles, template, earliestCreated, latestCreated)
-					: null
-			))
+			// Layout the digest e-mail, if any articles are found
+			.spread((articles : Article[], template : MailTemplate) => {
+				log('Found %d articles on %s to include in the digest', articles.length, website.name);
+				return (articles.length === 0) ? null
+					: layoutDigest(website, articles, template, earliestCreated, latestCreated);
+			})
 
 			// Send the digest e-mail
 			.then((mailContent : string|null) => {
 				if (mailContent === null) {
-					return;
+					return;  // The previous step didn't dig up anything, so do nothing here as well
 				}
 
 				return Promise.all([
 					getRecipientList(website, MailRecipientList.Editors),
 					getMailSubject(website, latestCreated),
 				])
-				.spread((recipients : Array <string>, subject : string) => (
-					SendGridMailer(recipients, subject, mailContent)
-				));
+				.spread((recipients : Array <string>, subject : string) => {
+					log (recipients);
+					return SendGridMailer(recipients, subject, mailContent);
+				});
 			})
 			// Update the "last digest"-timestamp in the website object
 			.finally(() => {
