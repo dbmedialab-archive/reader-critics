@@ -25,7 +25,7 @@ abstract class BaseItems {
 
 	private totalElementCount : number = 0;
 
-	private elementTypeCounts : any = {};
+	private readonly elementTypeCounts : {} = {};
 
 	constructor() {
 		// Preset element type counters

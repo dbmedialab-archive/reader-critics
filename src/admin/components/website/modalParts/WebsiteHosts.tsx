@@ -17,12 +17,12 @@
 //
 
 import * as React from 'react';
-import {InputError} from 'admin/components/form/InputError';
-import {connect} from 'react-redux';
+import { InputError } from 'admin/components/form/InputError';
+import { connect } from 'react-redux';
 import Validator from 'admin/services/Validation';
 
 class WebsiteHosts extends React.Component <any, any> {
-	private validator: Validator;
+	private readonly validator : Validator;
 
 	constructor (props) {
 		super(props);

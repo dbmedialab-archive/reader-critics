@@ -59,7 +59,7 @@ extends React.Component <ArticleEditFormProp, ArticleEditFormState>
 
 	// To prevent hidden references to nested objects (esp. the "links" array),
 	// define current/initial separately!
-	private static makeCleanState = (text : string) => ({
+	private static readonly makeCleanState = (text : string) => ({
 		current: {
 			text,
 			comment: '',

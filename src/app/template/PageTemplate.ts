@@ -29,8 +29,8 @@ import config from 'app/config';
 
 export default class PageTemplate extends AbstractTemplate {
 
-	private scripts : string[] = [];
-	private styles : string[] = [];
+	private readonly scripts : string[] = [];
+	private readonly styles : string[] = [];
 
 	private params : Object = {};
 
