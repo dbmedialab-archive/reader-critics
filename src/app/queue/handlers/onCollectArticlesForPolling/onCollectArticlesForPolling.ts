@@ -60,12 +60,15 @@ function queryArticles() : Promise <PollUpdateData[]> {
 
 	const queries = pollParams.map((pollParam, index) => {
 		// Calculate the query dates for certain query periods
-		const latestCreated = pollParam.pastBase
-			? moment(now).subtract(pollParam.pastBase).toDate()
-			: now;
+		let latestCreated = pollParam.pastBase ? moment(now).subtract(pollParam.pastBase).toDate() : now;
 
 		const earliestCreated = moment(latestCreated).subtract(pollParam.querySpan).toDate();
 		const latestPoll = moment(now).subtract(pollParam.pollSpan).toDate();
+
+		if (!pollParam.pastBase) {
+			// If we're looking for "now", add one minute to safely include everything
+			latestCreated = moment(latestCreated).add(moment.duration({ minutes: 1 })).toDate();
+		}
 
 		return articleService.getIDsToPullUpdates(latestCreated, earliestCreated, latestPoll);
 	});
