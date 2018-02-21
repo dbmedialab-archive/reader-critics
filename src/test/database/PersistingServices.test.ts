@@ -18,7 +18,10 @@
 
 import 'mocha';
 
-import { initDatabase } from 'app/db';
+import {
+	closeDatabase,
+	initDatabase,
+} from 'app/db/MongoDB';
 
 import articleService from './persisting-services/ArticleServiceTests';
 import enduserService from './persisting-services/EndUserServiceTests';
@@ -28,6 +31,7 @@ import userService from './persisting-services/UserServiceTests';
 import websiteService from './persisting-services/WebsiteServiceTests';
 
 before(() => initDatabase());
+after(() => closeDatabase());
 
 // Order of execution has to be preserved:
 describe('WebsiteService', websiteService);

@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 
-import {ObjectID} from 'bson';
 import Article from 'base/Article';
-import {ArticleModel} from 'app/db/models';
 import emptyCheck from 'app/util/emptyCheck';
-import {wrapFindOne} from 'app/db/common';
+
+import { ArticleModel } from 'app/db/models';
+import { ObjectID } from 'app/db';
+import { wrapFindOne } from 'app/db/common';
 
 export default function (
 	ID : ObjectID,

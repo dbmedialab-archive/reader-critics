@@ -6,6 +6,10 @@
 			"www.abendschau.de",
 		],
 		locale: "de",
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Gustl Bayrhammer",
@@ -21,6 +25,10 @@
 		],
 		locale: "nb",
 		parserClass: 'AMP Parser',
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
@@ -43,7 +51,14 @@
 				name: "Vakt Sjef",
 				"email": "vakt@dagbladet.no"
 			}
-		]
+		],
+		layout: {
+			templates: {
+			},
+		},
+		unrevisedDigest: {
+			isActive: true,
+		},
 	},
 	{
 		name: "dinside.no",
@@ -51,6 +66,10 @@
 			"www.dinside.no"
 		],
 		locale: "nb",
+		layout: {
+			templates: {
+			},
+		},
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
@@ -73,26 +92,28 @@
 				email: 'redaksjon@morgenposten.no',
 			},
 		],
+		layout: {
+			templates: {
+			},
+		},
+		unrevisedDigest: {
+			isActive: true,
+		},
 	},
 	{
-		name: 'f-b.no',
+		name: 'nettavisen.no',
 		hosts: [
-			'f-b.no',
-			'www.f-b.no',
+			'na.no',
+			'www.na.no',
+			'nettavisen.no',
+			'www.nettavisen.no',
 		],
 		locale: 'nb',
-		parserClass: 'Fredriksstad Blad Parser',
-		chiefEditors: [
-		],
-	},
-	{
-		name: 'b.dk',
-		hosts: [
-			'b.dk',
-			'www.b.dk',
-		],
-		locale: 'da',
-		parserClass: 'Berlingske Parser',
+		layout: {
+			templates: {
+			},
+		},
+		parserClass: 'Nettavisen Parser',
 		chiefEditors: [
 		],
 	},

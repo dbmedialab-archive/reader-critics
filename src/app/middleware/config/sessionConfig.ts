@@ -19,8 +19,10 @@
 import * as session from 'express-session';
 import * as connectRedis from 'connect-redis';
 
-import { createRedisConnection } from 'app/db';
-import { dbSessionCache } from 'app/db/createRedisConnection';
+import {
+	createRedisConnection,
+	dbSessionCache,
+} from 'app/db';
 
 import * as app from 'app/util/applib';
 import config from 'app/config';

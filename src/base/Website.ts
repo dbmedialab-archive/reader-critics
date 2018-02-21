@@ -21,7 +21,7 @@ import { EscalationThresholds } from './EscalationThresholds';
 import PersistedModel from './zz/PersistedModel';
 import Person from './zz/Person';
 
-interface Website extends PersistedModel {
+export interface Website extends PersistedModel {
 	name : string
 	parserClass? : string
 	locale? : string
@@ -33,8 +33,10 @@ interface Website extends PersistedModel {
 
 	layout : {
 		templates : {
+			escalateToEditorMail? : string
 			feedbackPage? : string
 			feedbackNotificationMail? : string
+			unrevisedDigestMail? : string
 		}
 		scssVariables? : object
 	}

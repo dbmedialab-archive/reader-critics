@@ -24,7 +24,7 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-const defaultName = 'example.html';
+const defaultName = 'resources/article/html/dagbladet.no_67732370.html';
 
 // Check if the input URL matches the simple pattern
 // http[s]://(hostname)/(article ID)

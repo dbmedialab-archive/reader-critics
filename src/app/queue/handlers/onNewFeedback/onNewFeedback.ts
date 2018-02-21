@@ -21,8 +21,6 @@ import {
 	Job,
 } from 'kue';
 
-import ArticleItem from 'base/ArticleItem';
-import ArticleItemType from 'base/ArticleItemType';
 import Feedback from 'base/Feedback';
 import FeedbackStatus from 'base/FeedbackStatus';
 import MailTemplate from 'app/template/MailTemplate';
@@ -39,7 +37,7 @@ import {
 	MessageType,
 } from 'app/queue';
 
-import { getRecipients } from 'app/mail/getRecipients';
+import { getRecipients } from 'app/mail/MailRecipients';
 
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
@@ -115,7 +113,5 @@ function process(feedbackID : string) {
 }
 
 function getMailSubject(feedback : Feedback) : Promise <string> {
-	return Promise.resolve(feedback.article.items.find(
-		(i : ArticleItem) => i.type === ArticleItemType.MainTitle
-	).text);
+	return Promise.resolve(feedback.article.title);
 }

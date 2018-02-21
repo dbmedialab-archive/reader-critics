@@ -19,16 +19,12 @@
 // tslint:disable: max-file-line-count
 
 import * as Cheerio from 'cheerio';
-
-import * as app from 'app/util/applib';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 
 import BaseIteratingItems from './BaseIteratingItems';
 import IteratingParserItem from './IteratingParserItem';
-
-const log = app.createLog();
 
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 
@@ -43,8 +39,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	};
 
 	protected initialize() : Promise <void> {
-		log('### initialize');
-
 		this.articleItems = Object.freeze({
 			featured: undefined,
 			titles: [],
@@ -59,7 +53,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	}
 
 	protected parseContent() : Promise <ArticleItem[]> {
-		log('### parseContent');
 		this.parseElements();
 		this.iterateParsedElements();
 		return Promise.resolve(this.articleItems.content);
@@ -161,6 +154,16 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 
 	protected parseTitles() : Promise <ArticleItem[]> {
 		return Promise.resolve(this.articleItems.titles);
+	}
+
+	protected parseTitleFromMetaData() : Promise <string> {
+		const meta = this.select('meta[name="title"]').toArray();
+
+		if (meta.length === 1) {
+			return Promise.resolve(this.select(meta[0]).attr('content'));
+		}
+
+		return Promise.resolve('');
 	}
 
 	// Nur zum Testen
