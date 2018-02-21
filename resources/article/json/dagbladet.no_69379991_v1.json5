@@ -1,10 +1,10 @@
 {
 	url: {
-		href: "https://www.dagbladet.no/nyheter/fyllekjorte-n-meter--ble-domt-til-fengsel/69379991",
+		href: "https://dagbladet.no/nyheter/fyllekjorte-n-meter--ble-domt-til-fengsel/69379991",
 	},
-	"version" : "2018-01-26T06:37:23.000Z",
+	version: '2018-01-26T06:37:23.000Z',
 	title: "Fyllekjørte én meter – ble dømt til fengsel",
-	"items" : [
+	items: [
 		{
 			"type" : "title",
 			"order" : {
@@ -83,8 +83,4 @@
 			name: "NTB",
 		},
 	],
-	"date" : {
-		"modified" : "2018-01-26T06:41:54.371Z",
-		"created" : "2018-01-26T06:41:54.371Z"
-	}
 }
