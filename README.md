@@ -12,6 +12,10 @@
 &nbsp;
 [![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/dbmedialab/reader-critics)
 
+Reader Critics is a tool made by Norwegian [Dagbladet](https://www.dagbladet.no/) with support from the [Google DNI](https://digitalnewsinitiative.com/dni-projects/leserkritikk-reader-critics/) fund, designed to enable the readers to give precise and constructive criticism to journalistic work.
+
+This is the completely rewritten version of _Leserkritikk_, made with [TypeScript](https://www.typescriptlang.org/) and [ReactJS](https://reactjs.org/) as its cornerstones, among lots of other things. It has been launched to production on [dagbladet.no](https://www.dagbladet.no/) as of December 2016.
+
 ## Table of Contents
 
 * [Project Setup](doc/project-setup.md) ‒ Instructions how to get from the checkout to a running system

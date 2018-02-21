@@ -37,8 +37,7 @@ const typescriptConfig = path.join(__dirname, 'tsconfig.json');
 const BabelLoader = {
 	loader: 'babel-loader',
 	options: {
-		presets: ['es2015', 'react'],
-		// plugins: [ 'lodash' ],
+		presets: [ 'env', 'react' ],
 	},
 };
 
