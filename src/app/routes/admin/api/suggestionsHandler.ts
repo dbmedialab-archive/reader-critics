@@ -26,29 +26,24 @@ import {
 	okResponse,
 } from 'app/routes/api/apiResponse';
 
-import {suggestionService} from 'app/services';
+import { Suggestion } from 'base/Suggestion';
+import { suggestionService } from 'app/services';
 import pagination from 'app/util/pagination';
 
 /**
  * Provides whole list of existing suggestions
  */
 export function list (requ: Request, resp: Response) {
-	const notFound = 'Resourse not found';
 	const params = pagination(requ);
-	const {skip, limit, sort} = params;
+	const { skip, limit, sort } = params;
+
 	Promise.all([
 		suggestionService.getRange(skip, limit, sort),
 		suggestionService.getAmount(),
-	]).then(data => {
-		const [suggestions, pages] = data;
-		const pageCount = Math.ceil(pages / limit);
-		if (suggestions.length > 0) {
-			return okResponse(resp, {suggestions, pageCount});
-		} else {
-			return errorResponse(resp, undefined, notFound, { status: 404 });
-		}
-
-	}).catch((err) => {
-		return errorResponse(resp, undefined, err.stack, { status: 500 });
-	});
+	])
+	.spread((suggestions : Suggestion[], pages : number) => okResponse(resp, {
+		suggestions,
+		pageCount: Math.ceil(pages / limit),
+	}))
+	.catch((err) => errorResponse(resp, undefined, err.stack, { status: 500 }));
 }
