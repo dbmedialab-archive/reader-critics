@@ -41,7 +41,7 @@ export interface FormPayload {
 export default class SuggestionFormContainer extends React.Component <any, FormPayload> {
 	private commentArea : any;
 	private emailInput : any;
-	private validator : Validation;
+	private readonly validator : Validation;
 	private recaptchaInstance;
 
 	constructor(props) {
@@ -66,7 +66,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		this.verifyCaptcha = this.verifyCaptcha.bind(this);
 	}
 
-	private handleBlur = (field) => (evt) => {
+	private readonly handleBlur = (field) => (evt) => {
 		this.setState({
 			touched: { ...this.state.touched, [field]: true },
 		});
@@ -129,7 +129,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		);
 	}
 
-	private renderEmailInput = () => (<fieldset className="text">
+	private readonly renderEmailInput = () => (<fieldset className="text">
 		<label htmlFor="email">Email</label>
 		<input
 			type="email"
@@ -141,7 +141,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		/>
 	</fieldset>)
 
-	private renderCommentInput = () => <fieldset className="text">
+	private readonly renderCommentInput = () => <fieldset className="text">
 		<label htmlFor="comment"><FormattedMessage id="suggest.label.comment"/></label>
 		<textarea
 			name="comment"
@@ -157,7 +157,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		/>
 	</fieldset>
 
-	private renderCaptcha = () => <fieldset>
+	private readonly renderCaptcha = () => <fieldset>
 		<Recaptcha
 			ref={e => this.recaptchaInstance = e}
 			sitekey={window['app']['recaptcha'] ? window['app']['recaptcha'].publicKey : ''}
@@ -174,7 +174,7 @@ export default class SuggestionFormContainer extends React.Component <any, FormP
 		});
 	}
 
-	private renderButtons = () => <fieldset className="actions">
+	private readonly renderButtons = () => <fieldset className="actions">
 		<button type="submit" disabled={!this.isFormValid()} className="button-primary">
 			<FormattedMessage id="button.save"/>
 		</button>

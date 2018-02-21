@@ -44,7 +44,7 @@ export interface FeedbackContainerState {
 export default class FeedbackContainer
 extends React.Component <any, FeedbackContainerState> {
 
-	private articleElements : ArticleElement[] = [];
+	private readonly articleElements : ArticleElement[] = [];
 	private finishBtn : FinishButton;
 
 	constructor() {
@@ -169,7 +169,7 @@ extends React.Component <any, FeedbackContainerState> {
 		);
 	}
 
-	private IntroHelpBox = () => (
+	private readonly IntroHelpBox = () => (
 		<div className={classnames('card', 'helpbox')}>
 			<h1><FormattedMessage id="fb.helpbox.title"/></h1>
 			<p><FormattedMessage id="fb.helpbox.text"/></p>

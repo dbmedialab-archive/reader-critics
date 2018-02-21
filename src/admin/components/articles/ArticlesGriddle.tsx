@@ -33,9 +33,9 @@ export interface IArticlesGriddle {
 }
 
 class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
-	private Layout: (components: any) => JSX.Element;
-	private RowEnhancer: (component: any) => (props: any) => JSX.Element;
-	private events: any;
+	private readonly Layout: (components: any) => JSX.Element;
+	private readonly RowEnhancer: (component: any) => (props: any) => JSX.Element;
+	private readonly events: any;
 
 	constructor (props: IArticlesGriddle) {
 		super(props);
