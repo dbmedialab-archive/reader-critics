@@ -44,6 +44,8 @@ const options : MoreConnectionOptions = {
 const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
 
 export function initDatabase() : Promise <void> {
+	console.log(mongoURL);
+	console.log();
 	return initiateConnection().then(() => ensureIndexes());
 }
 
