@@ -25,9 +25,17 @@ import config from 'app/config';
 import * as app from 'app/util/applib';
 
 const log = app.createLog('redis');
+const checkURL = /^redis:\/\/.+$/;
 
 export const dbMessageQueue = 'message-queue';
 export const dbSessionCache = 'session-cache';
+
+// This function directly returns the Redis client object and does not produce
+// a promise, as opposed to most other functions. Mostly because this function
+// is used to create client objects for several other middleware objects like
+// message queue or session cache (all third-party modules) it needs to return a
+// client object directly. Luckily, IORedis returns synchronously and handles
+// delays during the connection phase internally.
 
 export function createRedisConnection(which : string) : IORedis.Redis {
 	if (![dbMessageQueue, dbSessionCache].includes(which)) {
@@ -35,6 +43,11 @@ export function createRedisConnection(which : string) : IORedis.Redis {
 	}
 
 	const url = config.get(`db.redis.url.${which}`);
+
+	if (!checkURL.test(url)) {
+		throw new Error('Invalid Redis connection URL');
+	}
+
 	const redis : IORedis.Redis = new IORedis(url);
 
 	redis.on('connect', () => {
