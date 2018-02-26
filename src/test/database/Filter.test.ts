@@ -12,12 +12,12 @@ const testData = {
 	},
 	'chiefEditors': [{
 		'name': 'Quak',
-		'email': 'vakt@mopo.no',
+		'email': 'vakt@avisa.tld',
 		'_id': '67890',
 	}],
 	'hosts': [
-		'www.mopo.no',
-		'www.morgenposten.no',
+		'avisa.tld',
+		'www.avisa.tld',
 	],
 	'singleElement': [
 		123456,
@@ -42,12 +42,12 @@ const expected = {
 	},
 	'chiefEditors': [{
 		'name': 'Quak',
-		'email': 'vakt@mopo.no',
+		'email': 'vakt@avisa.tld',
 		'ID': '67890',
 	}],
 	'hosts': [
-		'www.mopo.no',
-		'www.morgenposten.no',
+		'avisa.tld',
+		'www.avisa.tld',
 	],
 	'singleElement': [
 		123456,
