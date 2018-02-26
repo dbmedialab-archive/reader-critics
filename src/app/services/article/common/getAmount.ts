@@ -30,7 +30,7 @@ export default function (search?: string) : Promise <number> {
 			// The RegExp above is looking for search string match in URL AFTER the domain part
 			// Example: for string 'dagbladet' it would find only the article with second link below:
 			// - 'http://www.dagbladet.no/articles/65342134'
-			// - 'http://mopo.no/articles/dagbladet-never-die/63232123'
+			// - 'http://avisa.tld/articles/dagbladet-never-die/63232123'
 		];
 	}
 

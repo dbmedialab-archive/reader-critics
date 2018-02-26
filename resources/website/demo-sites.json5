@@ -13,7 +13,7 @@
 		chiefEditors: [
 			{
 				name: "Gustl Bayrhammer",
-				"email": "gb@br.de"
+				email: "gb@br.de"
 			}
 		]
 	},
@@ -32,7 +32,7 @@
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
-				"email": "vakt@ampbladet.no"
+				email: "vakt@ampbladet.no"
 			}
 		]
 	},
@@ -49,7 +49,7 @@
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
-				"email": "vakt@dagbladet.no"
+				email: "vakt@dagbladet.no"
 			}
 		],
 		layout: {
@@ -73,23 +73,21 @@
 		chiefEditors: [
 			{
 				name: "Vakt Sjef",
-				"email": "vakt@dinside.no"
+				email: "vakt@dinside.no"
 			}
 		]
 	},
 	{
-		name: 'morgenposten.no',
+		name: 'avisa.tld',
 		hosts: [
-			'mopo.no',
-			'morgenposten.no',
-			'www.mopo.no',
-			'www.morgenposten.no',
+			'avisa.tld',
+			'www.avisa.tld',
 		],
 		locale: 'nb',
 		chiefEditors: [
 			{
 				name: 'Like A. Boss',
-				email: 'redaksjon@morgenposten.no',
+				email: 'redaksjon@avisa.tld',
 			},
 		],
 		layout: {
