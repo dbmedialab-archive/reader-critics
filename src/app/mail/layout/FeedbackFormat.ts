@@ -30,7 +30,6 @@ export function formatFeedback(
 	locale : string
 ) : string
 {
-	console.log(app.inspect(feedback));
 	const created = new Date(feedback.date.created);
 
 	const posted = __('mail.fb-notify.posted', {
