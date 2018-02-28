@@ -115,8 +115,8 @@
 					nb: 'Du har fått tilbakemelding på artikkelen',
 				},
 				'posted': {
-					en: 'Posted on',
-					nb: 'Postet på',
+					en: 'Posted on {createdDate} {createdTime} by {enduser}',
+					nb: 'Postet på {createdDate} {createdTime} av {enduser}',
 				},
 				'who-sent': {
 					en: 'Send in by',

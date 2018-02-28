@@ -29,10 +29,12 @@ import {
 
 import { Article } from 'base/Article';
 import { Website } from 'base/Website';
+import { EmptyError } from 'app/util/errors';
 import { translate as __ } from 'app/services/localization';
 
 import {
 	articleService,
+	feedbackService,
 	templateService,
 	websiteService,
 } from 'app/services';
@@ -85,9 +87,35 @@ function process() {
 
 			// Layout the digest e-mail, if any articles are found
 			.spread((articles : Article[], template : MailTemplate) => {
+				if (articles.length === 0) {
+					// Flow control through exception handling is a Bad Thing™ normally.
+					// Since promises don't really leave the programmer a choice to
+					// "bail fast" (not to be confused with "fail fast") in a non-error
+					// condition (like here, there's just no data, which is fine)
+					// I'm using this way of getting of of this loop iteration.
+					// The apt reader is kindly asked to think of a better way than this,
+					// instead of adopting the pattern :-)
+					throw new EmptyError(null);
+				}
+
+				return Promise.map(articles, (article : Article) => (
+					feedbackService.getByArticle(article)
+					.then((feedbacks) => {
+						console.log(app.inspect(feedbacks));
+						article.feedbacks = feedbacks;
+						return article;
+					})
+				))
+
+				.then((articlesWithFeedbacks) => [
+					articlesWithFeedbacks,
+					template,
+				]);
+			})
+
+			.spread((articles : Article[], template : MailTemplate) => {
 				log('Found %d articles on %s to include in the digest', articles.length, website.name);
-				return (articles.length === 0) ? null
-					: layoutDigest(website, articles, template, earliestCreated, latestCreated);
+				return layoutDigest(website, articles, template, earliestCreated, latestCreated);
 			})
 
 			// Send the digest e-mail
@@ -102,12 +130,24 @@ function process() {
 				])
 				.spread((recipients : Array <string>, subject : string) => {
 					log (recipients);
-					return SendGridMailer(recipients, subject, mailContent);
+					// return SendGridMailer(recipients, subject, mailContent);
 				});
 			})
+
+			// Catch errors from this loop iteration, don't let them bubble up
+			// and disturb the processing of the other website items
+			.catch(error => {
+				if (error instanceof EmptyError) {  // That one is on purpose, really
+					log('No relevant articles found for %s', website.name);
+				}
+				else {
+					app.yell(error);
+				}
+			})
+
 			// Update the "last digest"-timestamp in the website object
 			.finally(() => {
-				websiteService.setUnrevisedDigestLastRun(website);
+				// websiteService.setUnrevisedDigestLastRun(website);
 			});
 		})); // Promise.map(websites)
 	});
@@ -116,11 +156,10 @@ function process() {
 // Query dates
 
 function getDates() {
-	const latestCreated = moment().second(0).millisecond(0)
-		.toDate();
-	const earliestCreated = moment(latestCreated)
-		.subtract(moment.duration({ hours: 24 }))
-		.toDate();
+	const now = moment().second(0).millisecond(0);
+
+	const latestCreated = now.add(moment.duration({ minutes: 1 })).toDate();
+	const earliestCreated = now.subtract(moment.duration({ hours: 24 })).toDate();
 
 	return {
 		latestCreated,

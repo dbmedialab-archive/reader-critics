@@ -16,13 +16,18 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as app from 'app/util/applib';
+
 import MailTemplate from 'app/template/MailTemplate';
 
 import { Article } from 'base/Article';
 import { Website } from 'base/Website';
+import { formatFeedbacks } from 'app/mail/layout/FeedbackFormat';
 import { translate as __ } from 'app/services/localization';
 
-// import { notifyBrowser } from 'app/util/notifyBrowser';
+import { notifyBrowser } from 'app/util/notifyBrowser';
+
+const log = app.createLog();
 
 // Get all articles together into one digest e-mail
 
@@ -32,15 +37,18 @@ export function layoutDigest(
 	template : MailTemplate,
 	earliestCreated : Date,
 	latestCreated : Date
-) : Promise <string> {
+) : Promise <string>
+{
 	const { locale } = website;
+
 	const html : string = template.setParams({
 		// Filter all needed data
 		articles: articles.map((article : Article) => ({
 			title: article.title,
 			url: article.url.toString(),
 			byline: formatAuthors(article),
-			feedbackCount: formatFeedbacks(article, locale),
+			feedbackCount: formatFeedbackCount(article, locale),
+			feedbacks: formatFeedbacks(article, article.feedbacks, locale),
 		})),
 		// Localization
 		text: {
@@ -58,7 +66,7 @@ export function layoutDigest(
 	})
 	.render();
 
-	// notifyBrowser(html);  // -- this is only for convenient local testing
+	notifyBrowser(html);  // -- this is only for convenient local testing
 	return Promise.resolve(html);
 }
 
@@ -68,7 +76,7 @@ const formatAuthors = (article : Article) => article.authors.map(author => (
 		: author.name
 )).join(', ');
 
-const formatFeedbacks = (article : Article, locale : string) => (
+const formatFeedbackCount = (article : Article, locale : string) => (
 	__('mail.digest.feedback-count', {
 		locale,
 		values: {
