@@ -40,7 +40,7 @@ const enduser = (f : Feedback) => {
 	const n = f.enduser.name;
 	const m = f.enduser.email;
 
-	return `${n} (<a href="mailto:${m}">${m}</a>)`;
+	return m === null ? n : `${n} (<a href="mailto:${m}">${m}</a>)`;
 };
 
 const whenSentIn = (f : Feedback) =>
