@@ -70,98 +70,50 @@ function process() {
 
 	// We're reusing the article query date to get the websites which are up for the digest
 	return websiteService.getToRunUnrevisedDigest(latestCreated)
-	.then((websites) => {
-		return Promise.map(websites, ((website : Website) => {
-			log(
-				'Checking articles from %s between %s and %s',
-				website.name,
-				earliestCreated.toISOString().replace(dateRegex, 'Z'),
-				latestCreated.toISOString().replace(dateRegex, 'Z')
-			);
+	.then((websites) => Promise.map(websites, ((website : Website) => {
+		log(
+			'Checking articles from %s between %s and %s',
+			website.name,
+			earliestCreated.toISOString().replace(dateRegex, 'Z'),
+			latestCreated.toISOString().replace(dateRegex, 'Z')
+		);
 
-			// Load mail template and query unrevised articles for this website
-			return Promise.all([
-				articleService.getUnrevised(website, latestCreated, earliestCreated),
-				templateService.getUnrevisedDigestMailTemplate(website),
+		// Load mail template and query unrevised articles for this website
+		return layoutDigestMail(website, latestCreated, earliestCreated)
+
+		// Send the digest e-mail
+		.then((mailContent : string) => (
+			Promise.all([
+				getRecipientList(website, MailRecipientList.Editors),
+				getMailSubject(website, latestCreated),
 			])
+			.spread((recipients : Array <string>, subject : string) => (
+				SendGridMailer(recipients, subject, mailContent)
+			))
+		))
 
-			// Layout the digest e-mail, if any articles are found
-			.spread((articles : Article[], template : MailTemplate) => {
-				if (articles.length === 0) {
-					// Flow control through exception handling is a Bad Thing™ normally.
-					// Since promises don't really leave the programmer a choice to
-					// "bail fast" (not to be confused with "fail fast") in a non-error
-					// condition (like here, there's just no data, which is fine)
-					// I'm using this way of getting of of this loop iteration.
-					// The apt reader is kindly asked to think of a better way than this,
-					// instead of adopting the pattern :-)
-					throw new EmptyError(null);
-				}
+		// Catch errors from this loop iteration, don't let them bubble up
+		// and disturb the processing of the other website items
+		.catch(error => {
+			if (error instanceof EmptyError) {  // That one is on purpose, really
+				log('No relevant articles found for %s', website.name);
+			}
+			else {
+				app.yell(error);
+			}
+		})
 
-				return Promise.map(articles, (article : Article) => (
-					feedbackService.getByArticle(article)
-					.then((feedbacks) => {
-						console.log(app.inspect(feedbacks));
-						article.feedbacks = feedbacks;
-						return article;
-					})
-				))
-
-				.then((articlesWithFeedbacks) => [
-					articlesWithFeedbacks,
-					template,
-				]);
-			})
-
-			.spread((articles : Article[], template : MailTemplate) => {
-				log('Found %d articles on %s to include in the digest', articles.length, website.name);
-				return layoutDigest(website, articles, template, earliestCreated, latestCreated);
-			})
-
-			// Send the digest e-mail
-			.then((mailContent : string|null) => {
-				if (mailContent === null) {
-					return;  // The previous step didn't dig up anything, so do nothing here as well
-				}
-
-				return Promise.all([
-					getRecipientList(website, MailRecipientList.Editors),
-					getMailSubject(website, latestCreated),
-				])
-				.spread((recipients : Array <string>, subject : string) => {
-					const rcpt = [
-						// 'philipp@sol.no',
-						// 'christoph.schmitz@dagbladet.no',
-					];
-					// log (rcpt);
-					// return SendGridMailer(rcpt, subject, mailContent);
-				});
-			})
-
-			// Catch errors from this loop iteration, don't let them bubble up
-			// and disturb the processing of the other website items
-			.catch(error => {
-				if (error instanceof EmptyError) {  // That one is on purpose, really
-					log('No relevant articles found for %s', website.name);
-				}
-				else {
-					app.yell(error);
-				}
-			})
-
-			// Update the "last digest"-timestamp in the website object
-			.finally(() => {
-				// websiteService.setUnrevisedDigestLastRun(website);
-			});
-		})); // Promise.map(websites)
-	});
+		// Update the "last digest"-timestamp in the website object
+		.finally(() => {
+			// websiteService.setUnrevisedDigestLastRun(website);
+		});
+	}))); // Promise.map(websites)
 }
 
 // Query dates
 
 function getDates() {
-	// const now = moment().second(0).millisecond(0);
-	const now = moment('2018-02-28 08:00:00+01');
+	const now = moment().second(0).millisecond(0);
 
 	const latestCreated = moment(now).add(moment.duration({ minutes: 1 })).toDate();
 	const earliestCreated = moment(now).subtract(moment.duration({ hours: 24 })).toDate();
@@ -170,6 +122,54 @@ function getDates() {
 		latestCreated,
 		earliestCreated,
 	};
+}
+
+// Layouting
+
+function layoutDigestMail(
+	website : Website,
+	latestCreated : Date,
+	earliestCreated : Date
+) {
+	return Promise.all([
+		articleService.getUnrevised(website, latestCreated, earliestCreated),
+		templateService.getUnrevisedDigestMailTemplate(website),
+	])
+
+	// Layout the digest e-mail, if any articles are found
+	.spread((articles : Article[], template : MailTemplate) => {
+		if (articles.length === 0) {
+			// Flow control through exception handling is a Bad Thing™ normally.
+			// Since promises don't really leave the programmer a choice to
+			// "bail fast" (not to be confused with "fail fast") in a non-error
+			// condition (like here, there's just no data, which is fine)
+			// I'm using this way of getting of of this loop iteration.
+			// The apt reader is kindly asked to think of a better way than this,
+			// instead of adopting the pattern :-)
+			throw new EmptyError(null);
+		}
+
+		// The sub documents of article.feedbacks are not populated here but we
+		// need their information, for example about the involved endusers.
+		// Query feedback objects in detail from the service and attach them to
+		// their article objects. Parallel job through Promise.map()
+		return Promise.map(articles, (article : Article) => (
+			feedbackService.getByArticle(article)
+			.then((feedbacks) => Object.assign(article, {
+				feedbacks,
+			}))
+		))
+		// Return data in an array so that the next spread() can dissociate it
+		.then((articlesWithFeedbacks) => [
+			articlesWithFeedbacks,
+			template,
+		]);
+	}) // spread()
+
+	.spread((articles : Article[], template : MailTemplate) => {
+		log('Found %d articles on %s to include in the digest', articles.length, website.name);
+		return layoutDigest(website, articles, template, earliestCreated, latestCreated);
+	});
 }
 
 // E-mail subject
