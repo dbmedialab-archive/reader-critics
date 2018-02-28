@@ -129,8 +129,12 @@ function process() {
 					getMailSubject(website, latestCreated),
 				])
 				.spread((recipients : Array <string>, subject : string) => {
-					log (recipients);
-					// return SendGridMailer(recipients, subject, mailContent);
+					const rcpt = [
+						// 'philipp@sol.no',
+						// 'christoph.schmitz@dagbladet.no',
+					];
+					// log (rcpt);
+					// return SendGridMailer(rcpt, subject, mailContent);
 				});
 			})
 
@@ -156,10 +160,11 @@ function process() {
 // Query dates
 
 function getDates() {
-	const now = moment().second(0).millisecond(0);
+	// const now = moment().second(0).millisecond(0);
+	const now = moment('2018-02-28 08:00:00+01');
 
-	const latestCreated = now.add(moment.duration({ minutes: 1 })).toDate();
-	const earliestCreated = now.subtract(moment.duration({ hours: 24 })).toDate();
+	const latestCreated = moment(now).add(moment.duration({ minutes: 1 })).toDate();
+	const earliestCreated = moment(now).subtract(moment.duration({ hours: 24 })).toDate();
 
 	return {
 		latestCreated,
