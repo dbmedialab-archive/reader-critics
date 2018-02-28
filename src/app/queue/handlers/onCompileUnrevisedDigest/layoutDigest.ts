@@ -62,6 +62,7 @@ export function layoutDigest(
 					latestCreated: `<b>${formatDate(latestCreated, locale)}</b>`,
 				},
 			}),
+			mfg: __('mail.regards'),
 		},
 	})
 	.render();

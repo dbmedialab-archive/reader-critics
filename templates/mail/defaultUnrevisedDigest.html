@@ -21,16 +21,16 @@
 			}
 
 			hr {
-				margin-top: 15px;
-				margin-bottom: 15px;
+				margin-top: 1em;
+				margin-bottom: 1em;
 			}
 
 			div.header {
 				font-size: 12pt;
-				margin-bottom: 15px;
+				margin-bottom: 1em;
 			}
-			div.bottom {
-				margin-top: 15px;
+			div.bottom, div.mfg {
+				margin-top: 1em;
 			}
 
 			div.article-box {
@@ -76,6 +76,11 @@
 			{{~}}
 
 			<div class="bottom">{{=it.text.dateRange}}</div>
+
+			<div class="mfg">
+				<p>{{=it.text.mfg}}</p>
+				<p><i>Reader Critics Robot</i></p>
+			</div>
 		</div>
 	</body>
 </html>

@@ -146,6 +146,10 @@
 					nb: 'Forfatter',
 				}
 			},
+			'regards': {
+				en: 'Regards',
+				nb: 'Med vennlig hilsen',
+			},
 		},
 		err: {
 			'invalid-param': {
