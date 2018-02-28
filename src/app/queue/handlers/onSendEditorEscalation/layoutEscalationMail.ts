@@ -23,10 +23,6 @@ import MailTemplate from 'app/template/MailTemplate';
 import { translate as __ } from 'app/services/localization';
 import { formatFeedbacks } from 'app/mail/layout/FeedbackFormat';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 export function layoutEscalationMail(
 	article : Article,
 	feedbacks : Feedback[],

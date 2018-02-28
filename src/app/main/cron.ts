@@ -34,10 +34,10 @@ const activeJobs : Array <CronJob> = [];
 export function initCron() : Promise <void> {
 	log('Initialising ...');
 
-	// jobCheckAwaitFeedback();
-	// jobCollectArticlesForPolling();
+	jobCheckAwaitFeedback();
+	jobCollectArticlesForPolling();
 	jobCompileUnrevisedDigest();
-	// jobMessageQueueMaintenance();
+	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
 }
@@ -68,8 +68,6 @@ function jobCompileUnrevisedDigest() {
 		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));
-
-	setTimeout(() => sendMessage(MessageType.CompileUnrevisedDigest), 1500);
 }
 
 function jobMessageQueueMaintenance() {

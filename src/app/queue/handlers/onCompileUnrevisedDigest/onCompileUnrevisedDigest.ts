@@ -104,9 +104,7 @@ function process() {
 		})
 
 		// Update the "last digest"-timestamp in the website object
-		.finally(() => {
-			// websiteService.setUnrevisedDigestLastRun(website);
-		});
+		.finally(() => websiteService.setUnrevisedDigestLastRun(website));
 	}))); // Promise.map(websites)
 }
 

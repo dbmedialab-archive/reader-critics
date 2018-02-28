@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as app from 'app/util/applib';
-
 import MailTemplate from 'app/template/MailTemplate';
 
 import { Article } from 'base/Article';
@@ -25,9 +23,7 @@ import { Website } from 'base/Website';
 import { formatFeedbacks } from 'app/mail/layout/FeedbackFormat';
 import { translate as __ } from 'app/services/localization';
 
-import { notifyBrowser } from 'app/util/notifyBrowser';
-
-const log = app.createLog();
+// import { notifyBrowser } from 'app/util/notifyBrowser';
 
 // Get all articles together into one digest e-mail
 
@@ -67,7 +63,7 @@ export function layoutDigest(
 	})
 	.render();
 
-	notifyBrowser(html);  // -- this is only for convenient local testing
+	// notifyBrowser(html);  // -- this is only for convenient local testing
 	return Promise.resolve(html);
 }
 
