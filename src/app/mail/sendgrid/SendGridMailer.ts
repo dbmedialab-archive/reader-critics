@@ -32,11 +32,7 @@ const log = app.createLog();
 
 const apiKey : string = config.get('mail.sendgrid.api_key');
 const senderDomain : string = config.get('mail.sender.domain');
-
-const bccRecipient : Array <string> = (() => {
-	const bcc = config.get('mail.bccRecipient');
-	return bcc === undefined ? [] : bcc.split(/,/);
-})();
+const bccRecipients : Array <string> = (config.get('mail.bccRecipient') || []).split(/,/);
 
 export type SendGridMailerOptions = {
 	highPriority? : boolean
@@ -53,18 +49,18 @@ export default function(
 		return Promise.reject(new ConfigError('SendGrid API key is not configured'));
 	}
 
-	log(`Sending e-mail to ${recipients.join(', ')}`);
-
 	if (app.isTest) {
-		log(`Not sending in test mode`);
+		log('(Not) Sending e-mail (in test mode) to', recipients.join(', '));
 		return Promise.resolve();
 	}
 
+	log('Sending e-mail to', recipients.join(', '));
 	sendgridMail.setApiKey(apiKey);
 
 	const message : any = {
 		to: recipients,
 		from: `no-reply@${senderDomain}`,
+		bcc: bccRecipients.filter((rcpt : string) => !recipients.includes(rcpt)),
 		subject,
 		html: htmlContent,
 		isMultiple: true,
@@ -78,10 +74,6 @@ export default function(
 			'X-MSMail-Priority': 'High',
 			'Importance': 'High',
 		});
-	}
-
-	if (bccRecipient.length > 0) {
-		message.bcc = bccRecipient;
 	}
 
 	return sendgridMail.send(message);
