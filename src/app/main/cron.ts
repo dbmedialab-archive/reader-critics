@@ -36,7 +36,7 @@ export function initCron() : Promise <void> {
 
 	jobCheckAwaitFeedback();
 	jobCollectArticlesForPolling();
-	// jobCompileUnrevisedDigest();
+	jobCompileUnrevisedDigest();
 	jobMessageQueueMaintenance();
 
 	return Promise.resolve();
@@ -62,15 +62,13 @@ function jobCollectArticlesForPolling() {
 	}));
 }
 
-/* function jobCompileUnrevisedDigest() {
+function jobCompileUnrevisedDigest() {
 	activeJobs.push(new CronJob({
-		cronTime: '0 5 * * * *',
+		cronTime: '0 1 * * * *',
 		onTick: () => sendMessage(MessageType.CompileUnrevisedDigest),
 		start: true,
 	}));
-
-	// setTimeout(() => sendMessage(MessageType.CompileUnrevisedDigest), 2500);
-} */
+}
 
 function jobMessageQueueMaintenance() {
 	activeJobs.push(new CronJob({

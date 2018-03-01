@@ -37,12 +37,13 @@ const log = app.createLog();
 
 export function onCollectArticlesForPolling(job : Job, done : DoneCallback) : void {
 	queryArticles()
+	// Sort out duplicates
 	.then(uniq)
+	// Trigger an update job for each found article. This way we can make use
+	// of multiple available job workers by balancing the load throughout all
+	// threads that are dedicated to background jobs.
 	.then((reducedData) => {
 		log('Found %d articles that should be polled for updates', reducedData.length);
-		// Trigger an update job for each found article. This way we can make use
-		// of multiple available job workers by balancing the load throughout all
-		// threads that are dedicated to background jobs.
 		return Promise.map(reducedData, data => sendMessage(MessageType.PollArticleUpdate, data));
 	})
 	.then(() => {
@@ -60,12 +61,15 @@ function queryArticles() : Promise <PollUpdateData[]> {
 
 	const queries = pollParams.map((pollParam, index) => {
 		// Calculate the query dates for certain query periods
-		const latestCreated = pollParam.pastBase
-			? moment(now).subtract(pollParam.pastBase).toDate()
-			: now;
+		let latestCreated = pollParam.pastBase ? moment(now).subtract(pollParam.pastBase).toDate() : now;
 
 		const earliestCreated = moment(latestCreated).subtract(pollParam.querySpan).toDate();
 		const latestPoll = moment(now).subtract(pollParam.pollSpan).toDate();
+
+		if (!pollParam.pastBase) {
+			// If we're looking for "now", add one minute to safely include everything
+			latestCreated = moment(latestCreated).add(moment.duration({ minutes: 1 })).toDate();
+		}
 
 		return articleService.getIDsToPullUpdates(latestCreated, earliestCreated, latestPoll);
 	});

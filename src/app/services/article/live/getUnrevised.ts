@@ -33,25 +33,32 @@ export function getUnrevised (
 ) : Promise <Article[]>
 {
 	emptyCheck(latestCreated, earliestCreated);
-	return wrapFind(ArticleModel.find({
-		'website': website.ID,
-		// Only a certain timespan will be checked
-		'date.created': {
-			'$gt': earliestCreated,
-			'$lte': latestCreated,
-		},
-		// Only articles that have received feedback
-		'feedbacks': {
-			$exists: true,
-			$not: {
-				'$size': 0,
+
+	return wrapFind(
+		ArticleModel.find({
+			'website': website.ID,
+			// Only articles created within a certain timespan will be included
+			'date.created': {
+				'$gt': earliestCreated,
+				'$lte': latestCreated,
 			},
-		},
-		// Only those where the "newerVersion" field does not exist yet, meaning
-		// those which haven't been already outdated by an updated version that
-		// exists here in the database
-		'newerVersion': {
-			'$exists': false,
-		},
-	}).populate('authors'));
+			// Only articles that have received feedback
+			'feedbacks': {
+				$exists: true,
+				$not: {
+					'$size': 0,
+				},
+			},
+			// Only those where the "newerVersion" field does not exist yet, meaning
+			// those which haven't been already outdated by an updated version that
+			// exists here in the database (if the article update poll hasn't picked
+			// it up or it came in through a user request, we can't know about it)
+			'newerVersion': {
+				'$exists': false,
+			},
+		})
+		.populate('authors')
+		.populate('feedbacks')
+		.populate('feedbacks.enduser')
+	);
 }

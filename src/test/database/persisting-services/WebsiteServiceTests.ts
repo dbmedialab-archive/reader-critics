@@ -109,8 +109,9 @@ const testGetRange = () => it('getRange()', () => {
 		websiteService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		websiteService.getRange(websiteCount),
-	]).then((results : [Website[]]) => {
-		results.forEach(result => {
+	])
+	.spread((...ranges : Website[][]) => {
+		ranges.forEach(result => {
 			assert.isArray(result);
 			result.forEach(item => assertWebsiteObject(item));
 		});
@@ -121,7 +122,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result : Website[], index : number) => {
+		ranges.forEach((result : Website[], index : number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],

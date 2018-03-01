@@ -34,7 +34,7 @@ export interface IValidation {
 
 export default class Validation implements IValidation {
 	protected validationRules: {};
-	private validator;
+	private readonly validator;
 
 	constructor() {
 		this.validator = inspector;

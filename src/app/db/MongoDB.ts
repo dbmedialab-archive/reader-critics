@@ -42,8 +42,16 @@ const options : MoreConnectionOptions = {
 };
 
 const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
+const matchTestHosts = /^mongodb:\/\/(:?localhost|mongo)(:\d+)?\/.+$/;
 
 export function initDatabase() : Promise <void> {
+	if (app.isTest && !matchTestHosts.test(mongoURL)) {
+		return Promise.reject(new Error(
+			'Refusing to run test environment on an unknown database host! ' +
+			`Configured host "${mongoURL}" does not match ${matchTestHosts.source} -- ` +
+			`Check regular expression "matchTestHosts" in ${__filename.replace(app.rootPath, '')}`
+		));
+	}
 	return initiateConnection().then(() => ensureIndexes());
 }
 

@@ -113,7 +113,7 @@ const testCount = () => it('count()', () => articleService.count().then(count =>
 
 const testExists = () => it('exists', () => {
 	return Promise.all([
-		articleService.exists('http://mopo.no/2', '201707251349'),
+		articleService.exists('http://avisa.tld/2', '201707251349'),
 		articleService.exists('http://something-else.xyz/goes/nowhere', 'nil'),
 	])
 	.spread((a : boolean, b : boolean) => {
@@ -126,7 +126,7 @@ const testExists = () => it('exists', () => {
 
 const testGet = () => it('get()', () => {
 	return Promise.all([
-		articleService.get('http://mopo.no/2', '201707251349'),
+		articleService.get('http://avisa.tld/2', '201707251349'),
 		articleService.get('http://something-else.xyz/goes/nowhere', 'nil'),
 	])
 	.spread((a : Article, b : Article) => {
@@ -147,8 +147,9 @@ const testGetRange = () => it('getRange()', () => {
 		articleService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		articleService.getRange(articleCount),
-	]).then((results : [Article[]]) => {
-		results.forEach(result => {
+	])
+	.spread((...ranges : Article[][]) => {
+		ranges.forEach(result => {
 			assert.isArray(result);
 			result.forEach(item => assertArticleObject(item));
 		});
@@ -159,7 +160,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result : Article[], index : number) => {
+		ranges.forEach((result : Article[], index : number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],

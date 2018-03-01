@@ -97,7 +97,7 @@ const testCount = () => it('count()', () => feedbackService.count()
 // feedbackService.getByArticle()
 
 const testGetByArticle = () => it('getByArticle()', () => {
-	return ArticleURL.from('http://mopo.no/1')
+	return ArticleURL.from('http://avisa.tld/1')
 	.then(articleURL => articleService.get(articleURL, 'final-draft'))
 	.then(article => feedbackService.getByArticle(article))
 	.then((results : Feedback[]) => {

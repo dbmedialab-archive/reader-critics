@@ -17,9 +17,7 @@
 //
 
 import { Schema } from 'mongoose';
-
-import ArticleURL from 'base/ArticleURL';
-
+import { ArticleURL } from 'base/ArticleURL';
 import { objectReference } from 'app/db/common';
 import { ModelNames } from 'app/db/names';
 
@@ -27,7 +25,7 @@ const ArticleSchema : Schema = new Schema({
 	url: {
 		type: String,
 		required: true,
-		set: (url : ArticleURL) : string => url.href,
+		set: (url : string|ArticleURL) : string => url instanceof ArticleURL ? url.href : url,
 	},
 	version: {
 		type: String,

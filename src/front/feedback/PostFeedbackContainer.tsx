@@ -225,7 +225,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		);
 	}
 
-	private renderMailIcon = () => (
+	private readonly renderMailIcon = () => (
 		<Transition timeout={200} in={this.state.mailIcon.show || this.state.doneIcon.show}>
 			{(status) => (
 				<fieldset className={`info-icon rotate hideit-after rotate-${status}`}>
@@ -238,7 +238,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		</Transition>
 	)
 
-	private renderBottomLinks = () => (
+	private readonly renderBottomLinks = () => (
 		<fieldset
 			id="bottomLinks"
 			className={`control-icon hideit-after slide-left slide-left-${status}`}
