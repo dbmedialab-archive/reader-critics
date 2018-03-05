@@ -81,7 +81,7 @@
 		"lodash": "4.17.5",
 		"moment": "2.20.1",
 		"mongoose": "4.13.7",
-		"node-fetch": "2.0.0",
+		"node-fetch": "2.1.1",
 		"node-read": "0.1.7",
 		"node-sass": "4.7.2",
 		"passport": "0.4.0",
