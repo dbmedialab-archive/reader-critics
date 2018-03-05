@@ -1,13 +1,13 @@
 {
 	url: {
-		href: "http://mopo.no/1",
+		href: "http://avisa.tld/1",
 	},
 	version: "final-draft",
 	title: "Her blir Donald Trump sowas von historisk",
 	authors: [
 		{
 			name: "Axel Egon Unterbichler",
-			email: "axel.egon@mopo.no",
+			email: "axel.egon@avisa.tld",
 		},
 	],
 	items: [
