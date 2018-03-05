@@ -17,8 +17,10 @@
 //
 
 import * as React from 'react';
-import {connect} from 'react-redux';
 import * as UsersActions from 'admin/actions/UsersActions';
+
+import { connect } from 'react-redux';
+import { UserRole } from 'base/UserRole';
 
 class WebsiteEditors extends React.Component <any, any> {
 	constructor (props) {
@@ -30,7 +32,8 @@ class WebsiteEditors extends React.Component <any, any> {
 	}
 
 	componentWillMount() {
-		UsersActions.getUsers();
+		console.warn('######### WebsiteEditors.componentWillMount');
+		UsersActions.getEditors();
 	}
 
 	/**
@@ -55,15 +58,15 @@ class WebsiteEditors extends React.Component <any, any> {
 		return this.props.users.asMutable()
 			.filter((user) => {
 				// Can add only users with allowed host names
-				if (!this.checkHost(user.email)) {
-					return false;
-				}
+				// if (!this.checkHost(user.email)) {
+				// 	return false;
+				// }
 				// We don't need duplicates
-				for (const editor of this.props.chiefEditors) {
-					if (editor.email === user.email) {
-						return false;
-					}
-				}
+				// for (const editor of this.props.chiefEditors) {
+				// 	if (editor.email === user.email) {
+				// 		return false;
+				// 	}
+				// }
 				return true;
 			}).map((user) => (
 				<option key={user.ID} value={user.ID}>{user.name}</option>
@@ -96,7 +99,9 @@ class WebsiteEditors extends React.Component <any, any> {
 				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
 			</li>);
 		});
+
 		const users = this.getUsers();
+
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">

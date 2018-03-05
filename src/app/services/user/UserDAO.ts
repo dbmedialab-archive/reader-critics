@@ -17,8 +17,10 @@
 //
 
 import * as bcrypt from 'bcrypt';
-import Person from 'base/zz/Person';
-import User from 'base/User';
+
+import { Person } from 'base/zz/Person';
+import { User } from 'base/User';
+import { UserRole } from 'base/UserRole';
 
 import {
 	UserDocument,
@@ -77,6 +79,18 @@ export function getByID(id : String) : Promise <User> {
 		? Promise.reject(new NotFoundError('User not found'))
 		: Promise.resolve(res)
 	);
+}
+
+export function getByRole(whatRoles : UserRole[]) : Promise <User[]>
+{
+	console.dir(whatRoles);
+	return Promise.resolve([
+		{
+			name: 'Example User',
+			email: 'someone@example.com',
+			role: UserRole.Editor,
+		}
+	]);
 }
 
 export function save(user : User) : Promise <User> {
