@@ -114,14 +114,14 @@ export function wrapCronFn(cronFn : Function) {
 	// If this is not master, wait for 2*lockTimeToLive if this node acquires it
 	const startTime = Math.round(Date.now() / 1000);
 
-	const intvID : NodeJS.Timer = setInterval(() => {
+	const intervalID = setInterval(() => {
 		const nowTime = Math.round(Date.now() / 1000);
 
 		if (nowTime >= startTime + (lockTimeToLive * 2)) {
-			clearInterval(intvID);  // Timeout, not trying anymore
+			clearInterval(intervalID);  // Timeout, not trying anymore
 		}
 		else if (isMaster) {  // Retrying
-			clearInterval(intvID);
+			clearInterval(intervalID);
 			executeCronFn();
 		}
 	}, 1000);
