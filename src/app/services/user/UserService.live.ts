@@ -40,6 +40,7 @@ import {
 	get,
 	getByEmail,
 	getByID,
+	getByRole,
 	save,
 	update,
 } from './UserDAO';
@@ -53,6 +54,7 @@ const service : UserService
 			get,
 			getByEmail,
 			getByID,
+			getByRole,
 			save,
 			update,
 			validateAndSave,

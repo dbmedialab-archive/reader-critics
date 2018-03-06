@@ -28,10 +28,14 @@ import {
 } from 'app/routes/api/apiResponse';
 
 import { userService } from 'app/services';
+import { UserRole } from 'base/UserRole';
 
 import emptyCheck from 'app/util/emptyCheck';
-
 import pagination from 'app/util/pagination';
+
+import * as app from 'app/util/applib';
+
+const log = app.createLog();
 
 /*
  * Creating new user
@@ -46,9 +50,16 @@ export function create (requ: Request, resp: Response) : void {
 /*
  * Showing list of users. pagination included
  */
-export function list (requ: Request, resp: Response) : void {
+export function list (requ : Request, resp : Response) : void {
 	const params = pagination(requ);
-	userService.getRange(params.skip, params.limit, params.sort)
+	userService.getRange(0, 0, params.sort)
+	.then(users => bulkResponse(resp, users))
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+}
+
+export function editorsList (requ : Request, resp : Response) : void {
+	log('get editors');
+	userService.getByRole([ UserRole.Editor, UserRole.SiteAdmin ])
 	.then(users => bulkResponse(resp, users))
 	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }

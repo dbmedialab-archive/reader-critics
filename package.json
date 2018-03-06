@@ -1,6 +1,6 @@
 {
 	"name": "reader-critics",
-	"version": "0.5.10",
+	"version": "0.5.11",
 	"license": "GPL-3.0",
 	"private": false,
 	"description": "Leserkritikk v2 (Reader Critics)",
@@ -159,8 +159,8 @@
 		"eslint": "^4.8.0",
 		"eslint-config-airbnb-base": "12.1.0",
 		"eslint-plugin-import": "^2.7.0",
-		"mocha": "5.0.1",
-		"nightwatch": "0.9.19",
+		"mocha": "5.0.2",
+		"nightwatch": "0.9.20",
 		"sass-lint": "1.12.1",
 		"source-map-support": "0.5.3",
 		"supports-color": "^4.2.1",
