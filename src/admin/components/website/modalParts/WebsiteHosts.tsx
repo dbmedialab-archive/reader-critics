@@ -48,7 +48,7 @@ class WebsiteHosts extends React.Component <any, any> {
 		});
 	}
 
-	//Checks the adding link for duplicates
+	// Checks the added link for duplicates
 
 	checkExistingHosts () {
 		const { value: link } = this.state;
@@ -108,7 +108,6 @@ class WebsiteHosts extends React.Component <any, any> {
 	}
 
 	render () {
-		console.warn('######### WebsiteHosts.render');
 		const hosts = this.props.hosts.map((host, index) => {
 			return (<li key={index + '-host'} className="website-hosts-list-item">
 				{host}
