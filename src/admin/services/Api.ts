@@ -68,16 +68,16 @@ const Api = {
 	 * @type {()=>Promise<any>}
 	 */
 	createWebsite: function(data) {
-		return sendRequest(`/admin/api/websites`, 'POST', data);
+		return sendRequest('/admin/api/websites', 'POST', data);
 	},
 
 	/**
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */
+	getUsers: () => sendRequest('/admin/api/users', 'GET'),
 
-	getUsers:(): Promise<any> =>
-		sendRequest(`/admin/api/users`, 'GET'),
+	getEditors: () => sendRequest('/admin/api/users/editors', 'GET'),
 
 	/**
 	 * Delete User
