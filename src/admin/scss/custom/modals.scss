@@ -18,7 +18,19 @@
 			cursor: pointer;
 			font-size: 22px;
 		}
+	}
 
+	.modal-caption {
+		margin-bottom: 2rem;
+	}
+
+	.modal-caption > .caption {
+		font-weight: bold;
+		font-size: 1.25rem;
+	}
+
+	.modal-caption > .hint {
+		font-size: 1.1rem;
 	}
 
 	.hint-title {
