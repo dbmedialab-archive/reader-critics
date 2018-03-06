@@ -28,6 +28,7 @@ import {
 } from 'app/db/models';
 
 import {
+	wrapFind,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
@@ -56,7 +57,7 @@ export function get(name : String, email? : String) : Promise <User> {
 	}
 
 	// Better be paranoid about the password hash!
-	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+	return wrapFindOne <UserDocument, User> (UserModel.findOne(query).select('-password'));
 }
 
 /*
@@ -66,7 +67,7 @@ export function getByEmail(email : String) : Promise <User> {
 	emptyCheck(email);
 	const query : any = { email: email };
 
-	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+	return wrapFindOne <UserDocument, User> (UserModel.findOne(query).select('-password'));
 }
 
 /*
@@ -83,14 +84,11 @@ export function getByID(id : String) : Promise <User> {
 
 export function getByRole(whatRoles : UserRole[]) : Promise <User[]>
 {
-	console.dir(whatRoles);
-	return Promise.resolve([
-		{
-			name: 'Example User',
-			email: 'someone@example.com',
-			role: UserRole.Editor,
-		}
-	]);
+	emptyCheck(whatRoles);
+	return wrapFind <UserDocument, User> (UserModel.find({
+		'$or': whatRoles.map(thisRole => ({ 'role': thisRole })),
+	})
+	.select('-password').sort('name'));
 }
 
 export function save(user : User) : Promise <User> {
