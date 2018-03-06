@@ -36,7 +36,10 @@ class WebsiteParserClass extends React.Component <any, any> {
 		return (
 			<div className="medium-6 columns">
 				<fieldset className="text">
-					<label htmlFor="parser">Parser</label>
+					<label htmlFor="parser">
+						<b>Parser</b><br/>
+						Which implementation to use when fetching articles
+					</label>
 					<select
 						id="parser-class" className="small-12 large-12"
 						value={this.props.parserClass}

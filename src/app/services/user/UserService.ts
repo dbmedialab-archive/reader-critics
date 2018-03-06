@@ -1,5 +1,6 @@
-import Person from 'base/zz/Person';
-import User from 'base/User';
+import { Person } from 'base/zz/Person';
+import { User } from 'base/User';
+import { UserRole } from 'base/UserRole';
 
 import BasicPersistingService from '../BasicPersistingService';
 
@@ -12,6 +13,7 @@ interface UserService extends BasicPersistingService <User> {
 	get(username : String, email? : String|null) : Promise <User>;
 	getByEmail(email : String) : Promise <User>;
 	getByID(id : String) : Promise <User>;
+	getByRole(whatRoles : UserRole[]) : Promise <User[]>;
 
 	save(user : User) : Promise <User>;
 
