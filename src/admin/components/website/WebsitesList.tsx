@@ -50,7 +50,6 @@ class WebsitesList extends React.Component <any, any> {
 	}
 
 	public render() : JSX.Element {
-
 		const content = this.props.websites.map((website) =>
 			<Transition key={website.ID} timeout={300}>
 				{(state) => (

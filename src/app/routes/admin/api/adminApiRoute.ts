@@ -25,7 +25,7 @@ import {
 import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 
-import * as  userHandler from 'app/routes/admin/api/usersHandler';
+import * as userHandler from 'app/routes/admin/api/usersHandler';
 import * as feedbacksHandler from 'app/routes/admin/api/feedbacksHandler';
 import * as articlesHandler from 'app/routes/admin/api/articlesHandler';
 import * as websitesHandler from 'app/routes/admin/api/websitesHandler';
@@ -47,6 +47,7 @@ adminApiRoute.use(cookieParser());
 /**
  * All api request that have NOT to to pass without authentication have to be placed here
  */
+adminApiRoute.get('/users/editors', isAuthenticatedApi, userHandler.editorsList);
 adminApiRoute.get('/users', isAuthenticatedApi, userHandler.list);
 adminApiRoute.post('/users', isAuthenticatedApi, userHandler.create);
 adminApiRoute.delete('/users/:id', isAuthenticatedApi, userHandler.doDelete);

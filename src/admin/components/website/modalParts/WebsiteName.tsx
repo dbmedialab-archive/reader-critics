@@ -82,7 +82,10 @@ class WebsiteName extends React.Component <any, any> {
 		return (
 			<div className="medium-6 columns">
 			<fieldset className="text">
-				<label htmlFor="name">Name</label>
+				<label htmlFor="name">
+					<b>Website Name</b><br/>
+					Usually the main host name (must be unique systemwide)
+				</label>
 				<input
 					type="text"
 					name="name"
