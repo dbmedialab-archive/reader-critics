@@ -119,8 +119,8 @@ class WebsiteHosts extends React.Component <any, any> {
 			<div className="medium-12 columns">
 				<fieldset className="text">
 					<label htmlFor="hosts-link">
-						<b>Hosts</b>
-						&nbsp;&ndash;&nbsp;all hostnames that this site uses, including "www" variants
+						<b>Hosts</b><br/>
+						All hostnames that this site uses to publish articles, including "www" variants
 					</label>
 					<input
 						id="hosts-link" type="text" className="small-12 medium-12"
