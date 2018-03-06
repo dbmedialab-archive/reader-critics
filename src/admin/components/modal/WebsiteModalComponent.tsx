@@ -86,6 +86,13 @@ class AddUserModalComponent extends React.Component <any, any> {
 	render (): JSX.Element {
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
 		const isDisabled = name && !ID;
+
+		const captionAdd = (<div className="caption"><b>Add New Website</b></div>);
+		const captionEdit = [
+			<div className="caption"><b>Edit Website</b></div>,
+			<div className="hint">Changes made here are saved immediately</div>,
+		];
+
 		return (
 			<ReactModal isOpen={isOpen} name="website" closeHandler={this.closePopup}>
 				<div className="modal-window">
@@ -94,8 +101,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 					</div>
 					<div className="row">
 						<div className="medium-12 columns modal-caption">
-							<div className="caption"><b>{ ID ? 'Edit Website' : 'Add New Website' }</b></div>
-							<div className="hint">Changes made here are saved immediately</div>
+							{ ID ? captionEdit : captionAdd }
 						</div>
 					</div>
 					<form className="website-edit-form">
