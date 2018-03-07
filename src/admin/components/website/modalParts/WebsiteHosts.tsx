@@ -24,6 +24,8 @@ import Validator from 'admin/services/Validation';
 class WebsiteHosts extends React.Component <any, any> {
 	private readonly validator : Validator;
 
+	private allHosts : string[] = [];
+
 	constructor (props) {
 		super(props);
 		this.state = {
@@ -35,61 +37,42 @@ class WebsiteHosts extends React.Component <any, any> {
 
 		this.onDelete = this.onDelete.bind(this);
 		this.checkExistingHosts = this.checkExistingHosts.bind(this);
-		this.checkDuplicateLink = this.checkDuplicateLink.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onEdit = this.onEdit.bind(this);
-	}
 
-	// Function checks if the new host already exists in hosts array
-	checkExistingHosts (existingHosts, addingHost) {
-		let result = false;
-		existingHosts.forEach((existLink) => {
-			if (existLink.toLowerCase() === addingHost.toLowerCase()) {
-				result = true;
+		this.props.websites.forEach(ws => {
+			if (ws.ID !== this.props.ID) {
+				this.allHosts = this.allHosts.concat(ws.hosts);
 			}
 		});
-		return result;
 	}
 
-	//Checks the adding link for duplicates
-	checkDuplicateLink () {
-		const {value: link} = this.state;
-		const {hosts, websites, ID} = this.props;
+	// Checks the added link for duplicates
 
-		let allHosts = websites.asMutable();
-		allHosts = allHosts
-			// We need all sites except current
-			.filter(website => {
-				return website.ID !== ID;
-			})
+	checkExistingHosts () {
+		const { value: link } = this.state;
+		const { hosts } = this.props;
 
-			// need only list of hosts of all websites
-			.reduce((res, website) => {
-				return res.concat(website.hosts);
-			}, [])
-
-			// We CAN have hosts with 'www'. But we have to check
-			// only for duplicate domains. 'www' have to not be there
-			// for this check
-			.map(host => !host.indexOf('www.') ? host.slice(4) : host);
-
-		// Link we also check without 'www'
-		allHosts.push(!link.indexOf('www.') ? link.slice(4) : link);
-
-		const isHost = this.validator.validate('host', link, {required: true});
+		const isHost = this.validator.validate('host', link, { required: true });
 
 		if (isHost.isError) {
 			return isHost.message;
-		} else {
+		}
+		else {
 			const isUniqueHere = this.validator.validate('uniqueness', hosts);
-			const isUniqueGlobally = this.validator.validate('uniqueness', allHosts);
+
 			if (isUniqueHere.isError) {
 				return isUniqueHere.message;
 			}
+
+			const reallyAllHosts = this.allHosts.concat(link);
+			const isUniqueGlobally = this.validator.validate('uniqueness', reallyAllHosts);
+
 			if (isUniqueGlobally.isError) {
-				return isUniqueGlobally.message;
+				return 'This hostname is already in use';
 			}
+
 			return false;
 		}
 	}
@@ -104,7 +87,7 @@ class WebsiteHosts extends React.Component <any, any> {
 
 	onSubmit () {
 		const {touched, value} = this.state;
-		if (touched && value && !this.checkDuplicateLink()) {
+		if (touched && value && !this.checkExistingHosts()) {
 			const hosts = this.props.hosts.concat(value);
 			this.props.onChange({hosts});
 			return this.setState({value: '', touched: false});
@@ -134,7 +117,10 @@ class WebsiteHosts extends React.Component <any, any> {
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<label htmlFor="hosts-link">Hosts</label>
+					<label htmlFor="hosts-link">
+						<b>Hosts</b><br/>
+						All hostnames that this site uses to publish articles, including "www" variants
+					</label>
 					<input
 						id="hosts-link" type="text" className="small-12 medium-12"
 						value={this.state.value}
@@ -142,7 +128,7 @@ class WebsiteHosts extends React.Component <any, any> {
 						onKeyPress={this.onKeyPress} onBlur={this.onSubmit}
 					/>
 					<InputError
-						errorText={this.checkDuplicateLink()}
+						errorText={this.checkExistingHosts()}
 						touchedField={this.state.touched}
 					/>
 					<ul className="website-hosts-list">

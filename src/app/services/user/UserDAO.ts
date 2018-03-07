@@ -17,8 +17,10 @@
 //
 
 import * as bcrypt from 'bcrypt';
-import Person from 'base/zz/Person';
-import User from 'base/User';
+
+import { Person } from 'base/zz/Person';
+import { User } from 'base/User';
+import { UserRole } from 'base/UserRole';
 
 import {
 	UserDocument,
@@ -26,6 +28,7 @@ import {
 } from 'app/db/models';
 
 import {
+	wrapFind,
 	wrapFindOne,
 	wrapSave,
 } from 'app/db/common';
@@ -54,7 +57,7 @@ export function get(name : String, email? : String) : Promise <User> {
 	}
 
 	// Better be paranoid about the password hash!
-	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+	return wrapFindOne <UserDocument, User> (UserModel.findOne(query).select('-password'));
 }
 
 /*
@@ -64,7 +67,7 @@ export function getByEmail(email : String) : Promise <User> {
 	emptyCheck(email);
 	const query : any = { email: email };
 
-	return wrapFindOne<UserDocument, User>(UserModel.findOne(query).select('-password'));
+	return wrapFindOne <UserDocument, User> (UserModel.findOne(query).select('-password'));
 }
 
 /*
@@ -77,6 +80,15 @@ export function getByID(id : String) : Promise <User> {
 		? Promise.reject(new NotFoundError('User not found'))
 		: Promise.resolve(res)
 	);
+}
+
+export function getByRole(whatRoles : UserRole[]) : Promise <User[]>
+{
+	emptyCheck(whatRoles);
+	return wrapFind <UserDocument, User> (UserModel.find({
+		'$or': whatRoles.map(thisRole => ({ 'role': thisRole })),
+	})
+	.select('-password').sort('name'));
 }
 
 export function save(user : User) : Promise <User> {

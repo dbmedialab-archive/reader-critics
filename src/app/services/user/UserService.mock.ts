@@ -31,6 +31,7 @@ import {
 	doDelete,
 	findOrInsert,
 	get,
+	getByRole,
 	save,
 } from './UserDAO';
 import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
@@ -42,6 +43,7 @@ const service : UserService
 			doDelete,
 			findOrInsert,
 			get,
+			getByRole,
 			save,
 			setPasswordHash,
 		}
