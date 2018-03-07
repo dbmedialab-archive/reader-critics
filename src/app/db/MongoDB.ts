@@ -36,7 +36,6 @@ const options : MoreConnectionOptions = {
 	connectTimeoutMS: 4000,
 	keepAlive: 120,
 	poolSize: cluster.isMaster || (!cluster.isMaster && !cluster.isWorker) ? 1 : 8,
-	useMongoClient: true,
 	reconnectTries: Number.MAX_VALUE,
 	socketTimeoutMS: 2000,
 };
@@ -120,6 +119,4 @@ interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
 	reconnectInterval? : number
 	reconnectTries? : number
 	socketTimeoutMS? : number
-	// Recommended with Mongoose 4.11+ but also not yet reflected
-	useMongoClient? : boolean
 }
