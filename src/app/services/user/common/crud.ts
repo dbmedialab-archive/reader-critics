@@ -21,13 +21,9 @@ import {
 	isObject,
 } from 'lodash';
 
-import {
-	userService,
-} from 'app/services';
-
-import {
-	SchemaValidationError,
-} from 'app/util/errors';
+import { userService } from 'app/services';
+import { SchemaValidationError } from 'app/util/errors';
+import { User } from 'base/User';
 
 /**
  * Validating input data and saving users
@@ -43,57 +39,56 @@ export function validateAndSave (data: any): Promise<any> {
 	return Promise.all([
 		checkUniqueEmail(data.email),
 		userService.setPasswordHash(data, data.password),
-	]).then(res => {
+	])
+	.then(res => {
 		const [unique, user] = res;
 		if (unique) {
 			return userService.save(user);
 		}
-		throw new SchemaValidationError('Email already exists in database');
+		throw new Error('Email already exists in database');
 	});
 }
 
 /*
- * Validates amd updates user.
- * This doesn't allow to change user password.
- * Updating password will be separate procedure
+ * Validates and updates a user
  */
-export function validateAndUpdate (id: String, data: any): Promise<any> {
+export function validateAndUpdate (id : string, data : any) : PromiseLike <User> {
 	try {
 		validateSchemaUpdate(data);
 	}
 	catch (error) {
 		return Promise.reject(error);
 	}
-	return userService.getByID(id)
-		.then(user => {
-			if (!isEmpty(data.password)) {
-				delete data.password;
-			}
 
-			if (data.email === user.email) {
+	return userService.getByID(id)
+	.then((user : User) => (
+		isEmpty(data.password)
+			? user
+			: userService.setPasswordHash(data, data.password).then(() => user)
+	))
+	.then((user : User) => {
+		delete data.password;
+
+		if (data.email === user.email) {
+			return userService.update(id, data);
+		}
+
+		return checkUniqueEmail(data.email).then((unique : boolean) => {
+			if (unique) {
 				return userService.update(id, data);
-			} else {
-				return checkUniqueEmail(data.email)
-					.then((unique: boolean) => {
-						if (unique) {
-							return userService.update(id, data);
-						} else {
-							throw new SchemaValidationError('Email already exists in database');
-						}
-					});
 			}
-		})
-		.catch(err => {
-			return Promise.reject(err);
+			else {
+				throw new Error('Email already exists in database');
+			}
 		});
+	});
 }
 
 /**
  * Check if email is unique in database
  */
-function checkUniqueEmail (userMail: string): Promise<boolean> {
-	return userService.getByEmail(userMail)
-					.then(user => user === null);
+function checkUniqueEmail (userMail: string): Promise <boolean> {
+	return userService.getByEmail(userMail).then(user => user === null);
 }
 
 /**
