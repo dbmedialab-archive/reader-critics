@@ -24,7 +24,6 @@ import emptyCheck from 'app/util/emptyCheck';
 
 export function setPasswordHash (user: User, password: string) : Promise<User> {
 	emptyCheck(user, password);
-	return bcrypt
-		.hash(password, config.get('auth.bcrypt.rounds'))
-		.then(hash => <User> Object.assign(user,{ password: hash }));
+	return bcrypt.hash(password, config.get('auth.bcrypt.rounds'))
+	.then(hash => Object.assign(user, { password: hash }) as User);
 }
