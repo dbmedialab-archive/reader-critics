@@ -22,7 +22,15 @@ import config from 'app/config';
 import User from 'base/User';
 import emptyCheck from 'app/util/emptyCheck';
 
-export function setPasswordHash (user: User, password: string) : Promise<User> {
+/**
+ * Updates the password hash of a user in the database. All other properties of
+ * the user object remain untouched. Keep in mind that this function takes a
+ * significant amount of time to finish due to the BCrypt hashing and depending
+ * on the number of configured hashing rounds. It is (officially, ny the authors
+ * of the algorithm) recommended to configure at least as many rounds so that
+ * the hashing takes not less that one second to complete on the target system.
+ */
+export function setPasswordHash (user : User, password : string) : Promise <User> {
 	emptyCheck(user, password);
 	return bcrypt.hash(password, config.get('auth.bcrypt.rounds'))
 	.then(hash => Object.assign(user, { password: hash }) as User);

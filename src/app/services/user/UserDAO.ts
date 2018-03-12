@@ -123,10 +123,23 @@ export function doDelete(id: String) : Promise <any> {
 }
 
 /*
- * Do updates user entry. Null - if not found, updated user if found is returned.
+ * Update a user. Returns "null" if not found, updated user otherwise.
+ * This function *will not* create a password hash if the passwort property is
+ * present. The password needs to be hashed with BCrypt explicitely before being
+ * written to the database. Use the dedicated function setPasswordHash() instead
+ * and chain the two together if updating the whole object is needed.
  */
-export function update(id: String, data: Object) : Promise <any> {
-	return wrapFindOne(UserModel.findOneAndUpdate({ '_id': id }, data, { new: true }))
+export function update(id : string, user : User) : Promise <any> {
+	emptyCheck(id, user);
+	return wrapFindOne(UserModel.findOneAndUpdate({
+		'_id': id,
+	}, {
+		'$set': Object.assign({}, user, { id: undefined }),
+	}, {
+		new: true,  // return the modified document rather than the original
+		upsert: false,  // fail if the object does not exist yet
+		fields: '-password',
+	}))
 	.then(res => (res === null)
 		? Promise.reject(new NotFoundError('User not found'))
 		: Promise.resolve(res)

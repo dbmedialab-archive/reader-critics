@@ -52,7 +52,7 @@ export function validateAndSave (data: any): Promise<any> {
 /*
  * Validates and updates a user
  */
-export function validateAndUpdate (id : string, data : any) : PromiseLike <User> {
+export function validateAndUpdate (id : string, data : User) : PromiseLike <User> {
 	try {
 		validateSchemaUpdate(data);
 	}
@@ -60,26 +60,30 @@ export function validateAndUpdate (id : string, data : any) : PromiseLike <User>
 		return Promise.reject(error);
 	}
 
-	return userService.getByID(id)
-	.then((user : User) => (
+	const doSomethingAboutPassword = () => (
 		isEmpty(data.password)
-			? user
-			: userService.setPasswordHash(data, data.password).then(() => user)
-	))
-	.then((user : User) => {
-		delete data.password;
+			? data  // Returns the data as-is, without password field
+			: userService.setPasswordHash(data, data.password)
+	);
 
-		if (data.email === user.email) {
-			return userService.update(id, data);
+	return Promise.all([
+		userService.getByID(id),
+		doSomethingAboutPassword(),
+	])
+	.spread((originalUser : User, userWithHashedPassword : User) => {
+		const toUpdate = Object.assign({}, data, {
+			password: isEmpty(data.password) ? undefined : userWithHashedPassword.password,
+		}) as User;
+
+		if (data.email === originalUser.email) {
+			return userService.update(id, toUpdate);
 		}
 
 		return checkUniqueEmail(data.email).then((unique : boolean) => {
 			if (unique) {
-				return userService.update(id, data);
+				return userService.update(id, toUpdate);
 			}
-			else {
-				throw new Error('Email already exists in database');
-			}
+			throw new Error('Email already exists in database');
 		});
 	});
 }
