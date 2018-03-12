@@ -52,7 +52,7 @@ export function create (requ: Request, resp: Response) : void {
  */
 export function list (requ : Request, resp : Response) : void {
 	const params = pagination(requ);
-	userService.getRange(0, 0, params.sort)
+	userService.getRange(params.skip, params.limit)
 	.then(users => bulkResponse(resp, users))
 	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }

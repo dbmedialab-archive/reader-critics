@@ -34,7 +34,6 @@
 		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
-		"prefer-readonly": true,
 		"semicolon": [ true, "always", "ignore-interfaces" ],
 		"trailing-comma": [ true, {
 			"multiline": {
