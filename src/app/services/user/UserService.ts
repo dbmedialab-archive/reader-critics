@@ -8,20 +8,20 @@ interface UserService extends BasicPersistingService <User> {
 	checkPassword(user : User, password : string) : Promise <boolean>;
 	setPasswordHash(user : User, password: string) : Promise <User>;
 
-	doDelete(id: String);
+	doDelete(id: string);
 
-	get(username : String, email? : String|null) : Promise <User>;
-	getByEmail(email : String) : Promise <User>;
-	getByID(id : String) : Promise <User>;
+	get(username : string, email? : string|null) : Promise <User>;
+	getByEmail(email : string) : Promise <User>;
+	getByID(id : string) : Promise <User>;
 	getByRole(whatRoles : UserRole[]) : Promise <User[]>;
 
 	save(user : User) : Promise <User>;
 
 	findOrInsert(user : Person) : Promise <User>;
-	update(id: String, user : Person) : Promise <User>;
+	update(id : string, user : User) : Promise <User>;
 
 	validateAndSave(data : any) : Promise <User>;
-	validateAndUpdate(id: String, data : Object) : Promise <User>;
+	validateAndUpdate(id : string, data : User) : Promise <User>;
 }
 
 export default UserService;
