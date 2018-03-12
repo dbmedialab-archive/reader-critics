@@ -109,7 +109,15 @@ export function getByRole(whatRoles : UserRole[]) : Promise <User[]>
 {
 	emptyCheck(whatRoles);
 	return wrapFind <UserDocument, User> (UserModel.find({
-		'$or': whatRoles.map(thisRole => ({ 'role': thisRole })),
+		role: {
+			'$in': whatRoles,
+		},
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
 	})
 	.select('-password').sort('name'));
 }
