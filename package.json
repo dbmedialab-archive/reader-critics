@@ -112,7 +112,7 @@
 		"serve-favicons": "2.1.5",
 		"spinkit": "^1.2.5",
 		"strip-url-auth": "1.0.1",
-		"style-loader": "0.20.2",
+		"style-loader": "0.20.3",
 		"typed-immutable-record": "0.0.6",
 		"uuid": "3.2.1",
 		"webpack": "3.11.0",
