@@ -33,6 +33,11 @@ import {
 	wrapSave,
 } from 'app/db/common';
 
+import {
+	defaultLimit,
+	defaultSkip,
+} from 'app/services//BasicPersistingService';
+
 import emptyCheck from 'app/util/emptyCheck';
 
 import { NotFoundError } from 'app/util/errors';
@@ -58,6 +63,24 @@ export function get(name : String, email? : String) : Promise <User> {
 
 	// Better be paranoid about the password hash!
 	return wrapFindOne <UserDocument, User> (UserModel.findOne(query).select('-password'));
+}
+
+export function getRange(
+	skip : number = defaultSkip,
+	limit : number = defaultLimit,
+	sort : {} = { name: 1 }
+) : Promise <User[]>
+{
+	return wrapFind <UserDocument, User> (
+		UserModel.find({
+			name: {
+				'$ne': '',
+			},
+			email: {
+				'$ne': '',
+			},
+		}).sort(sort).skip(skip).limit(limit)
+	);
 }
 
 /*
@@ -86,7 +109,15 @@ export function getByRole(whatRoles : UserRole[]) : Promise <User[]>
 {
 	emptyCheck(whatRoles);
 	return wrapFind <UserDocument, User> (UserModel.find({
-		'$or': whatRoles.map(thisRole => ({ 'role': thisRole })),
+		role: {
+			'$in': whatRoles,
+		},
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
 	})
 	.select('-password').sort('name'));
 }

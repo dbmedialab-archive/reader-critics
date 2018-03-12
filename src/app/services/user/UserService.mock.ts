@@ -34,6 +34,7 @@ import {
 	getByEmail,
 	getByID,
 	getByRole,
+	getRange,
 	save,
 	update,
 } from './UserDAO';
@@ -55,6 +56,7 @@ const service : UserService
 			getByEmail,
 			getByID,
 			getByRole,
+			getRange,
 			save,
 			setPasswordHash,
 			update,
