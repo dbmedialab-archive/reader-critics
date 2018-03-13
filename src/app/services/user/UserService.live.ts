@@ -27,22 +27,24 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import {
-	validateAndSave,
-	validateAndUpdate
-} from './common/crud';
-
-import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
-
-import {
 	checkPassword,
 	doDelete,
 	findOrInsert,
 	get,
 	getByEmail,
 	getByID,
+	getByRole,
+	getRange,
 	save,
 	update,
 } from './UserDAO';
+
+import { setPasswordHash } from 'app/services/user/common/setPasswordHash';
+
+import {
+	validateAndSave,
+	validateAndUpdate
+} from './common/crud';
 
 const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
@@ -53,11 +55,13 @@ const service : UserService
 			get,
 			getByEmail,
 			getByID,
+			getByRole,
+			getRange,
 			save,
+			setPasswordHash,
 			update,
 			validateAndSave,
 			validateAndUpdate,
-			setPasswordHash,
 		}
 	);
 

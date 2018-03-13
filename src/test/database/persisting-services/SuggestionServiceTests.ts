@@ -95,8 +95,9 @@ const testGetRange = () => it('getRange()', () => {
 		suggestionService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		suggestionService.getRange(totalCount),
-	]).then((results : [Suggestion[]]) => {
-		results.forEach(result => assert.isArray(result));
+	])
+	.spread((...ranges : Suggestion[][]) => {
+		ranges.forEach(result => assert.isArray(result));
 
 		const lengthCheck = [
 			Math.min(totalCount, defaultLimit),
@@ -104,7 +105,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result : Suggestion[], index : number) => {
+		ranges.forEach((result : Suggestion[], index : number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],

@@ -36,14 +36,21 @@ const options : MoreConnectionOptions = {
 	connectTimeoutMS: 4000,
 	keepAlive: 120,
 	poolSize: cluster.isMaster || (!cluster.isMaster && !cluster.isWorker) ? 1 : 8,
-	useMongoClient: true,
 	reconnectTries: Number.MAX_VALUE,
 	socketTimeoutMS: 2000,
 };
 
 const reconnectionLimit = config.get('db.mongo.reconnectionLimit');
+const matchTestHosts = /^mongodb:\/\/(:?localhost|mongo)(:\d+)?\/.+$/;
 
 export function initDatabase() : Promise <void> {
+	if (app.isTest && !matchTestHosts.test(mongoURL)) {
+		return Promise.reject(new Error(
+			'Refusing to run test environment on an unknown database host! ' +
+			`Configured host "${mongoURL}" does not match ${matchTestHosts.source} -- ` +
+			`Check regular expression "matchTestHosts" in ${__filename.replace(app.rootPath, '')}`
+		));
+	}
 	return initiateConnection().then(() => ensureIndexes());
 }
 
@@ -112,6 +119,4 @@ interface MoreConnectionOptions extends Mongoose.ConnectionOptions {
 	reconnectInterval? : number
 	reconnectTries? : number
 	socketTimeoutMS? : number
-	// Recommended with Mongoose 4.11+ but also not yet reflected
-	useMongoClient? : boolean
 }

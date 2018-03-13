@@ -111,6 +111,8 @@ const testGet = () => it('get()', () => {
 // userService.checkPassword()
 
 const testCheckPassword = () => it('checkPassword()', () => Promise.all([
+	userService.get('admin')
+		.then(u => userService.checkPassword(u, 'test')),
 	userService.get('Indiana Horst')
 		.then(u => userService.checkPassword(u, 'nix')),
 	userService.get('Ernst Eisenbichler')
@@ -118,10 +120,11 @@ const testCheckPassword = () => it('checkPassword()', () => Promise.all([
 	userService.get('Philipp Gröschler', 'philipp@sol.no')
 		.then(u => userService.checkPassword(u, 'freshguacamole')),
 ])
-.then((results: boolean[]) => {
-	assert.isFalse(results[0], 'Indiana Horst password is wrong');
-	assert.isTrue(results[1], 'Ernst Eisenbichler password is wrong');
-	assert.isFalse(results[2], 'Philipp Gröschler password is wrong');
+.spread((bAdmin : boolean, bHorst : boolean, bErnst : boolean, bPhilipp : boolean) => {
+	assert.isTrue(bAdmin, 'Admin password should be correct');
+	assert.isFalse(bHorst, 'Horst\'s password is wrong');
+	assert.isTrue(bErnst, 'Ernst\'s password should be correct');
+	assert.isFalse(bPhilipp, 'Philipp\'s password is wrong');
 }));
 
 // userService.getRange()
@@ -136,8 +139,9 @@ const testGetRange = () => it('getRange()', () => {
 		userService.getRange(0, testLimit),
 		// #3 skipping past the number of stored items should yield an empty result:
 		userService.getRange(userCount),
-	]).then((results: [User[]]) => {
-		results.forEach(result => {
+	])
+	.spread((...ranges : User[][]) => {
+		ranges.forEach(result => {
 			assert.isArray(result);
 			result.forEach(item => assertUserObject(item));
 		});
@@ -148,7 +152,7 @@ const testGetRange = () => it('getRange()', () => {
 			0,
 		];
 
-		results.forEach((result: User[], index: number) => {
+		ranges.forEach((result: User[], index: number) => {
 			assert.lengthOf(
 				result,
 				lengthCheck[index],

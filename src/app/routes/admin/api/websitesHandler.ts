@@ -40,7 +40,7 @@ export function list (requ: Request, resp: Response) {
 	const notFound = 'Resourse not found';
 	const params = pagination(requ);
 	Promise.all([
-		websiteService.getRange(params.skip, params.limit, params.sort),
+		websiteService.getRange(params.skip, params.limit, { 'name': 1 }),
 		parserService.getAvailableParsers(),
 	]).then(data => {
 		const [websites, parsers = []] = data;

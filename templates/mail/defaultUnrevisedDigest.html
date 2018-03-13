@@ -4,9 +4,14 @@
 	</head>
 	<body>
 		<style>
-			div {
+			body, div {
 				font-size: 12pt;
 			}
+
+			p {
+				margin: 0 0 0.4em 0;
+			}
+
 			a {
 				color: #0070D0;
 				text-decoration: none;
@@ -14,25 +19,41 @@
 			a:hover {
 				text-decoration: underline;
 			}
+
 			hr {
-				margin-top: 15px;
-				margin-bottom: 15px;
+				margin-top: 1em;
+				margin-bottom: 1em;
 			}
+
 			div.header {
 				font-size: 12pt;
-				margin-bottom: 15px;
+				margin-bottom: 1em;
 			}
-			div.bottom {
-				margin-top: 15px;
+			div.bottom, div.mfg {
+				margin-top: 1em;
 			}
+
 			div.article-box {
-				margin-bottom: 8px;
+				margin-bottom: 0.8em;
 			}
-			span.article-title {
+
+			p.feedback-count {
+				font-weight: bold;
+			}
+			p.article-title {
 				font-size: 14pt;
 				font-weight: bold;
 			}
-			span.article-byline {
+			p.article-byline {
+				font-size: 12pt;
+			}
+
+			div.feedback-box {
+				margin-bottom: 0.8em;
+			}
+			div.feedback-date {
+				margin-bottom: 0.4em;
+				font-weight: bold;
 			}
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
@@ -41,18 +62,25 @@
 			<hr/>
 
 			{{~it.articles :article}}
-			<div class="article-box">
-				<span class="feedback-count">{{=article.feedbackCount}}</span>
-				&nbsp;&bull;&nbsp;
-				<span class="article-title"><a href="{{=article.url}}">{{=article.title}}</a></span>
-				&nbsp;&bull;&nbsp;
-				<span class="article-byline">{{=it.text.author}}:&nbsp;{{=article.byline}}</span>
-			</div>
+				<div class="article-box">
+					<p class="feedback-count">{{=article.feedbackCount}}</p>
+					<p class="article-title"><a href="{{=article.url}}">{{=article.title}}</a></p>
+					<p class="article-byline">{{=it.text.author}}:&nbsp;{{=article.byline}}</p>
+				</div>
+				<div class="feedback-box">
+					{{~article.feedbacks :feedback}}
+						<div class="feedback-item-box">{{=feedback}}</div>
+					{{~}}
+				</div>
+				<hr/>
 			{{~}}
 
-			<hr/>
-
 			<div class="bottom">{{=it.text.dateRange}}</div>
+
+			<div class="mfg">
+				<p>{{=it.text.mfg}}</p>
+				<p><i>Reader Critics Robot</i></p>
+			</div>
 		</div>
 	</body>
 </html>

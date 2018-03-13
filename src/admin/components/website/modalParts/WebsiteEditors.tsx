@@ -17,8 +17,9 @@
 //
 
 import * as React from 'react';
-import {connect} from 'react-redux';
 import * as UsersActions from 'admin/actions/UsersActions';
+
+import { connect } from 'react-redux';
 
 class WebsiteEditors extends React.Component <any, any> {
 	constructor (props) {
@@ -30,7 +31,7 @@ class WebsiteEditors extends React.Component <any, any> {
 	}
 
 	componentWillMount() {
-		UsersActions.getUsers();
+		UsersActions.getEditors();
 	}
 
 	/**
@@ -54,11 +55,7 @@ class WebsiteEditors extends React.Component <any, any> {
 	private getUsers () {
 		return this.props.users.asMutable()
 			.filter((user) => {
-				// Can add only users with allowed host names
-				if (!this.checkHost(user.email)) {
-					return false;
-				}
-				// We don't need duplicates
+				// Filter away users that are already selected as editor
 				for (const editor of this.props.chiefEditors) {
 					if (editor.email === user.email) {
 						return false;
@@ -96,17 +93,22 @@ class WebsiteEditors extends React.Component <any, any> {
 				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
 			</li>);
 		});
+
 		const users = this.getUsers();
+
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<label htmlFor="chiefs">Chief Editors</label>
+					<label htmlFor="chiefs">
+						<b>Chief Editors</b><br/>
+						Choose available editors here (roles "Editor" and "Site Admin")
+					</label>
 					<select
 						id="chief-editor" className="chief-editor small-12"
 						onChange={this.onSubmit}
 						value=""
 					>
-						<option value=""/>
+						<option value=""><i>-- select --</i></option>
 						{users}
 					</select>
 					<ul className="website-editors-list">
