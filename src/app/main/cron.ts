@@ -60,6 +60,10 @@ function jobCollectArticlesForPolling() {
 		}),
 		start: true,
 	}));
+
+	setTimeout(() => {
+		sendMessage(MessageType.CollectArticlesForPolling);
+	}, 2500);
 }
 
 function jobCompileUnrevisedDigest() {
