@@ -28,6 +28,6 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 
 ## License
 
-**Copyright © 2017 DB Medialab / Aller Media AS** (Oslo, Norway)
+**Copyright © 2017-18 DBmedialab / Aller Media AS** (Oslo, Norway)
 
 Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).
