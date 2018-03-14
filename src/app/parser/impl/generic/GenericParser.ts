@@ -27,9 +27,8 @@ import AbstractParser from '../../AbstractParser';
 import * as CheerioPlugin from '../../util/CheerioPlugin';
 import * as NodeReadPlugin from '../../util/NodeReadPlugin';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
+import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
+import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
 const elementTags = [
 	'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'ul', 'img', 'ol', 'a',
@@ -44,7 +43,6 @@ export default class GenericParser extends AbstractParser implements Parser {
 	// Initialize plugins
 
 	protected initialize() : Promise <any> {
-		log('initialize');
 		return NodeReadPlugin.create(this.rawArticle)
 			.then((a : NodeReadPlugin.NodeReadArticle) => this.nodeRead = a)
 		// Executed sequentially because Cheerio receives NodeRead's parsed content
@@ -57,18 +55,15 @@ export default class GenericParser extends AbstractParser implements Parser {
 	// Parser Implementation
 
 	protected parseVersion() : Promise <string> {
-		log('parsing version');
-		return Promise.resolve('');
+		return Promise.resolve(getOpenGraphModifiedTime(this.select));
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		log('parsing byline');
-		return Promise.resolve([]);
+		return Promise.resolve(getOpenGraphAuthors(this.select));
 	}
 
 	protected parseTitles() : Promise <ArticleItem[]> {
 		const title = this.nodeRead.title;
-		log('parsing title:', title);
 		return Promise.resolve([
 			this.createMainTitleEl(title),
 		]);

@@ -23,6 +23,7 @@ import Person from 'base/zz/Person';
 import Website from 'base/Website';
 import User from 'base/User';
 
+import { isEmpty } from 'lodash';
 import { ArticleModel } from 'app/db/models';
 import { ObjectID } from 'app/db';
 
@@ -85,14 +86,12 @@ export function saveNewVersion(
 	emptyCheck(website, newArticle, oldID);
 
 	return makeDocument(website, newArticle)
-	.then(newDoc => {
-		return new ArticleModel(newDoc).save();
-	})
-	.then(newObj => wrapFindOne(ArticleModel.findOneAndUpdate(
+	.then(newDocument => save(website, newDocument))
+	.then(newPersisted => wrapFindOne(ArticleModel.findOneAndUpdate(
 		{ _id : oldID },
 		{
 			'$set': {
-				newerVersion: newObj._id,
+				newerVersion: newPersisted.ID,
 			},
 		}
 	)));
@@ -139,7 +138,10 @@ const makeDocument = (website : Website, article : Article) => (
 	}))
 );
 
-const getUsers = (article : Article) : Promise <User[]> => Promise.all(
+const getUsers = (article : Article) : Promise <User[]> => {
 	// For some reason, TypeScript rejects Promise.map here. I stopped bothering
-	article.authors.map((author : Person) => userService.findOrInsert(author))
-);
+	return Promise.all(article.authors
+		.filter((author : Person) => (!isEmpty(author.name) && !isEmpty(author.email)))
+		.map((author : Person) => userService.findOrInsert(author))
+	);
+};

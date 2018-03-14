@@ -61,9 +61,9 @@ function jobCollectArticlesForPolling() {
 		start: true,
 	}));
 
-	setTimeout(() => {
-		sendMessage(MessageType.CollectArticlesForPolling);
-	}, 2500);
+	/* ONLY FOR TESTING >>>>>>>>>> */
+	setTimeout(() => sendMessage(MessageType.CollectArticlesForPolling), 2000);
+	/* <<<<<<<<<< ONLY FOR TESTING */
 }
 
 function jobCompileUnrevisedDigest() {
