@@ -23,10 +23,18 @@ import { ArticleElement } from '../ArticleElement';
 export default class SubHeadingElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
-		const order : number = this.props.item.order.type;
 		return <div>
-			<label><FormattedMessage id="label.article-el.subHead" values={{order}}/></label>
-			<h3>{ this.textDiff(this.props.item.originalText, this.state.text) }</h3>
+			<label>
+				<FormattedMessage
+					id="article-el.subhead"
+					values={{
+						order: this.props.item.order.type,
+					}}
+				/>
+			</label>
+			<h3 hidden={this.state.editing}>
+				{ this.textDiff(this.props.item.originalText, this.state.text) }
+			</h3>
 		</div>;
 	}
 

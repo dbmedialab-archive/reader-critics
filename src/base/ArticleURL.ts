@@ -24,7 +24,7 @@ import { EmptyError } from 'app/util/errors';
 const containsHex = /(?:%3A|%2F)/i;  // Detect encoded ':' and '/' characters
 const containsScheme = /^https?:\/\//;
 
-export default class ArticleURL {
+export class ArticleURL {
 
 	// readonly url : URL;
 	readonly href : string;
@@ -52,7 +52,7 @@ export default class ArticleURL {
 			: origURL;
 
 		if (!containsScheme.test(decodedURL)) {
-			throw new TypeError('URL must begin with a HTTP(S) scheme');
+			throw new TypeError(`URL must begin with a HTTP(S) scheme (${decodedURL})`);
 		}
 
 		// this.url = new URL(decodedURL);
@@ -66,3 +66,5 @@ export default class ArticleURL {
 	}
 
 }
+
+export default ArticleURL;

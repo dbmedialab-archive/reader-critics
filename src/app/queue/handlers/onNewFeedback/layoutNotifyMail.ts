@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import Article from 'base/Article';
-import ArticleItem from 'base/ArticleItem';
 import Feedback from 'base/Feedback';
 import FeedbackItem from 'base/FeedbackItem';
 import MailTemplate from 'app/template/MailTemplate';
@@ -27,21 +25,36 @@ import {
 	ItemFormatPayload,
 } from 'app/mail/layout/FeedbackNotifyLayout';
 
+import * as app from 'app/util/applib';
+
+import { articleService } from 'app/services';
 import { translate as __ } from 'app/services/localization';
+
+const log = app.createLog();
 
 const cssFeedbackItemBox = [
 	'padding: 0.8em',
 	'margin-bottom: 0.5em',
 ].join(';');
 
-export default function (feedback : Feedback, template : MailTemplate) : Promise <any> {
+export default function (feedback : Feedback, template : MailTemplate) : Promise <string> {
 	let dtxt = '';
 
 	feedback.items.forEach((fItem : FeedbackItem, fIndex : number) => {
 		const i : ItemFormatPayload = {
-			aItem: getRelatedArticleItem(feedback.article, fItem),
+			aItem: articleService.getRelatedArticleItem(feedback.article, fItem),
 			fItem,
 		};
+
+		if (i.aItem === undefined) {
+			log('Could not find related article item (feedback ID %s)', feedback.ID, app.inspect(fItem));
+			return;
+		}
+
+		if (i.fItem.text === undefined) {
+			log('Found a feedback object without text property, ignoring');
+			return;
+		}
 
 		const formatted = [
 			format.itemHeader(i),
@@ -55,11 +68,11 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 		dtxt += `<div class="fb-item-box" style="${css}">${formatted.join('')}</div>`;
 	});
 
-	const html = template.setParams({
+	const html : string = template.setParams({
 		gotFeedback: __('mail.fb-notify.got-feedback'),
 		whoSent: __('mail.fb-notify.who-sent'),
 
-		articleTitle: format.articleTitle(feedback),
+		articleTitle: feedback.article.title,
 		enduser: format.enduser(feedback),
 		sentIn: format.whenSentIn(feedback),
 
@@ -72,14 +85,6 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 	// notifyBrowser(html);  // -- this is only for convenient local testing
 
 	return Promise.resolve(html);
-}
-
-function getRelatedArticleItem(article : Article, fItem : FeedbackItem) {
-	return article.items.find((aItem : ArticleItem) => {
-		return aItem.order.item === fItem.order.item
-			&& aItem.order.type === fItem.order.type
-			&& aItem.type === fItem.type;
-	});
 }
 
 function debugInfo(feedback : Feedback) : string {

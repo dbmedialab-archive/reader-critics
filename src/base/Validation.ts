@@ -34,7 +34,7 @@ export interface IValidation {
 
 export default class Validation implements IValidation {
 	protected validationRules: {};
-	private validator;
+	private readonly validator;
 
 	constructor() {
 		this.validator = inspector;
@@ -68,7 +68,8 @@ export default class Validation implements IValidation {
 		const validation = this.validator.validate(schema, data);
 		return {
 			isError: !validation.valid,
-			message: errorText || validation.error[0],
+			message: errorText ||
+					(validation.error.length ? validation.error[0].message : ''),
 		};
 	}
 }

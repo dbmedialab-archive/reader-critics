@@ -10,48 +10,61 @@ console.log('Gecko driver version:', geckodriver.version);
 // require('ts-node/register');
 // require('tsconfig-paths/register');
 
+var SELENIUM_CONFIGURATION = {
+	start_process: true,
+	server_path: seleniumJAR.path,
+	port: 4444,
+	cli_args : {
+		'webdriver.chrome.driver': chromedriver.path,
+		'webdriver.gecko.driver': geckodriver.path,
+	}
+};
+
+var DEFAULT_CONFIGURATION = {
+		filter: '**/*.test.js',
+		launch_url: 'http://localhost',
+		selenium_port: 4444,
+		exclude : [],
+		selenium_host: 'localhost',
+		silent: true,
+		screenshots : {
+			enabled : false,
+			path : ""
+		},
+		globals: {
+			
+		},
+		end_session_on_fail: true,
+		desiredCapabilities: {
+			browserName: 'chrome',
+		},
+		// 'desiredCapabilities': {
+		//  	'browserName': 'firefox',
+		//  	'marionette': true
+		// },
+	};
+	var ENVIRONMENTS = {
+		default: DEFAULT_CONFIGURATION,
+		chrome : {
+			desiredCapabilities: {
+				browserName: "chrome"
+			}
+		},
+	};
+
+
 const conf = {
-	'src_folders': ['src/test/frontend'],
-	'output_folder': false,
-
-	'selenium': {
-		'server_path': seleniumJAR.path,
-		'start_process': true,
-		'port': 4444,
-		'cli_args': {
-			'webdriver.chrome.driver': chromedriver.path,
-			'webdriver.gecko.driver': geckodriver.path,
+	src_folders: ['src/test/frontend'],
+	output_folder: false,
+	selenium: SELENIUM_CONFIGURATION,
+	test_runner: {
+		type: 'mocha',
+		options: {
+			ui: 'bdd',
+			reporter: 'list',
 		},
 	},
-
-	'test_runner': {
-		'type': 'mocha',
-		'options': {
-			'ui': 'bdd',
-			'reporter': 'list'
-		},
-	},
-
-	'test_settings': {
-		'default': {
-			'filter': '**/*.test.js',
-			'launch_url': 'http://localhost',
-			'selenium_port': 4444,
-			'selenium_host': 'localhost',
-			'silent': true,
-			'screenshots' : {
-				'enabled' : false,
-			},
-			'end_session_on_fail': true,
-			'desiredCapabilities': {
-				'browserName': 'chrome',
-			},
-			// 'desiredCapabilities': {
-			//  	'browserName': 'firefox',
-			//  	'marionette': true
-			// },
-		},
-	},
+	test_settings: ENVIRONMENTS,
 };
 
 module.exports = conf;

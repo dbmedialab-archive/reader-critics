@@ -1,2 +1,2 @@
-secrets.*
+secret*
 !secrets.example.yaml

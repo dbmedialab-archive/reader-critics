@@ -20,26 +20,27 @@ import * as React from 'react';
 
 import { Link } from 'react-router-dom';
 
-const MainMenuComponent : React.StatelessComponent <any> = () =>
-		<ul className="menu-nav">
-				<li className="menu-item">
-					<Link
-							to="/users"
-							className="tooltip-tip tooltipster-disable"
-							title="All users"
-						>
-							<i className="fa fa-users" />
-							<span>Users</span>
-					</Link>
-					<Link
-							to="/feedbacks"
-							className="tooltip-tip tooltipster-disable"
-							title="All feedbacks"
-						>
-							<i className="fa fa-list-ul" />
-							<span>Feedbacks</span>
-					</Link>
-				</li>
-			</ul>;
+const targets : string[] = [
+	'Feedbacks',
+	'Articles',
+	'Suggestions',
+	'Users',
+	'Websites',
+];
+
+const createMenuEntry = (target : string) => (
+	<li key={target} className="menu-item">
+		<Link to={`/${target.toLowerCase()}`} className="tooltip-tip tooltipster-disable" title={target}>
+			<i className="fa fa-list-ul" />
+			<span>{target}</span>
+		</Link>
+	</li>
+);
+
+const MainMenuComponent : React.StatelessComponent <any> = () => (
+	<ul className="menu-nav">
+		{ targets.map(createMenuEntry) }
+	</ul>
+);
 
 export default MainMenuComponent;

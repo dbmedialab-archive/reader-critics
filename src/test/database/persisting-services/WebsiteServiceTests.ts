@@ -32,89 +32,123 @@ import * as app from 'app/util/applib';
 
 const demoSites = path.join('resources', 'website', 'demo-sites.json5');
 
+// Main test function
+
 export default function(this: ISuiteCallbackContext) {
-	let websiteCount : number;
+	this.slow(250);
 
-	it('parameter checks', () => {
-		assert.throws(() => websiteService.get(null), EmptyError);
-		assert.throws(() => websiteService.identify(null), EmptyError);
-		assert.throws(() => websiteService.save(null), EmptyError);
-	});
+	testParameterChecks();
+	testClear();
+	testSave();
+	testCount();
 
-	it('clear()', () => websiteService.clear());
+	testGet();
+	testGetRange();
 
-	it('save()', () => app.loadJSON(demoSites).then(data => {
-		assert.isArray(data);
-		websiteCount = data.length;
-
-		return Promise.mapSeries(data, websiteService.save);
-	})
-	.then(results => {
-		assert.isArray(results);
-		assert.lengthOf(results, websiteCount, 'Number of saved objects does not match');
-	}));
-
-	it('count()', () => websiteService.count().then(count => {
-		assert.strictEqual(count, websiteCount);
-	}));
-
-	it('get()', () => {
-		return Promise.all([
-			websiteService.get('dagbladet.no'),
-			websiteService.get('something-else.xyz'),
-		])
-		.then((results : Website[]) => {
-			assertWebsiteObject(results[0], 'dagbladet.no');
-			assert.isNull(results[1]);
-		});
-	});
-
-	it('getRange()', () => {
-		const testLimit = 2;
-
-		return Promise.all([
-			// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
-			websiteService.getRange(),
-			// #2 should return exactly "testLimit" items:
-			websiteService.getRange(0, testLimit),
-			// #3 skipping past the number of stored items should yield an empty result:
-			websiteService.getRange(websiteCount),
-		]).then((results : [Website[]]) => {
-			results.forEach(result => {
-				assert.isArray(result);
-				result.forEach(item => assertWebsiteObject(item));
-			});
-
-			const lengthCheck = [
-				Math.min(websiteCount, defaultLimit),
-				testLimit,
-				0,
-			];
-
-			results.forEach((result : Website[], index : number) => {
-				assert.lengthOf(
-					result,
-					lengthCheck[index],
-					`Incorrect number of objects in test range #${index + 1}`
-				);
-			});
-		});
-	});
-
-	it('identify()', () => {
-		const a : ArticleURL = new ArticleURL('http://www.dagbladet.no/mat/67728317');
-		const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
-
-		return Promise.all([
-			websiteService.identify(a),
-			websiteService.identify(b),
-		])
-		.then((results : Website[]) => {
-			assertWebsiteObject(results[0], 'dagbladet.no');
-			assert.isNull(results[1]);
-		});
-	});
+	testIdentify();
 }
+
+// Test runtime data
+
+let websiteCount : number;
+
+// Check for thrown exceptions
+
+const testParameterChecks = () => it('parameter checks', () => {
+	assert.throws(() => websiteService.get(null), EmptyError);
+	assert.throws(() => websiteService.identify(null), EmptyError);
+	assert.throws(() => websiteService.save(null), EmptyError);
+});
+
+// websiteService.clear()
+
+const testClear = () => it('clear()', () => websiteService.clear());
+
+// websiteService.save()
+
+const testSave = () => it('save()', () => app.loadJSON(demoSites).then(data => {
+	assert.isArray(data);
+	websiteCount = data.length;
+
+	return Promise.mapSeries(data, websiteService.save);
+})
+.then(results => {
+	assert.isArray(results);
+	assert.lengthOf(results, websiteCount, 'Number of saved objects does not match');
+}));
+
+// websiteService.count()
+
+const testCount = () => it('count()', () => websiteService.count()
+.then(count => {
+	assert.strictEqual(count, websiteCount);
+}));
+
+// websiteService.get()
+
+const testGet = () => it('get()', () => {
+	return Promise.all([
+		websiteService.get('dagbladet.no'),
+		websiteService.get('something-else.xyz'),
+	])
+	.then((results : Website[]) => {
+		assertWebsiteObject(results[0], 'dagbladet.no');
+		assert.isNull(results[1]);
+	});
+});
+
+// websiteService.getRange()
+
+const testGetRange = () => it('getRange()', () => {
+	const testLimit = 2;
+
+	return Promise.all([
+		// #1 should return the lesser of "defaultLimit" or "websiteCount" number of items:
+		websiteService.getRange(),
+		// #2 should return exactly "testLimit" items:
+		websiteService.getRange(0, testLimit),
+		// #3 skipping past the number of stored items should yield an empty result:
+		websiteService.getRange(websiteCount),
+	])
+	.spread((...ranges : Website[][]) => {
+		ranges.forEach(result => {
+			assert.isArray(result);
+			result.forEach(item => assertWebsiteObject(item));
+		});
+
+		const lengthCheck = [
+			Math.min(websiteCount, defaultLimit),
+			testLimit,
+			0,
+		];
+
+		ranges.forEach((result : Website[], index : number) => {
+			assert.lengthOf(
+				result,
+				lengthCheck[index],
+				`Incorrect number of objects in test range #${index + 1}`
+			);
+		});
+	});
+});
+
+// websiteService.identify()
+
+const testIdentify = () => it('identify()', () => {
+	const a : ArticleURL = new ArticleURL('http://www.dagbladet.no/mat/67728317');
+	const b : ArticleURL = new ArticleURL('http://something-else.xyz/goes/nowhere');
+
+	return Promise.all([
+		websiteService.identify(a),
+		websiteService.identify(b),
+	])
+	.then((results : Website[]) => {
+		assertWebsiteObject(results[0], 'dagbladet.no');
+		assert.isNull(results[1]);
+	});
+});
+
+// Generic structure check
 
 const assertWebsiteObject = (w : Website, name? : string) => {
 	assert.isObject(w);

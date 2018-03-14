@@ -21,6 +21,7 @@ import * as fs from 'fs';
 import * as JSON5 from 'json5';
 import * as path from 'path';
 
+import { NotFoundError } from 'app/util/errors';
 import { isTest } from './environment';
 
 /** The filesystem root of the whole project */
@@ -35,7 +36,7 @@ export function loadResource(relativePath : string) : Promise <Buffer> {
 		fs.open(fullPath, 'r', (errOpen) => {
 			if (errOpen) {
 				if (errOpen.code === 'ENOENT') {
-					return reject(new Error(`${fullPath} does not exist`));
+					return reject(new NotFoundError(`${fullPath} does not exist`));
 				}
 
 				return reject(errOpen);

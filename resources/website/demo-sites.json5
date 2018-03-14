@@ -1,74 +1,120 @@
 [
 	{
-		"name": "abendschau.de",
-		"hosts": [
+		name: "abendschau.de",
+		hosts: [
 			"abendschau.de",
 			"www.abendschau.de",
 		],
-		"locale": "de",
-		"chiefEditors": [
+		locale: "de",
+		layout: {
+			templates: {
+			},
+		},
+		chiefEditors: [
 			{
-				"name": "Gustl Bayrhammer",
-				"email": "gb@br.de"
+				name: "Gustl Bayrhammer",
+				email: "gb@br.de"
 			}
 		]
 	},
 	{
-		"name": "ampbladet.no",
-		"hosts": [
+		name: "ampbladet.no",
+		hosts: [
 			"ampbladet.no",
 			"www.ampbladet.no",
 		],
-		"locale": "nb",
-		parserClass: 'AMPParser',
-		"chiefEditors": [
+		locale: "nb",
+		parserClass: 'AMP Parser',
+		layout: {
+			templates: {
+			},
+		},
+		chiefEditors: [
 			{
-				"name": "Vakt Sjef",
-				"email": "vakt@ampbladet.no"
+				name: "Vakt Sjef",
+				email: "vakt@ampbladet.no"
 			}
 		]
 	},
 	{
-		"name": "dagbladet.no",
-		"hosts": [
-			"www.dagbladet.no"
+		name: "dagbladet.no",
+		hosts: [
+			"db.no",
+			"www.db.no",
+			"dagbladet.no",
+			"www.dagbladet.no",
 		],
-		"locale": "nb",
-		parserClass: 'DagbladetParser',
-		"chiefEditors": [
+		locale: "nb",
+		parserClass: 'Dagbladet Parser',
+		chiefEditors: [
 			{
-				"name": "Vakt Sjef",
-				"email": "vakt@dagbladet.no"
+				name: "Vakt Sjef",
+				email: "vakt@dagbladet.no"
 			}
-		]
+		],
+		layout: {
+			templates: {
+			},
+		},
+		unrevisedDigest: {
+			isActive: true,
+		},
 	},
 	{
-		"name": "dinside.no",
-		"hosts": [
+		name: "dinside.no",
+		hosts: [
 			"www.dinside.no"
 		],
-		"locale": "nb",
-		"chiefEditors": [
+		locale: "nb",
+		parserClass: 'Labrador Parser',
+		layout: {
+			templates: {
+			},
+		},
+		chiefEditors: [
 			{
-				"name": "Vakt Sjef",
-				"email": "vakt@dinside.no"
+				name: "Vakt Sjef",
+				email: "vakt@dinside.no"
 			}
 		]
 	},
 	{
-		"name": "morgenposten.no",
-		"hosts": [
-			"mopo.no",
-			"morgenposten.no",
-			"www.mopo.no",
-			"www.morgenposten.no",
+		name: 'avisa.tld',
+		hosts: [
+			'avisa.tld',
+			'www.avisa.tld',
 		],
-		"locale": "nb",
-		"chiefEditors": [
+		locale: 'nb',
+		parserClass: 'Generic Parser',
+		chiefEditors: [
 			{
-				"name": "Like A. Boss",
-				"email": "redaksjon@morgenposten.no"
-			}
-		]
+				name: 'Like A. Boss',
+				email: 'redaksjon@avisa.tld',
+			},
+		],
+		layout: {
+			templates: {
+			},
+		},
+		unrevisedDigest: {
+			isActive: false,
+		},
+	},
+	{
+		name: 'nettavisen.no',
+		hosts: [
+			'na.no',
+			'www.na.no',
+			'nettavisen.no',
+			'www.nettavisen.no',
+		],
+		locale: 'nb',
+		layout: {
+			templates: {
+			},
+		},
+		parserClass: 'Nettavisen Parser',
+		chiefEditors: [
+		],
 	},
 ]

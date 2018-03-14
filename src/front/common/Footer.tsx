@@ -19,8 +19,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-const year = new Date().getFullYear();
-
 const Footer : React.StatelessComponent <any> =
 	() => <footer className="main-footer">
 		<div className="container">
@@ -30,14 +28,8 @@ const Footer : React.StatelessComponent <any> =
 					<FormattedMessage id="footer.giveUsF"/>
 				</a>
 			</div>
-			<div className="content four columns">
-				<span><FormattedMessage id="footer.chiefEditor"/> <a href="#">John Arne Markussen</a></span>
-				<div itemType="http://schema.org/Organization">
-					© {year} <span itemProp="name">DB Medialab</span>
-				</div>
-			</div>
 		</div>
-		<div id="err-section"/>
+		<div id="modal-section"/>
 	</footer>;
 
 export default Footer;

@@ -24,31 +24,42 @@ import PersistedModel from './zz/PersistedModel';
 import User from './User';
 import Website from './Website';
 
-interface Feedback extends PersistedModel {
+export interface FeedbackStatusEntry {
+	status : FeedbackStatus
+	changeDate : Date
+}
+
+export interface Feedback extends PersistedModel {
 	/** The Article that this feedback object is based on */
-	article : Article,
+	article : Article
 
 	/** The EndUser who sent in this feedback */
-	enduser : EndUser,
+	enduser : EndUser
 
 	/** Copy of the Website reference from "article", for filtered queries */
-	website? : Website,
+	website? : Website
 
 	/** Copy of the authors references from "article", for filtered queries */
-	articleAuthors? : User[],
+	articleAuthors? : User[]
 
 	/** The actual feedback data, related to the article items */
-	items : FeedbackItem[],
+	items : FeedbackItem[]
 
-	/** Current processing status */
-	status : FeedbackStatus,
+	/** Current processing status and a log of all past status changes */
+	status : FeedbackStatusEntry & {
+		log : FeedbackStatusEntry[]
+	}
 
-	/** Additional date field that holds the latest status update */
-	date : {
-		created? : Date,
-		modified? : Date,
-		statusChange? : Date,
-	},
+	/**
+	 * Token which enables an enduser to update his/her data after the feedback
+	 * has already been posted
+	 */
+	oneshotUpdateToken? : string
+
+	date? : {
+		created? : Date
+		modified? : Date
+	}
 }
 
 export default Feedback;

@@ -4,13 +4,17 @@
 &nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
-[![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
+[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=svg)](https://circleci.com/gh/dbmedialab/reader-critics)
 &nbsp;
-[![Wercker status](https://app.wercker.com/status/becb14dfb1645c8010f604bdbb6aeeca/s/develop "wercker status")](https://app.wercker.com/project/byKey/becb14dfb1645c8010f604bdbb6aeeca)
+[![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
 [![Greenkeeper badge](https://badges.greenkeeper.io/dbmedialab/Reader-critics.svg?token=a55103c0252ec9f2b14f7bb9af0229280aeba52887991f94b78b271f245e9f0c)](https://greenkeeper.io/)
 &nbsp;
-[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/)
+[![Dependencies](https://david-dm.org/dbmedialab/reader-critics/status.svg)](https://david-dm.org/dbmedialab/reader-critics)
+
+Reader Critics is a tool made by Norwegian [Dagbladet](https://www.dagbladet.no/) with support from the [Google DNI](https://digitalnewsinitiative.com/dni-projects/leserkritikk-reader-critics/) fund, designed to enable the readers to give precise and constructive criticism to journalistic work.
+
+This is the completely rewritten version of _Leserkritikk_, made with [TypeScript](https://www.typescriptlang.org/) and [ReactJS](https://reactjs.org/) as its cornerstones, among lots of other things. It has been launched to production on [dagbladet.no](https://www.dagbladet.no/) as of December 2016.
 
 ## Table of Contents
 
@@ -21,10 +25,9 @@
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
 * [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
-* [Crazy Ideas](doc/think-about-these-crazy-ideas.md) ‒ We won't do that right now, but we really want to
 
 ## License
 
-**Copyright © 2017 DB Medialab / Aller Media AS** (Oslo, Norway)
+**Copyright © 2017-18 DBmedialab / Aller Media AS** (Oslo, Norway)
 
 Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).

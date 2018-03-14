@@ -31,96 +31,92 @@ import {
 	userService,
 } from 'app/services';
 
+import {
+	testGetByStatus,
+	testUpdateStatus,
+} from './FeedbackServiceTests/StatusFunctions';
+
+import { assertFeedbackObject } from './FeedbackServiceTests/assertFeedbackObject';
+
 import * as app from 'app/util/applib';
 
 const feedbackDir = path.join('resources', 'feedback', 'create');
 const feedbackIDs = [];
 
+// Test runtime data
+
+let feedbackCount : number;
+
+// Main test function
+
 export default function(this: ISuiteCallbackContext) {
-	let feedbackCount : number;
+	this.slow(250);
 
-	it('clear()', () => feedbackService.clear());
+	testClear();
+	testValidateAndSave();
+	testCount();
 
-	it('validateAndSave()', () => app.scanDir(feedbackDir).then((files : string[]) => {
-		feedbackCount = files.length;
+	testGetByArticle();
+	testGetByArticleAuthor();
 
-		return Promise.mapSeries(files, (filename : string) => {
-			return app.loadJSON(path.join(feedbackDir, filename))
-			.then((a : any) => {
-				assert.isNotNull(a);
-				return feedbackService.validateAndSave(a).then((doc) => {
-					feedbackIDs.push(doc.ID);
-				});
-			});
-		});
-	}));
-
-	it('count()', () => feedbackService.count().then(count => {
-		assert.strictEqual(
-			count, feedbackCount,
-			`Expected object count of ${feedbackCount} but got ${count} instead`
-		);
-	}));
-
-	it('getByArticle()', () => {
-		return ArticleURL.from('http://www.mopo.no/1')
-		.then(articleURL => articleService.get(articleURL, 'final-draft'))
-		.then(article => feedbackService.getByArticle(article))
-		.then((results : Feedback[]) => {
-			assert.lengthOf(results, 1);
-			results.forEach(feedback => assertFeedbackObject(feedback));
-		});
-	});
-
-	it('getByArticleAuthor()', () => {
-		return userService.get('Axel Egon Unterbichler')
-		.then(author => {
-			return feedbackService.getByArticleAuthor(author);
-		})
-		.then((results : Feedback[]) => {
-			assert.lengthOf(results, 2);
-			results.forEach((feedback, index) => {
-				// console.error(colors.brightYellow(
-				// 	`--- queried feedback #${index} -------------------------------------------------------`
-				// ));
-				// console.error(app.inspect(feedback));
-				// console.error(colors.brightYellow(
-				// 	'-------------------------------------------------------------------------------\n'
-				// ));
-				assertFeedbackObject(feedback);
-			});
-		});
-	});
+	testUpdateStatus();
+	testGetByStatus();
 }
 
-const assertFeedbackObject = (f : Feedback) => {
-	assert.isObject(f);
+// feedbackService.clear()
 
-	[ 'article', 'enduser', 'items', 'status' ].forEach(prop => {
-		assert.property(f, prop);
-	});
+const testClear = () => it('clear()', () => feedbackService.clear());
 
-	[ 'articleAuthors' ].forEach(prop => {
-		assert.notProperty(f, prop);
-	});
+// feedbackService.validateAndSave()
 
-	// Test if "article" object was populated
-	assert.isObject(f.article);
-	[ 'authors', 'items', 'url', 'version' ].forEach(prop => {
-		assert.property(f.article, prop);
-	});
+const testValidateAndSave = () => it('validateAndSave()', () => app.scanDir(feedbackDir)
+.then((files : string[]) => {
+	feedbackCount = files.length;
 
-	// Test if "article.authors" array was populated
-	assert.isArray(f.article.authors);
-	f.article.authors.forEach(author => {
-		assert.isObject(author);
-		[ 'email', 'name' ].forEach(prop => {
-			assert.property(author, prop);
+	return Promise.mapSeries(files, (filename : string) => {
+		return app.loadJSON(path.join(feedbackDir, filename))
+		.then((a : any) => {
+			assert.isNotNull(a);
+			return feedbackService.validateAndSave(a).then(feedback => {
+				feedbackIDs.push(feedback.ID);
+			});
 		});
 	});
+}));
 
-	assert.isObject(f.date);
-	assert.isObject(f.enduser);
+// feedbackService.count()
 
-	assert.isArray(f.items);
-};
+const testCount = () => it('count()', () => feedbackService.count()
+.then(count => {
+	assert.strictEqual(
+		count, feedbackCount,
+		`Expected object count of ${feedbackCount} but got ${count} instead`
+	);
+}));
+
+// feedbackService.getByArticle()
+
+const testGetByArticle = () => it('getByArticle()', () => {
+	return ArticleURL.from('http://avisa.tld/1')
+	.then(articleURL => articleService.get(articleURL, 'final-draft'))
+	.then(article => feedbackService.getByArticle(article))
+	.then((results : Feedback[]) => {
+		assert.lengthOf(results, 1);
+		results.forEach(feedback => assertFeedbackObject(feedback));
+	});
+});
+
+// feedbackService.getByArticleAuthor()
+
+const testGetByArticleAuthor = () => it('getByArticleAuthor()', () => {
+	return userService.get('Axel Egon Unterbichler')
+	.then(author => {
+		return feedbackService.getByArticleAuthor(author);
+	})
+	.then((results : Feedback[]) => {
+		assert.lengthOf(results, 2);
+		results.forEach((feedback, index) => {
+			assertFeedbackObject(feedback);
+		});
+	});
+});

@@ -18,12 +18,15 @@
 
 import * as colors from 'ansicolors';
 import * as cluster from 'cluster';
+import * as moment from 'moment';
 import * as path from 'path';
 import * as semver from 'semver';
 
+import { initCron } from './cron';
+import { initDatabase } from 'app/db';
+import { initMasterQueue } from 'app/queue';
+import { initVote } from './vote';
 import { readFileSync } from 'fs';
-
-import printEnvironment from 'print-env';
 
 import {
 	typeJobWorker,
@@ -36,6 +39,7 @@ import {
 } from './clusterSignals';
 
 import * as app from 'app/util/applib';
+
 const log = app.createLog('master');
 
 const workerMap = {};
@@ -46,11 +50,14 @@ const workerMap = {};
 export default function() {
 	log('Starting Reader Critics webservice');
 	log('App located in %s', colors.brightWhite(app.rootPath));
-
-	printEnvironment(app.createLog('env'));
+	log('Node ID is %s', colors.brightMagenta(app.nodeID));
 
 	checkEngineVersion()
+		.then(initMasterQueue)
+		.then(initDatabase)
+		.then(initVote)
 		.then(startWorkers)
+		.then(initCron)
 		.then(notifyTestMaster)
 		.catch(startupErrorHandler);
 }
@@ -60,22 +67,19 @@ export default function() {
 function startWorkers() : Promise <any> {
 	const startupPromises : Promise <any> [] = [];
 
-	const numJobWorkers = 1;  // TODO this number should scale with available CPU cores
-	const numWebWorkers = app.numConcurrency;
-
 	log(
 		'%s threads available, running %s %s workers and %s %s workers',
 		colors.brightWhite(app.numThreads),
-		colors.brightWhite(numWebWorkers),
+		colors.brightWhite(app.numWebWorkers),
 		colors.brightGreen('web'),
-		colors.brightWhite(numJobWorkers),
+		colors.brightWhite(app.numJobWorkers),
 		colors.brightYellow('job')
 	);
 
-	const numTotal = numWebWorkers + numJobWorkers;
+	const numTotal = app.numWebWorkers + app.numJobWorkers;
 
 	for (let i = 0; i < numTotal; i++) {
-		const workerType = i < numWebWorkers ? typeWebWorker : typeJobWorker;
+		const workerType = i < app.numWebWorkers ? typeWebWorker : typeJobWorker;
 
 		const worker : cluster.Worker = cluster.fork({
 			WORKER_TYPE: workerType,
@@ -99,7 +103,31 @@ function startWorkers() : Promise <any> {
 
 cluster.on('exit', (worker : cluster.Worker, code : number, signal : string) => {
 	log('Worker %d died (%s)', worker.id, signal || code);
+	app.notify(`_${moment().format('YY.MM.DD HH:mm:ss.SSS')}_  Worker ${worker.id} died`);
+
+	// Get the type of the recently deceased worker process
+	const workerType = workerMap[worker.id].workerType;
+
+	// Delete the deceased worker object from the map
 	delete workerMap[worker.id];
+
+	// Fork a new process
+	const newWorker : cluster.Worker = cluster.fork({
+		WORKER_TYPE: workerType,
+	});
+
+	log('Starting new worker %d', newWorker.id);
+
+	// Put the new process into the worker map
+	workerMap[newWorker.id] = {
+		startupResolve: () => {
+			log('Worker reboot successful');
+		},
+		startupReject: () => {
+			log('Worker reboot failed!');
+		},
+		workerType,
+	};
 });
 
 cluster.on('message', (worker : cluster.Worker, message : ClusterMessage) => {

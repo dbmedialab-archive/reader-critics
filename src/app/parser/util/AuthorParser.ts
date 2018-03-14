@@ -20,6 +20,9 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 
+import { isString } from 'lodash';
+import { getLinkedData } from './LinkedData';
+
 /**
  * Facebook's OpenGraph scheme
  * looks for <meta property="article:modified_time" content="...">
@@ -44,4 +47,24 @@ export function getOpenGraphAuthors(select : Cheerio) : ArticleAuthor[] {
 		name: name.trim(),
 		email: splitMail[index].trim(),
 	}));
+}
+
+/**
+ * Linked-data according to Schema.org
+ * looks for <script type="application/ld+json">...{JSON data}...</script>
+ */
+export function getLinkedDataAuthors(select : Cheerio) : ArticleAuthor[] {
+	const ld = getLinkedData(select);
+	const authors : ArticleAuthor[] = [];
+
+	if (isString(ld.author)) {
+		authors.push({
+			name: ld.author,
+		});
+	}
+	else {
+		authors.push(ld.author);
+	}
+
+	return authors;
 }

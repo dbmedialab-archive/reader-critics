@@ -27,9 +27,10 @@ import {
 	feedbackService,
 } from 'app/services';
 
-import { sendMessage } from 'app/queue';
-
-import MessageType from 'app/queue/MessageType';
+import {
+	sendMessage,
+	MessageType,
+} from 'app/queue';
 
 import * as app from 'app/util/applib';
 
@@ -37,7 +38,7 @@ const log = app.createLog();
 
 export function mockFeedbackEvent() : Promise <any> {
 	// Get an article from the test crowd
-	return articleService.get('http://www.mopo.no/2', '201707251349')
+	return articleService.get('http://www.avisa.tld/2', '201707251349')
 	// Get first feedback for this article => test contents
 	.then((article : Article) => (
 		article === null

@@ -29,17 +29,26 @@ import createPersistingService from '../createPersistingService';
 import {
 	get,
 	getByID,
-	identify,
+	getToRunUnrevisedDigest,
 	save,
+	setUnrevisedDigestLastRun,
+	update,
 } from './WebsiteDAO';
+
+import { identify } from './mock/identify';
+import validateAndUpdate from './common/validateAndUpdate';
 
 const service : WebsiteService
 	= createPersistingService <WebsiteDocument, WebsiteService,	Website> (
 		WebsiteModel, {
 			get,
 			getByID,
+			getToRunUnrevisedDigest,
+			setUnrevisedDigestLastRun,
 			identify,
 			save,
+			update,
+			validateAndUpdate,
 		}
 	);
 

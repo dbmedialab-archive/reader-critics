@@ -5,6 +5,7 @@
 	db: {
 		mongodb: {
 			url: fill,
+			reconnectionLimit: fill,
 		},
 		redis: {
 			url: {

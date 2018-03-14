@@ -18,6 +18,8 @@
 
 import 'whatwg-fetch';
 
+import { RawPostEndUser } from 'base/api/RawPostEndUser';
+
 import { getLocale } from 'front/uiGlobals';
 import { showError } from 'front/uiHelpers';
 
@@ -33,13 +35,20 @@ export const fetchArticle = ((url : string, version : string) : Promise <any> =>
 	const encVersion = encodeURIComponent(version);
 
 	return fetchData(`/api/article/?url=${encURL}&version=${encVersion}`)
-	.then(data => data.article);
+	.then(data => data.article)
+	.catch(err => {
+		throw new Error(err);
+	});
 });
 
 // Send all kinds of data
 
 export const sendFeedback = ((data : any) : Promise <any> => {
 	return postData('/api/feedback/', data).then(checkStatus);
+});
+
+export const sendEnduserData = ((data : RawPostEndUser) : Promise <any> => {
+	return postData('/api/enduser/', data).then(checkStatus);
 });
 
 export const sendSuggestion = ((data : any) : Promise <any> => {
@@ -51,10 +60,10 @@ export const sendSuggestion = ((data : any) : Promise <any> => {
 function fetchData(url : string) : Promise <any> {
 	return fetch(url, {
 		method: 'GET',
-		headers: {
-			'Accept': apiMIME,
-			'Accept-Language': getLocale(),
-		},
+		headers: [
+			[ 'Accept', apiMIME ],
+			[ 'Accept-Language', getLocale() ],
+		],
 	})
 	.then(checkStatus);
 }
@@ -68,10 +77,10 @@ function postData(uri : string, data : any) : Promise <any> {
 function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <any> {
 	return fetch(uri, {
 		method: method,
-		headers: {
-			'Accept-Language': getLocale(),
-			'Content-Type': apiMIME,
-		},
+		headers: [
+			[ 'Accept-Language', getLocale() ],
+			[ 'Content-Type', apiMIME ],
+		],
 		body: JSON.stringify(data),
 	});
 }
@@ -81,7 +90,7 @@ function sendData(method: 'POST' | 'PUT', uri : string, data : any) : Promise <a
 function checkStatus(resp : Response) : Promise <any> {
 	const bail = (message) => {
 		showError(message);
-		return Promise.reject(Promise.reject(new Error(message)));
+		return Promise.reject(new Error(message));
 	};
 
 	return resp.json().then((payload) => {

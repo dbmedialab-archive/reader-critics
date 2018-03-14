@@ -32,12 +32,17 @@ const log = app.createLog();
 
 const apiKey : string = config.get('mail.sendgrid.api_key');
 const senderDomain : string = config.get('mail.sender.domain');
-const bccRecipient : string = config.get('mail.bccRecipient');
+const bccRecipients : Array <string> = (config.get('mail.bccRecipient') || []).split(/,/);
+
+export type SendGridMailerOptions = {
+	highPriority? : boolean
+};
 
 export default function(
 	recipients : Array <string>,
 	subject : string,
-	htmlContent : string
+	htmlContent : string,
+	options : SendGridMailerOptions = {}
 ) : Promise <any>
 {
 	if (apiKey.length <= 0) {
@@ -45,23 +50,31 @@ export default function(
 	}
 
 	if (app.isTest) {
-		log(`Not sending in test mode`);
+		log('(Not) Sending e-mail (in test mode) to', recipients.join(', '));
 		return Promise.resolve();
 	}
 
-	log(`Sending e-mail to ${recipients.join(', ')}`);
+	log('Sending e-mail to', recipients.join(', '));
 	sendgridMail.setApiKey(apiKey);
 
-	const options : any = {
+	const message : any = {
 		to: recipients,
 		from: `no-reply@${senderDomain}`,
+		bcc: bccRecipients.filter((rcpt : string) => !recipients.includes(rcpt)),
 		subject,
 		html: htmlContent,
+		isMultiple: true,
+		headers: {},
 	};
 
-	if (bccRecipient.length > 0) {
-		options.bcc = bccRecipient;
+	if (options && options.highPriority) {
+		// https://sendgrid.com/blog/magic-email-headers/
+		Object.assign(message.headers, {
+			'X-Priority': '1 (Highest)',
+			'X-MSMail-Priority': 'High',
+			'Importance': 'High',
+		});
 	}
 
-	return sendgridMail.send(options);
+	return sendgridMail.send(message);
 }
