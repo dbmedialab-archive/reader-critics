@@ -25,7 +25,6 @@ import * as app from 'app/util/applib';
 const log = app.createLog();
 
 export default function (requ : Request, resp : Response) : void {
-	log(app.inspect(requ.body));
 	// Store the new feedback
 	feedbackService.validateAndSave(requ.body)
 	// Reply with only the one-shot token in the response.
