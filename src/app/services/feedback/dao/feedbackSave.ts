@@ -78,7 +78,6 @@ const makeDocument = (
 // Update enduser data
 
 export function updateEndUser (feedback : Feedback, enduser : EndUser) : Promise <Feedback> {
-	log('updateEndUser [[[ %s ]]] [[[ %s ]]]', app.inspect(feedback), app.inspect(enduser));
 	emptyCheck(enduser);
 
 	return wrapFindOne(FeedbackModel.findOneAndUpdate(
