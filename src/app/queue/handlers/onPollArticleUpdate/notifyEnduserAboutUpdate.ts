@@ -18,8 +18,15 @@
 
 import * as app from 'app/util/applib';
 
-import { Article } from 'base';
+import {
+	Article,
+	EndUser,
+	Feedback,
+} from 'base';
+
+import { isEmpty } from 'lodash';
 import { feedbackService } from 'app/services';
+import { EmptyError } from 'app/util/errors';
 
 const log = app.createLog();
 
@@ -28,11 +35,37 @@ export function notifyEnduserAboutUpdate(
 	newRevision : Article
 ) : PromiseLike <void>
 {
-	log('############ Let\'s do this!');
+	let totalCount = 0;
 
-	oldRevision.feedbacks.forEach(feedbackID => {
-		log(feedbackID);
+	return feedbackService.getByArticle(oldRevision, 0, 0)
+	// Filter all that have enduser data, specifically an e-mail address
+	.then((feedbacks : Feedback[]) => {
+		totalCount = feedbacks.length;
+		return feedbacks.filter((thisFeedback) => !isEmpty(thisFeedback.enduser.email));
+	})
+
+	// Check for available enduser data, also log some numbers
+	.then((feedbacksWithUserData : Feedback[]) => {
+		log(
+			'Article has %d feedbacks and %d have enduser data with an e-mail address',
+			totalCount, feedbacksWithUserData.length
+		);
+
+		if (feedbacksWithUserData.length === 0) {
+			// Flow control through exception handling is a Bad Thing™ and I have
+			// to state that here again, because I'm repeating that pattern!
+			throw new EmptyError(null);
+		}
+
+		// Extract user data and get the notification template
+		return Promise.all([
+			feedbacksWithUserData.map((feedback : Feedback) => feedback.enduser),
+			// TODO template service get enduser thingy
+		]);
+	})
+
+	// Put everything together und shoot the mail
+	.spread((endusers : EndUser[]) => {
+		log(app.inspect(endusers));
 	});
-
-	return Promise.resolve();
 }
