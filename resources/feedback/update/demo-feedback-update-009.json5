@@ -1,0 +1,5 @@
+{
+	name: 'Other User',
+	email: 'other.user@elsewhere.tld',
+	updateToken: 'one-shot-test-token-9',
+}
