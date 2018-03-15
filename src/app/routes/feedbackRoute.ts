@@ -146,7 +146,6 @@ function feedbackHandler(
 				locale: website.locale,
 				messages: locaStrings,
 			},
-		//	signed: 'NUdzNVJRdUdmTzd0ejFBWGwxS2tZRDVrRzBldTVnc0RDc2VheGdwego=',
 		}).render())
 		.status(200).end();
 		return null;
