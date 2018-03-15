@@ -27,10 +27,6 @@ import { wrapFindOne, wrapSave } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 // save
 
 export function save (
