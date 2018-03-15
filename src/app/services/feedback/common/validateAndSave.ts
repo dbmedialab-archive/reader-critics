@@ -17,6 +17,7 @@
 //
 
 import * as cryptoRandomString from 'crypto-random-string';
+import * as app from 'app/util/applib';
 
 import { isObject } from 'lodash';
 
@@ -47,6 +48,9 @@ type RawArticle = {
 		items? : [{}],
 	},
 };
+
+const testToken = 'one-shot-test-token';
+let testTokenIncrement = 1;
 
 /**
  * Validate and store to database
@@ -118,7 +122,9 @@ function getAnonymousEndUser() : Promise <EndUser> {
  * one shot update token.
  */
 function getOneShotToken() : string {
-	return cryptoRandomString(92);  // 368 bytes of random. Yes, an unusual number!
+	// 368 bytes of random. Yes, an unusual number!
+	// Use a fixed update token when in test mode (that is matched by the mock data)
+	return app.isTest ? `${testToken}-${testTokenIncrement++}` : cryptoRandomString(92);
 }
 
 /**
