@@ -93,6 +93,9 @@ export function saveNewVersion(
 			'$set': {
 				newerVersion: newPersisted.ID,
 			},
+		},
+		{
+			'new': true,
 		}
 	)));
 }

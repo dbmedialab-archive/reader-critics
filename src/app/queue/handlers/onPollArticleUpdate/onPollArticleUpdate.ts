@@ -85,18 +85,11 @@ function pollArticle(pollData : PollUpdateData) : Promise <void> {
 
 		return Promise.all([
 			articleService.get(articleURL, pollData.version, false),
-			update(website, newArticle, new ObjectID(pollData.ID)).then(() => newArticle),
+			articleService.saveNewVersion(website, newArticle, new ObjectID(pollData.ID)),
 		])
 		// 4 - Check existing feedbacks and notify their endusers (if possible)
 		.spread((oldRevision : Article, newRevision : Article) => (
-			notifyEnduserAboutUpdate(oldRevision, newRevision)
+			notifyEnduserAboutUpdate(website, oldRevision, newRevision)
 		));
-	});
-}
-
-function update(website : Website, newArticle : Article, oldID : ObjectID) : Promise <void> {
-	return articleService.saveNewVersion(website, newArticle, oldID)
-	.then((oldArticle : Article) => {
-		log('Successfully updated %s to version %s', oldArticle.url.toString(), newArticle.version);
 	});
 }
