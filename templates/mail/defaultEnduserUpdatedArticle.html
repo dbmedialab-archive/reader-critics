@@ -1,0 +1,53 @@
+<html lang="{{=it.locale}}">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<style>
+			body, div {
+				font-family: 'Droid Sans', Arial, Helvetica, sans-serif;
+				font-size: 12pt;
+			}
+
+			p {
+				margin: 0 0 0.5em 0;
+			}
+
+			a {
+				color: #0070D0;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+
+			div.hello {
+				margin-bottom: 1em;
+			}
+			div.mfg {
+				margin-top: 1em;
+			}
+
+			p.article-title {
+				font-size: 14pt;
+				font-weight: bold;
+			}
+		</style>
+		<div id="mail-main">
+			<div class="hello">
+				<p>{{=it.text.hello}}</p>
+			</div>
+
+			<p>{{=it.text.updated}}</p>
+
+			<p class="article-title"><a href="{{=it.article.url}}">{{=it.article.title}}</a></p>
+
+			<p>{{=it.text.system}}</p>
+
+			<div class="mfg">
+				<p>{{=it.text.mfg}}</p>
+				<p><i>Reader Critics Robot</i></p>
+			</div>
+		</div>
+	</body>
+</html>
