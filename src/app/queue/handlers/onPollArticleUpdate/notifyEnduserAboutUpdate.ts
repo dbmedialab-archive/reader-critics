@@ -19,7 +19,6 @@
 import * as app from 'app/util/applib';
 
 import { isEmpty } from 'lodash';
-import { EmptyError } from 'app/util/errors';
 import { translate as __ } from 'app/services/localization';
 
 import MailTemplate from 'app/template/MailTemplate';
@@ -61,9 +60,7 @@ export function notifyEnduserAboutUpdate(
 		);
 
 		if (feedbacksWithUserData.length === 0) {
-			// Flow control through exception handling is a Bad Thing™ and I have
-			// to state that here again, because I'm repeating that pattern!
-			throw new EmptyError(null);
+			return;  // No feedbacks with user data/e-mail addresses -> do nothing
 		}
 
 		// Extract user e-mail addresses
@@ -71,13 +68,12 @@ export function notifyEnduserAboutUpdate(
 			feedbacksWithUserData.map((feedback : Feedback) => feedback.enduser.email),
 			layoutNotification(website, newRevision),
 			getMailSubject(website, newRevision),
-		]);
-	})
-
-	// Put everything together und shoot the mail
-	.spread((recipients : string[], html : string, subject : string) => (
-		SendGridMailer(recipients, subject, html)
-	));
+		])
+		// Put everything together und shoot the mail
+		.spread((recipients : string[], html : string, subject : string) => (
+			SendGridMailer(recipients, subject, html)
+		));
+	});
 }
 
 // E-mail layout
