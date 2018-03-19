@@ -32,7 +32,8 @@ const log = app.createLog();
 
 const apiKey : string = config.get('mail.sendgrid.api_key');
 const senderDomain : string = config.get('mail.sender.domain');
-const bccRecipients : Array <string> = (config.get('mail.bccRecipient') || []).split(/,/);
+const bccRecipients : Array <string> = (config.get('mail.bccRecipient') || '').split(/,/);
+// const override : string = config.get('mail.testOverride');
 
 export type SendGridMailerOptions = {
 	highPriority? : boolean
@@ -65,6 +66,14 @@ export default function(
 		html: htmlContent,
 		isMultiple: true,
 		headers: {},
+		trackingSettings: {
+			clickTracking: {
+				enable: false,
+			},
+			ganalytics: {
+				enable: false,
+			},
+		},
 	};
 
 	if (options && options.highPriority) {

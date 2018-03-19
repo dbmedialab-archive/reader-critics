@@ -36,6 +36,7 @@ import {
 import { ArticleURL } from 'base/ArticleURL';
 import { ObjectID } from 'app/db';
 import { PollUpdateData } from 'app/services/article/ArticleService';
+import { notifyEnduserAboutUpdate } from './notifyEnduserAboutUpdate';
 
 const log = app.createLog();
 
@@ -75,24 +76,20 @@ function pollArticle(pollData : PollUpdateData) : Promise <void> {
 		website = w;
 		return articleService.fetch(website, articleURL);
 	})
+	// 3 - Compare the polled data to the existing article
 	.then((newArticle : Article) => {
 		if (newArticle.version === pollData.version) {
 			log('No update found for', pollData.url);
 			return;
 		}
 
-		return update(website, newArticle, new ObjectID(pollData.ID));
-		// Later when comparing article updates to inform users about it, this is
-		// the place where the app should either fire another queue message to
-		// trigger comparing "old" versus "updated" or, rather maybe, do that
-		// job right here (but in another function, of course).
-		// This could very well be its own module inside this handler directory.
-	});
-}
-
-function update(website : Website, newArticle : Article, oldID : ObjectID) : Promise <void> {
-	return articleService.saveNewVersion(website, newArticle, oldID)
-	.then((oldArticle : Article) => {
-		log('Successfully updated %s to version %s', oldArticle.url.toString(), newArticle.version);
+		return Promise.all([
+			articleService.get(articleURL, pollData.version, false),
+			articleService.saveNewVersion(website, newArticle, new ObjectID(pollData.ID)),
+		])
+		// 4 - Check existing feedbacks and notify their endusers (if possible)
+		.spread((oldRevision : Article, newRevision : Article) => (
+			notifyEnduserAboutUpdate(website, oldRevision, newRevision)
+		));
 	});
 }

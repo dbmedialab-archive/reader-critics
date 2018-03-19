@@ -56,7 +56,7 @@ export const testGetByStatus = () => it('getByStatus()', () => {
 		feedbackService.getByStatus(FeedbackStatus.FeedbackSent),
 	])
 	.spread((resultAwait : Feedback[], resultSent : Feedback[]) => {
-		const numAwait = 7;
+		const numAwait = 9;
 		assert.lengthOf(
 			resultAwait, numAwait,
 			`Expected ${numAwait} feedbacks in status "AwaitEnduserData"`

@@ -1,0 +1,20 @@
+{
+	article: {
+		url: 'https://dagbladet.no/nyheter/fyllekjorte-n-meter--ble-domt-til-fengsel/69379991',
+		version: '2018-01-26T08:02:03.000Z',
+	},
+	feedback: {
+		items: [
+			{
+				type: 'paragraph',
+				order: {
+					item: 8,
+					type: 6
+				},
+				text: 'Mannen nektet i retten for at han hadde kjørt bilen, men retten trodde ikke på ham og han ble dømt til 21 dagers fengsel og en bot på 160.000 kroner.',
+				comment: 'Dieser Mann war zwar schon sehr dicht, aber Goethe war Dichter',
+				links: [],
+			},
+		],
+	},
+}
