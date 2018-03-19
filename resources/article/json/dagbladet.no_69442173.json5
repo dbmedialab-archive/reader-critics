@@ -7,7 +7,7 @@
 	authors: [
 		{
 			name: "Fredrik Økstad Sandberg",
-			email: "fos@dagbladet.no"
+			email: "fos@dagbladet.test.tld"
 		},
 	],
 	items: [

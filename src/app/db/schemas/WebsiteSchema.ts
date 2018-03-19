@@ -111,6 +111,11 @@ const WebsiteSchema : Schema = new Schema({
 				required: false,
 				default: null,
 			},
+			enduserUpdatedArticleMail: {
+				type: String,
+				required: false,
+				default: null,
+			},
 		},
 		scssVariables: {
 			type: Object,

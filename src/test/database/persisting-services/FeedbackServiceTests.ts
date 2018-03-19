@@ -40,7 +40,9 @@ import { assertFeedbackObject } from './FeedbackServiceTests/assertFeedbackObjec
 
 import * as app from 'app/util/applib';
 
-const feedbackDir = path.join('resources', 'feedback', 'create');
+const feedbackCreateDir = path.join('resources', 'feedback', 'create');
+const feedbackUpdateDir = path.join('resources', 'feedback', 'update');
+
 const feedbackIDs = [];
 
 // Test runtime data
@@ -55,6 +57,7 @@ export default function(this: ISuiteCallbackContext) {
 	testClear();
 	testValidateAndSave();
 	testCount();
+	testValidateAndUpdateEnduser();
 
 	testGetByArticle();
 	testGetByArticleAuthor();
@@ -69,20 +72,33 @@ const testClear = () => it('clear()', () => feedbackService.clear());
 
 // feedbackService.validateAndSave()
 
-const testValidateAndSave = () => it('validateAndSave()', () => app.scanDir(feedbackDir)
-.then((files : string[]) => {
-	feedbackCount = files.length;
+const testValidateAndSave = () => it('validateAndSave()', () => (
+	app.scanDir(feedbackCreateDir)
+	.then((files : string[]) => {
+		feedbackCount = files.length;
 
-	return Promise.mapSeries(files, (filename : string) => {
-		return app.loadJSON(path.join(feedbackDir, filename))
-		.then((a : any) => {
-			assert.isNotNull(a);
-			return feedbackService.validateAndSave(a).then(feedback => {
-				feedbackIDs.push(feedback.ID);
+		return Promise.mapSeries(files.sort(), (filename : string) => {
+			return app.loadJSON(path.join(feedbackCreateDir, filename))
+			.then((a : any) => {
+				assert.isNotNull(a);
+				return feedbackService.validateAndSave(a).then(feedback => {
+					feedbackIDs.push(feedback.ID);
+				});
 			});
 		});
-	});
-}));
+	})
+));
+
+const testValidateAndUpdateEnduser = () => it('validateAndUpdateEnduser()', () => (
+	app.scanDir(feedbackUpdateDir)
+	.then((files : string[]) => Promise.mapSeries(files.sort(), (filename : string) => (
+		app.loadJSON(path.join(feedbackUpdateDir, filename))
+		.then((a : any) => {
+			assert.isNotNull(a);
+			return feedbackService.validateAndUpdateEnduser(a);
+		})
+	))) // .then(files, ..)
+));
 
 // feedbackService.count()
 

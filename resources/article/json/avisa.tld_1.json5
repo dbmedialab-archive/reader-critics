@@ -17,7 +17,7 @@
 			type: "title"
 		}, 	{
 			order: { item: 2, type: 1 },
-			text: "(Morgenposten): I dag landet Donald Trump i Israel. Kort tid etter ble han historisk da han, som den f\u00f8rste sittende amerikanske presidenten, bes\u00f8kte Vestmuren, bedre kjent som klagemuren, i Jerusalem.",
+			text: "(Avisa): I dag landet Donald Trump i Israel. Kort tid etter ble han historisk da han, som den f\u00f8rste sittende amerikanske presidenten, bes\u00f8kte Vestmuren, bedre kjent som klagemuren, i Jerusalem.",
 			type: "paragraph"
 		}, 	{
 			order: { item: 3, type: 2 },
@@ -37,7 +37,7 @@
 			type: "paragraph"
 		}, 	{
 			order: { item: 7, type: 5 },
-			text: "USAs president er i disse dager p\u00e5 sin aller f\u00f8rste utenlandstur. I helga bes\u00f8kte han Saudi-Arabia, der han \u00f8nsket \u00abknytte sterkere b\u00e5nd til den islamske verden i kampen mot terrorisme\u00bb.",
+			text: "USAs president er i disse dager p\u00e5 sin aller f\u00f8rste utenlandstur. I helga bes\u00f8kte han Saudi-Arabia, der han \u00f8nsket \u00abknytte sterkere b\u00e5nd til den islamske verden i kampen mot terrorisme.",
 			type: "paragraph"
 		}, 	{
 			order: { item: 8, type: 2 },

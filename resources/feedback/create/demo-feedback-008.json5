@@ -1,0 +1,20 @@
+{
+	article: {
+		url: 'https://dagbladet.no/nyheter/fyllekjorte-n-meter--ble-domt-til-fengsel/69379991',
+		version: '2018-01-26T08:02:03.000Z',
+	},
+	feedback: {
+		items: [
+			{
+				type: 'lead',
+				order: {
+					item: 2,
+					type: 1
+				},
+				text: 'En mann i 40-årene ble i Bergen tingrett dømt til 21 dagers fengsel og en bot på 160.000 etter å ha kjørt om lag en meter i bæsja tilstand.',
+				comment: '21 Tage ist noch viel zu wenig!',
+				links: [],
+			},
+		],
+	},
+}

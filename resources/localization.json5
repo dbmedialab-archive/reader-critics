@@ -101,6 +101,7 @@
 	},
 	app: {
 		mail: {
+			// Notification about new feedback, goes to the article authors
 			'fb-notify': {
 				'cc-editor': {
 					en: 'A copy of this mail will be sent to the editor in chief.',
@@ -123,10 +124,11 @@
 					nb: 'Sendt inn av',
 				}
 			},
+			// The editor's daily digest mail
 			digest: {
-				head: {
-					en: 'The following articles have received user feedback but have not yet been revised:',
-					nb: 'Disse artiklene har fått tilbakemeldinger det siste døgnet, men har ikke blitt endret:',
+				author: {
+					en: 'Author',
+					nb: 'Forfatter',
 				},
 				'date-range': {
 					en: 'Period for the report is from {earliestCreated} to {latestCreated}.',
@@ -138,13 +140,32 @@
 					en: '{count} feedbacks',
 					nb: '{count} tilbakemeldinger',
 				},
+				head: {
+					en: 'The following articles have received user feedback but have not yet been revised:',
+					nb: 'Disse artiklene har fått tilbakemeldinger det siste døgnet, men har ikke blitt endret:',
+				},
 				subject: {
 					en: 'Reader Critics Editors Digest for {today}',
 				},
-				author: {
-					en: 'Author',
-					nb: 'Forfatter',
-				}
+			},
+			// Enduser notification on article update
+			'eu-notify': {
+				'has-been-updated': {
+					en: 'An article that you gave feedback to has been updated:',
+					nb: 'Saken du ga tilbakemeldinger om er endret:',
+				},
+				'subject': {
+					en: 'Article was updated: {title}',
+					nb: 'Saken ble endret: {title}',
+				},
+				'system-can-not-know': {
+					en: 'The system does not know if your suggestions were applied. The article was updated on {datetime}.',
+					nb: 'Systemet kan ikke se om ditt endringsforslag ble tatt med, men saken er altså oppdatert {datetime}.',
+				},
+			},
+			'hello': {
+				en: 'Hello!',
+				nb: 'Hei!',
 			},
 			'regards': {
 				en: 'Regards',

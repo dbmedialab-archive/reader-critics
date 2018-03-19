@@ -7,7 +7,7 @@
   authors: [
 		{
 			name: 'Christoph Schmitz',
-			email: 'christoph.schmitz@gmail.com',
+			email: 'christoph.schmitz@gmail.test.tld',
 		},
 	],
 	items: [

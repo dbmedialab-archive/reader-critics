@@ -16,12 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export * from './mail/getEscalateToEditorMailTemplate';
-export * from './mail/getFeedbackMailTemplate';
-export * from './mail/getUnrevisedDigestMailTemplate';
-export * from './mail/getEnduserUpdatedArticleMailTemplate';
+import * as doT from 'dot';
+import * as path from 'path';
 
-export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
-export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';
+import MailTemplate from 'app/template/MailTemplate';
 
-export { default as getAdminPageTemplate } from './common/getAdminPageTemplate';
+import * as app from 'app/util/applib';
+
+import Website from 'base/Website';
+import emptyCheck from 'app/util/emptyCheck';
+import chooseTemplate from 'app/services/template/chooseTemplate';
+
+const log = app.createLog();
+const defaultTemplate = path.join('templates', 'mail', 'defaultEnduserUpdatedArticle.html');
+
+export function getEnduserUpdatedArticleMailTemplate(website : Website) : Promise <MailTemplate> {
+	emptyCheck(website);
+
+	return chooseTemplate(website.layout.templates.enduserUpdatedArticleMail, defaultTemplate)
+		.then((raw : string) => {
+			log('Template for notifying endusers about updated article loaded');
+			return new MailTemplate (doT.template(raw));
+		});
+}

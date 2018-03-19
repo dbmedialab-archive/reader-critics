@@ -27,10 +27,6 @@ import { wrapFindOne, wrapSave } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
 
-import * as app from 'app/util/applib';
-
-const log = app.createLog();
-
 // save
 
 export function save (
@@ -78,7 +74,6 @@ const makeDocument = (
 // Update enduser data
 
 export function updateEndUser (feedback : Feedback, enduser : EndUser) : Promise <Feedback> {
-	log('updateEndUser [[[ %s ]]] [[[ %s ]]]', app.inspect(feedback), app.inspect(enduser));
 	emptyCheck(enduser);
 
 	return wrapFindOne(FeedbackModel.findOneAndUpdate(

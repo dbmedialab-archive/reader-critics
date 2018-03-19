@@ -37,6 +37,7 @@ export interface Website extends PersistedModel {
 			feedbackPage? : string
 			feedbackNotificationMail? : string
 			unrevisedDigestMail? : string
+			enduserUpdatedArticleMail? : string
 		}
 		scssVariables? : object
 	}
