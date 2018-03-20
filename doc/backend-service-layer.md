@@ -5,7 +5,7 @@ The service layer is the main abstraction between the object persistence on the 
 * The persistence layer is isolated and abstracted from the communication layer, which reduces repetitious code when accessing persistence and enforces validation and security routines.
 * The service layer offers a common interface and the implementations behind these functions can be easily switched out by the service factory. When run in "test" environment, all functions that access remote resources like external network sites are replaced by mock functions that load static resources from the local filesystem. This is mainly to have dependable tests, but also useful for other problems.
 
-_The interface declarations and implementations are still in development and will most definitely undergo some changes. Therefore, the excerps included in this document should not be treated as an API documentation of any kind. Please take a look at the real source code for any details, files and folders from all examples used here are linked from this document._
+_The excerps included in this document should not be treated as an API documentation of any kind. Please take a look at the real source code for any details, files and folders from all examples used here are linked from this document._
 
 ## Services
 
