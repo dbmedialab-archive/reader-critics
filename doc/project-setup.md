@@ -1,8 +1,8 @@
 # Project Setup
 
 ## Dependencies:
-* Node.js ≥ v8.1.4
-* NPM ≥ v5.0
+* Node.js v8
+* NPM v5
 * MongoDB ≥ v2.4 (_upsert_, _setDefaultsOnInsert_), preferrably ≥ v3.4
 * Redis ≥ v3.0
 
@@ -13,6 +13,11 @@ npm install
 ```
 `yarn` should work fine as well, however it has happened in the past that it resolved second level dependencies (and especially their versions) in a different way than NPM 5. This lead to conflicting `@types` packages in several cases. Due to this, NPM 5 is the recommended tool for dependency management.
 NPM 5 also finally respects the indentation of the `package.json` file; be aware that we use tabs for every file type except YAML, where spaces are mandatory. This is not only a recommendation. If your commit/pull request changes the indentation, it _will be rejected_.
+
+## Node.js
+This project is based on TypeScript which runs on top of Node.js on the server side. Since Node 8 is an LTS version, it was chosen to be the preferred version to fuel the project. The `engine` structure in `package.json` defines the current minimum version that should be installed and this is in fact a hard requirement: the application will check the engine version it is launched on against the specification from `package.json` and refuse to proceed if that requirement isn't met.
+
+It is very probable that the project also runs fine with later major versions of Node.js but that is neither tested nor officially supported.
 
 ## MongoDB
 MongoDB is the main storage backend for this project, everything that should be permanently persistend is going here. We didn't opt for an instance embedded in the distributed Docker image, because the risk of accidentally removing the production database is simply too high. Instead, an appropriate cloud hosted database plan should be chosen, or if you wish to do so, you can also set up your own MongoDB instance and manage it yourself. Having regular backups is recommended and replication is supported out of the box through the driver.
