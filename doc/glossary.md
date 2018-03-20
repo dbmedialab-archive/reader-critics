@@ -1,9 +1,5 @@
 # Glossary
 
-Explain what common used "vocabulary" means in the context of this project, so everybody can speak about the same thing.
-
-<em></em>
-
 <table border="1" cellpadding="3" cellspacing="0">
 	<tr>
 		<th width="50%">Explanation</th>
@@ -79,7 +75,7 @@ Explain what common used "vocabulary" means in the context of this project, so e
 	</tr>
 	<tr>
 		<td valign="top">The complete <em>Feedback</em> that an <em>Enduser</em> gives on an <em>Article</em>, possibly consisting of comments and text suggestions for several parts of the <em>Article</em> content.</td>
-		<td valign="top"></td>
+		<td valign="top">Among other data, the <em>Feedback</em> contains a status value including a log of past status changes.</td>
 	</tr>
 	<!-- Feedback Item -->
 	<tr>
@@ -119,7 +115,7 @@ Explain what common used "vocabulary" means in the context of this project, so e
 	</tr>
 	<tr>
 		<td valign="top">Services in the backend are a layer between the <em>API</em> and the persistence, so mostly the database layer.</td>
-		<td valign="top">See the detailed description of the service layer</td>
+		<td valign="top">See the detailed description of the service layer.</td>
 	</tr>
 	<!-- User -->
 	<tr>
