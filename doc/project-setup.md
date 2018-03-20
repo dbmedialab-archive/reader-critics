@@ -24,7 +24,10 @@ MongoDB is the main storage backend for this project, everything that should be 
 
 ## Redis
 We use Redis as storage for message queues (IPC among separated nodes) and as a session cache. Data loss is not a severe problem, all data stored here is completely temporary. However it might happen that in a sudden loss of Redis stored data, active sessions become invalid and the message queue loses jobs. Those will get picked up on the next cleanup run.
+
 Instructions on how to start Redis server locally: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
+
+It is possible and also recommended to use two different Redis databases for the _session data_ and the _message queue_. This does not necessarily mean using different _instances_ because Redis per default is started with 16 different database numbers per instance. Simply address different databases.
 
 ## Run
 ```
@@ -50,7 +53,27 @@ There are a few Bash scripts in the `/run` folder which will make developing eas
 The app has its default configuration, but often you will want to modify its behaviour. For example, without setting the `DEBUG` variable, you won't get anything on your terminal from a running app, because the `debug` module silences itself unless you ask it to do otherwise.
 
 | Variable | What it does |
-| -------- | ------------ |
+|:-------- |:------------ |
+| `ANALYTICS_GOOGLE_TRACKING_ID` | Google GTM tracking ID to be injected in templates |
+| `AUTH_BCRYPT_ROUNDS` | Number of salt rounds when hashing passwords with BCrypt |
+| `AUTH_JWT_SECRET` | 64 character hexadecimal random sequence for signing JSON web tokens |
+| `AUTH_SESSION_SECRET` | 64 character hexadecimal random sequence for signing session tokens |
+| `AUTH_SESSION_TTL` | Lifetime of a session in minutes |
 | `DEBUG`  | Logging output of the app. Recommended is at least `"app:*"` |
-| `HTTP_PORT` | Which port to listen on |
+| `ESCALATE_THRESHOLD_DEFAULT_TO_EDITOR` | Default number of feedbacks that an article can receive before being escalated to the editor |
+| `HTTP_PORT` | Network port where the HTTP server is going to listen |
+| `I18N_SYS_LOCALE` | Default system locale that will be used when websites do not override |
+| `MAIL_BCC_RECIPIENT` | Set this to a valid e-mail address to BCC all outgoing mail to it |
+| `MAIL_SENDER_DOMAIN` | Default domain to use for sending out e-mails |
+| `MAIL_TEST_OVERRIDE` | Set this to a valid e-mail address to direct ALL outgoing mail to it. Automatically disabled in production mode. |
+| `MONGODB_URL` | MongoDB connection URL for the main backend database |
+| `MONGODB_RECONNECTION_LIMIT` | Amount of retries for connecting to MongoDB |
+| `RECAPTCHA_PUBLIC_KEY` | Public Google Recaptcha key (Suggestion Box page) |
+| `RECAPTCHA_SECRET_KEY` | Secret Google Recaptcha key (Suggestion Box page) |
+| `REDIS_URL_MESSAGE_QUEUE` | Redis URL for the database that holds the message queue |
+| `REDIS_URL_SESSION_CACHE` | Redis URL for the database that holds the session cache |
+| `SENDGRID_API_KEY` | API key for SendGrid mail service |
+| `SLACK_BOTNAME` | Bot display name for the Slack integration |
+| `SLACK_CHANNEL` | Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver. |
+| `SLACK_WEBHOOK` | If set to a Slack webhook URL, warnings and errors will be posted to this integration |
 | `WEB_CONCURRENCY` | How many cluster processes to start. If not set, takes number of CPU cores. |
