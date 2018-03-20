@@ -10,15 +10,16 @@ _The excerps included in this document should not be treated as an API documenta
 ## Services
 
 Service<br/>name | DB | Main<br/>model | Purpose
----------------- |:--:|:--------------:| -------
-[Article](/src/app/services/article/ArticleService.ts) | ✖ | [🔗](/src/base/Article.ts) | Download external articles, store and load article objects
-[End User](/src/app/services/enduser/EndUserService.ts) | ✖ | [🔗](/src/base/EndUser.ts) | Controls end user objects (persons that use the feedback frontend)
-[Feedback](/src/app/services/feedback/FeedbackService.ts) | ✖ | [🔗](/src/base/Feedback.ts) | Store and load feedback objects, various queries for statistics
-[Parser](/src/app/services/parser/ParserService.ts) | - | | Control the parser engine, parse articles into objects
-[Suggestion](/src/app/services/suggestion/SuggestionService.ts) | ✖ | [🔗](/src/base/Suggestion.ts) | Store and load comments from the suggestion box
-[Template](/src/app/services/template/TemplateService.ts) | - | | Provide templates for frontend and mail formatting
-[User](/src/app/services/user/UserService.ts) | ✖ | [🔗](/src/base/User.ts) | Store and load user objects, authentification
-[Website](/src/app/services/website/WebsiteService.ts) | ✖ | [🔗](/src/base/Website.ts) | Store and load website objects, control depending services
+---------------- |:--:|:-------------- | -------
+[Article](/src/app/services/article/ArticleService.ts) | ✔ | [Article.ts](/src/base/Article.ts) | Download external articles, store and load article objects
+[End User](/src/app/services/enduser/EndUserService.ts) | ✔ | [EndUser.ts](/src/base/EndUser.ts) | Controls end user objects (persons that use the feedback frontend)
+[Feedback](/src/app/services/feedback/FeedbackService.ts) | ✔ | [Feedback.ts](/src/base/Feedback.ts) | Store and load feedback objects, various queries for statistics
+[Localization](/src/app/services/LocalizationService.ts) | - | - | Multiple language support
+[Parser](/src/app/services/parser/ParserService.ts) | - | - | Control the parser engine, parse articles into objects
+[Suggestion](/src/app/services/suggestion/SuggestionService.ts) | ✔ | [Suggestion.ts](/src/base/Suggestion.ts) | Store and load comments from the suggestion box
+[Template](/src/app/services/template/TemplateService.ts) | - | - | Provide templates for frontend and mail formatting
+[User](/src/app/services/user/UserService.ts) | ✔ | [User.ts](/src/base/User.ts) | Store and load user objects, authentification
+[Website](/src/app/services/website/WebsiteService.ts) | ✔ | [Website.ts](/src/base/Website.ts) | Store and load website objects, control depending services
 
 _DB = Does this service use the database to persist objects?_ If yes, a link to the main model interface for its objects can be found in the next column. See [the section about persistence](#persisting-services) for more details.
 
