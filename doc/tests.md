@@ -14,11 +14,23 @@ all backend related tests and additionally `*.test.js` for frontend tests.
 
 ## Database Tests
 
+These tests try to cover all DAO methods of the persisting services and apply them in a defined order against a running database, preferrable on `localhost`. During deployment, the CI/CD container has to provide a sufficient MongoDB service. Redis is not affected by these tests.
+
 :exclamation::exclamation: **Attention: running the database tests will delete and rewrite all collections in the configured MongoDB** :exclamation::exclamation:
 
 If you want to keep your own test data, either add them to the test resources or _simply do not run them_. The database tests are also executed when as one of the test suites in `run/test` so be aware that running this script locally **will erase everything**.
 
 To prevent the test script from overwriting remote databases, the MongoDB connection module checks the database URL against a regular expression when started in test mode
+
+While overwriting data might sound like a bad thing at first, it is in fact a very valuable development tool. These tests will always provide you with a defined set of objects in your database that you can work with. If you need additional object which maybe have to contain specific data for a new feature, create new test files in [/resources](/resources) to have them included in the tests on every new run.
+
+Several of these tests scan their relevant directories under [/resources](/resources) and try to store all the [JSON5](https://json5.org/)-files that are found there. So you don't need to add the names of your new resource files to the test sources, they will get picked up automatically.
+
+Beware though, that there are tests that check object counts of the collections, sometimes against criteria like _feedback objects in a certain status_ or similar. These numbers are hardcoded and need to be changed to make the tests pass again. Congrats, you have just performed [test-driven development](https://en.wikipedia.org/wiki/Test-driven_development)!
+
+**When changing code in the persisting services or adding a new feature that depends on objects in the database, it is _highly_ recommended to run these tests as often as possible during development, not only once when you think your task is finished.**
+
+Some workflows of the application, like for example sending out e-mail notifications, can change the state of the objects in the database. To reset the state for re-testing such a workflow, it is sometimes required to run the database tests everytime before the app is started again. But this is just another use that these tests have, giving you a defined state everytime the app starts. Since the tests finish in less than two seconds on a halfwhat recent machine, this is certainly not a problem.
 
 ## Unit Tests
 
