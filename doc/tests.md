@@ -18,11 +18,11 @@ These tests try to cover all DAO methods of the persisting services and apply th
 
 :exclamation::exclamation: **Attention: running the database tests will delete and rewrite all collections in the configured MongoDB** :exclamation::exclamation:
 
-If you want to keep your own test data, either add them to the test resources or _simply do not run them_. The database tests are also executed when as one of the test suites in `run/test` so be aware that running this script locally **will erase everything**.
+If you want to keep your own test data, either add them to the test resources or _simply do not run them_. The database tests are also executed as one of the test suites in `run/test` so be aware that running this script locally **will erase everything**.
 
 To prevent the test script from overwriting remote databases, the MongoDB connection module checks the database URL against a regular expression when started in test mode
 
-While overwriting data might sound like a bad thing at first, it is in fact a very valuable development tool. These tests will always provide you with a defined set of objects in your database that you can work with. If you need additional object which maybe have to contain specific data for a new feature, create new test files in [/resources](/resources) to have them included in the tests on every new run.
+While overwriting data might sound like a bad thing at first, it is in fact a very valuable development tool. These tests will always provide you with a defined set of objects in your database that you can work with. If you need additional objects which maybe have to contain specific data for a new feature, create new test files in [/resources](/resources) to have them included in the tests on every new run.
 
 Several of these tests scan their relevant directories under [/resources](/resources) and try to store all the [JSON5](https://json5.org/)-files that are found there. So you don't need to add the names of your new resource files to the test sources, they will get picked up automatically.
 
@@ -38,7 +38,7 @@ Tests for the app (all things backend) use
 * Mocha
 * Chai/Assert
 
-TypeScript requires additional libraries on the way, these are included though Mocha's `require` command line parameters (see the _*.opts_ files in _/src/test_)
+TypeScript requires additional libraries on the way, these are included though Mocha's `require` command line parameters (see the _*.opts_ files in [/conf](/conf))
 * `ts-node/register` - instant compiling of TS sources
 * `tsconfig-paths/register` - takes `paths` from _tsconfig.json` and maps them
 
