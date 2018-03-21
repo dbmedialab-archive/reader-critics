@@ -77,3 +77,8 @@ The app has its default configuration, but often you will want to modify its beh
 | `SLACK_CHANNEL` | Channel name for the Slack integration to use for notifications. Overrides the Webhook configuration on the receiver. |
 | `SLACK_WEBHOOK` | If set to a Slack webhook URL, warnings and errors will be posted to this integration |
 | `WEB_CONCURRENCY` | How many cluster processes to start. If not set, takes number of CPU cores. |
+
+## Configuration
+Apart from injecting configuration parameters through environment variables (see above) it is also possible to use a configuration file. This is mostly useful for development situations, not so much for production use, where you want to provide the configuration through the application container for more flexibility. Having production values in the config file would also mean having those exposed in the repository and the deployment image created from it.
+
+The file [config.example.json5](/config.example.json5) in the project root gives an example of the structure of this configuration file, it is in [JSON5 format](https://json5.org/) and the hierarchy of the keys follows exactly that of [config.ts](/src/app/config.ts) which is the central configuration entity of the whole application. It uses [Convict](https://www.npmjs.com/package/convict) as backend, check its documentation for more details.
