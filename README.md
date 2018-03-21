@@ -18,11 +18,13 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 
 ## Table of Contents
 
+* [Application Architecture](doc/application-architecture.md) ‒ What it consists of in general
+* [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
+* [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
 * [Project Setup](doc/project-setup.md) ‒ Instructions how to get from the checkout to a running system
 * [Conventions](doc/conventions.md) ‒ Project guidelines for developers
-* [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
-* [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
+* [Feedback Overview](doc/feedback-sequence-overview.md) ‒ Workflow and common lifecycle of an article feedback
 * [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
 
