@@ -28,6 +28,21 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 * [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
 
+## Credits
+
+* **[Christoph Schmitz](https://github.com/christ0ph) ‒ Product owner and marketing**
+* **[Philipp Gröschler](https://github.com/phgroe) ‒ Lead developer and architect**
+* [Dimitriy Borshchov](https://github.com/GrimStal) ‒ Full stack everything genie (the diff library!)
+* [Dmitry Marchenko](https://github.com/tcat) ‒ React wizard, Admin UI and all over the frontend
+* [Dmitry Pogorelovsky](https://github.com/zetmann) ‒ Full stack on API and Admin UI, eagle eye
+* [Eric Myhre](https://github.com/warpfork) ‒ DevOps madman in the background
+* [Ole Nedrebrø](https://github.com/olenedr) ‒ Project prototype, TypeScript initiator
+* [Ørjan Ommundsen](https://github.com/obliadp) ‒ DevOps sorcerer, automating all the things
+* [Sebastian Brage Hansen](https://github.com/sbhansen) ‒ UI/UX and frontend design
+* [Simen Berge](https://github.com/egreb) ‒ Project prototype and good old Leserkritikk v1
+* [Tibor Vukovic](https://github.com/tiborv) ‒ Taming Wercker and Docker
+* [Valeriy Donika](https://github.com/DonikaV) ‒ All things Frontend and a little bit of everything
+
 ## License
 
 **Copyright © 2017-18 DBmedialab / Aller Media AS** (Oslo, Norway)
