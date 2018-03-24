@@ -70,7 +70,7 @@
 		"flat": "4.0.0",
 		"foundation-sites": "6.2.1",
 		"griddle-react": "1.11.2",
-		"has-color": "0.1.7",
+		"has-color": "0.2.0",
 		"immutable": "3.8.2",
 		"ioredis": "3.2.2",
 		"json5": "1.0.1",
