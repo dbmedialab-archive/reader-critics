@@ -4,7 +4,7 @@
 &nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
-[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=svg)](https://circleci.com/gh/dbmedialab/reader-critics)
+[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=shield)](https://circleci.com/gh/dbmedialab/reader-critics)
 &nbsp;
 [![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
