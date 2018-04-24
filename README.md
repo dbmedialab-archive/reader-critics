@@ -4,7 +4,7 @@
 &nbsp;
 [![GitHub version](https://badge.fury.io/gh/dbmedialab%2Freader-critics.svg)](https://badge.fury.io/gh/dbmedialab%2Freader-critics)
 &nbsp;
-[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=svg)](https://circleci.com/gh/dbmedialab/reader-critics)
+[![CircleCI](https://circleci.com/gh/dbmedialab/reader-critics.svg?style=shield)](https://circleci.com/gh/dbmedialab/reader-critics)
 &nbsp;
 [![Code Climate](https://codeclimate.com/github/dbmedialab/reader-critics/badges/gpa.svg)](https://codeclimate.com/github/dbmedialab/reader-critics)
 &nbsp;
@@ -18,13 +18,30 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 
 ## Table of Contents
 
+* [Application Architecture](doc/application-architecture.md) ‒ What it consists of in general
+* [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
+* [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
 * [Project Setup](doc/project-setup.md) ‒ Instructions how to get from the checkout to a running system
 * [Conventions](doc/conventions.md) ‒ Project guidelines for developers
-* [Project Structure](doc/project-structure.md) ‒ Explanation of most folders in / and some of the files
-* [Glossary](doc/glossary.md) ‒ Set some vocabulary straight first
 * [Tests](doc/tests.md) ‒ Everything that needs to be known about automated tests of this thing
+* [Feedback Overview](doc/feedback-sequence-overview.md) ‒ Workflow and common lifecycle of an article feedback
 * [Backend Service Layer](doc/backend-service-layer.md) ‒ The formidable backend abstraction layer
 * [Localization](doc/localization.md) ‒ Multi language support
+
+## Credits
+
+* **[Christoph Schmitz](https://github.com/christ0ph) ‒ Product owner and marketing**
+* **[Philipp Gröschler](https://github.com/phgroe) ‒ Lead developer and architect**
+* [Dimitriy Borshchov](https://github.com/GrimStal) ‒ Full stack everything genie (the diff library!)
+* [Dmitry Marchenko](https://github.com/tcat) ‒ React wizard, Admin UI and all over the frontend
+* [Dmitry Pogorelovsky](https://github.com/zetmann) ‒ Full stack on API and Admin UI, eagle eye
+* [Eric Myhre](https://github.com/warpfork) ‒ DevOps madman in the background
+* [Ole Nedrebrø](https://github.com/olenedr) ‒ Project prototype, TypeScript initiator
+* [Ørjan Ommundsen](https://github.com/obliadp) ‒ DevOps sorcerer, automating all the things
+* [Sebastian Brage Hansen](https://github.com/sbhansen) ‒ UI/UX and frontend design
+* [Simen Berge](https://github.com/egreb) ‒ Project prototype and good old Leserkritikk v1
+* [Tibor Vukovic](https://github.com/tiborv) ‒ Taming Wercker and Docker
+* [Valeriy Donika](https://github.com/DonikaV) ‒ All things Frontend and a little bit of everything
 
 ## License
 
