@@ -25,7 +25,7 @@ class WebsiteParserClass extends React.Component <any, any> {
 		this.onChange = this.onChange.bind(this);
 	}
 
-	onChange(e) {
+	onChange(e): void {
 		return this.props.onChange({parserClass: e.target.value});
 	}
 
