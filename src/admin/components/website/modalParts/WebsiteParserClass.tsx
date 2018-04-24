@@ -59,7 +59,7 @@ class WebsiteParserClass extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		options: state.website.getIn(['options', 'parsers'], []),
-		parserClass: state.website.getIn(['selected', 'parserClass']),
+		parserClass: state.website.getIn(['selected', 'parserClass'], ''),
 	};
 };
 
