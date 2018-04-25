@@ -25,7 +25,7 @@ class WebsiteParserClass extends React.Component <any, any> {
 		this.onChange = this.onChange.bind(this);
 	}
 
-	onChange(e) {
+	onChange(e): void {
 		return this.props.onChange({parserClass: e.target.value});
 	}
 
@@ -59,7 +59,7 @@ class WebsiteParserClass extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		options: state.website.getIn(['options', 'parsers'], []),
-		parserClass: state.website.getIn(['selected', 'parserClass']),
+		parserClass: state.website.getIn(['selected', 'parserClass'], ''),
 	};
 };
 
