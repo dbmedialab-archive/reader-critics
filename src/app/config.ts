@@ -128,7 +128,7 @@ const config = convict({
 			reconnectionLimit: {
 				default: 5,
 				format: Number,
-				doc: 'Amount of tries for reconnect to mongoDB if it is down on startup',
+				doc: 'Amount of retries for connecting to MongoDB',
 				env: 'MONGODB_RECONNECTION_LIMIT',
 			},
 		},
@@ -179,6 +179,7 @@ const config = convict({
 	mail: {
 		sender: {
 			domain: {
+				doc: 'Default domain to use for sending out e-mails',
 				default: 'readercritics.com',
 				format: String,
 				env: 'MAIL_SENDER_DOMAIN',
@@ -188,7 +189,7 @@ const config = convict({
 			api_key: {
 				default: undefined,
 				format: 'string-or-empty',
-				doc: 'API key for SendGrid mail service, used if no other service is configured',
+				doc: 'API key for SendGrid mail service',
 				env: 'SENDGRID_API_KEY',
 			},
 		},
@@ -231,7 +232,7 @@ const config = convict({
 		botname: {
 			default: 'Reader Critics',
 			format: 'string-or-empty',
-			doc: 'Bot name for the Slack integration.',
+			doc: 'Bot display name for the Slack integration.',
 			env: 'SLACK_BOTNAME',
 		},
 		webhook: {
