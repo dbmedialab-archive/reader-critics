@@ -37,6 +37,7 @@ const initialSelectedWebsite: Website = Immutable({
 		scssVariables: null,
 		templates: {
 			feedbackPage: '',
+			feedbackNotificationMail: '',
 		},
 	},
 });
