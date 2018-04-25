@@ -108,7 +108,7 @@ class WebsiteEditors extends React.Component <any, any> {
 						onChange={this.onSubmit}
 						value=""
 					>
-						<option value=""><i>-- select --</i></option>
+						<option value="">-- select --</option>
 						{users}
 					</select>
 					<ul className="website-editors-list">
