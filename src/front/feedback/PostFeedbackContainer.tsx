@@ -171,7 +171,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private isFormValid() {
 		const {name, email} = this.state.user;
-		const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+		const emailValid = email.length > 1;
 		const nameValid = name.length > 1;
 		return emailValid !== null && nameValid;
 	}
