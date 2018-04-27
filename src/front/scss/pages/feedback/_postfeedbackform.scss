@@ -164,12 +164,11 @@
 		margin-bottom: 24px;
 
 		.send-fb {
-			border: none;
+			border: 0;
 		}
-
 		.send-fb:disabled {
 			opacity: .3;
-			background: 0 !important;
+			background: none !important;
 			cursor: not-allowed;
 		}
 	}
