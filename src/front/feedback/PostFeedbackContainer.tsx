@@ -66,8 +66,8 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		this.state = {
 			isSend: false,
 			user : {
-					name: null,
-					email: null,
+					name: '',
+					email: '',
 			},
 			nameField: {
 				show: true,
@@ -98,6 +98,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		this.afterSendingAnimation = this.afterSendingAnimation.bind(this);
 		this.postEnduserData = this.postEnduserData.bind(this);
 		this.onUnload = this.onUnload.bind(this);
+		this.isFormValid = this.isFormValid.bind(this);
 	}
 
 	componentDidMount() {
@@ -168,6 +169,13 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		this.setState({user:userObj});
 	}
 
+	private isFormValid() {
+		const {name, email} = this.state.user;
+		const emailValid = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+		const nameValid = name.length > 1;
+		return emailValid !== null && nameValid;
+	}
+
 	private postEnduserData() {
 		return sendEnduserData(Object.assign({
 			updateToken: this.props.updateToken,
@@ -179,9 +187,10 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		});
 	}
 
-	public render() {
+	public render(): JSX.Element {
 		return (
-			<form id="postFeedbackBox" className="twelve columns feedbackform">
+			<form
+				id="postFeedbackBox" onSubmit={this._handleSubmit } className="twelve columns feedbackform">
 				{ this.renderMailIcon() }
 				<fieldset>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
@@ -204,6 +213,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 								type="text"
 								name="name"
 								onChange={this._inputChanged}
+								required
 							/>
 					</fieldset>
 					)}
@@ -213,14 +223,17 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 						<fieldset className={`slide-left slide-left-${status}`}>
 							<p className="field-title"><FormattedMessage id="fb.label.getRecommend"/></p>
 							<input
-								type="text"
+								type="email"
 								name="email"
 								onChange={this._inputChanged}
+								required
 							/>
 						</fieldset>
 					)}
 				</Transition>
-				{ this.renderBottomLinks() }
+				{!this.state.doneIcon.show &&
+					<div>{this.renderBottomLinks()}</div>
+				}
 			</form>
 		);
 	}
@@ -244,10 +257,11 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 			className={`control-icon hideit-after slide-left slide-left-${status}`}
 		>
 			<div id="submitForm">
-				<a href="#" role="button" onClick={this._handleSubmit}>
+				<button
+					className="send-fb" type="submit" disabled={!this.isFormValid()}>
 					<span className="icon mail"/>
 					<span className="btn-text"><FormattedMessage id="fb.label.keepInfo"/></span>
-				</a>
+				</button>
 			</div>
 			<div id="backToArticle">
 				<a href={getArticleURL()}>

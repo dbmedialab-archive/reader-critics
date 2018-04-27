@@ -17,6 +17,7 @@
 
 				&.slide-left-exited {
 					opacity: 0;
+					height: 0;
 
 					&.hideit-after {
 						display: none;
@@ -161,5 +162,14 @@
 
 	#submitForm {
 		margin-bottom: 24px;
+
+		.send-fb {
+			border: none;
+		}
+		.send-fb:disabled {
+			opacity: .3;
+			background: none !important;
+			cursor: not-allowed;
+		}
 	}
 }
