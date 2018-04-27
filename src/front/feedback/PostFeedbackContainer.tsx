@@ -169,7 +169,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		this.setState({user:userObj});
 	}
 
-	private isFormValid() {
+	private isFormValid(): boolean {
 		const {name, email} = this.state.user;
 		const emailValid: boolean = email.trim().length > 0;
 		const nameValid: boolean = name.trim().length > 0;
@@ -180,7 +180,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		return sendEnduserData(Object.assign({
 			updateToken: this.props.updateToken,
 		}, this.state.user))
-		.then((response) => {
+		.then(() => {
 			this.setState({
 				isSend: true,
 			}, this.afterSendingAnimation);
