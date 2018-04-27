@@ -171,9 +171,9 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private isFormValid() {
 		const {name, email} = this.state.user;
-		const emailValid = email.length > 1;
-		const nameValid = name.length > 1;
-		return emailValid !== null && nameValid;
+		const emailValid: boolean = email.trim().length > 0;
+		const nameValid: boolean = name.trim().length > 0;
+		return emailValid && nameValid;
 	}
 
 	private postEnduserData() {
@@ -223,7 +223,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 						<fieldset className={`slide-left slide-left-${status}`}>
 							<p className="field-title"><FormattedMessage id="fb.label.getRecommend"/></p>
 							<input
-								type="email"
+								type="text"
 								name="email"
 								onChange={this._inputChanged}
 								required
