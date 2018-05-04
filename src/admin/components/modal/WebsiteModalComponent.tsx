@@ -27,6 +27,7 @@ import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
+import WebsiteFeedbackEmailOverride from '../website/modalParts/WebsiteFeedbackEmailOverride';
 
 export interface IWebsiteUpdateProps {
 	currentName: string;
@@ -114,6 +115,9 @@ class WebsiteModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteFeedbackEmailOverride onChange={this.onUpdate} />
 						</div>
 						<WebsiteLayout
 							feedbackPage={feedbackPage}

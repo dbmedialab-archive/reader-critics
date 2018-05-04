@@ -48,6 +48,12 @@ export function getRecipients(
 		return Promise.resolve([ override ]);
 	}
 
+	// If feedback email override to dedicated addresses is set for website
+	// then send messages there only instead of article authors
+	if (website.feedbackEmailOverride && website.feedbackEmailOverride.length) {
+		return Promise.resolve(website.feedbackEmailOverride);
+	}
+
 	let recipients : Array <string> = filterForMailAddr(article.authors);
 
 	if (recipients.length <= 0 || includeEditors) {

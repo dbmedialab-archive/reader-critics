@@ -31,6 +31,8 @@ export interface Website extends PersistedModel {
 
 	escalateThreshold : EscalationThresholds
 
+	feedbackEmailOverride : string[]
+
 	layout : {
 		templates : {
 			escalateToEditorMail? : string
