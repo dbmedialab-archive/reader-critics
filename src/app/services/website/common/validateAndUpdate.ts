@@ -26,6 +26,7 @@ import {
 
 import Website from 'base/Website';
 import {websiteService} from 'app/services';
+import {emailRegexp} from 'base/ValidationCustomValidations';
 
 // Validate and store to database
 
@@ -37,8 +38,7 @@ export default function(name: string, data : any) : Promise <Website> {
 		return Promise.reject(error);
 	}
 
-	return Promise.resolve()
-	.then(() => websiteService.update(name, data));
+	return websiteService.update(name, data);
 }
 
 // Schema Validator
@@ -58,9 +58,7 @@ function validateSchema(data : any) {
 
 	if (data.feedbackEmailOverride) {
 		data.feedbackEmailOverride.forEach((item) => {
-			const test = new RegExp(
-				'^[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*' +
-				'@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$').test(item);
+			const test = emailRegexp.test(item);
 			if (!test) {
 				throw new SchemaValidationError(
 					`Invalid website data: feedbackEmailOverride must contain valid emails`);

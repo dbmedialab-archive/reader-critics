@@ -17,13 +17,15 @@
 
 //tslint:disable max-line-length
 
+export const emailRegexp = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+
 export interface ICustomValidations {
 	[index: string]: (schema: String, v: any) => void;
 }
 
 const customValidations = {
 	isEmail: function(schema: String, v:any) {
-		if (!/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(v)) {
+		if (!emailRegexp.test(v)) {
 			this.report(`${schema} must me an email`);
 		}
 	},
