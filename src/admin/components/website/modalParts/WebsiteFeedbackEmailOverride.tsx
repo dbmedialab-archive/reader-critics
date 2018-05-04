@@ -21,10 +21,8 @@ import { InputError } from 'admin/components/form/InputError';
 import { connect } from 'react-redux';
 import Validator from 'admin/services/Validation';
 
-class WebsiteHosts extends React.Component <any, any> {
+class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 	private readonly validator : Validator;
-
-	private allHosts : string[] = [];
 
 	constructor (props) {
 		super(props);
@@ -36,41 +34,25 @@ class WebsiteHosts extends React.Component <any, any> {
 		this.validator = new Validator();
 
 		this.onDelete = this.onDelete.bind(this);
-		this.checkExistingHosts = this.checkExistingHosts.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onEdit = this.onEdit.bind(this);
-
-		this.props.websites.forEach(ws => {
-			if (ws.ID !== this.props.ID) {
-				this.allHosts = this.allHosts.concat(ws.hosts);
-			}
-		});
+		this.checkValidation = this.checkValidation.bind(this);
 	}
 
-	// Checks the added link for duplicates
+	checkValidation () {
+		const {value} = this.state;
+		const isEmail = this.validator.validate('feedbackEmailOverride', value, { required: true });
 
-	checkExistingHosts () {
-		const { value: link } = this.state;
-		const { hosts } = this.props;
-
-		const isHost = this.validator.validate('host', link, { required: true });
-
-		if (isHost.isError) {
-			return isHost.message;
+		if (isEmail.isError) {
+			return isEmail.message;
 		}
 		else {
-			const isUniqueHere = this.validator.validate('uniqueness', hosts.concat(link));
+			const isUnique = this.validator.validate('uniqueness',
+				this.props.feedbackEmailOverride.concat(value));
 
-			if (isUniqueHere.isError) {
-				return isUniqueHere.message;
-			}
-
-			const reallyAllHosts = this.allHosts.concat(link);
-			const isUniqueGlobally = this.validator.validate('uniqueness', reallyAllHosts);
-
-			if (isUniqueGlobally.isError) {
-				return 'This hostname is already in use';
+			if (isUnique.isError) {
+				return isUnique.message;
 			}
 
 			return false;
@@ -78,18 +60,19 @@ class WebsiteHosts extends React.Component <any, any> {
 	}
 
 	onDelete (index) {
+		const {feedbackEmailOverride: override} = this.props;
 		if (index >= 0) {
-			const hosts = this.props.hosts.asMutable();
-			hosts.splice(index, 1);
-			return this.props.onChange({hosts});
+			const feedbackEmailOverride = override.asMutable();
+			feedbackEmailOverride.splice(index, 1);
+			return this.props.onChange({feedbackEmailOverride});
 		}
 	}
 
 	onSubmit () {
 		const {touched, value} = this.state;
-		if (touched && value && !this.checkExistingHosts()) {
-			const hosts = this.props.hosts.concat(value);
-			this.props.onChange({hosts});
+		if (touched && value && !this.checkValidation()) {
+			const feedbackEmailOverride = this.props.feedbackEmailOverride.concat(value);
+			this.props.onChange({feedbackEmailOverride});
 			return this.setState({value: '', touched: false});
 		}
 	}
@@ -108,31 +91,33 @@ class WebsiteHosts extends React.Component <any, any> {
 	}
 
 	render () {
-		const hosts = this.props.hosts.map((host, index) => {
-			return (<li key={index + '-host'} className="website-hosts-list-item">
-				{host}
-				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-			</li>);
+		const feedbackEmailOverride = this.props.feedbackEmailOverride.map((email, index) => {
+			return (
+				<li key={index + '-email-override'} className="website-feedback-email-override-list-item">
+					{email}
+					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
+				</li>);
 		});
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<label htmlFor="hosts-link">
-						<b>Hosts</b><br/>
-						All hostnames that this site uses to publish articles, including "www" variants
+					<label htmlFor="feedback-email-override">
+						<b>Feedback email override</b><br/>
+						Emails to get notifications about feedbacks for articles if needed
+						(instead of article authors emails)
 					</label>
 					<input
-						id="hosts-link" type="text" className="small-12 medium-12"
+						id="feedback-email-override" type="text" className="small-12 medium-12"
 						value={this.state.value}
 						onChange={this.onEdit}
 						onKeyPress={this.onKeyPress} onBlur={this.onSubmit}
 					/>
 					<InputError
-						errorText={this.checkExistingHosts()}
+						errorText={this.checkValidation()}
 						touchedField={this.state.touched}
 					/>
-					<ul className="website-hosts-list">
-						{hosts}
+					<ul className="website-feedback-email-override-list">
+						{feedbackEmailOverride}
 					</ul>
 				</fieldset>
 			</div>
@@ -142,8 +127,7 @@ class WebsiteHosts extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		hosts: state.website.getIn(['selected', 'hosts']),
-		websites: state.website.getIn(['websites'], []),
+		feedbackEmailOverride: state.website.getIn(['selected', 'feedbackEmailOverride'], null),
 		ID: state.website.getIn(['selected', 'ID'], null),
 	};
 };
@@ -152,4 +136,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebsiteHosts);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteFeedbackEmailOverride);

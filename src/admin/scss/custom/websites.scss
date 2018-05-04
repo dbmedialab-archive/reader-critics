@@ -40,7 +40,7 @@
 		}
 	}
 
-	.website-host-list, .website-editor-list {
+	.website-host-list, .website-editor-list, .website-feedback-email-override-list {
 		margin-bottom: 5px;
 		padding: 5px;
 		font-size: 1rem;
@@ -58,12 +58,12 @@
 	}
 }
 
-.website-hosts-list, .website-editors-list {
+.website-hosts-list, .website-editors-list, .website-feedback-email-override-list {
 	list-style: none;
 	margin-left: 0;
 }
 
-.website-hosts-list-item, .website-editors-list-item {
+.website-hosts-list-item, .website-editors-list-item, .website-feedback-email-override-list-item {
 	margin-right: 5px;
 	margin-bottom: 2px;
 	padding: 4px;
@@ -81,7 +81,7 @@
 	}
 }
 
-.website-hosts-list-item {
+.website-hosts-list-item, .website-feedback-email-override-list-item {
 	background-color: #1a7bf3;
 }
 

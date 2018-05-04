@@ -33,6 +33,7 @@ const initialSelectedWebsite: Website = Immutable({
 	parserClass: '',
 	chiefEditors: [],
 	hosts: [],
+	feedbackEmailOverride: [],
 	layout: {
 		scssVariables: null,
 		templates: {

@@ -67,7 +67,8 @@ export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
 	const {layout} = data;
 	// Get only data we expect to update
-	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	let updateData = pick(data,['name', 'hosts', 'chiefEditors',
+								'parserClass', 'feedbackEmailOverride']);
 	// Remove empty
 	updateData = pickBy(updateData);
 

@@ -61,6 +61,12 @@ const additionalRules : IValidationRules = {
 		minLength: 4,
 		error: 'Host name is too short',
 	},
+
+	feedbackEmailOverride: {
+		type: 'string',
+		exec: customValidations.isEmail,
+		error: 'User mail should be valid email address!',
+	},
 };
 
 class Validator extends Validation {

@@ -26,6 +26,7 @@ import {
 
 import Website from 'base/Website';
 import {websiteService} from 'app/services';
+import {emailRegexp} from 'base/ValidationCustomValidations';
 
 // Validate and store to database
 
@@ -37,8 +38,7 @@ export default function(name: string, data : any) : Promise <Website> {
 		return Promise.reject(error);
 	}
 
-	return Promise.all([])
-	.then(() => websiteService.update(name, data));
+	return websiteService.update(name, data);
 }
 
 // Schema Validator
@@ -48,10 +48,21 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-	if ('hosts' in data && !data.hosts && !Array.isArray(data.hosts)) {
-		throw new SchemaValidationError('Invalid website data: hosts must be an array');
-	}
-	if ('chiefEditors' in data && !data.chiefEditors && !Array.isArray(data.chiefEditors)) {
-		throw new SchemaValidationError('Invalid website data: chiefEditors must be an array');
+	const dataArrays: string[] = ['hosts', 'chiefEditors', 'feedbackEmailOverride'];
+
+	dataArrays.forEach((item: string) => {
+		if (item in data && (!data[item] || !Array.isArray(data[item]))) {
+			throw new SchemaValidationError(`Invalid website data: ${item} must be an array`);
+		}
+	});
+
+	if (data.feedbackEmailOverride) {
+		data.feedbackEmailOverride.forEach((item) => {
+			const test = emailRegexp.test(item);
+			if (!test) {
+				throw new SchemaValidationError(
+					`Invalid website data: feedbackEmailOverride must contain valid emails`);
+			}
+		});
 	}
 }

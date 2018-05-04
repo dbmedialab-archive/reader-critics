@@ -88,6 +88,11 @@ const WebsiteSchema : Schema = new Schema({
 		},
 	},
 
+	feedbackEmailOverride: {
+		type: [String],
+		required: false,
+	},
+
 	// Website-specific layout
 	layout: {
 		templates: {
