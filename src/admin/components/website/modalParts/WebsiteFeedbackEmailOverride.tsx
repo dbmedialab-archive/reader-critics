@@ -127,7 +127,8 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		feedbackEmailOverride: state.website.getIn(['selected', 'feedbackEmailOverride'], null),
+		feedbackEmailOverride: state.website.getIn(
+			['selected', 'overrideSettings', 'overrides', 'feedbackEmail'], null),
 		ID: state.website.getIn(['selected', 'ID'], null),
 	};
 };

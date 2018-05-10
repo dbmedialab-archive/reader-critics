@@ -44,61 +44,83 @@ export function getRecipients(
 	includeEditors : boolean = false
 ) : Promise <Array <string>>
 {
+
+	// override emails for development
 	if (override && !app.isProduction) {
-		return Promise.resolve([ override ]);
+		return Promise.resolve([override]);
 	}
 
-	// If feedback email override to dedicated addresses is set for website
-	// then send messages there only instead of article authors
-	if (website.feedbackEmailOverride && website.feedbackEmailOverride.length) {
-		return Promise.resolve(website.feedbackEmailOverride);
+	const {
+		name,
+		chiefEditors,
+		overrideSettings: {
+			settings = {},
+			overrides = {},
+		} = {},
+	} = website;
+
+	const {feedbackEmail = [], fallbackFeedbackEmail = []} = override;
+
+	// if website is set to send all feedback's to dedicated addresses then override email addresses
+	if (settings.feedback && feedbackEmail.length) {
+		return Promise.resolve(overrides.feedbackEmail);
 	}
 
 	let recipients : Array <string> = filterForMailAddr(article.authors);
 
+	// if authors list is empty and we have fallback emails then add them to list
+	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
+		recipients = recipients.concat(uniq(overrides.fallbackFeedbackEmail));
+	}
+
+	// If notify editors option is set or list is still empty then add them to the list
 	if (recipients.length <= 0 || includeEditors) {
-		recipients = recipients.concat(filterForMailAddr(website.chiefEditors));
+		recipients = recipients.concat(filterForMailAddr(chiefEditors));
 	}
 
 	// If the list of recipients is still empty here then we can't really do
 	// anything about that. The caller function will have to deal with it.
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(`${msgNoRcpt} (${website.name})`));
+		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
 	}
 
 	return Promise.resolve(uniq(recipients));
 }
 
-// Get a specific list of recipients for a website. Currently, only the "editors"
-// list is defined.
-
-export enum MailRecipientList {
-	Editors,
-}
-
 export function getRecipientList(
-	website : Website,
-	recipientList : MailRecipientList
+	website : Website
 ) : Promise <Array <string>>
 {
 	if (override && !app.isProduction) {
 		return Promise.resolve([ override ]);
 	}
 
+	const {
+		name,
+		chiefEditors,
+		overrideSettings: {
+			settings = {},
+			overrides = {},
+		} = {},
+	} = website;
+
+	const {escalationEmail = []} = overrides;
+
 	let recipients;
 
-	switch (recipientList) {
-		case MailRecipientList.Editors:
-			recipients = website.chiefEditors;
+	if (settings.escalation) {
+		recipients = escalationEmail;
+	} else {
+		recipients = uniq(filterForMailAddr(chiefEditors));
 	}
 
 	// If the list of recipients is still empty here then we can't really do
 	// anything about that. The caller function will have to deal with it.
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(`${msgNoRcpt} (${website.name})`));
+		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
 	}
 
-	return Promise.resolve(uniq(filterForMailAddr(recipients)));
+	return Promise.resolve(recipients);
 }
 
 // Extract e-mail addresses from an array of <Person> objects
