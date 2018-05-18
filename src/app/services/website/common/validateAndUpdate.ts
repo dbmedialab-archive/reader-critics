@@ -48,21 +48,43 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-	const dataArrays: string[] = ['hosts', 'chiefEditors', 'feedbackEmailOverride'];
+	const dataArrays: string[] = ['hosts', 'chiefEditors'];
+	const overrideArrays: string[] = ['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail'];
 
-	dataArrays.forEach((item: string) => {
-		if (item in data && (!data[item] || !Array.isArray(data[item]))) {
-			throw new SchemaValidationError(`Invalid website data: ${item} must be an array`);
+	dataArrays.forEach((item: string) =>
+		arrayValidation(
+			`Invalid website data: "${item}" must be an array`,
+			item,
+			data));
+
+	if (data.overrideSettings && data.overrideSettings.overrides) {
+		overrideArrays.forEach(item => arrayOfEmailsValidation(item, data.overrideSettings.overrides));
+	}
+}
+
+function arrayValidation (errText: string, item: any, data: any) {
+	if (item in data && (!data[item] || !Array.isArray(data[item]))) {
+		throw new SchemaValidationError(errText);
+	}
+}
+
+function emailValidation (errText: string, item: string) {
+	const test = emailRegexp.test(item);
+	if (!test) {
+		throw new SchemaValidationError(errText);
+	}
+}
+
+function arrayOfEmailsValidation (item: any, data: any) {
+	if (item in data) {
+		if (!data[item] || !Array.isArray(data[item])) {
+			throw new SchemaValidationError(
+				`Invalid website data: "overrideSettings.overrides.${item}" must be an array`
+			);
 		}
-	});
-
-	if (data.feedbackEmailOverride) {
-		data.feedbackEmailOverride.forEach((item) => {
-			const test = emailRegexp.test(item);
-			if (!test) {
-				throw new SchemaValidationError(
-					`Invalid website data: feedbackEmailOverride must contain valid emails`);
-			}
-		});
+		data[item].forEach((email: string) =>
+			emailValidation(
+			`Invalid website data: "overrideSettings.overrides.${item}" must contain valid emails`,
+				email));
 	}
 }

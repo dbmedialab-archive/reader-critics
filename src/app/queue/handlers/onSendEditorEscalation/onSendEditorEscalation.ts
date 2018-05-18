@@ -27,10 +27,7 @@ import {
 	templateService,
 } from 'app/services';
 
-import {
-	getRecipientList,
-	MailRecipientList,
-} from 'app/mail/MailRecipients';
+import {getRecipientList} from 'app/mail/MailRecipients';
 
 import { layoutEscalationMail } from './layoutEscalationMail';
 import { EscalationLevel } from 'base/EscalationLevel';
@@ -71,7 +68,7 @@ function process(article : Article) {
 	])
 	.spread((feedbacks : Feedback[], template : MailTemplate) => Promise.all([
 		layoutEscalationMail(article, feedbacks, template),
-		getRecipientList(article.website, MailRecipientList.Editors),
+		getRecipientList(article.website),
 		getMailSubject(article),
 	]))
 	.spread((htmlMailContent : string, recipients : Array <string>, subject : string) => {

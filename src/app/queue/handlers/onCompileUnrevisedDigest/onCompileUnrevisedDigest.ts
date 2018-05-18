@@ -39,10 +39,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import {
-	getRecipientList,
-	MailRecipientList,
-} from 'app/mail/MailRecipients';
+import {getRecipientList} from 'app/mail/MailRecipients';
 
 import { layoutDigest } from './layoutDigest';
 
@@ -84,7 +81,7 @@ function process() {
 		// Send the digest e-mail
 		.then((mailContent : string) => (
 			Promise.all([
-				getRecipientList(website, MailRecipientList.Editors),
+				getRecipientList(website),
 				getMailSubject(website, latestCreated),
 			])
 			.spread((recipients : Array <string>, subject : string) => (

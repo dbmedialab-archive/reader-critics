@@ -54,12 +54,17 @@ export function getRecipients(
 		name,
 		chiefEditors,
 		overrideSettings: {
-			settings = {},
-			overrides = {},
+			settings = {
+				feedback : false,
+			},
+			overrides = {
+				feedbackEmail: [],
+				fallbackFeedbackEmail: [],
+			},
 		} = {},
 	} = website;
 
-	const {feedbackEmail = [], fallbackFeedbackEmail = []} = override;
+	const {feedbackEmail = [], fallbackFeedbackEmail = []} = overrides;
 
 	// if website is set to send all feedback's to dedicated addresses then override email addresses
 	if (settings.feedback && feedbackEmail.length) {
@@ -75,7 +80,7 @@ export function getRecipients(
 
 	// If notify editors option is set or list is still empty then add them to the list
 	if (recipients.length <= 0 || includeEditors) {
-		recipients = recipients.concat(filterForMailAddr(chiefEditors));
+		recipients = recipients.concat(uniq(filterForMailAddr(chiefEditors)));
 	}
 
 	// If the list of recipients is still empty here then we can't really do
@@ -99,8 +104,12 @@ export function getRecipientList(
 		name,
 		chiefEditors,
 		overrideSettings: {
-			settings = {},
-			overrides = {},
+			settings = {
+				escalation: false,
+			},
+			overrides = {
+				escalationEmail: [],
+			},
 		} = {},
 	} = website;
 
@@ -109,7 +118,7 @@ export function getRecipientList(
 	let recipients;
 
 	if (settings.escalation) {
-		recipients = escalationEmail;
+		recipients = uniq(escalationEmail);
 	} else {
 		recipients = uniq(filterForMailAddr(chiefEditors));
 	}
