@@ -41,6 +41,7 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		this.checkValidation = this.checkValidation.bind(this);
 		this.onToggleCheck = this.onToggleCheck.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
+		this.buildList = this.buildList.bind(this);
 	}
 
 	checkValidation () {
@@ -105,17 +106,15 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		});
 	}
 
-	render () {
-		/**
-		 * Great luck if I don't burn at the stake for it...
-		 */
-		const feedbackEmailOverride = this.props.feedbackEmailOverride.map((email, index) => {
-			return (
+	buildList () {
+		return this.props.feedbackEmailOverride.map((email, index) => (
 				<li key={index + '-email-override'} className="website-feedback-email-override-list-item">
 					{email}
 					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-				</li>);
-		});
+				</li>));
+	}
+
+	render () {
 		const {value, touched} = this.state;
 		const {settings: {feedback: feedbackOverrideStatus = false}} = this.props;
 		return (
@@ -124,21 +123,15 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 					<div className="row">
 						<div className="small-12 columns hide-for-medium columns override-status-control">
 							<SwitchBox
-								classes={`switch round tiny`}
-								ID={'feedback-email-override-status-small'}
-								checked={feedbackOverrideStatus}
-								onChange={this.onToggleCheck}
+								classes={`switch round tiny`} ID={'feedback-email-override-status-small'}
+								checked={feedbackOverrideStatus} onChange={this.onToggleCheck}
 							/>
 						</div>
 						<div className="small-12 medium-9 large-10 columns">
 							<LabeledInput
-								onSubmit={this.onSubmit}
-								errorText={this.checkValidation()}
-								onEdit={this.onEdit}
-								value={value}
-								touched={touched}
-								label={
-									<span>
+								onSubmit={this.onSubmit} errorText={this.checkValidation()}
+								onEdit={this.onEdit} value={value}	touched={touched}
+								label={<span>
 										<b>Feedback email override</b><br/>
 										Emails to get notifications about feedbacks for articles if needed
 										(instead of article authors emails)
@@ -147,21 +140,18 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 						</div>
 						<div className="medium-3 large-2 show-for-medium columns override-status-control">
 							<SwitchBox
-								classes={`switch round large`}
-								ID={'feedback-email-override-status'}
-								checked={feedbackOverrideStatus}
-								onChange={this.onToggleCheck}
+								classes={`switch round large`} ID={'feedback-email-override-status'}
+								checked={feedbackOverrideStatus} onChange={this.onToggleCheck}
 							/>
 						</div>
 						<div className="small-12 columns">
 							<ul className="website-feedback-email-override-list">
-								{feedbackEmailOverride}
+								{this.buildList()}
 							</ul>
 						</div>
 					</div>
 				</fieldset>
-			</div>
-		);
+			</div>);
 	}
 }
 

@@ -123,9 +123,9 @@ export function getRecipientList(
 		recipients = uniq(filterForMailAddr(chiefEditors));
 	}
 
-	// If the list of recipients is still empty here then we can't really do
-	// anything about that. The caller function will have to deal with it.
 	if (recipients.length <= 0) {
+		// If the list of recipients is still empty here then we can't really do
+		// anything about that. The caller function will have to deal with it.
 		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
 	}
 

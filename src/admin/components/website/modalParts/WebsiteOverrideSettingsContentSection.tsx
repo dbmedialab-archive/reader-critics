@@ -23,7 +23,7 @@ import {SwitchBox} from '../additionalComponents/SwitchBox';
 export interface IWebsiteOverrideSettingsContentSection {
 	list: string[];
 	listPropName: string;
-	onSubmit: (data: any) => void;	// TODO replace with correct type
+	onSubmit: (data: any) => void;
 	checkValidation: (value: string, touched: boolean) => string | boolean;
 	controlPropName?: string;
 	controlPropValue?: boolean;
@@ -45,6 +45,7 @@ export class WebsiteOverrideSettingsContentSection extends
 		this.onEdit = this.onEdit.bind(this);
 		this.onToggleCheck = this.onToggleCheck.bind(this);
 		this.getValidationError = this.getValidationError.bind(this);
+		this.buildList = this.buildList.bind(this);
 	}
 
 	getValidationError() {
@@ -55,7 +56,7 @@ export class WebsiteOverrideSettingsContentSection extends
 	onDelete (index: number) {
 		const {list, listPropName} = this.props;
 		if (index >= 0) {
-			const overrideList = list;		// TODO get as mutable
+			const overrideList = list;
 			overrideList.splice(index, 1);
 			return this.props.onSubmit({overrides: {[listPropName]: overrideList}});
 		}
@@ -91,25 +92,19 @@ export class WebsiteOverrideSettingsContentSection extends
 		});
 	}
 
+	buildList () {
+		const {list, listPropName} = this.props;
+		return list.map((email: string, index: number) =>
+			(<li key={`${index}-${listPropName}-override`}
+						className="website-feedback-email-override-list-item email-override-list-item">
+				{email}
+				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
+			</li>)
+		);
+	}
+
 	render () {
-		/**
-		 * Great luck if I don't burn at the stake for it...
-		 */
-		// TODO classes
-		const {
-			controlPropValue = false,
-			controlPropName: isControllable,
-			list,
-			listPropName,
-		} = this.props;
-		const listEl = list.map((email: string, index: number) => {
-			return (
-				<li key={`${index}-${listPropName}-override`}
-					className="website-feedback-email-override-list-item email-override-list-item">
-					{email}
-					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-				</li>);
-		});
+		const {controlPropValue = false, controlPropName: isControllable} = this.props;
 		const {value, touched} = this.state;
 		return (
 			<div className="medium-12 columns website-feedback-email-override-container overrides-container">
@@ -126,13 +121,9 @@ export class WebsiteOverrideSettingsContentSection extends
 						</div>}
 						<div className={`small-12 ${isControllable && 'medium-9 large-10'} columns`}>
 							<LabeledInput
-								onSubmit={this.onSubmit}
-								errorText={this.getValidationError()}
-								onEdit={this.onEdit}
-								value={value}
-								touched={touched}
-								label={
-									<span>
+								onSubmit={this.onSubmit} errorText={this.getValidationError()}
+								onEdit={this.onEdit} value={value}	touched={touched}
+								label={<span>
 										<b>Feedback email override</b><br/>
 										Emails to get notifications about feedbacks for articles if needed
 										(instead of article authors emails)
@@ -142,20 +133,17 @@ export class WebsiteOverrideSettingsContentSection extends
 						{isControllable &&
 						<div className="medium-3 large-2 show-for-medium columns override-status-control">
 							<SwitchBox
-								classes={`switch round large`}
-								ID={'feedback-email-override-status'}
-								checked={controlPropValue}
-								onChange={this.onToggleCheck}
+								classes={`switch round large`}	ID={'feedback-email-override-status'}
+								checked={controlPropValue} onChange={this.onToggleCheck}
 							/>
 						</div>}
 						<div className="small-12 columns">
 							<ul className="website-feedback-email-override-list">
-								{listEl}
+								{this.buildList()}
 							</ul>
 						</div>
 					</div>
 				</fieldset>
-			</div>
-		);
+			</div>);
 	}
 }
