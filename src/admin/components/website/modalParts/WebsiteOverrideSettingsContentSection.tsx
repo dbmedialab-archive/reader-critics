@@ -113,10 +113,8 @@ export class WebsiteOverrideSettingsContentSection extends
 						{isControllable &&
 						<div className="small-12 columns hide-for-medium columns override-status-control">
 							<SwitchBox
-								classes={`switch round tiny`}
-								ID={'feedback-email-override-status-small'}
-								checked={controlPropValue}
-								onChange={this.onToggleCheck}
+								classes={`switch round tiny`} ID={'feedback-email-override-status-small'}
+								checked={controlPropValue} onChange={this.onToggleCheck}
 							/>
 						</div>}
 						<div className={`small-12 ${isControllable && 'medium-9 large-10'} columns`}>
@@ -138,7 +136,7 @@ export class WebsiteOverrideSettingsContentSection extends
 							/>
 						</div>}
 						<div className="small-12 columns">
-							<ul className="website-feedback-email-override-list">
+							<ul className="website-feedback-email-override-list override-list">
 								{this.buildList()}
 							</ul>
 						</div>
