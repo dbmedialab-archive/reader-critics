@@ -21,11 +21,11 @@ import { InputError } from 'admin/components/form/InputError';
 
 export interface ILabeledInput {
 	onSubmit: () => void;
-	errorText: string | boolean;
+	errorText: string;
 	onEdit: (e) => void;
 	value: string;
 	touched: boolean;
-	label: any;
+	label: string | JSX.Element;
 	ID: string;
 	inputType?: string;
 }
@@ -38,14 +38,23 @@ export class LabeledInput extends React.Component <ILabeledInput, any> {
 		this.onKeyPress = this.onKeyPress.bind(this);
 	}
 
-	onKeyPress (e) {
+	onKeyPress (e): void {
 		if (e.key === 'Enter') {
 			return this.props.onSubmit();
 		}
 	}
 
 	render () {
-		const {value, touched, ID, inputType = 'text', onEdit, onSubmit, errorText, label} = this.props;
+		const {
+			value,
+			touched,
+			ID,
+			onEdit,
+			onSubmit,
+			errorText,
+			label,
+			inputType = 'text',
+		} = this.props;
 		return (
 			<div className="row">
 				<div className="small-12 columns">

@@ -24,7 +24,7 @@ export interface IWebsiteOverrideSettingsContentSection {
 	list: string[];
 	listPropName: string;
 	onSubmit: (data: any) => void;
-	checkValidation: (value: string, touched: boolean) => string | boolean;
+	checkValidation: (value: string, touched: boolean) => string;
 	controlPropName?: string;
 	controlPropValue?: boolean;
 }
@@ -79,7 +79,7 @@ export class WebsiteOverrideSettingsContentSection extends
 		return this.props.onSubmit({settings});
 	}
 
-	onKeyPress (e) {
+	onKeyPress (e): void {
 		if (e.key === 'Enter') {
 			return this.onSubmit();
 		}

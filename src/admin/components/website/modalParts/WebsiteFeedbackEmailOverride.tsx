@@ -44,7 +44,7 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		this.buildList = this.buildList.bind(this);
 	}
 
-	checkValidation () {
+	checkValidation (): string {
 		const {value} = this.state;
 		const isEmail = this.validator.validate('feedbackEmailOverride', value, { required: true });
 
@@ -59,7 +59,7 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 				return isUnique.message;
 			}
 
-			return false;
+			return '';
 		}
 	}
 
@@ -93,7 +93,7 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		return this.sendOverrideChanges({settings});
 	}
 
-	onKeyPress (e) {
+	onKeyPress (e): void {
 		if (e.key === 'Enter') {
 			return this.onSubmit();
 		}
