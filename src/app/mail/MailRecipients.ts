@@ -38,7 +38,7 @@ const override : string = config.get('mail.testOverride');
 // authors and adds the website's editors if this is requested, or if the list
 // of article authors is empty (happens often on articles from external sources)
 
-export function getRecipients(
+export function getFeedbackRecipients(
 	website : Website,
 	article : Article,
 	includeEditors : boolean = false
@@ -68,14 +68,14 @@ export function getRecipients(
 
 	// if website is set to send all feedback's to dedicated addresses then override email addresses
 	if (settings.feedback && feedbackEmail.length) {
-		return Promise.resolve(overrides.feedbackEmail);
+		return Promise.resolve(feedbackEmail);
 	}
 
 	let recipients : Array <string> = filterForMailAddr(article.authors);
 
 	// if authors list is empty and we have fallback emails then add them to list
 	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
-		recipients = recipients.concat(uniq(overrides.fallbackFeedbackEmail));
+		recipients = recipients.concat(uniq(fallbackFeedbackEmail));
 	}
 
 	// If notify editors option is set or list is still empty then add them to the list
@@ -92,7 +92,7 @@ export function getRecipients(
 	return Promise.resolve(uniq(recipients));
 }
 
-export function getRecipientList(
+export function getEscalationRecipientList(
 	website : Website
 ) : Promise <Array <string>>
 {

@@ -86,7 +86,6 @@ export function update(name : string, data:any) : Promise <Website> {
 			if (overrideSettings) {
 				if ('settings' in overrideSettings) {
 					const updatedSettings = pick(overrideSettings.settings, ['feedback', 'escalation']);
-					// updatedSettings = pickBy(updatedSettings);
 					resWrite.overrideSettings.settings = Object.assign(
 						{}, wsite.overrideSettings.settings, updatedSettings);
 				}

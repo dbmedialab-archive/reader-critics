@@ -39,7 +39,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import {getRecipientList} from 'app/mail/MailRecipients';
+import {getEscalationRecipientList} from 'app/mail/MailRecipients';
 
 import { layoutDigest } from './layoutDigest';
 
@@ -81,8 +81,8 @@ function process() {
 		// Send the digest e-mail
 		.then((mailContent : string) => (
 			Promise.all([
-				getRecipientList(website),
-				getMailSubject(website, latestCreated),
+					getEscalationRecipientList(website),
+					getMailSubject(website, latestCreated),
 			])
 			.spread((recipients : Array <string>, subject : string) => (
 				SendGridMailer(recipients, subject, mailContent)
