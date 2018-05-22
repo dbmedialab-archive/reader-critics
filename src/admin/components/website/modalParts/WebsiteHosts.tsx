@@ -50,7 +50,7 @@ class WebsiteHosts extends React.Component <any, any> {
 
 	// Checks the added link for duplicates
 
-	checkExistingHosts () {
+	checkExistingHosts (): string {
 		const { value: link } = this.state;
 		const { hosts } = this.props;
 
@@ -73,7 +73,7 @@ class WebsiteHosts extends React.Component <any, any> {
 				return 'This hostname is already in use';
 			}
 
-			return false;
+			return '';
 		}
 	}
 
@@ -94,7 +94,7 @@ class WebsiteHosts extends React.Component <any, any> {
 		}
 	}
 
-	onKeyPress (e) {
+	onKeyPress (e): void {
 		if (e.key === 'Enter') {
 			return this.onSubmit();
 		}

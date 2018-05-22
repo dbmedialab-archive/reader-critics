@@ -16,43 +16,33 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { EscalationThresholds } from './EscalationThresholds';
+import * as React from 'react';
 
-import PersistedModel from './zz/PersistedModel';
-import Person from './zz/Person';
-
-export interface Website extends PersistedModel {
-	name : string
-	parserClass? : string
-	locale? : string
-
-	hosts : string[]
-	chiefEditors : Person[]
-
-	escalateThreshold : EscalationThresholds
-
-	overrideSettings : {
-		settings: {
-			escalation : boolean
-			feedback : boolean
-		}
-		overrides: {
-			feedbackEmail: string[]
-			fallbackFeedbackEmail: string[]
-			escalationEmail: string[]
-		}
-	}
-
-	layout : {
-		templates : {
-			escalateToEditorMail? : string
-			feedbackPage? : string
-			feedbackNotificationMail? : string
-			unrevisedDigestMail? : string
-			enduserUpdatedArticleMail? : string
-		}
-		scssVariables? : object
-	}
+export interface ISwitchBox {
+	classes: string;
+	ID: string;
+	checked: boolean;
+	onChange: (e) => void;
 }
 
-export default Website;
+export class SwitchBox extends React.Component <ISwitchBox, any> {
+
+	constructor (props) {
+		super(props);
+	}
+
+	render () {
+		const {classes, checked, ID, onChange} = this.props;
+		return (
+			<div className={classes}>
+				<input
+					type="checkbox" id={ID}
+					className="switch-input"
+					checked={checked}
+					onChange={onChange}
+				/>
+				<label htmlFor={ID} className="switch-paddle" />
+			</div>
+		);
+	}
+}

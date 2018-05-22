@@ -65,10 +65,9 @@ export function save(website : Website) : Promise <Website> {
 
 export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
-	const {layout} = data;
+	const {layout, overrideSettings} = data;
 	// Get only data we expect to update
-	let updateData = pick(data,['name', 'hosts', 'chiefEditors',
-								'parserClass', 'feedbackEmailOverride']);
+	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
 	// Remove empty
 	updateData = pickBy(updateData);
 
@@ -80,11 +79,22 @@ export function update(name : string, data:any) : Promise <Website> {
 			const resWrite = Object.assign(wsite, updateData);
 
 			if (layout && 'templates' in layout) {
-				if ('feedbackPage' in layout.templates) {
-					resWrite.layout.templates.feedbackPage = layout.templates.feedbackPage;
+				let updatedLayout = pick(layout.templates,['feedbackPage', 'feedbackNotificationMail']);
+				updatedLayout = pickBy(updatedLayout);
+				resWrite.layout.templates = Object.assign({}, wsite.layout.templates, updatedLayout);
+			}
+			if (overrideSettings) {
+				if ('settings' in overrideSettings) {
+					const updatedSettings = pick(overrideSettings.settings, ['feedback', 'escalation']);
+					resWrite.overrideSettings.settings = Object.assign(
+						{}, wsite.overrideSettings.settings, updatedSettings);
 				}
-				if ('feedbackNotificationMail' in layout.templates) {
-					resWrite.layout.templates.feedbackNotificationMail = layout.templates.feedbackNotificationMail;
+				if ('overrides' in overrideSettings) {
+					let updatedOverrides = pick(overrideSettings.overrides,
+						['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
+					updatedOverrides = pickBy(updatedOverrides);
+					resWrite.overrideSettings.overrides = Object.assign(
+						{}, wsite.overrideSettings.overrides, updatedOverrides);
 				}
 			}
 			return wrapSave(resWrite.save());

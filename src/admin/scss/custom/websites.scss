@@ -52,12 +52,6 @@
 	}
 }
 
-.website-edit-form {
-	.row {
-		margin-bottom: 1rem;
-	}
-}
-
 .website-hosts-list, .website-editors-list, .website-feedback-email-override-list {
 	list-style: none;
 	margin-left: 0;
@@ -99,6 +93,32 @@
 		font-weight: bold;
 		font-style: italic;
 		text-transform: uppercase;
+	}
+}
+
+.overrides-container {
+	label {
+		line-height: 1.6;
+	}
+
+	.override-status-control {
+		position: relative;
+
+		@media #{$medium-up} {
+			justify-content: center;
+			align-self: flex-end;
+			text-align: center;
+			padding-bottom: .5rem;
+		}
+
+		.switch {
+			margin-bottom: 0;
+
+			@media #{$small-only} {
+				position: absolute;
+				right: 0;
+			}
+		}
 	}
 }
 

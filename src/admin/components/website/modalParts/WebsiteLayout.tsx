@@ -90,7 +90,7 @@ export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps,
 						Layout Settings
 					</div>
 				</div>
-				<div className="small-12 columns layout-content">
+				<div className="small-12 layout-content">
 					<WebsiteLayoutContentSection
 						buttonText={'Feedback page template'}
 						templateName={'feedbackPage'}

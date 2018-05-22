@@ -51,7 +51,7 @@ class WebsiteName extends React.Component <any, any> {
 		});
 	}
 
-	onKeyPress(e) {
+	onKeyPress(e): void {
 		if (e.key === 'Enter') {
 			return this.onSubmit();
 		}
@@ -63,7 +63,7 @@ class WebsiteName extends React.Component <any, any> {
 		}
 	}
 
-	isError (): string | boolean {
+	isError (): string {
 		let websites = this.props.websites.asMutable();
 		websites = websites.filter(website => {
 			return (website.ID !== this.props.ID);
