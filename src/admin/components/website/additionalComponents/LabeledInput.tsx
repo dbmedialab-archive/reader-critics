@@ -18,6 +18,7 @@
 
 import * as React from 'react';
 import { InputError } from 'admin/components/form/InputError';
+import { Label } from 'admin/components/website/additionalComponents/Label';
 
 export interface ILabeledInput {
 	onSubmit: () => void;
@@ -57,11 +58,7 @@ export class LabeledInput extends React.Component <ILabeledInput, any> {
 		} = this.props;
 		return (
 			<div className="row">
-				<div className="small-12 columns">
-					<label htmlFor={`${ID}-input`}>
-						{label}
-					</label>
-				</div>
+				<Label label={label} ID={ID} />
 				<div className="small-12 columns">
 					<input
 						id={`${ID}-input`} type={inputType}

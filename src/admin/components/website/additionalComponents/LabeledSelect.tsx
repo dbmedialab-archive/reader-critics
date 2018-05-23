@@ -17,6 +17,7 @@
 //
 
 import * as React from 'react';
+import { Label } from 'admin/components/website/additionalComponents/Label';
 
 export interface ILabeledSelect {
 	onChange: (e) => void;
@@ -60,11 +61,7 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 		} = this.props;
 		return (
 			<div className="row">
-				<div className="small-12 columns">
-					<label htmlFor={`${ID}-input`}>
-						{label}
-					</label>
-				</div>
+				<Label label={label} ID={ID} />
 				<div className="small-12 columns">
 					<select
 						id={`${ID}-input`}
