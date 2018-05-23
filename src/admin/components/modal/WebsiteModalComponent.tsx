@@ -85,6 +85,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	}
 
 	render (): JSX.Element {
+		console.log('----render -------- modal/ modal')
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
 		const isDisabled = name && !ID;
 
@@ -105,11 +106,14 @@ class WebsiteModalComponent extends React.Component <any, any> {
 							{ ID ? captionEdit : captionAdd }
 						</div>
 					</div>
+
 					<form className="website-edit-form">
+
 						<div className="row">
 							<WebsiteName onSubmit={this.onUpdate} name={name} />
 							<WebsiteParserClass	onChange={this.onUpdate} />
 						</div>
+
 						<div className="row">
 							<WebsiteHosts onChange={this.onUpdate}	/>
 						</div>
@@ -139,6 +143,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 							</div>
 						</div> : null}
 					</form>
+
 				</div>
 			</ReactModal>
 		);

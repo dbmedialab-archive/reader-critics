@@ -50,7 +50,7 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 
 	render () {
 		const {
-			value,
+			value = '',
 			ID,
 			onChange,
 			name,
@@ -59,6 +59,8 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 			defaultOptionText = '',
 			enabled = true,
 		} = this.props;
+		console.log('select@!!!!!')
+		console.log(value)
 		return (
 			<div className="row">
 				<Label label={label} ID={ID} />

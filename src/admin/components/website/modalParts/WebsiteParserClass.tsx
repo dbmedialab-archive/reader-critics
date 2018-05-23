@@ -31,7 +31,11 @@ class WebsiteParserClass extends React.Component <any, any> {
 	}
 
 	render () {
-		const { parserClass, options } = this.props;
+		console.log('parser class ');
+		console.log(this.props)
+		console.log()
+		const { parserClass = '', options } = this.props;
+		console.log(parserClass)
 		const structuredOpts = options.map((option) => {
 			return {value: option, name: option};
 		});
