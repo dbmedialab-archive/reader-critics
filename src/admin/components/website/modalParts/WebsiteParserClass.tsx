@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import {connect} from 'react-redux';
-import { LabeledSelect } from '../additionalComponents/LabeledSelect';
+import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
 
 class WebsiteParserClass extends React.Component <any, any> {
 	constructor (props) {

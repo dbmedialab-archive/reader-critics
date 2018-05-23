@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-import { LabeledInput } from '../additionalComponents/LabeledInput';
+import { LabeledInput } from 'admin/components/website/additionalComponents/LabeledInput';
 import { TagList } from 'admin/components/website/additionalComponents/TagList';
 import { connect } from 'react-redux';
 import Validator from 'admin/services/Validation';
@@ -118,7 +118,8 @@ class WebsiteHosts extends React.Component <any, any> {
 					<TagList
 						items={this.props.hosts}
 						onDelete={this.onDelete}
-						classes={'website-hosts-list'}
+						classes="website-settings-list"
+						color="blue"
 					/>
 				</fieldset>
 			</div>

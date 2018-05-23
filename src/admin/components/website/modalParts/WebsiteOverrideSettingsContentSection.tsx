@@ -17,8 +17,8 @@
 //
 
 import * as React from 'react';
-import {LabeledInput} from '../additionalComponents/LabeledInput';
-import {SwitchBox} from '../additionalComponents/SwitchBox';
+import {LabeledInput} from 'admin/components/website/additionalComponents/LabeledInput';
+import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox';
 
 export interface IWebsiteOverrideSettingsContentSection {
 	list: string[];

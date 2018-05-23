@@ -19,8 +19,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Validator from 'admin/services/Validation';
-import {LabeledInput} from '../additionalComponents/LabeledInput';
-import {SwitchBox} from '../additionalComponents/SwitchBox';
+import {LabeledInput} from 'admin/components/website/additionalComponents/LabeledInput';
+import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox';
+import { TagList } from 'admin/components/website/additionalComponents/TagList';
 
 class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 	private readonly validator : Validator;
@@ -41,7 +42,6 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		this.checkValidation = this.checkValidation.bind(this);
 		this.onToggleCheck = this.onToggleCheck.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
-		this.buildList = this.buildList.bind(this);
 	}
 
 	checkValidation (): string {
@@ -106,17 +106,9 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 		});
 	}
 
-	buildList () {
-		return this.props.feedbackEmailOverride.map((email, index) => (
-				<li key={index + '-email-override'} className="website-feedback-email-override-list-item">
-					{email}
-					<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-				</li>));
-	}
-
 	render () {
 		const {value, touched} = this.state;
-		const {settings: {feedback: feedbackOverrideStatus = false}} = this.props;
+		const {settings: {feedback: feedbackOverrideStatus = false}, feedbackEmailOverride} = this.props;
 		return (
 			<div className="medium-12 columns website-feedback-email-override-container overrides-container">
 				<fieldset className="text">
@@ -145,9 +137,12 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 							/>
 						</div>
 						<div className="small-12 columns">
-							<ul className="website-feedback-email-override-list">
-								{this.buildList()}
-							</ul>
+							<TagList
+								items={ feedbackEmailOverride }
+								onDelete={this.onDelete}
+								classes="website-settings-list"
+								color="blue"
+							/>
 						</div>
 					</div>
 				</fieldset>
