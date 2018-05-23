@@ -37,7 +37,7 @@ export interface IOption {
 
 export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 
-	constructor (props) {
+	constructor (props: ILabeledSelect) {
 		super(props);
 
 	}

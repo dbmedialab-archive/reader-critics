@@ -33,7 +33,7 @@ export interface ILabeledInput {
 
 export class LabeledInput extends React.Component <ILabeledInput, any> {
 
-	constructor (props) {
+	constructor (props: ILabeledInput) {
 		super(props);
 
 		this.onKeyPress = this.onKeyPress.bind(this);

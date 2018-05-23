@@ -24,7 +24,7 @@ export interface ILabel {
 }
 
 export class Label extends React.Component <ILabel, any> {
-	constructor (props) {
+	constructor (props: ILabel) {
 		super(props);
 	}
 

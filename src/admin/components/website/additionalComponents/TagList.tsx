@@ -22,18 +22,19 @@ export interface ITagList {
 	classes: string;
 	onDelete: (index: number) => void;
 	items: string[];
+	color?: string;
 }
 
 export class TagList extends React.Component <ITagList, any> {
 
-	constructor (props) {
+	constructor (props: ITagList) {
 		super(props);
 		this.createTags = this.createTags.bind(this);
 	}
 	createTags (items: string[]) {
-		const {classes, onDelete} = this.props;
+		const {classes, onDelete, color = 'blue'} = this.props;
 		return items.map((item, index) => {
-			return (<li key={index + '-item'} className={`${classes}-item`}>
+			return (<li key={index + '-item '} className={`${classes}-item ${color}`}>
 				{item}
 				<i className="fa fa-times" onClick={onDelete.bind(this, index)}/>
 			</li>);

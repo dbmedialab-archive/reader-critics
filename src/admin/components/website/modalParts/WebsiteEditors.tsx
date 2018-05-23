@@ -19,7 +19,7 @@
 import * as React from 'react';
 import * as UsersActions from 'admin/actions/UsersActions';
 
-import { LabeledSelect } from '../additionalComponents/LabeledSelect';
+import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
 import { TagList } from 'admin/components/website/additionalComponents/TagList';
 
 import { connect } from 'react-redux';
@@ -90,7 +90,7 @@ class WebsiteEditors extends React.Component <any, any> {
 	}
 
 	render () {
-		const chiefEditors = this.props.chiefEditors.map((item) => { item.name; });
+		const chiefEditors = this.props.chiefEditors.map((item) => item.name);
 		const users = this.getUsers();
 
 		return (
@@ -113,7 +113,8 @@ class WebsiteEditors extends React.Component <any, any> {
 					<TagList
 						items={ chiefEditors }
 						onDelete={this.onDelete}
-						classes={`website-editors-list`}
+						classes="website-settings-list"
+						color="green"
 					/>
 				</fieldset>
 			</div>
