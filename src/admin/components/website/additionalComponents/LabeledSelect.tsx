@@ -23,7 +23,7 @@ export interface ILabeledSelect {
 	value: string;
 	label: string | JSX.Element;
 	ID: string;
-    options: IOption[];
+	options: IOption[];
 	enabled: boolean;
 	name: string;
 	defaultOptionText?: string;
@@ -41,22 +41,22 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 
 	}
 
-    createSelectOptions (options: IOption[]) {
-        return options.map((option, index) => (
+	createSelectOptions (options: IOption[]) {
+		return options.map((option, index) => (
 			<option value={option.value} key={option.value}>{option.name}</option>
 		));
-    }
+	}
 
 	render () {
 		const {
 			value,
 			ID,
-            onChange,
+			onChange,
 			name,
-            label,
+			label,
 			options,
 			defaultOptionText = '',
-            enabled = true,
+			enabled = true,
 		} = this.props;
 		return (
 			<div className="row">
@@ -68,17 +68,17 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 				<div className="small-12 columns">
 					<select
 						id={`${ID}-input`}
-                        value={value}
-                        className="small-12 large-12"
+						value={value}
+						className="small-12 large-12"
 						onChange={onChange}
-                        name={name}
+						name={name}
 					>
-                        {!enabled &&
+					{!enabled &&
 							<option value="" disabled /> }
-						{defaultOptionText && 
+						{defaultOptionText &&
 							<option value="">{defaultOptionText}</option> }
-                        {this.createSelectOptions(options)}
-                    </select>
+							{this.createSelectOptions(options)}
+					</select>
 				</div>
 			</div>
 		);

@@ -90,13 +90,13 @@ class WebsiteEditors extends React.Component <any, any> {
 	}
 
 	render () {
-		const chiefEditors = this.props.chiefEditors.map((item) => {return item.name});
+		const chiefEditors = this.props.chiefEditors.map((item) => { item.name; });
 		const users = this.getUsers();
 
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<LabeledSelect 
+					<LabeledSelect
 						onChange={this.onChange}
 						label={<span>
 								<b>Chief Editors</b><br/>
@@ -107,7 +107,7 @@ class WebsiteEditors extends React.Component <any, any> {
 						ID={`chief-editor`}
 						options={ users }
 						enabled={ true }
-						defaultOptionText={"-- select --"}
+						defaultOptionText={'-- select --'}
 						name="parserClass"
 					/>
 					<TagList

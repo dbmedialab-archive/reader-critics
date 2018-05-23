@@ -17,7 +17,6 @@
 //
 
 import * as React from 'react';
-import { InputError } from 'admin/components/form/InputError';
 import { LabeledInput } from '../additionalComponents/LabeledInput';
 import { TagList } from 'admin/components/website/additionalComponents/TagList';
 import { connect } from 'react-redux';
@@ -119,7 +118,7 @@ class WebsiteHosts extends React.Component <any, any> {
 					<TagList
 						items={this.props.hosts}
 						onDelete={this.onDelete}
-						classes={"website-hosts-list"}
+						classes={'website-hosts-list'}
 					/>
 				</fieldset>
 			</div>

@@ -33,12 +33,12 @@ class WebsiteParserClass extends React.Component <any, any> {
 	render () {
 		const { parserClass, options } = this.props;
 		const structuredOpts = options.map((option) => {
-			return {value: option, name: option}
-		})
+			return {value: option, name: option};
+		});
 		return (
 			<div className="medium-6 columns">
 				<fieldset className="text">
-					<LabeledSelect 
+					<LabeledSelect
 						onChange={this.onChange}
 						label={<span>
 								<b>Parser</b><br/>

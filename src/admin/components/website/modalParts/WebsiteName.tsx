@@ -17,7 +17,6 @@
 //
 
 import * as React from 'react';
-import {InputError} from 'admin/components/form/InputError';
 import {LabeledInput} from '../additionalComponents/LabeledInput';
 import {connect} from 'react-redux';
 import Validator from 'admin/services/Validation';

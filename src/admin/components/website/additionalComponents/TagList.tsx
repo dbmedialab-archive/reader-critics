@@ -19,34 +19,32 @@
 import * as React from 'react';
 
 export interface ITagList {
-    classes: string;
-    onDelete: (index: number) => void;
-    items: string[];
+	classes: string;
+	onDelete: (index: number) => void;
+	items: string[];
 }
 
 export class TagList extends React.Component <ITagList, any> {
 
 	constructor (props) {
-        super(props);
-        
-        this.createTags = this.createTags.bind(this);
-    }
-    
-    createTags (items: string[]) {
-        const {classes, onDelete} = this.props;
-        return items.map((item, index) => {
-            return (<li key={index + '-item'} className={`${classes}-item`}>
-                {item}
-                <i className="fa fa-times" onClick={onDelete.bind(this, index)}/>
-            </li>)
-        })
-    };
+		super(props);
+		this.createTags = this.createTags.bind(this);
+	}
+	createTags (items: string[]) {
+		const {classes, onDelete} = this.props;
+		return items.map((item, index) => {
+			return (<li key={index + '-item'} className={`${classes}-item`}>
+				{item}
+				<i className="fa fa-times" onClick={onDelete.bind(this, index)}/>
+			</li>);
+		});
+	}
 
 	render () {
 		const {classes, items} = this.props;
 		return (
 			<ul className={classes}>
-                {this.createTags(items)}
+				{this.createTags(items)}
 			</ul>
 		);
 	}
