@@ -50,8 +50,8 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 
 	render () {
 		const {
-			value,
 			ID,
+			value,
 			onChange,
 			name,
 			label,
@@ -59,19 +59,20 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 			defaultOptionText = '',
 			enabled = true,
 		} = this.props;
+
 		return (
 			<div className="row">
 				<Label label={label} ID={ID} />
 				<div className="small-12 columns">
 					<select
 						id={`${ID}-input`}
-						value={value}
+						value={value || ''}
 						className="small-12 large-12"
 						onChange={onChange}
 						name={name}
 					>
 					{!enabled &&
-							<option value="" disabled /> }
+						<option value="" disabled />}
 						{defaultOptionText &&
 							<option value="">{defaultOptionText}</option> }
 							{this.createSelectOptions(options)}
