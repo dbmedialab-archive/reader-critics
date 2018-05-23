@@ -36,8 +36,8 @@ export default class WebsiteLayout extends React.Component <IWebsiteLayoutProps,
 		super(props);
 		this.state = {
 			visible: false,
-			feedbackPage: this.props.feedbackPage,
-			feedbackNotificationMail: this.props.feedbackNotificationMail,
+			feedbackPage: this.props.feedbackPage || '',
+			feedbackNotificationMail: this.props.feedbackNotificationMail || '',
 		};
 
 		this.onSubmit = this.onSubmit.bind(this);

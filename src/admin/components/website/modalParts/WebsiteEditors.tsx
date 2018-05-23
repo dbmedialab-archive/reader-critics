@@ -19,6 +19,9 @@
 import * as React from 'react';
 import * as UsersActions from 'admin/actions/UsersActions';
 
+import { LabeledSelect } from '../additionalComponents/LabeledSelect';
+import { TagList } from 'admin/components/website/additionalComponents/TagList';
+
 import { connect } from 'react-redux';
 
 class WebsiteEditors extends React.Component <any, any> {
@@ -26,7 +29,7 @@ class WebsiteEditors extends React.Component <any, any> {
 		super(props);
 		this.onDelete = this.onDelete.bind(this);
 		this.checkHost = this.checkHost.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
+		this.onChange = this.onChange.bind(this);
 		this.getUsers = this.getUsers.bind(this);
 	}
 
@@ -63,7 +66,7 @@ class WebsiteEditors extends React.Component <any, any> {
 				}
 				return true;
 			}).map((user) => (
-				<option key={user.ID} value={user.ID}>{user.name}</option>
+				{value: user.ID, name: user.name}
 			));
 	}
 
@@ -75,7 +78,7 @@ class WebsiteEditors extends React.Component <any, any> {
 		}
 	}
 
-	onSubmit (e) {
+	onChange (e) {
 		const userID = e.target.value;
 		if (userID) {
 			const newUser = this.props.users.find(user => user.ID === userID).without(['ID', 'date']);
@@ -87,33 +90,31 @@ class WebsiteEditors extends React.Component <any, any> {
 	}
 
 	render () {
-		const chiefs = this.props.chiefEditors.map((chief, index) => {
-			return (<li key={index + 'editor'} className="website-editors-list-item">
-				{chief.name}
-				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-			</li>);
-		});
-
+		const chiefEditors = this.props.chiefEditors.map((item) => {return item.name});
 		const users = this.getUsers();
 
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<label htmlFor="chiefs">
-						<b>Chief Editors</b><br/>
-						Choose available editors here (roles "Editor" and "Site Admin")
-					</label>
-					<select
-						id="chief-editor" className="chief-editor small-12"
-						onChange={this.onSubmit}
+					<LabeledSelect 
+						onChange={this.onChange}
+						label={<span>
+								<b>Chief Editors</b><br/>
+								Choose available editors here (roles "Editor" and "Site Admin")
+							</span>
+						}
 						value=""
-					>
-						<option value="">-- select --</option>
-						{users}
-					</select>
-					<ul className="website-editors-list">
-						{chiefs}
-					</ul>
+						ID={`chief-editor`}
+						options={ users }
+						enabled={ true }
+						defaultOptionText={"-- select --"}
+						name="parserClass"
+					/>
+					<TagList
+						items={ chiefEditors }
+						onDelete={this.onDelete}
+						classes={`website-editors-list`}
+					/>
 				</fieldset>
 			</div>
 		);

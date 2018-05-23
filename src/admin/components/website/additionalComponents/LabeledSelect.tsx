@@ -1,0 +1,86 @@
+//
+// LESERKRITIKK v2 (aka Reader Critics)
+// Copyright (C) 2017 DB Medialab/Aller Media AS, Oslo, Norway
+// https://github.com/dbmedialab/reader-critics/
+//
+// This program is free software: you can redistribute it and/or modify it under
+// the terms of the GNU General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later
+// version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program. If not, see <http://www.gnu.org/licenses/>.
+//
+
+import * as React from 'react';
+
+export interface ILabeledSelect {
+	onChange: (e) => void;
+	value: string;
+	label: string | JSX.Element;
+	ID: string;
+    options: IOption[];
+	enabled: boolean;
+	name: string;
+	defaultOptionText?: string;
+}
+
+export interface IOption {
+	value: string;
+	name: string;
+}
+
+export class LabeledSelect extends React.Component <ILabeledSelect, any> {
+
+	constructor (props) {
+		super(props);
+
+	}
+
+    createSelectOptions (options: IOption[]) {
+        return options.map((option, index) => (
+			<option value={option.value} key={option.value}>{option.name}</option>
+		));
+    }
+
+	render () {
+		const {
+			value,
+			ID,
+            onChange,
+			name,
+            label,
+			options,
+			defaultOptionText = '',
+            enabled = true,
+		} = this.props;
+		return (
+			<div className="row">
+				<div className="small-12 columns">
+					<label htmlFor={`${ID}-input`}>
+						{label}
+					</label>
+				</div>
+				<div className="small-12 columns">
+					<select
+						id={`${ID}-input`}
+                        value={value}
+                        className="small-12 large-12"
+						onChange={onChange}
+                        name={name}
+					>
+                        {!enabled &&
+							<option value="" disabled /> }
+						{defaultOptionText && 
+							<option value="">{defaultOptionText}</option> }
+                        {this.createSelectOptions(options)}
+                    </select>
+				</div>
+			</div>
+		);
+	}
+}

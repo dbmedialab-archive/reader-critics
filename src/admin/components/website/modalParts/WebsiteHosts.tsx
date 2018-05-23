@@ -18,6 +18,8 @@
 
 import * as React from 'react';
 import { InputError } from 'admin/components/form/InputError';
+import { LabeledInput } from '../additionalComponents/LabeledInput';
+import { TagList } from 'admin/components/website/additionalComponents/TagList';
 import { connect } from 'react-redux';
 import Validator from 'admin/services/Validation';
 
@@ -38,7 +40,6 @@ class WebsiteHosts extends React.Component <any, any> {
 		this.onDelete = this.onDelete.bind(this);
 		this.checkExistingHosts = this.checkExistingHosts.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.onKeyPress = this.onKeyPress.bind(this);
 		this.onEdit = this.onEdit.bind(this);
 
 		this.props.websites.forEach(ws => {
@@ -94,12 +95,6 @@ class WebsiteHosts extends React.Component <any, any> {
 		}
 	}
 
-	onKeyPress (e): void {
-		if (e.key === 'Enter') {
-			return this.onSubmit();
-		}
-	}
-
 	onEdit (e) {
 		this.setState({
 			value: e.target.value,
@@ -108,32 +103,24 @@ class WebsiteHosts extends React.Component <any, any> {
 	}
 
 	render () {
-		const hosts = this.props.hosts.map((host, index) => {
-			return (<li key={index + '-host'} className="website-hosts-list-item">
-				{host}
-				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-			</li>);
-		});
+		const { value, touched } = this.state;
 		return (
 			<div className="medium-12 columns">
 				<fieldset className="text">
-					<label htmlFor="hosts-link">
-						<b>Hosts</b><br/>
-						All hostnames that this site uses to publish articles, including "www" variants
-					</label>
-					<input
-						id="hosts-link" type="text" className="small-12 medium-12"
-						value={this.state.value}
-						onChange={this.onEdit}
-						onKeyPress={this.onKeyPress} onBlur={this.onSubmit}
+					<LabeledInput
+						onSubmit={this.onSubmit} errorText={this.checkExistingHosts()}
+						onEdit={this.onEdit} value={value} touched={touched}
+						label={<span>
+								<b>Hosts</b><br/>
+								All hostnames that this site uses to publish articles, including "www" variants
+							</span>}
+						ID={`hosts-link`}
 					/>
-					<InputError
-						errorText={this.checkExistingHosts()}
-						touchedField={this.state.touched}
+					<TagList
+						items={this.props.hosts}
+						onDelete={this.onDelete}
+						classes={"website-hosts-list"}
 					/>
-					<ul className="website-hosts-list">
-						{hosts}
-					</ul>
 				</fieldset>
 			</div>
 		);
