@@ -67,9 +67,7 @@ export function update(name : string, data:any) : Promise <Website> {
 	emptyCheck(name, data);
 	const {layout, overrideSettings} = data;
 	// Get only data we expect to update
-	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
-	// Remove empty
-	updateData = pickBy(updateData);
+	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
 
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {

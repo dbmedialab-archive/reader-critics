@@ -48,7 +48,6 @@ class WebsiteParserClass extends React.Component <any, any> {
 						value={parserClass}
 						ID={`parser`}
 						options={structuredOpts}
-						enabled={parserClass}
 						defaultOptionText="-- select --"
 						name="parserClass"
 					/>

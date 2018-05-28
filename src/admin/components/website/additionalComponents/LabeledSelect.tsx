@@ -25,7 +25,6 @@ export interface ILabeledSelect {
 	label: string | JSX.Element;
 	ID: string;
 	options: IOption[];
-	enabled: boolean;
 	name: string;
 	defaultOptionText?: string;
 }
@@ -57,7 +56,6 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 			label,
 			options,
 			defaultOptionText = '',
-			enabled = true,
 		} = this.props;
 
 		return (
@@ -71,11 +69,8 @@ export class LabeledSelect extends React.Component <ILabeledSelect, any> {
 						onChange={onChange}
 						name={name}
 					>
-					{!enabled &&
-						<option value="" disabled />}
-						{defaultOptionText &&
-							<option value="">{defaultOptionText}</option> }
-							{this.createSelectOptions(options)}
+					{defaultOptionText && <option value="">{defaultOptionText}</option> }
+					{options.length && this.createSelectOptions(options)}
 					</select>
 				</div>
 			</div>
