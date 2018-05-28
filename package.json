@@ -104,7 +104,7 @@
 		"react-transition-group": "2.2.1",
 		"redux-logger": "3.0.6",
 		"redux-promise-middleware": "5.0.0",
-		"redux-thunk": "2.2.0",
+		"redux-thunk": "2.3.0",
 		"sass-loader": "6.0.7",
 		"schema-inspector": "^1.6.8",
 		"seamless-immutable": "7.1.3",
