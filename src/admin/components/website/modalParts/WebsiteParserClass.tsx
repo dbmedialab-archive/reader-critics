@@ -18,6 +18,7 @@
 
 import * as React from 'react';
 import {connect} from 'react-redux';
+import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
 
 class WebsiteParserClass extends React.Component <any, any> {
 	constructor (props) {
@@ -30,26 +31,26 @@ class WebsiteParserClass extends React.Component <any, any> {
 	}
 
 	render () {
-		const options = this.props.options.map((parser, index) => (
-			<option value={parser} key={index + 1}>{parser}</option>
-		));
+		const { parserClass, options } = this.props;
+		const structuredOpts = options.map((option) => {
+			return {value: option, name: option};
+		});
 		return (
 			<div className="medium-6 columns">
 				<fieldset className="text">
-					<label htmlFor="parser">
-						<b>Parser</b><br/>
-						Which implementation to use when fetching articles
-					</label>
-					<select
-						id="parser-class" className="small-12 large-12"
-						value={this.props.parserClass}
+					<LabeledSelect
 						onChange={this.onChange}
+						label={<span>
+								<b>Parser</b><br/>
+								Which implementation to use when fetching articles
+							</span>
+						}
+						value={parserClass}
+						ID={`parser`}
+						chosen={!!parserClass}
+						options={structuredOpts}
 						name="parserClass"
-					>
-						{!this.props.parserClass ?
-							<option value="" disabled /> : null}
-						{options}
-					</select>
+					/>
 				</fieldset>
 			</div>
 		);
