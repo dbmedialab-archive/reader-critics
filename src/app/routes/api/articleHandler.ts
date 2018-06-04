@@ -52,7 +52,6 @@ export default function(requ : Request, resp : Response) : void {
 	let article : Article;
 
 	let version : string = requ.query.version || null;
-	console.log('---- article handle version ----srtx')
 
 	// 1 - Article URL and Website identification
 	ArticleURL.from(requ.query.url).then((url : ArticleURL) => {

@@ -113,14 +113,12 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 			<div className="medium-12 columns website-feedback-email-override-container overrides-container">
 				<fieldset className="text">
 					<div className="row">
-
 						<div className="small-12 columns hide-for-medium columns override-status-control">
 							<SwitchBox
 								classes={`switch round tiny`} ID={'feedback-email-override-status-small'}
 								checked={feedbackOverrideStatus} onChange={this.onToggleCheck}
 							/>
 						</div>
-
 						<div className="small-12 medium-9 large-10 columns">
 							<LabeledInput
 								onSubmit={this.onSubmit} errorText={this.checkValidation()}
@@ -132,8 +130,6 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 									</span>}
 								ID={`feedback-email-override`}/>
 						</div>
-
-
 						<div className="medium-3 large-2 show-for-medium columns override-status-control">
 							<SwitchBox
 								classes={`switch round large`} ID={'feedback-email-override-status'}

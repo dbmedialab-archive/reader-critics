@@ -36,7 +36,6 @@ export default class WebsitesRow extends React.Component <any, any> {
 	updateModalWindowData() {
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
 		const {state, ...website} = this.props;
-
 		const websiteRes = {
 			isOpen: true,
 		};
