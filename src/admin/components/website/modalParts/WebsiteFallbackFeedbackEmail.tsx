@@ -20,7 +20,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import {WebsiteOverrideSettings} from 'admin/components/website/modalParts/WebsiteOverrideSettings';
 
-class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
+class WebsiteFallbackFeedbackEmail extends React.Component <any, any> {
 
 	constructor (props) {
 		super(props);
@@ -28,6 +28,7 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 			value: '',
 			touched: false,
 		};
+
 		this.onChange = this.onChange.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
 	}
@@ -47,23 +48,20 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 	}
 
 	render () {
-		const {settings: {feedback: feedbackOverrideStatus = false}, feedbackEmailOverride} = this.props;
+		const {fallbackFeedbackEmail} = this.props;
 		const {value, touched} = this.state;
 		return (
 			<WebsiteOverrideSettings
-				list={feedbackEmailOverride}
-				listPropName={'feedbackEmail'}
-				isControllable={true}
-				controlPropName={'feedback'}
-				controlPropValue={feedbackOverrideStatus}
+				list={fallbackFeedbackEmail}
+				listPropName={'fallbackFeedbackEmail'}
+				controlPropName={'fallback'}
+				label={<span>
+					<b>Fallback email</b><br/>
+					Emails to send notifications about feedback (if article authors aren't set)
+				</span>}
+				ID={'fallback-email-override-status'}
 				value={value}
 				touched={touched}
-				label={<span>
-					<b>Feedback email override</b><br/>
-					Emails to get notifications about feedbacks for articles if needed
-					(instead of article authors emails)
-				</span>}
-				ID={'feedback-email-override-status'}
 				onSubmit={this.sendOverrideChanges}
 				onChange={this.onChange}
 			/>
@@ -73,12 +71,10 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		feedbackEmailOverride: state.website.getIn(
-			['selected', 'overrideSettings', 'overrides', 'feedbackEmail'], []),
+		fallbackFeedbackEmail: state.website.getIn(
+			['selected', 'overrideSettings', 'overrides', 'fallbackFeedbackEmail'], []),
 		overrideSettings: state.website.getIn(
 			['selected', 'overrideSettings'], {}),
-		settings: state.website.getIn(
-			['selected', 'overrideSettings', 'settings'], {}),
 	};
 };
 
@@ -86,4 +82,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebsiteFeedbackEmailOverride);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteFallbackFeedbackEmail);

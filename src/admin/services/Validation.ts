@@ -62,7 +62,19 @@ const additionalRules : IValidationRules = {
 		error: 'Host name is too short',
 	},
 
-	feedbackEmailOverride: {
+	feedback: {
+		type: 'string',
+		exec: customValidations.isEmail,
+		error: 'User mail should be valid email address!',
+	},
+
+	escalation: {
+		type: 'string',
+		exec: customValidations.isEmail,
+		error: 'User mail should be valid email address!',
+	},
+
+	fallback: {
 		type: 'string',
 		exec: customValidations.isEmail,
 		error: 'User mail should be valid email address!',
