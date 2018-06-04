@@ -106,8 +106,7 @@ class WebsiteEditors extends React.Component <any, any> {
 						value=""
 						ID={`chief-editor`}
 						options={ users }
-						enabled={ true }
-						defaultOptionText={'-- select --'}
+						defaultOptionText="-- select --"
 						name="parserClass"
 					/>
 					<TagList
