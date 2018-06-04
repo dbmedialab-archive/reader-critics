@@ -85,7 +85,6 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	}
 
 	render (): JSX.Element {
-		console.log('----render -------- modal/ modal')
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
 		const isDisabled = name && !ID;
 

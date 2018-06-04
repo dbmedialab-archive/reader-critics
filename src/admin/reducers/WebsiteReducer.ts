@@ -66,8 +66,6 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	console.log('-----action----')
-	console.log(action)
 	return state.merge({
 		selected: action.payload ? action.payload : initialSelectedWebsite,
 	}, {deep: true});

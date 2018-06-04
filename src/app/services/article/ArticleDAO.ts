@@ -44,10 +44,6 @@ export function exists(
 	version : string
 ) : Promise <boolean>
 {
-	console.log('---- article DAO -----')
-	console.log(articleURL)
-	console.log(version)
-	console.log('---- article DAO -----')
 	emptyCheck(articleURL, version);
 
 	return wrapExists(ArticleModel.find({

@@ -50,10 +50,6 @@ export default class WebsiteLayoutContentSection
 
 	render () {
 		const {buttonText, rows = 10, templateName, value = ''} = this.props;
-
-		console.log('!!!!! value !!!!!')
-		console.log(value);
-
 		const {visible} = this.state;
 		const className = `row layout-content-section
 							${visible ? ' opened' : ''}`;

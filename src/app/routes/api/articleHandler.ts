@@ -58,15 +58,11 @@ export default function(requ : Request, resp : Response) : void {
 	ArticleURL.from(requ.query.url).then((url : ArticleURL) => {
 		articleURL = url;
 		log(url.toString());
-		console.log('----article handler url----')
-		console.log(articleURL)
 		return websiteService.identify(articleURL);
 	})
 
 	// 2 - Query versioned article directly from our database
 	.then((w : Website) => {
-		console.log('--- article handler website----')
-		console.log(w)
 		if (w === null) {
 			log('not identified');
 			return Promise.reject(new Error(__('err.no-website-identify')));
@@ -88,7 +84,6 @@ export default function(requ : Request, resp : Response) : void {
 
 	// 3 - Fetch stage (if no database hit or no version parameter in request)
 	.then((a : Article) => {
-		console.log('--- article handler --- article or fetch ')
 		return (a !== null) ? a : articleService.fetch(website, articleURL);
 	})
 
