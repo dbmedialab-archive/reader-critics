@@ -20,10 +20,13 @@ import { isNil, isString } from 'lodash';
 
 import { EmptyError } from './errors';
 
-const emptyCheck = (...args) : void => args.forEach((v : any, i : number) => {
+const emptyCheck = (...args) : void => { console.log(args); args.forEach((v : any, i : number) => {
+	console.log(' ---- empty check -----');
+	console.log(v);
 	if (isNil(v) || (isString(v) && v === '')) {
 		throw new EmptyError(`Checked parameter ${i + 1} is null or undefined`);
 	}
 });
+};
 
 export default emptyCheck;

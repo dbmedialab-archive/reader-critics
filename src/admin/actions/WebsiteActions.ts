@@ -40,6 +40,8 @@ export function getWebsiteList() {
 }
 
 export function setSelectedWebsite(website: Website) {
+	console.log('----- action -----')
+	console.log(website)
 	UIActions.hideMainPreloader();
 	MainStore.dispatch(
 		WebsiteActionsCreator.setSelectedWebsite(website)
