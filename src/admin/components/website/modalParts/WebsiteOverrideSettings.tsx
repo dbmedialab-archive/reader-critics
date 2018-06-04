@@ -114,7 +114,6 @@ export class WebsiteOverrideSettings extends React.Component <IWebsiteOverrideSe
 	render () {
 		const {
 			controlPropValue = false,
-			controlPropName,
 			isControllable = false,
 			list,
 			label,

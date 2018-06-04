@@ -106,6 +106,7 @@ class WebsiteEditors extends React.Component <any, any> {
 						value=""
 						ID={`chief-editor`}
 						options={ users }
+						chosen={ false }
 						defaultOptionText="-- select --"
 						name="parserClass"
 					/>
