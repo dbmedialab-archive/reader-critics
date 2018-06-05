@@ -19,16 +19,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {WebsiteOverrideSettings} from './WebsiteOverrideSettings';
-import { WebsiteBaseOverride } from './WebsiteBaseOverride';
+import { WebsiteBaseEmailOverride } from './WebsiteBaseEmailOverride';
 
-class WebsiteFeedbackEmailOverride extends WebsiteBaseOverride {
+class WebsiteFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 
 	constructor (props) {
 		super(props);
-		this.state = {
-			value: '',
-			touched: false,
-		};
+
 		this.onChange = this.onChange.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
 	}

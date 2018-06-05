@@ -20,6 +20,14 @@ import * as React from 'react';
 
 export class WebsiteBaseEmailOverride extends React.Component <any, any> {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: '',
+			touched: false,
+		};
+	}
+
 	onChange(value:string, touched:boolean) {
 		this.setState({
 			value,

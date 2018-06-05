@@ -25,10 +25,6 @@ class WebsiteEscalationEmailOverride extends WebsiteBaseEmailOverride {
 
 	constructor (props) {
 		super(props);
-		this.state = {
-			value: '',
-			touched: false,
-		};
 
 		this.onChange = this.onChange.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
