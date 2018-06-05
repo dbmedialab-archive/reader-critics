@@ -18,9 +18,10 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {WebsiteOverrideSettings} from 'admin/components/website/modalParts/WebsiteOverrideSettings';
+import {WebsiteOverrideSettings} from './WebsiteOverrideSettings';
+import { WebsiteBaseOverride } from './WebsiteBaseOverride';
 
-class WebsiteFallbackFeedbackEmail extends React.Component <any, any> {
+class WebsiteFallbackFeedbackEmail extends WebsiteBaseOverride {
 
 	constructor (props) {
 		super(props);
@@ -31,20 +32,6 @@ class WebsiteFallbackFeedbackEmail extends React.Component <any, any> {
 
 		this.onChange = this.onChange.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
-	}
-
-	onChange(value:string, touched:boolean) {
-		this.setState({
-			value,
-			touched,
-		});
-	}
-
-	sendOverrideChanges (data) {
-		const {overrideSettings: os} = this.props;
-		const overrideSettings = Object.assign({}, os, data);
-		this.setState({value: '', touched: false});
-		return this.props.onChange({overrideSettings});
 	}
 
 	render () {

@@ -18,9 +18,10 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {WebsiteOverrideSettings} from 'admin/components/website/modalParts/WebsiteOverrideSettings';
+import {WebsiteOverrideSettings} from './WebsiteOverrideSettings';
+import {WebsiteBaseEmailOverride} from './WebsiteBaseEmailOverride';
 
-class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
+class WebsiteEscalationEmailOverride extends WebsiteBaseEmailOverride {
 
 	constructor (props) {
 		super(props);
@@ -28,42 +29,28 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 			value: '',
 			touched: false,
 		};
+
 		this.onChange = this.onChange.bind(this);
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
 	}
 
-	onChange(value:string, touched:boolean) {
-		this.setState({
-			value,
-			touched,
-		});
-	}
-
-	sendOverrideChanges (data) {
-		const {overrideSettings: os} = this.props;
-		const overrideSettings = Object.assign({}, os, data);
-		this.setState({value: '', touched: false});
-		return this.props.onChange({overrideSettings});
-	}
-
 	render () {
-		const {settings: {feedback: feedbackOverrideStatus = false}, feedbackEmailOverride} = this.props;
+		const {settings: {escalation: escalationStatus = false}, escalationEmailOverride} = this.props;
 		const {value, touched} = this.state;
 		return (
 			<WebsiteOverrideSettings
-				list={feedbackEmailOverride}
-				listPropName={'feedbackEmail'}
+				list={escalationEmailOverride}
+				listPropName={'escalationEmail'}
 				isControllable={true}
-				controlPropName={'feedback'}
-				controlPropValue={feedbackOverrideStatus}
+				controlPropName={'escalation'}
+				controlPropValue={escalationStatus}
+				label={<span>
+					<b>Escalation email override</b><br/>
+					Emails to send notifications about escalation (instead of website chief editors)
+				</span>}
+				ID={'escalation-email-override-status'}
 				value={value}
 				touched={touched}
-				label={<span>
-					<b>Feedback email override</b><br/>
-					Emails to get notifications about feedbacks for articles if needed
-					(instead of article authors emails)
-				</span>}
-				ID={'feedback-email-override-status'}
 				onSubmit={this.sendOverrideChanges}
 				onChange={this.onChange}
 			/>
@@ -73,8 +60,8 @@ class WebsiteFeedbackEmailOverride extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		feedbackEmailOverride: state.website.getIn(
-			['selected', 'overrideSettings', 'overrides', 'feedbackEmail'], []),
+		escalationEmailOverride: state.website.getIn(
+			['selected', 'overrideSettings', 'overrides', 'escalationEmail'], []),
 		overrideSettings: state.website.getIn(
 			['selected', 'overrideSettings'], {}),
 		settings: state.website.getIn(
@@ -86,4 +73,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebsiteFeedbackEmailOverride);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteEscalationEmailOverride);

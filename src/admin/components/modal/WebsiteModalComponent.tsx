@@ -27,9 +27,12 @@ import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
-import WebsiteFeedbackEmailOverride from '../website/modalParts/WebsiteFeedbackEmailOverride';
-import WebsiteEscalationEmailOverride from '../website/modalParts/WebsiteEscalationEmailOverride';
-import WebsiteFallbackFeedbackEmail from '../website/modalParts/WebsiteFallbackFeedbackEmail';
+import WebsiteFeedbackEmailOverride from
+'../website/modalParts/emailOverride/WebsiteFeedbackEmailOverride';
+import WebsiteEscalationEmailOverride from
+'../website/modalParts/emailOverride/WebsiteEscalationEmailOverride';
+import WebsiteFallbackFeedbackEmail from
+'../website/modalParts/emailOverride/WebsiteFallbackFeedbackEmail';
 
 export interface IWebsiteUpdateProps {
 	currentName: string;
