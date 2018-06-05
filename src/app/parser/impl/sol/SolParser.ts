@@ -40,7 +40,15 @@ export default class SolParser extends AbstractLabradorParser {
 			const name = ''.concat(this.select(wrap).find('span.name').find('span.firstname').text(),
 				this.select(wrap).find('span.name').find('span.lastname').text());
 			const encodedMail = this.select(wrap).find('a[rel="author"]').attr('href');
-			const mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
+			let mail;
+
+			if (encodedMail.includes('mailto:')) {
+				mail = encodedMail.replace('mailto:', '');
+			} else if (encodedMail.includes('/cdn-cgi/l/email-protection#')) {
+				mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
+			} else {
+				mail = '';
+			}
 			return {
 				name,
 				email: mail === undefined ? undefined : mail,
