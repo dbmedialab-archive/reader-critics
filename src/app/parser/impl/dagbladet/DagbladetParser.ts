@@ -18,19 +18,14 @@
 
 import * as Cheerio from 'cheerio';
 
-import ArticleAuthor from 'base/ArticleAuthor';
-
-import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
+import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
-import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
-
-export default class DagbladetParser extends AbstractIteratingParser {
+export default class DagbladetParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
 
-	protected parseVersion() : Promise <string> {
+/*	protected parseVersion() : Promise <string> {
 		return Promise.resolve(getOpenGraphModifiedTime(this.select));
 	}
 
@@ -121,8 +116,8 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		return item.name === 'p'
 			&& item.text.length > 0;
 	}
-
-	protected isFigure(
+*/
+	/*protected isFigure(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
@@ -132,6 +127,6 @@ export default class DagbladetParser extends AbstractIteratingParser {
 		return !hasVideo
 			&& item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}
+	}*/
 
 }

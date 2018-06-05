@@ -20,11 +20,11 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 
-import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
+import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 import {cfEmailDecode} from 'app/parser/util/EmailDecode';
 
-export default class SolParser extends AbstractIteratingParser {
+export default class SolParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
 
@@ -54,16 +54,16 @@ export default class SolParser extends AbstractIteratingParser {
 		return 'main';
 	}
 
-	protected getParsedElementNames() : string[] {
+	/*protected getParsedElementNames() : string[] {
 		return [
 			'h1',
 			'h2',
 			'p',
 			'figure',
 		];
-	}
+	}*/
 
-	protected isMainTitle(
+	/*protected isMainTitle(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
@@ -83,19 +83,20 @@ export default class SolParser extends AbstractIteratingParser {
 		return item.text.length > 0 && withinHeader
 			&& (item.name === 'h1' || item.name === 'h2')
 			&& item.css.includes('intro');
-	}
+	}*/
 
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		const hasParentStandfirst = select(item.elem).parents('div').hasClass('standfirst');
+		const hasParentDescription = select(item.elem).parents('div').attr('itemprop') === 'description';
+			//hasClass('standfirst');
 		return item.name === 'p'
-			&& hasParentStandfirst
+			&& hasParentDescription
 			&& item.text.length > 0;
 	}
 
-	protected isFeaturedImage(
+	/*protected isFeaturedImage(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
@@ -114,9 +115,9 @@ export default class SolParser extends AbstractIteratingParser {
 			.map(thisEl => thisEl.name);
 
 		return parents.includes('header');
-	}
+	}*/
 
-	protected isSubHeading(
+	/*protected isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
@@ -143,6 +144,6 @@ export default class SolParser extends AbstractIteratingParser {
 		return !hasVideo
 			&& item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}
+	}*/
 
 }

@@ -20,48 +20,61 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 
-import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
+import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
+import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
-export default class BerlingskeParser extends AbstractLabradorParser {
+abstract class AbstractLabradorParser extends AbstractIteratingParser {
 
 	// Implement AbstractParser
 
-	/*protected parseVersion() : Promise <string> {
+	protected parseVersion() : Promise <string> {
 		return Promise.resolve(getOpenGraphModifiedTime(this.select));
-	}*/
+	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		/*const authors = getOpenGraphAuthors(this.select);
-		log('parsing byline:', authors);*/
-		return Promise.resolve([]);
+		return Promise.resolve(getOpenGraphAuthors(this.select));
 	}
 
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {
-		return 'div#content.main-content';
+		return 'main[role="main"]';
 	}
 
-	/*protected getParsedElementNames() : string[] {
+	protected getParsedElementNames() : string[] {
 		return [
 			'h1',
 			'h2',
 			'p',
 			'figure',
 		];
-	}*/
+	}
 
 	protected isMainTitle(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'h1'
-			&& item.css.includes('article-header__title')
-			&& item.text.length > 0;
+		const withinHeader = select(item.elem).parents('header').length === 1;
+
+		return item.text.length > 0 && withinHeader
+			&& (item.name === 'h1' || item.name === 'h2' )
+			&& (select(item.elem).attr('itemprop') === 'headline');
+		  //&& item.css.includes('headline');
+	}
+
+	protected isSubTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const withinHeader = select(item.elem).parents('header').length === 1;
+
+		return item.text.length > 0 && withinHeader
+			&& (item.name === 'h1' || item.name === 'h2')
+			&& (select(item.elem).attr('itemprop') === 'alternativeHeadline');
+			//&& item.css.includes('intro');
 	}
 
 	protected isLeadIn(
@@ -69,40 +82,61 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 		select : Cheerio
 	) : boolean {
 		return item.name === 'p'
-			&& item.css.includes('article-header__summary')
+			&& (select(item.elem).attr('itemprop') === 'description')
 			&& item.text.length > 0;
+			//&& item.css.includes('standfirst');
 	}
 
 	protected isFeaturedImage(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return this.isFigure(item, select);
+		// Fail-fast if this isn't a figure element
+		if (!this.isFigure(item, select)) {
+			return false;
+		}
+
+		// The only way to figure out if a <figure> is a featured image on
+		// Labrador CMS is to look at its parent element. If by climbing up the
+		// DOM tree we find a <header> element, then this is a featured image.
+		// If that container is missing, it's just a plain inline figure.
+		const parents : string[] = select(item.elem)
+			.parentsUntil(this.getArticleContentScope())
+			.toArray()
+			.map(thisEl => thisEl.name);
+
+		return parents.includes('header');
 	}
 
-	/*protected isSubHeading(
+	protected isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return item.name === 'h2'
 			&& item.text.length > 0
 			&& item.css.length === 0;
-	}*/
+	}
 
-	/*protected isParagraph(
+	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return item.name === 'p'
 			&& item.text.length > 0;
-	}*/
+	}
 
 	protected isFigure(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return item.name === 'figure'
+		// Check if a video element is present, then this doesn't count as an image/figure
+		const hasVideo : boolean = select(item.elem).children('div[class="flex-video"]').length === 1;
+
+		return !hasVideo
+			&& item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
 	}
 
 }
+
+export default AbstractLabradorParser;
