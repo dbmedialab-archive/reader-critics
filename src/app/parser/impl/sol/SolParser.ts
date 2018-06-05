@@ -37,8 +37,7 @@ export default class SolParser extends AbstractLabradorParser {
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		const authorWrap = this.select('div.byline').find('span.person').toArray();
 		return Promise.resolve(authorWrap.map(wrap => {
-			const name = ''.concat(this.select(wrap).find('span.name').find('span.firstname').text(),
-				this.select(wrap).find('span.name').find('span.lastname').text());
+			const name = this.select(wrap).find('span.name').text();
 			const encodedMail = this.select(wrap).find('a[rel="author"]').attr('href');
 			let mail;
 
@@ -49,8 +48,8 @@ export default class SolParser extends AbstractLabradorParser {
 			}
 
 			return {
-				name,
-				email: mail === undefined ? undefined : mail,
+				name:  name === undefined ? undefined : name.replace(/\s+/g, ' '),
+				email: mail,
 			};
 		}));
 	}

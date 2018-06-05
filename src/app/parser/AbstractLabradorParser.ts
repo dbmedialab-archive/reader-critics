@@ -82,7 +82,6 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		return item.name === 'p'
 			&& (select(item.elem).attr('itemprop') === 'description')
 			&& item.text.length > 0;
-			//&& item.css.includes('standfirst');
 	}
 
 	protected isFeaturedImage(
