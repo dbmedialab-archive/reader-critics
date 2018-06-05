@@ -62,7 +62,6 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		return item.text.length > 0 && withinHeader
 			&& (item.name === 'h1' || item.name === 'h2' )
 			&& (select(item.elem).attr('itemprop') === 'headline');
-		  //&& item.css.includes('headline');
 	}
 
 	protected isSubTitle(
