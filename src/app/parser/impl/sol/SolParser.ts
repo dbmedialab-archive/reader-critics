@@ -63,4 +63,5 @@ export default class SolParser extends AbstractLabradorParser {
 			&& hasParentDescription
 			&& item.text.length > 0;
 	}
+
 }
