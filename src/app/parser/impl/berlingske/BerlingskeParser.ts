@@ -24,15 +24,10 @@ import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 // import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
-import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
 export default class BerlingskeParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
-
-	/*protected parseVersion() : Promise <string> {
-		return Promise.resolve(getOpenGraphModifiedTime(this.select));
-	}*/
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		/*const authors = getOpenGraphAuthors(this.select);
@@ -45,15 +40,6 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 	protected getArticleContentScope() : string {
 		return 'div#content.main-content';
 	}
-
-	/*protected getParsedElementNames() : string[] {
-		return [
-			'h1',
-			'h2',
-			'p',
-			'figure',
-		];
-	}*/
 
 	protected isMainTitle(
 		item : IteratingParserItem,
@@ -79,23 +65,6 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 	) : boolean {
 		return this.isFigure(item, select);
 	}
-
-	/*protected isSubHeading(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'h2'
-			&& item.text.length > 0
-			&& item.css.length === 0;
-	}*/
-
-	/*protected isParagraph(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'p'
-			&& item.text.length > 0;
-	}*/
 
 	protected isFigure(
 		item : IteratingParserItem,

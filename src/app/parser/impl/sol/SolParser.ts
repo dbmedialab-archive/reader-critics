@@ -54,96 +54,13 @@ export default class SolParser extends AbstractLabradorParser {
 		return 'main';
 	}
 
-	/*protected getParsedElementNames() : string[] {
-		return [
-			'h1',
-			'h2',
-			'p',
-			'figure',
-		];
-	}*/
-
-	/*protected isMainTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		const withinHeader = select(item.elem).parents('header').length === 1;
-
-		return item.text.length > 0 && withinHeader
-			&& (item.name === 'h1' || item.name === 'h2' )
-			&& item.css.includes('headline');
-	}
-
-	protected isSubTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		const withinHeader = select(item.elem).parents('header').length === 1;
-
-		return item.text.length > 0 && withinHeader
-			&& (item.name === 'h1' || item.name === 'h2')
-			&& item.css.includes('intro');
-	}*/
-
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		const hasParentDescription = select(item.elem).parents('div').attr('itemprop') === 'description';
-			//hasClass('standfirst');
 		return item.name === 'p'
 			&& hasParentDescription
 			&& item.text.length > 0;
 	}
-
-	/*protected isFeaturedImage(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		// Fail-fast if this isn't a figure element
-		if (!this.isFigure(item, select)) {
-			return false;
-		}
-
-		// The only way to figure out if a <figure> is a featured image on
-		// sol.no (or other labrador-style) is to look at its parent element. If by climbing up the
-		// DOM tree we find a <header> element, then this is a featured image.
-		// If that container is missing, it's just a plain inline figure.
-		const parents : string[] = select(item.elem)
-			.parentsUntil(this.getArticleContentScope())
-			.toArray()
-			.map(thisEl => thisEl.name);
-
-		return parents.includes('header');
-	}*/
-
-	/*protected isSubHeading(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'h2'
-			&& item.text.length > 0
-			&& item.css.length === 0;
-	}
-
-	protected isParagraph(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'p'
-			&& item.text.length > 0;
-	}
-
-	protected isFigure(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		// Check if a video element is present, then this doesn't count as an image/figure
-		const hasVideo : boolean = select(item.elem).children('div[class="flex-video"]').length === 1;
-
-		return !hasVideo
-			&& item.name === 'figure'
-			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
-	}*/
-
 }
