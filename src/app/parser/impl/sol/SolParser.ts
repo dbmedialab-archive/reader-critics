@@ -46,9 +46,8 @@ export default class SolParser extends AbstractLabradorParser {
 				mail = encodedMail.replace('mailto:', '');
 			} else if (encodedMail.includes('/cdn-cgi/l/email-protection#')) {
 				mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
-			} else {
-				mail = '';
 			}
+
 			return {
 				name,
 				email: mail === undefined ? undefined : mail,
