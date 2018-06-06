@@ -17,21 +17,25 @@
 //
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export interface InputErrorProps {
-	/** The Error Text */
-	errorText: string | boolean | FormattedMessage;
-	/** Is touched field */
-	touchedField: boolean | undefined;
+export interface ILabel {
+	label: JSX.Element | string,
+	ID: string;
 }
 
-export const InputError: React.StatelessComponent <InputErrorProps> =
-	(props : InputErrorProps) => {
-		if (!props.errorText || !props.touchedField) {
-			return null;
-		}
+export class Label extends React.Component <ILabel, any> {
+	constructor (props: ILabel) {
+		super(props);
+	}
+
+	render() {
+		const { label, ID } = this.props;
 		return (
-			<small className="callout secondary alert error">{props.errorText}</small>
+			<div className="small-12 columns">
+				<label htmlFor={`${ID}-input`}>
+					{label}
+				</label>
+			</div>
 		);
-	};
+	}
+}

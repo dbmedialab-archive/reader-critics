@@ -17,21 +17,36 @@
 //
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export interface InputErrorProps {
-	/** The Error Text */
-	errorText: string | boolean | FormattedMessage;
-	/** Is touched field */
-	touchedField: boolean | undefined;
+export interface ITagList {
+	classes: string;
+	onDelete: (index: number) => void;
+	items: string[];
+	color?: string;
 }
 
-export const InputError: React.StatelessComponent <InputErrorProps> =
-	(props : InputErrorProps) => {
-		if (!props.errorText || !props.touchedField) {
-			return null;
-		}
+export class TagList extends React.Component <ITagList, any> {
+
+	constructor (props: ITagList) {
+		super(props);
+		this.createTags = this.createTags.bind(this);
+	}
+	createTags (items: string[]) {
+		const {classes, onDelete, color = 'blue'} = this.props;
+		return items.map((item, index) => {
+			return (<li key={index + '-item '} className={`${classes}-item ${color}`}>
+				{item}
+				<i className="fa fa-times" onClick={onDelete.bind(this, index)}/>
+			</li>);
+		});
+	}
+
+	render () {
+		const {classes, items} = this.props;
 		return (
-			<small className="callout secondary alert error">{props.errorText}</small>
+			<ul className={classes}>
+				{this.createTags(items)}
+			</ul>
 		);
-	};
+	}
+}

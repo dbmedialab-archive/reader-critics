@@ -17,21 +17,28 @@
 //
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export interface InputErrorProps {
-	/** The Error Text */
-	errorText: string | boolean | FormattedMessage;
-	/** Is touched field */
-	touchedField: boolean | undefined;
+export class WebsiteBaseEmailOverride extends React.Component <any, any> {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: '',
+			touched: false,
+		};
+	}
+
+	onChange(value:string, touched:boolean) {
+		this.setState({
+			value,
+			touched,
+		});
+	}
+
+	sendOverrideChanges (data) {
+		const {overrideSettings: os} = this.props;
+		const overrideSettings = Object.assign({}, os, data);
+		this.setState({value: '', touched: false});
+		return this.props.onChange({overrideSettings});
+	}
 }
-
-export const InputError: React.StatelessComponent <InputErrorProps> =
-	(props : InputErrorProps) => {
-		if (!props.errorText || !props.touchedField) {
-			return null;
-		}
-		return (
-			<small className="callout secondary alert error">{props.errorText}</small>
-		);
-	};

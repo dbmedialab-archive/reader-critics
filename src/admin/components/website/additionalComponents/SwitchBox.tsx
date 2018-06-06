@@ -17,21 +17,32 @@
 //
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export interface InputErrorProps {
-	/** The Error Text */
-	errorText: string | boolean | FormattedMessage;
-	/** Is touched field */
-	touchedField: boolean | undefined;
+export interface ISwitchBox {
+	classes: string;
+	ID: string;
+	checked: boolean;
+	onChange: (e) => void;
 }
 
-export const InputError: React.StatelessComponent <InputErrorProps> =
-	(props : InputErrorProps) => {
-		if (!props.errorText || !props.touchedField) {
-			return null;
-		}
+export class SwitchBox extends React.Component <ISwitchBox, any> {
+
+	constructor (props) {
+		super(props);
+	}
+
+	render () {
+		const {classes, checked, ID, onChange} = this.props;
 		return (
-			<small className="callout secondary alert error">{props.errorText}</small>
+			<div className={classes}>
+				<input
+					type="checkbox" id={ID}
+					className="switch-input"
+					checked={checked}
+					onChange={onChange}
+				/>
+				<label htmlFor={ID} className="switch-paddle" />
+			</div>
 		);
-	};
+	}
+}
