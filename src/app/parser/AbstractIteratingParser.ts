@@ -22,6 +22,7 @@ import * as Cheerio from 'cheerio';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
+import ParsedContent from 'base/ParsedContent';
 
 import BaseIteratingItems from './BaseIteratingItems';
 import IteratingParserItem from './IteratingParserItem';
@@ -52,10 +53,13 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		});
 	}
 
-	protected parseContent() : Promise <ArticleItem[]> {
+	protected parseContent() : Promise <ParsedContent> {
 		this.parseElements();
 		this.iterateParsedElements();
-		return Promise.resolve(this.articleItems.content);
+		return Promise.resolve({
+			content: this.articleItems.content,
+			titles: this.articleItems.titles,
+		});
 	}
 
 	private parseElements() : void {
