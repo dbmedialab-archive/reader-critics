@@ -22,9 +22,10 @@ import * as Cheerio from 'cheerio';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
+import ParsedContent from 'base/ParsedContent';
 
-import BaseIteratingItems from './BaseIteratingItems';
-import IteratingParserItem from './IteratingParserItem';
+import BaseIteratingItems from 'app/parser/BaseIteratingItems';
+import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 
@@ -52,10 +53,11 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		});
 	}
 
-	protected parseContent() : Promise <ArticleItem[]> {
+	protected parseContent() : Promise <ParsedContent>{
 		this.parseElements();
 		this.iterateParsedElements();
-		return Promise.resolve(this.articleItems.content);
+		return Promise.resolve({content: this.articleItems.content, titles: this.articleItems.titles });
+		//return Promise.resolve(this.articleItems.content);
 	}
 
 	private parseElements() : void {
@@ -109,14 +111,12 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isSubTitle(item, this.select)) {
 				this.pushNewTitleItem(this.createSubTitle(item, this.select));
 			}
-
 			else if (this.isLeadIn(item, this.select)) {
 				this.pushNewContentItem(this.createLeadIn(item, this.select));
 			}
 			else if (this.isFeaturedImage(item, this.select)) {
 				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
 			}
-
 			else if (this.isSubHeading(item, this.select)) {
 				this.pushNewContentItem(this.createSubHeading(item, this.select));
 			}
@@ -129,7 +129,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isLink(item, this.select)) {
 				this.pushNewContentItem(this.createLink(item, this.select));
 			}
-
 			else {
 				this.checkOtherVariants(item, this.select);
 			}

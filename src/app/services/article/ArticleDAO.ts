@@ -73,7 +73,6 @@ export function get(
 
 export function save(website : Website, article : Article) : Promise <Article> {
 	emptyCheck(website, article);
-
 	return makeDocument(website, article)
 	.then(doc => wrapSave<Article>(new ArticleModel(doc).save()));
 }
@@ -114,7 +113,6 @@ export function saveNewVersion(
 
 export function upsert(website : Website, article : Article) : Promise <Article> {
 	emptyCheck(website, article);
-
 	const query = {
 		url: article.url,
 		version: article.version,

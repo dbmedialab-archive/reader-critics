@@ -20,6 +20,7 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
+import ParsedContent from 'base/ParsedContent';
 import Parser from 'base/Parser';
 
 import AbstractParser from '../../AbstractParser';
@@ -90,7 +91,7 @@ export default class GenericParser extends AbstractParser implements Parser {
 		return Promise.resolve(featured);
 	}
 
-	protected parseContent() : Promise <ArticleItem[]> {
+	protected parseContent() : Promise <ParsedContent> {
 		const items : ArticleItem[] = [];
 		const $elements = this.contentSelect(elementTags.join(','));
 
@@ -131,7 +132,8 @@ export default class GenericParser extends AbstractParser implements Parser {
 			}
 		}
 
-		return Promise.resolve(items);
+		//return Promise.resolve(items);
+		return Promise.resolve({content: items, titles: items});
 	}
 
 }
