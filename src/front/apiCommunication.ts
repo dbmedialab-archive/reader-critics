@@ -29,10 +29,6 @@ const rxUnencoded = /:\/\//;
 // Fetch data
 
 export const fetchArticle = ((url : string, version : string) : Promise <any> => {
-	console.log('---------------------')
-	console.log(url)
-	console.log(version)
-	console.log('------------------')
 	const encURL = rxUnencoded.test(url)
 		? encodeURIComponent(url)
 		: url;
