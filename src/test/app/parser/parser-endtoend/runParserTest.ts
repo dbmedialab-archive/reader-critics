@@ -54,7 +54,6 @@ export function runParserTest(
 
 		actualResult = actual;
 		const expected = result as Article;  // Type-cast the "expected" data
-
 		checkURL(actual, expected);
 		checkVersion(actual, expected);
 		checkAuthors(actual, expected);
