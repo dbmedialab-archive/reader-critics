@@ -18,8 +18,12 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {WebsiteOverrideSettings} from './WebsiteOverrideSettings';
-import { WebsiteBaseEmailOverride } from './WebsiteBaseEmailOverride';
+import {
+	WebsiteOverrideSettings
+} from 'admin/components/website/modalParts/emailOverride/WebsiteOverrideSettings';
+import {
+	WebsiteBaseEmailOverride
+} from 'admin/components/website/modalParts/emailOverride/WebsiteBaseEmailOverride';
 
 class WebsiteFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 
@@ -50,6 +54,7 @@ class WebsiteFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 				ID={'feedback-email-override-status'}
 				onSubmit={this.sendOverrideChanges}
 				onChange={this.onChange}
+				validationType={'userMail'}
 			/>
 		);
 	}

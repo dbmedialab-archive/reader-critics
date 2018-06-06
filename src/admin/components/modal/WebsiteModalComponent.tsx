@@ -28,11 +28,11 @@ import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
-'../website/modalParts/emailOverride/WebsiteFeedbackEmailOverride';
+'admin/components/website/modalParts/emailOverride/WebsiteFeedbackEmailOverride';
 import WebsiteEscalationEmailOverride from
-'../website/modalParts/emailOverride/WebsiteEscalationEmailOverride';
+'admin/components/website/modalParts/emailOverride/WebsiteEscalationEmailOverride';
 import WebsiteFallbackFeedbackEmail from
-'../website/modalParts/emailOverride/WebsiteFallbackFeedbackEmail';
+'admin/components/website/modalParts/emailOverride/WebsiteFallbackFeedbackEmail';
 
 export interface IWebsiteUpdateProps {
 	currentName: string;

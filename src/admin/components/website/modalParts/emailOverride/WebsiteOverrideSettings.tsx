@@ -29,6 +29,7 @@ export interface IWebsiteOverrideSettings {
 	isControllable?: boolean;
 	controlPropName?: string;
 	controlPropValue?: boolean;
+	validationType?: string;
 	label: JSX.Element | string;
 	ID: string;
 	value: string;
@@ -54,14 +55,17 @@ export class WebsiteOverrideSettings extends React.Component <IWebsiteOverrideSe
 	}
 
 	getValidationError() {
-		return this.checkValidation(this.props.controlPropName);
+		return this.checkValidation(this.props.validationType);
 	}
 
 	onDelete (index: number) {
 		const {list, listPropName} = this.props;
 		if (index >= 0) {
-			const overrideList = Immutable(list).asMutable();
-			overrideList.splice(index, 1);
+			const overrideList = Immutable(list).filter((value, i) => {
+				if (i !== index) {
+					return value;
+				}
+			});
 			return this.props.onSubmit({overrides: {[listPropName]: overrideList}});
 		}
 	}
