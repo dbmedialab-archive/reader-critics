@@ -22,6 +22,7 @@ import ArticleItem from 'base/ArticleItem';
 import ArticleItemType from 'base/ArticleItemType';
 import ArticleURL from 'base/ArticleURL';
 import Parser from 'base/Parser';
+import ParsedContent from 'base/ParsedContent';
 
 import BaseItems from './BaseItems';
 
@@ -63,6 +64,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 	 */
 	private parseArticle() : Promise <Article> {
 		let content : Array<ArticleItem>;
+		let titles : Array<ArticleItem>;
 
 		// First the handler that parses all the content is called. Each implementing
 		// parser has the freedom to extract *all* necessary items (like titles, etc)
@@ -71,13 +73,14 @@ abstract class AbstractParser extends BaseItems implements Parser {
 		// parser instance and just be returned/resolved in f.ex. parseTitles().
 		return this.parseContent()
 		.then(items => {
-			content = items;
+			content = items.content;
+			titles = items.titles;
 
 			return Promise.props({
 				version: this.parseVersion(),
 				authors: this.parseByline(),
 				titles: this.parseTitles(),
-				title: this.findTitle(items),
+				title: this.findTitle(titles),
 				featured: this.parseFeaturedImage(),
 			});
 		})
@@ -100,7 +103,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 	protected abstract parseByline() : Promise <ArticleAuthor[]>;
 	protected abstract parseTitles() : Promise <ArticleItem[]>;
 	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
-	protected abstract parseContent() : Promise <ArticleItem[]>;
+	protected abstract parseContent() : Promise <ParsedContent>;
 
 	protected abstract parseTitleFromMetaData() : Promise <string>;
 
