@@ -113,7 +113,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isLeadIn(item, this.select)) {
 				this.pushNewContentItem(this.createLeadIn(item, this.select));
 			}
-
 			else if (this.isFeaturedImage(item, this.select)) {
 				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
 			}
@@ -121,15 +120,12 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isSubHeading(item, this.select)) {
 				this.pushNewContentItem(this.createSubHeading(item, this.select));
 			}
-
 			else if (this.isParagraph(item, this.select)) {
 				this.pushNewContentItem(this.createParagraph(item, this.select));
 			}
-
 			else if (this.isFigure(item, this.select)) {
 				this.pushNewContentItem(this.createFigure(item, this.select));
 			}
-
 			else if (this.isLink(item, this.select)) {
 				this.pushNewContentItem(this.createLink(item, this.select));
 			}
