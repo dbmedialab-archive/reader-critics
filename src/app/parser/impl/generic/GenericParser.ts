@@ -20,7 +20,6 @@ import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
 import ArticleItem from 'base/ArticleItem';
-import ParsedContent from 'base/ParsedContent';
 import Parser from 'base/Parser';
 
 import AbstractParser from '../../AbstractParser';

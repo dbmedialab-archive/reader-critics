@@ -56,7 +56,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		this.parseElements();
 		this.iterateParsedElements();
 		return Promise.resolve(this.articleItems.content);
-		//return Promise.resolve(this.articleItems.content);
 	}
 
 	private parseElements() : void {
