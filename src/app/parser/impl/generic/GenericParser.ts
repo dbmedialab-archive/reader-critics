@@ -91,7 +91,7 @@ export default class GenericParser extends AbstractParser implements Parser {
 		return Promise.resolve(featured);
 	}
 
-	protected parseContent() : Promise <ParsedContent> {
+	protected parseContent() : Promise <ArticleItem[]> {
 		const items : ArticleItem[] = [];
 		const $elements = this.contentSelect(elementTags.join(','));
 
@@ -133,7 +133,7 @@ export default class GenericParser extends AbstractParser implements Parser {
 		}
 
 		//return Promise.resolve(items);
-		return Promise.resolve({content: items, titles: items});
+		return Promise.resolve(items);
 	}
 
 }
