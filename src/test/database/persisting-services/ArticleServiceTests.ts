@@ -71,6 +71,7 @@ const testClear = () => it('clear()', () => articleService.clear());
 
 const testSave = () => it('save()', () => app.scanDir(articleDir).then((files : string[]) => {
 	articleCount = files.length;
+
 	return Promise.mapSeries(files, (filename : string) => {
 		let article : Article;
 		let website : Website;
