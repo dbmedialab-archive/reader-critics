@@ -131,7 +131,6 @@ export default class GenericParser extends AbstractParser implements Parser {
 			}
 		}
 
-		//return Promise.resolve(items);
 		return Promise.resolve(items);
 	}
 
