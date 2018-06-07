@@ -52,7 +52,7 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		});
 	}
 
-	protected parseContent() : Promise <ArticleItem[]>{
+	protected parseContent() : Promise <ArticleItem[]> {
 		this.parseElements();
 		this.iterateParsedElements();
 		return Promise.resolve(this.articleItems.content);
@@ -109,24 +109,31 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isSubTitle(item, this.select)) {
 				this.pushNewTitleItem(this.createSubTitle(item, this.select));
 			}
+
 			else if (this.isLeadIn(item, this.select)) {
 				this.pushNewContentItem(this.createLeadIn(item, this.select));
 			}
+
 			else if (this.isFeaturedImage(item, this.select)) {
 				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
 			}
+
 			else if (this.isSubHeading(item, this.select)) {
 				this.pushNewContentItem(this.createSubHeading(item, this.select));
 			}
+
 			else if (this.isParagraph(item, this.select)) {
 				this.pushNewContentItem(this.createParagraph(item, this.select));
 			}
+
 			else if (this.isFigure(item, this.select)) {
 				this.pushNewContentItem(this.createFigure(item, this.select));
 			}
+
 			else if (this.isLink(item, this.select)) {
 				this.pushNewContentItem(this.createLink(item, this.select));
 			}
+
 			else {
 				this.checkOtherVariants(item, this.select);
 			}
