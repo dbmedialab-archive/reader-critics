@@ -22,7 +22,6 @@ import * as Cheerio from 'cheerio';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
-import ParsedContent from 'base/ParsedContent';
 
 import BaseIteratingItems from 'app/parser/BaseIteratingItems';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
