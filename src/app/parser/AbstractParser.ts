@@ -72,11 +72,12 @@ abstract class AbstractParser extends BaseItems implements Parser {
 		return this.parseContent()
 		.then(items => {
 			content = items;
+
 			return Promise.props({
 				version: this.parseVersion(),
 				authors: this.parseByline(),
 				titles: this.parseTitles(),
-				title: this.findTitle(),
+				title: this.findTitle(items),
 				featured: this.parseFeaturedImage(),
 			});
 		})
@@ -105,13 +106,11 @@ abstract class AbstractParser extends BaseItems implements Parser {
 
 	// Article title
 
-	protected async findTitle() : Promise <string> {
-		const titles = await this.parseTitles();
-
-		let item = titles.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
+	private findTitle(items : ArticleItem[]) : Promise <string> {
+		let item = items.find((i : ArticleItem) => i.type === ArticleItemType.MainTitle);
 
 		if (item === undefined) {
-			item = titles.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
+			item = items.find((i : ArticleItem) => i.type === ArticleItemType.SubTitle);
 		}
 
 		if (item) {
@@ -119,7 +118,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 		}
 
 		return this.parseTitleFromMetaData();
-		}
+	}
 
 }
 

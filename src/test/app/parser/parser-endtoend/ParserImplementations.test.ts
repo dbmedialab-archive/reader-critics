@@ -56,7 +56,6 @@ describe('Parser resolver', function() {
 			assert.include(parsers, 'AMP Parser');
 			assert.include(parsers, 'Dagbladet Parser');
 			assert.include(parsers, 'Generic Parser');
-			assert.include(parsers, 'Sol Parser');
 		});
 	});
 });
