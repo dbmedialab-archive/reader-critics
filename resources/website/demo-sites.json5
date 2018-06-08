@@ -117,19 +117,4 @@
 		chiefEditors: [
 		],
 	},
-	{
-		name: 'sol.no',
-		hosts: [
-			'sol.no',
-			'www.sol.no',
-		],
-		locale: 'nb',
-		layout: {
-			templates: {
-			},
-		},
-		parserClass: 'Sol Parser',
-		chiefEditors: [
-		],
-	},
 ]
