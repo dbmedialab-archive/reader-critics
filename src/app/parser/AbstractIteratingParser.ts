@@ -23,8 +23,8 @@ import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 
-import BaseIteratingItems from './BaseIteratingItems';
-import IteratingParserItem from './IteratingParserItem';
+import BaseIteratingItems from 'app/parser/BaseIteratingItems';
+import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 

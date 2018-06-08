@@ -22,56 +22,52 @@ import ArticleAuthor from 'base/ArticleAuthor';
 
 import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
+import {cfEmailDecode} from 'app/parser/util/EmailDecode';
 
-// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
-
-export default class BerlingskeParser extends AbstractLabradorParser {
+export default class SolParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
 
+	protected parseVersion() : Promise <string> {
+		return Promise.resolve(
+			this.select('div.meta').find('meta[itemprop="dateModified"]').attr('content')
+		);
+	}
+
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		/*const authors = getOpenGraphAuthors(this.select);
-		log('parsing byline:', authors);*/
-		return Promise.resolve([]);
+		const authorWrap = this.select('div.byline').find('span.person').toArray();
+		return Promise.resolve(authorWrap.map(wrap => {
+			const name = this.select(wrap).find('span.name').text();
+			const encodedMail = this.select(wrap).find('a[rel="author"]').attr('href');
+			let mail;
+
+			if (encodedMail.includes('mailto:')) {
+				mail = encodedMail.replace('mailto:', '');
+			} else if (encodedMail.includes('/cdn-cgi/l/email-protection#')) {
+				mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
+			}
+
+			return {
+				name:  name === undefined ? undefined : name.replace(/\s+/g, ' '),
+				email: mail,
+			};
+		}));
 	}
 
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {
-		return 'div#content.main-content';
-	}
-
-	protected isMainTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'h1'
-			&& item.css.includes('article-header__title')
-			&& item.text.length > 0;
+		return 'main';
 	}
 
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
+		const hasParentDescription = select(item.elem).parents('div').attr('itemprop') === 'description';
 		return item.name === 'p'
-			&& item.css.includes('article-header__summary')
+			&& hasParentDescription
 			&& item.text.length > 0;
-	}
-
-	protected isFeaturedImage(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return this.isFigure(item, select);
-	}
-
-	protected isFigure(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return item.name === 'figure'
-			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
 	}
 
 }
