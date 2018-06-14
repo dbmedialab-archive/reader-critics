@@ -46,7 +46,7 @@
 		"Valeriy Donika"
 	],
 	"dependencies": {
-		"@sendgrid/mail": "6.2.1",
+		"@sendgrid/mail": "6.3.1",
 		"ansicolors": "0.3.2",
 		"app-module-path": "2.2.0",
 		"axios": "0.18.0",
