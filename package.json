@@ -115,7 +115,7 @@
 		"strip-url-auth": "1.0.1",
 		"style-loader": "0.20.3",
 		"typed-immutable-record": "0.0.6",
-		"uuid": "3.2.1",
+		"uuid": "3.3.0",
 		"webpack": "3.11.0",
 		"whatwg-fetch": "2.0.3"
 	},
