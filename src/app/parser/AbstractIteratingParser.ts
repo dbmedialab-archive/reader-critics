@@ -104,9 +104,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
 
-			console.log('----------')
-			console.log(item)
-
 			if (this.isMainTitle(item, this.select)) {
 				this.pushNewTitleItem(this.createMainTitle(item, this.select));
 			}
