@@ -104,14 +104,14 @@ export default class SolParser extends AbstractLabradorParser {
 		const isTags = $element.parents('ul').attr('itemprop') === 'keywords';
 		const isBreadCrumbs = $element.parents('div').hasClass('pageheader');
 		const withinSection = $element.parents('aside').length === 1;
-		const isAnnonce = $element.hasClass('text-darkgrey');
+		const isAnnounce = $element.hasClass('text-darkgrey');
 
 		return (item.name === 'p' || item.name === 'li')
 			&& withinArticle
 			&& !isTags
 			&& !isBreadCrumbs
 			&& !withinSection
-			&& !isAnnonce
+			&& !isAnnounce
 			&& item.text.length > 0;
 	}
 
@@ -121,11 +121,11 @@ export default class SolParser extends AbstractLabradorParser {
 	) : boolean {
 		const $element = select(item.elem);
 		const withinSection = $element.parents('aside').length === 1;
-		const isAnnonce = $element.parents('aside').hasClass('article-annonce');
+		const isAnnounce = $element.parents('aside').hasClass('article-annonce');
 
 		return (item.name === 'p' || item.name === 'li')
 			&& withinSection
-			&& !isAnnonce
+			&& !isAnnounce
 			&& item.text.length > 0;
 	}
 
@@ -135,12 +135,12 @@ export default class SolParser extends AbstractLabradorParser {
 	) : boolean {
 		const $element = select(item.elem);
 		const withinSection = $element.parents('aside').length === 1;
-		const isAnnonce = $element.parents('aside').hasClass('article-annonce') ;
+		const isAnnounce = $element.parents('aside').hasClass('article-announce') ;
 
 		return item.name === 'h5'
 			&& item.css.includes('section-title')
 			&& withinSection
-			&& !isAnnonce
+			&& !isAnnounce
 			&& item.text.length > 0;
 	}
 }
