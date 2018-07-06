@@ -100,6 +100,7 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	}
 
 	private iterateParsedElements() : void {
+
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
 

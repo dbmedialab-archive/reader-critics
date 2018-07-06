@@ -120,8 +120,7 @@ export default class SolParser extends AbstractLabradorParser {
 		select : Cheerio
 	) : boolean {
 		const $element = select(item.elem);
-		const withinSection = $element.parents('aside').length === 1
-			&& $element.parents('article').length === 1;
+		const withinSection = $element.parents('aside').length === 1;
 		const isAnnonce = $element.parents('aside').hasClass('article-annonce');
 
 		return (item.name === 'p' || item.name === 'li')
