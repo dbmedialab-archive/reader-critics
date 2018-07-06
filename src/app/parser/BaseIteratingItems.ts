@@ -109,7 +109,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	// (complex) parsed item of the iterator. Most item types should work fine
 	// with these implementations as long as getting to their actual content is
 	// just copying their text contents.
-
 	protected createMainTitle(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -167,7 +166,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	}
 
 	// The more advanced item types
-
 	private getFigureData(
 		fromItem : IteratingParserItem,
 		select : Cheerio
