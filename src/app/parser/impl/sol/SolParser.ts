@@ -95,26 +95,53 @@ export default class SolParser extends AbstractLabradorParser {
 			&& item.text.length > 0;
 	}
 
-	protected isSubHeading(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return (item.name === 'h2' && item.css.length === 0
-			|| item.name ==='h5' && item.css.includes('section-title'))
-			&& item.text.length > 0;
-	}
-
 	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		const withinArticle = select(item.elem).parents('article').length === 1;
-		const isTags = select(item.elem).parents('ul').attr('itemprop') === 'keywords';
-		const isBreadCrumbs = select(item.elem).parents('div').hasClass('pageheader');
+		const $element = select(item.elem);
+		const withinArticle = $element.parents('article').length === 1;
+		const isTags = $element.parents('ul').attr('itemprop') === 'keywords';
+		const isBreadCrumbs = $element.parents('div').hasClass('pageheader');
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnonce = $element.hasClass('text-darkgrey');
 
-		return (item.name === 'p'
-			|| (item.name === 'li' && withinArticle && !isTags && !isBreadCrumbs))
+		return (item.name === 'p' || item.name === 'li')
+			&& withinArticle
+			&& !isTags
+			&& !isBreadCrumbs
+			&& !withinSection
+			&& !isAnnonce
 			&& item.text.length > 0;
 	}
 
+	protected isSectionParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1
+			&& $element.parents('article').length === 1;
+		const isAnnonce = $element.parents('aside').hasClass('article-annonce');
+
+		return (item.name === 'p' || item.name === 'li')
+			&& withinSection
+			&& !isAnnonce
+			&& item.text.length > 0;
+	}
+
+	protected isSectionTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnonce = $element.parents('aside').hasClass('article-annonce') ;
+
+		return item.name === 'h5'
+			&& item.css.includes('section-title')
+			&& withinSection
+			&& !isAnnonce
+			&& item.text.length > 0;
+	}
 }

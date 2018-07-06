@@ -41,50 +41,55 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	) : boolean {
 		return false;
 	}
-
 	protected isSubTitle(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isLeadIn(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isFeaturedImage(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isFigure(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
 		return false;
 	}
-
 	protected isLink(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return false;
+	}
+	protected isSectionTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return false;
+	}
+	protected isSectionParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
@@ -102,44 +107,50 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	) : ArticleItem {
 		return this.createMainTitleEl(fromItem.text);
 	}
-
 	protected createSubTitle(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createSubTitleEl(fromItem.text);
 	}
-
 	protected createLeadIn(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createLeadInEl(fromItem.text);
 	}
-
 	protected createSubHeading(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createSubHeadingEl(fromItem.text);
 	}
-
 	protected createParagraph(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createParagraphEl(fromItem.text);
 	}
-
 	protected createLink(
 		fromItem : IteratingParserItem,
 		select : Cheerio
 	) : ArticleItem {
 		return this.createLinkEl(fromItem.text, fromItem.text);  // TODO split data
 	}
+	protected createSectionParagraph(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createSectionParagraphEl(fromItem.text);
+	}
+	protected createSectionTitle(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createSectionTitleEl(fromItem.text);
+	}
 
 	// The more advanced item types
-
 	private getFigureData(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -153,7 +164,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 			altTxt: CheerioPlugin.trimText(select(capEl).text()).replace(/Vis mer/, ''),
 		};
 	}
-
 	protected createFeaturedImage(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -161,7 +171,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		const figure = this.getFigureData(fromItem, select);
 		return this.createFeaturedImageEl(figure.imgSrc, figure.altTxt);
 	}
-
 	protected createFigure(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -169,7 +178,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		const figure = this.getFigureData(fromItem, select);
 		return this.createFigureEl(figure.imgSrc, figure.altTxt);
 	}
-
 }
 
 export default BaseIteratingItems;
