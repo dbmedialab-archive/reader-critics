@@ -37,7 +37,6 @@ export default class SolParser extends AbstractLabradorParser {
 			'h3',
 			'p',
 			'figure',
-			//'li',
 			'ul',
 			'ol',
 			'li',
