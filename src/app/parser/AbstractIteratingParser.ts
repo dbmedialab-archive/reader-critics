@@ -67,16 +67,21 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	}
 
 	private preprocessElement(elem : Cheerio, getParents : boolean = true) : IteratingParserItem {
+		let text = '';
+		if (elem.name === 'ul' || elem.name === 'ol'){
+			text = CheerioPlugin.formText(elem);
+		} else {
+			text = CheerioPlugin.trimText(this.select(elem).text());
+		}
 		const preprocessed : IteratingParserItem = {
 			// Some properties are collected and prefiltered here so access is easier
 			name: elem.name,
-			text: CheerioPlugin.trimText(this.select(elem).text()),
+			text: text,
 			css: CheerioPlugin.splitCSS(this.select(elem).attr('class')),
 			id: CheerioPlugin.getElemID(this.select(elem).attr('id')),
 			// Reference the original Cheerio object here for advanced access
 			elem,
 		};
-
 		// Provide an array of parent items
 		if (getParents) {
 			preprocessed.parents = this.select(elem)

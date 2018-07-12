@@ -29,6 +29,19 @@ export function create(rawArticle : string) : Promise <Cheerio> {
 export const trimText = (str : string) =>
 	str === undefined ? '' : str.replace(/[\r\n\t\s]+/g, ' ').trim();
 
+export const formText = (elem : Cheerio): string => {
+	const text = [];
+	const items = Cheerio(elem).children();
+	items.each((i, el) => {
+		if (!Cheerio(el).text().endsWith('.')){
+			text[i] = Cheerio(el).text() + '.';
+		} else {
+			text[i] = Cheerio(el).text();
+		}
+	});
+	return text.join(' ');
+};
+
 export const splitCSS = (css : string) =>
 	css === undefined ? [] : css.replace(/\s+/, ' ').split(' ');
 

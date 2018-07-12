@@ -34,8 +34,12 @@ export default class SolParser extends AbstractLabradorParser {
 		return [
 			'h1',
 			'h2',
+			'h3',
 			'p',
 			'figure',
+			//'li',
+			'ul',
+			'ol',
 			'li',
 			'h5',
 		];
@@ -94,6 +98,14 @@ export default class SolParser extends AbstractLabradorParser {
 			&& (hasParentDescription || select(item.elem).attr('itemprop') === 'description')
 			&& item.text.length > 0;
 	}
+	protected isSubHeading(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return (item.name === 'h2' || item.name === 'h3')
+			&& item.text.length > 0
+			&& item.css.length === 0;
+	}
 
 	protected isParagraph(
 		item : IteratingParserItem,
@@ -101,12 +113,12 @@ export default class SolParser extends AbstractLabradorParser {
 	) : boolean {
 		const $element = select(item.elem);
 		const withinArticle = $element.parents('article').length === 1;
-		const isTags = $element.parents('ul').attr('itemprop') === 'keywords';
+		const isTags = $element.attr('itemprop') === 'keywords';
 		const isBreadCrumbs = $element.parents('div').hasClass('pageheader');
 		const withinSection = $element.parents('aside').length === 1;
 		const isAnnounce = $element.hasClass('text-darkgrey');
 
-		return (item.name === 'p' || item.name === 'li')
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol')
 			&& withinArticle
 			&& !isTags
 			&& !isBreadCrumbs
@@ -123,7 +135,7 @@ export default class SolParser extends AbstractLabradorParser {
 		const withinSection = $element.parents('aside').length === 1;
 		const isAnnounce = $element.parents('aside').hasClass('article-announce');
 
-		return (item.name === 'p' || item.name === 'li')
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol' )
 			&& withinSection
 			&& !isAnnounce
 			&& item.text.length > 0;

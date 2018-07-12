@@ -22,7 +22,14 @@ import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class SectionParagraphElement extends ArticleElement {
-
+	/*protected toLines(nodes) {
+		if (nodes){
+			return nodes[0].split('\\n').map( (item, i) => {
+				console.log(item);
+				return (item + '\n');
+			});
+		}
+	}*/
 	protected getContentElement() : JSX.Element {
 		return <div>
 			<label>
@@ -38,5 +45,4 @@ export default class SectionParagraphElement extends ArticleElement {
 			</p>
 		</div>;
 	}
-
 }
