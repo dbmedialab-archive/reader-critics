@@ -121,7 +121,7 @@ export default class SolParser extends AbstractLabradorParser {
 	) : boolean {
 		const $element = select(item.elem);
 		const withinSection = $element.parents('aside').length === 1;
-		const isAnnounce = $element.parents('aside').hasClass('article-annonce');
+		const isAnnounce = $element.parents('aside').hasClass('article-announce');
 
 		return (item.name === 'p' || item.name === 'li')
 			&& withinSection
