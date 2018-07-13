@@ -33,7 +33,7 @@ export const listToParagraph = (elem : Cheerio): string => {
 	const text = [];
 	const items = Cheerio(elem).children();
 	items.each((i, el) => {
-		text[i] =  Cheerio(el).text().replace(/\s*\.\s*$/, '');
+		text[i] =  Cheerio(el).text().replace(/\s*\.\s*/g, '. ').replace(/\s*\.\s*$/, '');
 	});
 	return text.join('. ');
 };
