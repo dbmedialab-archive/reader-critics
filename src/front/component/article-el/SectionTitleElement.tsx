@@ -25,9 +25,9 @@ export default class SectionTitleElement extends ArticleElement {
 	protected getContentElement() : JSX.Element {
 		return <div>
 			<label><FormattedMessage id="article-el.sectionTitle"/></label>
-			<h2 hidden={this.state.editing}>
+			<h3 hidden={this.state.editing}>
 		{ this.textDiff(this.props.item.originalText, this.state.text) }
-		</h2>
+		</h3>
 		</div>;
 	}
 

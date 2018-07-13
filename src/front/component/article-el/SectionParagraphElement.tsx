@@ -22,7 +22,6 @@ import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
 export default class SectionParagraphElement extends ArticleElement {
-
 	protected getContentElement() : JSX.Element {
 		return <div>
 			<label>
@@ -38,5 +37,4 @@ export default class SectionParagraphElement extends ArticleElement {
 			</p>
 		</div>;
 	}
-
 }

@@ -105,6 +105,7 @@ abstract class BaseItems {
 
 	protected createSectionParagraphEl(sectionParagraph : string) : ArticleItem {
 		const text = clean(sectionParagraph);
+
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.SectionParagraph, {
 			text,
 		});
