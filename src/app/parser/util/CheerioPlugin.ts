@@ -39,7 +39,7 @@ export const listToParagraph = (elem : Cheerio): string => {
 };
 
 export const formatText = (elem : Cheerio): string => {
-	return elem.name === 'ul' || elem.name === 'ol'?
+	return elem.name === 'ul' || elem.name === 'ol' ?
 		listToParagraph(elem) : trimText(Cheerio(elem).text());
 };
 
