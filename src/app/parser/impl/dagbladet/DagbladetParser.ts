@@ -16,9 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import * as Cheerio from 'cheerio';
 import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
-import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 export default class DagbladetParser extends AbstractLabradorParser {
 
