@@ -50,6 +50,9 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 			'h2',
 			'p',
 			'figure',
+			'ul',
+			'ol',
+			'h5',
 		];
 	}
 
@@ -132,6 +135,35 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		return !hasVideo
 			&& item.name === 'figure'
 			&& select(item.elem).attr('itemtype') === 'http://schema.org/ImageObject';
+	}
+
+	protected isSectionParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.parents('aside').hasClass('article-announce');
+
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol' )
+			&& withinSection
+			&& !isAnnounce
+			&& item.text.length > 0;
+	}
+
+	protected isSectionTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.parents('aside').hasClass('article-announce') ;
+
+		return item.name === 'h5'
+			&& item.css.includes('section-title')
+			&& withinSection
+			&& !isAnnounce
+			&& item.text.length > 0;
 	}
 
 }
