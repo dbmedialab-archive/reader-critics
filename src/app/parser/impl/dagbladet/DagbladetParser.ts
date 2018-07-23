@@ -24,20 +24,4 @@ export default class DagbladetParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
 
-	protected isParagraph(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		const $element = select(item.elem);
-		const isAnnounce = $element.hasClass('text-darkgrey');
-		const withinArticle = $element.parents('article').length === 1;
-		const withinSection = $element.parents('aside').length === 1;
-
-		return item.name === 'p'
-			&& withinArticle
-			&& !withinSection
-			&& !isAnnounce
-			&& item.text.length > 0;
-	}
-
 }
