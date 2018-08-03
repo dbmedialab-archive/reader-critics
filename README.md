@@ -46,5 +46,6 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 ## License
 
 **Copyright © 2017-18 DBmedialab / Aller Media AS** (Oslo, Norway)
+    test 
+Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt)
 
-Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).
