@@ -34,8 +34,11 @@ export default class SolParser extends AbstractLabradorParser {
 		return [
 			'h1',
 			'h2',
+			'h3',
 			'p',
 			'figure',
+			'ul',
+			'ol',
 			'li',
 			'h5',
 		];
@@ -94,27 +97,61 @@ export default class SolParser extends AbstractLabradorParser {
 			&& (hasParentDescription || select(item.elem).attr('itemprop') === 'description')
 			&& item.text.length > 0;
 	}
-
 	protected isSubHeading(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return (item.name === 'h2' && item.css.length === 0
-			|| item.name ==='h5' && item.css.includes('section-title'))
-			&& item.text.length > 0;
+		return (item.name === 'h2' || item.name === 'h3')
+			&& item.text.length > 0
+			&& item.css.length === 0;
 	}
 
 	protected isParagraph(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		const withinArticle = select(item.elem).parents('article').length === 1;
-		const isTags = select(item.elem).parents('ul').attr('itemprop') === 'keywords';
-		const isBreadCrumbs = select(item.elem).parents('div').hasClass('pageheader');
+		const $element = select(item.elem);
+		const withinArticle = $element.parents('article').length === 1;
+		const isTags = $element.attr('itemprop') === 'keywords';
+		const isBreadCrumbs = $element.parents('div').hasClass('pageheader');
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.hasClass('text-darkgrey');
 
-		return (item.name === 'p'
-			|| (item.name === 'li' && withinArticle && !isTags && !isBreadCrumbs))
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol')
+			&& withinArticle
+			&& !isTags
+			&& !isBreadCrumbs
+			&& !withinSection
+			&& !isAnnounce
 			&& item.text.length > 0;
 	}
 
+	protected isSectionParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.parents('aside').hasClass('article-announce');
+
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol' )
+			&& withinSection
+			&& !isAnnounce
+			&& item.text.length > 0;
+	}
+
+	protected isSectionTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.parents('aside').hasClass('article-announce') ;
+
+		return item.name === 'h5'
+			&& item.css.includes('section-title')
+			&& withinSection
+			&& !isAnnounce
+			&& item.text.length > 0;
+	}
 }
