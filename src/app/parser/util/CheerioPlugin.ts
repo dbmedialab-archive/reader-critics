@@ -32,8 +32,8 @@ export const trimText = (str : string) =>
 //
 // convert texts taken from list of <li> to solid text
 //  - delete extra whitespaces inside of the each li's text, saving regular sentences  ". "
-//  - delete sing '.' and extra whitespaces at the end of the each  li's text
-//  - join li's texts in one string adding to the each li's text ' .'  to form sentences
+//  - delete sign '.' at the end of the each  li's text
+//  - join li's texts in one string adding to the each li's text '. '  to form sentences
 // Example:
 //     <li>Indre spenning.      Indre spenning . Indre spenning. </li>
 //     <li><a href="#">Redusert nattesøvn    .      </a></li>
