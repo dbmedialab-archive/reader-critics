@@ -28,8 +28,56 @@ jobs:
           command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
+  trigger_deploy_rc_customer1:
+    <<: *container_defaults
+    steps:
+      - run:
+          name: Triggering deploy of remote repo rc-customer1
+          command: |
+            curl --user ${DEPLOY_KEY_RC_CUSTOMER1}: \
+              --data build_parameters[CIRCLE_JOB]=deploy_reader_critics \
+              https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/rc-customer1/tree/$CIRCLE_BRANCH
+
   deploy_prod:  *deploy_prod
   deploy_stage: *deploy_stage
   deploy_test:  *deploy_test
 
-workflows: *default_workflows
+workflows:
+  version: 2
+  build-stage:
+    jobs:
+      - build:
+          context: "org-global"
+      - deploy_prod:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy_stage:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+      - deploy_test:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - master
+                - develop
+      - trigger_deploy_rc_customer1:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+
