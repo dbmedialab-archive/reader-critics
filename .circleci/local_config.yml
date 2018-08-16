@@ -35,7 +35,7 @@ jobs:
           name: Triggering deploy of remote repo rc-customer1
           command: |
             curl --user ${DEPLOY_KEY_RC_CUSTOMER1}: \
-              --data build_parameters[CIRCLE_JOB]=deploy_reader_critics \
+              --data build_parameters[CIRCLE_JOB]=deploy_reader_critics_${CIRCLE_BRANCH} \
               https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/rc-customer1/tree/$CIRCLE_BRANCH
 
   deploy_prod:  *deploy_prod

@@ -136,7 +136,7 @@ common_aliases:
       setup_remote_docker:
         version: 17.10.0-ce
         docker_layer_caching: true
-
+        
   - &docker_build
     run:
       name: Build and tag docker image
@@ -217,9 +217,8 @@ jobs:
       - run:
           name: Triggering deploy of remote repo rc-customer1
           command: |
-            apk add --no-cache curl curl-dev
             curl --user ${DEPLOY_KEY_RC_CUSTOMER1}: \
-              --data build_parameters[CIRCLE_JOB]=deploy_reader_critics \
+              --data build_parameters[CIRCLE_JOB]=deploy_reader_critics_${CIRCLE_BRANCH} \
               https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/rc-customer1/tree/$CIRCLE_BRANCH
 
   deploy_prod:  *deploy_prod
