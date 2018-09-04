@@ -58,8 +58,8 @@ const additionalRules : IValidationRules = {
 
 	host: {
 		type: 'string',
-		exec: customValidations.isHost,
-		error: 'Invalid host name',
+		minLength: 4,
+		error: 'Host name is too short',
 	},
 };
 
