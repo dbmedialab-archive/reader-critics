@@ -17,27 +17,34 @@
 //
 
 import * as React from 'react';
-import {LabeledInput} from '../additionalComponents/LabeledInput';
-import {SwitchBox} from '../additionalComponents/SwitchBox';
+import Validator from 'admin/services/Validation';
+import * as Immutable from 'seamless-immutable';
+import {LabeledInput} from 'admin/components/website/additionalComponents/LabeledInput';
+import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox';
+import {TagList} from 'admin/components/website/additionalComponents/TagList';
 
-export interface IWebsiteOverrideSettingsContentSection {
+export interface IWebsiteOverrideSettings {
 	list: string[];
 	listPropName: string;
-	onSubmit: (data: any) => void;
-	checkValidation: (value: string, touched: boolean) => string;
+	isControllable?: boolean;
 	controlPropName?: string;
 	controlPropValue?: boolean;
+	validationType?: string;
+	label: JSX.Element | string;
+	ID: string;
+	value: string;
+	touched: boolean;
+	onSubmit: (data: any) => void;
+	onChange: (value:string, touched:boolean) => void;
 }
 
-export class WebsiteOverrideSettingsContentSection extends
-	React.Component <IWebsiteOverrideSettingsContentSection, any> {
+export class WebsiteOverrideSettings extends React.Component <IWebsiteOverrideSettings, any> {
+	private readonly validator : Validator;
 
 	constructor (props) {
 		super(props);
-		this.state = {
-			value: '',
-			touched: false,
-		};
+
+		this.validator = new Validator();
 
 		this.onDelete = this.onDelete.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -45,30 +52,30 @@ export class WebsiteOverrideSettingsContentSection extends
 		this.onEdit = this.onEdit.bind(this);
 		this.onToggleCheck = this.onToggleCheck.bind(this);
 		this.getValidationError = this.getValidationError.bind(this);
-		this.buildList = this.buildList.bind(this);
 	}
 
 	getValidationError() {
-		const {value, touched} = this.state;
-		return this.props.checkValidation(value, touched);
+		return this.checkValidation(this.props.validationType);
 	}
 
 	onDelete (index: number) {
 		const {list, listPropName} = this.props;
 		if (index >= 0) {
-			const overrideList = list;
-			overrideList.splice(index, 1);
+			const overrideList = Immutable(list).filter((value, i) => {
+				if (i !== index) {
+					return value;
+				}
+			});
 			return this.props.onSubmit({overrides: {[listPropName]: overrideList}});
 		}
 	}
 
 	onSubmit () {
-		const {touched, value} = this.state;
+		const {touched, value} = this.props;
 		if (touched && value && !this.getValidationError()) {
 			const {listPropName, list} = this.props;
 			const overrides = {[listPropName]: list.concat(value)};
 			this.props.onSubmit({overrides});
-			return this.setState({value: '', touched: false});
 		}
 	}
 
@@ -86,59 +93,62 @@ export class WebsiteOverrideSettingsContentSection extends
 	}
 
 	onEdit (e) {
-		this.setState({
-			value: e.target.value,
-			touched: true,
-		});
+		this.props.onChange(e.target.value, true);
 	}
 
-	buildList () {
-		const {list, listPropName} = this.props;
-		return list.map((email: string, index: number) =>
-			(<li key={`${index}-${listPropName}-override`}
-						className="website-feedback-email-override-list-item email-override-list-item">
-				{email}
-				<i className="fa fa-times" onClick={this.onDelete.bind(this, index)}/>
-			</li>)
-		);
+	checkValidation(propName: string): string {
+		const {value} = this.props;
+		const isEmail = this.validator.validate(propName, value, { required: true });
+
+		if (isEmail.isError) {
+			return isEmail.message;
+		}
+		else {
+			const isUnique = this.validator.validate('uniqueness',
+				this.props.list.concat(value));
+
+			if (isUnique.isError) {
+				return isUnique.message;
+			}
+
+			return '';
+		}
 	}
 
 	render () {
-		const {controlPropValue = false, controlPropName: isControllable} = this.props;
-		const {value, touched} = this.state;
+		const {
+			controlPropValue = false,
+			isControllable = false,
+			list,
+			label,
+			ID,
+			value,
+			touched} = this.props;
 		return (
-			<div className="medium-12 columns website-feedback-email-override-container overrides-container">
+			<div className="medium-12 columns overrides-container">
 				<fieldset className="text">
 					<div className="row">
-						{isControllable &&
-						<div className="small-12 columns hide-for-medium columns override-status-control">
-							<SwitchBox
-								classes={`switch round tiny`} ID={'feedback-email-override-status-small'}
-								checked={controlPropValue} onChange={this.onToggleCheck}
-							/>
-						</div>}
 						<div className={`small-12 ${isControllable && 'medium-9 large-10'} columns`}>
 							<LabeledInput
 								onSubmit={this.onSubmit} errorText={this.getValidationError()}
 								onEdit={this.onEdit} value={value}	touched={touched}
-								label={<span>
-										<b>Feedback email override</b><br/>
-										Emails to get notifications about feedbacks for articles if needed
-										(instead of article authors emails)
-									</span>}
-								ID={`feedback-email-override`}/>
+								label={label}
+								ID={ID}/>
 						</div>
 						{isControllable &&
 						<div className="medium-3 large-2 show-for-medium columns override-status-control">
 							<SwitchBox
-								classes={`switch round large`}	ID={'feedback-email-override-status'}
+								classes={`switch round large`}	ID={ID}
 								checked={controlPropValue} onChange={this.onToggleCheck}
 							/>
 						</div>}
 						<div className="small-12 columns">
-							<ul className="website-feedback-email-override-list override-list">
-								{this.buildList()}
-							</ul>
+							<TagList
+								items={ list }
+								onDelete={this.onDelete}
+								classes="website-settings-list"
+								color="blue"
+							/>
 						</div>
 					</div>
 				</fieldset>

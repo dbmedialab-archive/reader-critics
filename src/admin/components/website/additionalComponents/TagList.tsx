@@ -16,29 +16,37 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as React from 'react';
 
-import * as app from 'app/util/applib';
-
-let opengraphHTML : string = null;
-
-let listItemsHTML : string = null;
-
-export function getListItemsHTML() : string {
-	if (listItemsHTML === null) {
-		listItemsHTML = load('ul-items.html');
-	}
-	return listItemsHTML;
+export interface ITagList {
+	classes: string;
+	onDelete: (index: number) => void;
+	items: string[];
+	color?: string;
 }
 
-export function getOpenGraphHTML() : string {
-	if (opengraphHTML === null) {
-		opengraphHTML = load('opengraph-meta.html');
-	}
-	return opengraphHTML;
-}
+export class TagList extends React.Component <ITagList, any> {
 
-function load(name : string) : string {
-	return readFileSync(join(app.rootPath, 'resources', 'parser', name), 'utf-8');
+	constructor (props: ITagList) {
+		super(props);
+		this.createTags = this.createTags.bind(this);
+	}
+	createTags (items: string[]) {
+		const {classes, onDelete, color = 'blue'} = this.props;
+		return items.map((item, index) => {
+			return (<li key={index + '-item '} className={`${classes}-item ${color}`}>
+				{item}
+				<i className="fa fa-times" onClick={onDelete.bind(this, index)}/>
+			</li>);
+		});
+	}
+
+	render () {
+		const {classes, items} = this.props;
+		return (
+			<ul className={classes}>
+				{this.createTags(items)}
+			</ul>
+		);
+	}
 }

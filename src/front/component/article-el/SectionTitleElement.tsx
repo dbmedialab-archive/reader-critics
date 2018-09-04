@@ -16,29 +16,19 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { ArticleElement } from '../ArticleElement';
 
-import * as app from 'app/util/applib';
+export default class SectionTitleElement extends ArticleElement {
 
-let opengraphHTML : string = null;
-
-let listItemsHTML : string = null;
-
-export function getListItemsHTML() : string {
-	if (listItemsHTML === null) {
-		listItemsHTML = load('ul-items.html');
+	protected getContentElement() : JSX.Element {
+		return <div>
+			<label><FormattedMessage id="article-el.sectionTitle"/></label>
+			<h3 hidden={this.state.editing}>
+		{ this.textDiff(this.props.item.originalText, this.state.text) }
+		</h3>
+		</div>;
 	}
-	return listItemsHTML;
-}
 
-export function getOpenGraphHTML() : string {
-	if (opengraphHTML === null) {
-		opengraphHTML = load('opengraph-meta.html');
-	}
-	return opengraphHTML;
-}
-
-function load(name : string) : string {
-	return readFileSync(join(app.rootPath, 'resources', 'parser', name), 'utf-8');
 }

@@ -17,59 +17,63 @@
 //
 
 import * as React from 'react';
-import { InputError } from 'admin/components/form/InputError';
 import { Label } from 'admin/components/website/additionalComponents/Label';
 
-export interface ILabeledInput {
-	onSubmit: () => void;
-	errorText: string;
-	onEdit: (e) => void;
+export interface ILabeledSelect {
+	onChange: (e) => void;
 	value: string;
-	touched: boolean;
 	label: string | JSX.Element;
 	ID: string;
-	inputType?: string;
+	options: IOption[];
+	name: string;
+	chosen?: boolean;
+	defaultOptionText?: string;
 }
 
-export class LabeledInput extends React.Component <ILabeledInput, any> {
+export interface IOption {
+	value: string;
+	name: string;
+}
 
-	constructor (props: ILabeledInput) {
+export class LabeledSelect extends React.Component <ILabeledSelect, any> {
+
+	constructor (props: ILabeledSelect) {
 		super(props);
 
-		this.onKeyPress = this.onKeyPress.bind(this);
 	}
 
-	onKeyPress (e): void {
-		if (e.key === 'Enter') {
-			return this.props.onSubmit();
-		}
+	createSelectOptions (options: IOption[]) {
+		return options.map((option, index) => (
+			<option value={option.value} key={option.value}>{option.name}</option>
+		));
 	}
 
 	render () {
 		const {
-			value,
-			touched,
 			ID,
-			onEdit,
-			onSubmit,
-			errorText,
+			value,
+			onChange,
+			name,
 			label,
-			inputType = 'text',
+			options,
+			chosen = true,
+			defaultOptionText = '-- None --',
 		} = this.props;
+
 		return (
 			<div className="row">
 				<Label label={label} ID={ID} />
 				<div className="small-12 columns">
-					<input
-						id={`${ID}-input`} type={inputType}
-						value={value}
-						onChange={onEdit}
-						onKeyPress={this.onKeyPress} onBlur={onSubmit}
-					/>
-					<InputError
-						errorText={errorText}
-						touchedField={touched}
-					/>
+					<select
+						id={`${ID}-input`}
+						value={value || ''}
+						className="small-12 large-12"
+						onChange={onChange}
+						name={name}
+					>
+					{defaultOptionText && !chosen && <option value="">{defaultOptionText}</option> }
+					{options.length && this.createSelectOptions(options)}
+					</select>
 				</div>
 			</div>
 		);

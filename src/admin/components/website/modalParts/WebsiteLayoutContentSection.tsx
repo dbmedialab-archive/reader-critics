@@ -63,7 +63,7 @@ export default class WebsiteLayoutContentSection
 				<div className="small-12 columns">
 					<fieldset className="fieldset">
 						<textarea
-							value={value}
+							value={value || ''}
 							onChange={this.onChange}
 							name={templateName}
 							onBlur={this.props.onSubmit}

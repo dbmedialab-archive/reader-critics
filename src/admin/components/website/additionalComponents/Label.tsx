@@ -16,29 +16,26 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as React from 'react';
 
-import * as app from 'app/util/applib';
-
-let opengraphHTML : string = null;
-
-let listItemsHTML : string = null;
-
-export function getListItemsHTML() : string {
-	if (listItemsHTML === null) {
-		listItemsHTML = load('ul-items.html');
-	}
-	return listItemsHTML;
+export interface ILabel {
+	label: JSX.Element | string,
+	ID: string;
 }
 
-export function getOpenGraphHTML() : string {
-	if (opengraphHTML === null) {
-		opengraphHTML = load('opengraph-meta.html');
+export class Label extends React.Component <ILabel, any> {
+	constructor (props: ILabel) {
+		super(props);
 	}
-	return opengraphHTML;
-}
 
-function load(name : string) : string {
-	return readFileSync(join(app.rootPath, 'resources', 'parser', name), 'utf-8');
+	render() {
+		const { label, ID } = this.props;
+		return (
+			<div className="small-12 columns">
+				<label htmlFor={`${ID}-input`}>
+					{label}
+				</label>
+			</div>
+		);
+	}
 }
