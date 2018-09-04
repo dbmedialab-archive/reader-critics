@@ -5,13 +5,11 @@ metadata:
   namespace: {{env "REPONAME"}}
   annotations:
     external-dns.alpha.kubernetes.io/hostname: {{env "REPONAME"}}.{{env "ENV"}}.medialaben.no.
-    kubernetes.io/tls-acme: "true"
-    kubernetes.io/ingress.class: "gce"
 spec:
   tls:
   - hosts:
     - {{env "REPONAME"}}.{{env "ENV"}}.medialaben.no
-    secretName: tls
+    secretName: {{ env "REPONAME" }}-tls
   rules:
   - host: {{env "REPONAME"}}.{{env "ENV"}}.medialaben.no
     http:
