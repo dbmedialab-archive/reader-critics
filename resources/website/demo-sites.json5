@@ -132,4 +132,19 @@
 		chiefEditors: [
 		],
 	},
+	{
+  		name: 'vi.no',
+  		hosts: [
+  			'vi.no',
+  			'www.vi.no',
+  		],
+  		locale: 'nb',
+  		layout: {
+  			templates: {
+  			},
+  		},
+  		parserClass: 'Sol Parser',
+  		chiefEditors: [
+  		],
+  	},
 ]
