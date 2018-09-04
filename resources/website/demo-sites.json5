@@ -117,4 +117,34 @@
 		chiefEditors: [
 		],
 	},
+	{
+		name: 'sol.no',
+		hosts: [
+			'sol.no',
+			'www.sol.no',
+		],
+		locale: 'nb',
+		layout: {
+			templates: {
+			},
+		},
+		parserClass: 'Sol Parser',
+		chiefEditors: [
+		],
+	},
+	{
+  		name: 'vi.no',
+  		hosts: [
+  			'vi.no',
+  			'www.vi.no',
+  		],
+  		locale: 'nb',
+  		layout: {
+  			templates: {
+  			},
+  		},
+  		parserClass: 'Sol Parser',
+  		chiefEditors: [
+  		],
+  	},
 ]
