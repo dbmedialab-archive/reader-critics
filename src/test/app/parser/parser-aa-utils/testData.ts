@@ -23,6 +23,15 @@ import * as app from 'app/util/applib';
 
 let opengraphHTML : string = null;
 
+let listItemsHTML : string = null;
+
+export function getListItemsHTML() : string {
+	if (listItemsHTML === null) {
+		listItemsHTML = load('ul-items.html');
+	}
+	return listItemsHTML;
+}
+
 export function getOpenGraphHTML() : string {
 	if (opengraphHTML === null) {
 		opengraphHTML = load('opengraph-meta.html');
