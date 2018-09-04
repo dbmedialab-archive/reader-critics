@@ -16,29 +16,29 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import * as React from 'react';
 
-import * as app from 'app/util/applib';
+export class WebsiteBaseEmailOverride extends React.Component <any, any> {
 
-let opengraphHTML : string = null;
-
-let listItemsHTML : string = null;
-
-export function getListItemsHTML() : string {
-	if (listItemsHTML === null) {
-		listItemsHTML = load('ul-items.html');
+	constructor(props) {
+		super(props);
+		this.state = {
+			value: '',
+			touched: false,
+		};
 	}
-	return listItemsHTML;
-}
 
-export function getOpenGraphHTML() : string {
-	if (opengraphHTML === null) {
-		opengraphHTML = load('opengraph-meta.html');
+	onChange(value:string, touched:boolean) {
+		this.setState({
+			value,
+			touched,
+		});
 	}
-	return opengraphHTML;
-}
 
-function load(name : string) : string {
-	return readFileSync(join(app.rootPath, 'resources', 'parser', name), 'utf-8');
+	sendOverrideChanges (data) {
+		const {overrideSettings: os} = this.props;
+		const overrideSettings = Object.assign({}, os, data);
+		this.setState({value: '', touched: false});
+		return this.props.onChange({overrideSettings});
+	}
 }
