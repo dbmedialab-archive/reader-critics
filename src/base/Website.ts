@@ -31,7 +31,17 @@ export interface Website extends PersistedModel {
 
 	escalateThreshold : EscalationThresholds
 
-	feedbackEmailOverride : string[]
+	overrideSettings : {
+		settings: {
+			escalation : boolean
+			feedback : boolean
+		}
+		overrides: {
+			feedbackEmail: string[]
+			fallbackFeedbackEmail: string[]
+			escalationEmail: string[]
+		}
+	}
 
 	layout : {
 		templates : {

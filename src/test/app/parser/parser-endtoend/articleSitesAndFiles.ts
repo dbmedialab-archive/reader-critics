@@ -5,6 +5,7 @@ import * as app from 'app/util/applib';
 export const mapSitesToParser = Object.freeze({
 	'dagbladet.no': 'Dagbladet Parser',
 	'nettavisen.no': 'Nettavisen Parser',
+	'sol.no': 'Sol Parser',
 });
 
 const htmlPath = path.join('resources', 'article', 'html');

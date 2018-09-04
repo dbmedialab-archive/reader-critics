@@ -10,6 +10,9 @@ checks:
   method-lines:
     config:
       threshold: 40
+  method-count:
+    config:
+      threshold: 21
   similar-code:
     enabled: false
 engines:
