@@ -16,29 +16,38 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import 'mocha';
 
-import * as app from 'app/util/applib';
+import { assert } from 'chai';
 
-let opengraphHTML : string = null;
+import * as Cheerio from 'cheerio';
 
-let listItemsHTML : string = null;
+import {
+	listToParagraph,
+} from 'app/parser/util/CheerioPlugin';
 
-export function getListItemsHTML() : string {
-	if (listItemsHTML === null) {
-		listItemsHTML = load('ul-items.html');
-	}
-	return listItemsHTML;
-}
+import {
+	getListItemsHTML,
+} from './testData';
 
-export function getOpenGraphHTML() : string {
-	if (opengraphHTML === null) {
-		opengraphHTML = load('opengraph-meta.html');
-	}
-	return opengraphHTML;
-}
+describe('CheerioPlugins', () => {
 
-function load(name : string) : string {
-	return readFileSync(join(app.rootPath, 'resources', 'parser', name), 'utf-8');
-}
+	it('list to Paragraph', function() {
+		const select: Cheerio = Cheerio.load(getListItemsHTML());
+		const text = listToParagraph(select('ul'));
+		const textEtalon = 'Tristhet (synlig tristhet og subjektiv opplevd tristhet). '
+		+ 'Indre spenning. '
+		+ 'Indre spenning. '
+		+ 'Indre spenning. '
+		+ 'Redusert nattesøvn. '
+		+ 'Svekket apetitt. '
+		+ 'Konsentrasjonsvansker. '
+		+ 'Initiativløshet. '
+		+ 'Svekkende følelsesmessige reaksjoner. '
+		+ 'Depressivt tankeinnhold. '
+		+ 'Selvmordstanker';
+
+		assert.equal (text, textEtalon);
+	});
+
+});
