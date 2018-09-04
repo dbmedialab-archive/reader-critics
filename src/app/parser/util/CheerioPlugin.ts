@@ -29,6 +29,33 @@ export function create(rawArticle : string) : Promise <Cheerio> {
 export const trimText = (str : string) =>
 	str === undefined ? '' : str.replace(/[\r\n\t\s]+/g, ' ').trim();
 
+//
+// convert texts taken from list of <li> to solid text
+//  - trim extra whitespaces of the each li's text
+//  - delete extra whitespaces inside of the each li's text, saving regular sentences  ". "
+//  - delete sign '.' at the end of the each li's text
+//  - join li's texts in one string adding to the each li's text '. '  to form sentences
+// Example:
+//     <li>Indre spenning.      Indre spenning . Indre spenning. </li>
+//     <li><a href="#">Redusert nattesøvn    .      </a></li>
+//
+// result => "Indre spenning. Indre spenning. Indre spenning. Redusert nattesøvn."
+//
+
+export const listToParagraph = (elem : Cheerio): string => {
+	const text = [];
+	const items = Cheerio(elem).children();
+	items.each((i, el) => {
+		text[i] =  Cheerio(el).text().trim().replace(/\s*\.\s*/g, '. ').replace(/\s*\.\s*$/, '');
+	});
+	return text.join('. ');
+};
+
+export const formatText = (elem : Cheerio): string => {
+	return elem.name === 'ul' || elem.name === 'ol' ?
+		listToParagraph(elem) : trimText(Cheerio(elem).text());
+};
+
 export const splitCSS = (css : string) =>
 	css === undefined ? [] : css.replace(/\s+/, ' ').split(' ');
 
