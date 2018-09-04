@@ -23,8 +23,8 @@ import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
 
-import BaseIteratingItems from './BaseIteratingItems';
-import IteratingParserItem from './IteratingParserItem';
+import BaseIteratingItems from 'app/parser/BaseIteratingItems';
+import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 abstract class AbstractIteratingParser extends BaseIteratingItems {
 
@@ -70,13 +70,12 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		const preprocessed : IteratingParserItem = {
 			// Some properties are collected and prefiltered here so access is easier
 			name: elem.name,
-			text: CheerioPlugin.trimText(this.select(elem).text()),
+			text: CheerioPlugin.formatText(elem),
 			css: CheerioPlugin.splitCSS(this.select(elem).attr('class')),
 			id: CheerioPlugin.getElemID(this.select(elem).attr('id')),
 			// Reference the original Cheerio object here for advanced access
 			elem,
 		};
-
 		// Provide an array of parent items
 		if (getParents) {
 			preprocessed.parents = this.select(elem)
@@ -100,6 +99,7 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 	}
 
 	private iterateParsedElements() : void {
+
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
 
@@ -116,7 +116,6 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			else if (this.isFeaturedImage(item, this.select)) {
 				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
 			}
-
 			else if (this.isSubHeading(item, this.select)) {
 				this.pushNewContentItem(this.createSubHeading(item, this.select));
 			}
@@ -128,6 +127,14 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 			}
 			else if (this.isLink(item, this.select)) {
 				this.pushNewContentItem(this.createLink(item, this.select));
+			}
+
+			else if (this.isSectionTitle(item, this.select)) {
+				this.pushNewContentItem(this.createSectionTitle(item, this.select));
+			}
+
+			else if (this.isSectionParagraph(item, this.select)) {
+				this.pushNewContentItem(this.createSectionParagraph(item, this.select));
 			}
 
 			else {
@@ -187,6 +194,13 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 		// this.pushNewContentItem(this.createParagraph(item));
 	}
 
+	protected parseSectionTitle() : Promise <ArticleItem[]> {
+		return Promise.resolve([]);
+	}
+
+	protected parseSectionParagraph() : Promise <ArticleItem[]> {
+		return Promise.resolve([]);
+	}
 }
 
 export default AbstractIteratingParser;

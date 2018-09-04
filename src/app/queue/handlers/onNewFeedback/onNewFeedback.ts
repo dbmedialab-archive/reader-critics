@@ -37,7 +37,7 @@ import {
 	MessageType,
 } from 'app/queue';
 
-import { getRecipients } from 'app/mail/MailRecipients';
+import { getFeedbackRecipients } from 'app/mail/MailRecipients';
 
 import layoutNotifyMail from './layoutNotifyMail';
 import SendGridMailer from 'app/mail/sendgrid/SendGridMailer';
@@ -99,7 +99,7 @@ function process(feedbackID : string) {
 		// reject for flow control.
 		return Promise.all([
 			layoutNotifyMail(feedback, template),
-			getRecipients(website, feedback.article),
+			getFeedbackRecipients(website, feedback.article),
 			getMailSubject(feedback),
 		]);
 	})

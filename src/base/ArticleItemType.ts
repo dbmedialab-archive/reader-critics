@@ -28,7 +28,8 @@ export enum ArticleItemType {
 	Paragraph = 'paragraph',
 	Figure = 'figure',
 	Link = 'link',
-
+	SectionTitle = 'sectionTitle',
+	SectionParagraph = 'sectionParagraph',
 }
 
 export default ArticleItemType;

@@ -44,55 +44,86 @@ common_aliases:
                     - master
                     - develop
 
+  - &privileged_workflows
+      version: 2
+      build-stage:
+        jobs:
+          - build:
+              context: "org-global"
+          - deploy_privileged:
+              context: "org-global"
+              requires:
+                - build
+
+  # --- utility functions --- #
+  - &docker_login
+    run:
+      name: Authenticate with GCR
+      command: echo $GCR_CREDENTIALS | docker login -u _json_key --password-stdin https://eu.gcr.io
+
   # --- deploy steps --- #
-  # "experimental" steps will use the develop branch of the deploy container. you probably don't want this
+  # All of these refer to the "production" version of the deployer/kubectl container.
+  # If iterating on deployer/kubectl itself, 1) make a custom tag on the image,
+  # then 2) mutate your project local config, and 3) get back to 'production' ASAP
+  # and delete your custom image tag from GCR -- do all of this and finish quickly,
+  # because branches in the deployer/kubectl container touch a *lot of projects*;
+  # more than one branch at a time in deployer will cause work-factories.
+
   - &deploy_prod
     machine: true
     steps:
       - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=prod  -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:production
+      - <<: *docker_login
+      - run:
+          name: Deploy app to production
+          command: |
+            export ENV=prod
+            export IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            env | egrep -e '^(BUILD|CI_|CIRCLE|ENV=|GCR=|GH_|IMAGE=)' > /tmp/env-file
+            docker run -t --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production kubeval_validate
+            docker run --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production
 
   - &deploy_stage
     machine: true
     steps:
       - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=stage -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:production
+      - <<: *docker_login
+      - run:
+          name: Deploy app to stage
+          command: |
+            export ENV=stage
+            export IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            env | egrep -e '^(BUILD|CI_|CIRCLE|ENV=|GCR=|GH_|IMAGE=)' > /tmp/env-file
+            docker run -t --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production kubeval_validate
+            docker run --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production
 
   - &deploy_test
     machine: true
     steps:
       - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=test  -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:production
+      - <<: *docker_login
+      - run:
+          name: Deploy app to test
+          command: |
+            export ENV=test
+            export IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            env | egrep -e '^(BUILD|CI_|CIRCLE|ENV=|GCR=|GH_|IMAGE=)' > /tmp/env-file
+            docker run -t --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production kubeval_validate
+            docker run --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production
 
-  - &deploy_prod_experimental
+  - &deploy_privileged
     machine: true
     steps:
       - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=prod  -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:develop
-
-  - &deploy_stage_experimental
-    machine: true
-    steps:
-      - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=stage -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:develop
-
-  - &deploy_test_experimental
-    machine: true
-    steps:
-      - checkout
-      - run: env
-      - run: docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-      - run: docker run -v /home/circleci/project/kubefiles:/kubefiles -e ENV=test  -e IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 -e CIRCLE_PROJECT_REPONAME -e CIRCLE_REPOSITORY_URL -e CIRCLE_COMPARE_URL -e CIRCLE_BUILD_URL -e CIRCLE_USERNAME $GCR/kubectl:develop
+      - <<: *docker_login
+      - run:
+          name: Deploy app to privileged cluster
+          command: |
+            export ENV=privileged
+            export IMAGE=$GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+            env | egrep -e '^(BUILD|CI_|CIRCLE|ENV=|GCR=|GH_|IMAGE=)' > /tmp/env-file
+            docker run -t --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production kubeval_validate
+            docker run --env-file /tmp/env-file -v /home/circleci/project/kubefiles:/kubefiles $GCR/kubectl:production
 
   # --- steps to plug in your build --- #
   #
@@ -105,28 +136,26 @@ common_aliases:
       setup_remote_docker:
         version: 17.10.0-ce
         docker_layer_caching: true
-
-  - &install_docker_compose
-    run:
-      name: Install Docker Compose
-      command: |
-        set -x
-        curl -L https://github.com/docker/compose/releases/download/1.11.2/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-        chmod +x /usr/local/bin/docker-compose
-
+        
   - &docker_build
     run:
       name: Build and tag docker image
       command: |
+        # --cache-from is used here as a best-effort layer cache, will work most of the time
+        docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
+        MUNGED_BRANCH=$(echo $CIRCLE_BRANCH | tr '/@#' '_')
+        #docker pull $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$MUNGED_BRANCH || true
+        #docker build --cache-from $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$MUNGED_BRANCH -t app .
         docker build -t app .
         docker tag app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+        docker tag app $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$MUNGED_BRANCH
 
   - &docker_push_gcr
     run:
       name: Push docker image
       command: |
         docker login -u _json_key -p "$GCR_CREDENTIALS" https://eu.gcr.io
-        docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1
+        docker push $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME
 
   - &setup_tests
       run:
@@ -141,6 +170,7 @@ common_aliases:
   - &store_test_artifacts
     store_artifacts:
       path: reports/junit/
+
 
 
 #########################################################################
@@ -181,8 +211,58 @@ jobs:
           command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
 
+  trigger_deploy_rc_customer1:
+    <<: *container_defaults
+    steps:
+      - run:
+          name: Triggering deploy of remote repo rc-customer1
+          command: |
+            apk add --no-cache curl curl-dev
+            curl -X POST \
+              --header "Content-Type: application/json" \
+              -d "{\"branch\":\"${CIRCLE_BRANCH}\"}" \
+              https://circleci.com/api/v1.1/project/github/dbmedialab/rc-customer1/build?circle-token=${DEPLOY_KEY_RC_CUSTOMER1}
+
   deploy_prod:  *deploy_prod
   deploy_stage: *deploy_stage
   deploy_test:  *deploy_test
 
-workflows: *default_workflows
+workflows:
+  version: 2
+  build-stage:
+    jobs:
+      - build:
+          context: "org-global"
+      - deploy_prod:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+      - deploy_stage:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only: develop
+      - deploy_test:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                - master
+                - develop
+      - trigger_deploy_rc_customer1:
+          context: "org-global"
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+

@@ -246,27 +246,29 @@ const mapStateToProps = (state, ownProps) => {
 	return {
 		isOpen: state.UI.getIn(['modalWindows', ownProps.windowName, 'isOpen']),
 		name: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'name', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input','name', 'touched'])
-			|| false,
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'name', 'value'], ''),
+			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input','name', 'touched'],
+				false),
 		},
 		email: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'touched'])
-			|| false,
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'value'],
+				''),
+			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'email', 'touched'],
+				false),
 		},
 		role: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value'])
-			|| UserRole.Journalist,
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'touched'])
-			|| false,
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'value'],
+				UserRole.Journalist),
+			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'role', 'touched'],
+				false),
 		},
 		password: {
-			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value']) || '',
-			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched'])
-			|| false,
+			value: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'value'],
+				''),
+			touched: state.UI.getIn(['modalWindows', ownProps.windowName, 'input', 'password', 'touched'],
+				false),
 		},
-		userId: state.UI.getIn(['modalWindows', ownProps.windowName, 'userId']) || null,
+		userId: state.UI.getIn(['modalWindows', ownProps.windowName, 'userId'], null),
 	};
 };
 
