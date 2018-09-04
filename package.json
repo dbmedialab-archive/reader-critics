@@ -104,7 +104,7 @@
 		"react-router": "4.2.0",
 		"react-router-dom": "4.3.0-rc.1",
 		"react-router-redux": "4.0.8",
-		"react-transition-group": "2.2.1",
+		"react-transition-group": "2.4.0",
 		"redux-logger": "3.0.6",
 		"redux-promise-middleware": "5.0.0",
 		"redux-thunk": "2.2.0",
