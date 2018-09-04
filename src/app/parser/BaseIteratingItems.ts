@@ -91,11 +91,24 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		return false;
 	}
 
+	protected isSectionTitle(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return false;
+	}
+
+	protected isSectionParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return false;
+	}
+
 	// Default implementations of methods that create an ArticleItem from a
 	// (complex) parsed item of the iterator. Most item types should work fine
 	// with these implementations as long as getting to their actual content is
 	// just copying their text contents.
-
 	protected createMainTitle(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -138,8 +151,21 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		return this.createLinkEl(fromItem.text, fromItem.text);  // TODO split data
 	}
 
-	// The more advanced item types
+	protected createSectionParagraph(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createSectionParagraphEl(fromItem.text);
+	}
 
+	protected createSectionTitle(
+		fromItem : IteratingParserItem,
+		select : Cheerio
+	) : ArticleItem {
+		return this.createSectionTitleEl(fromItem.text);
+	}
+
+	// The more advanced item types
 	private getFigureData(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -153,7 +179,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 			altTxt: CheerioPlugin.trimText(select(capEl).text()).replace(/Vis mer/, ''),
 		};
 	}
-
 	protected createFeaturedImage(
 		fromItem : IteratingParserItem,
 		select : Cheerio
@@ -169,7 +194,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 		const figure = this.getFigureData(fromItem, select);
 		return this.createFigureEl(figure.imgSrc, figure.altTxt);
 	}
-
 }
 
 export default BaseIteratingItems;

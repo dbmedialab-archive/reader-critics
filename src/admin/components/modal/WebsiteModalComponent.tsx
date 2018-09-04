@@ -27,6 +27,12 @@ import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
+import WebsiteFeedbackEmailOverride from
+'admin/components/website/modalParts/emailOverride/WebsiteFeedbackEmailOverride';
+import WebsiteEscalationEmailOverride from
+'admin/components/website/modalParts/emailOverride/WebsiteEscalationEmailOverride';
+import WebsiteFallbackFeedbackEmail from
+'admin/components/website/modalParts/emailOverride/WebsiteFallbackFeedbackEmail';
 
 export interface IWebsiteUpdateProps {
 	currentName: string;
@@ -37,7 +43,7 @@ export interface IWebsiteUpdateProps {
 	layout?: WebsiteLayoutProps;
 }
 
-class AddUserModalComponent extends React.Component <any, any> {
+class WebsiteModalComponent extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 
@@ -87,10 +93,10 @@ class AddUserModalComponent extends React.Component <any, any> {
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
 		const isDisabled = name && !ID;
 
-		const captionAdd = (<div className="caption"><b>Add New Website</b></div>);
+		const captionAdd = (<div className="caption" key="add-website"><b>Add New Website</b></div>);
 		const captionEdit = [
-			<div className="caption"><b>Edit Website</b></div>,
-			<div className="hint">Changes made here are saved immediately</div>,
+			<div className="caption" key="edit-website"><b>Edit Website</b></div>,
+			<div className="hint" key="hint">Changes made here are saved immediately</div>,
 		];
 
 		return (
@@ -114,6 +120,15 @@ class AddUserModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteFeedbackEmailOverride onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteEscalationEmailOverride onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteFallbackFeedbackEmail onChange={this.onUpdate} />
 						</div>
 						<WebsiteLayout
 							feedbackPage={feedbackPage}
@@ -157,4 +172,4 @@ const mapDispatchToProps = () => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUserModalComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteModalComponent);
