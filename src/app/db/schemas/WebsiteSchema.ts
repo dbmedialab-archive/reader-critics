@@ -88,6 +88,34 @@ const WebsiteSchema : Schema = new Schema({
 		},
 	},
 
+	// Settings to override email notifications
+	overrideSettings: {
+		settings: {
+			escalation : {
+				type: Boolean,
+				default: false,
+			},
+			feedback : {
+				type: Boolean,
+				default: false,
+			},
+		},
+		overrides: {
+			feedbackEmail: {
+				type: [String],
+				required: false,
+			},
+			fallbackFeedbackEmail: {
+				type: [String],
+				required: false,
+			},
+			escalationEmail: {
+				type: [String],
+				required: false,
+			},
+		},
+	},
+
 	// Website-specific layout
 	layout: {
 		templates: {
