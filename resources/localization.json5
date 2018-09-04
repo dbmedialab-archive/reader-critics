@@ -63,6 +63,14 @@
 				en: 'Title',
 				nb: 'Tittel',
 			},
+			sectionTitle: {
+					en: 'Title fact box',
+					nb: 'Tittel faktaboks',
+			},
+			sectionParagraph: {
+					en: 'Text fact box #{order}',
+					nb: 'Tekst faktaboks #{order}',
+			},
 		},
 		errors: {
 			tryLater: {
