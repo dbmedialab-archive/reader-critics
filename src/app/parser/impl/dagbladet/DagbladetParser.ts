@@ -21,4 +21,5 @@ import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 export default class DagbladetParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
+
 }
