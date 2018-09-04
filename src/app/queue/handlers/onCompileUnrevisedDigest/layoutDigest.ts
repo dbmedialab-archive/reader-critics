@@ -20,6 +20,7 @@ import MailTemplate from 'app/template/MailTemplate';
 
 import { Article } from 'base/Article';
 import { Website } from 'base/Website';
+import { formatFeedbacks } from 'app/mail/layout/FeedbackFormat';
 import { translate as __ } from 'app/services/localization';
 
 // import { notifyBrowser } from 'app/util/notifyBrowser';
@@ -32,15 +33,18 @@ export function layoutDigest(
 	template : MailTemplate,
 	earliestCreated : Date,
 	latestCreated : Date
-) : Promise <string> {
+) : Promise <string>
+{
 	const { locale } = website;
+
 	const html : string = template.setParams({
 		// Filter all needed data
 		articles: articles.map((article : Article) => ({
 			title: article.title,
 			url: article.url.toString(),
 			byline: formatAuthors(article),
-			feedbackCount: formatFeedbacks(article, locale),
+			feedbackCount: formatFeedbackCount(article, locale),
+			feedbacks: formatFeedbacks(article, article.feedbacks, locale),
 		})),
 		// Localization
 		text: {
@@ -54,6 +58,7 @@ export function layoutDigest(
 					latestCreated: `<b>${formatDate(latestCreated, locale)}</b>`,
 				},
 			}),
+			mfg: __('mail.regards'),
 		},
 	})
 	.render();
@@ -68,7 +73,7 @@ const formatAuthors = (article : Article) => article.authors.map(author => (
 		: author.name
 )).join(', ');
 
-const formatFeedbacks = (article : Article, locale : string) => (
+const formatFeedbackCount = (article : Article, locale : string) => (
 	__('mail.digest.feedback-count', {
 		locale,
 		values: {

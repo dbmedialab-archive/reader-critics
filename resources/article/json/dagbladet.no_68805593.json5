@@ -7,7 +7,7 @@
   authors: [
 		{
 			name: 'Christoph Schmitz',
-			email: 'christoph.schmitz@gmail.com',
+			email: 'christoph.schmitz@gmail.test.tld',
 		},
 	],
 	items: [
@@ -75,44 +75,55 @@
 			order: { item: 11, type: 5 },
 			text: '(5) Da kongssønnen hadde reist et stykke, ble han sulten, tok opp skreppen sin og satte seg til å holde dugurd utmed veien. Så kom det ut en rev av et granholt og satt og så på.',
 		},
+    {
+			"type": "sectionTitle",
+			"order": {
+				"item": 12,
+				"type": 1
+			},
+			"text": "Fakta om mannen"
+		},
 		{
-			type: 'paragraph',
-			order: { item: 12, type: 6 },
-			text: 'Mannen (lit. "The Man") is a mountain rising 1,294 metres (4,245 ft) over the village of Horgheim, along the river Rauma in Romsdalen, Norway. Mannen has a distinctive needle peak. The mountain\'s shape has been compared to an enormous seated goose that looks out over the Rauma valley, from which it can easily be seen.',
+			"type": "sectionParagraph",
+			"order": {
+				"item": 13,
+				"type": 1
+			},
+			 "text": "Mannen (lit. \"The Man\") is a mountain rising 1,294 metres (4,245 ft) over the village of Horgheim, along the river Rauma in Romsdalen, Norway. Mannen has a distinctive needle peak. The mountain's shape has been compared to an enormous seated goose that looks out over the Rauma valley, from which it can easily be seen."
 		},
 		{
 			type: 'paragraph',
-			order: { item: 13, type: 7 },
+			order: { item: 14, type: 6 },
 			text: '(6) «Kjære, gi meg litt mat, du!» sa reven. «Jeg gir deg brent horn, jeg!» sa kongssønnen. «Jeg kan trenge maten min selv; ingen kan vite hvor langt og hvor lenge jeg skal fare,» sa han. «Det var så det,» sa reven, og så gikk han til skogs igjen.',
 		},
 		{
 			type: 'subhead',
-			order: { item: 14, type: 2 },
+			order: { item: 15, type: 2 },
 			text: 'Mellomtittel to',
 		},
 		{
 			type: 'paragraph',
-			order: { item: 15, type: 8 },
+			order: { item: 16, type: 7 },
 			text: '(7) Da kongssønnen hadde ett og hvilt, ga han seg på veien igjen. Langt om lenge kom han til en stor by, og i den byen var det et vertshus, der det støtt var glede og aldri sorg; der syntes han det skulle være gildt å ta inn, - og så ble han værende der. Det var slik dans og drikk og lyst og herlighet at han rent glemte fuglen og fjæren og far sin og reisen og hele riket. Borte var han og borte ble han.',
 		},
 		{
 			type: 'paragraph',
-			order: { item: 16, type: 9 },
+			order: { item: 17, type: 8 },
 			text: '(8) Neste året skulle mellomste kongssønnen gjete opp epletyven i hagen. Ja, han satte seg under treet, han også, da eplet tok til å modnes. Men rett som det var, kom gullfuglen en natt og skinte som en sol, og gutten ble så redd at han tok hyven, og satte inn igjen det forteste han vant.',
 		},
 		{
 			type: 'paragraph',
-			order: { item: 17, type: 10 },
+			order: { item: 18, type: 9 },
 			text: '(9) Om morgenen var eplet borte; men da var kongssønnen blitt modig igjen, og ville av gårde og se om han kunne finne fuglen. Ja, han tok til å niste seg ut, og kongen rustet ham vel og sparte hverken på klær eller penger.',
 		},
 		{
 			type: 'paragraph',
-			order: { item: 18, type: 11 },
+			order: { item: 19, type: 10 },
 			text: '(10) ...',
 		},
 		{
 			type: 'paragraph',
-			order: { item: 19, type: 12 },
+			order: { item: 20, type: 11 },
 			text: '(11) Utdrag fra Asbjørnsen og Moe\'s Gullfuglen.',
 		},
 	],

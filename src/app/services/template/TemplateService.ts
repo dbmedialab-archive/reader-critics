@@ -25,10 +25,11 @@ interface TemplateService {
 	getFeedbackPageTemplate(website : Website) : Promise <PageTemplate>;
 	getSuggestionPageTemplate(): Promise <PageTemplate>;
 
-	// E-Mail templates
+	// E-Mail templates - beware of long function names *scnr*
 	getFeedbackMailTemplate(website : Website) : Promise <MailTemplate>;
 	getEscalateToEditorMailTemplate(website : Website) : Promise <MailTemplate>;
 	getUnrevisedDigestMailTemplate(website : Website) : Promise <MailTemplate>;
+	getEnduserUpdatedArticleMailTemplate(website : Website) : Promise <MailTemplate>;
 
 	// Admin page template
 	getAdminPageTemplate(): Promise <PageTemplate>;

@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-import {InputError} from 'admin/components/form/InputError';
+import {LabeledInput} from 'admin/components/website/additionalComponents/LabeledInput';
 import {connect} from 'react-redux';
 import Validator from 'admin/services/Validation';
 
@@ -51,7 +51,7 @@ class WebsiteName extends React.Component <any, any> {
 		});
 	}
 
-	onKeyPress(e) {
+	onKeyPress(e): void {
 		if (e.key === 'Enter') {
 			return this.onSubmit();
 		}
@@ -63,7 +63,7 @@ class WebsiteName extends React.Component <any, any> {
 		}
 	}
 
-	isError (): string | boolean {
+	isError (): string {
 		let websites = this.props.websites.asMutable();
 		websites = websites.filter(website => {
 			return (website.ID !== this.props.ID);
@@ -79,21 +79,18 @@ class WebsiteName extends React.Component <any, any> {
 	}
 
 	render () {
+		const {value, touched} = this.state;
 		return (
-			<div className="medium-6 columns">
+			<div className="medium-6 small-12 columns">
 			<fieldset className="text">
-				<label htmlFor="name">Name</label>
-				<input
-					type="text"
-					name="name"
-					value={this.state.value}
-					onChange={this.onChange}
-					onBlur={this.onSubmit}
-					onKeyPress={this.onKeyPress}
-				/>
-				<InputError
-					errorText={this.isError()}
-					touchedField={this.state.touched}
+				<LabeledInput
+					onSubmit={this.onSubmit} errorText={this.isError()}
+					onEdit={this.onChange} value={value} touched={touched}
+					label={<span>
+							<b>Website Name</b><br/>
+							Usually the main host name (must be unique systemwide)
+						</span>}
+					ID={`name`}
 				/>
 			</fieldset>
 		</div>);

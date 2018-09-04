@@ -45,7 +45,19 @@ export function getUsers() {
 	UIActions.showMainPreloader();
 	Api.getUsers()
 		.then((response) => {
-			if (typeof response !== 'undefined'){
+			if (typeof response !== 'undefined') {
+				MainStore.dispatch(UsersActionsCreator.getUsers(response));
+				UIActions.hideMainPreloader();
+			}
+		})
+		.catch((error) => UIActions.hideMainPreloader());
+}
+
+export function getEditors() {
+	UIActions.showMainPreloader();
+	Api.getEditors()
+		.then((response) => {
+			if (typeof response !== 'undefined') {
 				MainStore.dispatch(UsersActionsCreator.getUsers(response));
 				UIActions.hideMainPreloader();
 			}

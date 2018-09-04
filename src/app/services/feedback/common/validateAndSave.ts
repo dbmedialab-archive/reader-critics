@@ -17,6 +17,7 @@
 //
 
 import * as cryptoRandomString from 'crypto-random-string';
+import * as app from 'app/util/applib';
 
 import { isObject } from 'lodash';
 
@@ -42,11 +43,14 @@ import {
  * Intermediate type for internal use, used between validation and persistence.
  */
 type RawArticle = {
-	article? : {}
+	article? :  Article,
 	feedback? : {
-		items? : [{}],
+		items? :  Array <FeedbackItem>,
 	},
 };
+
+const testToken = 'one-shot-test-token';
+let testTokenIncrement = 1;
 
 /**
  * Validate and store to database
@@ -71,11 +75,11 @@ export function validateAndSave(data : {}) : PromiseLike <Feedback> {
 }
 
 function storeFeedback(
-	article : Article,
-	enduser : EndUser,
-	items : Array <FeedbackItem>,
-	oneshotUpdateToken : string
-) {
+		article: Article,
+		enduser: EndUser,
+		items: Array <FeedbackItem>,
+		oneshotUpdateToken: string
+	) {
 	return feedbackService.save(
 		article,
 		enduser,
@@ -98,10 +102,9 @@ function getArticle(articleData : any) : Promise <Article> {
 
 	return ArticleURL.from(url)
 	.then(articleURL => articleService.get(articleURL, version, true))
-	.then((article : Article) => (article === null
-		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
-		: article
-	));
+	.then((article: Article|PromiseLike <Article>) => (article === null
+				? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
+				: article));
 }
 
 /**
@@ -118,7 +121,9 @@ function getAnonymousEndUser() : Promise <EndUser> {
  * one shot update token.
  */
 function getOneShotToken() : string {
-	return cryptoRandomString(92);  // 368 bytes of random. Yes, an unusual number!
+	// 368 bytes of random. Yes, an unusual number!
+	// Use a fixed update token when in test mode (that is matched by the mock data)
+	return app.isTest ? `${testToken}-${testTokenIncrement++}` : cryptoRandomString(92);
 }
 
 /**

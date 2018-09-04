@@ -63,7 +63,7 @@ export function wrapFindOne <D extends Document, Z> (
 		result.exec()
 		.then((doc : D) => (doc === null) ? resolve(null) : doc.toObject())
 		.then((doc : null|Object) => {
-			if (!isObject(doc)) {
+			if (!(doc === null || isObject(doc))) {  // Explicit null-check here
 				return reject(new Error('result.exec() did not return a single object'));
 			}
 

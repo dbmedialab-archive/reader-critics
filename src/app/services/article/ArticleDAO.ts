@@ -23,6 +23,7 @@ import Person from 'base/zz/Person';
 import Website from 'base/Website';
 import User from 'base/User';
 
+import { isEmpty } from 'lodash';
 import { ArticleModel } from 'app/db/models';
 import { ObjectID } from 'app/db';
 
@@ -81,21 +82,34 @@ export function saveNewVersion(
 	website : Website,
 	newArticle : Article,
 	oldID : ObjectID
-) : Promise <Article> {
+) : PromiseLike <Article> {
 	emptyCheck(website, newArticle, oldID);
 
-	return makeDocument(website, newArticle)
-	.then(newDoc => {
-		return new ArticleModel(newDoc).save();
-	})
-	.then(newObj => wrapFindOne(ArticleModel.findOneAndUpdate(
-		{ _id : oldID },
-		{
-			'$set': {
-				newerVersion: newObj._id,
-			},
-		}
-	)));
+	// Try to fetch the object with the new version first, there's a chance it
+	// already exists in the database (for example if the update on the article
+	// site just happened and someone put in a feedback to that version here)
+	return get(newArticle.url, newArticle.version, false)
+	// If the article is not yet in the database, create a new Mongoose document
+	// from the schema and persists the newly fetched data
+	.then((existingArticle : Article) => (
+		(existingArticle === null)
+			? makeDocument(website, newArticle)
+				.then(newDocument => save(website, newDocument))
+			: existingArticle
+	))
+	// Now that we definitely have the object of the new revision, save its ID to
+	// the older version as a pointer to this "updated" revision
+	.then((newRevision : Article) => (
+		ArticleModel.findOneAndUpdate(
+			{ _id: oldID },
+			{
+				'$set': {
+					newerVersion: newRevision.ID,
+				},
+			}
+		)
+		.then(() => newRevision)
+	));
 }
 
 export function upsert(website : Website, article : Article) : Promise <Article> {
@@ -139,7 +153,10 @@ const makeDocument = (website : Website, article : Article) => (
 	}))
 );
 
-const getUsers = (article : Article) : Promise <User[]> => Promise.all(
+const getUsers = (article : Article) : Promise <User[]> => {
 	// For some reason, TypeScript rejects Promise.map here. I stopped bothering
-	article.authors.map((author : Person) => userService.findOrInsert(author))
-);
+	return Promise.all(article.authors
+		.filter((author : Person) => (!isEmpty(author.name) && !isEmpty(author.email)))
+		.map((author : Person) => userService.findOrInsert(author))
+	);
+};

@@ -17,13 +17,13 @@
 //
 
 // tslint:disable:max-line-length
-'use strict';
 
 import Validation from 'base/Validation';
-import {IValidationRules} from 'base/ValidationRules';
 import customValidations from 'base/ValidationCustomValidations';
 
-const additionalRules: IValidationRules = {
+import { IValidationRules } from 'base/ValidationRules';
+
+const additionalRules : IValidationRules = {
 	userName: {
 		type: 'string',
 		pattern: /^[a-zA-Z0-9-.\\/_\s\u00C6\u00D8\u00C5\u00E6\u00F8\u00E5]{1,50}$/,
@@ -47,19 +47,19 @@ const additionalRules: IValidationRules = {
 		type: 'string',
 		minLength: 4,
 		maxLength: 64,
-		error: 'Site name have to be longer than 4 symbols',
+		error: 'Site name has to be longer than 4 symbols',
 	},
 
 	uniqueness: {
 		type: 'array',
 		uniqueness: true,
-		error: 'Have to be unique',
+		error: 'Has to be unique',
 	},
 
 	host: {
 		type: 'string',
-		exec: customValidations.isHost,
-		error: 'Invalid host name',
+		minLength: 4,
+		error: 'Host name is too short',
 	},
 };
 

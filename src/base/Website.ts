@@ -31,12 +31,25 @@ export interface Website extends PersistedModel {
 
 	escalateThreshold : EscalationThresholds
 
+	overrideSettings : {
+		settings: {
+			escalation : boolean
+			feedback : boolean
+		}
+		overrides: {
+			feedbackEmail: string[]
+			fallbackFeedbackEmail: string[]
+			escalationEmail: string[]
+		}
+	}
+
 	layout : {
 		templates : {
 			escalateToEditorMail? : string
 			feedbackPage? : string
 			feedbackNotificationMail? : string
 			unrevisedDigestMail? : string
+			enduserUpdatedArticleMail? : string
 		}
 		scssVariables? : object
 	}

@@ -19,8 +19,9 @@
 export * from './mail/getEscalateToEditorMailTemplate';
 export * from './mail/getFeedbackMailTemplate';
 export * from './mail/getUnrevisedDigestMailTemplate';
+export * from './mail/getEnduserUpdatedArticleMailTemplate';
 
 export { default as getFeedbackPageTemplate } from './page/getFeedbackPageTemplate';
 export { default as getSuggestionPageTemplate } from './page/getSuggestionPageTemplate';
 
-export { default as getAdminPageTemplate} from './common/getAdminPageTemplate';
+export { default as getAdminPageTemplate } from './common/getAdminPageTemplate';

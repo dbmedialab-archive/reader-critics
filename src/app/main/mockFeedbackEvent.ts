@@ -38,7 +38,7 @@ const log = app.createLog();
 
 export function mockFeedbackEvent() : Promise <any> {
 	// Get an article from the test crowd
-	return articleService.get('http://www.mopo.no/2', '201707251349')
+	return articleService.get('http://www.avisa.tld/2', '201707251349')
 	// Get first feedback for this article => test contents
 	.then((article : Article) => (
 		article === null

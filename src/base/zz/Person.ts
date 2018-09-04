@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-interface Person {
+export interface Person {
 	name : string;
 	email : string;
 }

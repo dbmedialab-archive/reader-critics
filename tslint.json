@@ -4,7 +4,7 @@
 		"arrow-return-shorthand": true,
 		"class-name": true,
 		"curly": true,
-		"cyclomatic-complexity": [ true, 10 ],
+		"cyclomatic-complexity": [ true, 12 ],
 		"eofline": true,
 		"indent": [ true, "tabs" ],
 		"linebreak-style": [ true, "LF" ],
@@ -34,7 +34,6 @@
 		"quotemark": [ true, "single", "jsx-double"],
 		"prefer-const": true,
 		"prefer-for-of": true,
-		"prefer-readonly": true,
 		"semicolon": [ true, "always", "ignore-interfaces" ],
 		"trailing-comma": [ true, {
 			"multiline": {

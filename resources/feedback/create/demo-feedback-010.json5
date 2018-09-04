@@ -1,0 +1,20 @@
+{
+	article: {
+		url: 'https://dagbladet.no/nyheter/fyllekjorte-n-meter--ble-domt-til-fengsel/69379991',
+		version: '2018-01-26T08:02:03.000Z',
+	},
+	feedback: {
+		items: [
+			{
+				type: 'paragraph',
+				order: {
+					item: 6,
+					type: 4
+				},
+				text: 'Mannen satte seg likevel inn i bilen.',
+				comment: 'Test comment without user data for checking enduser notification',
+				links: [],
+			},
+		],
+	},
+}

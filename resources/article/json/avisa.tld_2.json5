@@ -1,17 +1,17 @@
 {
 	url: {
-		href: "http://mopo.no/2",
+		href: "http://avisa.tld/2",
 	},
 	version: "201707251349",
 	title: "Bavaria ipsum dolor sit amet a bissal Marei sit, da Kini!",
 	authors: [
 		{
 			name: "Axel Egon Unterbichler",
-			email: "axel.egon@mopo.no",
+			email: "axel.egon@avisa.tld",
 		},
 		{
 			name: "Hubertus Hasenzahn",
-			email: "hubert@mopo.no",
+			email: "hubert@avisa.tld",
 		},
 	],
 	items: [
@@ -22,7 +22,7 @@
 		},
 		{
 			order: { item: 2, type: 1 },
-			text: "(Morgenposten): Erat nomoi Freibia, Freibia! Jo mei is des schee enim des is schee placerat sint. Meidromml deserunt is ma Wuascht reprehenderit measi oamoi!",
+			text: "(Avisa): Erat nomoi Freibia, Freibia! Jo mei is des schee enim des is schee placerat sint. Meidromml deserunt is ma Wuascht reprehenderit measi oamoi!",
 			type: "paragraph",
 		},
 		{

@@ -20,45 +20,27 @@ import * as React from 'react';
 
 import { Link } from 'react-router-dom';
 
-const MainMenuComponent : React.StatelessComponent <any> = () =>
-		<ul className="menu-nav">
-				<li className="menu-item">
-					<Link
-							to="/feedbacks"
-							className="tooltip-tip tooltipster-disable"
-							title="All feedbacks" >
-							<i className="fa fa-list-ul" />
-							<span>Feedbacks</span>
-					</Link>
-					<Link
-						to="/articles"
-						className="tooltip-tip tooltipster-disable"
-						title="All articles" >
-						<i className="fa fa-list-ul" />
-						<span>Articles</span>
-					</Link>
-					<Link
-						to="/suggestions"
-						className="tooltip-tip tooltipster-disable"
-						title="All suggestions" >
-						<i className="fa fa-list-ul" />
-						<span>Suggestions</span>
-					</Link>
-					<Link
-							to="/users"
-							className="tooltip-tip tooltipster-disable"
-							title="All users" >
-							<i className="fa fa-users" />
-							<span>Users</span>
-					</Link>
-					<Link
-						to="/websites"
-						className="tooltip-tip tooltipster-disable"
-						title="All websites" >
-						<i className="fa fa-list-ul" />
-						<span>Websites</span>
-					</Link>
-				</li>
-			</ul>;
+const targets : string[] = [
+	'Feedbacks',
+	'Articles',
+	'Suggestions',
+	'Users',
+	'Websites',
+];
+
+const createMenuEntry = (target : string) => (
+	<li key={target} className="menu-item">
+		<Link to={`/${target.toLowerCase()}`} className="tooltip-tip tooltipster-disable" title={target}>
+			<i className="fa fa-list-ul" />
+			<span>{target}</span>
+		</Link>
+	</li>
+);
+
+const MainMenuComponent : React.StatelessComponent <any> = () => (
+	<ul className="menu-nav">
+		{ targets.map(createMenuEntry) }
+	</ul>
+);
 
 export default MainMenuComponent;
