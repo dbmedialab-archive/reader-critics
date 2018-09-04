@@ -43,9 +43,9 @@ import {
  * Intermediate type for internal use, used between validation and persistence.
  */
 type RawArticle = {
-	article? : {}
+	article? :  Article, //TODO testing have to check
 	feedback? : {
-		items? : [{}],
+		items? :  Array <FeedbackItem>, //TODO testing have to check
 	},
 };
 
@@ -74,12 +74,12 @@ export function validateAndSave(data : {}) : PromiseLike <Feedback> {
 	});
 }
 
-function storeFeedback(
-	article : Article,
-	enduser : EndUser,
-	items : Array <FeedbackItem>,
-	oneshotUpdateToken : string
-) {
+function storeFeedback( //TODO testing types !done
+		article: Article,
+		enduser: EndUser,
+		items: Array <FeedbackItem>,
+		oneshotUpdateToken: string
+	) {
 	return feedbackService.save(
 		article,
 		enduser,
@@ -102,10 +102,10 @@ function getArticle(articleData : any) : Promise <Article> {
 
 	return ArticleURL.from(url)
 	.then(articleURL => articleService.get(articleURL, version, true))
-	.then((article : Article) => (article === null
-		? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
-		: article
-	));
+	.then((article: Article|PromiseLike <Article>) => (article === null
+		//TODO testing was Article done
+				? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
+				: article));
 }
 
 /**
