@@ -26,10 +26,12 @@ export interface IOptions {
 export interface IValidation {
 	validate(
 		validationItem : { schema : string | IValidationRule; errorText? : string; },
-		data : any, options: IOptions) : {
-			isError : boolean,
-			message : string
-		};
+		data : any, options: IOptions) : IValidationResult;
+}
+
+export interface IValidationResult {
+	isError: boolean;
+	message?: string;
 }
 
 export default class Validation implements IValidation {
@@ -45,7 +47,7 @@ export default class Validation implements IValidation {
 		Object.assign(this.validationRules, rules);
 	}
 
-	validate(validationItem, data, options:IOptions = {}) {
+	validate(validationItem, data, options:IOptions = {}) : IValidationResult {
 		let schema;
 		const errorText = validationItem.errorText;
 		const { required } = options;

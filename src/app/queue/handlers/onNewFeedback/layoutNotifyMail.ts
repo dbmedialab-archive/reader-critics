@@ -73,6 +73,7 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 		whoSent: __('mail.fb-notify.who-sent'),
 
 		articleTitle: feedback.article.title,
+		articleUrl: feedback.article.url,
 		enduser: format.enduser(feedback),
 		sentIn: format.whenSentIn(feedback),
 
@@ -83,7 +84,6 @@ export default function (feedback : Feedback, template : MailTemplate) : Promise
 	.render();
 
 	// notifyBrowser(html);  // -- this is only for convenient local testing
-
 	return Promise.resolve(html);
 }
 

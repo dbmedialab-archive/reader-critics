@@ -171,3 +171,15 @@ ins {
 del {
 	color: $color-warning;
 }
+
+.switch {
+	&.round {
+		.switch-paddle {
+			border-radius: 2rem;
+
+			&::after {
+				border-radius: 50%;
+			}
+		}
+	}
+}

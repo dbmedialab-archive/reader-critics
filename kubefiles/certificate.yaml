@@ -1,0 +1,18 @@
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: {{ env "REPONAME" }}-tls
+  namespace: {{ env "REPONAME" }}
+spec:
+  secretName: {{ env "REPONAME" }}-tls
+  issuerRef:
+    name: letsencrypt-dns
+    kind: ClusterIssuer
+  dnsNames:
+    - {{ env "REPONAME" }}.{{ env "ENV" }}.medialaben.no
+  acme:
+    config:
+    - dns01:
+        provider: cf-dns
+      domains:
+        - {{ env "REPONAME" }}.{{ env "ENV" }}.medialaben.no
