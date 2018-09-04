@@ -69,8 +69,7 @@ export function update(name : string, data: Website) : Promise <Website> { // te
 	// Get only data we expect to update
 	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
 	// Remove empty
-	//updateData = pickBy(updateData)
-	//TODO testing !done
+
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
@@ -92,7 +91,6 @@ export function update(name : string, data: Website) : Promise <Website> { // te
 				if ('overrides' in overrideSettings) {
 					const updatedOverrides = pick(overrideSettings.overrides,
 						['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
-					//updatedOverrides = pickBy(updatedOverrides); //TODO testing ! done
 					resWrite.overrideSettings.overrides = Object.assign(
 						{}, wsite.overrideSettings.overrides, pickBy(updatedOverrides));
 				}

@@ -86,7 +86,6 @@ function process() {
 					getMailSubject(website, latestCreated),
 			])
 			.spread((recipients: Array <string>, subject : string) => (
-				//TODO testing Array <string>, subject : string !done
 				SendGridMailer(recipients, subject, mailContent)
 			))
 		))
@@ -135,7 +134,6 @@ function layoutDigestMail(
 
 	// Layout the digest e-mail, if any articles are found
 	.spread((articles : Article[], template : MailTemplate) => {
-		//TODO  testing Article[], template : MailTemplate !done
 
 		if (articles.length === 0) {
 			// Flow control through exception handling is a Bad Thing™ normally.
@@ -166,7 +164,6 @@ function layoutDigestMail(
 	}) // spread()
 
 	.spread((articles : (Article&{feedbacks:Feedback[];})[], template : MailTemplate) => {
-		//TODO testing articles : Article[], template : MailTemplate have to check
 		log('Found %d articles on %s to include in the digest', articles.length, website.name);
 		return layoutDigest(website, articles, template, earliestCreated, latestCreated);
 	});

@@ -43,9 +43,9 @@ import {
  * Intermediate type for internal use, used between validation and persistence.
  */
 type RawArticle = {
-	article? :  Article, //TODO testing have to check
+	article? :  Article,
 	feedback? : {
-		items? :  Array <FeedbackItem>, //TODO testing have to check
+		items? :  Array <FeedbackItem>,
 	},
 };
 
@@ -74,7 +74,7 @@ export function validateAndSave(data : {}) : PromiseLike <Feedback> {
 	});
 }
 
-function storeFeedback( //TODO testing types !done
+function storeFeedback(
 		article: Article,
 		enduser: EndUser,
 		items: Array <FeedbackItem>,
@@ -103,7 +103,6 @@ function getArticle(articleData : any) : Promise <Article> {
 	return ArticleURL.from(url)
 	.then(articleURL => articleService.get(articleURL, version, true))
 	.then((article: Article|PromiseLike <Article>) => (article === null
-		//TODO testing was Article done
 				? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
 				: article));
 }
