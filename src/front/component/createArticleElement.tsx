@@ -29,6 +29,8 @@ import MainTitleElement from './article-el/MainTitleElement';
 import ParagraphElement from './article-el/ParagraphElement';
 import SubHeadingElement from './article-el/SubHeadingElement';
 import SubTitleElement from './article-el/SubTitleElement';
+import SectionTitleElement from './article-el/SectionTitleElement';
+import SectionParagraphElement from './article-el/SectionParagraphElement';
 
 const elTypes = Object.freeze({
 	[ArticleItemType.FeaturedImage]: FeaturedImageElement,
@@ -39,6 +41,9 @@ const elTypes = Object.freeze({
 	[ArticleItemType.Paragraph]: ParagraphElement,
 	[ArticleItemType.SubHeading]: SubHeadingElement,
 	[ArticleItemType.SubTitle]: SubTitleElement,
+	[ArticleItemType.SectionParagraph]: SectionParagraphElement,
+	[ArticleItemType.SectionTitle]: SectionTitleElement,
+
 });
 
 export default function (
