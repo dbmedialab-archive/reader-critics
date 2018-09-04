@@ -49,3 +49,4 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 
 Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).
 
+strictNullChecks: false
