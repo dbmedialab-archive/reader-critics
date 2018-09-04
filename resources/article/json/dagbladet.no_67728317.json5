@@ -88,10 +88,26 @@
 				},
 			"text" : "Den tradisjonelle metoden i Belgia er å dobbeltfritere potetbitene. Det betyr at de først friteres rå, før de avkjøles og friteres for annen gang. Bare på den måten blir de sprø på utsiden og myke inni, hevdes det av kjennere. Det er særlig i Belgia at denne metoden er populær (selv om det praktiseres andre steder også). Belgierne er stolte av produktet og belgisk pommes frites er som en kulinarisk nasjonalskatt å regne."
 		},
+    {
+			"type": "sectionTitle",
+			"order": {
+				"item": 10,
+				"type": 1
+			},
+			"text": "Fakta om pommes frites"
+		},
+		{
+			"type": "sectionParagraph",
+			"order": {
+				"item": 11,
+				"type": 1
+			},
+			"text": "Kommer opprinnelig fra Belgia. Betyr stekte poteter. Uttales påmm fritt (med T til slutt). Amerikanerne kaller det french fries etter annen verdenskrig hvor soldatene oppdaget retten i den fransktalende delen av Belgia"
+		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 10,
+				"item" : 12,
 				"type" : 5
 				},
 			"text" : "Kjernen i EUs forslag er at potetene skal blansjeres, altså kokes i kort tid, før de friteres. På den måten begrenses produksjonen at akrylamid, ifølge EU. EUs skriv ligger nå ute til høring (det er to dokumenter, et generelt forslag til regulering og et tilleggsdokument med detaljerte framgangsmåter for steking av pommes frites). Alle som vil kan komme med kommentarer og innspill på EUs egne sider."
@@ -99,7 +115,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 11,
+				"item" : 13,
 				"type" : 6
 				},
 			"text" : "Reaksjonene mot EUs forslag har ikke latt vente på seg. The Guardian melder at turistminister Ben Weyts nå anmoder EU-kommisjonen om å revurdere forslaget for å ivareta Belgias kulturelle identitet:"
@@ -107,7 +123,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 12,
+				"item" : 14,
 				"type" : 7
 				},
 			"text" : "- Det er viktig å være klar over at man ikke tar unødige skritt som har utilsiktede og store konsekvenser for vår rikholdige, gastronomiske tradisjon, skriver han i et brev til Vytenis Andriukaitis, som er EU-kommisjonær med særlig ansvar for matrelevante spørsmål som ansvarlig for helse- og forbrukerpolitikk og næringsmiddelsikkerhet."
@@ -115,7 +131,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 13,
+				"item" : 15,
 				"type" : 8
 				},
 			"text" : "Weyts fortsetter:"
@@ -123,7 +139,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 14,
+				"item" : 16,
 				"type" : 9
 				},
 			"text" : "- Smaken på våre pommes frites skyldes håndverket i bodene. De friterer dem først rå og så en gang til. Jeg forstår at andre land har andre kulturer. Men, vi har vår egen tradisjon. Det ville være skammelig om EU skulle forby dette, skriver han."
@@ -131,7 +147,7 @@
 		{
 			"type" : "subhead",
 			"order" : {
-				"item" : 15,
+				"item" : 17,
 				"type" : 2
 				},
 			"text" : "EU nekter"
@@ -139,7 +155,7 @@
 		{
 			"type" : "figure",
 			"order" : {
-				"item" : 16,
+				"item" : 18,
 				"type" : 1
 				},
 				"href" : "//dbstatic.no/67729294.jpg?imageId=67729294&width=512&height=308",
@@ -148,7 +164,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 17,
+				"item" : 19,
 				"type" : 10
 				},
 			"text" : "I tilleggsdokumentet fra EU kan man lese en svært detaljert framgangsmåte for hvordan pommes frites skal lages. Det er særlig punkt fire og fem (av syv) det reageres på:"
@@ -156,7 +172,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 18,
+				"item" : 20,
 				"type" : 11
 				},
 			"text" : "I punkt fire står det at potetbitene skal kokes for å redusere noe av sukkeret på utsiden av poteten. Og punkt fem utdyper hvordan kokingen også må sees i forhold til råvaren man har for hånden. Det foreslåes nøyaktige rammer for hva slags farge sluttproduktet skal ha (hvor man særlig er bekymret for at fargen blir for mørk)."
@@ -164,7 +180,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 19,
+				"item" : 21,
 				"type" : 12
 				},
 			"text" : "Overfor The Telegraph blånekter EU for at de vil forby den tradisjonelle friteringsteknikken. Det hele handler om «anbefalinger» som skal følges hvor det er mulig:"
@@ -172,7 +188,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 20,
+				"item" : 22,
 				"type" : 13
 				},
 			"text" : "- EU-kommisjonen har ingen, jeg gjentar, ingen intensjon overholde, om å forby belgiske pommes frites eller noen annen form for chips, sier EUs talsmann Margaritis Schinas til den britiske avisen og utdyper:"
@@ -180,7 +196,7 @@
 		{
 			"type" : "figure",
 			"order" : {
-				"item" : 21,
+				"item" : 23,
 				"type" : 2
 				},
 				"href" : "//dbstatic.no/67729297.jpg?imageId=67729297&x=0&y=0&cropw=100&croph=100&width=322&height=431",
@@ -189,7 +205,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 22,
+				"item" : 24,
 				"type" : 14
 				},
 			"text" : "- Vi er alle veldig knyttet til den rike, kulinariske arven som finnes i medlemslandene."
@@ -197,7 +213,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 23,
+				"item" : 25,
 				"type" : 15
 				},
 			"text" : "Anca Paduraru, en annen talsperson i EU, mener Belgia spiller et «politisk spill»:"
@@ -205,7 +221,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 24,
+				"item" : 26,
 				"type" : 16
 				},
 			"text" : "- Vi vil ikke tvinge noen til å koke potetene. De kan gjøre hva de vil med potetene så lenge temperaturen er under 175 grader, forteller hun."
@@ -213,7 +229,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 25,
+				"item" : 27,
 				"type" : 17
 				},
 			"text" : "Saken er nå under behandling i EU. Medlemslandene vil ha mulighet til å stemme imot forslaget når det endelig legges fram."
@@ -221,7 +237,7 @@
 		{
 			"type" : "subhead",
 			"order" : {
-				"item" : 26,
+				"item" : 28,
 				"type" : 3
 				},
 			"text" : "Hoksrud: - Litt mer bevisst"
@@ -229,7 +245,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 27,
+				"item" : 29,
 				"type" : 18
 				},
 			"text" : "- Jeg skjønner godt at man i Belgia reagerer på utspillet fra EU-kommisjonen, selv om det ikke er snakk om et forbud. Pommes frites er jo nesten for en nasjonalrett å regne på de kanter, sier Fremskrittspartiets helsepolitiker, Bård Hoksrud."
@@ -237,7 +253,7 @@
 		{
 			"type" : "figure",
 			"order" : {
-				"item" : 28,
+				"item" : 30,
 				"type" : 3
 				},
 				"href" : "//dbstatic.no/65372374.jpg?imageId=65372374&x=0&y=23.395445134576&cropw=100&croph=42.650103519669&width=161&height=103",
@@ -246,7 +262,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 29,
+				"item" : 31,
 				"type" : 19
 				},
 			"text" : "Han spiser gjerne pommes frites, men innrømmer at han ikke var klar over at potetproduktet inneholder det kreftfremkallende stoffet akrylamid."
@@ -254,7 +270,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 30,
+				"item" : 32,
 				"type" : 20
 				},
 			"text" : "- Selv om jeg kan styre meg for å få tredd direktiver fra EU og Brussel ned over hodet, er det selvsagt positivt at problemstillinger som dette blir satt på dagsordenen. Forhåpentligvis vil det føre til økt bevissthet både blant forbrukere og matprodusenter."
@@ -262,7 +278,7 @@
 		{
 			"type" : "figure",
 			"order" : {
-				"item" : 31,
+				"item" : 33,
 				"type" : 4
 				},
 				"href" : "//dbstatic.no/67729296.jpg?imageId=67729296&width=512&height=308",
@@ -271,7 +287,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 32,
+				"item" : 34,
 				"type" : 21
 				},
 			"text" : "Hoksrud tror likevel ikke at han vil slutte å spise pommes frites:"
@@ -279,7 +295,7 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 33,
+				"item" : 35,
 				"type" : 22
 				},
 			"text" : "- Men jeg vil nok være litt mer bevisst, og ha med meg disse opplysningene i bakhodet, understreker Hoksrud."
@@ -287,7 +303,7 @@
 		{
 			"type" : "subhead",
 			"order" : {
-				"item" : 34,
+				"item" : 36,
 				"type" : 4
 				},
 			"text" : "Industrien er klar over problemet"
@@ -295,55 +311,71 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 35,
+				"item" : 37,
 				"type" : 23
 				},
 			"text" : "Administrerende direktør i Norges største potetforedlings-bedrift, Hoff SA, Ingeborg Flønes, opplyser til Dagbladet at de jobber bevisst for å redusere innholdet av akrylamid i sine produkter:"
 		},
+    {
+			"type": "sectionTitle",
+			"order": {
+				"item": 38,
+				"type": 2
+			},
+			"text": "Akrylamid"
+		},
 		{
-			"type" : "paragraph",
+			"type": "sectionParagraph",
+			"order": {
+				"item": 39,
+				"type": 2
+			},
+			"text": "En forholdsvis nyoppdaget forbindelse i mat som i hovedsak finnes i stekte og friterte stivelsesrike matvarer, som potet- og kornprodukter. Et generelt råd er å steke mat ved lav temperatur, unngå hardsteking. I tillegg anbefales ikke gjenbruk av stekefett eller å bruke stekesjyen fra hardt stekte produkter. Akrylamid dannes naturlig i matvarer under tilberedning og ved produksjonsprosesser over 120 ºC, når man baker, friterer, steker eller griller"
+		},
+		{
+			"type" : "sectionParagraph",
 			"order" : {
-				"item" : 36,
-				"type" : 24
+				"item" : 40,
+				"type" : 3
 				},
 			"text" : "Kilde: Mattilsynet"
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 37,
-				"type" : 25
+				"item" : 41,
+				"type" : 24
 				},
 			"text" : "- Vi er opptatt av å levere kvalitetsprodukter til det norske folk, og har gjennom mange år jobbet med denne problemstillingen. Vi er godt kjent med EU-kommisjonens arbeid på området, sier hun."
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 38,
-				"type" : 26
+				"item" : 42,
+				"type" : 25
 				},
 			"text" : "Hoff har, ifølge Flønes, gjennomført flere endringer i sin produksjonsprosess for å redusere akrylamidinnholdet. Blant annet gjør de nettopp det EU-kommisjonen tar opp: De blansjerer alle pommes frites-produktene før de friteres."
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 39,
-				"type" : 27
+				"item" : 43,
+				"type" : 26
 				},
 			"text" : "- Det har vært en del av vår prosess i mange år. I tillegg har vi som eneste norske pommes frites-leverandør et samarbeid med Zeracryl AS, og sammen har vi utviklet en metode for ytterligere reduksjon av akrylamidinnholdet. Denne metoden er implementert i vår produksjon. Ved å ha gjennomført disse tiltakene ligger vi innenfor de grenseverdiene som EU-kommisjonen foreslår, forteller hun."
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 40,
-				"type" : 28
+				"item" : 44,
+				"type" : 27
 				},
 			"text" : "Hoff jobber på flere områder for ytterligere å redusere akrylamidinnholdet, både ved å se på utvikling av nye potetsorter, lagringsforhold hos bonden og ulike forbedringer i produksjonsprosessen."
 		},
 		{
 			"type" : "subhead",
 			"order" : {
-				"item" : 41,
+				"item" : 45,
 				"type" : 5
 				},
 			"text" : "Moi: - Høres fornuftig ut"
@@ -351,15 +383,15 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 42,
-				"type" : 29
+				"item" : 46,
+				"type" : 28
 				},
 			"text" : "Den erfarne kokken Trond Moi har gitt ut flere kokebøker der han beskriver hvordan man lager gode pommes frites."
 		},
 		{
 			"type" : "figure",
 			"order" : {
-				"item" : 43,
+				"item" : 47,
 				"type" : 5
 				},
 				"href" : "//dbstatic.no/67729717.jpg?imageId=67729717&x=0.61728395061728&y=29.268292682927&cropw=99.382716049383&croph=52.845528455285&width=161&height=131",
@@ -368,40 +400,40 @@
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 44,
-				"type" : 30
+				"item" : 48,
+				"type" : 29
 				},
 			"text" : "- Den beste måten er å bruke poteter med skall som skylles godt i kaldt vann, tørkes godt og så stekes i olje to omganger. Først ved lav varme, cirka 120 grader, og deretter til de blir sprø ved cirka 170 grader. Deretter må de krydres godt, understreker han overfor Dagbladet."
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 45,
-				"type" : 31
+				"item" : 49,
+				"type" : 30
 				},
 			"text" : "- Hva tenker du om EU-kommisjonens forslag til at man eventuelt skal være nødt til å blansjere potetene før frityrsteking?"
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 46,
-				"type" : 32
+				"item" : 50,
+				"type" : 31
 				},
 			"text" : "- Det høres fornuftig ut! «Friesene» kan bli gode likevel, tror Moi."
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 47,
-				"type" : 33
+				"item" : 51,
+				"type" : 32
 				},
 			"text" : "Avslutningsvis avslører han hvordan han selv aller helst spiser sine nystekte pommes frites:"
 		},
 		{
 			"type" : "paragraph",
 			"order" : {
-				"item" : 48,
-				"type" : 34
+				"item" : 52,
+				"type" : 33
 				},
 			"text" : "- Jeg elsker gode, nystekte fries, og vender dem gjerne i en blanding av en spiseskje smør, litt hakket sjalottløk og gressløk. Prikken over i’en er et dryss med parmesan."
 		}

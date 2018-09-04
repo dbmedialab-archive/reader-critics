@@ -28,6 +28,7 @@ import {
 } from 'kue';
 
 import { Article } from 'base/Article';
+import { Feedback } from 'base/Feedback';
 import { Website } from 'base/Website';
 import { EmptyError } from 'app/util/errors';
 import { translate as __ } from 'app/services/localization';
@@ -39,10 +40,7 @@ import {
 	websiteService,
 } from 'app/services';
 
-import {
-	getRecipientList,
-	MailRecipientList,
-} from 'app/mail/MailRecipients';
+import {getEscalationRecipientList} from 'app/mail/MailRecipients';
 
 import { layoutDigest } from './layoutDigest';
 
@@ -84,10 +82,10 @@ function process() {
 		// Send the digest e-mail
 		.then((mailContent : string) => (
 			Promise.all([
-				getRecipientList(website, MailRecipientList.Editors),
-				getMailSubject(website, latestCreated),
+					getEscalationRecipientList(website),
+					getMailSubject(website, latestCreated),
 			])
-			.spread((recipients : Array <string>, subject : string) => (
+			.spread((recipients: Array <string>, subject : string) => (
 				SendGridMailer(recipients, subject, mailContent)
 			))
 		))
@@ -136,6 +134,7 @@ function layoutDigestMail(
 
 	// Layout the digest e-mail, if any articles are found
 	.spread((articles : Article[], template : MailTemplate) => {
+
 		if (articles.length === 0) {
 			// Flow control through exception handling is a Bad Thing™ normally.
 			// Since promises don't really leave the programmer a choice to
@@ -153,18 +152,18 @@ function layoutDigestMail(
 		// their article objects. Parallel job through Promise.map()
 		return Promise.map(articles, (article : Article) => (
 			feedbackService.getByArticle(article)
-			.then((feedbacks) => Object.assign(article, {
-				feedbacks,
-			}))
+			.then((feedbacks: Feedback[]) => Object.assign(
+				article, {feedbacks: feedbacks}
+				))
 		))
 		// Return data in an array so that the next spread() can dissociate it
-		.then((articlesWithFeedbacks) => [
+		.then((articlesWithFeedbacks: (Article&{feedbacks:Feedback[];})[]) => [
 			articlesWithFeedbacks,
 			template,
 		]);
 	}) // spread()
 
-	.spread((articles : Article[], template : MailTemplate) => {
+	.spread((articles : (Article&{feedbacks:Feedback[];})[], template : MailTemplate) => {
 		log('Found %d articles on %s to include in the digest', articles.length, website.name);
 		return layoutDigest(website, articles, template, earliestCreated, latestCreated);
 	});
