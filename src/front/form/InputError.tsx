@@ -17,10 +17,11 @@
 //
 
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 export interface InputErrorProps {
 	/** The Error Text */
-	errorText: string | boolean;
+	errorText: string | boolean | FormattedMessage;
 	/** Is touched field */
 	touchedField: boolean | undefined;
 }

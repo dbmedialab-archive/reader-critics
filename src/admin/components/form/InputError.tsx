@@ -19,9 +19,9 @@ import * as React from 'react';
 
 export interface InputErrorProps {
 	/** The Error Text */
-	errorText: string | boolean;
+	errorText: string;
 	/** Is touched field */
-	touchedField: boolean | undefined;
+	touchedField?: boolean;
 }
 
 export const InputError: React.StatelessComponent <InputErrorProps> =
