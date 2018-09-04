@@ -63,27 +63,36 @@ export function save(website : Website) : Promise <Website> {
 	return wrapSave(new WebsiteModel(website).save());
 }
 
-export function update(name : string, data:any) : Promise <Website> {
+export function update(name : string, data: Website) : Promise <Website> { // testing Website
 	emptyCheck(name, data);
-	const {layout} = data;
+	const {layout, overrideSettings} = data;
 	// Get only data we expect to update
-	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
 	// Remove empty
-	updateData = pickBy(updateData);
 
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
 				throw new Error(`No such website ${name}`);
 			}
-			const resWrite = Object.assign(wsite, updateData);
+			const resWrite = Object.assign(wsite, pickBy(updateData));
 
 			if (layout && 'templates' in layout) {
-				if ('feedbackPage' in layout.templates) {
-					resWrite.layout.templates.feedbackPage = layout.templates.feedbackPage;
+				let updatedLayout = pick(layout.templates,['feedbackPage', 'feedbackNotificationMail']);
+				updatedLayout = pickBy(updatedLayout);
+				resWrite.layout.templates = Object.assign({}, wsite.layout.templates, updatedLayout);
+			}
+			if (overrideSettings) {
+				if ('settings' in overrideSettings) {
+					const updatedSettings = pick(overrideSettings.settings, ['feedback', 'escalation']);
+					resWrite.overrideSettings.settings = Object.assign(
+						{}, wsite.overrideSettings.settings, updatedSettings);
 				}
-				if ('feedbackNotificationMail' in layout.templates) {
-					resWrite.layout.templates.feedbackNotificationMail = layout.templates.feedbackNotificationMail;
+				if ('overrides' in overrideSettings) {
+					const updatedOverrides = pick(overrideSettings.overrides,
+						['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
+					resWrite.overrideSettings.overrides = Object.assign(
+						{}, wsite.overrideSettings.overrides, pickBy(updatedOverrides));
 				}
 			}
 			return wrapSave(resWrite.save());
