@@ -24,7 +24,7 @@
 		</style>
 		<div id="mail-main" style="font-family: 'Droid Sans', Arial, Helvetica, sans-serif; font-size: 11pt;">
 			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.gotFeedback}}</div>
-			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.articleTitle}}</div>
+			<div style="font-size: 15pt; margin-bottom: 0.4cm;"><a title="{{=it.articleTitle}}" href="{{=it.articleUrl}}">{{=it.articleTitle}}</a></div>
 
 			<div style="font-size: 12pt; margin-bottom: 0.1cm;">{{=it.whoSent}}</div>
 			<div style="font-size: 15pt; margin-bottom: 0.4cm;">{{=it.enduser}}</div>
@@ -40,10 +40,6 @@
 
 			<hr style="margin: 2em 0 1em;"/>
 
-			<div style="font-size: 10pt; color: #0055AA;">
-				<p style="margin: 0.4em 0;"><u>Debug information:</u></p>
-				{{=it.debugInfo}}
-			</div>
 		</div>
 	</body>
 </html>
