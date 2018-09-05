@@ -4,16 +4,22 @@ set -euo pipefail
 
 CIRCLECI_FILE=config.yml
 LOCAL_FILE=local_config.yml
-SCRIPT=$(realpath $0)
+SCRIPT=$(readlink -f -- $0)
 SCRIPTPATH=$(dirname $SCRIPT)
 SCRIPTNAME=$(basename $SCRIPT)
-LOCK=$TMPDIR/$(basename $0).lock
 DIR=$(mktemp -d)
 
-trap "rm -rf $LOCK $DIR" INT HUP TERM EXIT
+# Let ci selfcheck clone via https
+mode=${1:-}
+
+trap "rm -rf $DIR" INT HUP TERM EXIT
 
 echo "* cloning upstream ci alias definitions"
-git clone -q git@github.com:dbmedialab/ci $DIR/ci
+if [ "x$mode" = "xci" ]; then
+	git clone -q https://github.com/dbmedialab/ci $DIR/ci
+else
+	git clone -q git@github.com:dbmedialab/ci $DIR/ci
+fi
 
 cd $SCRIPTPATH
 
@@ -41,7 +47,7 @@ cat << EOF >> $CIRCLECI_FILE
 #########################################################################
 #
 # Anything below this line comes from $LOCAL_FILE inside the project
-# 
+#
 #########################################################################
 
 version: 2
