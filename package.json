@@ -179,7 +179,7 @@
 		"geckodriver": "^1.8.0",
 		"nodemon": "^1.11.0",
 		"npm-run-all": "^4.0.0",
-		"selenium-server-standalone-jar": "3.9.1",
+		"selenium-server-standalone-jar": "3.11.0",
 		"webpack-dev-server": "^2.5.0"
 	},
 	"greenkeeper": {
