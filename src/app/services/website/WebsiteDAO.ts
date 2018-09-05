@@ -63,20 +63,19 @@ export function save(website : Website) : Promise <Website> {
 	return wrapSave(new WebsiteModel(website).save());
 }
 
-export function update(name : string, data:any) : Promise <Website> {
+export function update(name : string, data: Website) : Promise <Website> { // testing Website
 	emptyCheck(name, data);
 	const {layout, overrideSettings} = data;
 	// Get only data we expect to update
-	let updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
 	// Remove empty
-	updateData = pickBy(updateData);
 
 	return WebsiteModel.findOne({ name })
 		.then(wsite => {
 			if (!wsite) {
 				throw new Error(`No such website ${name}`);
 			}
-			const resWrite = Object.assign(wsite, updateData);
+			const resWrite = Object.assign(wsite, pickBy(updateData));
 
 			if (layout && 'templates' in layout) {
 				let updatedLayout = pick(layout.templates,['feedbackPage', 'feedbackNotificationMail']);
@@ -90,11 +89,10 @@ export function update(name : string, data:any) : Promise <Website> {
 						{}, wsite.overrideSettings.settings, updatedSettings);
 				}
 				if ('overrides' in overrideSettings) {
-					let updatedOverrides = pick(overrideSettings.overrides,
+					const updatedOverrides = pick(overrideSettings.overrides,
 						['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
-					updatedOverrides = pickBy(updatedOverrides);
 					resWrite.overrideSettings.overrides = Object.assign(
-						{}, wsite.overrideSettings.overrides, updatedOverrides);
+						{}, wsite.overrideSettings.overrides, pickBy(updatedOverrides));
 				}
 			}
 			return wrapSave(resWrite.save());
