@@ -70,7 +70,7 @@
 		"express-session": "1.15.6",
 		"extract-text-webpack-plugin": "3.0.2",
 		"find-root": "1.1.0",
-		"flat": "4.0.0",
+		"flat": "4.1.0",
 		"foundation-sites": "6.2.1",
 		"griddle-react": "1.13.1",
 		"has-color": "0.1.7",
