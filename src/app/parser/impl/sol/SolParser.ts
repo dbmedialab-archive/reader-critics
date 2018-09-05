@@ -19,39 +19,67 @@
 import * as Cheerio from 'cheerio';
 
 import ArticleAuthor from 'base/ArticleAuthor';
+import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 
 import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 import {cfEmailDecode} from 'app/parser/util/EmailDecode';
+import {getOpenGraphModifiedTime} from 'app/parser/util/VersionParser';
 
 export default class SolParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
 
+	protected getParsedElementNames() : string[] {
+		return [
+			'h1',
+			'h2',
+			'h3',
+			'p',
+			'figure',
+			'ul',
+			'ol',
+			'li',
+			'h5',
+		];
+	}
+
 	protected parseVersion() : Promise <string> {
-		return Promise.resolve(
-			this.select('div.meta').find('meta[itemprop="dateModified"]').attr('content')
-		);
+		const version = getOpenGraphModifiedTime(this.select);
+
+		if (version !== undefined ){
+			return Promise.resolve(version);
+		} else {
+			return Promise.resolve(
+				this.select('div.meta').find('meta[itemprop="dateModified"]').attr('content')
+			);
+		}
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
-		const authorWrap = this.select('div.byline').find('span.person').toArray();
-		return Promise.resolve(authorWrap.map(wrap => {
-			const name = this.select(wrap).find('span.name').text();
-			const encodedMail = this.select(wrap).find('a[rel="author"]').attr('href');
-			let mail;
+		const authors = getOpenGraphAuthors(this.select);
 
-			if (encodedMail.includes('mailto:')) {
-				mail = encodedMail.replace('mailto:', '');
-			} else if (encodedMail.includes('/cdn-cgi/l/email-protection#')) {
-				mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
-			}
+		if (authors.length !== 0) {
+			return Promise.resolve(authors);
+		} else {
+			const authorWrap = this.select('div.byline').find('span.person').toArray();
+			return Promise.resolve(authorWrap.map(wrap => {
+				const name = this.select(wrap).find('span.name').text();
+				const encodedMail = this.select(wrap).find('a[rel="author"]').attr('href');
+				let mail;
 
-			return {
-				name:  name === undefined ? undefined : name.replace(/\s+/g, ' '),
-				email: mail,
-			};
-		}));
+				if (encodedMail.includes('mailto:')) {
+					mail = encodedMail.replace('mailto:', '');
+				} else if (encodedMail.includes('/cdn-cgi/l/email-protection#')) {
+					mail = cfEmailDecode(encodedMail.replace('/cdn-cgi/l/email-protection#', ''));
+				}
+
+				return {
+					name:  name === undefined ? undefined : name.replace(/\s+/g, ' '),
+					email: mail,
+				};
+			}));
+		}
 	}
 
 	// Implement AbstractIteratingParser
@@ -66,8 +94,35 @@ export default class SolParser extends AbstractLabradorParser {
 	) : boolean {
 		const hasParentDescription = select(item.elem).parents('div').attr('itemprop') === 'description';
 		return item.name === 'p'
-			&& hasParentDescription
+			&& (hasParentDescription || select(item.elem).attr('itemprop') === 'description')
 			&& item.text.length > 0;
 	}
+	protected isSubHeading(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		return (item.name === 'h2' || item.name === 'h3')
+			&& item.text.length > 0
+			&& item.css.length === 0;
+	}
 
+	protected isParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const withinArticle = $element.parents('article').length === 1;
+		const isTags = $element.attr('itemprop') === 'keywords';
+		const isBreadCrumbs = $element.parents('div').hasClass('pageheader');
+		const withinSection = $element.parents('aside').length === 1;
+		const isAnnounce = $element.hasClass('text-darkgrey');
+
+		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol')
+			&& withinArticle
+			&& !isTags
+			&& !isBreadCrumbs
+			&& !withinSection
+			&& !isAnnounce
+			&& item.text.length > 0;
+	}
 }
