@@ -111,7 +111,7 @@
 		"sass-loader": "6.0.7",
 		"schema-inspector": "^1.6.8",
 		"seamless-immutable": "7.1.4",
-		"seamless-immutable-mergers": "7.0.0",
+	  "seamless-immutable-mergers": "7.1.0",
 		"semver": "5.5.1",
 		"serve-favicons": "2.1.5",
 		"spinkit": "^1.2.5",
