@@ -8,9 +8,9 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, 'out', 'bundle'),
-		filename: '[name]-bundle.js',
+		filename: '[name].bundle.js',
 	},
-
+	mode: 'development',
 	// Enable sourcemaps for debugging webpack's output.
 	devtool: 'source-map',
 
@@ -23,7 +23,7 @@ module.exports = {
 	module: {
 		rules: [
 			// All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-			{ test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+			{ test: /\.tsx?$/, use: ['babel-loader', 'awesome-typescript-loader'] },
 			{
 				test: /\.scss$/,
 				use: [{
