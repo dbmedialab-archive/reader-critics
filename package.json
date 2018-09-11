@@ -64,7 +64,7 @@
 		"cron": "1.4.1",
 		"crypto-random-string": "1.0.0",
 		"css-loader": "1.0.0",
-		"debug": "3.1.0",
+		"debug": "3.2.1",
 		"dot": "1.1.2",
 		"express": "4.15.3",
 		"express-session": "1.15.6",
