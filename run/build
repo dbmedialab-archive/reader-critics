@@ -20,14 +20,19 @@ echo -e "\033[1;37mBuilding App ...\033[0m"
 node_modules/.bin/tsc --pretty --diagnostics --project tsconfig.json
 checkReturnCode $?
 
-echo
-echo -e "\033[1;37mBuilding Frontend ...\033[0m"
-node_modules/.bin/webpack --config webpack-front.js
-checkReturnCode $?
+#echo
+#echo -e "\033[1;37mBuilding Frontend ...\033[0m"
+#node_modules/.bin/webpack --config webpack-front.js
+#checkReturnCode $?
+
+#echo
+#echo -e "\033[1;37mBuilding Admin UI ...\033[0m"
+#node_modules/.bin/webpack --config webpack-admin.js
+#checkReturnCode $?
 
 echo
-echo -e "\033[1;37mBuilding Admin UI ...\033[0m"
-node_modules/.bin/webpack --config webpack-admin.js
+echo -e "\033[1;37mTEST BUILDING ...\033[0m"
+node_modules/.bin/webpack --config webpack.js
 checkReturnCode $?
 
 echo "{\"commit\":\"${COMMIT}\",\"branch\":\"${BRANCH}\"}" > out/version.json

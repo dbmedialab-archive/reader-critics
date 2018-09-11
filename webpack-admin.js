@@ -16,4 +16,4 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-module.exports = require('./webpack')('admin');
+module.exports = require('./webpack.old')('admin');
