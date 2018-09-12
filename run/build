@@ -16,6 +16,8 @@ checkReturnCode()
 	fi
 }
 
+export NODE_ENV=${NODE_ENV:-"production"}
+
 echo -e "\033[1;37mBuilding App ...\033[0m"
 node_modules/.bin/tsc --pretty --diagnostics --project tsconfig.json
 checkReturnCode $?
