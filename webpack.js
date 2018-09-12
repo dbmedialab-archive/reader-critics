@@ -39,7 +39,7 @@ module.exports = (applicationPart, scssParts) => {
 			path: path.join(__dirname, 'out', 'bundle'),
 		},
 
-		mode: mode,
+		mode: 'production',
 
 		optimization: {
 			minimizer: [
