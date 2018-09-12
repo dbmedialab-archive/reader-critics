@@ -16,7 +16,4 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-module.exports = require('./webpack.old')('front', [
-	'fb',
-	'front',
-]);
+module.exports = require('./webpack')('front', ['front', 'fb']);
