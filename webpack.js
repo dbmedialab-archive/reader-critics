@@ -18,117 +18,71 @@
 
 /* eslint-disable quote-props, import/no-extraneous-dependencies */
 
-const path = require('path');
+
 const webpack = require('webpack');
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const LodashPlugin = require('lodash-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const mode = process.env.NODE_ENV;
 
-const { isArray } = require('lodash');
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
-
-const isProduction = process.env.NODE_ENV === 'production';
-
-const typescriptConfig = path.join(__dirname, 'tsconfig.json');
-
-// Loaders
-
-const BabelLoader = {
-	loader: 'babel-loader',
-	options: {
-		presets: [ '@babel/env', '@babel/react' ],
-	},
-};
-
-const TypeScriptLoader = {
-	loader: 'awesome-typescript-loader?silent=true',
-	options: {
-		configFileName: typescriptConfig,
-	},
-};
-
-// Plugins
-
-const TypeScriptPathsPlugin = new TsConfigPathsPlugin({
-	configFileName: typescriptConfig,
-	compiler: 'typescript',
-});
-
-const OrderPlugin = new webpack.optimize.OccurrenceOrderPlugin();
-
-const UglifyPlugin = new webpack.optimize.UglifyJsPlugin();
-
-// SASS Plugin, can be used multiple times
-
-const createSassModule = (sassPlugin, pattern) => ({
-	test: pattern,
-	use: sassPlugin.extract({
-		use: [{
-			loader: 'css-loader?-url',
-		}, {
-			loader: 'sass-loader',
-		}],
-		// use style-loader in development
-		fallback: 'style-loader',
-	}),
-});
-
-/**
- * Main Webpack configuration.
- * Creates a config object with project-default settings that can be extended
- * later, before finally returning the finished configuration to Webpack.
- *
- * @param applicationPart The name of the application part that to be bundled,
- *   referring to a sub directory in /src
- * @param scssParts (optional) An array of strings that are names of discrete
- *   SCSS configs inside that application part. If you want to create more than
- *   one final CSS file during a build, create for example the main files
- *   "basic.scss" and "other.scss" somewhere in the source sub directory. The
- *   array parameter would then be [ 'basic', 'other' ] and the resulting CSS
- *   files "basic.css" and "other.css" will arrive in /out/bundle
- */
 module.exports = (applicationPart, scssParts) => {
 	const webpackConfig = {
+
 		entry: {
-			app: path.join(__dirname, 'src', applicationPart, 'index.tsx'),
 		},
+
 		output: {
-			filename: `${applicationPart}.bundle.js`,
+			filename: '[name].bundle.js',
 			path: path.join(__dirname, 'out', 'bundle'),
-			publicPath: '/static',
 		},
+
+		mode: mode,
+
+		optimization: {
+			minimizer: [
+				new UglifyJsPlugin({
+					cache: true,
+					parallel: true,
+					sourceMap: false, // set to true if you want JS source maps
+				}),
+				new OptimizeCSSAssetsPlugin({}),
+			],
+		},
+
+		// Enable sourcemaps for debugging webpack's output.
+		devtool: 'source-map',
 
 		resolve: {
 			// Add '.ts' and '.tsx' as resolvable extensions.
-			extensions: [
-				'.ts',
-				'.tsx',
-				'.js',
-				'.json',
-			],
-			modules: [
-				path.join(__dirname, 'src'),
-				'node_modules',
-			],
+			extensions: ['.ts', '.tsx', '.js', '.json'],
+			modules: [path.resolve(__dirname, 'src'), 'node_modules'],
 		},
 
 		module: {
 			rules: [
+				// All files with a '.ts' or '.tsx' extension will be handled
+				// by 'awesome-typescript-loader'.
 				{
-					test: /\.tsx?$/,
-					// Mind that these loaders get executed in right-to-left order:
+					test: /\.tsx?$/, use: ['babel-loader', 'awesome-typescript-loader'],
+				},
+				{
+					test: /\.scss$/,
 					use: [
-						BabelLoader,
-						TypeScriptLoader,
+						MiniCssExtractPlugin.loader,
+						'css-loader',
+						'sass-loader',
 					],
 				},
+				// All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+				{ enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
 			],
 		},
 
 		plugins: [
-			TypeScriptPathsPlugin,
-			OrderPlugin,
+			new MiniCssExtractPlugin(),
 			new BundleAnalyzerPlugin({
 				// Can be `server`, `static` or `disabled`.
 				// In `server` mode analyzer will start HTTP server to show
@@ -167,6 +121,7 @@ module.exports = (applicationPart, scssParts) => {
 				// Log level. Can be 'info', 'warn', 'error' or 'silent'.
 				logLevel: 'info',
 			}),
+
 		],
 
 		// When importing a module whose path matches one of the following, just
@@ -174,55 +129,19 @@ module.exports = (applicationPart, scssParts) => {
 		// This is important because it allows us to avoid bundling all of our
 		// dependencies, which allows browsers to cache those libraries between builds.
 		externals: {
-			'react': 'React',
+			react: 'React',
 			'react-dom': 'ReactDOM',
 		},
 	};
 
-	// Create SASS plugins
-
-	if (scssParts === undefined) {
-		// The second parameter to the main function here can be left empty. In this
-		// case a default SASS plugin with a target name of 'applicationPart' will
-		// be created which takes in all .scss files found in the source folder
-		const sassPlugin = new ExtractTextPlugin({
-			filename: `${applicationPart}.css`,
-		});
-
-		webpackConfig.module.rules.push(createSassModule(sassPlugin, /\.scss$/));
-		webpackConfig.plugins.push(sassPlugin);
-	}
-	else if (isArray(scssParts)) {
-		scssParts.forEach((scssName) => {
-			const sassPlugin = new ExtractTextPlugin({
-				filename: `${scssName}.css`,
-			});
-
-			const scssPattern = new RegExp(`${scssName}.scss$`);
-
-			webpackConfig.module.rules.push(createSassModule(sassPlugin, scssPattern));
-			webpackConfig.plugins.push(sassPlugin);
-		});
-	}
-
-	// Enable source maps in development
-
-	if (!isProduction) {
-		webpackConfig.devtool = 'source-map';
-		/* webpackConfig.module.rules.push({
-			enforce: 'pre',
-			test: /\.js$/,
-			loader: 'source-map-loader'
-		}); */
-	}
-
-	// Production Plugins
-
-	if (isProduction) {
-		webpackConfig.plugins.push(
-			UglifyPlugin,
-		);
-	}
-
+	scssParts.forEach((item) => {
+		const jsEntry = `./src/${applicationPart}/index.tsx`;
+		const scssEntry = `./src/${applicationPart}/scss/${item}.scss`;
+		if (item === 'fb') {
+			webpackConfig.entry[item] = [scssEntry];
+		} else {
+			webpackConfig.entry[item] = [jsEntry, scssEntry];
+		}
+	});
 	return webpackConfig;
 };
