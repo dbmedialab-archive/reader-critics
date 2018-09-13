@@ -40,8 +40,8 @@ export default function() : Promise <PageTemplate> {
 		return new PageTemplate (doT.template(raw))
 			.pushStyle('/static/fb.css')
 			.pushScript(
-				'/static/react/react.js',
-				'/static/react/react-dom.js',
+				'/static/react/react.production.minjs',
+				'/static/react/react-dom.production.minjs',
 				`/static/locale/${systemLocale}.js`,
 				`//www.google.com/recaptcha/api.js?hl=${systemLocale}`,
 				'/static/front.bundle.js'

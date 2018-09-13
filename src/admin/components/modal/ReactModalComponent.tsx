@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-import Modal from 'react-modal';
+import * as Modal from 'react-modal';
 
 const customStyles = {
 	content: {
