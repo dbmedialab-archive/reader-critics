@@ -27,7 +27,7 @@ import Article from 'admin/components/article/ArticleContainer';
 import WebsitesContainer from 'admin/components/website/WebsitesContainer';
 import Suggestions from 'admin/components/suggestions/SuggestionsContainer';
 
-const Routes : React.StatelessComponent <any> =	() =>
+const Routes = () => (
 	<Switch>
 		<Route exact path="/" component={Feedbacks}/>
 		<Route path="/login" component={Login}/>
@@ -38,5 +38,7 @@ const Routes : React.StatelessComponent <any> =	() =>
 		<Route path="/articles/:id" component={Article}/>
 		<Route exact path="/websites" component={WebsitesContainer}/>
 		<Route exact path="/suggestions" component={Suggestions}/>
-	</Switch>;
+	</Switch>
+);
+
 export default Routes;
