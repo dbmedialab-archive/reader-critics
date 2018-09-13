@@ -44,8 +44,8 @@ export default function(website : Website) : Promise <PageTemplate> {
 			return new PageTemplate (doT.template(raw, templateSettings), website.locale)
 				.pushStyle('/static/fb.css')
 				.pushScript(
-					'/static/react/react.development.js',
-					'/static/react/react-dom.development.js',
+					'/static/react/react.production.js',
+					'/static/react/react-dom.production.js',
 					`/static/locale/${website.locale}.js`,
 					'/static/front.bundle.js'
 				)

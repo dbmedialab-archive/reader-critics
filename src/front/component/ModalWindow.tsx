@@ -16,8 +16,6 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-// tslint:disable max-file-line-count
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
@@ -25,7 +23,6 @@ import { IntlProvider } from 'react-intl';
 import {AlertIcon, SuccessIcon} from 'front/common/Icons';
 
 /** @type {{styles: React.CSSProperties}} */
-//const styles = { //TODO test
 	const modalWrapper : React.CSSProperties = {
 		position: 'absolute' as 'absolute',
 		top: '100px',
@@ -74,7 +71,6 @@ import {AlertIcon, SuccessIcon} from 'front/common/Icons';
 		textAlign: 'center',
 		marginTop: '40px',
 	};
-//};
 
 export interface IModalWindowProps {
 	msg: string;

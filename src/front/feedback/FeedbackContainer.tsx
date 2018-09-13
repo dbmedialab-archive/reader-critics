@@ -48,7 +48,6 @@ extends React.Component <any, FeedbackContainerState> {
 	private finishBtn : FinishButton;
 
 	constructor(props) {
-		//TODO test
 		super(props);
 		this.state = {
 			article: null,
