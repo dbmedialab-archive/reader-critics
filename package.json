@@ -92,10 +92,10 @@
 		"print-env": "0.1.2",
 		"query-string": "6.0.0",
 		"react": "^16.3.0",
-		"react-dom": "^15.6.2",
+		"react-dom": "^16.5.0",
 		"react-helmet": "5.2.0",
 		"react-intl": "2.4.0",
-		"react-modal": "2.2.4",
+		"react-modal": "^3.5.1",
 		"react-preloader-icon": "0.1.1",
 		"react-recaptcha": "2.3.10",
 		"react-redux": "5.0.7",
@@ -119,6 +119,7 @@
 		"typed-immutable-record": "0.0.6",
 		"uuid": "3.3.2",
 		"webpack": "4.18.0",
+		"webpack-dev-middleware": "^3.3.0",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
@@ -184,7 +185,7 @@
 		"nodemon": "^1.11.0",
 		"npm-run-all": "^4.0.0",
 		"selenium-server-standalone-jar": "3.14.0",
-		"webpack-dev-server": "^2.5.0"
+		"webpack-dev-server": "^3.1.8"
 	},
 	"greenkeeper": {
 		"ignore": [
