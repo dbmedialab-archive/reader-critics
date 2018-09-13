@@ -29,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 	middleware = applyMiddleware(promiseMiddleware(), thunk);
 }
 
-const MainStore:Store<any> = createStore<any>(
+const MainStore:Store<any> = createStore(
 	CombineReducer,
 	middleware
 );
