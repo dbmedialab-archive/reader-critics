@@ -38,8 +38,8 @@ export default function() : Promise <PageTemplate> {
 		return new PageTemplate (doT.template(raw))
 			.pushStyle('/static/admin.css')
 			.pushScript(
-				'/static/react/react.production.js',
-				'/static/react/react-dom.production.js',
+				'/static/react/react.production.min.js',
+				'/static/react/react-dom.production.min.js',
 				`/static/locale/${systemLocale}.js`,
 				'/static/admin.bundle.js',
 				'https://use.fontawesome.com/b15ebca61e.js'
