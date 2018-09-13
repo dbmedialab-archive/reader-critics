@@ -19,17 +19,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider} from 'react-redux';
 
 import './scss/admin.scss';
 
 import Routes from 'admin/routes/Routes';
 import MainStore from 'admin/stores/MainStore';
 
-const AppRouter : React.StatelessComponent <any> = () =>
+const AppRouter = () => (
 	<BrowserRouter basename="/admin" >
 		<Routes/>
-	</BrowserRouter>;
+	</BrowserRouter>
+);
 
 const rootContainer : HTMLElement = document.getElementById('app');
+
 ReactDOM.render(<Provider store={MainStore}><AppRouter/></Provider>, rootContainer);

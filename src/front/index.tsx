@@ -55,6 +55,7 @@ const { locale, messages } = (() => {
 if (window['ReactIntlLocaleData']) {
 	addLocaleData(window['ReactIntlLocaleData'][locale]);
 }
+console.log(React);
 
 const rootEl = (<IntlProvider locale={locale} messages={messages}>
 	{ React.createElement(apps[name]) }

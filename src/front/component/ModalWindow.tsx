@@ -24,8 +24,9 @@ import { FormattedMessage } from 'react-intl';
 import { IntlProvider } from 'react-intl';
 import {AlertIcon, SuccessIcon} from 'front/common/Icons';
 
-const styles = {
-	modalWrapper: {
+/** @type {{styles: React.CSSProperties}} */
+//const styles = { //TODO test
+	const modalWrapper : React.CSSProperties = {
 		position: 'absolute' as 'absolute',
 		top: '100px',
 		left: '50%',
@@ -40,7 +41,7 @@ const styles = {
 		marginRight: '-50%',
 		transform: 'translate(-50%, 0px)',
 	},
-	modalOverlay : {
+	modalOverlay : React.CSSProperties = {
 		position: 'fixed' as 'fixed',
 		top: '0px',
 		left: '0px',
@@ -50,7 +51,7 @@ const styles = {
 		zIndex: 101,
 		overflowY: 'auto' as 'auto',
 	},
-	modal : {
+	modal : React.CSSProperties = {
 		background: '#fff',
 		borderRadius: '3px',
 		border: 'none',
@@ -59,20 +60,21 @@ const styles = {
 		boxShadow: '0 1px 0 rgba(0, 0, 0, 0.2)',
 		width: '500px',
 	},
-	iconSection:{
-		textAlign: 'center',
+	iconSection : React.CSSProperties = {
+		position: 'relative',
 		marginBottom: '40px',
+		textAlign: 'center',
 	},
-	content:{
+	content : React.CSSProperties = {
 		textAlign: 'center',
 		color: '#777777',
 	},
-	buttonsSection:{
+	buttonsSection : React.CSSProperties = {
 		width: '100%',
 		textAlign: 'center',
 		marginTop: '40px',
-	},
-};
+	};
+//};
 
 export interface IModalWindowProps {
 	msg: string;
@@ -106,16 +108,16 @@ class ModalWindow extends React.Component <IModalWindowProps, any> {
 						: <FormattedMessage id="errors.tryLater"/>);
 		return(
 			<IntlProvider locale={locale} messages={messages}>
-				<div className="modal-overlay" style={styles.modalOverlay}>
-					<div className="modal-wrapper" style={styles.modalWrapper}>
-						<div className="modal" style={styles.modal}>
-							<div className="icon-section" style={styles.iconSection}>
+				<div className="modal-overlay" style={modalOverlay}>
+					<div className="modal-wrapper" style={modalWrapper}>
+						<div className="modal" style={modal}>
+							<div className="icon-section" style={iconSection}>
 								{icon}
 							</div>
-							<div className="content" style={styles.content}>
+							<div className="content" style={content}>
 								{shownMsg}
 							</div>
-							<div className="buttonsSection" style={styles.buttonsSection}>
+							<div className="buttonsSection" style={buttonsSection}>
 								<button	type="submit" className="button button-primary"
 									onClick={this.okBtnClick}>
 									<FormattedMessage id="button.ok"/>

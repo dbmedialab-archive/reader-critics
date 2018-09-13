@@ -47,8 +47,9 @@ extends React.Component <any, FeedbackContainerState> {
 	private readonly articleElements : ArticleElement[] = [];
 	private finishBtn : FinishButton;
 
-	constructor() {
-		super();
+	constructor(props) {
+		//TODO test
+		super(props);
 		this.state = {
 			article: null,
 			isFeedbackReady: false,

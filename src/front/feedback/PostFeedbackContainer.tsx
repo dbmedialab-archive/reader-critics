@@ -60,9 +60,9 @@ export interface FeedbackUserState {
 export default class PostFeedbackContainer
 extends React.Component <EndUserFormProps, FeedbackUserState>
 {
-
-	constructor() {
-		super();
+  //TODO test
+	constructor(props) {
+		super(props);
 		this.state = {
 			isSend: false,
 			user : {

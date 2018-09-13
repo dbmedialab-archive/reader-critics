@@ -46,7 +46,7 @@ module.exports = (applicationPart, scssParts) => {
 				new UglifyJsPlugin({
 					cache: true,
 					parallel: true,
-					sourceMap: false, // set to true if you want JS source maps
+					sourceMap: true, // set to true if you want JS source maps
 				}),
 				new OptimizeCSSAssetsPlugin({}),
 			],
@@ -129,7 +129,7 @@ module.exports = (applicationPart, scssParts) => {
 		// This is important because it allows us to avoid bundling all of our
 		// dependencies, which allows browsers to cache those libraries between builds.
 		externals: {
-			react: 'React',
+			'react': 'React',
 			'react-dom': 'ReactDOM',
 		},
 	};
