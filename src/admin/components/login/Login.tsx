@@ -26,7 +26,6 @@ import * as UserActions from 'admin/actions/UserActions';
 class Login extends React.Component <any, any> {
 	constructor(props) {
 		super(props);
-
 		this.getBack = this.getBack.bind(this);
 	}
 
