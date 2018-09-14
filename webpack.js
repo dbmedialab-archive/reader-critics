@@ -28,6 +28,21 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const mode = process.env.NODE_ENV;
 
+/**
+ * Main Webpack configuration.
+ * Creates a config object with project-default settings that can be extended
+ * later, before finally returning the finished configuration to Webpack.
+ *
+ * @param applicationPart The name of the application part that to be bundled,
+ *   referring to a sub directory in /src
+ * @param scssParts (optional) An array of strings that are names of discrete
+ *   SCSS configs inside that application part. If you want to create more than
+ *   one final CSS file during a build, create for example the main files
+ *   "basic.scss" and "other.scss" somewhere in the source sub directory. The
+ *   array parameter would then be [ 'basic', 'other' ] and the resulting CSS
+ *   files "basic.css" and "other.css" will arrive in /out/bundle
+ */
+
 module.exports = (applicationPart, scssParts) => {
 	const webpackConfig = {
 
