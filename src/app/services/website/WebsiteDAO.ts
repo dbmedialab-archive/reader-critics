@@ -63,7 +63,7 @@ export function save(website : Website) : Promise <Website> {
 	return wrapSave(new WebsiteModel(website).save());
 }
 
-export function update(name : string, data: Website) : Promise <Website> { // testing Website
+export function update(name : string, data: Website) : Promise <Website> {
 	emptyCheck(name, data);
 	const {layout, overrideSettings} = data;
 	// Get only data we expect to update

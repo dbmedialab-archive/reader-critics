@@ -22,7 +22,7 @@ import { FormattedMessage } from 'react-intl';
 import { IntlProvider } from 'react-intl';
 import {AlertIcon, SuccessIcon} from 'front/common/Icons';
 
-/** @type {{styles: React.CSSProperties}} */
+// @type {{styles: React.CSSProperties}}
 	const modalWrapper : React.CSSProperties = {
 		position: 'absolute' as 'absolute',
 		top: '100px',
