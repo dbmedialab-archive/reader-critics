@@ -133,15 +133,21 @@ module.exports = (applicationPart, scssParts) => {
 			'react-dom': 'ReactDOM',
 		},
 	};
-
-	scssParts.forEach((item) => {
+  if (scssParts && scssParts.length > 0) {
+		scssParts.forEach((item) => {
+			const jsEntry = `./src/${applicationPart}/index.tsx`;
+			const scssEntry = `./src/${applicationPart}/scss/${item}.scss`;
+			if (item === 'fb') {
+				webpackConfig.entry[item] = [scssEntry];
+			} else {
+				webpackConfig.entry[item] = [jsEntry, scssEntry];
+			}
+		});
+	} else {
 		const jsEntry = `./src/${applicationPart}/index.tsx`;
-		const scssEntry = `./src/${applicationPart}/scss/${item}.scss`;
-		if (item === 'fb') {
-			webpackConfig.entry[item] = [scssEntry];
-		} else {
-			webpackConfig.entry[item] = [jsEntry, scssEntry];
-		}
-	});
+		const scssEntry = `./src/${applicationPart}/scss/${applicationPart}.scss`;
+		webpackConfig.entry[item] = [jsEntry, scssEntry];
+	}
+
 	return webpackConfig;
 };

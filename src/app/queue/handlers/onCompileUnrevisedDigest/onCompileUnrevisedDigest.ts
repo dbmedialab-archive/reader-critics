@@ -157,13 +157,13 @@ function layoutDigestMail(
 				))
 		))
 		// Return data in an array so that the next spread() can dissociate it
-		.then((articlesWithFeedbacks: (Article&{feedbacks:Feedback[];})[]) => [
+		.then((articlesWithFeedbacks: Article[]) => [
 			articlesWithFeedbacks,
 			template,
 		]);
 	}) // spread()
 
-	.spread((articles : (Article&{feedbacks:Feedback[];})[], template : MailTemplate) => {
+	.spread((articles : Article[], template : MailTemplate) => {
 		log('Found %d articles on %s to include in the digest', articles.length, website.name);
 		return layoutDigest(website, articles, template, earliestCreated, latestCreated);
 	});
