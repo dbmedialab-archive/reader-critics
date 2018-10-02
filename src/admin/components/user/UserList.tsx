@@ -23,6 +23,7 @@ import { Transition, TransitionGroup } from 'react-transition-group';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as UsersActions from 'admin/actions/UsersActions';
+import UsersGriddle from 'admin/components/user/UsersGriddle';
 
 class UserList extends React.Component <any, any> {
 	constructor(props) {
@@ -46,6 +47,7 @@ class UserList extends React.Component <any, any> {
 		const windowName = AdminConstants.USER_MODAL_NAME;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: true});
 	}
+
 	updateErrorState(message: string = '', touched: boolean = false): void {
 		return this.setState({
 			serverError: {
@@ -54,9 +56,36 @@ class UserList extends React.Component <any, any> {
 			},
 		});
 	}
-	public render() : JSX.Element {
 
-		const content = this.props.users.map((user) =>
+	public render() : JSX.Element {
+		return (
+			<main>
+				<section className="row expanded">
+					<div className="column small-12">
+						<button type="button" onClick={this.onCreate} className="button">Create User</button>
+					</div>
+				</section>
+				<UsersGriddle/>
+			</main>
+		);
+	}
+}
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		users: state.users.getIn(['users']) || [],
+	};
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+
+
+/*
+const content = this.props.users.map((user) =>
 			<Transition key={user.ID} timeout={300}>
 				{(state) => (
 					<UserRow
@@ -70,14 +99,7 @@ class UserList extends React.Component <any, any> {
 				)}
 			</Transition>
 		);
-		return (
-			<main>
-				<section className="row expanded">
-					<div className="column small-12">
-						<button type="button" onClick={this.onCreate} className="button">Create User</button>
-					</div>
-				</section>
-				<section className="userTable">
+<section className="userTable">
 					<div className="row expanded">
 						<div className="column small-12 users-group-holder">
 							<div className="userlist-table-heading">
@@ -102,19 +124,21 @@ class UserList extends React.Component <any, any> {
 						</div>
 					</div>
 				</section>
-			</main>
-		);
-	}
-}
+					<section>
+					<Griddle data={usersGrid}>
+						<RowDefinition>
+							<ColumnDefinition id="name" title="Name"/>
+							<ColumnDefinition id="role" title="Role"/>
+							<ColumnDefinition id="email" title="Email"/>
+							<ColumnDefinition id="id" title="Actions" customComponent={ActionBar} />
+						</RowDefinition>
+					</Griddle>
+				</section>
+					const ActionBar = ({ value }) => (
+			<div>
+				<button className="button success" type="button">Edit</button>
+				<button className="button alert" type="button">Delete</button>
+			</div>);
 
-const mapStateToProps = (state, ownProps) => {
-	return {
-		users: state.users.getIn(['users']) || [],
-	};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+		const usersGrid = this.generateGridData();
+ */

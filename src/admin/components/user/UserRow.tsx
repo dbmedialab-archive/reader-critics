@@ -22,6 +22,8 @@ import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import * as UsersAction  from 'admin/actions/UsersActions';
 
+import Griddle, {ColumnDefinition, RowDefinition} from 'griddle-react';
+
 export interface UserRowState {
 	editing? : boolean;
 }
