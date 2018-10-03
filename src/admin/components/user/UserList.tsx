@@ -39,7 +39,7 @@ class UserList extends React.Component <any, any> {
 	}
 
 	componentDidMount() {
-		UsersActions.getUsers();
+		//UsersActions.getUsers();
 	}
 
 	public onCreate(e: any): void {

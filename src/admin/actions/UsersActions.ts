@@ -22,6 +22,8 @@ import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
 import Api from 'admin/services/Api';
+import * as PaginationActions from 'admin/actions/PaginationActions';
+import * as ArticlesActions from 'admin/actions/ArticlesActions';
 
 /**
  * Create || Update User in DB
@@ -41,12 +43,13 @@ export function saveUser(user) {
 /**
  * Fetch Users from DB
  */
-export function getUsers() {
+export function getUsers(page?, limit?, sort?, sortOrder?, search?) {
 	UIActions.showMainPreloader();
-	Api.getUsers()
+	Api.getUsers(page, limit, sort, sortOrder, search)
 		.then((response) => {
 			if (typeof response !== 'undefined') {
-				MainStore.dispatch(UsersActionsCreator.getUsers(response));
+				MainStore.dispatch(UsersActionsCreator.getUsers(response.users));
+				PaginationActions.setPageCount(response.pages);
 				UIActions.hideMainPreloader();
 			}
 		})

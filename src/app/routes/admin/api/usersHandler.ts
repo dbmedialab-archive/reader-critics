@@ -27,7 +27,7 @@ import {
 	okApiResponse,
 } from 'app/routes/api/apiResponse';
 
-import { userService } from 'app/services';
+import {userService} from 'app/services';
 import { UserRole } from 'base/UserRole';
 
 import emptyCheck from 'app/util/emptyCheck';
@@ -52,9 +52,21 @@ export function create (requ: Request, resp: Response) : void {
  */
 export function list (requ : Request, resp : Response) : void {
 	const params = pagination(requ);
-	userService.getRange(params.skip, params.limit)
+	const {skip, limit, sort} = params;
+	const {search} = requ.query;
+	/*userService.getRange(params.skip, params.limit)
 	.then(users => bulkResponse(resp, users))
-	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
+	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));*/
+	Promise.all([
+		userService.getRange(skip, limit, sort),
+		userService.getAmount(),
+	])
+		.then(data => {
+			const [users, amount] = data;
+			const pages = Math.ceil(amount / limit);
+			return okApiResponse(resp, {users, pages});
+		})
+		.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
 
 export function editorsList (requ : Request, resp : Response) : void {
