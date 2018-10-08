@@ -48,3 +48,6 @@ This is the completely rewritten version of _Leserkritikk_, made with [TypeScrip
 **Copyright © 2017-18 DBmedialab / Aller Media AS** (Oslo, Norway)
 
 Licensed under the [GNU General Public License (GPL) v3](LICENSE.txt).
+ this.updateUsersList
+  this.updateUsersList
+   this.updateUsersList

@@ -18,15 +18,12 @@
 import * as React from 'react';
 import AdminConstants from 'admin/constants/AdminConstants';
 import {defaultLimit} from 'app/services/BasicPersistingService';
-
 import * as UIActions from 'admin/actions/UIActions';
 import * as UsersActions from 'admin/actions/UsersActions';
 import User from 'base/User';
-
 import Griddle, {ColumnDefinition, RowDefinition} from 'griddle-react';
 import * as PaginationActions from 'admin/actions/PaginationActions';
 import {connect} from 'react-redux';
-
 import SearchFilter from 'admin/components/common/filter/Filter';
 import EnhancedActionBar from 'admin/components/common/action/ActionBar';
 
@@ -49,7 +46,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		this.onSort = this.onSort.bind(this);
 		this.onFilterChange = this.onFilterChange.bind(this);
 		this.clear = this.clear.bind(this);
-
 		this.state = {
 			page: 1,
 			limit: defaultLimit,
@@ -136,11 +132,9 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			};
 		});
 	}
-
 	render() {
 		const {page, limit} = this.state;
 		const {pageCount} = this.props;
-
 		const usersGrid = this.generateGridData();
 		return (
 			<div>
@@ -157,11 +151,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 					</div>
 				</div>
 				<Griddle data={usersGrid}
-					pageProperties={{
-						currentPage: page,
-						pageSize: limit,
-						recordCount: limit * pageCount,
-					}}
+					pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
 					events={this.events}
 					components={{
 						Filter: () => <span />,
