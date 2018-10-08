@@ -17,6 +17,7 @@
 //
 
 import UserConstants from 'admin/constants/UserConstants';
+import AdminConstants from 'admin/constants/AdminConstants';
 
 export interface IAction {
 	type: any;
@@ -48,6 +49,13 @@ export function deleteUser(payload): IAction {
 export function editUser(payload): IAction {
 	return {
 		type: UserConstants.EDIT_USER,
+		payload,
+	};
+}
+
+export function clear(payload?): IAction {
+	return {
+		type: UserConstants.USER_LIST_CLEAR,
 		payload,
 	};
 }

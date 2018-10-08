@@ -54,12 +54,10 @@ export function list (requ : Request, resp : Response) : void {
 	const params = pagination(requ);
 	const {skip, limit, sort} = params;
 	const {search} = requ.query;
-	/*userService.getRange(params.skip, params.limit)
-	.then(users => bulkResponse(resp, users))
-	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));*/
+	//TODO search
 	Promise.all([
-		userService.getRange(skip, limit, sort),
-		userService.getAmount(),
+		userService.getRange(skip, limit, sort, search),
+		userService.getAmount(search),
 	])
 		.then(data => {
 			const [users, amount] = data;

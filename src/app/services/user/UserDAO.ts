@@ -68,7 +68,8 @@ export function get(name : String, email? : String) : Promise <User> {
 export function getRange(
 	skip : number = defaultSkip,
 	limit : number = defaultLimit,
-	sort : {} = { name: 1 }
+	sort : {} = { name: 1 },
+	search: string
 ) : Promise <User[]>
 {
 	return wrapFind <UserDocument, User> (

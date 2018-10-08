@@ -21,6 +21,7 @@ import * as Immutable from 'seamless-immutable';
 import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 import UserConstants from 'admin/constants/UserConstants';
 import * as mergers from 'seamless-immutable-mergers';
+import AdminConstants from 'admin/constants/AdminConstants';
 
 const mergeConfig = {
 	merger: mergers.updatingByIdArrayMerger,
@@ -37,6 +38,10 @@ const initialState = Immutable.from <UsersInit> ({
 
 function receiveUsers(action, state) {
 	return state.merge({users: action.payload}, {deep: true});
+}
+
+function clear(action, state) {
+	return initialState;
 }
 
 function deleteUser(action, state) {
@@ -84,6 +89,8 @@ function UsersReducer(state: User[] = initialState, action: UsersActionsCreator.
 			return saveUser(action, state);
 		case UserConstants.ADD_USER:
 			return addUser(action, state);
+		case UserConstants.USER_LIST_CLEAR:
+			return clear(action, state);
 		default:
 			return state;
 	}

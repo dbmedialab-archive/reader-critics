@@ -17,12 +17,10 @@
 //
 import * as React from 'react';
 import { connect } from 'react-redux';
-import UserRow from 'admin/components/user/UserRow';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
-import * as UsersActions from 'admin/actions/UsersActions';
 import UsersGriddle from 'admin/components/user/UsersGriddle';
 
 class UserList extends React.Component <any, any> {
@@ -82,63 +80,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
-
-
-/*
-const content = this.props.users.map((user) =>
-			<Transition key={user.ID} timeout={300}>
-				{(state) => (
-					<UserRow
-						key={user.ID}
-						ID={user.ID}
-						email={user.email}
-						role={user.role}
-						name={user.name}
-						state={state}
-					/>
-				)}
-			</Transition>
-		);
-<section className="userTable">
-					<div className="row expanded">
-						<div className="column small-12 users-group-holder">
-							<div className="userlist-table-heading">
-								<div className="row expanded user-row table-header">
-									<div className="column small-3 medium-3">
-										<b>Name</b>
-									</div>
-									<div className="column small-2 medium-2">
-										<b>Role</b>
-									</div>
-									<div className="column small-5 medium-4">
-										<b>Email</b>
-									</div>
-									<div className="column small-2 medium-3">
-										<b>Edit</b>
-									</div>
-								</div>
-								<TransitionGroup>
-									{content}
-								</TransitionGroup>
-							</div>
-						</div>
-					</div>
-				</section>
-					<section>
-					<Griddle data={usersGrid}>
-						<RowDefinition>
-							<ColumnDefinition id="name" title="Name"/>
-							<ColumnDefinition id="role" title="Role"/>
-							<ColumnDefinition id="email" title="Email"/>
-							<ColumnDefinition id="id" title="Actions" customComponent={ActionBar} />
-						</RowDefinition>
-					</Griddle>
-				</section>
-					const ActionBar = ({ value }) => (
-			<div>
-				<button className="button success" type="button">Edit</button>
-				<button className="button alert" type="button">Delete</button>
-			</div>);
-
-		const usersGrid = this.generateGridData();
- */

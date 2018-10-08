@@ -24,6 +24,7 @@ import * as UIActions from 'admin/actions/UIActions';
 import Api from 'admin/services/Api';
 import * as PaginationActions from 'admin/actions/PaginationActions';
 import * as ArticlesActions from 'admin/actions/ArticlesActions';
+import * as ArticlesActionsCreator from 'admin/actions/ArticlesActionsCreator';
 
 /**
  * Create || Update User in DB
@@ -88,5 +89,11 @@ export function deleteUser(user) {
 export function addUser(user) {
 	MainStore.dispatch(
 		UsersActionsCreator.addUser(user)
+	);
+}
+
+export function clear() {
+	MainStore.dispatch(
+		UsersActionsCreator.clear()
 	);
 }

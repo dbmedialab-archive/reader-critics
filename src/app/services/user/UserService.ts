@@ -12,12 +12,8 @@ interface UserService extends BasicPersistingService <User> {
 	doDelete(id: string);
 
 	get(username : string, email? : string|null) : Promise <User>;
-	getRangeWithSearch(skip: number,
-											limit: number,
-											sort: Object,
-											search?: string
-	): Promise <UserDocument[]>
-	getAmount() : Promise <number>;
+	getRange(skip?: number, limit?: number, sort?: Object, search?: string): Promise <UserDocument[]>
+	getAmount(search?: string) : Promise <number>;
 	getByEmail(email : string) : Promise <User>;
 	getByID(id : string) : Promise <User>;
 	getByRole(whatRoles : UserRole[]) : Promise <User[]>;

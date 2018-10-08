@@ -26,8 +26,6 @@ import AddUserModalComponent from 'admin/components/modal/AddUserModalComponent'
 
 import AdminConstants from 'admin/constants/AdminConstants';
 
-import * as PaginationActions from 'admin/actions/PaginationActions';
-
 const Users : React.StatelessComponent <any> =
 	() => <Layout pageTitle="Users">
 		<UserList  />

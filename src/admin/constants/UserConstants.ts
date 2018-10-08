@@ -24,6 +24,7 @@ const UserConstants = keykey([
 	'SAVE_USER',
 	'DELETE_USER',
 	'USERS_RECEIVED',
+	'USER_LIST_CLEAR',
 ]);
 
 export default UserConstants;
