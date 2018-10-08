@@ -51,3 +51,10 @@ export function editUser(payload): IAction {
 		payload,
 	};
 }
+
+export function clear(payload?): IAction {
+	return {
+		type: UserConstants.USER_LIST_CLEAR,
+		payload,
+	};
+}
