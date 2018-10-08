@@ -32,7 +32,7 @@ const Api = {
 	 * @type {(data: any) => Promise<any>}
 	 */
 	saveUser:(data: any): Promise<any> => {
-		const userId = data.id || '';
+		const userId = data.ID || '';
 		const method = userId.length ? 'PUT' : 'POST';
 		return sendRequest(`/admin/api/users/${userId}`, method, data);
 	},
@@ -75,7 +75,20 @@ const Api = {
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */
-	getUsers: () => sendRequest('/admin/api/users', 'GET'),
+	//getUsers: () => sendRequest('/admin/api/users', 'GET'),
+	getUsers: (
+		page?: number,
+		limit?: number,
+		sort?: string,
+		sortOrder?: number,
+		search?: string
+	) => {
+		const query = new URLSearchParams(getFormattedPagination(page, limit, sort, sortOrder));
+		if (search) {
+			query.append('search', search);
+		}
+		return sendRequest(`/admin/api/users?${query}`, 'GET');
+	},
 
 	getEditors: () => sendRequest('/admin/api/users/editors', 'GET'),
 

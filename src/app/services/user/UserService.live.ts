@@ -46,6 +46,8 @@ import {
 	validateAndUpdate
 } from './common/crud';
 
+import getAmount from 'app/services/user/common/getAmount';
+
 const service : UserService
 	= createPersistingService <UserDocument, UserService,	User> (
 		UserModel, {
@@ -53,6 +55,7 @@ const service : UserService
 			doDelete,
 			findOrInsert,
 			get,
+			getAmount,
 			getByEmail,
 			getByID,
 			getByRole,
