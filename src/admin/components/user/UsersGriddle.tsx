@@ -51,7 +51,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 
 		this.state = {
 			page: 1,
-			limit: 5,
+			limit: defaultLimit,
 			sort: '',
 			sortOrder: 1,
 			search: '',

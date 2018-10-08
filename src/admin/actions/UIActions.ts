@@ -43,10 +43,8 @@ export function initModalWindows(windowNames) {
 		UIActionsCreator.initModalWindows({windowNames: windowNames})
 	);
 }
+
 export function modalWindowsChangeState(windowName, options) {
-	console.log('actions')
-	console.log(windowName);
-	console.log(options);
 	MainStore.dispatch(
 		UIActionsCreator.modalWindowsChangeState({windowName: windowName, options: options})
 	);

@@ -21,7 +21,6 @@ import * as Immutable from 'seamless-immutable';
 import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 import UserConstants from 'admin/constants/UserConstants';
 import * as mergers from 'seamless-immutable-mergers';
-import AdminConstants from 'admin/constants/AdminConstants';
 
 const mergeConfig = {
 	merger: mergers.updatingByIdArrayMerger,

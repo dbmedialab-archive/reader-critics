@@ -27,7 +27,7 @@ import {
 	okApiResponse,
 } from 'app/routes/api/apiResponse';
 
-import {userService} from 'app/services';
+import { userService } from 'app/services';
 import { UserRole } from 'base/UserRole';
 
 import emptyCheck from 'app/util/emptyCheck';
