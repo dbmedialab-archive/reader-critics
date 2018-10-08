@@ -54,7 +54,6 @@ export function list (requ : Request, resp : Response) : void {
 	const params = pagination(requ);
 	const {skip, limit, sort} = params;
 	const {search} = requ.query;
-	//TODO search
 	Promise.all([
 		userService.getRange(skip, limit, sort, search),
 		userService.getAmount(search),
