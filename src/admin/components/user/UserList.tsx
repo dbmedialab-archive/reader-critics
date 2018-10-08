@@ -36,10 +36,6 @@ class UserList extends React.Component <any, any> {
 		this.onCreate = this.onCreate.bind(this);
 	}
 
-	componentDidMount() {
-		//UsersActions.getUsers();
-	}
-
 	public onCreate(e: any): void {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
