@@ -48,7 +48,6 @@ export default class SearchFilter extends React.Component <IFilter, any> {
 	render () {
 		const {search, placeholder = 'Search...', buttonText = 'Search'} = this.props;
 		return (
-			<div>
 				<div className="filter-container">
 					<div className="row">
 						<div className="column small-12 medium-6">
@@ -74,7 +73,6 @@ export default class SearchFilter extends React.Component <IFilter, any> {
 						</div>
 					</div>
 				</div>
-			</div>
 		);
 	}
 }

@@ -72,15 +72,24 @@ export function getRange(
 	search: string
 ) : Promise <User[]>
 {
+	const match = {
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
+	};
+	if (search) {
+		match['$or'] = [
+			{'name': new RegExp(`${search}`, 'i')},
+			{'email': new RegExp(`${search}`, 'i')},
+			{'role': new RegExp(`${search}`, 'i')},
+		];
+	}
 	return wrapFind <UserDocument, User> (
-		UserModel.find({
-			name: {
-				'$ne': '',
-			},
-			email: {
-				'$ne': '',
-			},
-		}).sort(sort).skip(skip).limit(limit)
+		UserModel.find(match
+		).sort(sort).skip(skip).limit(limit)
 	);
 }
 

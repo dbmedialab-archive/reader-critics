@@ -44,6 +44,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		this.updateUsersList = this.updateUsersList.bind(this);
 		this.nextHandler = this.nextHandler.bind(this);
 		this.prevHandler = this.prevHandler.bind(this);
+		this.getPageHandler = this.getPageHandler.bind(this);
 		this.generateGridData = this.generateGridData.bind(this);
 		this.onSort = this.onSort.bind(this);
 		this.onFilterChange = this.onFilterChange.bind(this);
@@ -60,6 +61,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			onNext: this.nextHandler,
 			onPrevious: this.prevHandler,
 			onSort: this.onSort,
+			onGetPage: this.getPageHandler,
 		};
 	}
 	public onEdit(e: any) :void {
@@ -107,6 +109,9 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		let {page} = this.state;
 		this.setState({page: --page}, this.updateUsersList);
 	}
+	getPageHandler(page: number) {
+		this.setState({page}, this.updateUsersList);
+	}
 	onFilterChange(search: string) {
 		this.setState({search});
 	}
@@ -118,7 +123,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		}, this.updateUsersList);
 	}
 	clear() {
-		this.setState({search: ''});
+		this.setState({search: ''}, this.updateUsersList);
 	}
 	generateGridData() {
 		const {users} = this.props;
@@ -138,7 +143,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 
 		const usersGrid = this.generateGridData();
 		return (
-			<section>
+			<div>
 				<div className="small-12">
 					<div className="row expanded">
 						<div className="small-12 large-7">
@@ -158,6 +163,10 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 						recordCount: limit * pageCount,
 					}}
 					events={this.events}
+					components={{
+						Filter: () => <span />,
+						SettingsToggle: () => <span />,
+					}}
 				>
 					<RowDefinition>
 						<ColumnDefinition id="name" title="Name"/>
@@ -172,7 +181,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 						/>
 					</RowDefinition>
 				</Griddle>
-			</section>
+			</div>
 		);
 	}
 }

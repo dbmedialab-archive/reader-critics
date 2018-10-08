@@ -113,7 +113,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 		this.setState({search});
 	}
 	clear() {
-		this.setState({search: ''});
+		this.setState({search: ''}, this.updateArticlesList);
 	}
 	generateGridData() {
 		const {articles} = this.props;
