@@ -41,9 +41,6 @@ const enhancedWithRowData = connect((state, props: IActionBar) => {
 	};
 });
 
-export interface IAction {
-	onEdit: () => void;
-}
 const ActionBar = ({ value, griddleKey, rowData, onEdit, onDestroy }) => (
 	<div>
 		<button
