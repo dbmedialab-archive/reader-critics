@@ -45,6 +45,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		this.generateGridData = this.generateGridData.bind(this);
 		this.onSort = this.onSort.bind(this);
 		this.onFilterChange = this.onFilterChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 		this.clear = this.clear.bind(this);
 		this.state = {
 			page: 1,
@@ -52,6 +53,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			sort: '',
 			sortOrder: 1,
 			search: '',
+			filterTouched: false,
 		};
 		this.events = {
 			onNext: this.nextHandler,
@@ -97,6 +99,13 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		const {page, limit, sort, sortOrder, search} = this.state;
 		UsersActions.getUsers(page, limit, sort, sortOrder, search);
 	}
+	onSubmit() {
+		const {filterTouched} = this.state;
+		filterTouched ? (
+			this.setState({page:1}, this.updateUsersList),
+			this.setState({filterTouched: false})
+		) : this.updateUsersList();
+	}
 	nextHandler() {
 		let {page} = this.state;
 		this.setState({page: ++page}, this.updateUsersList);
@@ -109,7 +118,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		this.setState({page}, this.updateUsersList);
 	}
 	onFilterChange(search: string) {
-		this.setState({search});
+		this.setState({search:search, filterTouched:true});
 	}
 	onSort(sortProps) {
 		const {id, sortAscending = false} = sortProps;
@@ -142,7 +151,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 					<div className="row expanded">
 						<div className="small-12 large-7">
 							<SearchFilter
-								onSubmit={this.updateUsersList}
+								onSubmit={this.onSubmit}
 								onChange={this.onFilterChange}
 								search={this.state.search}
 								clear={this.clear}
