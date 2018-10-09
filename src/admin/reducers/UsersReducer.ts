@@ -39,6 +39,10 @@ function receiveUsers(action, state) {
 	return state.merge({users: action.payload}, {deep: true});
 }
 
+function clear(action, state) {
+	return initialState;
+}
+
 function deleteUser(action, state) {
 	const users = state.getIn(['users']);
 	const userId = action.payload;
@@ -84,6 +88,8 @@ function UsersReducer(state: User[] = initialState, action: UsersActionsCreator.
 			return saveUser(action, state);
 		case UserConstants.ADD_USER:
 			return addUser(action, state);
+		case UserConstants.USER_LIST_CLEAR:
+			return clear(action, state);
 		default:
 			return state;
 	}

@@ -127,11 +127,11 @@ class AddUserModalComponent extends React.Component <any, any> {
 		const {
 			email: {value: email},
 			password: {value: password},
-			userId: id,
+			userId: ID,
 			name: {value: name},
 			role: {value: role},
 		} = this.props;
-		const data = {email, password, id, name, role};
+		const data = {email, password, ID, name, role};
 		UsersAction.saveUser(data);
 	}
 
