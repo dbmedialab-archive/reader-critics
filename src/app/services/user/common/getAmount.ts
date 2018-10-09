@@ -17,6 +17,21 @@
 
 import {UserModel} from 'app/db/models';
 
-export default function () : Promise <number> {
-	return UserModel.count({}).then(amount => amount);
+export default function (search:string) : Promise <number> {
+	const match = {
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
+	};
+	if (search) {
+		match['$or'] = [
+			{'name': new RegExp(`${search}`, 'i')},
+			{'email': new RegExp(`${search}`, 'i')},
+			{'role': new RegExp(`${search}`, 'i')},
+		];
+	}
+	return UserModel.count(match).then(amount => amount);
 }

@@ -48,7 +48,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		this.clear = this.clear.bind(this);
 		this.state = {
 			page: 1,
-			limit: defaultLimit,
+			limit: 3,
 			sort: '',
 			sortOrder: 1,
 			search: '',
