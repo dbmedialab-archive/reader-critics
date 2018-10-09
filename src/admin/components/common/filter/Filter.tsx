@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 
-export interface IArticlesFilter {
+export interface IFilter {
 	onSubmit: () => void;
 	onChange: (s: string) => void;
 	search: string;
@@ -27,8 +27,8 @@ export interface IArticlesFilter {
 	clear: () => void;
 }
 
-export default class ArticlesFilter extends React.Component <IArticlesFilter, any> {
-	constructor (props: IArticlesFilter) {
+export default class SearchFilter extends React.Component <IFilter, any> {
+	constructor (props: IFilter) {
 		super(props);
 		this.onFilterChange = this.onFilterChange.bind(this);
 		this.onKeyUp = this.onKeyUp.bind(this);
@@ -48,7 +48,6 @@ export default class ArticlesFilter extends React.Component <IArticlesFilter, an
 	render () {
 		const {search, placeholder = 'Search...', buttonText = 'Search'} = this.props;
 		return (
-			<div>
 				<div className="filter-container">
 					<div className="row">
 						<div className="column small-12 medium-6">
@@ -74,7 +73,6 @@ export default class ArticlesFilter extends React.Component <IArticlesFilter, an
 						</div>
 					</div>
 				</div>
-			</div>
 		);
 	}
 }
