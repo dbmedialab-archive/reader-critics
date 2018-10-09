@@ -42,6 +42,8 @@ import emptyCheck from 'app/util/emptyCheck';
 
 import { NotFoundError } from 'app/util/errors';
 
+import { getFilterCondition } from 'app/services/user/lib/getFilterCondition';
+
 export function checkPassword(user : User, password : string) : Promise <boolean> {
 	return UserModel.findOne({
 		name: user.name,
@@ -72,24 +74,9 @@ export function getRange(
 	search: string
 ) : Promise <User[]>
 {
-	const match = {
-		name: {
-			'$ne': '',
-		},
-		email: {
-			'$ne': '',
-		},
-	};
-	if (search) {
-		match['$or'] = [
-			{'name': new RegExp(`${search}`, 'i')},
-			{'email': new RegExp(`${search}`, 'i')},
-			{'role': new RegExp(`${search}`, 'i')},
-		];
-	}
+	const match = getFilterCondition(search);
 	return wrapFind <UserDocument, User> (
-		UserModel.find(match
-		).sort(sort).skip(skip).limit(limit)
+		UserModel.find(match).sort(sort).skip(skip).limit(limit)
 	);
 }
 

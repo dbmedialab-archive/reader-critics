@@ -14,11 +14,23 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
+//
 
-import { UserModel } from 'app/db/models';
-import { getFilterCondition } from 'app/services/user/lib/getFilterCondition';
-
-export default function (search:string) : Promise <number> {
-	const match = getFilterCondition(search);
-	return UserModel.count(match).then(amount => amount);
+export function getFilterCondition (search: string): any {
+	const match = {
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
+	};
+	if (search) {
+		match['$or'] = [
+			{'name': new RegExp(`${search}`, 'i')},
+			{'email': new RegExp(`${search}`, 'i')},
+			{'role': new RegExp(`${search}`, 'i')},
+		];
+	}
+	return match;
 }
