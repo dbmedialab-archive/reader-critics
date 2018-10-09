@@ -17,12 +17,11 @@
 //
 import * as React from 'react';
 import { connect } from 'react-redux';
-import UserRow from 'admin/components/user/UserRow';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as UIActions from 'admin/actions/UIActions';
-import * as UsersActions from 'admin/actions/UsersActions';
+import UsersGriddle from 'admin/components/user/UsersGriddle';
 
 class UserList extends React.Component <any, any> {
 	constructor(props) {
@@ -37,15 +36,12 @@ class UserList extends React.Component <any, any> {
 		this.onCreate = this.onCreate.bind(this);
 	}
 
-	componentDidMount() {
-		UsersActions.getUsers();
-	}
-
 	public onCreate(e: any): void {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: true});
 	}
+
 	updateErrorState(message: string = '', touched: boolean = false): void {
 		return this.setState({
 			serverError: {
@@ -54,22 +50,8 @@ class UserList extends React.Component <any, any> {
 			},
 		});
 	}
-	public render() : JSX.Element {
 
-		const content = this.props.users.map((user) =>
-			<Transition key={user.ID} timeout={300}>
-				{(state) => (
-					<UserRow
-						key={user.ID}
-						ID={user.ID}
-						email={user.email}
-						role={user.role}
-						name={user.name}
-						state={state}
-					/>
-				)}
-			</Transition>
-		);
+	public render() : JSX.Element {
 		return (
 			<main>
 				<section className="row expanded">
@@ -77,31 +59,7 @@ class UserList extends React.Component <any, any> {
 						<button type="button" onClick={this.onCreate} className="button">Create User</button>
 					</div>
 				</section>
-				<section className="userTable">
-					<div className="row expanded">
-						<div className="column small-12 users-group-holder">
-							<div className="userlist-table-heading">
-								<div className="row expanded user-row table-header">
-									<div className="column small-3 medium-3">
-										<b>Name</b>
-									</div>
-									<div className="column small-2 medium-2">
-										<b>Role</b>
-									</div>
-									<div className="column small-5 medium-4">
-										<b>Email</b>
-									</div>
-									<div className="column small-2 medium-3">
-										<b>Edit</b>
-									</div>
-								</div>
-								<TransitionGroup>
-									{content}
-								</TransitionGroup>
-							</div>
-						</div>
-					</div>
-				</section>
+				<UsersGriddle/>
 			</main>
 		);
 	}

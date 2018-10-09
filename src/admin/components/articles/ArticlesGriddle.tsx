@@ -24,7 +24,7 @@ import Article from 'base/Article';
 import {defaultLimit} from 'app/services/BasicPersistingService';
 import Griddle, {ColumnDefinition, RowDefinition} from 'griddle-react';
 import {connect} from 'react-redux';
-import ArticlesFilter from 'admin/components/articles/ArticlesFilter';
+import SearchFilter from 'admin/components/common/filter/Filter';
 
 export interface IArticlesGriddle {
 	articleSelectHandler: (id: number) => void;
@@ -113,7 +113,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 		this.setState({search});
 	}
 	clear() {
-		this.setState({search: ''});
+		this.setState({search: ''}, this.updateArticlesList);
 	}
 	generateGridData() {
 		const {articles} = this.props;
@@ -142,7 +142,7 @@ class ArticlesGriddle extends React.Component <IArticlesGriddle, any> {
 				<div className="small-12">
 					<div className="row expanded">
 						<div className="small-12 large-7">
-							<ArticlesFilter
+							<SearchFilter
 								onSubmit={this.updateArticlesList}
 								onChange={this.onFilterChange}
 								search={this.state.search}
