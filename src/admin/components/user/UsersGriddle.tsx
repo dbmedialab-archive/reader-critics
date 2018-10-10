@@ -163,7 +163,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 					<Griddle data={usersGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
 						events={this.events}
-						//useGriddleStyles={false}
 						components={{
 							Filter: () => <span />,
 							SettingsToggle: () => <span />,
