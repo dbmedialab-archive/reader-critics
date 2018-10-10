@@ -147,7 +147,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		const usersGrid = this.generateGridData();
 		return (
 			<div>
-				<div className="small-12">
 					<div className="row expanded">
 						<div className="small-12 large-7">
 							<SearchFilter
@@ -158,7 +157,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 							/>
 						</div>
 					</div>
-				</div>
 				<div className="users-group-holder">
 					<Griddle data={usersGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
