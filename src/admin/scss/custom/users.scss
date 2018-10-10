@@ -1,4 +1,4 @@
-.users-group-holder {
+/*.users-group-holder {
 	.userlist-table-heading, .userlist-table-row {
 		background: #CCCBCB;
 		padding: 0 .9375rem;
@@ -37,5 +37,32 @@
 
 	&.entering, &.entered {
 		opacity: 1;
+	}
+}
+*/
+
+.users-group-holder {
+	.gridle-table-heading, .griddle-table-body{
+		//background: #CCCBCB;
+		//padding: 0.9375rem;
+	}
+	.griddle-row {
+		//background: #fff;
+		//padding-bottom: 3px;
+		font-size: 1.1rem;
+		color: #777;
+	}
+	.griddle-table-heading {
+		font-weight: bold;
+		font-style: italic;
+		text-transform: uppercase;
+		font-size: 1.2rem;
+		color: #111;
+	}
+	.griddle-cell{
+		padding:0.5rem 0.625rem;
+			button {
+				margin: 0;
+			}
 	}
 }

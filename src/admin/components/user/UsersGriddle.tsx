@@ -159,27 +159,30 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 						</div>
 					</div>
 				</div>
-				<Griddle data={usersGrid}
-					pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
-					events={this.events}
-					components={{
-						Filter: () => <span />,
-						SettingsToggle: () => <span />,
-					}}
-				>
-					<RowDefinition>
-						<ColumnDefinition id="name" title="Name"/>
-						<ColumnDefinition id="role" title="Role"/>
-						<ColumnDefinition id="email" title="Email"/>
-						<ColumnDefinition id="id" title="id" visible={false}/>
-						<ColumnDefinition id="actions"
-							title="Actions"
-							onEdit={this.onEdit}
-							onDestroy={this.onDestroy}
-							customComponent={EnhancedActionBar}
-						/>
-					</RowDefinition>
-				</Griddle>
+				<div className="users-group-holder">
+					<Griddle data={usersGrid}
+						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
+						events={this.events}
+						//useGriddleStyles={false}
+						components={{
+							Filter: () => <span />,
+							SettingsToggle: () => <span />,
+						}}
+					>
+						<RowDefinition>
+							<ColumnDefinition id="name" title="Name"/>
+							<ColumnDefinition id="role" title="Role"/>
+							<ColumnDefinition id="email" title="Email"/>
+							<ColumnDefinition id="id" title="id" visible={false}/>
+							<ColumnDefinition id="actions"
+								title="Actions"
+								onEdit={this.onEdit}
+								onDestroy={this.onDestroy}
+								customComponent={EnhancedActionBar}
+							/>
+						</RowDefinition>
+					</Griddle>
+				</div>
 			</div>
 		);
 	}
