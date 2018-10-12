@@ -81,7 +81,7 @@ describe('Parser implementations', function() {
 			// Test if the parser service returns a factory for the current website
 			it('resolves the parser factory', () => (
 				parserService.getParserFor(website)
-				.then(factory => {assertParserFactory(factory)})
+				.then(factory => {assertParserFactory(factory);})
 			));
 
 			// Parse and deep-compare all articles
