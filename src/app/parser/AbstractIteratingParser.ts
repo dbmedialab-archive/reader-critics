@@ -102,82 +102,22 @@ abstract class AbstractIteratingParser extends ExtendedIteratingItems {
 	private iterateParsedElements() : void {
 
 		while (this.parsedItems.length > 0) {
-			//console.log('********** first **********')
 			const item = this.parsedItems.shift();
-			//console.log(item.name);
 			for (const key in ArticleItemType) {
 				if (ArticleItemType.hasOwnProperty(key)) {
-					//console.log('---- second ----')
 					const isFuncName = `is${key}`;
 					const createFuncName = `create${key}`;
-
-					/*this[isFuncName](item, this.select) && isFuncName.includes('Title') ?
-						this.pushNewTitleItem(this[createFuncName](item, this.select)) :
-					this[isFuncName](item, this.select) ?
-						this.pushNewContentItem(this[createFuncName](item, this.select)) :
-						this.checkOtherVariants(item, this.select);*/
-
 					if (this[isFuncName](item, this.select) && isFuncName.includes('Title')){
 						this.pushNewTitleItem(this[createFuncName](item, this.select));
 						break;
 					} else if (this[isFuncName](item, this.select)) {
-						//console.log('           -- true', isFuncName)
 						this.pushNewContentItem(this[createFuncName](item, this.select));
 						break;
 					} else {
 						this.checkOtherVariants(item, this.select);
 					}
 				}
-
 			}
-
-			/*if (this.isMainTitle(item, this.select)) {
-				this.pushNewTitleItem(this.createMainTitle(item, this.select));
-			}
-			else if (this.isSubTitle(item, this.select)) {
-				this.pushNewTitleItem(this.createSubTitle(item, this.select));
-			}
-			else if (this.isLeadIn(item, this.select)) {
-				this.pushNewContentItem(this.createLeadIn(item, this.select));
-			}
-			else if (this.isFeaturedImage(item, this.select)) {
-				console.log('---is featured----')
-				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
-			}
-			else if (this.isSubHeading(item, this.select)) {
-				this.pushNewContentItem(this.createSubHeading(item, this.select));
-			}
-			else if (this.isParagraph(item, this.select)) {
-				this.pushNewContentItem(this.createParagraph(item, this.select));
-			}
-			else if (this.isFigure(item, this.select)) {
-				console.log('---is fig ---')
-				this.pushNewContentItem(this.createFigure(item, this.select));
-			}
-			else if (this.isLink(item, this.select)) {
-				this.pushNewContentItem(this.createLink(item, this.select));
-			}
-			else if (this.isSectionTitle(item, this.select)) {
-				this.pushNewContentItem(this.createSectionTitle(item, this.select));
-			}
-			else if (this.isSectionParagraph(item, this.select)) {
-				this.pushNewContentItem(this.createSectionParagraph(item, this.select));
-			}
-			else if (this.isTestResultTitle(item, this.select)) {
-				this.pushNewContentItem(this.createTestResultTitle(item, this.select));
-			}
-			else if (this.isTestResultQuote(item, this.select)) {
-				this.pushNewContentItem(this.createTestResultQuote(item, this.select));
-			}
-			else if (this.isTestResultPros(item, this.select)) {
-				this.pushNewContentItem(this.createTestResultPros(item, this.select));
-			}
-			else if (this.isTestResultCons(item, this.select)) {
-				this.pushNewContentItem(this.createTestResultCons(item, this.select));
-			}
-			else {
-				this.checkOtherVariants(item, this.select);
-			}*/
 		}
 	}
 

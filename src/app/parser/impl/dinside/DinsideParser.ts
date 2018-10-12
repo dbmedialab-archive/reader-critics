@@ -24,7 +24,6 @@ export default class DinsideParser extends AbstractLabradorParser {
 	protected getParsedElementNames() : string[] {
 		const parsedElementsNames: string[] = super.getParsedElementNames();
 		parsedElementsNames.push('blockquote');
-		console.log(parsedElementsNames)
 		return parsedElementsNames;
 	}
 
@@ -32,16 +31,7 @@ export default class DinsideParser extends AbstractLabradorParser {
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		//const $element = select(item.elem);
-		//const withinSection = $element.parents('aside').length === 1;
-		//const isAnnounce = $element.parents('aside').hasClass('article-announce') ;
-
 		return false;
-			// item.name === 'h5'
-			//&& item.css.includes('section-title')
-			//&& withinSection
-			//&& !isAnnounce
-			//&& item.text.length > 0;
 	}
 	protected isTestResultQuote(
 		item : IteratingParserItem,
