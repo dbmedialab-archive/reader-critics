@@ -28,8 +28,14 @@ export enum ArticleItemType {
 	Paragraph = 'paragraph',
 	Figure = 'figure',
 	Link = 'link',
+
 	SectionTitle = 'sectionTitle',
 	SectionParagraph = 'sectionParagraph',
+
+	TestResultTitle = 'testResultTitle',
+	TestResultQuote = 'testResultQuote',
+	TestResultPros = 'testResultPros',
+	TestResultCons = 'testResultCons',
 }
 
 export default ArticleItemType;

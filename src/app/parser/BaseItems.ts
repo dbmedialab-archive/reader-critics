@@ -118,6 +118,31 @@ abstract class BaseItems {
 		});
 	}
 
+	protected createTestResultTitleEl(sectionTitle : string) : ArticleItem {
+		const text = clean(sectionTitle);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultTitle, {
+			text,
+		});
+	}
+	protected createTestResultQuoteEl(sectionTitle : string) : ArticleItem {
+		const text = clean(sectionTitle);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultQuote, {
+			text,
+		});
+	}
+	protected createTestResultProsEl(sectionTitle : string) : ArticleItem {
+		const text = clean(sectionTitle);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultPros, {
+			text,
+		});
+	}
+	protected createTestResultConsEl(sectionTitle : string) : ArticleItem {
+		const text = clean(sectionTitle);
+		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultCons, {
+			text,
+		});
+	}
+
 }
 
 export default BaseItems;

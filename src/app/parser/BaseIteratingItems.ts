@@ -90,21 +90,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	) : boolean {
 		return false;
 	}
-
-	protected isSectionTitle(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
-	}
-
-	protected isSectionParagraph(
-		item : IteratingParserItem,
-		select : Cheerio
-	) : boolean {
-		return false;
-	}
-
 	// Default implementations of methods that create an ArticleItem from a
 	// (complex) parsed item of the iterator. Most item types should work fine
 	// with these implementations as long as getting to their actual content is
@@ -150,21 +135,6 @@ abstract class BaseIteratingItems extends AbstractParser implements Parser {
 	) : ArticleItem {
 		return this.createLinkEl(fromItem.text, fromItem.text);  // TODO split data
 	}
-
-	protected createSectionParagraph(
-		fromItem : IteratingParserItem,
-		select : Cheerio
-	) : ArticleItem {
-		return this.createSectionParagraphEl(fromItem.text);
-	}
-
-	protected createSectionTitle(
-		fromItem : IteratingParserItem,
-		select : Cheerio
-	) : ArticleItem {
-		return this.createSectionTitleEl(fromItem.text);
-	}
-
 	// The more advanced item types
 	private getFigureData(
 		fromItem : IteratingParserItem,

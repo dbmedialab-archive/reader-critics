@@ -57,20 +57,19 @@ describe('Parser resolver', function() {
 			assert.include(parsers, 'Dagbladet Parser');
 			assert.include(parsers, 'Generic Parser');
 			assert.include(parsers, 'Sol Parser');
+			assert.include(parsers, 'Dinside Parser');
 		});
 	});
 });
 
 describe('Parser implementations', function() {
 	const inputFiles = collectArticleFiles();
-
 	Object.keys(mapSitesToParser).sort().forEach(hostName => {
 		const parserName = mapSitesToParser[hostName];
-
 		describe(parserName, function() {
 			let website : Website;
 
-			this.slow(5000);
+			this.slow(15000);
 
 			// Get a (mock) website object
 			before(function() {
@@ -82,7 +81,7 @@ describe('Parser implementations', function() {
 			// Test if the parser service returns a factory for the current website
 			it('resolves the parser factory', () => (
 				parserService.getParserFor(website)
-				.then(factory => assertParserFactory(factory))
+				.then(factory => {assertParserFactory(factory)})
 			));
 
 			// Parse and deep-compare all articles

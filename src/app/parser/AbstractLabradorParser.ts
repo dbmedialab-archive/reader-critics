@@ -127,6 +127,7 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		const withinSection = $element.parents('aside').length === 1;
 
 		return item.name === 'p'
+			//&& select(item.elem).attr('itemprop') !== 'description'
 			&& withinArticle
 			&& !withinSection
 			&& !isAnnounce
