@@ -15,16 +15,22 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
-import * as keykey from 'keykey';
 
-const UserConstants = keykey([
-	'CREATE_USER',
-	'ADD_USER',
-	'EDIT_USER',
-	'SAVE_USER',
-	'DELETE_USER',
-	'USERS_RECEIVED',
-	'USER_LIST_CLEAR',
-]);
-
-export default UserConstants;
+export function getFilterCondition (search: string): any {
+	const match = {
+		name: {
+			'$ne': '',
+		},
+		email: {
+			'$ne': '',
+		},
+	};
+	if (search) {
+		match['$or'] = [
+			{'name': new RegExp(`${search}`, 'i')},
+			{'email': new RegExp(`${search}`, 'i')},
+			{'role': new RegExp(`${search}`, 'i')},
+		];
+	}
+	return match;
+}

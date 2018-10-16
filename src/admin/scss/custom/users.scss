@@ -1,41 +1,21 @@
 .users-group-holder {
-	.userlist-table-heading, .userlist-table-row {
-		background: #CCCBCB;
-		padding: 0 .9375rem;
+	.griddle-row {
+		font-size: 1.1rem;
+		color: #777;
 	}
 
-	.userlist-table-heading {
+	.griddle-table-heading {
 		font-weight: bold;
 		font-style: italic;
 		text-transform: uppercase;
-	}
-}
-
-.user-row {
-	background: #fff;
-	padding-bottom: 3px;
-	font-size: .9rem;
-	color: #777;
-
-	&.table-header {
-		font-size: 1rem;
+		font-size: 1.2rem;
 		color: #111;
 	}
 
-	> div {
-		padding: 10px;
-	}
+	.griddle-cell {
 
-	.column, .columns {
-		background: #eee;
-	}
-}
-
-.remove-enter-row {
-	transition: opacity .25s ease-in-out;
-	opacity: 0;
-
-	&.entering, &.entered {
-		opacity: 1;
+		button {
+			margin: 0;
+		}
 	}
 }

@@ -14,17 +14,11 @@
 //
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
-//
-import * as keykey from 'keykey';
 
-const UserConstants = keykey([
-	'CREATE_USER',
-	'ADD_USER',
-	'EDIT_USER',
-	'SAVE_USER',
-	'DELETE_USER',
-	'USERS_RECEIVED',
-	'USER_LIST_CLEAR',
-]);
+import { UserModel } from 'app/db/models';
+import { getFilterCondition } from 'app/services/user/lib/getFilterCondition';
 
-export default UserConstants;
+export default function (search:string) : Promise <number> {
+	const match = getFilterCondition(search);
+	return UserModel.count(match).then(amount => amount);
+}
