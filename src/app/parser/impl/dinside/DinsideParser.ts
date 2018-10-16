@@ -24,32 +24,71 @@ export default class DinsideParser extends AbstractLabradorParser {
 	protected getParsedElementNames() : string[] {
 		const parsedElementsNames: string[] = super.getParsedElementNames();
 		parsedElementsNames.push('blockquote');
+
 		return parsedElementsNames;
+	}
+
+	protected elementWithinReview($element){
+		return $element
+			.parents('.review-box.culture-review-box')
+			.parent()
+			.attr('itemprop') === 'itemReviewed';
+	}
+
+	protected elementPrisjakt($element){
+		return $element.parents('aside').parent().attr('itemprop') === 'itemReviewed';
 	}
 
 	protected isTestResultTitle(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return false;
+		const $element = select(item.elem);
+
+		return  $element.hasClass('review-name') && this.elementWithinReview($element);
 	}
+
 	protected isTestResultQuote(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return false;
+		return item.name === 'blockquote' && this.elementWithinReview(select(item.elem));
 	}
+
 	protected isTestResultPros(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return false;
+		const $element = select(item.elem);
+
+		return item.name === 'p'
+			&& $element.attr('itemprop') === 'description'
+			&& $element.hasClass('review-pros')
+			&& this.elementWithinReview($element);
 	}
+
 	protected isTestResultCons(
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
-		return false;
+		const $element = select(item.elem);
+
+		return item.name === 'p'
+			&& $element.attr('itemprop') === 'description'
+			&& $element.hasClass('review-cons')
+			&& this.elementWithinReview($element);
+	}
+
+	protected isParagraph(
+		item : IteratingParserItem,
+		select : Cheerio
+	) : boolean {
+		const $element = select(item.elem);
+		const isParagraphSuper: boolean = super.isParagraph(item, select);
+
+		return isParagraphSuper
+			&& !this.elementPrisjakt($element)
+			&& !this.elementWithinReview($element);
 	}
 
 }

@@ -98,7 +98,7 @@ module.exports = (applicationPart, scssParts) => {
 
 		plugins: [
 			new MiniCssExtractPlugin(),
-			new BundleAnalyzerPlugin({
+			/*new BundleAnalyzerPlugin({
 				// Can be `server`, `static` or `disabled`.
 				// In `server` mode analyzer will start HTTP server to show
 				// bundle report.
@@ -135,7 +135,7 @@ module.exports = (applicationPart, scssParts) => {
 				statsOptions: null,
 				// Log level. Can be 'info', 'warn', 'error' or 'silent'.
 				logLevel: 'info',
-			}),
+			}),*/
 
 		],
 
@@ -148,7 +148,7 @@ module.exports = (applicationPart, scssParts) => {
 			'react-dom': 'ReactDOM',
 		},
 	};
-  if (scssParts && scssParts.length > 0) {
+	if (scssParts && scssParts.length > 0) {
 		scssParts.forEach((item) => {
 			const jsEntry = `./src/${applicationPart}/index.tsx`;
 			const scssEntry = `./src/${applicationPart}/scss/${item}.scss`;
