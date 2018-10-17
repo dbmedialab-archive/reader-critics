@@ -21,7 +21,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ArticleElement } from '../ArticleElement';
 
-export default class ParagraphElement extends ArticleElement {
+export default class TestResultConsElement extends ArticleElement {
 
 	protected getContentElement() : JSX.Element {
 		return <div>
