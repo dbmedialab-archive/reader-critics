@@ -161,7 +161,7 @@ module.exports = (applicationPart, scssParts) => {
 	} else {
 		const jsEntry = `./src/${applicationPart}/index.tsx`;
 		const scssEntry = `./src/${applicationPart}/scss/${applicationPart}.scss`;
-		webpackConfig.entry[item] = [jsEntry, scssEntry];
+		webpackConfig.entry[applicationPart] = [jsEntry, scssEntry];
 	}
 
 	return webpackConfig;
