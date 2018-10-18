@@ -102,7 +102,7 @@ extends React.Component <ArticleElementProp, ArticleElementState>
 			edited: this.state.edited,
 		});
 
-		return <article id={`article-el-${this.props.item.order}`} className={css}>
+		return <article id={`article-el-${this.props.item.order.item}`} className={css}>
 				<header>
 					{ this.getContentElement() }
 				</header>

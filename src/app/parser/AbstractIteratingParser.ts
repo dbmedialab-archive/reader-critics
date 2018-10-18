@@ -22,11 +22,12 @@ import * as Cheerio from 'cheerio';
 import * as CheerioPlugin from './util/CheerioPlugin';
 
 import ArticleItem from 'base/ArticleItem';
+import ArticleItemType from 'base/ArticleItemType';
 
-import BaseIteratingItems from 'app/parser/BaseIteratingItems';
+import ExtendedIteratingItems from 'app/parser/ExtendedIteratingItems';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-abstract class AbstractIteratingParser extends BaseIteratingItems {
+abstract class AbstractIteratingParser extends ExtendedIteratingItems {
 
 	protected select : Cheerio;
 
@@ -102,43 +103,19 @@ abstract class AbstractIteratingParser extends BaseIteratingItems {
 
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
-
-			if (this.isMainTitle(item, this.select)) {
-				this.pushNewTitleItem(this.createMainTitle(item, this.select));
-			}
-			else if (this.isSubTitle(item, this.select)) {
-				this.pushNewTitleItem(this.createSubTitle(item, this.select));
-			}
-
-			else if (this.isLeadIn(item, this.select)) {
-				this.pushNewContentItem(this.createLeadIn(item, this.select));
-			}
-			else if (this.isFeaturedImage(item, this.select)) {
-				this.pushNewContentItem(this.createFeaturedImage(item, this.select));
-			}
-			else if (this.isSubHeading(item, this.select)) {
-				this.pushNewContentItem(this.createSubHeading(item, this.select));
-			}
-			else if (this.isParagraph(item, this.select)) {
-				this.pushNewContentItem(this.createParagraph(item, this.select));
-			}
-			else if (this.isFigure(item, this.select)) {
-				this.pushNewContentItem(this.createFigure(item, this.select));
-			}
-			else if (this.isLink(item, this.select)) {
-				this.pushNewContentItem(this.createLink(item, this.select));
-			}
-
-			else if (this.isSectionTitle(item, this.select)) {
-				this.pushNewContentItem(this.createSectionTitle(item, this.select));
-			}
-
-			else if (this.isSectionParagraph(item, this.select)) {
-				this.pushNewContentItem(this.createSectionParagraph(item, this.select));
-			}
-
-			else {
-				this.checkOtherVariants(item, this.select);
+			for (const key in ArticleItemType) {
+				if (!ArticleItemType.hasOwnProperty(key)) { break; }
+				const isFuncName = `is${key}`;
+				const createFuncName = `create${key}`;
+				if (this[isFuncName](item, this.select) && isFuncName.includes('Title')){
+					this.pushNewTitleItem(this[createFuncName](item, this.select));
+					break;
+				} else if (this[isFuncName](item, this.select)) {
+					this.pushNewContentItem(this[createFuncName](item, this.select));
+					break;
+				} else {
+					this.checkOtherVariants(item, this.select);
+				}
 			}
 		}
 	}
