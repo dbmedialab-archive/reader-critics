@@ -18,6 +18,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import WebsitesRow from 'admin/components/website/WebsitesRow';
+import WebsitesGriddle from 'admin/components/website/WebsitesGriddle';
 import { Transition, TransitionGroup } from 'react-transition-group';
 import AdminConstants from 'admin/constants/AdminConstants';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
@@ -98,6 +99,7 @@ class WebsitesList extends React.Component <any, any> {
 						</div>
 					</div>
 				</section>
+				<WebsitesGriddle/>
 			</main>
 		);
 	}

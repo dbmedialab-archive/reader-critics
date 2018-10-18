@@ -104,18 +104,17 @@ abstract class AbstractIteratingParser extends ExtendedIteratingItems {
 		while (this.parsedItems.length > 0) {
 			const item = this.parsedItems.shift();
 			for (const key in ArticleItemType) {
-				if (ArticleItemType.hasOwnProperty(key)) {
-					const isFuncName = `is${key}`;
-					const createFuncName = `create${key}`;
-					if (this[isFuncName](item, this.select) && isFuncName.includes('Title')){
-						this.pushNewTitleItem(this[createFuncName](item, this.select));
-						break;
-					} else if (this[isFuncName](item, this.select)) {
-						this.pushNewContentItem(this[createFuncName](item, this.select));
-						break;
-					} else {
-						this.checkOtherVariants(item, this.select);
-					}
+				if (!ArticleItemType.hasOwnProperty(key)) { break; }
+				const isFuncName = `is${key}`;
+				const createFuncName = `create${key}`;
+				if (this[isFuncName](item, this.select) && isFuncName.includes('Title')){
+					this.pushNewTitleItem(this[createFuncName](item, this.select));
+					break;
+				} else if (this[isFuncName](item, this.select)) {
+					this.pushNewContentItem(this[createFuncName](item, this.select));
+					break;
+				} else {
+					this.checkOtherVariants(item, this.select);
 				}
 			}
 		}

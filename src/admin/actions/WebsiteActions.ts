@@ -30,7 +30,7 @@ export function setWebsiteList(websites: Array<Website>) {
 	);
 }
 
-export function getWebsiteList() {
+export function getWebsiteList(page?, limit?, sort?, sortOrder?, search?) {
 	UIActions.showMainPreloader();
 	Api.getWebsiteList()
 		.then((resp)=>{
@@ -51,6 +51,10 @@ export function setWebsiteOptions(options: any) {
 	MainStore.dispatch(
 		WebsiteActionsCreator.setWebsiteOptions(options)
 	);
+}
+
+export function deleteWebsite(website){
+	console.log('delete');
 }
 
 export function updateWebsite(data: any) {
