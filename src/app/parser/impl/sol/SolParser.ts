@@ -31,19 +31,9 @@ export default class SolParser extends AbstractLabradorParser {
 	// Implement AbstractParser
 
 	protected getParsedElementNames() : string[] {
-		return [
-			'h1',
-			'h2',
-			'h3',
-			'p',
-			'figure',
-			'ul',
-			'ol',
-			'li',
-			'h5',
-		];
+		const parsedElementsNames: string[] = super.getParsedElementNames();
+		return parsedElementsNames.concat(['h3', 'li']);
 	}
-
 	protected parseVersion() : Promise <string> {
 		const version = getOpenGraphModifiedTime(this.select);
 

@@ -31,6 +31,10 @@ import SubHeadingElement from './article-el/SubHeadingElement';
 import SubTitleElement from './article-el/SubTitleElement';
 import SectionTitleElement from './article-el/SectionTitleElement';
 import SectionParagraphElement from './article-el/SectionParagraphElement';
+import TestResultTitleElement from './article-el/TestResultTitleElement';
+import TestResultQuoteElement from './article-el/TestResultQuoteElement';
+import TestResultProsElement from './article-el/TestResultProsElement';
+import TestResultConsElement from './article-el/TestResultConsElement';
 
 const elTypes = Object.freeze({
 	[ArticleItemType.FeaturedImage]: FeaturedImageElement,
@@ -43,6 +47,10 @@ const elTypes = Object.freeze({
 	[ArticleItemType.SubTitle]: SubTitleElement,
 	[ArticleItemType.SectionParagraph]: SectionParagraphElement,
 	[ArticleItemType.SectionTitle]: SectionTitleElement,
+	[ArticleItemType.TestResultTitle]: TestResultTitleElement,
+	[ArticleItemType.TestResultQuote]: TestResultQuoteElement,
+	[ArticleItemType.TestResultPros]: TestResultProsElement,
+	[ArticleItemType.TestResultCons]: TestResultConsElement,
 
 });
 

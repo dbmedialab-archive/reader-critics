@@ -71,6 +71,22 @@
 					en: 'Text fact box #{order}',
 					nb: 'Tekst faktaboks #{order}',
 			},
+			testResultTitle: {
+					en: 'Title test result box',
+					nb: 'Tittel testresultat boks',
+			},
+			testResultQuote: {
+					en: 'Quote test result box',
+					nb: 'Sitat testresultat boks',
+			},
+			testResultPros: {
+					en: 'Pros test result box #{order}',
+					nb: 'Pros testresultat boks #{order}',
+			},
+			testResultCons: {
+					en: 'Cons test result box #{order}',
+					nb: 'Cons testresultat boks #{order}',
+			},
 		},
 		errors: {
 			tryLater: {
