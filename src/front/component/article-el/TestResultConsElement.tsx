@@ -16,26 +16,27 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-export enum ArticleItemType {
+import * as React from 'react';
 
-	MainTitle = 'title',
-	SubTitle = 'subtitle',
+import { FormattedMessage } from 'react-intl';
+import { ArticleElement } from '../ArticleElement';
 
-	LeadIn = 'lead',
-	FeaturedImage = 'featured',
+export default class TestResultConsElement extends ArticleElement {
 
-	SubHeading = 'subhead',
-	Paragraph = 'paragraph',
-	Figure = 'figure',
-	Link = 'link',
+	protected getContentElement() : JSX.Element {
+		return <div>
+			<label>
+				<FormattedMessage
+					id="article-el.testResultCons"
+					values={{
+						order: this.props.item.order.type,
+					}}
+				/>
+			</label>
+			<p hidden={this.state.editing}>
+				{ this.textDiff(this.props.item.originalText, this.state.text) }
+			</p>
+		</div>;
+	}
 
-	SectionTitle = 'sectionTitle',
-	SectionParagraph = 'sectionParagraph',
-
-	TestResultTitle = 'testResultTitle',
-	TestResultQuote = 'testResultQuote',
-	TestResultPros = 'testResultPros',
-	TestResultCons = 'testResultCons',
 }
-
-export default ArticleItemType;

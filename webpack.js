@@ -148,7 +148,7 @@ module.exports = (applicationPart, scssParts) => {
 			'react-dom': 'ReactDOM',
 		},
 	};
-  if (scssParts && scssParts.length > 0) {
+	if (scssParts && scssParts.length > 0) {
 		scssParts.forEach((item) => {
 			const jsEntry = `./src/${applicationPart}/index.tsx`;
 			const scssEntry = `./src/${applicationPart}/scss/${item}.scss`;
@@ -161,7 +161,7 @@ module.exports = (applicationPart, scssParts) => {
 	} else {
 		const jsEntry = `./src/${applicationPart}/index.tsx`;
 		const scssEntry = `./src/${applicationPart}/scss/${applicationPart}.scss`;
-		webpackConfig.entry[item] = [jsEntry, scssEntry];
+		webpackConfig.entry[applicationPart] = [jsEntry, scssEntry];
 	}
 
 	return webpackConfig;

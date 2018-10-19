@@ -35,7 +35,6 @@ export function identify(articleURL : ArticleURL|string) : Promise <Website> {
 
 	const url = new URL(isString(articleURL) ? articleURL : articleURL.href);
 	const hostname = url.hostname;
-
 	return initialPromise()
 	.then(() => websiteCache.filter(thatSite => thatSite.hosts.includes(hostname)))
 	.then(websites => websites[0]);

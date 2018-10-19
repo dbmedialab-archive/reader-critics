@@ -55,6 +55,14 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 			'h5',
 		];
 	}
+	protected elementWithinSection($element){
+		return $element.parents('aside').hasClass('has-section-title');
+	}
+
+	protected elementAnnounce($element) {
+		return  $element.hasClass('text-darkgrey')
+			|| $element.parents('aside').hasClass('article-announce');
+	}
 
 	protected isMainTitle(
 		item : IteratingParserItem,
@@ -82,8 +90,11 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		item : IteratingParserItem,
 		select : Cheerio
 	) : boolean {
+		const $element = select(item.elem);
+
 		return item.name === 'p'
-			&& (select(item.elem).attr('itemprop') === 'description')
+			&& $element.attr('itemprop') === 'description'
+			&& $element.hasClass('standfirst')
 			&& item.text.length > 0;
 	}
 
@@ -122,14 +133,12 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		select : Cheerio
 	) : boolean {
 		const $element = select(item.elem);
-		const isAnnounce = $element.hasClass('text-darkgrey');
 		const withinArticle = $element.parents('article').length === 1;
-		const withinSection = $element.parents('aside').length === 1;
 
 		return item.name === 'p'
 			&& withinArticle
-			&& !withinSection
-			&& !isAnnounce
+			&& !this.elementWithinSection($element)
+			&& !this.elementAnnounce($element)
 			&& item.text.length > 0;
 	}
 
@@ -150,12 +159,10 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		select : Cheerio
 	) : boolean {
 		const $element = select(item.elem);
-		const withinSection = $element.parents('aside').length === 1;
-		const isAnnounce = $element.parents('aside').hasClass('article-announce');
 
 		return (item.name === 'p' || item.name === 'ul' ||  item.name === 'ol' )
-			&& withinSection
-			&& !isAnnounce
+			&& this.elementWithinSection($element)
+			&& !this.elementAnnounce($element)
 			&& item.text.length > 0;
 	}
 
@@ -164,13 +171,11 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 		select : Cheerio
 	) : boolean {
 		const $element = select(item.elem);
-		const withinSection = $element.parents('aside').length === 1;
-		const isAnnounce = $element.parents('aside').hasClass('article-announce') ;
 
 		return item.name === 'h5'
 			&& item.css.includes('section-title')
-			&& withinSection
-			&& !isAnnounce
+			&& this.elementWithinSection($element)
+			&& !this.elementAnnounce($element)
 			&& item.text.length > 0;
 	}
 

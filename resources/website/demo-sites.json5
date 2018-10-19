@@ -63,10 +63,11 @@
 	{
 		name: "dinside.no",
 		hosts: [
+		  "dinside.no",
 			"www.dinside.no"
 		],
 		locale: "nb",
-		parserClass: 'Labrador Parser',
+		parserClass: "Dinside Parser",
 		layout: {
 			templates: {
 			},
