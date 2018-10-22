@@ -29,7 +29,8 @@ class WebsitesList extends React.Component <any, any> {
 		super(props);
 
 		this.updateErrorState = this.updateErrorState.bind(this);
-		this.updateModalWindowData = this.updateModalWindowData.bind(this);
+		this.onCreate = this.onCreate.bind(this);
+		//this.updateModalWindowData = this.updateModalWindowData.bind(this);
 	}
 
 	updateErrorState(message: string = '', touched: boolean = false): void {
@@ -41,17 +42,23 @@ class WebsitesList extends React.Component <any, any> {
 		});
 	}
 
-	updateModalWindowData() {
+	public onCreate(e: any): void {
+		e.preventDefault();
+		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
+		UIActions.modalWindowsChangeState(windowName, {isOpen: true});
+	}
+
+	/*updateModalWindowData() {
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
 		const websiteRes = {
 			isOpen: true,
 		};
 		WebsiteActions.setSelectedWebsite(null);
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
-	}
+	}*/
 
 	public render() : JSX.Element {
-		const content = this.props.websites.map((website) =>
+		/*const content = this.props.websites.map((website) =>
 			<Transition key={website.ID} timeout={300}>
 				{(state) => (
 					<WebsitesRow
@@ -61,9 +68,34 @@ class WebsitesList extends React.Component <any, any> {
 					/>
 				)}
 			</Transition>
-		);
+		);*/
 		return (
 			<main>
+				<section className="row expanded">
+					<div className="column small-12">
+						<button type="button" onClick={this.onCreate} className="button">Create Website</button>
+					</div>
+				</section>
+				<WebsitesGriddle/>
+			</main>
+		);
+	}
+}
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		websites: state.website.getIn(['websites']) || [],
+	};
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WebsitesList);
+
+/*
+<main>
 				<section className="row expanded">
 					<div className="column small-12">
 						<button className="button" onClick={this.updateModalWindowData}>
@@ -101,18 +133,4 @@ class WebsitesList extends React.Component <any, any> {
 				</section>
 				<WebsitesGriddle/>
 			</main>
-		);
-	}
-}
-
-const mapStateToProps = (state, ownProps) => {
-	return {
-		websites: state.website.getIn(['websites']) || [],
-	};
-};
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {};
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(WebsitesList);
+ */

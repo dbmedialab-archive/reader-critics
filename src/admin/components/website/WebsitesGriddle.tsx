@@ -50,8 +50,6 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		this.prevHandler = this.prevHandler.bind(this);
 		this.getPageHandler = this.getPageHandler.bind(this);
 		this.generateGridData = this.generateGridData.bind(this);
-		this.onSort = this.onSort.bind(this);
-		this.onFilterChange = this.onFilterChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.clear = this.clear.bind(this);
 		this.updateModalWindowData = this.updateModalWindowData.bind(this);
@@ -66,29 +64,27 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		this.events = {
 			onNext: this.nextHandler,
 			onPrevious: this.prevHandler,
-			onSort: this.onSort,
 			onGetPage: this.getPageHandler,
 		};
 	}
-
-	updateModalWindowData(item) {
+	updateModalWindowData(website) {
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
 		const websiteRes = {
 			isOpen: true,
-			input: {},
-			websiteId: item.i || null,
 		};
-		websiteRes.input['name'] = { value: item.name };
-		websiteRes.input['hosts'] = { value: item.hosts };
-		websiteRes.input['chiefeditors'] = { value: item.chiefeditors };
-		websiteRes.input['parser'] = { value: item.parser };
-		//WebsiteActions.setSelectedWebsite(website);
+		WebsiteActions.setSelectedWebsite(website as Website);
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
 
 	public onEdit(e: any) :void {
 		e.preventDefault();
-		return this.updateModalWindowData(e.target.dataset.item);
+		console.log(e.target.dataset.id);
+		const websiteId = e.target.dataset.id;
+		const {websites} = this.props;
+		const website = websites.filter( item => {
+			return website ? item.ID = websiteId: null;
+		});
+		return this.updateModalWindowData(website as Website);
 	}
 	public onDestroy(e: any) :void {
 		e.preventDefault();
@@ -130,50 +126,37 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 	getPageHandler(page: number) {
 		this.setState({page}, this.updateWebsitesList);
 	}
-	onFilterChange(search: string) {
-		this.setState({search:search, filterTouched:true});
-	}
-	onSort(sortProps) {
-		const {id, sortAscending = false} = sortProps;
-		this.setState({
-			sort: id,
-			sortOrder: sortAscending ? -1 : 1,
-		}, this.updateWebsitesList);
-	}
+
 	clear() {
 		this.setState({search: ''}, this.updateWebsitesList);
 	}
 	generateGridData() {
 		const {websites} = this.props;
+
 		return websites.map((website: Website) => {
+			console.log(website);
+
 			const chiefEditors = website.chiefEditors.map(editor => {
 				return editor.name;
 			});
+			console.log(chiefEditors);
+
 			return {
 				name: website.name,
 				hosts: website.hosts.join(', '),
 				chiefEditors: chiefEditors.join(', '),
-				praser: website.parserClass,
+				parser: website.parserClass,
 				id: website.ID,
 			};
 		});
 	}
+
 	render() {
 		const {page, limit} = this.state;
 		const {pageCount} = this.props;
 		const websitesGrid = this.generateGridData();
 		return (
 			<div>
-				<div className="row expanded">
-					<div className="small-12 large-7">
-						<SearchFilter
-							onSubmit={this.onSubmit}
-							onChange={this.onFilterChange}
-							search={this.state.search}
-							clear={this.clear}
-						/>
-					</div>
-				</div>
 				<div className="users-group-holder">
 					<Griddle data={websitesGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
@@ -186,7 +169,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 						<RowDefinition>
 							<ColumnDefinition id="name" title="Name"/>
 							<ColumnDefinition id="hosts" title="Hosts"/>
-							<ColumnDefinition id="chiefeditors" title="ChiefEditors"/>
+							<ColumnDefinition id="chiefEditors" title="ChiefEditors"/>
 							<ColumnDefinition id="parser" title="Parser"/>
 							<ColumnDefinition id="id" title="id" visible={false}/>
 							<ColumnDefinition id="actions"
@@ -215,3 +198,30 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebsitesGriddle);
+
+/*
+	<div className="row expanded">
+					<div className="small-12 large-7">
+						<SearchFilter
+							onSubmit={this.onSubmit}
+							onChange={this.onFilterChange}
+							search={this.state.search}
+							clear={this.clear}
+						/>
+					</div>
+				</div>
+
+				onFilterChange(search: string) {
+		this.setState({search:search, filterTouched:true});
+	}
+	onSort(sortProps) {
+		const {id, sortAscending = false} = sortProps;
+		this.setState({
+			sort: id,
+			sortOrder: sortAscending ? -1 : 1,
+		}, this.updateWebsitesList);
+	}
+	this.onSort = this.onSort.bind(this);
+		this.onFilterChange = this.onFilterChange.bind(this);
+			onSort: this.onSort,
+ */

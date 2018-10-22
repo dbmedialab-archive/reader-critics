@@ -45,6 +45,7 @@ const ActionBar = ({ value, griddleKey, rowData, onEdit, onDestroy }) => (
 	<div>
 		<button
 			onClick={onEdit}
+			data-id={rowData.id}
 			data-item={JSON.stringify(rowData)}
 			className="button success" type="button">
 			Edit
