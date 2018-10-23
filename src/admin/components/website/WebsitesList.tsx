@@ -45,7 +45,11 @@ class WebsitesList extends React.Component <any, any> {
 	public onCreate(e: any): void {
 		e.preventDefault();
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
-		UIActions.modalWindowsChangeState(windowName, {isOpen: true});
+		const websiteRes = {
+			isOpen: true,
+		};
+		UIActions.modalWindowsChangeState(windowName, websiteRes);
+		WebsiteActions.setSelectedWebsite(null);
 	}
 
 	/*updateModalWindowData() {

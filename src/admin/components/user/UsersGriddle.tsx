@@ -62,21 +62,33 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			onGetPage: this.getPageHandler,
 		};
 	}
-	public onEdit(e: any) :void {
-		e.preventDefault();
+
+	updateModalWindowData(user: User) {
 		const windowName = AdminConstants.USER_MODAL_NAME;
-		const item = JSON.parse(e.target.dataset.item);
 		const userRes = {
 			input: {},
 			isOpen: true,
-			userId: item.id || null,
+			userId: user.ID || null,
 		};
-		userRes.input['name'] = { value: item.name };
-		userRes.input['email'] = { value: item.email };
-		userRes.input['role'] = { value: item.role };
-		userRes.input['password'] = { value: item.password };
+		userRes.input['name'] = { value: user.name };
+		userRes.input['email'] = { value: user.email };
+		userRes.input['role'] = { value: user.role };
+		userRes.input['password'] = { value: user.password };
 		UIActions.modalWindowsChangeState(windowName, userRes);
 	}
+
+	public onEdit(e: any) :void {
+		e.preventDefault();
+		const { users } = this.props;
+		const userId = e.target.dataset.id;
+		const user = users.filter( item => {
+			return item ? item.ID === userId: null;
+		});
+		if (user){
+			this.updateModalWindowData(user[0]);
+		}
+	}
+
 	public onDestroy(e: any) :void {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
