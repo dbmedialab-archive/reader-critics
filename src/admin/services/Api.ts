@@ -72,6 +72,14 @@ const Api = {
 	},
 
 	/**
+	 * Delete Website
+	 * @type {(websiteId: any) => Promise<any>}
+	 */
+
+	deleteWebsite:(websiteId: any): Promise<any> =>
+		sendRequest(`/admin/api/websites/${websiteId}`, 'DELETE'),
+
+	/**
 	 * Get users
 	 * @type {() => Promise<any>}
 	 */

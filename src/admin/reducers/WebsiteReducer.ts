@@ -98,6 +98,21 @@ function updateWebsitesList(action, state) {
 	}
 }
 
+function deleteWebsite(action, state) {
+	console.log('reducer delete site' );
+	/*const users = state.getIn(['users']);
+	const userId = action.payload;
+	const newUsers = Immutable.flatMap(users, (value) => {
+		if (value.ID === userId) {
+			return [];
+		} else {
+			return value;
+		}
+	});
+	return Immutable.set(state, '', newUsers);*/
+	return state;
+}
+
 function WebsiteReducer(
 	state: IWebsiteState = initialState,
 	action: WebsiteActionsCreator.TAction
@@ -116,6 +131,8 @@ function WebsiteReducer(
 			return updateWebsitesList(action, state);
 		case AdminConstants.WEBSITE_UPDATED:
 			return updateWebsitesList(action, state);
+		case AdminConstants.WEBSITE_DELETED:
+			return deleteWebsite(action, state);
 		default:
 			return state;
 	}

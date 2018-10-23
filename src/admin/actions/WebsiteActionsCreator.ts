@@ -17,6 +17,7 @@
 //
 
 import AdminConstants from 'admin/constants/AdminConstants';
+import UserConstants from 'admin/constants/UserConstants';
 
 export interface IAction {
 		type: any;
@@ -64,6 +65,13 @@ export function addCreatedWebsite(payload): IAction {
 export function updateWebsiteList(payload): IAction {
 	return {
 		type: AdminConstants.WEBSITE_UPDATED,
+		payload,
+	};
+}
+
+export function deleteWebsite(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_DELETED,
 		payload,
 	};
 }

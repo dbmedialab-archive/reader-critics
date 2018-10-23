@@ -22,6 +22,7 @@ import Api from 'admin/services/Api';
 import * as WebsiteActions from './WebsiteActions';
 import * as WebsiteActionsCreator from 'admin/actions/WebsiteActionsCreator';
 import * as UIActions from 'admin/actions/UIActions';
+import * as UsersActionsCreator from 'admin/actions/UsersActionsCreator';
 
 export function setWebsiteList(websites: Array<Website>) {
 	UIActions.hideMainPreloader();
@@ -53,8 +54,21 @@ export function setWebsiteOptions(options: any) {
 	);
 }
 
-export function deleteWebsite(website){
-	console.log('delete');
+//export function deleteWebsite(website){
+	//console.log('delete');
+//}
+
+/**
+ * Delete Website by ID
+ * @param website
+ */
+export function deleteWebsite(website) {
+	UIActions.showMainPreloader();
+	Api.deleteWebsite(website)
+		.then(()=> MainStore.dispatch(
+			WebsiteActionsCreator.deleteWebsite(website)
+		))
+		.then((error) => UIActions.hideMainPreloader());
 }
 
 export function updateWebsite(data: any) {

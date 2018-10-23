@@ -59,6 +59,7 @@ const AdminConstants = keykey([
 	'WEBSITE_MODAL_NAME',
 	'WEBSITE_CREATED',
 	'WEBSITE_UPDATED',
+	'.WEBSITE_DELETED',
 
 	//Pagination
 	'PAGINATION_RECEIVED',
