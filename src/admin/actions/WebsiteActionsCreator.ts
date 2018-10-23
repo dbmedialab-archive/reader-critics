@@ -17,7 +17,6 @@
 //
 
 import AdminConstants from 'admin/constants/AdminConstants';
-import UserConstants from 'admin/constants/UserConstants';
 
 export interface IAction {
 		type: any;

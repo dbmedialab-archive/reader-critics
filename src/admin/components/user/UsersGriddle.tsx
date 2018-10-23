@@ -62,7 +62,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			onGetPage: this.getPageHandler,
 		};
 	}
-
 	updateModalWindowData(user: User) {
 		const windowName = AdminConstants.USER_MODAL_NAME;
 		const userRes = {
@@ -76,7 +75,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		userRes.input['password'] = { value: user.password };
 		UIActions.modalWindowsChangeState(windowName, userRes);
 	}
-
 	public onEdit(e: any) :void {
 		e.preventDefault();
 		const { users } = this.props;
@@ -88,7 +86,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			this.updateModalWindowData(user[0]);
 		}
 	}
-
 	public onDestroy(e: any) :void {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
@@ -196,16 +193,13 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		);
 	}
 }
-
 const mapStateToProps = (state, ownProps) => {
 	return {
 		users: state.users.getIn(['users']) || [],
 		pageCount: state.pagination.getIn(['pageCount'], 1),
 	};
 };
-
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(UsersGriddle);
