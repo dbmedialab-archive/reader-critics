@@ -17,7 +17,6 @@
 //
 import * as React from 'react';
 import { connect } from 'react-redux';
-import WebsitesRow from 'admin/components/website/WebsitesRow';
 import WebsitesGriddle from 'admin/components/website/WebsitesGriddle';
 import { Transition, TransitionGroup } from 'react-transition-group';
 import AdminConstants from 'admin/constants/AdminConstants';
@@ -30,7 +29,6 @@ class WebsitesList extends React.Component <any, any> {
 
 		this.updateErrorState = this.updateErrorState.bind(this);
 		this.onCreate = this.onCreate.bind(this);
-		//this.updateModalWindowData = this.updateModalWindowData.bind(this);
 	}
 
 	updateErrorState(message: string = '', touched: boolean = false): void {
@@ -52,27 +50,7 @@ class WebsitesList extends React.Component <any, any> {
 		WebsiteActions.setSelectedWebsite(null);
 	}
 
-	/*updateModalWindowData() {
-		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
-		const websiteRes = {
-			isOpen: true,
-		};
-		WebsiteActions.setSelectedWebsite(null);
-		UIActions.modalWindowsChangeState(windowName, websiteRes);
-	}*/
-
 	public render() : JSX.Element {
-		/*const content = this.props.websites.map((website) =>
-			<Transition key={website.ID} timeout={300}>
-				{(state) => (
-					<WebsitesRow
-						{...website}
-						key={website.ID}
-						state={state}
-					/>
-				)}
-			</Transition>
-		);*/
 		return (
 			<main>
 				<section className="row expanded">
@@ -97,44 +75,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebsitesList);
-
-/*
-<main>
-				<section className="row expanded">
-					<div className="column small-12">
-						<button className="button" onClick={this.updateModalWindowData}>
-							Create website
-						</button>
-					</div>
-				</section>
-				<section className="websiteTable">
-					<div className="row expanded">
-						<div className="column small-12 websites-group-holder">
-							<div className="websitelist-table-heading">
-								<div className="row expanded website-row table-header">
-									<div className="column small-2 medium-2">
-										<b>Name</b>
-									</div>
-									<div className="column small-4 medium-3">
-										<b>Hosts</b>
-									</div>
-									<div className="column small-2 medium-3">
-										<b>ChiefEditors</b>
-									</div>
-									<div className="column small-2 medium-2">
-										<b>Parser</b>
-									</div>
-									<div className="column small-2 medium-2">
-										<b>Edit</b>
-									</div>
-								</div>
-								<TransitionGroup>
-									{content}
-								</TransitionGroup>
-							</div>
-						</div>
-					</div>
-				</section>
-				<WebsitesGriddle/>
-			</main>
- */

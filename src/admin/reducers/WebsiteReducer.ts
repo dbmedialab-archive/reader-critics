@@ -99,18 +99,16 @@ function updateWebsitesList(action, state) {
 }
 
 function deleteWebsite(action, state) {
-	console.log('reducer delete site' );
-	/*const users = state.getIn(['users']);
-	const userId = action.payload;
-	const newUsers = Immutable.flatMap(users, (value) => {
-		if (value.ID === userId) {
+	const websites = state.getIn(['websites']);
+	const websiteId = action.payload;
+	const newWebsites = Immutable.flatMap(websites, (value) => {
+		if (value.ID === websiteId) {
 			return [];
 		} else {
 			return value;
 		}
 	});
-	return Immutable.set(state, '', newUsers);*/
-	return state;
+	return Immutable.set(state, 'websites', newWebsites);
 }
 
 function WebsiteReducer(

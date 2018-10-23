@@ -16,23 +16,17 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 import * as React from 'react';
+import {connect} from 'react-redux';
 
 import Website from 'base/Website';
 import AdminConstants from 'admin/constants/AdminConstants';
 
-import { WebsiteProps } from 'admin/types/Website';
-
+import {defaultLimit} from 'app/services/BasicPersistingService';
+import EnhancedActionBar from 'admin/components/common/action/ActionBar';
+import Griddle, {ColumnDefinition, RowDefinition} from 'griddle-react';
+import * as PaginationActions from 'admin/actions/PaginationActions';
 import * as UIActions from 'admin/actions/UIActions';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
-import User from 'base/User';
-import * as UsersActions from 'admin/actions/UsersActions';
-import {IUsersGriddle} from 'admin/components/user/UsersGriddle';
-import EnhancedActionBar from 'admin/components/common/action/ActionBar';
-import {defaultLimit} from 'app/services/BasicPersistingService';
-import * as PaginationActions from 'admin/actions/PaginationActions';
-import Griddle, {ColumnDefinition, RowDefinition} from 'griddle-react';
-import {connect} from 'react-redux';
-import SearchFilter from 'admin/components/common/filter/Filter';
 
 export interface IWebsitesGriddle {
 	websites: Array<Website>;
@@ -104,7 +98,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		return this.updateWebsitesList();
 	}
 	componentWillUnmount() {
-		//UsersActions.clear();
+		//WebsiteActions.clear();
 		PaginationActions.clear();
 	}
 	updateWebsitesList() {
@@ -198,30 +192,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WebsitesGriddle);
-
-/*
-	<div className="row expanded">
-					<div className="small-12 large-7">
-						<SearchFilter
-							onSubmit={this.onSubmit}
-							onChange={this.onFilterChange}
-							search={this.state.search}
-							clear={this.clear}
-						/>
-					</div>
-				</div>
-
-				onFilterChange(search: string) {
-		this.setState({search:search, filterTouched:true});
-	}
-	onSort(sortProps) {
-		const {id, sortAscending = false} = sortProps;
-		this.setState({
-			sort: id,
-			sortOrder: sortAscending ? -1 : 1,
-		}, this.updateWebsitesList);
-	}
-	this.onSort = this.onSort.bind(this);
-		this.onFilterChange = this.onFilterChange.bind(this);
-			onSort: this.onSort,
- */

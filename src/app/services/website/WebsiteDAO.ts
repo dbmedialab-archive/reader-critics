@@ -25,7 +25,7 @@ import ArticleURL from 'base/ArticleURL';
 import Website from 'base/Website';
 
 import { ObjectID } from 'app/db';
-import { WebsiteModel } from 'app/db/models';
+import {UserModel, WebsiteModel} from 'app/db/models';
 
 import {
 	wrapFind,
@@ -34,6 +34,7 @@ import {
 } from 'app/db/common';
 
 import emptyCheck from 'app/util/emptyCheck';
+import {NotFoundError} from 'app/util/errors';
 
 /**
  * Returns a single Website object if the exact name is found in the database.
@@ -142,4 +143,15 @@ export function setUnrevisedDigestLastRun(website : Website) : Promise <void> {
 			},
 		}
 	));
+}
+
+/**
+ * Delete website entry by ID. Null - if not found, website object if found is returned.
+ */
+export function doDeleteWebsite(id: String) : Promise <any> {
+	return WebsiteModel.findOneAndRemove({ '_id': id })
+		.then(res => (res === null)
+			? Promise.reject(new NotFoundError('Website not found'))
+			: Promise.resolve(res)
+		);
 }

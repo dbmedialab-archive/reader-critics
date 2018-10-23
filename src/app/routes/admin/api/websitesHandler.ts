@@ -22,7 +22,7 @@ import {
 } from 'express';
 
 import {
-	errorResponse,
+	errorResponse, okApiResponse,
 	okResponse,
 } from 'app/routes/api/apiResponse';
 
@@ -107,4 +107,13 @@ export function create (requ: Request, resp: Response) {
 		.save(body)
 		.then((wsite) => okResponse(resp, wsite))
 		.catch(error => errorResponse(resp, error));
+}
+
+/**
+ * Deletes website by ID parameter
+ */
+export function doDeleteWebsite (requ: Request, resp: Response) : void {
+	websiteService.doDeleteWebsite(requ.params.id)
+		.then(res => okApiResponse(resp, res))
+		.catch(err => errorResponse(resp, err));
 }
