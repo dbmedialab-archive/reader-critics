@@ -98,7 +98,7 @@ module.exports = (applicationPart, scssParts) => {
 
 		plugins: [
 			new MiniCssExtractPlugin(),
-			/*new BundleAnalyzerPlugin({
+			new BundleAnalyzerPlugin({
 				// Can be `server`, `static` or `disabled`.
 				// In `server` mode analyzer will start HTTP server to show
 				// bundle report.
@@ -135,7 +135,7 @@ module.exports = (applicationPart, scssParts) => {
 				statsOptions: null,
 				// Log level. Can be 'info', 'warn', 'error' or 'silent'.
 				logLevel: 'info',
-			}),*/
+			}),
 
 		],
 
