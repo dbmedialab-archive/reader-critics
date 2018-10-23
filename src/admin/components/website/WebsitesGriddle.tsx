@@ -166,11 +166,11 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 							<ColumnDefinition id="chiefEditors" title="ChiefEditors"/>
 							<ColumnDefinition id="parser" title="Parser"/>
 							<ColumnDefinition id="id" title="id" visible={false}/>
-							<ColumnDefinition id="actions"
-																title="Actions"
-																onEdit={this.onEdit}
-																onDestroy={this.onDestroy}
-																customComponent={EnhancedActionBar}
+							<ColumnDefinition id="sites-actions"
+									title="Websites Actions"
+									onEdit={this.onEdit}
+									onDestroy={this.onDestroy}
+									customComponent={EnhancedActionBar}
 							/>
 						</RowDefinition>
 					</Griddle>

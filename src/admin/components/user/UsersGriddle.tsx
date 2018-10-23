@@ -180,8 +180,8 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 							<ColumnDefinition id="role" title="Role"/>
 							<ColumnDefinition id="email" title="Email"/>
 							<ColumnDefinition id="id" title="id" visible={false}/>
-							<ColumnDefinition id="actions"
-								title="Actions"
+							<ColumnDefinition id="user-actions"
+								title="Users Actions"
 								onEdit={this.onEdit}
 								onDestroy={this.onDestroy}
 								customComponent={EnhancedActionBar}
