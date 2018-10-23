@@ -74,7 +74,7 @@
 		"griddle-react": "1.13.1",
 		"has-color": "0.2.0",
 		"immutable": "3.8.2",
-		"ioredis": "4.1.0",
+		"ioredis": "4.2.0",
 		"json5": "2.1.0",
 		"jsonwebtoken": "8.3.0",
 		"keykey": "2.1.1",
@@ -118,7 +118,7 @@
 		"style-loader": "0.23.1",
 		"typed-immutable-record": "0.0.6",
 		"uuid": "3.3.2",
-		"webpack": "4.19.1",
+		"webpack": "4.21.0",
 		"webpack-dev-middleware": "^3.3.0",
 		"whatwg-fetch": "2.0.3"
 	},
