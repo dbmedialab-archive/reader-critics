@@ -81,7 +81,7 @@ export function deleteUser(user) {
 		.then(()=> MainStore.dispatch(
 			UsersActionsCreator.deleteUser(user)
 		))
-		.then((error) => UIActions.hideMainPreloader());
+		.catch((error) => UIActions.hideMainPreloader());
 }
 
 export function addUser(user) {

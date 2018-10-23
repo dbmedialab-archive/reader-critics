@@ -63,7 +63,7 @@ export function deleteWebsite(website) {
 		.then(()=> MainStore.dispatch(
 			WebsiteActionsCreator.deleteWebsite(website)
 		))
-		.then((error) => UIActions.hideMainPreloader());
+		.catch((error) => UIActions.hideMainPreloader());
 }
 
 export function updateWebsite(data: any) {

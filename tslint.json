@@ -8,7 +8,7 @@
 		"eofline": true,
 		"indent": [ true, "tabs" ],
 		"linebreak-style": [ true, "LF" ],
-		"max-file-line-count": [ true, 206 ],
+		"max-file-line-count": [ true, 200 ],
 		"max-line-length": [ true, 100 ],
 		"new-parens": true,
 		"newline-per-chained-call": false,

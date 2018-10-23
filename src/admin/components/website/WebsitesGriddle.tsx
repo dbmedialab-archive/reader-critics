@@ -37,16 +37,6 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 	private readonly events: any;
 	constructor(props: IWebsitesGriddle) {
 		super(props);
-		this.onEdit = this.onEdit.bind(this);
-		this.onDestroy = this.onDestroy.bind(this);
-		this.updateWebsitesList = this.updateWebsitesList.bind(this);
-		this.nextHandler = this.nextHandler.bind(this);
-		this.prevHandler = this.prevHandler.bind(this);
-		this.getPageHandler = this.getPageHandler.bind(this);
-		this.generateGridData = this.generateGridData.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-		this.clear = this.clear.bind(this);
-		this.updateModalWindowData = this.updateModalWindowData.bind(this);
 		this.state = {
 			page: 1,
 			limit: defaultLimit,
@@ -61,8 +51,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 			onGetPage: this.getPageHandler,
 		};
 	}
-
-	updateModalWindowData(website: Website) {
+	updateModalWindowData = (website: Website) => {
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
 		const websiteRes = {
 			isOpen: true,
@@ -70,8 +59,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		WebsiteActions.setSelectedWebsite(website);
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
-
-	public onEdit(e: any) :void {
+	onEdit = (e: any) :void => {
 		e.preventDefault();
 		const websiteId = e.target.dataset.id;
 		const { websites } = this.props;
@@ -82,8 +70,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 			return this.updateModalWindowData(website[0]);
 		}
 	}
-
-	public onDestroy(e: any) :void {
+	onDestroy = (e: any) :void => {
 		e.preventDefault();
 		const windowName = AdminConstants.WEBSITE_MODAL_NAME;
 		const websiteId = e.target.dataset.id;
@@ -98,36 +85,34 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		return this.updateWebsitesList();
 	}
 	componentWillUnmount() {
-		//WebsiteActions.clear();
 		PaginationActions.clear();
 	}
-	updateWebsitesList() {
+	updateWebsitesList = () => {
 		const {page, limit, sort, sortOrder, search} = this.state;
 		WebsiteActions.getWebsiteList(page, limit, sort, sortOrder, search);
 	}
-	onSubmit() {
+	onSubmit = () => {
 		const {filterTouched} = this.state;
 		filterTouched ? (
 			this.setState({page:1}, this.updateWebsitesList),
 				this.setState({filterTouched: false})
 		) : this.updateWebsitesList();
 	}
-	nextHandler() {
+	nextHandler = () => {
 		let {page} = this.state;
 		this.setState({page: ++page}, this.updateWebsitesList);
 	}
-	prevHandler() {
+	prevHandler = () => {
 		let {page} = this.state;
 		this.setState({page: --page}, this.updateWebsitesList);
 	}
-	getPageHandler(page: number) {
+	getPageHandler = (page: number) => {
 		this.setState({page}, this.updateWebsitesList);
 	}
-
-	clear() {
+	clear = () => {
 		this.setState({search: ''}, this.updateWebsitesList);
 	}
-	generateGridData() {
+	generateGridData = () => {
 		const {websites} = this.props;
 
 		return websites.map((website: Website) => {
