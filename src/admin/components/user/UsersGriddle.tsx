@@ -36,17 +36,6 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 	private readonly events: any;
 	constructor(props: IUsersGriddle) {
 		super(props);
-		this.onEdit = this.onEdit.bind(this);
-		this.onDestroy = this.onDestroy.bind(this);
-		this.updateUsersList = this.updateUsersList.bind(this);
-		this.nextHandler = this.nextHandler.bind(this);
-		this.prevHandler = this.prevHandler.bind(this);
-		this.getPageHandler = this.getPageHandler.bind(this);
-		this.generateGridData = this.generateGridData.bind(this);
-		this.onSort = this.onSort.bind(this);
-		this.onFilterChange = this.onFilterChange.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
-		this.clear = this.clear.bind(this);
 		this.state = {
 			page: 1,
 			limit: defaultLimit,
@@ -62,22 +51,31 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			onGetPage: this.getPageHandler,
 		};
 	}
-	public onEdit(e: any) :void {
-		e.preventDefault();
+	updateModalWindowData = (user: User) => {
 		const windowName = AdminConstants.USER_MODAL_NAME;
-		const item = JSON.parse(e.target.dataset.item);
 		const userRes = {
 			input: {},
 			isOpen: true,
-			userId: item.id || null,
+			userId: user.ID || null,
 		};
-		userRes.input['name'] = { value: item.name };
-		userRes.input['email'] = { value: item.email };
-		userRes.input['role'] = { value: item.role };
-		userRes.input['password'] = { value: item.password };
+		userRes.input['name'] = { value: user.name };
+		userRes.input['email'] = { value: user.email };
+		userRes.input['role'] = { value: user.role };
+		userRes.input['password'] = { value: user.password };
 		UIActions.modalWindowsChangeState(windowName, userRes);
 	}
-	public onDestroy(e: any) :void {
+	onEdit = (e: any) :void => {
+		e.preventDefault();
+		const { users } = this.props;
+		const userId = e.target.dataset.id;
+		const user = users.filter( item => {
+			return item ? item.ID === userId: null;
+		});
+		if (user){
+			this.updateModalWindowData(user[0]);
+		}
+	}
+	onDestroy = (e: any) :void => {
 		e.preventDefault();
 		const windowName = AdminConstants.USER_MODAL_NAME;
 		const userId = e.target.dataset.id;
@@ -95,42 +93,42 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		UsersActions.clear();
 		PaginationActions.clear();
 	}
-	updateUsersList() {
+	updateUsersList = () => {
 		const {page, limit, sort, sortOrder, search} = this.state;
 		UsersActions.getUsers(page, limit, sort, sortOrder, search);
 	}
-	onSubmit() {
+	onSubmit = () => {
 		const {filterTouched} = this.state;
 		filterTouched ? (
 			this.setState({page:1}, this.updateUsersList),
 			this.setState({filterTouched: false})
 		) : this.updateUsersList();
 	}
-	nextHandler() {
+	nextHandler = () => {
 		let {page} = this.state;
 		this.setState({page: ++page}, this.updateUsersList);
 	}
-	prevHandler() {
+	prevHandler = () => {
 		let {page} = this.state;
 		this.setState({page: --page}, this.updateUsersList);
 	}
-	getPageHandler(page: number) {
+	getPageHandler = (page: number) => {
 		this.setState({page}, this.updateUsersList);
 	}
-	onFilterChange(search: string) {
+	onFilterChange = (search: string) => {
 		this.setState({search:search, filterTouched:true});
 	}
-	onSort(sortProps) {
+	onSort = (sortProps) => {
 		const {id, sortAscending = false} = sortProps;
 		this.setState({
 			sort: id,
 			sortOrder: sortAscending ? -1 : 1,
 		}, this.updateUsersList);
 	}
-	clear() {
+	clear = () => {
 		this.setState({search: ''}, this.updateUsersList);
 	}
-	generateGridData() {
+	generateGridData = () => {
 		const {users} = this.props;
 		return users.map((user) => {
 			return {
@@ -141,6 +139,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 			};
 		});
 	}
+
 	render() {
 		const {page, limit} = this.state;
 		const {pageCount} = this.props;
@@ -157,7 +156,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 							/>
 						</div>
 					</div>
-				<div className="users-group-holder">
+				<div className="griddle-holder">
 					<Griddle data={usersGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
 						events={this.events}
@@ -171,8 +170,8 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 							<ColumnDefinition id="role" title="Role"/>
 							<ColumnDefinition id="email" title="Email"/>
 							<ColumnDefinition id="id" title="id" visible={false}/>
-							<ColumnDefinition id="actions"
-								title="Actions"
+							<ColumnDefinition id="user-actions"
+								title="Users Actions"
 								onEdit={this.onEdit}
 								onDestroy={this.onDestroy}
 								customComponent={EnhancedActionBar}
@@ -184,16 +183,13 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		);
 	}
 }
-
 const mapStateToProps = (state, ownProps) => {
 	return {
 		users: state.users.getIn(['users']) || [],
 		pageCount: state.pagination.getIn(['pageCount'], 1),
 	};
 };
-
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(UsersGriddle);
