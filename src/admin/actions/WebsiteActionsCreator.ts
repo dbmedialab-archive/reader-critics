@@ -67,3 +67,10 @@ export function updateWebsiteList(payload): IAction {
 		payload,
 	};
 }
+
+export function deleteWebsite(payload): IAction {
+	return {
+		type: AdminConstants.WEBSITE_DELETED,
+		payload,
+	};
+}

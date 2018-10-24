@@ -61,6 +61,7 @@ adminApiRoute.get('/websites', isAuthenticatedApi, websitesHandler.list);
 adminApiRoute.post('/websites', isAuthenticatedApi, websitesHandler.create);
 adminApiRoute.get('/websites/:name', isAuthenticatedApi, websitesHandler.show);
 adminApiRoute.patch('/websites/:name', isAuthenticatedApi, websitesHandler.update);
+adminApiRoute.delete('/websites/:id', isAuthenticatedApi, websitesHandler.doDeleteWebsite);
 adminApiRoute.get('/suggestions', isAuthenticatedApi, suggestionsHandler.list);
 adminApiRoute.get('/*', defaultHandler);
 
