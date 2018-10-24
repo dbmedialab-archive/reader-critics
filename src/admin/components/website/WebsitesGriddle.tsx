@@ -136,7 +136,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		const websitesGrid = this.generateGridData();
 		return (
 			<div>
-				<div className="users-group-holder">
+				<div className="griddle-holder">
 					<Griddle data={websitesGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
 						events={this.events}

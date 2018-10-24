@@ -156,7 +156,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 							/>
 						</div>
 					</div>
-				<div className="users-group-holder">
+				<div className="griddle-holder">
 					<Griddle data={usersGrid}
 						pageProperties={{currentPage: page, pageSize: limit, recordCount: limit * pageCount}}
 						events={this.events}
