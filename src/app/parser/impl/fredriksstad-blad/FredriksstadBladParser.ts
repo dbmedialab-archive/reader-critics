@@ -26,6 +26,7 @@ import IteratingParserItem from 'app/parser/IteratingParserItem';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
 
 import * as app from 'app/util/applib';
+import {getArticleCategory} from 'app/parser/util/CategoryParser';
 
 const log = app.createLog();
 
@@ -35,6 +36,10 @@ export default class FredriksstadBladParser extends AbstractIteratingParser {
 
 	protected parseVersion() : Promise <string> {
 		return Promise.resolve(getOpenGraphModifiedTime(this.select, true));
+	}
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
 	}
 
 	protected parseByline() : Promise <ArticleAuthor[]> {

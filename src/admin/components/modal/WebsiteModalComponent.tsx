@@ -25,6 +25,7 @@ import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParse
 import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
+import WebsiteSectionEditors from 'admin/components/website/modalParts/WebsiteSectionEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
@@ -89,6 +90,8 @@ class WebsiteModalComponent extends React.Component <any, any> {
 		}
 	}
 
+
+
 	render (): JSX.Element {
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;
 		const isDisabled = name && !ID;
@@ -120,6 +123,9 @@ class WebsiteModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
+						</div>
+						<div className="row">
+							<WebsiteSectionEditors	onChange={this.onUpdate} />
 						</div>
 						<div className="row">
 							<WebsiteFeedbackEmailOverride onChange={this.onUpdate} />

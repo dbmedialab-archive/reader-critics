@@ -35,7 +35,10 @@ const ArticleSchema : Schema = new Schema({
 		type: String,
 		required: true,
 	},
-
+	category: {
+		type: String,
+		//required: true,
+	},
 	items: [Schema.Types.Mixed],
 
 	authors: [objectReference(ModelNames.User)],

@@ -25,6 +25,7 @@ import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
+import { getArticleCategory } from 'app/parser/util/CategoryParser';
 
 abstract class AbstractLabradorParser extends AbstractIteratingParser {
 
@@ -36,6 +37,10 @@ abstract class AbstractLabradorParser extends AbstractIteratingParser {
 
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		return Promise.resolve(getOpenGraphAuthors(this.select));
+	}
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve(getArticleCategory(this.select));
 	}
 
 	// Implement AbstractIteratingParser

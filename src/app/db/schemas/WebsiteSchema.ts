@@ -18,6 +18,7 @@
 
 import { Schema } from 'mongoose';
 import { systemLocale } from 'app/services/localization';
+import WebsiteSection from 'base/WebsiteSection';
 
 const WebsiteSchema : Schema = new Schema({
 	name: {
@@ -38,6 +39,7 @@ const WebsiteSchema : Schema = new Schema({
 
 	// Fallback e-mail addresses and related options
 	chiefEditors: [Schema.Types.Mixed],
+	sectionEditors: [Schema.Types.Mixed],
 
 	// Articles with a feedback count greater or equal to the values configured
 	// here will trigger an escalation notification

@@ -23,8 +23,6 @@ import ArticleAuthor from 'base/ArticleAuthor';
 import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
-
 export default class BerlingskeParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser

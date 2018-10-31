@@ -16,41 +16,9 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import ArticleItem from './ArticleItem';
-import ArticleURL from './ArticleURL';
-import Feedback from './Feedback';
-import PersistedModel from './zz/PersistedModel';
-import User from './User';
-import Website from './Website';
+import * as Cheerio from 'cheerio';
 
-export interface Article extends PersistedModel {
-	// Defining a unique version of one article
-	url : ArticleURL
-	version : string
-
-	// Byline
-	authors : User[]
-
-	// Title as own property; this is also included in the article items if the
-	// parser works correctly.
-	title : string,
-
-	category: string,
-
-	website? : Website
-
-	// Contents - Title, subtitle, everything is picked up as an item
-	items : ArticleItem[]
-
-	date? : {
-		created?: Date
-	}
-
-	feedbacks? : Feedback[]
-
-	status?: {
-		escalated? : string
-	}
+export function getArticleCategory(select : Cheerio) : string {
+	const metaName = select('head').find('meta[property="page:site_section"]');
+	return metaName.attr('content').trim();
 }
-
-export default Article;

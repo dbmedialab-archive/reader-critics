@@ -171,13 +171,14 @@ abstract class AbstractIteratingParser extends ExtendedIteratingItems {
 		// this.pushNewContentItem(this.createParagraph(item));
 	}
 
-	protected parseSectionTitle() : Promise <ArticleItem[]> {
+/*	protected parseSectionTitle() : Promise <ArticleItem[]> {
 		return Promise.resolve([]);
 	}
 
 	protected parseSectionParagraph() : Promise <ArticleItem[]> {
 		return Promise.resolve([]);
 	}
+	*/
 }
 
 export default AbstractIteratingParser;
