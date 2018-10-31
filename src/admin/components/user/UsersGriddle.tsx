@@ -81,6 +81,7 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		const userId = e.target.dataset.id;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: false});
 		UIActions.showDialog({
+			yesBtnName: 'Yes',
 			noBtnName: 'Cancel',
 			dialogTitle: 'Do you want delete this user?',
 			yesHandler: () => UsersActions.deleteUser(userId),
@@ -192,4 +193,5 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(UsersGriddle);

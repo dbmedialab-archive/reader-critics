@@ -76,6 +76,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		const websiteId = e.target.dataset.id;
 		UIActions.modalWindowsChangeState(windowName, {isOpen: false});
 		UIActions.showDialog({
+			yesBtnName: 'Yes',
 			noBtnName: 'Cancel',
 			dialogTitle: 'Do you want delete this WEBSITE?',
 			yesHandler: () => WebsiteActions.deleteWebsite(websiteId),

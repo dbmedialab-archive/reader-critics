@@ -60,9 +60,10 @@ export function setWebsiteOptions(options: any) {
 export function deleteWebsite(website) {
 	UIActions.showMainPreloader();
 	Api.deleteWebsite(website)
-		.then(()=> MainStore.dispatch(
-			WebsiteActionsCreator.deleteWebsite(website)
-		))
+		.then(()=> {
+				UIActions.hideMainPreloader();
+				MainStore.dispatch(WebsiteActionsCreator.deleteWebsite(website));
+			})
 		.catch((error) => UIActions.hideMainPreloader());
 }
 
