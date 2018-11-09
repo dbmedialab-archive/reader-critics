@@ -32,9 +32,11 @@ import {emailRegexp} from 'base/ValidationCustomValidations';
 
 export default function(name: string, data : any) : Promise <Website> {
 	try {
+		console.log('validate');
 		validateSchema(data);
 	}
 	catch (error) {
+		console.log(error)
 		return Promise.reject(error);
 	}
 
@@ -48,7 +50,7 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-	const dataArrays: string[] = ['hosts', 'chiefEditors'];
+	const dataArrays: string[] = ['hosts', 'chiefEditors', 'sectionEditors'];
 	const overrideArrays: string[] = ['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail'];
 
 	dataArrays.forEach((item: string) =>

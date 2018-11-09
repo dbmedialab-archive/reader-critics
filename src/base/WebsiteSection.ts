@@ -17,9 +17,14 @@
 //
 
 export enum WebsiteSection {
-	Nyheter = 'nyheter',
-	Sport = 'sport',
-	Kulture = 'kulture',
+	News = 'Nyheter',
+	Sport = 'Sport',
+	Kulture = 'Kulture',
+	Economy = 'Økonomi',
+	Celebrity = 'Kjendis',
+	Travel = 'Reise',
+	Opinions = 'Meninger',
+	Tips = 'Oddstips',
 }
 
 export default WebsiteSection;

@@ -25,7 +25,7 @@ import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParse
 import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
-import WebsiteSectionEditors from 'admin/components/website/modalParts/WebsiteSectionEditors';
+import WebsiteSectionEditors from 'admin/components/website/modalParts/websiteSectionEditors/WebsiteSectionEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
@@ -41,6 +41,7 @@ export interface IWebsiteUpdateProps {
 	parserClass?: string;
 	hosts?: string[];
 	chiefEditors?: {name: string, email: string}[];
+	sectionEditors?: {name: string, email: string, section: string}[];
 	layout?: WebsiteLayoutProps;
 }
 
@@ -75,8 +76,10 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	}
 
 	onUpdate (data: object): void {
+		console.log('update website ID', this.props.ID)
 		if (this.props.ID) {
 			const dataToSend:IWebsiteUpdateProps = Object.assign({currentName: this.props.name}, data);
+			console.log('data to send', data)
 			return WebsiteActions.updateWebsite(dataToSend);
 		} else {
 			return WebsiteActions.updateNewWebsiteTemplate(data);
@@ -89,8 +92,6 @@ class WebsiteModalComponent extends React.Component <any, any> {
 			return this.closeReset();
 		}
 	}
-
-
 
 	render (): JSX.Element {
 		const {isOpen, name, ID, feedbackPage, feedbackNotificationMail} = this.props;

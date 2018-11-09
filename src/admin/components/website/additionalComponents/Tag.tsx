@@ -17,39 +17,49 @@
 //
 
 import * as React from 'react';
+import WebsiteSection from 'base/WebsiteSection';
 
-export interface ITagList {
+export interface ITag {
 	classes: string;
 	onDelete: (index: number) => void;
-	items: string[];
+	onEdit: (item: string) => void;
+	item: string;
 	color?: string;
-	id?: number;
+	id: number;
+	isEditing: string;
 }
 
-export class TagList extends React.Component <ITagList, any> {
+export class Tag extends React.Component <ITag, any> {
 
-	constructor (props: ITagList) {
+	constructor (props: ITag) {
 		super(props);
-		this.createTags = this.createTags.bind(this);
+		this.createTag = this.createTag.bind(this);
+		this.onEditSection = this.onEditSection.bind(this);
 	}
-	createTags (items: string[]) {
-		const {id, classes, onDelete, color = 'blue'} = this.props;
 
-		return items.map((item, index) => {
-			const key = id >= 0 ? `${index}-${id}` : index;
-			console.log('---taglist', key)
-			return (<li key={ `${key}-item` }  className={ `${classes}-item ${color}` }>
-					{ item }
-				<i className="fa fa-times" onClick={onDelete.bind(this, key)}/>
-			</li>);
-		});
+	onEditSection(){
+	const  { item } = this.props;
+	return this.props.onEdit( item );
+
+	}
+
+	createTag (item: string, color) {
+		const {id, classes, onDelete } = this.props;
+			return (
+				<li key={ `${id}-item` } className={`${classes}-item ${color}`}>
+						{WebsiteSection[item]}
+					<i className="fa fa-pencil-square-o" aria-hidden="true" onClick={this.onEditSection}/>
+					<i className="fa fa-times" aria-hidden="true" onClick={onDelete.bind(this, id)}/>
+				</li>
+			);
 	}
 
 	render () {
-		const {classes, items} = this.props;
+		const {classes, item, isEditing} = this.props;
+		const colorSection = isEditing === item ? 'red' : 'green';
 		return (
 			<ul className={classes}>
-				{this.createTags(items)}
+				{this.createTag(item, colorSection)}
 			</ul>
 		);
 	}
