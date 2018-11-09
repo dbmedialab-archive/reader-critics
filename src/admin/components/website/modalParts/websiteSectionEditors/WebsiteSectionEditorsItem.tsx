@@ -55,8 +55,8 @@ export class WebsiteSectionEditorsItem extends React.Component <any, any> {
 		if (editorIndex >= 0){
 			editors.splice(editorIndex, 1);
 		}
-		const newSectionEditorsItem = {section: sectionEditorsAll[sectionIndex].section, editors: editors};
-		const sectionEditors = immutable.set(sectionEditorsAll, sectionIndex, newSectionEditorsItem);
+		const newEditorsItem = {section: sectionEditorsAll[sectionIndex].section, editors: editors};
+		const sectionEditors = immutable.set(sectionEditorsAll, sectionIndex, newEditorsItem);
 		return this.props.onChange({sectionEditors});
 	}
 
