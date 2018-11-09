@@ -157,52 +157,40 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 		const { newSection, editSection } = this.state;
 		const disabled = !newSection && !editSection;
 		return (
-			< div className="medium-12 columns">
-					<fieldset className="text">
-						<div className="left">
+			<div className="medium-12 columns">
+				<fieldset className="text">
+					<div className="left">
 						<LabeledSelect
 							onChange={this.onChangeSection}
-							label={<span>
-									<b>Article's Category</b><br/>
-									Choose available category
-								</span>
-							}
+							label={ <span><b>Article's Category</b><br/>Choose available category</span> }
 							value=""
 							ID={ `website-section` }
 							options={ sections }
 							chosen={ false }
 							defaultOptionText="-- select --"
-							name="parserClass"
-						/>
-						</div>
-						<div className="right">
+							name="parserClass" />
+					</div>
+					<div className="right">
 						<LabeledSelect
 							onChange={this.onChangeEditor}
-							label={<span>
-								<b>Category's Editors</b><br/>
-								Choose available editors here (roles "Editor" and "Site Admin")
-							</span>
-							}
+							label={ <span><b>Category's Editors</b><br/>
+								Choose available editors here (roles "Editor" and "Site Admin") </span> }
 							value=""
 							ID={ `section-editor` }
 							options={ users }
 							chosen={ false }
 							defaultOptionText="-- select --"
 							name="parserClass"
-							disabled={ disabled }
-						/>
-						</div>
-					</fieldset>
-
+							disabled={ disabled } />
+					</div>
+				</fieldset>
 				{ newSection && newSectionTag }
-
 				<WebSectionEditorsItem
 					sectionEditors={this.props.sectionEditors}
 					onChange={this.props.onChange}
 					onEdit={this.onEditSection}
-					isEditing={this.state.section}
-				/>
-				</div>
+					isEditing={this.state.section} />
+			</div>
 		);
 	}
 }
