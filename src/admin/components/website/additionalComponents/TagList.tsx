@@ -37,7 +37,6 @@ export class TagList extends React.Component <ITagList, any> {
 
 		return items.map((item, index) => {
 			const key = id >= 0 ? `${index}-${id}` : index;
-			console.log('---taglist', key)
 			return (<li key={ `${key}-item` }  className={ `${classes}-item ${color}` }>
 					{ item }
 				<i className="fa fa-times" onClick={onDelete.bind(this, key)}/>

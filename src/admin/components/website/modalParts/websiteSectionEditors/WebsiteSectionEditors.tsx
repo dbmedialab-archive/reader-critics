@@ -30,7 +30,7 @@ import { LabeledSelect } from 'admin/components/website/additionalComponents/Lab
 import { TagList } from 'admin/components/website/additionalComponents/TagList';
 
 import WebsiteSection from 'base/WebsiteSection';
-import WebSectionEditorsItem from './WebsiteSectionEditorsItem';
+import { WebsiteSectionEditorsItem } from './WebsiteSectionEditorsItem';
 
 class WebsiteSectionEditors extends React.Component <any, any> {
 	constructor (props) {
@@ -163,8 +163,7 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 						<LabeledSelect
 							onChange={this.onChangeSection}
 							label={ <span><b>Article's Category</b><br/>Choose available category</span> }
-							value=""
-							ID={ `website-section` }
+							value=""  ID={ `website-section` }
 							options={ sections }
 							chosen={ false }
 							defaultOptionText="-- select --"
@@ -175,8 +174,7 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 							onChange={this.onChangeEditor}
 							label={ <span><b>Category's Editors</b><br/>
 								Choose available editors here (roles "Editor" and "Site Admin") </span> }
-							value=""
-							ID={ `section-editor` }
+							value=""  ID={ `section-editor` }
 							options={ users }
 							chosen={ false }
 							defaultOptionText="-- select --"
@@ -185,7 +183,7 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 					</div>
 				</fieldset>
 				{ newSection && newSectionTag }
-				<WebSectionEditorsItem
+				<WebsiteSectionEditorsItem
 					sectionEditors={this.props.sectionEditors}
 					onChange={this.props.onChange}
 					onEdit={this.onEditSection}

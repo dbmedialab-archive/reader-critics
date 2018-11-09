@@ -76,10 +76,8 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	}
 
 	onUpdate (data: object): void {
-		console.log('update website ID', this.props.ID)
 		if (this.props.ID) {
 			const dataToSend:IWebsiteUpdateProps = Object.assign({currentName: this.props.name}, data);
-			console.log('data to send', data)
 			return WebsiteActions.updateWebsite(dataToSend);
 		} else {
 			return WebsiteActions.updateNewWebsiteTemplate(data);

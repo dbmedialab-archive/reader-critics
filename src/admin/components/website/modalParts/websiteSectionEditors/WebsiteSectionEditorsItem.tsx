@@ -21,7 +21,7 @@ import { TagList } from 'admin/components/website/additionalComponents/TagList';
 import { Tag } from 'admin/components/website/additionalComponents/Tag';
 import * as immutable from 'seamless-immutable';
 
-export default class WebsiteSectionEditorsItem extends React.Component <any, any> {
+export class WebsiteSectionEditorsItem extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 		this.onDeleteSection = this.onDeleteSection.bind(this);
@@ -55,7 +55,7 @@ export default class WebsiteSectionEditorsItem extends React.Component <any, any
 		if (editorIndex >= 0){
 			editors.splice(editorIndex, 1);
 		}
-		const newSectionEditorsItem = {section: sectionEditorsAll[sectionIndex].section, editors: editors}
+		const newSectionEditorsItem = {section: sectionEditorsAll[sectionIndex].section, editors: editors};
 		const sectionEditors = immutable.set(sectionEditorsAll, sectionIndex, newSectionEditorsItem);
 		return this.props.onChange({sectionEditors});
 	}
