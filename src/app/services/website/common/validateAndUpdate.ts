@@ -32,11 +32,9 @@ import {emailRegexp} from 'base/ValidationCustomValidations';
 
 export default function(name: string, data : any) : Promise <Website> {
 	try {
-		console.log('validate');
 		validateSchema(data);
 	}
 	catch (error) {
-		console.log(error)
 		return Promise.reject(error);
 	}
 
