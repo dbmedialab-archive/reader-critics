@@ -18,7 +18,6 @@
 
 import { Schema } from 'mongoose';
 import { systemLocale } from 'app/services/localization';
-import WebsiteSection from 'base/WebsiteSection';
 
 const WebsiteSchema : Schema = new Schema({
 	name: {

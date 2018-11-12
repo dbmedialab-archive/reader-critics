@@ -46,9 +46,9 @@ export function getFeedbackRecipients(
 {
 
 	// override emails for development
-	if (override && !app.isProduction) {
-		return Promise.resolve([override]);
-	}
+	//if (override && !app.isProduction) {
+	//	return Promise.resolve([override]);
+	//}
 
 	const {
 		name,

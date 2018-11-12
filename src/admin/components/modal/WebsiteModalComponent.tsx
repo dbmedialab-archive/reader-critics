@@ -25,7 +25,8 @@ import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParse
 import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
-import WebsiteSectionEditors from 'admin/components/website/modalParts/websiteSectionEditors/WebsiteSectionEditors';
+import WebsiteSectionEditors from
+'admin/components/website/modalParts/websiteSectionEditors/WebsiteSectionEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
