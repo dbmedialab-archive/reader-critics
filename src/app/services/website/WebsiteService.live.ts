@@ -27,6 +27,7 @@ import {
 import createPersistingService from '../createPersistingService';
 
 import {
+	doDeleteWebsite,
 	get,
 	getByID,
 	getToRunUnrevisedDigest,
@@ -43,6 +44,7 @@ const service : WebsiteService
 			get,
 			getByID,
 			getToRunUnrevisedDigest,
+			doDeleteWebsite,
 			setUnrevisedDigestLastRun,
 			identify,
 			save,

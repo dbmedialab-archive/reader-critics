@@ -30,7 +30,7 @@ export function setWebsiteList(websites: Array<Website>) {
 	);
 }
 
-export function getWebsiteList() {
+export function getWebsiteList(page?, limit?, sort?, sortOrder?, search?) {
 	UIActions.showMainPreloader();
 	Api.getWebsiteList()
 		.then((resp)=>{
@@ -51,6 +51,20 @@ export function setWebsiteOptions(options: any) {
 	MainStore.dispatch(
 		WebsiteActionsCreator.setWebsiteOptions(options)
 	);
+}
+
+/**
+ * Delete Website by ID
+ * @param website
+ */
+export function deleteWebsite(website) {
+	UIActions.showMainPreloader();
+	Api.deleteWebsite(website)
+		.then(()=> {
+				UIActions.hideMainPreloader();
+				MainStore.dispatch(WebsiteActionsCreator.deleteWebsite(website));
+			})
+		.catch((error) => UIActions.hideMainPreloader());
 }
 
 export function updateWebsite(data: any) {

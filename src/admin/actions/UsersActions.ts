@@ -78,10 +78,12 @@ export function editUser(user) {
 export function deleteUser(user) {
 	UIActions.showMainPreloader();
 	Api.deleteUser(user)
-		.then(()=> MainStore.dispatch(
-			UsersActionsCreator.deleteUser(user)
-		))
-		.then((error) => UIActions.hideMainPreloader());
+		.then(()=> {
+			UIActions.hideMainPreloader();
+			MainStore.dispatch(
+				UsersActionsCreator.deleteUser(user));
+		})
+		.catch((error) => UIActions.hideMainPreloader());
 }
 
 export function addUser(user) {

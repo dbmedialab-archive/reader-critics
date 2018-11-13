@@ -37,7 +37,7 @@ import * as app from 'app/util/applib';
 
 const log = app.createLog();
 
-/*
+/**
  * Creating new user
  */
 export function create (requ: Request, resp: Response) : void {
@@ -47,7 +47,7 @@ export function create (requ: Request, resp: Response) : void {
 	.catch(error => errorResponse(resp, error));
 }
 
-/*
+/**
  * Showing list of users. pagination included
  */
 export function list (requ : Request, resp : Response) : void {
@@ -73,7 +73,7 @@ export function editorsList (requ : Request, resp : Response) : void {
 	.catch(err => errorResponse(resp, undefined, err, { status: 500 }));
 }
 
-/*
+/**
  * Deletes user by ID parameter
  */
 export function doDelete (requ: Request, resp: Response) : void {
@@ -82,7 +82,7 @@ export function doDelete (requ: Request, resp: Response) : void {
 	.catch(err => errorResponse(resp, err));
 }
 
-/*
+/**
  * Updating user by ID
  * Doesn't affect user password
  */
