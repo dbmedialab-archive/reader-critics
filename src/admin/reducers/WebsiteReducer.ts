@@ -37,11 +37,13 @@ const initialSelectedWebsite: Website = Immutable({
 		settings: {
 			escalation : false,
 			feedback : false,
+			section : false,
 		},
 		overrides: {
 			feedbackEmail: [],
 			fallbackFeedbackEmail: [],
 			escalationEmail: [],
+			sectionFeedbackEmail: [],
 		},
 	},
 	layout: {

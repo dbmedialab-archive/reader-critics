@@ -19,7 +19,7 @@
 export enum WebsiteSection {
 	News = 'Nyheter',
 	Sport = 'Sport',
-	Kulture = 'Kulture',
+	Culture = 'Kulture',
 	Economy = 'Økonomi',
 	Celebrity = 'Kjendis',
 	Travel = 'Reise',
@@ -27,4 +27,12 @@ export enum WebsiteSection {
 	Tips = 'Oddstips',
 }
 
-export default WebsiteSection;
+export function getWebsiteSection(value){
+	for (const item in WebsiteSection) {
+		if (value === WebsiteSection[item] ){
+			return item;
+		}
+	}
+}
+
+//export default WebsiteSection;

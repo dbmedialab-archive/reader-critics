@@ -25,8 +25,10 @@ import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParse
 import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
+import WebsiteSectionFeedbackEmailOverride from
+		'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionFeedbackEmailOverride';
 import WebsiteSectionEditors from
-'admin/components/website/modalParts/websiteSectionEditors/WebsiteSectionEditors';
+		'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
@@ -79,6 +81,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	onUpdate (data: object): void {
 		if (this.props.ID) {
 			const dataToSend:IWebsiteUpdateProps = Object.assign({currentName: this.props.name}, data);
+			console.log('data to send', dataToSend);
 			return WebsiteActions.updateWebsite(dataToSend);
 		} else {
 			return WebsiteActions.updateNewWebsiteTemplate(data);
@@ -125,7 +128,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 							<WebsiteEditors	onChange={this.onUpdate} />
 						</div>
 						<div className="row">
-							<WebsiteSectionEditors	onChange={this.onUpdate} />
+							<WebsiteSectionFeedbackEmailOverride onChange={this.onUpdate} />
 						</div>
 						<div className="row">
 							<WebsiteFeedbackEmailOverride onChange={this.onUpdate} />

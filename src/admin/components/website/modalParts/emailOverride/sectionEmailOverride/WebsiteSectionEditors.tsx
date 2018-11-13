@@ -21,34 +21,36 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import * as immutable from 'seamless-immutable';
-import * as _ from 'lodash';
+import { filter, find } from 'lodash';
 import * as mergers from 'seamless-immutable-mergers';
 
 import * as UsersActions from 'admin/actions/UsersActions';
 
 import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
-import { TagList } from 'admin/components/website/additionalComponents/TagList';
-
-import WebsiteSection from 'base/WebsiteSection';
+import { WebsiteSection } from 'base/WebsiteSection';
 import { WebsiteSectionEditorsItem } from './WebsiteSectionEditorsItem';
 
 class WebsiteSectionEditors extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 		this.state = {
+			touched : false,
 			section: null,
 			newSection: false,
 			editSection: false,
 		};
-		this.onDeleteSection = this.onDeleteSection.bind(this);
-		this.onChangeEditor = this.onChangeEditor.bind(this);
-		this.onChangeSection = this.onChangeSection.bind(this);
-		this.onEditSection = this.onEditSection.bind(this);
-		this.getUsers = this.getUsers.bind(this);
 	}
 
 	componentWillMount() {
 		UsersActions.getEditors();
+	}
+
+	componentDidUpdate(prevProps){
+		const prevSectionEditors = JSON.stringify(prevProps.sectionEditors);
+		const sectionEditors = JSON.stringify(this.props.sectionEditors);
+		if (sectionEditors !== prevSectionEditors){
+			this.props.onTouch(true);
+		}
 	}
 
 	makeSectionOptions() {
@@ -69,7 +71,7 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 		});
 	}
 
-	private getUsers () {
+	getUsers = ( () => {
 		const {users, chiefEditors} = this.props;
 		return users.asMutable()
 			.filter((user) => {
@@ -83,30 +85,28 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 			}).map((user) => (
 				{value: user.ID, name: user.name}
 			));
-	}
+	});
 
-	onDeleteSection (index) {
-		if (index >= 0) {
-			const sectionEditors = this.props.sectionEditors.asMutable();
-			sectionEditors.splice(index, 1);
-			this.setState({editSection:false, newSection:false, section: ''});
-			return this.props.onChange({sectionEditors});
-		}
-	}
-
-	onEditSection(sectionName) {
+	onEditSection = ((sectionName) => {
 		if (sectionName) {
 			this.setState({editSection:true});
 			this.setState({section: sectionName});
 		}
-	}
+	});
 
-	onChangeSection (e) {
+	onChangeSection  = ((e) => {
 		const section = e.target.value;
-		this.setState({section: section, newSection:true});
-	}
+		const sectionEditors = this.props.sectionEditors.asMutable();
+		const isNewSection = !find(sectionEditors, { 'section': section });
+		this.setState({editSection:true, touched:true});
+		this.setState({section: section});
+		if (isNewSection){
+			sectionEditors.unshift({section: section, editors: []});
+		}
+		return this.props.onChange({sectionEditors});
+	});
 
-	onChangeEditor (e) {
+	onChangeEditor =  ((e) => {
 		const mergeConfig = {
 			merger: mergers.updatingByIdArrayMerger,
 			mergerObjectIdentifier: 'section',
@@ -115,15 +115,15 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 
 		const userID = e.target.value;
 		const { section } = this.state;
-		this.setState({newSection:false, editSection:false, section: ''});
+		this.setState({newSection:false, editSection:false, section: '', touched:true});
 		const sectionEditorsAll = this.props.sectionEditors.asMutable();
 
 		if (userID) {
 			const newEditor = this.props.users.find(user => user.ID === userID).without(['ID', 'date']);
-			const sectionEditorsFiltered = _.filter(sectionEditorsAll, { 'section': section });
+			const sectionEditorsFiltered = filter(sectionEditorsAll, { 'section': section });
 			const editors = sectionEditorsFiltered[0] ? sectionEditorsFiltered[0]['editors'].asMutable()
 				: [];
-			const isNewEditor = !_.find(editors, ['name', newEditor.name]);
+			const isNewEditor = !find(editors, ['name', newEditor.name]);
 			if (!isNewEditor){
 				return;
 			}
@@ -133,31 +133,15 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 			const sectionEditors = sectionEditorsObj.merge(newSectionEditorsItemObj, mergeConfig).array;
 			return this.props.onChange({sectionEditors});
 		}
-	}
-
-	renderTagSection(){
-		const section = this.state.section;
-		return (
-			<fieldset className="text">
-				<div className="left">
-					<TagList
-						items={[WebsiteSection[section]]}
-						onDelete={this.onDeleteSection}
-						classes="website-settings-list"
-						color="green"
-					/>
-				</div>
-			</fieldset>);
-	}
+	});
 
 	render () {
 		const users = this.getUsers();
 		const sections = this.makeSectionOptions();
-		const newSectionTag = this.renderTagSection();
-		const { newSection, editSection } = this.state;
-		const disabled = !newSection && !editSection;
+		const { editSection } = this.state;
+		const disabled = !editSection;
 		return (
-			<div className="medium-12 columns">
+			<div className="small-12 medium-9 large-10 columns">
 				<fieldset className="text">
 					<div className="left">
 						<LabeledSelect
@@ -182,7 +166,6 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 							disabled={ disabled } />
 					</div>
 				</fieldset>
-				{ newSection && newSectionTag }
 				<WebsiteSectionEditorsItem
 					sectionEditors={this.props.sectionEditors}
 					onChange={this.props.onChange}

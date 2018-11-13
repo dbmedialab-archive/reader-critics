@@ -17,8 +17,10 @@
 //
 
 import * as Cheerio from 'cheerio';
+import { getWebsiteSection } from 'base/WebsiteSection';
+import {capitalizeFirstLetter} from 'admin/services/Utils';
 
 export function getArticleCategory(select : Cheerio) : string {
 	const metaName = select('head').find('meta[property="page:site_section"]');
-	return metaName.attr('content').trim();
+	return getWebsiteSection(capitalizeFirstLetter(metaName.attr('content').trim()));
 }

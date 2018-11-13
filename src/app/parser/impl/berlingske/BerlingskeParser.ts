@@ -33,6 +33,11 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 		return Promise.resolve([]);
 	}
 
+	// override Labrador implementation, meta structure is different
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
+	}
+
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {

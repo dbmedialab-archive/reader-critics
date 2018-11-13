@@ -36,9 +36,12 @@ export interface Website extends PersistedModel {
 		settings: {
 			escalation : boolean
 			feedback : boolean
+			section : boolean
 		}
 		overrides: {
 			feedbackEmail: string[]
+			//sectionFeedbackEmail: Array <{section:string, emails: string[]}>
+			sectionFeedbackEmail: [{}]
 			fallbackFeedbackEmail: string[]
 			escalationEmail: string[]
 		}

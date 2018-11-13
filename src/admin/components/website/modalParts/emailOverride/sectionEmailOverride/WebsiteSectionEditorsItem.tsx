@@ -24,26 +24,23 @@ import * as immutable from 'seamless-immutable';
 export class WebsiteSectionEditorsItem extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
-		this.onDeleteSection = this.onDeleteSection.bind(this);
-		this.onDeleteEditor = this.onDeleteEditor.bind(this);
-		this.onEditSection = this.onEditSection.bind(this);
 	}
 
-	onDeleteSection (index) {
+	onDeleteSection = ( (index) => {
 		if (index >= 0) {
 			const sectionEditors = this.props.sectionEditors.asMutable();
 			sectionEditors.splice(index, 1);
 			return this.props.onChange({sectionEditors});
 		}
-	}
+	});
 
-	onEditSection (sectionName) {
+	onEditSection = ( (sectionName) =>{
 		if (sectionName) {
 			return this.props.onEdit(sectionName);
 		}
-	}
+	});
 
-	onDeleteEditor (index) {
+	onDeleteEditor = ( (index) => {
 		const sectionEditorsAll = this.props.sectionEditors;
 		// index looks like 0-0, 1-0 ...
 		// where the first part - index of the editor in the editors list
@@ -58,7 +55,7 @@ export class WebsiteSectionEditorsItem extends React.Component <any, any> {
 		const newEditorsItem = {section: sectionEditorsAll[sectionIndex].section, editors: editors};
 		const sectionEditors = immutable.set(sectionEditorsAll, sectionIndex, newEditorsItem);
 		return this.props.onChange({sectionEditors});
-	}
+	});
 
 	render () {
 		return this.props.sectionEditors.map((item, index) => {

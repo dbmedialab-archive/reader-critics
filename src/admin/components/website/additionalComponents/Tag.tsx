@@ -17,7 +17,7 @@
 //
 
 import * as React from 'react';
-import WebsiteSection from 'base/WebsiteSection';
+import { WebsiteSection } from 'base/WebsiteSection';
 
 export interface ITag {
 	classes: string;
