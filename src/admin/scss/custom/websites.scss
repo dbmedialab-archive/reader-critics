@@ -1,12 +1,11 @@
 .left {
-	float:left;
-	width:30%;
-	//background-color:blue;
+	float: left;
+	width: 30%;
 }
+
 .right {
-	float:right;
-	width:65%;
-	//background-color:red;
+	float: right;
+	width: 65%;
 }
 
 .website-edition-form {
@@ -86,7 +85,7 @@
 	}
 
 	&.red {
-		background-color: indianred;
+		background-color: #ff7f50;
 	}
 
 	.fa {
