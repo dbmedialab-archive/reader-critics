@@ -104,11 +104,13 @@ export function getFeedbackRecipients(
 
 	// If the list of recipients is empty then we can't really do
 	// anything about that. The caller function will have to deal with it
+	let recipientList;
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
+		recipientList =  Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
 	} else {
-		return Promise.resolve(uniq(recipients));
+		recipientList = Promise.resolve(uniq(recipients));
 	}
+	return recipientList;
 }
 
 export function getEscalationRecipientList(
