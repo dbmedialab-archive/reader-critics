@@ -59,7 +59,6 @@ export function getFeedbackRecipients(
 ) : Promise <Array <string>> {
 
 	// override emails for development
-
 	if (override && !app.isProduction) {
 		return Promise.resolve([override]);
 	}
