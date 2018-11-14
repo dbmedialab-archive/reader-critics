@@ -52,7 +52,7 @@ function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEdi
 
 export function getFeedbackRecipients(
 	website : Website, article : Article, includeEditors : boolean = false
-  ) : Promise <Array <string>> {
+) : Promise <Array <string>> {
 
 	// override emails for development
 	if (override && !app.isProduction) {
@@ -91,10 +91,7 @@ export function getFeedbackRecipients(
 	}
 
 	const recipients = formRecipients(
-		fallbackFeedbackEmail,
-		article.authors,
-		chiefEditors,
-		includeEditors
+		fallbackFeedbackEmail, article.authors, chiefEditors, includeEditors
 	);
 
 	// If the list of recipients is empty then we can't really do
