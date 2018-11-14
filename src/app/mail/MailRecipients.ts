@@ -36,8 +36,8 @@ const override : string = config.get('mail.testOverride');
 // authors and adds the website's editors if this is requested, or if the list
 // of article authors is empty (happens often on articles from external sources)
 function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEditors){
-
 	let recipients : Array <string> = filterForMailAddr(authors);
+	console.log(recipients);
 
 	// if authors list is empty and we have fallback emails then add them to list`
 	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
@@ -48,7 +48,6 @@ function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEdi
 	if (recipients.length <= 0 || includeEditors) {
 		recipients = recipients.concat(uniq(filterForMailAddr(chiefEditors)));
 	}
-
 	return recipients;
 }
 
@@ -81,9 +80,11 @@ export function getFeedbackRecipients(
 
 	// if website is set to send all feedback's to category editor then override email addresses
 	const { sectionFeedbackEmail = []} = overrides, section = article.category;
-	if (settings.section && sectionFeedbackEmail.length) {
+	if (settings.section && sectionFeedbackEmail.length && section) {
 		const sectionEmails = find(sectionFeedbackEmail, ((item) => item[section]));
-		return Promise.resolve(sectionEmails[section]);
+		if (sectionEmails){
+			return Promise.resolve(sectionEmails[section]);
+		}
 	}
 
 	const {feedbackEmail = [], fallbackFeedbackEmail = []} = overrides;
@@ -98,6 +99,7 @@ export function getFeedbackRecipients(
 		chiefEditors,
 		includeEditors
 	);
+
 	// If the list of recipients is empty then we can't really do
 	// anything about that. The caller function will have to deal with it
 	let recipientsResult;
