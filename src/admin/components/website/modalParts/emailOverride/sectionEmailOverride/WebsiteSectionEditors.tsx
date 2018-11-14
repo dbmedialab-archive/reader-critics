@@ -36,7 +36,6 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 		this.state = {
 			touched : false,
 			section: null,
-			newSection: false,
 			editSection: false,
 		};
 	}
@@ -115,7 +114,7 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 
 		const userID = e.target.value;
 		const { section } = this.state;
-		this.setState({newSection:false, editSection:false, section: '', touched:true});
+		this.setState({editSection:false, section: '', touched:true});
 		const sectionEditorsAll = this.props.sectionEditors.asMutable();
 
 		if (userID) {
@@ -181,7 +180,6 @@ const mapStateToProps = (state, ownProps) => {
 		sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
 		chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
 		users: state.users.getIn(['users'], []),
-		hosts: state.website.getIn(['selected', 'hosts']),
 	};
 };
 

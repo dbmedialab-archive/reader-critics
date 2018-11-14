@@ -19,7 +19,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import WebsiteSectionEditors
-	from 'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionEditors';
+from 'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionEditors';
 import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox';
 
 import {
@@ -32,7 +32,6 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 		super(props);
 		this.state = { checked : this.props.overrideSettings.settings.section };
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
-		//this.onChange = this.onChange.bind(this);
 	}
 
 	onToggleCheck = ((e) => {
@@ -41,7 +40,7 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 		return this.sendOverrideChanges(!checked);
 	});
 
-	getSectionOverrides = (() => {
+	getSectionEmailOverrides = (() => {
 		const { sectionEditors } = this.props;
 		const sectionEmails = [];
 		sectionEditors.forEach((item)=> {
@@ -55,7 +54,7 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 	sendOverrideChanges (checked: boolean = false) {
 		const { settings } = this.props.overrideSettings;
 		const { overrides } = this.props.overrideSettings;
-		const sectionOverrides = this.getSectionOverrides();
+		const sectionEmailOverrides = this.getSectionEmailOverrides();
 
 		const newSettings = Object.assign({}, settings, {section: checked});
 		let newOverrides = {sectionFeedbackEmail : []};
@@ -64,15 +63,13 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 			newOverrides = Object.assign(
 				{},
 				overrides,
-				{sectionFeedbackEmail : sectionOverrides});
+				{sectionFeedbackEmail : sectionEmailOverrides});
 		}
 		const overrideSettings = {overrides: newOverrides, settings: newSettings};
 		return this.props.onChange({overrideSettings});
 	}
 
 	onTouch = ((touched:boolean = false) => {
-		console.log('******************* touch')
-		console.log(touched)
 		if (touched){
 			const { checked } = this.state;
 			this.sendOverrideChanges(checked);
@@ -83,7 +80,7 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 		const {checked} = this.state;
 		return (
 			<React.Fragment>
-				<h6 className="override-status-control"><b>Feedback email override by category</b></h6>
+				<h6 className="overrides-container"><b>Feedback email override by category</b></h6>
 				<WebsiteSectionEditors onChange={this.props.onChange} onTouch={this.onTouch}/>
 				<div className="switcher-container medium-3 large-2 show-for-medium
 												columns override-status-control">

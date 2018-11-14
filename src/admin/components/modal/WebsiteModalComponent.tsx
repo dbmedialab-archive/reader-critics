@@ -26,7 +26,7 @@ import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
 import WebsiteSectionFeedbackEmailOverride from
-		'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionFeedbackEmailOverride';
+		'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionFBEmailOverride';
 import WebsiteSectionEditors from
 		'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionEditors';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
