@@ -80,8 +80,7 @@ export function getFeedbackRecipients(
 	} = website;
 
 	// if website is set to send all feedback's to category editor then override email addresses
-	const { sectionFeedbackEmail = []} = overrides;
-	const section = article.category;
+	const { sectionFeedbackEmail = []} = overrides, section = article.category;
 	if (settings.section && sectionFeedbackEmail.length) {
 		const sectionEmails = find(sectionFeedbackEmail, ((item) => item[section]));
 		return Promise.resolve(sectionEmails[section]);
