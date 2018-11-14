@@ -37,7 +37,6 @@ const override : string = config.get('mail.testOverride');
 // of article authors is empty (happens often on articles from external sources)
 function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEditors){
 	let recipients : Array <string> = filterForMailAddr(authors);
-	console.log(recipients);
 
 	// if authors list is empty and we have fallback emails then add them to list`
 	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
@@ -52,10 +51,8 @@ function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEdi
 }
 
 export function getFeedbackRecipients(
-	website : Website,
-	article : Article,
-	includeEditors : boolean = false
-) : Promise <Array <string>> {
+	website : Website, article : Article, includeEditors : boolean = false
+  ) : Promise <Array <string>> {
 
 	// override emails for development
 	if (override && !app.isProduction) {

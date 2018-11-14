@@ -34,5 +34,3 @@ export function getWebsiteSection(value){
 		}
 	}
 }
-
-//export default WebsiteSection;
