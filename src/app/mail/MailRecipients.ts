@@ -88,7 +88,6 @@ export function getFeedbackRecipients(
 	}
 
 	const {feedbackEmail = [], fallbackFeedbackEmail = []} = overrides;
-
 	// if website is set to send all feedback's to dedicated addresses then override email addresses
 	if (settings.feedback && feedbackEmail.length) {
 		return Promise.resolve(feedbackEmail);
@@ -100,16 +99,15 @@ export function getFeedbackRecipients(
 		chiefEditors,
 		includeEditors
 	);
-
 	// If the list of recipients is empty then we can't really do
 	// anything about that. The caller function will have to deal with it
-	let recipientList;
+	let recipientsResult;
 	if (recipients.length <= 0) {
-		recipientList =  Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
+		recipientsResult =  Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
 	} else {
-		recipientList = Promise.resolve(uniq(recipients));
+		recipientsResult = Promise.resolve(uniq(recipients));
 	}
-	return recipientList;
+	return recipientsResult;
 }
 
 export function getEscalationRecipientList(
