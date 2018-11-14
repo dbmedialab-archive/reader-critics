@@ -80,7 +80,9 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 		const {checked} = this.state;
 		return (
 			<React.Fragment>
-				<h6 className="overrides-container"><b>Feedback email override by category</b></h6>
+				<span className="small-12 medium-9 large-10 column" >
+					<b>Feedback email override by category</b>
+				</span>
 				<WebsiteSectionEditors onChange={this.props.onChange} onTouch={this.onTouch}/>
 				<div className="switcher-container medium-3 large-2 show-for-medium
 												columns override-status-control">

@@ -118,6 +118,10 @@ isplay: flex;
 
 .switcher-container {
 	margin-top: 2.5rem;
+	align-items: center;
+	justify-content: center;
+	align-self: flex-start;
+	text-align: center;
 }
 
 .overrides-container {
