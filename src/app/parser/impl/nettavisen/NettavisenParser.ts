@@ -26,7 +26,6 @@ import AbstractIteratingParser from 'app/parser/AbstractIteratingParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
 import { getLinkedDataModifiedTime } from 'app/parser/util/VersionParser';
-import {getArticleCategory} from 'app/parser/util/CategoryParser';
 
 export default class NettavisenParser extends AbstractIteratingParser {
 
@@ -49,6 +48,8 @@ export default class NettavisenParser extends AbstractIteratingParser {
 			};
 		}));
 	}
+
+	// need to implement
 
 	protected parseCategory() : Promise <string> {
 		return Promise.resolve( '');

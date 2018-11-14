@@ -29,7 +29,6 @@ import * as NodeReadPlugin from '../../util/NodeReadPlugin';
 
 import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
 import { getOpenGraphModifiedTime } from 'app/parser/util/VersionParser';
-import {getArticleCategory} from 'app/parser/util/CategoryParser';
 
 const elementTags = [
 	'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'ul', 'img', 'ol', 'a',
@@ -62,6 +61,8 @@ export default class GenericParser extends AbstractParser implements Parser {
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		return Promise.resolve(getOpenGraphAuthors(this.select));
 	}
+
+	// need to implement
 
 	protected parseCategory() : Promise <string> {
 		return Promise.resolve( '');

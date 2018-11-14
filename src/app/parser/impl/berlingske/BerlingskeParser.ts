@@ -34,6 +34,8 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 	}
 
 	// override Labrador implementation, meta structure is different
+	// need to implement
+
 	protected parseCategory() : Promise <string> {
 		return Promise.resolve( '');
 	}

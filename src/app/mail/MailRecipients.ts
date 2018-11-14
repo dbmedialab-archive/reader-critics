@@ -16,7 +16,7 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { find, head, uniq } from 'lodash';
+import { find, uniq } from 'lodash';
 
 import Article from 'base/Article';
 import Person from 'base/zz/Person';

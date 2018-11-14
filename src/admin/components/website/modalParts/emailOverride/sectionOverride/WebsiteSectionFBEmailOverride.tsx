@@ -19,7 +19,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import WebsiteSectionEditors
-from 'admin/components/website/modalParts/emailOverride/sectionEmailOverride/WebsiteSectionEditors';
+	from 'admin/components/website/modalParts/emailOverride/sectionOverride/WebsiteSectionEditors';
 import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox';
 
 import {
