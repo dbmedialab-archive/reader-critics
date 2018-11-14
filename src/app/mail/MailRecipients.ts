@@ -59,6 +59,7 @@ export function getFeedbackRecipients(
 ) : Promise <Array <string>> {
 
 	// override emails for development
+
 	if (override && !app.isProduction) {
 		return Promise.resolve([override]);
 	}
@@ -105,9 +106,9 @@ export function getFeedbackRecipients(
 	// anything about that. The caller function will have to deal with it
 	if (recipients.length <= 0) {
 		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
+	} else {
+		return Promise.resolve(uniq(recipients));
 	}
-
-	return Promise.resolve(uniq(recipients));
 }
 
 export function getEscalationRecipientList(
