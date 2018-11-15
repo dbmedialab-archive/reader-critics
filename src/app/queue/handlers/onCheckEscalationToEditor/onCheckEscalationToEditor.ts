@@ -104,7 +104,6 @@ function getThresholds(website : Website) : EscalationThresholds {
 	// Apply some sensible boundaries to that number
 	toEditor = Math.max(toEditor, minThreshold);
 	toEditor = Math.min(toEditor, maxThreshold);
-
 	return {
 		toEditor,
 	};
