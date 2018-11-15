@@ -32,6 +32,7 @@ const initialSelectedWebsite: Website = Immutable({
 	name: '',
 	parserClass: '',
 	chiefEditors: [],
+	sectionEditors: [],
 	hosts: [],
 	overrideSettings: {
 		settings: {

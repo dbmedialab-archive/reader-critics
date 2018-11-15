@@ -28,7 +28,7 @@ export interface Website extends PersistedModel {
 
 	hosts : string[]
 	chiefEditors : Person[]
-	sectionEditors: Array <{section: string, editors: Person[]}>
+	sectionEditors: {section: string, editors: Person[]}[]
 
 	escalateThreshold : EscalationThresholds
 
