@@ -23,8 +23,6 @@ import ArticleAuthor from 'base/ArticleAuthor';
 import AbstractLabradorParser from 'app/parser/AbstractLabradorParser';
 import IteratingParserItem from 'app/parser/IteratingParserItem';
 
-// import { getOpenGraphAuthors } from 'app/parser/util/AuthorParser';
-
 export default class BerlingskeParser extends AbstractLabradorParser {
 
 	// Implement AbstractParser
@@ -33,6 +31,13 @@ export default class BerlingskeParser extends AbstractLabradorParser {
 		/*const authors = getOpenGraphAuthors(this.select);
 		log('parsing byline:', authors);*/
 		return Promise.resolve([]);
+	}
+
+	// override Labrador implementation, meta structure is different
+	// need to implement
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
 	}
 
 	// Implement AbstractIteratingParser
