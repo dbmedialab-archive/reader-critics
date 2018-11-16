@@ -68,11 +68,11 @@ class UsersGriddle extends React.Component <IUsersGriddle, any> {
 		e.preventDefault();
 		const { users } = this.props;
 		const userId = e.target.dataset.id;
-		const user = users.filter( item => {
+		const user = users.find( item => {
 			return item ? item.ID === userId: null;
 		});
 		if (user){
-			this.updateModalWindowData(user[0]);
+			this.updateModalWindowData(user);
 		}
 	}
 	onDestroy = (e: any) :void => {

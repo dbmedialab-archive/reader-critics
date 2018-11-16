@@ -73,6 +73,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 	}
 
 	closeReset (): void {
+		console.log('close reset modal window');
 		UIActions.closeReset(this.props.windowName);
 	}
 

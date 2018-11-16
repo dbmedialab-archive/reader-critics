@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 
-import { connect } from 'react-redux';
+//import { connect } from 'react-redux';
 
 import * as immutable from 'seamless-immutable';
 import { filter, find } from 'lodash';
@@ -30,7 +30,7 @@ import { LabeledSelect } from 'admin/components/website/additionalComponents/Lab
 import { WebsiteSection } from 'base/WebsiteSection';
 import { WebsiteSectionEditorsItem } from './WebsiteSectionEditorsItem';
 
-class WebsiteSectionEditors extends React.Component <any, any> {
+export default class WebsiteSectionEditors extends React.Component <any, any> {
 	constructor (props) {
 		super(props);
 		this.state = {
@@ -175,16 +175,16 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
-	return {
+//const mapStateToProps = (state, ownProps) => {
+	//return {
 		//sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
 		//chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
 		//users: state.users.getIn(['users'], []),
-	};
-};
+	//};
+//};
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {};
-};
+//const mapDispatchToProps = (dispatch, ownProps) => {
+	//return {};
+//};
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebsiteSectionEditors);
+//export default connect(mapStateToProps, mapDispatchToProps)(WebsiteSectionEditors);
