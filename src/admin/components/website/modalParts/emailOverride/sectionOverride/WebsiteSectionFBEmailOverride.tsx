@@ -83,7 +83,11 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 				<span className="small-12 medium-9 large-10 column" >
 					<b>Feedback email override by category</b>
 				</span>
-				<WebsiteSectionEditors onChange={this.props.onChange} onTouch={this.onTouch}/>
+				<WebsiteSectionEditors
+					sectionEditors={this.props.sectionEditors}
+					chiefEditors={this.props.chiefEditors}
+					users={this.props.users}
+					onChange={this.props.onChange} onTouch={this.onTouch}/>
 				<div className="switcher-container medium-3 large-2 show-for-medium
 												columns override-status-control">
 					<SwitchBox
@@ -98,8 +102,10 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		overrideSettings: state.website.getIn(['selected', 'overrideSettings'], {}),
-		sectionEditors: state.website.getIn(['selected', 'sectionEditors'], {}),
+		overrideSettings: state.website.getIn(['selected', 'overrideSettings']),
+		sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
+		chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
+		users: state.users.getIn(['users'], []),
 	};
 };
 
