@@ -69,9 +69,14 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	return state.merge({
-		selected: action.payload ? action.payload : initialSelectedWebsite,
-	}, {deep: true});
+	console.log('+++++++++++++++++++++');
+	console.log(state);
+	console.log(action);
+	//return state.merge({
+	//	selected: action.payload ? action.payload : initialSelectedWebsite,
+	//}, {deep: true});
+	return state.setIn(['selected'],
+		action.payload ? action.payload : initialSelectedWebsite);
 }
 
 function updateSelected(action, state) {
