@@ -62,6 +62,9 @@ function modalInit(action, state) {
 }
 
 function resetFormInput(action, state) {
+	console.log('reset form input')
+	console.log(state)
+	console.log(action)
 	if (!state.getIn(['modalWindows', action.payload.windowName])) {
 		throw new Error(`You have to init your modal ${action.payload.windowName} window`);
 	} else {
