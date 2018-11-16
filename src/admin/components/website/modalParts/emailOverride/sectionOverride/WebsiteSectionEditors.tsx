@@ -177,9 +177,9 @@ class WebsiteSectionEditors extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
-		chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
-		users: state.users.getIn(['users'], []),
+		//sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
+		//chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
+		//users: state.users.getIn(['users'], []),
 	};
 };
 
