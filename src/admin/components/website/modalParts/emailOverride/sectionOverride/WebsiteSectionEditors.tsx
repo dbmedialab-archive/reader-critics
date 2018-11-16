@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 
-import { connect } from 'react-redux';
+//import { connect } from 'react-redux';
 
 import * as immutable from 'seamless-immutable';
 import { filter, find } from 'lodash';

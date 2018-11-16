@@ -60,7 +60,7 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
 	onEdit = (e: any) :void => {
-		console.log('------ on edit website list -----')
+		console.log('------ on edit website list -----');
 		e.preventDefault();
 		const websiteId = e.target.dataset.id;
 		const { websites } = this.props;
