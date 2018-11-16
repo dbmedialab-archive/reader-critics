@@ -69,7 +69,7 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	console.log('+++++++++++++++++++++==')
+	console.log('+++++++++++++++++++++');
 	console.log(state);
 	console.log(action);
 	//return state.merge({
