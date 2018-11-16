@@ -79,9 +79,9 @@ function modalStateChanged(action, state) {
 	} else {
 		const mergeObj = {};
 		mergeObj[action.payload.windowName] = action.payload.options;
-		console.log('change state modal')
-		console.log(action.payload.options)
-		console.log(state.merge({modalWindows: mergeObj}, {deep: true}))
+		console.log('change state modal');
+		console.log(action.payload.options);
+		console.log(state.merge({modalWindows: mergeObj}, {deep: true}));
 		return state.merge({modalWindows: mergeObj}, {deep: true});
 	}
 }
