@@ -28,6 +28,7 @@ export interface Website extends PersistedModel {
 
 	hosts : string[]
 	chiefEditors : Person[]
+	sectionEditors: {section: string, editors: Person[]}[]
 
 	escalateThreshold : EscalationThresholds
 
@@ -35,9 +36,11 @@ export interface Website extends PersistedModel {
 		settings: {
 			escalation : boolean
 			feedback : boolean
+			section : boolean
 		}
 		overrides: {
 			feedbackEmail: string[]
+			sectionFeedbackEmail: [{}]
 			fallbackFeedbackEmail: string[]
 			escalationEmail: string[]
 		}

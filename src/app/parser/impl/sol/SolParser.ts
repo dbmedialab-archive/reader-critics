@@ -46,6 +46,12 @@ export default class SolParser extends AbstractLabradorParser {
 		}
 	}
 
+	// override Labrador implementation, meta structure is different
+	// need to implement
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( 'cat');
+	}
+
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		const authors = getOpenGraphAuthors(this.select);
 

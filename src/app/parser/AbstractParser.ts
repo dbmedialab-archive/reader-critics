@@ -30,6 +30,7 @@ interface ParserWorkflowPayload {
 	authors : any;
 	titles : any;
 	title : string;
+	category: string,
 	featured : ArticleItem[]
 }
 
@@ -75,6 +76,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 			return Promise.props({
 				version: this.parseVersion(),
 				authors: this.parseByline(),
+				category: this.parseCategory(),
 				titles: this.parseTitles(),
 				title: this.findTitle(),
 				featured: this.parseFeaturedImage(),
@@ -85,6 +87,7 @@ abstract class AbstractParser extends BaseItems implements Parser {
 			version: a.version,
 			authors: a.authors,
 			title: a.title,
+			category: a.category,
 			items: [
 				...a.titles,
 				...a.featured,
@@ -96,11 +99,11 @@ abstract class AbstractParser extends BaseItems implements Parser {
 	// Prototypes
 
 	protected abstract parseVersion() : Promise <string>;
+	protected abstract parseCategory() : Promise <string>;
 	protected abstract parseByline() : Promise <ArticleAuthor[]>;
 	protected abstract parseTitles() : Promise <ArticleItem[]>;
 	protected abstract parseFeaturedImage() : Promise <ArticleItem[]>;
 	protected abstract parseContent() : Promise <ArticleItem[]>;
-
 	protected abstract parseTitleFromMetaData() : Promise <string>;
 
 	// Article title

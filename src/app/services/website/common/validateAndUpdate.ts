@@ -17,7 +17,9 @@
 //
 
 import {
+	head,
 	isObject,
+	isString
 } from 'lodash';
 
 import {
@@ -37,7 +39,6 @@ export default function(name: string, data : any) : Promise <Website> {
 	catch (error) {
 		return Promise.reject(error);
 	}
-
 	return websiteService.update(name, data);
 }
 
@@ -48,8 +49,13 @@ function validateSchema(data : any) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');
 	}
-	const dataArrays: string[] = ['hosts', 'chiefEditors'];
-	const overrideArrays: string[] = ['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail'];
+	const dataArrays: string[] = ['hosts', 'chiefEditors', 'sectionEditors'];
+	const overrideArrays: string[] = [
+		'feedbackEmail',
+		'sectionFeedbackEmail',
+		'fallbackFeedbackEmail',
+		'escalationEmail',
+	];
 
 	dataArrays.forEach((item: string) =>
 		arrayValidation(
@@ -58,7 +64,9 @@ function validateSchema(data : any) {
 			data));
 
 	if (data.overrideSettings && data.overrideSettings.overrides) {
-		overrideArrays.forEach(item => arrayOfEmailsValidation(item, data.overrideSettings.overrides));
+		overrideArrays.forEach(
+			item => arrayOfEmailsValidation(item, data.overrideSettings.overrides)
+		);
 	}
 }
 
@@ -82,9 +90,18 @@ function arrayOfEmailsValidation (item: any, data: any) {
 				`Invalid website data: "overrideSettings.overrides.${item}" must be an array`
 			);
 		}
-		data[item].forEach((email: string) =>
-			emailValidation(
-			`Invalid website data: "overrideSettings.overrides.${item}" must contain valid emails`,
-				email));
+		data[item].forEach((email: any) => {
+			if ( isObject(email) ) {
+				const emailToCheck: [string] = head(Object.values(email));
+				emailToCheck.forEach((el:string) => {
+					emailValidation(
+						`Invalid website data: "overrideSettings.overrides.${item}" must contain valid emails`, el);
+				});
+			} else if ( isString(email) ) {
+				emailValidation(
+					`Invalid website data: "overrideSettings.overrides.${item}" must contain valid emails`,
+					email);
+			}
+		});
 	}
 }

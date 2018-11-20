@@ -1,3 +1,13 @@
+.left {
+	float: left;
+	width: 30%;
+}
+
+.right {
+	float: right;
+	width: 65%;
+}
+
 .website-edition-form {
 
 	label {
@@ -74,6 +84,10 @@
 		background-color: #3adb76;
 	}
 
+	&.red {
+		background-color: #ff7f50;
+	}
+
 	.fa {
 		&::before {
 			color: #fff;
@@ -83,6 +97,12 @@
 	}
 }
 
+
+/*
+isplay: flex;
+    justify-content: center;
+    align-self: flex-start;
+ */
 .websites-group-holder {
 	.websitelist-table-heading, .websitelist-table-row {
 		background: #CCCBCB;
@@ -94,6 +114,14 @@
 		font-style: italic;
 		text-transform: uppercase;
 	}
+}
+
+.switcher-container {
+	margin-top: 2.5rem;
+	align-items: center;
+	justify-content: center;
+	align-self: flex-start;
+	text-align: center;
 }
 
 .overrides-container {
@@ -121,6 +149,7 @@
 		}
 	}
 }
+
 
 .layout-settings-section {
 	.layout-content {
