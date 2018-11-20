@@ -69,19 +69,9 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	console.log('+++++++++++++++++++++');
-	console.log(state);
-	console.log(action);
-	//Immutable.merge(obj, action.payload ? action.payload : initialSelectedWebsite);
-	//return state;
-	//const a = Immutable(action.payload).merge({selected: initialSelectedWebsite }, {deep: true});
-	const a = Immutable(initialSelectedWebsite).merge(action.payload, {deep: true});
-	console.log(a);
 	return state.merge({
-		selected: a,
+		selected: Immutable(initialSelectedWebsite).merge(action.payload, {deep: true}),
 	}, {deep: true});
-	//return state.merge({selected: state.setIn(['selected'],
-	//	action.payload ? action.payload : initialSelectedWebsite)});
 }
 
 function updateSelected(action, state) {
