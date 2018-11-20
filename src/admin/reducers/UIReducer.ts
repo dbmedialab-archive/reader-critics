@@ -62,13 +62,9 @@ function modalInit(action, state) {
 }
 
 function resetFormInput(action, state) {
-	console.log('reset form input');
-	console.log(state);
-	console.log(action);
 	if (!state.getIn(['modalWindows', action.payload.windowName])) {
 		throw new Error(`You have to init your modal ${action.payload.windowName} window`);
 	} else {
-		console.log(state.setIn(['modalWindows', action.payload.windowName], initModalParams));
 		return state.setIn(['modalWindows', action.payload.windowName], initModalParams);
 	}
 }
@@ -79,9 +75,6 @@ function modalStateChanged(action, state) {
 	} else {
 		const mergeObj = {};
 		mergeObj[action.payload.windowName] = action.payload.options;
-		console.log('change state modal');
-		console.log(action.payload.options);
-		console.log(state.merge({modalWindows: mergeObj}, {deep: true}));
 		return state.merge({modalWindows: mergeObj}, {deep: true});
 	}
 }
