@@ -38,9 +38,9 @@ export default class WebsiteSectionEditors extends React.Component <any, any> {
 		};
 	}
 
-	componentWillMount() {
-		UsersActions.getEditors();
-	}
+	//componentWillMount() {
+	//	UsersActions.getEditors();
+	//}
 
 	componentDidUpdate(prevProps){
 		const prevSectionEditors = JSON.stringify(prevProps.sectionEditors);
