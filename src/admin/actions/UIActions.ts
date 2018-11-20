@@ -89,7 +89,6 @@ export function hideDialog() {
 }
 
 export function closeReset(windowName){
-	console.log('close reset actions');
 	const data = {windowName: windowName};
 	MainStore.dispatch(
 		UIActionsCreator.closeReset(data)
