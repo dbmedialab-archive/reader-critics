@@ -32,16 +32,19 @@ const initialSelectedWebsite: Website = Immutable({
 	name: '',
 	parserClass: '',
 	chiefEditors: [],
+	sectionEditors: [],
 	hosts: [],
 	overrideSettings: {
 		settings: {
 			escalation : false,
 			feedback : false,
+			section : false,
 		},
 		overrides: {
 			feedbackEmail: [],
 			fallbackFeedbackEmail: [],
 			escalationEmail: [],
+			sectionFeedbackEmail: [],
 		},
 	},
 	layout: {
@@ -66,9 +69,15 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	return state.merge({
-		selected: action.payload ? action.payload : initialSelectedWebsite,
-	}, {deep: true});
+	if (action.payload) {
+		return state.merge({
+			selected: Immutable(initialSelectedWebsite).merge(action.payload, {deep: true}),
+		}, {deep: true});
+	} else {
+		return state.merge({
+			selected: initialSelectedWebsite,
+		}, {deep: true});
+	}
 }
 
 function updateSelected(action, state) {

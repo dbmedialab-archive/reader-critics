@@ -62,6 +62,12 @@ export default class GenericParser extends AbstractParser implements Parser {
 		return Promise.resolve(getOpenGraphAuthors(this.select));
 	}
 
+	// need to implement
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
+	}
+
 	protected parseTitles() : Promise <ArticleItem[]> {
 		const title = this.nodeRead.title;
 		return Promise.resolve([
