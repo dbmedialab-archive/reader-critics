@@ -124,20 +124,20 @@ abstract class BaseItems {
 			text,
 		});
 	}
-	protected createTestResultQuoteEl(sectionTitle : string) : ArticleItem {
-		const text = clean(sectionTitle);
+	protected createTestResultQuoteEl(quote : string) : ArticleItem {
+		const text = clean(quote);
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultQuote, {
 			text,
 		});
 	}
-	protected createTestResultProsEl(sectionTitle : string) : ArticleItem {
-		const text = clean(sectionTitle);
+	protected createTestResultProsEl(pros : string) : ArticleItem {
+		const text = clean(pros);
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultPros, {
 			text,
 		});
 	}
-	protected createTestResultConsEl(sectionTitle : string) : ArticleItem {
-		const text = clean(sectionTitle);
+	protected createTestResultConsEl(cons : string) : ArticleItem {
+		const text = clean(cons);
 		return text.length <= 0 ? undefined : this.createEl(ArticleItemType.TestResultCons, {
 			text,
 		});

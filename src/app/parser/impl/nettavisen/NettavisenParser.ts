@@ -49,6 +49,12 @@ export default class NettavisenParser extends AbstractIteratingParser {
 		}));
 	}
 
+	// need to implement
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
+	}
+
 	// Implement AbstractIteratingParser
 
 	protected getArticleContentScope() : string {
