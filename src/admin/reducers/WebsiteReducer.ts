@@ -69,7 +69,7 @@ function setWebsites(action, state) {
 }
 
 function setSelected(action, state) {
-	if (action.payload){
+	if (action.payload) {
 		return state.merge({
 			selected: Immutable(initialSelectedWebsite).merge(action.payload, {deep: true}),
 		}, {deep: true});
