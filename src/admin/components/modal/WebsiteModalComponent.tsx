@@ -19,12 +19,15 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import ReactModal from './ReactModalComponent';
+import WebsiteEscalateThreshold from 'admin/components/website/modalParts/WebsiteEscalateThreshold';
 import * as UIActions from 'admin/actions/UIActions';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
 import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParserClass';
 import WebsiteName from 'admin/components/website/modalParts/WebsiteName';
 import WebsiteHosts from 'admin/components/website/modalParts/WebsiteHosts';
 import WebsiteEditors from 'admin/components/website/modalParts/WebsiteEditors';
+import WebsiteSectionFeedbackEmailOverride from
+	'admin/components/website/modalParts/emailOverride/sectionOverride/WebsiteSectionFBEmailOverride';
 import WebsiteLayout from 'admin/components/website/modalParts/WebsiteLayout';
 import {WebsiteLayoutProps} from 'admin/types/Website';
 import WebsiteFeedbackEmailOverride from
@@ -40,6 +43,8 @@ export interface IWebsiteUpdateProps {
 	parserClass?: string;
 	hosts?: string[];
 	chiefEditors?: {name: string, email: string}[];
+	sectionEditors?: {name: string, email: string, section: string}[];
+	escalateThreshold?: number,
 	layout?: WebsiteLayoutProps;
 }
 
@@ -120,6 +125,10 @@ class WebsiteModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
+							<WebsiteEscalateThreshold onSubmit={this.onUpdate}/>
+						</div>
+						<div className="row">
+							<WebsiteSectionFeedbackEmailOverride onChange={this.onUpdate} />
 						</div>
 						<div className="row">
 							<WebsiteFeedbackEmailOverride onChange={this.onUpdate} />

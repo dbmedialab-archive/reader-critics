@@ -50,6 +50,13 @@ const additionalRules : IValidationRules = {
 		error: 'Site name has to be longer than 4 symbols',
 	},
 
+	escalateNumber: {
+			type: 'number',
+			gte: 0,
+			lte: 10,
+			error: 'Escalation Threshold should be in range 0..10',
+	},
+
 	uniqueness: {
 		type: 'array',
 		uniqueness: true,
