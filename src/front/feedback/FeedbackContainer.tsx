@@ -139,7 +139,7 @@ extends React.Component <any, FeedbackContainerState> {
 			<div>
 			{ isFeedbackReady && !isSending && confirmationPage }
 			{ !isFeedbackReady && !isSending && feedbackForm }
-			{ isSending && !isFeedbackReady &&  <Spinner message="Is sending"/> }
+			{ isSending && !isFeedbackReady &&  <Spinner/> }
 			</div>
 		);
 	}
