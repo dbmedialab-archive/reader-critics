@@ -96,7 +96,7 @@ function getThresholds(website : Website) : EscalationThresholds {
 
 	// Get the threshold setting from the website configuration, if it is set
 	if (website.escalateThreshold) {
-		if (website.escalateThreshold.toEditor) {
+		if (website.escalateThreshold.toEditor && website.escalateThreshold.toEditor > 0 ) {
 			toEditor = website.escalateThreshold.toEditor;
 		}
 	}

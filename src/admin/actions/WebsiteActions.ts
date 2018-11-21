@@ -68,7 +68,6 @@ export function deleteWebsite(website) {
 }
 
 export function updateWebsite(data: any) {
-	console.log('api update', data);
 	UIActions.showMainPreloader();
 	Api.updateWebsite(data)
 		.then(resp => {

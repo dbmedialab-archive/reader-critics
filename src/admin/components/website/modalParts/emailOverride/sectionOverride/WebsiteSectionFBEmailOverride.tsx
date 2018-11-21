@@ -58,7 +58,6 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 
 	sendOverrideChanges (checked: boolean = false) {
 		const { settings, overrides  } = this.props.overrideSettings;
-		//const { overrides } = this.props.overrideSettings;
 		const sectionEmailOverrides = this.getSectionEmailOverrides();
 
 		const newSettings = Object.assign({}, settings, {section: checked});

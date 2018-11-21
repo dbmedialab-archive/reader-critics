@@ -87,7 +87,6 @@ class WebsiteEscalateThreshold extends React.Component <any, any> {
 const mapStateToProps = (state, ownProps) => {
 	return {
 		escalateThreshold: state.website.getIn(['selected', 'escalateThreshold', 'toEditor']),
-		//ID: state.website.getIn(['selected', 'ID'], null),
 	};
 };
 
