@@ -160,9 +160,6 @@ export function doDelete(id: String) : Promise <any> {
  */
 export function update(id : string, user : User) : Promise <any> {
 	emptyCheck(id, user);
-	console.log('--- user update -----');
-	console.log(user);
-	console.log( Object.assign({}, user, { id: undefined }));
 
 	return wrapFindOne(UserModel.findOneAndUpdate({
 		'_id': id,
