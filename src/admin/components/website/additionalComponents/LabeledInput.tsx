@@ -29,6 +29,8 @@ export interface ILabeledInput {
 	label: string | JSX.Element;
 	ID: string;
 	inputType?: string;
+	min?: string,
+	max?: string
 }
 
 export class LabeledInput extends React.Component <ILabeledInput, any> {
@@ -55,13 +57,15 @@ export class LabeledInput extends React.Component <ILabeledInput, any> {
 			errorText,
 			label,
 			inputType = 'text',
+			min,
+			max,
 		} = this.props;
 		return (
 			<div className="row">
 				<Label label={label} ID={ID} />
 				<div className="small-12 columns">
 					<input
-						id={`${ID}-input`} type={inputType}
+						id={`${ID}-input`} type={inputType} min={min} max={max}
 						value={value}
 						onChange={onEdit}
 						onKeyPress={this.onKeyPress} onBlur={onSubmit}
