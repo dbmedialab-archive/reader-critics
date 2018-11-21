@@ -50,7 +50,7 @@ const additionalRules : IValidationRules = {
 		error: 'Site name has to be longer than 4 symbols',
 	},
 
-  escalateNumber: {
+	escalateNumber: {
 			type: 'number',
 			gte: 0,
 			lte: 10,

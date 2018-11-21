@@ -37,6 +37,13 @@ class WebsiteEscalateThreshold extends React.Component <any, any> {
 		this.isError = this.isError.bind(this);
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			value: nextProps.escalateThreshold,
+			touched: false,
+		});
+	}
+
 	onChange(e) {
 		this.setState({
 			value: parseInt(e.target.value),
@@ -52,8 +59,10 @@ class WebsiteEscalateThreshold extends React.Component <any, any> {
 
 	onSubmit() {
 		const escalateThreshold = {};
-		escalateThreshold['toEditor'] = this.state.value;
-		return this.props.onSubmit({escalateThreshold});
+		if (!this.isError() && this.state.value !== this.props.escalateThreshold){
+			escalateThreshold['toEditor'] = this.state.value;
+			return this.props.onSubmit({escalateThreshold});
+		}
 	}
 
 	isError (): string {
