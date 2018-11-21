@@ -19,6 +19,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import ReactModal from './ReactModalComponent';
+import WebsiteEscalateThreshold from 'admin/components/website/modalParts/WebsiteEscalateThreshold';
 import * as UIActions from 'admin/actions/UIActions';
 import * as WebsiteActions from 'admin/actions/WebsiteActions';
 import WebsiteParserClass from 'admin/components/website/modalParts/WebsiteParserClass';
@@ -43,6 +44,7 @@ export interface IWebsiteUpdateProps {
 	hosts?: string[];
 	chiefEditors?: {name: string, email: string}[];
 	sectionEditors?: {name: string, email: string, section: string}[];
+	escalateThreshold?: number,
 	layout?: WebsiteLayoutProps;
 }
 
@@ -123,6 +125,7 @@ class WebsiteModalComponent extends React.Component <any, any> {
 						</div>
 						<div className="row">
 							<WebsiteEditors	onChange={this.onUpdate} />
+							<WebsiteEscalateThreshold onSubmit={this.onUpdate}/>
 						</div>
 						<div className="row">
 							<WebsiteSectionFeedbackEmailOverride onChange={this.onUpdate} />
