@@ -17,7 +17,8 @@
 
 import * as React from 'react';
 
-const Spinner : React.StatelessComponent <any> = () => (
+const Spinner : React.StatelessComponent <any> = (props) => (
+	console.log(props),
 	<div className="sk-wave">
 		<div className="sk-rect sk-rect1"/>
 		<div className="sk-rect sk-rect2"/>

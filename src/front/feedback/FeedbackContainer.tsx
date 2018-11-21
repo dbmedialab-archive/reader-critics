@@ -37,6 +37,7 @@ export interface FeedbackContainerState {
 	article : Article
 	articleItems : Array <FeedbackItem>
 	isFeedbackReady : boolean
+	isSending : boolean
 	gotServerError : boolean
 	updateToken? : string
 }
@@ -54,6 +55,7 @@ extends React.Component <any, FeedbackContainerState> {
 			isFeedbackReady: false,
 			articleItems: [],
 			gotServerError: false,
+			isSending: false,
 		};
 	}
 
@@ -97,6 +99,9 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 
 	private nextFeedbackStep() {
+		this.setState({
+			isSending: true,
+		});
 		const items : FeedbackItem[] = this.articleElements
 			.filter((element : ArticleElement) => element.hasData())
 			.map((element : ArticleElement) => element.getCurrentData());
@@ -105,9 +110,7 @@ extends React.Component <any, FeedbackContainerState> {
 			alert(<FormattedMessage id="fb.errors.emptyErr"/>);
 			return;
 		}
-
 		console.log('sending feedback');
-
 		sendFeedback({
 			article: {
 				url: getArticleURL(),
@@ -119,19 +122,28 @@ extends React.Component <any, FeedbackContainerState> {
 		})
 		.then((response) => {
 			console.dir(response);
-
-			this.setState({
-				isFeedbackReady: true,
-				articleItems: items,
-				updateToken: response.updateToken,
-			});
+			setTimeout(()=>{
+				this.setState({
+					isFeedbackReady: true,
+					isSending: false,
+					articleItems: items,
+					updateToken: response.updateToken,
+				});
+			}, 3000);
 		});
 	}
 
 	public render() {
-		return this.state.isFeedbackReady
-			? this.renderConfirmationPage()
-			: this.renderFeedbackForm();
+		const { isFeedbackReady, isSending } = this.state;
+		const feedbackForm = this.renderFeedbackForm();
+		const confirmationPage = this.renderConfirmationPage();
+		return (
+			<div>
+			{ isFeedbackReady && !isSending && confirmationPage }
+			{ !isFeedbackReady && !isSending && feedbackForm }
+			{ isSending && !isFeedbackReady &&  <Spinner message="Is sending"/> }
+			</div>
+		);
 	}
 
 	private renderFeedbackForm() {
@@ -143,7 +155,10 @@ extends React.Component <any, FeedbackContainerState> {
 		}
 
 		const refFn = (i : any) => { this.articleElements.push(i); };
-		const sendFn = () => this.nextFeedbackStep.call(this);
+		const sendFn = () => {
+			console.log('click send')
+			this.nextFeedbackStep.call(this);
+		}
 
 		// Iterate article elements and render sub components
 		return (
