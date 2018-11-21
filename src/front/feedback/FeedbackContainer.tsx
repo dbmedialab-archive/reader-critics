@@ -190,5 +190,4 @@ extends React.Component <any, FeedbackContainerState> {
 			<p><FormattedMessage id="fb.helpbox.text"/></p>
 		</div>
 	)
-
 }
