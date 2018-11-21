@@ -55,9 +55,9 @@ export function getFeedbackRecipients(
 ) : Promise <Array <string>> {
 
 	// override emails for development
-	//if (override && !app.isProduction) {
-	//	return Promise.resolve([override]);
-	//}
+	if (override && !app.isProduction) {
+		return Promise.resolve([override]);
+	}
 
 	const {
 		name,
@@ -109,9 +109,9 @@ export function getEscalationRecipientList(
 	website : Website
 ) : Promise <Array <string>>
 {
-	//if (override && !app.isProduction) {
-	//	return Promise.resolve([ override ]);
-	//}
+	if (override && !app.isProduction) {
+		return Promise.resolve([ override ]);
+	}
 
 	const {
 		name,

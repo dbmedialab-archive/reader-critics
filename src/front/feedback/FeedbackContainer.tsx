@@ -122,14 +122,12 @@ extends React.Component <any, FeedbackContainerState> {
 		})
 		.then((response) => {
 			console.dir(response);
-			setTimeout(()=>{
-				this.setState({
-					isFeedbackReady: true,
-					isSending: false,
-					articleItems: items,
-					updateToken: response.updateToken,
-				});
-			}, 3000);
+			this.setState({
+				isFeedbackReady: true,
+				isSending: false,
+				articleItems: items,
+				updateToken: response.updateToken,
+			});
 		});
 	}
 
@@ -155,10 +153,7 @@ extends React.Component <any, FeedbackContainerState> {
 		}
 
 		const refFn = (i : any) => { this.articleElements.push(i); };
-		const sendFn = () => {
-			console.log('click send')
-			this.nextFeedbackStep.call(this);
-		}
+		const sendFn = () => this.nextFeedbackStep.call(this);
 
 		// Iterate article elements and render sub components
 		return (
