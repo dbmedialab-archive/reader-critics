@@ -11,6 +11,8 @@ import {
 
 import * as app from 'app/util/applib';
 
+const log = app.createLog();
+
 const cssFeedbackItemBox = [
 	'padding: 0.25em 0.5em',
 	'margin-bottom: 0.5em',
