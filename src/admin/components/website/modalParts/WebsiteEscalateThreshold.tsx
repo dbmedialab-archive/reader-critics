@@ -21,7 +21,7 @@ import {connect} from 'react-redux';
 import {LabeledInput} from 'admin/components/website/additionalComponents/LabeledInput';
 import Validator from 'admin/services/Validation';
 
-class EscalateThreshold extends React.Component <any, any> {
+class WebsiteEscalateThreshold extends React.Component <any, any> {
 	private readonly validator : Validator;
 
 	constructor (props) {
@@ -36,13 +36,6 @@ class EscalateThreshold extends React.Component <any, any> {
 		this.onSubmit = this.onSubmit.bind(this);
 		this.isError = this.isError.bind(this);
 	}
-
-	/*componentWillReceiveProps(nextProps) {
-		this.setState({
-			value: nextProps.name,
-			touched: false,
-		});
-	}*/
 
 	onChange(e) {
 		this.setState({
@@ -61,9 +54,6 @@ class EscalateThreshold extends React.Component <any, any> {
 		const escalateThreshold = {};
 		escalateThreshold['toEditor'] = this.state.value;
 		return this.props.onSubmit({escalateThreshold});
-		//return this.props.onSubmit({escalateThreshold.toEditor: this.state.value});
-		//if (!this.isError() && this.state.value !== this.props.name) {
-	//	}
 	}
 
 	isError (): string {
@@ -96,9 +86,8 @@ class EscalateThreshold extends React.Component <any, any> {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		//websites: state.website.getIn(['websites'], []),
 		escalateThreshold: state.website.getIn(['selected', 'escalateThreshold', 'toEditor']),
-		ID: state.website.getIn(['selected', 'ID'], null),
+		//ID: state.website.getIn(['selected', 'ID'], null),
 	};
 };
 
@@ -106,4 +95,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(EscalateThreshold);
+export default connect(mapStateToProps, mapDispatchToProps)(WebsiteEscalateThreshold);
