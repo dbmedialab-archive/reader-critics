@@ -111,7 +111,6 @@ const WebsiteSchema : Schema = new Schema({
 				required: false,
 			},
 			sectionFeedbackEmail: {
-				//type: [Schema.Types.Mixed],
 				type: [{}],
 				required: false,
 			},

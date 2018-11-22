@@ -56,18 +56,15 @@ class WebsitesGriddle extends React.Component <IWebsitesGriddle, any> {
 		const websiteRes = {
 			isOpen: true,
 		};
-		//WebsiteActions.setSelectedWebsite(website);
 		UIActions.modalWindowsChangeState(windowName, websiteRes);
 	}
 	onEdit = (e: any) :void => {
-		console.log('------ on edit website list -----');
 		e.preventDefault();
 		const websiteId = e.target.dataset.id;
 		const { websites } = this.props;
 		const website = websites.find( item => { //filter
 			return item ? item.ID === websiteId: null;
 		});
-		console.log(website);
 
 		if (website){
 			WebsiteActions.setSelectedWebsite(website as Website);

@@ -18,13 +18,9 @@
 
 import * as React from 'react';
 
-//import { connect } from 'react-redux';
-
 import * as immutable from 'seamless-immutable';
 import { filter, find } from 'lodash';
 import * as mergers from 'seamless-immutable-mergers';
-
-import * as UsersActions from 'admin/actions/UsersActions';
 
 import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
 import { WebsiteSection } from 'base/WebsiteSection';
@@ -38,10 +34,6 @@ export default class WebsiteSectionEditors extends React.Component <any, any> {
 			section: null,
 			editSection: false,
 		};
-	}
-
-	componentWillMount() {
-		UsersActions.getEditors();
 	}
 
 	componentDidUpdate(prevProps){
@@ -174,17 +166,3 @@ export default class WebsiteSectionEditors extends React.Component <any, any> {
 		);
 	}
 }
-
-//const mapStateToProps = (state, ownProps) => {
-	//return {
-		//sectionEditors: state.website.getIn(['selected', 'sectionEditors']),
-		//chiefEditors: state.website.getIn(['selected', 'chiefEditors']),
-		//users: state.users.getIn(['users'], []),
-	//};
-//};
-
-//const mapDispatchToProps = (dispatch, ownProps) => {
-	//return {};
-//};
-
-//export default connect(mapStateToProps, mapDispatchToProps)(WebsiteSectionEditors);
