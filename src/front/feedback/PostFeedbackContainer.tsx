@@ -27,9 +27,6 @@ import { FormattedMessage } from 'react-intl';
 import { getArticleURL } from 'front/uiGlobals';
 import { sendEnduserData } from 'front/apiCommunication';
 import Spinner from 'front/common/Spinner';
-import EventHandler = require('react');
-import ChangeEvent = require('react');
-import ChangeEventHandler = require('react');
 
 export interface EndUserFormProps {
 	updateToken : string
