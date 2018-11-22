@@ -26,6 +26,7 @@ import Transition from 'react-transition-group/Transition';
 import { FormattedMessage } from 'react-intl';
 import { getArticleURL } from 'front/uiGlobals';
 import { sendEnduserData } from 'front/apiCommunication';
+import Spinner from 'front/common/Spinner';
 
 export interface EndUserFormProps {
 	updateToken : string
@@ -33,6 +34,7 @@ export interface EndUserFormProps {
 
 export interface FeedbackUserState {
 	isSend: boolean;
+	isSending: boolean;
 	user: EndUser;
 	nameField: {
 		show: boolean,
@@ -64,6 +66,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		super(props);
 		this.state = {
 			isSend: false,
+			isSending: false,
 			user : {
 					name: '',
 					email: '',
@@ -158,6 +161,8 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private _handleSubmit(e) {
 		e.preventDefault();
+		this.afterSendingAnimation();
+		this.setState({isSending: true});
 		this.postEnduserData();
 	}
 
@@ -179,15 +184,16 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		return sendEnduserData(Object.assign({
 			updateToken: this.props.updateToken,
 		}, this.state.user))
-		.then(() => {
-			this.setState({
-				isSend: true,
-			}, this.afterSendingAnimation);
-		});
+			.then(() => {
+				this.setState({
+					isSend: true,
+					isSending: false,
+				});
+			});
 	}
 
-	public render(): JSX.Element {
-		return (
+	private renderForm() {
+		return(
 			<form
 				id="postFeedbackBox" onSubmit={this._handleSubmit } className="twelve columns feedbackform">
 				{ this.renderMailIcon() }
@@ -214,7 +220,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 								onChange={this._inputChanged}
 								required
 							/>
-					</fieldset>
+						</fieldset>
 					)}
 				</Transition>
 				<Transition timeout={250} in={this.state.emailField.show}>
@@ -231,9 +237,15 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 					)}
 				</Transition>
 				{!this.state.doneIcon.show &&
-					<div>{this.renderBottomLinks()}</div>
+				<div>{this.renderBottomLinks()}</div>
 				}
 			</form>
+		);
+	}
+
+	public render(): JSX.Element {
+		return (
+			this.state.isSending ? <Spinner/> : this.renderForm()
 		);
 	}
 
