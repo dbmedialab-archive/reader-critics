@@ -164,7 +164,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		this.afterSendingAnimation();
 		setTimeout(() => {
 			this.setState({isSending: true});
-		}, 400)
+		}, 400);
 		this.postEnduserData();
 	}
 
