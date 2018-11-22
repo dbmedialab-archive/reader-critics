@@ -192,6 +192,51 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 			});
 	}
 
+	private renderTransitionInput(
+		timeout: number,
+		inState: any,
+		id: string,
+		className: string,
+		type: string,
+		name: string,
+		onChange: any
+	){
+		return (
+		<Transition timeout={timeout} in={inState}>
+			{(status) => (
+				<fieldset className={`${className}-${status}`}>
+					<p className="field-title"><FormattedMessage id={id}/></p>
+					<input
+						type={type}
+						name={name}
+						onChange={onChange}
+						required
+					/>
+				</fieldset>
+			)}
+		</Transition>
+		);
+	}
+
+	private renderTransitionField(
+		timeout: number,
+		inState: any,
+		id: string,
+		className: string
+	){
+		return(
+		<Transition timeout={timeout} in={inState}>
+			{(status) => (
+				<div>
+					<fieldset className={`${className}-${status}`}>
+						<p className="field-title"><FormattedMessage id={id}/></p>
+					</fieldset>
+				</div>
+			)}
+		</Transition>
+		);
+	}
+
 	private renderForm() {
 		return(
 			<form
@@ -201,41 +246,26 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
 					<p className="message"><FormattedMessage id="message.postFeedback"/></p>
 				</fieldset>
-				<Transition timeout={300} in={this.state.finalText.show}>
-					{(status) => (
-						<div>
-							<fieldset className={`final-text fade fade-${status}`}>
-								<p className="field-title"><FormattedMessage id="fb.post.transmitted"/></p>
-							</fieldset>
-						</div>
-					)}
-				</Transition>
-				<Transition timeout={300} in={this.state.nameField.show}>
-					{(status) => (
-						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title"><FormattedMessage id="fb.label.name"/></p>
-							<input
-								type="text"
-								name="name"
-								onChange={this._inputChanged}
-								required
-							/>
-						</fieldset>
-					)}
-				</Transition>
-				<Transition timeout={250} in={this.state.emailField.show}>
-					{(status) => (
-						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title"><FormattedMessage id="fb.label.getRecommend"/></p>
-							<input
-								type="text"
-								name="email"
-								onChange={this._inputChanged}
-								required
-							/>
-						</fieldset>
-					)}
-				</Transition>
+				{ this.renderTransitionField(
+					300,
+					this.state.finalText.show,
+					'fb.post.transmitted', 'final-text fade fade'
+				)}
+				{ this.renderTransitionInput(
+					300,
+					this.state.nameField.show,
+					'fb.label.name',
+					'slide-left slide-left',
+					'text', 'name', this._inputChanged
+				)}
+				{ this.renderTransitionInput(
+					250,
+					this.state.nameField.show,
+					'fb.label.getRecommend',
+					'slide-left slide-left',
+					'text', 'email', this._inputChanged
+				)}
+
 				{!this.state.doneIcon.show &&
 				<div>{this.renderBottomLinks()}</div>
 				}
