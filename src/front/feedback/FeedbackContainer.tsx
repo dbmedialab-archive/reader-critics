@@ -125,6 +125,7 @@ extends React.Component <any, FeedbackContainerState> {
 
 	public render() {
 		const { isFeedbackReady, isSending } = this.state;
+
 		return (
 			<div>
 				{ isFeedbackReady && this.renderConfirmationPage() }
