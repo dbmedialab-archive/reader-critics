@@ -27,6 +27,9 @@ import { FormattedMessage } from 'react-intl';
 import { getArticleURL } from 'front/uiGlobals';
 import { sendEnduserData } from 'front/apiCommunication';
 import Spinner from 'front/common/Spinner';
+import EventHandler = require('react');
+import ChangeEvent = require('react');
+import ChangeEventHandler = require('react');
 
 export interface EndUserFormProps {
 	updateToken : string
@@ -162,7 +165,9 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 	private _handleSubmit(e) {
 		e.preventDefault();
 		this.afterSendingAnimation();
-		this.setState({isSending: true});
+		setTimeout(()=>{
+			this.setState({isSending: true});
+		}, 400)
 		this.postEnduserData();
 	}
 
@@ -194,15 +199,15 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private renderTransitionInput(
 		timeout: number,
-		inState: any,
+		show: boolean,
 		id: string,
 		className: string,
 		type: string,
 		name: string,
-		onChange: any
+		onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 	){
 		return (
-		<Transition timeout={timeout} in={inState}>
+		<Transition timeout={timeout} in={show}>
 			{(status) => (
 				<fieldset className={`${className}-${status}`}>
 					<p className="field-title"><FormattedMessage id={id}/></p>
@@ -220,12 +225,12 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private renderTransitionField(
 		timeout: number,
-		inState: any,
+		show: boolean,
 		id: string,
 		className: string
 	){
 		return(
-		<Transition timeout={timeout} in={inState}>
+		<Transition timeout={timeout} in={show}>
 			{(status) => (
 				<div>
 					<fieldset className={`${className}-${status}`}>
