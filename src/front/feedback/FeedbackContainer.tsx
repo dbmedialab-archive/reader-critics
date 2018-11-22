@@ -130,7 +130,7 @@ extends React.Component <any, FeedbackContainerState> {
 			<div>
 				{ isFeedbackReady && this.renderConfirmationPage() }
 				{ !isFeedbackReady && !isSending && this.renderFeedbackForm() }
-				{ isSending &&  <Spinner/> }
+				{ isSending && <Spinner/> }
 			</div>
 		);
 	}
