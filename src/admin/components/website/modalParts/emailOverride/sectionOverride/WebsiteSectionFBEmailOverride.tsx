@@ -25,6 +25,7 @@ import {SwitchBox} from 'admin/components/website/additionalComponents/SwitchBox
 import {
 	WebsiteBaseEmailOverride
 } from 'admin/components/website/modalParts/emailOverride/WebsiteBaseEmailOverride';
+import * as UsersActions from 'admin/actions/UsersActions';
 
 class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 
@@ -32,6 +33,10 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 		super(props);
 		this.state = { checked : this.props.overrideSettings.settings.section };
 		this.sendOverrideChanges = this.sendOverrideChanges.bind(this);
+	}
+
+	componentWillMount() {
+		UsersActions.getEditors();
 	}
 
 	onToggleCheck = ((e) => {
@@ -52,8 +57,7 @@ class WebsiteSectionFeedbackEmailOverride extends WebsiteBaseEmailOverride {
 	});
 
 	sendOverrideChanges (checked: boolean = false) {
-		const { settings } = this.props.overrideSettings;
-		const { overrides } = this.props.overrideSettings;
+		const { settings, overrides  } = this.props.overrideSettings;
 		const sectionEmailOverrides = this.getSectionEmailOverrides();
 
 		const newSettings = Object.assign({}, settings, {section: checked});

@@ -22,8 +22,6 @@ import * as immutable from 'seamless-immutable';
 import { filter, find } from 'lodash';
 import * as mergers from 'seamless-immutable-mergers';
 
-import * as UsersActions from 'admin/actions/UsersActions';
-
 import { LabeledSelect } from 'admin/components/website/additionalComponents/LabeledSelect';
 import { WebsiteSection } from 'base/WebsiteSection';
 import { WebsiteSectionEditorsItem } from './WebsiteSectionEditorsItem';
@@ -36,10 +34,6 @@ export default class WebsiteSectionEditors extends React.Component <any, any> {
 			section: null,
 			editSection: false,
 		};
-	}
-
-	componentWillMount() {
-		UsersActions.getEditors();
 	}
 
 	componentDidUpdate(prevProps){

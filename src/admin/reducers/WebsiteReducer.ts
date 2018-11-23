@@ -34,6 +34,9 @@ const initialSelectedWebsite: Website = Immutable({
 	chiefEditors: [],
 	sectionEditors: [],
 	hosts: [],
+	escalateThreshold:{
+		toEditor: 0,
+	},
 	overrideSettings: {
 		settings: {
 			escalation : false,
