@@ -19,6 +19,7 @@
 /*tslint:disable max-file-line-count*/
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { identity, pickBy } from 'lodash';
 import ReactModal from './ReactModalComponent';
 import UserRole from 'base/UserRole';
 
@@ -131,7 +132,7 @@ class AddUserModalComponent extends React.Component <any, any> {
 			name: {value: name},
 			role: {value: role},
 		} = this.props;
-		const data = {email, password, ID, name, role};
+		const data = pickBy({email, password, ID, name, role}, identity);
 		UsersAction.saveUser(data);
 	}
 
