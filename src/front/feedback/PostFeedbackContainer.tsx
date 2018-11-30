@@ -26,6 +26,7 @@ import Transition from 'react-transition-group/Transition';
 import { FormattedMessage } from 'react-intl';
 import { getArticleURL } from 'front/uiGlobals';
 import { sendEnduserData } from 'front/apiCommunication';
+import Spinner from 'front/common/Spinner';
 
 export interface EndUserFormProps {
 	updateToken : string
@@ -33,6 +34,7 @@ export interface EndUserFormProps {
 
 export interface FeedbackUserState {
 	isSend: boolean;
+	isSending: boolean;
 	user: EndUser;
 	nameField: {
 		show: boolean,
@@ -64,6 +66,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		super(props);
 		this.state = {
 			isSend: false,
+			isSending: false,
 			user : {
 					name: '',
 					email: '',
@@ -158,6 +161,8 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 
 	private _handleSubmit(e) {
 		e.preventDefault();
+		this.afterSendingAnimation();
+		this.setState({isSending: true});
 		this.postEnduserData();
 	}
 
@@ -179,15 +184,61 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 		return sendEnduserData(Object.assign({
 			updateToken: this.props.updateToken,
 		}, this.state.user))
-		.then(() => {
-			this.setState({
-				isSend: true,
-			}, this.afterSendingAnimation);
-		});
+			.then(() => {
+				this.setState({
+					isSend: true,
+					isSending: false,
+				});
+			});
 	}
 
-	public render(): JSX.Element {
+	private renderTransitionInput(
+		timeout: number,
+		show: boolean,
+		id: string,
+		className: string,
+		type: string,
+		name: string,
+		onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+	){
 		return (
+		<Transition timeout={timeout} in={show}>
+			{(status) => (
+				<fieldset className={`${className}-${status}`}>
+					<p className="field-title"><FormattedMessage id={id}/></p>
+					<input
+						type={type}
+						name={name}
+						onChange={onChange}
+						required
+					/>
+				</fieldset>
+			)}
+		</Transition>
+		);
+	}
+
+	private renderTransitionField(
+		timeout: number,
+		show: boolean,
+		id: string,
+		className: string
+	){
+		return(
+		<Transition timeout={timeout} in={show}>
+			{(status) => (
+				<div>
+					<fieldset className={`${className}-${status}`}>
+						<p className="field-title"><FormattedMessage id={id}/></p>
+					</fieldset>
+				</div>
+			)}
+		</Transition>
+		);
+	}
+
+	private renderForm() {
+		return(
 			<form
 				id="postFeedbackBox" onSubmit={this._handleSubmit } className="twelve columns feedbackform">
 				{ this.renderMailIcon() }
@@ -195,45 +246,36 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 					<p className="field-title"><FormattedMessage id="message.thankYou"/></p>
 					<p className="message"><FormattedMessage id="message.postFeedback"/></p>
 				</fieldset>
-				<Transition timeout={300} in={this.state.finalText.show}>
-					{(status) => (
-						<div>
-							<fieldset className={`final-text fade fade-${status}`}>
-								<p className="field-title"><FormattedMessage id="fb.post.transmitted"/></p>
-							</fieldset>
-						</div>
-					)}
-				</Transition>
-				<Transition timeout={300} in={this.state.nameField.show}>
-					{(status) => (
-						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title"><FormattedMessage id="fb.label.name"/></p>
-							<input
-								type="text"
-								name="name"
-								onChange={this._inputChanged}
-								required
-							/>
-					</fieldset>
-					)}
-				</Transition>
-				<Transition timeout={250} in={this.state.emailField.show}>
-					{(status) => (
-						<fieldset className={`slide-left slide-left-${status}`}>
-							<p className="field-title"><FormattedMessage id="fb.label.getRecommend"/></p>
-							<input
-								type="text"
-								name="email"
-								onChange={this._inputChanged}
-								required
-							/>
-						</fieldset>
-					)}
-				</Transition>
+				{ this.renderTransitionField(
+					300,
+					this.state.finalText.show,
+					'fb.post.transmitted', 'final-text fade fade'
+				)}
+				{ this.renderTransitionInput(
+					300,
+					this.state.nameField.show,
+					'fb.label.name',
+					'slide-left slide-left',
+					'text', 'name', this._inputChanged
+				)}
+				{ this.renderTransitionInput(
+					250,
+					this.state.nameField.show,
+					'fb.label.getRecommend',
+					'slide-left slide-left',
+					'text', 'email', this._inputChanged
+				)}
+
 				{!this.state.doneIcon.show &&
-					<div>{this.renderBottomLinks()}</div>
+				<div>{this.renderBottomLinks()}</div>
 				}
 			</form>
+		);
+	}
+
+	public render(): JSX.Element {
+		return (
+			this.state.isSending ? <Spinner/> : this.renderForm()
 		);
 	}
 

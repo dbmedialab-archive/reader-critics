@@ -17,6 +17,7 @@
 //
 
 import * as bcrypt from 'bcrypt';
+import { identity, pickBy } from 'lodash';
 
 import { Person } from 'base/zz/Person';
 import { User } from 'base/User';
@@ -159,10 +160,11 @@ export function doDelete(id: String) : Promise <any> {
  */
 export function update(id : string, user : User) : Promise <any> {
 	emptyCheck(id, user);
+
 	return wrapFindOne(UserModel.findOneAndUpdate({
 		'_id': id,
 	}, {
-		'$set': Object.assign({}, user, { id: undefined }),
+		'$set': Object.assign({}, pickBy(user, identity), { id: undefined }),
 	}, {
 		new: true,  // return the modified document rather than the original
 		upsert: false,  // fail if the object does not exist yet
