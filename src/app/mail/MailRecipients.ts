@@ -16,17 +16,15 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
-import { uniq } from 'lodash';
+import { find, uniq } from 'lodash';
 
 import Article from 'base/Article';
 import Person from 'base/zz/Person';
 import Website from 'base/Website';
-
 import { EmptyError } from 'app/util/errors';
 
 import config from 'app/config';
 import * as app from 'app/util/applib';
-
 const msgNoRcpt = 'Could not determine recipients for feedback notification e-mail';
 
 // If this e-mail address is set in the configuration, every outgoing e-mail
@@ -37,13 +35,24 @@ const override : string = config.get('mail.testOverride');
 // Get recipients for an article; collects the e-mail addresses from all article
 // authors and adds the website's editors if this is requested, or if the list
 // of article authors is empty (happens often on articles from external sources)
+function formRecipients(fallbackFeedbackEmail, authors, chiefEditors, includeEditors){
+	let recipients : Array <string> = filterForMailAddr(authors);
+
+	// if authors list is empty and we have fallback emails then add them to list`
+	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
+		recipients = recipients.concat(uniq(fallbackFeedbackEmail));
+	}
+
+	// If notify editors option is set or list is still empty then add them to the list
+	if (recipients.length <= 0 || includeEditors) {
+		recipients = recipients.concat(uniq(filterForMailAddr(chiefEditors)));
+	}
+	return recipients;
+}
 
 export function getFeedbackRecipients(
-	website : Website,
-	article : Article,
-	includeEditors : boolean = false
-) : Promise <Array <string>>
-{
+	website : Website, article : Article, includeEditors : boolean = false
+) : Promise <Array <string>> {
 
 	// override emails for development
 	if (override && !app.isProduction) {
@@ -56,40 +65,44 @@ export function getFeedbackRecipients(
 		overrideSettings: {
 			settings = {
 				feedback : false,
+				section: false,
 			},
 			overrides = {
 				feedbackEmail: [],
+				sectionFeedbackEmail: [],
 				fallbackFeedbackEmail: [],
 			},
 		} = {},
 	} = website;
 
-	const {feedbackEmail = [], fallbackFeedbackEmail = []} = overrides;
+	// if website is set to send all feedback's to category editor then override email addresses
+	const { sectionFeedbackEmail = []} = overrides, section = article.category;
+	if (settings.section && sectionFeedbackEmail.length && section) {
+		const sectionEmails = find(sectionFeedbackEmail, ((item) => item[section]));
+		if (sectionEmails){
+			return Promise.resolve(sectionEmails[section]);
+		}
+	}
 
+	const {feedbackEmail = [], fallbackFeedbackEmail = []} = overrides;
 	// if website is set to send all feedback's to dedicated addresses then override email addresses
 	if (settings.feedback && feedbackEmail.length) {
 		return Promise.resolve(feedbackEmail);
 	}
 
-	let recipients : Array <string> = filterForMailAddr(article.authors);
+	const recipients = formRecipients(
+		fallbackFeedbackEmail, article.authors, chiefEditors, includeEditors
+	);
 
-	// if authors list is empty and we have fallback emails then add them to list
-	if (recipients.length <= 0 && fallbackFeedbackEmail.length) {
-		recipients = recipients.concat(uniq(fallbackFeedbackEmail));
-	}
-
-	// If notify editors option is set or list is still empty then add them to the list
-	if (recipients.length <= 0 || includeEditors) {
-		recipients = recipients.concat(uniq(filterForMailAddr(chiefEditors)));
-	}
-
-	// If the list of recipients is still empty here then we can't really do
-	// anything about that. The caller function will have to deal with it.
+	// If the list of recipients is empty then we can't really do
+	// anything about that. The caller function will have to deal with it
+	let recipientsResult;
 	if (recipients.length <= 0) {
-		return Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
+		recipientsResult =  Promise.reject(new EmptyError(`${msgNoRcpt} (${name})`));
+	} else {
+		recipientsResult = Promise.resolve(uniq(recipients));
 	}
-
-	return Promise.resolve(uniq(recipients));
+	return recipientsResult;
 }
 
 export function getEscalationRecipientList(

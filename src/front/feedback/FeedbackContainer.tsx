@@ -37,6 +37,7 @@ export interface FeedbackContainerState {
 	article : Article
 	articleItems : Array <FeedbackItem>
 	isFeedbackReady : boolean
+	isSending : boolean
 	gotServerError : boolean
 	updateToken? : string
 }
@@ -54,6 +55,7 @@ extends React.Component <any, FeedbackContainerState> {
 			isFeedbackReady: false,
 			articleItems: [],
 			gotServerError: false,
+			isSending: false,
 		};
 	}
 
@@ -72,17 +74,12 @@ extends React.Component <any, FeedbackContainerState> {
 
 	public onChange() {
 		let changedItems = 0;
-		// console.log('received onChange');
 		this.articleElements.forEach((elem, index) => {
 			if (elem.hasData()) {
-				// const d = elem.getCurrentData();
-				// console.log(`item ${d.type}-${d.order.item}-${d.order.type} has data`);
 				changedItems += 1;
 			}
 		});
-		// console.log('changedItems =', changedItems);
 		if (changedItems > 0) {
-			// console.log('form has data, enable submit/change button');
 			this.finishBtn.enable(<FormattedMessage
 				id="fb.message.form-has-input"
 				values={{
@@ -91,12 +88,14 @@ extends React.Component <any, FeedbackContainerState> {
 			/>);
 		}
 		else {
-			// console.log('form is empty');
 			this.finishBtn.disable(<span>No changes so far</span>);
 		}
 	}
 
 	private nextFeedbackStep() {
+		this.setState({
+			isSending: true,
+		});
 		const items : FeedbackItem[] = this.articleElements
 			.filter((element : ArticleElement) => element.hasData())
 			.map((element : ArticleElement) => element.getCurrentData());
@@ -105,9 +104,6 @@ extends React.Component <any, FeedbackContainerState> {
 			alert(<FormattedMessage id="fb.errors.emptyErr"/>);
 			return;
 		}
-
-		console.log('sending feedback');
-
 		sendFeedback({
 			article: {
 				url: getArticleURL(),
@@ -118,10 +114,9 @@ extends React.Component <any, FeedbackContainerState> {
 			},
 		})
 		.then((response) => {
-			console.dir(response);
-
 			this.setState({
 				isFeedbackReady: true,
+				isSending: false,
 				articleItems: items,
 				updateToken: response.updateToken,
 			});
@@ -129,9 +124,15 @@ extends React.Component <any, FeedbackContainerState> {
 	}
 
 	public render() {
-		return this.state.isFeedbackReady
-			? this.renderConfirmationPage()
-			: this.renderFeedbackForm();
+		const { isFeedbackReady, isSending } = this.state;
+
+		return (
+			<div>
+				{ isFeedbackReady && this.renderConfirmationPage() }
+				{ !isFeedbackReady && !isSending && this.renderFeedbackForm() }
+				{ isSending && <Spinner/> }
+			</div>
+		);
 	}
 
 	private renderFeedbackForm() {
@@ -175,5 +176,4 @@ extends React.Component <any, FeedbackContainerState> {
 			<p><FormattedMessage id="fb.helpbox.text"/></p>
 		</div>
 	)
-
 }

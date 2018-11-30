@@ -37,6 +37,12 @@ export default class FredriksstadBladParser extends AbstractIteratingParser {
 		return Promise.resolve(getOpenGraphModifiedTime(this.select, true));
 	}
 
+	// need to implement
+
+	protected parseCategory() : Promise <string> {
+		return Promise.resolve( '');
+	}
+
 	protected parseByline() : Promise <ArticleAuthor[]> {
 		const authorMap : Array <ArticleAuthor> = [];
 

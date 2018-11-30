@@ -68,7 +68,8 @@ export function update(name : string, data: Website) : Promise <Website> {
 	emptyCheck(name, data);
 	const {layout, overrideSettings} = data;
 	// Get only data we expect to update
-	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'parserClass']);
+	const updateData = pick(data,['name', 'hosts', 'chiefEditors', 'sectionEditors',
+		'parserClass', 'escalateThreshold']);
 	// Remove empty
 
 	return WebsiteModel.findOne({ name })
@@ -85,13 +86,14 @@ export function update(name : string, data: Website) : Promise <Website> {
 			}
 			if (overrideSettings) {
 				if ('settings' in overrideSettings) {
-					const updatedSettings = pick(overrideSettings.settings, ['feedback', 'escalation']);
+					const updatedSettings = pick(overrideSettings.settings,
+						['feedback', 'escalation', 'section']);
 					resWrite.overrideSettings.settings = Object.assign(
 						{}, wsite.overrideSettings.settings, updatedSettings);
 				}
 				if ('overrides' in overrideSettings) {
 					const updatedOverrides = pick(overrideSettings.overrides,
-						['feedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
+						['feedbackEmail', 'sectionFeedbackEmail', 'fallbackFeedbackEmail', 'escalationEmail']);
 					resWrite.overrideSettings.overrides = Object.assign(
 						{}, wsite.overrideSettings.overrides, pickBy(updatedOverrides));
 				}

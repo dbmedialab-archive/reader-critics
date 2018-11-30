@@ -38,6 +38,7 @@ const WebsiteSchema : Schema = new Schema({
 
 	// Fallback e-mail addresses and related options
 	chiefEditors: [Schema.Types.Mixed],
+	sectionEditors: [Schema.Types.Mixed],
 
 	// Articles with a feedback count greater or equal to the values configured
 	// here will trigger an escalation notification
@@ -99,10 +100,18 @@ const WebsiteSchema : Schema = new Schema({
 				type: Boolean,
 				default: false,
 			},
+			section : {
+				type: Boolean,
+				default: false,
+			},
 		},
 		overrides: {
 			feedbackEmail: {
 				type: [String],
+				required: false,
+			},
+			sectionFeedbackEmail: {
+				type: [{}],
 				required: false,
 			},
 			fallbackFeedbackEmail: {
