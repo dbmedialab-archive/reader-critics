@@ -123,9 +123,9 @@
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.0.0",
+		"@babel/core": "^7.1.6",
 		"@babel/polyfill": "^7.0.0",
-		"@babel/preset-env": "^7.0.0",
+		"@babel/preset-env": "^7.1.6",
 		"@babel/preset-react": "^7.0.0",
 		"@types/bluebird": "^3.5.0",
 		"@types/bluebird-global": "^3.5.0",
