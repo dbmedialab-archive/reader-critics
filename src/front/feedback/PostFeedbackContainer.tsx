@@ -162,9 +162,7 @@ extends React.Component <EndUserFormProps, FeedbackUserState>
 	private _handleSubmit(e) {
 		e.preventDefault();
 		this.afterSendingAnimation();
-		setTimeout(() => {
-			this.setState({isSending: true});
-		}, 400);
+		this.setState({isSending: true});
 		this.postEnduserData();
 	}
 
