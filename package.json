@@ -61,7 +61,7 @@
 		"connect-redis": "3.4.0",
 		"convict": "4.4.1",
 		"cookie-parser": "1.4.3",
-		"cron": "1.6.0",
+		"cron": "1.7.1",
 		"crypto-random-string": "1.0.0",
 		"css-loader": "2.0.1",
 		"debug": "4.1.0",
