@@ -51,7 +51,7 @@
 		"ajv-keywords": "^3.2.0",
 		"ansicolors": "0.3.2",
 		"app-module-path": "2.2.0",
-		"axios": "0.18.0",
+		"axios": "0.19.0",
 		"bcrypt": "3.0.0",
 		"bluebird": "3.5.3",
 		"body-parser": "1.18.3",
