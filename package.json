@@ -177,7 +177,7 @@
 		"typescript": "^2.9.2",
 		"uglifyjs-webpack-plugin": "^2.0.0",
 		"webpack-bundle-analyzer": "^2.8.3",
-		"webpack-cli": "^3.1.0"
+		"webpack-cli": "^3.3.6"
 	},
 	"optionalDependencies": {
 		"chromedriver": "^2.30.1",
