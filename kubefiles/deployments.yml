@@ -14,6 +14,43 @@ spec:
       labels:
         app: {{env "REPONAME"}}
     spec:
+      # Affinity to make sure that multiple pods does not run on the same node
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          # prefer to run in different datacentres
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ env "REPONAME" }}
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+          # prefer to run on different "physical" nodes
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ env "REPONAME" }}
+              topologyKey: kubernetes.io/hostname
+        # prefer to run on preemptible instances
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: Exists
+            weight: 100
+      tolerations:
+        - key: cloud.google.com/gke-preemptible
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       containers:
         - name: {{env "REPONAME"}}
           image: {{env "IMAGE"}}
@@ -37,4 +74,3 @@ spec:
               path: /api/version
               port: http-port
             timeoutSeconds: 5
-
