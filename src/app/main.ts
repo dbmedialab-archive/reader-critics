@@ -21,7 +21,7 @@
 import * as cluster from 'cluster';
 import * as Bluebird from 'bluebird';
 global.Promise = Bluebird;
-//import * as Promise from 'bluebird';
+
 
 export const typeJobWorker = 'job-worker';
 export const typeWebWorker = 'web-worker';
