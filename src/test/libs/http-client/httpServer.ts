@@ -46,10 +46,10 @@ expressApp.get('/', (requ : Request, resp : Response) => {
 
 // Expose interface to test
 
-export function listen(port : number, callback : Function) {
+export function listen(port : number, callback : () => void) {
 	server = expressApp.listen(port, callback);
 }
 
-export function close(callback : Function) {
+export function close(callback : () => void) {
 	server.close(callback);
 }

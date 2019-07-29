@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import {
 	isEmpty,
 	isObject,
@@ -92,13 +94,13 @@ export function validateAndUpdate (id : string, data : User) : PromiseLike <User
  * Check if email is unique in database
  */
 function checkUniqueEmail (userMail: string): Promise <boolean> {
-	return userService.getByEmail(userMail).then(user => user === null);
+	return Promise.resolve(userService.getByEmail(userMail)).then(user => user === null);
 }
 
 /**
  * Schema Validator
  */
-function validateSchema (data: any) {
+function validateSchema (data: User) {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid user data');
@@ -124,7 +126,7 @@ function validateSchema (data: any) {
 /*
  * Validating fileds when updating user entity
  */
-function validateSchemaUpdate (data: any) {
+function validateSchemaUpdate (data: User) {
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid user data');
 	}

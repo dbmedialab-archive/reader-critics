@@ -19,9 +19,9 @@
 // tslint:disable no-require-imports
 
 import * as cluster from 'cluster';
-import * as Bluebird from 'bluebird';
+//import * as Bluebird from 'bluebird';
 
-global.Promise = Bluebird;
+//global.Promise = Bluebird;
 
 export const typeJobWorker = 'job-worker';
 export const typeWebWorker = 'web-worker';
