@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
+import * as Promise from 'bluebird';
 
 import * as cluster from 'cluster';
 import * as colors from 'ansicolors';
@@ -55,7 +56,7 @@ export function initDatabase() : Promise <void> {
 }
 
 export function closeDatabase() : Promise <void> {
-	return Mongoose.connection.close();
+	return Promise.resolve(Mongoose.connection.close());
 }
 
 // Create initial connection, retry if necessary (e.g. connection error)
@@ -105,7 +106,7 @@ function ensureIndexes() : Promise <void> {
 }
 
 function ensureIndex <T extends Document> (model : Model<T>) : Promise <void> {
-	return model.ensureIndexes();
+	return Promise.resolve(model.ensureIndexes());
 }
 
 // Current @types/mongoose is missing a lot of the recent options,

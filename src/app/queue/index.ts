@@ -18,6 +18,7 @@
 
 import * as colors from 'ansicolors';
 import * as kue from 'kue';
+import * as Promise from 'bluebird';
 
 import {
 	createRedisConnection,
