@@ -136,7 +136,7 @@ common_aliases:
       setup_remote_docker:
         version: 17.10.0-ce
         docker_layer_caching: true
-        
+
   - &docker_build
     run:
       name: Build and tag docker image
@@ -192,7 +192,7 @@ jobs:
       - run:
           name: Setup docker-compose and credentials
           command: |
-            apk --no-cache add py-pip
+            apk --no-cache add libssl-dev libffi-dev py-pip
             pip -q install docker-compose
       - run:
           name: Fire up compose context for later tests
