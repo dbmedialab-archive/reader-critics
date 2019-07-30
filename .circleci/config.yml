@@ -192,7 +192,7 @@ jobs:
       - run:
           name: Setup docker-compose and credentials
           command: |
-            apk --no-cache add libressl-dev libffi-dev py-pip
+            apk --no-cache add python libressl-dev libffi-dev py-pip
             pip -q install docker-compose
       - run:
           name: Fire up compose context for later tests
