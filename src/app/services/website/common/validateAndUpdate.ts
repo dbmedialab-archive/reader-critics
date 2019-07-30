@@ -44,7 +44,7 @@ export default function(name: string, data : any) : Promise <Website> {
 
 // Schema Validator
 
-function validateSchema(data : any) {
+function validateSchema(data : Website) {
 	// TODO see RC-110 for schema validation
 	if (!isObject(data)) {
 		throw new SchemaValidationError('Invalid feedback data');

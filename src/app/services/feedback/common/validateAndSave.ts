@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import * as cryptoRandomString from 'crypto-random-string';
 import * as app from 'app/util/applib';
 
@@ -100,7 +102,7 @@ function getArticle(articleData : any) : Promise <Article> {
 	const url = articleData.url;
 	const version = articleData.version;
 
-	return ArticleURL.from(url)
+	return Promise.resolve(ArticleURL.from(url))
 	.then(articleURL => articleService.get(articleURL, version, true))
 	.then((article: Article|PromiseLike <Article>) => (article === null
 				? Promise.reject(new NotFoundError(`Article "${url}" with version "${version}" not found`))
@@ -113,7 +115,7 @@ function getArticle(articleData : any) : Promise <Article> {
  * and has submitted this "update". If the user
  */
 function getAnonymousEndUser() : Promise <EndUser> {
-	return enduserService.get();  // Yes, it's really that easy!
+	return Promise.resolve(enduserService.get());  // Yes, it's really that easy!
 }
 
 /**

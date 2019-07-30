@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import * as app from 'app/util/applib';
 
 import {
@@ -62,7 +64,7 @@ function pollArticle(pollData : PollUpdateData) : Promise <void> {
 	let website : Website;
 
 	// 1 - Article URL and Website identification
-	return ArticleURL.from(pollData.url).then((a : ArticleURL) => {
+	return Promise.resolve(ArticleURL.from(pollData.url)).then((a : ArticleURL) => {
 		articleURL = a;
 		log('Polling', pollData.url.toString());
 		return websiteService.identify(articleURL);

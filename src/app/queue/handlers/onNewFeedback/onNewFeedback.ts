@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License along with
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
-
+import * as Promise from 'bluebird';
 import {
 	DoneCallback,
 	Job,
@@ -73,7 +73,7 @@ function process(feedbackID : string) {
 	let website : Website;
 
 	// First, get the feedback object
-	return feedbackService.getByID(feedbackID)
+	return Promise.resolve(feedbackService.getByID(feedbackID))
 	// Now that we have the article inside the feedback object, we can
 	// ask for the "Website" that all this belongs to:
 	.then((f : Feedback) => {

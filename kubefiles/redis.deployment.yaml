@@ -11,10 +11,46 @@ spec:
       labels:
         app: redis
     spec:
+      # Affinity to make sure that multiple pods does not run on the same node
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          # prefer to run in different datacentres
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ env "REPONAME" }}
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+          # prefer to run on different "physical" nodes
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ env "REPONAME" }}
+              topologyKey: kubernetes.io/hostname
+        # prefer to run on preemptible instances
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: Exists
+            weight: 100
+      tolerations:
+        - key: cloud.google.com/gke-preemptible
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       containers:
-      - name: redis
-        image: redis
-        ports:
         - name: redis
-          containerPort: 6379
-
+          image: redis
+          ports:
+            - name: redis
+              containerPort: 6379

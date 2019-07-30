@@ -13,9 +13,7 @@ addPath(path.join(rootPath, 'out'));
 
 // Use Bluebird globally
 
-import * as Bluebird from 'bluebird';
-
-global.Promise = Bluebird;
+import * as Promise from 'bluebird';
 
 // Initialize and start this tool
 
@@ -86,7 +84,7 @@ function migrateTitle(article : Article) {
 		return getWebsite(article)
 		.then((website) => {
 			return articleService.fetch(website, article.url)
-			.then(fetched => {
+			.then((fetched) => {
 				return updateArticle(article.ID, fetched.title);
 			});
 		});
@@ -118,7 +116,7 @@ function getWebsite(article : Article) : Promise <Website> {
 		return Promise.resolve(websites[websiteID]);
 	}
 
-	return websiteService.getByID(websiteID)
+	return Promise.resolve(websiteService.getByID(websiteID))
 	.then(website => {
 		websites[websiteID] = website;
 		return website;

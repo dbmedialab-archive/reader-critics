@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import {
 	Request,
 	Response,
@@ -36,9 +38,9 @@ export default function(requ : Request, resp : Response) : void {
 }
 
 function getPackageInfo() : Promise<any> {
-	return app.loadJSON('package.json');
+	return Promise.resolve(app.loadJSON('package.json'));
 }
 
 function getRepositoryInfo() : Promise<any> {
-	return app.loadJSON('out/version.json');
+	return Promise.resolve(app.loadJSON('out/version.json'));
 }

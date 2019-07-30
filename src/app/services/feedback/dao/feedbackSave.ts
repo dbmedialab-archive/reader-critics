@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import Article from 'base/Article';
 import EndUser from 'base/EndUser';
 import Feedback from 'base/Feedback';
@@ -45,7 +47,7 @@ export function save (
 		status,
 		oneshotUpdateToken
 	)
-	.then(doc => wrapSave<Feedback>(new FeedbackModel(doc).save()));
+	.then((doc: any) => wrapSave<Feedback>(new FeedbackModel(doc).save()));
 }
 
 const makeDocument = (
@@ -76,7 +78,7 @@ const makeDocument = (
 export function updateEndUser (feedback : Feedback, enduser : EndUser) : Promise <Feedback> {
 	emptyCheck(enduser);
 
-	return wrapFindOne(FeedbackModel.findOneAndUpdate(
+	return Promise.resolve(wrapFindOne(FeedbackModel.findOneAndUpdate(
 		// Query:
 		{ _id : feedback.ID },
 		// Update data:
@@ -88,5 +90,5 @@ export function updateEndUser (feedback : Feedback, enduser : EndUser) : Promise
 				oneshotUpdateToken: '',
 			},
 		}
-	));
+	)));
 }
