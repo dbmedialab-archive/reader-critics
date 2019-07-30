@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import Article from 'base/Article';
 import ArticleURL from 'base/ArticleURL';
 import ParserFactory from 'base/ParserFactory';
@@ -77,9 +79,10 @@ function determineLocation(website : Website, url : ArticleURL) : Promise <Artic
 
 	switch (website.parserClass) {
 		case 'AMP Parser':
-			return ArticleURL.from(`${url.toString()}/amp/`);
+			return Promise.resolve(ArticleURL.from(`${url.toString()}/amp/`));
 		case 'Nettavisen Parser':
-			return ArticleURL.from(url.toString().replace(/m.nettavisen.no/, 'www.nettavisen.no'));
+			return Promise.resolve(ArticleURL.from(url.toString().
+			replace(/m.nettavisen.no/, 'www.nettavisen.no')));
 	}
 
 	return Promise.resolve(url);

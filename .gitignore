@@ -16,7 +16,6 @@ config.json5
 *secret*
 
 # Package manager lock files
-package-lock.json
 yarn.lock
 
 # Packages

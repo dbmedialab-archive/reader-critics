@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import * as path from 'path';
 
 import { assert } from 'chai';

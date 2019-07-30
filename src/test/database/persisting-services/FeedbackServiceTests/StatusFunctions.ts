@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import { assert } from 'chai';
 import { feedbackService } from 'app/services';
 import { Feedback } from 'base/Feedback';

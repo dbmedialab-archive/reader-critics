@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import { isObject, isString } from 'lodash';
 
 import EndUser from 'base/EndUser';
@@ -47,14 +49,14 @@ export function validateAndUpdateEnduser(data : {}) : Promise <Feedback> {
 }
 
 function getFeedback(data : RawPostEndUser) : Promise <Feedback> {
-	return feedbackService.getByUpdateToken(data.updateToken);
+	return Promise.resolve(feedbackService.getByUpdateToken(data.updateToken));
 }
 
 function getEndUser(data : RawPostEndUser) : Promise <EndUser> {
 	const name = trimUserData(data.name);
 	const email = trimUserData(data.email);
 
-	return enduserService.get(name, email)
+	return Promise.resolve(enduserService.get(name, email))
 	.then((foundUser : EndUser) => {
 		if (foundUser !== null) {
 			return foundUser;

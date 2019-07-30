@@ -16,6 +16,8 @@
 // this program. If not, see <http://www.gnu.org/licenses/>.
 //
 
+import * as Promise from 'bluebird';
+
 import * as bodyParser from 'body-parser';
 
 import {
@@ -73,8 +75,8 @@ function parseParameters(requ : Request) : Promise <FeedbackParams> {
 	const hasQueryParams = Object.getOwnPropertyNames(requ.query).length > 0;
 
 	if (hasSingleParam && !hasQueryParams) {
-		return ArticleURL
-		.from(requ.params[0].trim())
+		return Promise.resolve(ArticleURL
+		.from(requ.params[0].trim()))
 		.then((url : ArticleURL) : FeedbackParams => ({
 			url,
 			version: null,
@@ -95,7 +97,7 @@ function parseParameters(requ : Request) : Promise <FeedbackParams> {
 			return Promise.reject(new NotFoundError(__('err.no-url-param')));
 		}
 
-		return ArticleURL.from(url)
+		return Promise.resolve(ArticleURL.from(url))
 		.then((articleURL : ArticleURL) : FeedbackParams => {
 			return {
 				url: articleURL,
@@ -121,7 +123,7 @@ function feedbackHandler(
 	// content and also load the page template
 	let website : Website;
 
-	return websiteService.identify(articleURL).then((w : Website) => {
+	return Promise.resolve(websiteService.identify(articleURL)).then((w : Website) => {
 		if (w === null) {
 			return Promise.reject(new NotFoundError(__('err.no-website-identify')));
 		}

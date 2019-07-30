@@ -17,6 +17,9 @@
 //
 
 // import * as colors from 'ansicolors';
+
+import * as Promise from 'bluebird';
+
 import * as path from 'path';
 
 import { assert } from 'chai';
