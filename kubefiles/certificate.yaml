@@ -10,9 +10,3 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - {{ env "REPONAME" }}.{{ env "ENV" }}.medialaben.no
-  acme:
-    config:
-    - dns01:
-        provider: cf-dns
-      domains:
-        - {{ env "REPONAME" }}.{{ env "ENV" }}.medialaben.no
