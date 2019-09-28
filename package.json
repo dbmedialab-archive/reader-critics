@@ -119,7 +119,7 @@
 		"typed-immutable-record": "0.0.6",
 		"uuid": "3.3.2",
 		"webpack": "4.26.0",
-		"webpack-dev-middleware": "^3.3.0",
+		"webpack-dev-middleware": "^3.7.2",
 		"whatwg-fetch": "2.0.3"
 	},
 	"devDependencies": {
