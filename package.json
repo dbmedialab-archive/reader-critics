@@ -75,7 +75,7 @@
 		"has-color": "0.2.0",
 		"immutable": "3.8.2",
 		"ioredis": "4.2.0",
-		"json5": "2.1.0",
+		"json5": "2.1.1",
 		"jsonwebtoken": "8.4.0",
 		"keykey": "2.1.1",
 		"keymirror": "0.1.1",
