@@ -40,12 +40,11 @@ spec:
               topologyKey: kubernetes.io/hostname
         # prefer to run on preemptible instances
         nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - preference:
-              matchExpressions:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
               - key: cloud.google.com/gke-preemptible
                 operator: Exists
-            weight: 100
       tolerations:
         - key: cloud.google.com/gke-preemptible
           operator: Equal
