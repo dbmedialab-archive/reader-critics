@@ -105,7 +105,7 @@
 		"react-transition-group": "2.5.0",
 		"redux": "^4.0.0",
 		"redux-logger": "3.0.6",
-		"redux-promise-middleware": "5.1.1",
+		"redux-promise-middleware": "6.1.2",
 		"redux-thunk": "2.3.0",
 		"sass-loader": "7.1.0",
 		"schema-inspector": "^1.6.8",
