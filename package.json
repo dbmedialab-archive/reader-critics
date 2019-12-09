@@ -63,7 +63,7 @@
 		"cookie-parser": "1.4.3",
 		"cron": "1.5.0",
 		"crypto-random-string": "1.0.0",
-		"css-loader": "1.0.1",
+		"css-loader": "3.3.0",
 		"debug": "4.1.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
