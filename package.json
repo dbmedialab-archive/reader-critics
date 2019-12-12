@@ -82,7 +82,7 @@
 		"kue": "0.11.6",
 		"lodash": "4.17.11",
 		"moment": "2.22.2",
-		"mongoose": "5.3.12",
+		"mongoose": "5.8.1",
 		"node-fetch": "2.3.0",
 		"node-read": "0.1.7",
 		"node-sass": "4.10.0",
