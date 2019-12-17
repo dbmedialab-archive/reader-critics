@@ -111,7 +111,7 @@
 		"schema-inspector": "^1.6.8",
 		"seamless-immutable": "7.1.4",
 		"seamless-immutable-mergers": "7.1.0",
-		"semver": "5.6.0",
+		"semver": "7.1.1",
 		"serve-favicons": "2.1.5",
 		"spinkit": "^1.2.5",
 		"strip-url-auth": "1.0.1",
