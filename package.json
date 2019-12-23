@@ -154,7 +154,7 @@
 		"@types/react-redux": "^5.0.0",
 		"@types/react-router": "^4.0.0",
 		"@types/react-router-dom": "^4.0.0",
-		"@types/redux-promise-middleware": "0.0.10",
+		"@types/redux-promise-middleware": "6.0.0",
 		"@types/webpack": "^3.0.0",
 		"awesome-typescript-loader": "^3.5.0",
 		"babel-eslint": "^7.2.3",
