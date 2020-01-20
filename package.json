@@ -108,7 +108,7 @@
 		"redux-promise-middleware": "5.1.1",
 		"redux-thunk": "2.3.0",
 		"sass-loader": "7.1.0",
-		"schema-inspector": "^1.6.8",
+		"schema-inspector": "1.6.8",
 		"seamless-immutable": "7.1.4",
 		"seamless-immutable-mergers": "7.1.0",
 		"semver": "5.6.0",
