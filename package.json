@@ -74,7 +74,7 @@
 		"griddle-react": "1.13.1",
 		"has-color": "0.2.0",
 		"immutable": "3.8.2",
-		"ioredis": "4.2.0",
+		"ioredis": "4.16.0",
 		"json5": "2.1.0",
 		"jsonwebtoken": "8.4.0",
 		"keykey": "2.1.1",
