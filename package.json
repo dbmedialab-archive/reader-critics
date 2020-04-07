@@ -126,7 +126,7 @@
 		"@babel/core": "^7.9.0",
 		"@babel/polyfill": "^7.8.7",
 		"@babel/preset-env": "^7.9.5",
-		"@babel/preset-react": "^7.0.0",
+		"@babel/preset-react": "^7.9.4",
 		"@types/bluebird": "^3.5.0",
 		"@types/bluebird-global": "^3.5.0",
 		"@types/body-parser": "^1.16.0",
