@@ -67,7 +67,7 @@
 		"debug": "4.1.0",
 		"dot": "1.1.2",
 		"express": "4.15.3",
-		"express-session": "1.15.6",
+		"express-session": "1.17.1",
 		"find-root": "1.1.0",
 		"flat": "4.1.0",
 		"foundation-sites": "6.2.1",
