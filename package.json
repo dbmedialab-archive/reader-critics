@@ -94,7 +94,7 @@
 		"react": "^16.5.0",
 		"react-dom": "^16.5.0",
 		"react-helmet": "5.2.0",
-		"react-intl": "2.7.2",
+		"react-intl": "4.5.10",
 		"react-modal": "^3.5.1",
 		"react-preloader-icon": "0.1.1",
 		"react-recaptcha": "2.3.10",
