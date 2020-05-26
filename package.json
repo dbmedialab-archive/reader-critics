@@ -168,7 +168,7 @@
 		"nightwatch": "1.0.1",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"sass-lint": "1.12.1",
-		"source-map-loader": "^0.2.4",
+		"source-map-loader": "^1.0.0",
 		"source-map-support": "0.5.6",
 		"supports-color": "^4.2.1",
 		"ts-node": "7.0.1",
