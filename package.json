@@ -80,7 +80,7 @@
 		"keykey": "2.1.1",
 		"keymirror": "0.1.1",
 		"kue": "0.11.6",
-		"lodash": "4.17.11",
+		"lodash": "4.17.20",
 		"moment": "2.22.2",
 		"mongoose": "5.3.12",
 		"node-fetch": "2.3.0",
