@@ -179,8 +179,6 @@ common_aliases:
 #
 #########################################################################
 
-version: 2
-
 jobs:
   build:
     <<: *container_defaults
