@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ADD package.json /tmp/package.json
 
-RUN cd /tmp && npm install --no-optional --no-package-lock --quiet
+RUN cd /tmp && npm ci
 
 RUN apt-get -q update && apt-get -y install rsync ca-certificates iproute2 git
 
