@@ -129,7 +129,7 @@
 		"@babel/preset-react": "^7.0.0",
 		"@types/bluebird": "^3.5.0",
 		"@types/bluebird-global": "^3.5.0",
-		"@types/body-parser": "^1.16.0",
+		"@types/body-parser": "^1.19.0",
 		"@types/callsite": "^1.0.0",
 		"@types/chai": "^4.0.0",
 		"@types/classnames": "^2.2.0",
