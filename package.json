@@ -140,7 +140,7 @@
 		"@types/express": "^4.0.0",
 		"@types/express-session": "^1.15.0",
 		"@types/ioredis": "^3.0.0",
-		"@types/kue": "^0.11.0",
+		"@types/kue": "^0.11.13",
 		"@types/lodash": "^4.14.116",
 		"@types/mocha": "^2.2.0",
 		"@types/mongodb": "^2.2.0",
