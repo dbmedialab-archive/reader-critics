@@ -136,7 +136,7 @@ common_aliases:
       setup_remote_docker:
         version: 17.10.0-ce
         docker_layer_caching: true
-
+        
   - &docker_build
     run:
       name: Build and tag docker image
@@ -179,8 +179,6 @@ common_aliases:
 #
 #########################################################################
 
-version: 2
-
 jobs:
   build:
     <<: *container_defaults
@@ -188,48 +186,15 @@ jobs:
       - checkout
       - <<: *setup_remote_docker
       - <<: *docker_build
-      - <<: *setup_tests
-      - run:
-          name: Setup docker-compose and credentials
-          command: |
-            apk --no-cache add py-pip
-            pip -q install docker-compose==1.23.2
-      - run:
-          name: Fire up compose context for later tests
-          command: docker-compose -f docker-compose.ci.yml up -d
-      - run:
-          name: Test libs
-          command: docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --libs
-      - run:
-          name: Test base
-          command: docker run $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --base
-      - run:
-          name: Test app
-          command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --app
-      - run:
-          name: Test db
-          command: docker run --network=container:test -e MONGODB_URL=mongodb://mongo/readercritics -e REDIS_URL_MESSAGE_QUEUE=redis://redis/1 -e REDIS_URL_SESSION_CACHE=redis://redis/2 -e AUTH_JWT_SECRET="abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678abcd1234cdef5678" -e AUTH_SESSION_SECRET="0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd0000cafe1111abcd" $GCR/$CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME:$CIRCLE_SHA1 run/test --db
       - <<: *docker_push_gcr
-
-  trigger_deploy_rc_customer1:
-    <<: *container_defaults
-    steps:
-      - run:
-          name: Triggering deploy of remote repo rc-customer1
-          command: |
-            apk add --no-cache curl curl-dev
-            curl -X POST \
-              --header "Content-Type: application/json" \
-              -d "{\"branch\":\"${CIRCLE_BRANCH}\"}" \
-              https://circleci.com/api/v1.1/project/github/dbmedialab/rc-customer1/build?circle-token=${DEPLOY_KEY_RC_CUSTOMER1}
-
   deploy_prod:  *deploy_prod
   deploy_stage: *deploy_stage
+  deploy_stage_from_prod: *deploy_stage
   deploy_test:  *deploy_test
 
 workflows:
   version: 2
-  build-stage:
+  main-workflow:
     jobs:
       - build:
           context: "org-global"
@@ -240,29 +205,27 @@ workflows:
           filters:
             branches:
               only: master
-      - deploy_stage:
+      - deploy_stage_from_prod:
           context: "org-global"
           requires:
             - build
           filters:
             branches:
-              only: develop
-      - deploy_test:
+              only: master
+      - approve_deploy_stage:
           context: "org-global"
+          type: approval
           requires:
             - build
           filters:
             branches:
               ignore:
                 - master
-                - develop
-      - trigger_deploy_rc_customer1:
+      - deploy_stage:
           context: "org-global"
           requires:
-            - build
+            - approve_deploy_stage
           filters:
             branches:
-              only:
+              ignore:
                 - master
-                - develop
-
