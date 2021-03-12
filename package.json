@@ -159,7 +159,7 @@
 		"awesome-typescript-loader": "^3.5.0",
 		"babel-eslint": "^7.2.3",
 		"babel-loader": "8.0.3",
-		"chai": "4.1.2",
+		"chai": "4.3.3",
 		"eslint": "^4.8.0",
 		"eslint-config-airbnb-base": "13.0.0",
 		"eslint-plugin-import": "^2.7.0",
