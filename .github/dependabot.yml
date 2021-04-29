@@ -1,0 +1,50 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+    timezone: Europe/Belfast
+  open-pull-requests-limit: 30
+  ignore:
+  - dependency-name: geckodriver
+    versions:
+    - 1.22.1
+    - 1.22.2
+  - dependency-name: mini-css-extract-plugin
+    versions:
+    - 1.3.5
+    - 1.3.8
+    - 1.3.9
+  - dependency-name: chai
+    versions:
+    - 4.2.0
+    - 4.3.3
+  - dependency-name: cheerio
+    versions:
+    - 1.0.0-rc.3
+    - 1.0.0-rc.5
+  - dependency-name: whatwg-fetch
+    versions:
+    - 3.5.0
+    - 3.6.1
+  - dependency-name: "@sendgrid/mail"
+    versions:
+    - 7.4.1
+  - dependency-name: "@types/react-redux"
+    versions:
+    - 7.1.15
+  - dependency-name: webpack
+    versions:
+    - 4.44.2
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: connect-redis
+    versions:
+    - 5.0.0
+  - dependency-name: schema-inspector
+    versions:
+    - 1.6.9
+  rebase-strategy: disabled
